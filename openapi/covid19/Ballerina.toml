@@ -1,0 +1,11 @@
+[package]
+org = "ballerinax"
+name = "covid19"
+version = "0.1.0"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["covid19", "covid19 vaccine"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+
+[build-options]
+observabilityIncluded = true

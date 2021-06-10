@@ -1,0 +1,43 @@
+
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  container:
+    runs-on: ubuntu-latest
+    container:
+      image: ballerina/ballerina:swan-lake-beta1
+      options: --user root
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build with Gradle
+        env:
+          BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
+          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+        run: |
+           ./gradlew build -Prelease=true -Premote=true
+      - name: Create Pull Request For Updating Release Files
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: Update file hashes
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: release/file-update
+          base: master
+          title: Update file hashes
+          body: |
+            Update file hashes
+              - openapi.properties
+            Update Ballerina.toml version of the released connectors
+          draft: false
+      - name: PR details
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

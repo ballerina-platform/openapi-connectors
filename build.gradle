@@ -1,0 +1,123 @@
+import org.ballerinax.openapi.validator.Utils
+
+buildscript {
+    dependencies {
+        classpath files("libs/ballerinax-openapi-validator-1.0-SNAPSHOT-all.jar")
+    }
+}
+
+plugins {
+    id 'java'
+    id "com.github.spotbugs" version "${githubSpotbugsVersion}"
+    id "com.github.johnrengelman.shadow" version "${githubJohnrengelmanShadowVersion}"
+    id "de.undercouch.download" version "${underCouchDownloadVersion}"
+    id "net.researchgate.release" version "${researchgateReleaseVersion}"
+}
+
+apply plugin: 'jacoco'
+apply plugin: 'maven-publish'
+
+def ballerinaDistributionPath = System.getenv("BALLERINA_HOME")
+List<String> updatedBallerinaPackages = new ArrayList<>();
+boolean release = new Boolean(project.property("release").toString())
+boolean remote = false;
+if (project.hasProperty("remote")){
+    remote = new Boolean(project.property("remote").toString())
+}
+
+// TODO: Remove this cleanup task once the file override enabled
+task cleanup {
+    println "Cleaning up generated code..."
+    Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
+    updatedBallerinaPackages.each {
+        dir->exec{
+            commandLine 'sh', '-c', "find ${dir} -name '*.bal' -type f -delete"
+        }
+    }
+    updatedBallerinaPackages.each {
+        dir->exec{
+            commandLine 'sh', '-c', "find ${dir} -name 'target' -type d -exec rm -rf {} +"
+        }
+    }
+    updatedBallerinaPackages.each {
+        dir->exec{
+            commandLine 'sh', '-c', "find ${dir} -name 'resources' -type d -exec rm -rf {} +"
+        }
+    }
+}
+
+task codegen {
+    Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
+    updatedBallerinaPackages = Utils.findUpdatedBallerinaPackages(project.projectDir.absolutePath)
+
+    exec {
+        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slbeta1"
+    }
+
+    for(String updatedPackagePath : updatedBallerinaPackages){
+        List<String> updatedYamlFiles = Utils.findOpenAPIs(updatedPackagePath);
+        println "Code generation..."
+        updatedYamlFiles.each {
+            file->exec{
+                commandLine 'bash', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i ${file} --mode client -o ${updatedPackagePath}"
+            }
+        }
+    }
+
+    // Pulling slalpha5 distribution if not available
+    if (project.hasProperty("remote") ) {
+        if (remote) {
+            exec {
+                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
+            }
+
+            exec {
+                commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
+            }
+        }
+    }
+
+    // Changing the build distribution to SL Alpha5
+    exec {
+        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
+    }
+
+
+    for (String path : updatedBallerinaPackages) {
+        println "Code building..."
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
+        }
+    }
+
+    for (String path : updatedBallerinaPackages) {
+
+        if (!release) {
+            exec {
+                workingDir "${path}"
+                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
+            }
+        }
+    }
+}
+
+task releaseConnector {
+    //TODO: check and remove the snapshot part in the ballerina toml
+    if (project.hasProperty("release") ) {
+        if(release){
+            for (String path : updatedBallerinaPackages) {
+                println "Pushing to Ballerina central..."
+                exec {
+                    workingDir "${path}"
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push"
+                }
+                print "Updating Ballerina.toml version: "
+                Utils.bumpBallerinaTomlVersion(path);
+                println "Success"
+            }
+            print "Updating package hashes: "
+            Utils.writeUpdatedFileHashes(project.projectDir.absolutePath, updatedBallerinaPackages)
+            println "Success"
+        }
+    }
+}

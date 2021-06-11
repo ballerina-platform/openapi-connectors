@@ -13,9 +13,9 @@ jobs:
       image: ballerina/ballerina:swan-lake-beta1
       options: --user root
     steps:
-      - uses: actions/checkout@v2
       - name: Install Git
         run: apk --no-cache add git
+      - uses: actions/checkout@v2
       - name: Build with Gradle
         env:
           BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
@@ -26,13 +26,13 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.BALLERINA_BOT_TOKEN }}
           commit-message: Update file hashes
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: release/file-update
-          base: master
+          base: main
           title: Update file hashes
           body: |
             Update file hashes

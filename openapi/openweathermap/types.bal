@@ -36,6 +36,7 @@ public type WeatherForecast record {
     Alerts[] alerts?;
 };
 
+# Government weather alerts
 public type Alerts record {
     # Name of the alert source.
     string sender_name?;
@@ -233,7 +234,7 @@ public type Coord record {
     decimal lat?;
 };
 
-# Weather
+# Weather metadata
 public type Weather record {
     # Weather condition id
     int id?;
@@ -271,7 +272,7 @@ public type Wind record {
     int deg?;
 };
 
-# Nature of the clounds
+# Nature of the clouds
 public type Clouds record {
     # Cloudiness, %
     int 'all?;
@@ -283,7 +284,7 @@ public type Rain record {
     int '\3h?;
 };
 
-# Snow
+# Snow volume information
 public type Snow record {
     # Snow volume for the last 3 hours
     decimal '\3h?;

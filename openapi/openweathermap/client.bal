@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,9 @@ public type ApiKeysConfig record {
     map<string|string[]> apiKeys;
 };
 
+# Client endpoint for OpenWeatherMap API
+#
+# + clientEp - Connector http endpoint
 @display {label: "Open Weather Client"}
 public client class Client {
     http:Client clientEp;
@@ -31,6 +34,17 @@ public client class Client {
         self.clientEp = httpEp;
         self.apiKeys = apiKeyConfig.apiKeys;
     }
+    # Access current weather data for any location.
+    #
+    # + q - City name, or city name and country code. For the query value, type the city name and optionally the country code divided by comma; use ISO 3166 country codes.
+    # + id - City ID. Example: `2172797`. The List of city IDs can be downloaded [here](http://bulk.openweathermap.o/sample/).
+    # + lat - Latitude
+    # + lon - Longtitude
+    # + zip - Zip code. Search by zip code. Example: 95050,us.
+    # + units - Units of measurement.
+    # + lang - Language
+    # + mode - Format of response. Possible values are `xml` and `html`. If mode parameter is empty the format is `json` by default.
+    # + return - Current weather data of the given location
     @display {label: "Current Weather"}
     remote isolated function getCurretWeatherData(@display {label: "CityName or StateCode or CountryCode"} string? q = (), @display {label: "City Id"} string? id = (), @display {label: "Latitude"} string? lat = (), @display {label: "Longitude"} string? lon = (), @display {label: "Zip Code"} string? zip = (), @display {label: "Units"} string? units = (), @display {label: "Language"} string? lang = (), @display {label: "Mode"} string? mode = ()) returns CurrentWeatherData|error {
         string  path = string `/weather`;
@@ -39,6 +53,14 @@ public client class Client {
         CurrentWeatherData response = check self.clientEp-> get(path, targetType = CurrentWeatherData);
         return response;
     }
+    # Access to current weather, minute forecast for 1 hour, hourly forecast for 48 hours, daily forecast for 7 days and government weather alerts.
+    #
+    # + lat - Latitude
+    # + lon - Longtitude
+    # + exclude - Exclude parts of the weather data from the API response. It should be a comma-delimited list (without spaces).
+    # + units - Units of measurement.
+    # + lang - Language
+    # + return - Weather forecast of the given location
     @display {label: "Weather Forecast"}
     remote isolated function getWeatherForecast(@display {label: "Latitude"} string lat, @display {label: "Longtitude"} string lon, @display {label: "Exclude"} string? exclude = (), @display {label: "Units"} string? units = (), @display {label: "Language"} string? lang = ()) returns WeatherForecast|error {
         string  path = string `/onecall`;
@@ -49,6 +71,10 @@ public client class Client {
     }
 }
 
+# Generate query path with query parameter.
+#
+# + queryParam - Query parameter map
+# + return - Returns generated Path or error at failure of client initialization
 isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string {
     string[] param = [];
     param[param.length()] = "?";

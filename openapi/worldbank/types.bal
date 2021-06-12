@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,56 +13,79 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+# Data indicator
 public type Indicator record {
+    # Id of the indicator
     string id?;
+    # Value represent by the indicator
     string value?;
 };
 
+# Represent a Country
 public type Country record {
+    # Country code
     string id?;
+    # Country name
     string value?;
 };
 
+# Represent access to electricity
 public type AccessToElectricity record {
+    # World bank indicator
     Indicator indicator?;
+    # Country
     Country country?;
+    # Date-range by year, month or quarter that scopes the result-set.
     string date?;
-    int? value?;
-    int 'decimal?;
+    # Population percentage having electricity
+    float? value?;
 };
 
+# Represent youth literacy rate
 public type YouthLiteracyRate record {
+    # World bank indicator
     Indicator indicator?;
+    # Country
     Country country?;
+    # Date-range by year, month or quarter that scopes the result-set.
     string date?;
-    int? value?;
-    int 'decimal?;
+    # Youth literacy rate
+    float? value?;
 };
 
+# Represent gross domestic product
 public type GrossDomesticProduct record {
+    # World bank indicator
     Indicator indicator?;
+    # Country
     Country country?;
+    # Date-range by year, month or quarter that scopes the result-set.
     string date?;
-    int? value?;
-    int 'decimal?;
+    # Gross domestic product
+    float? value?;
 };
 
+# Represent primary education expenditure
 public type PrimaryEducationExpenditure record {
+    # World bank indicator
     Indicator indicator?;
+    # Country
     Country country?;
+    # Date-range by year, month or quarter that scopes the result-set.
     string date?;
-    int? value?;
-    int 'decimal?;
+    # Primary education expenditure
+    float? value?;
 };
 
+# Represent country population.
 public type CountryPopulation record {
+    # World bank indicator
     Indicator indicator?;
+    # Country
     Country country?;
+    # Date-range by year, month or quarter that scopes the result-set.
     string date?;
+    # Country population
     int? value?;
-    int 'decimal?;
-};
-
-public type Error record {
-    string name?;
 };

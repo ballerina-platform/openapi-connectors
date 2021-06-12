@@ -254,6 +254,7 @@ components:
              $ref: '#/components/schemas/Alerts'
           description: Government weather alerts
     Alerts:
+      description: Government weather alerts
       type: object
       properties:
         sender_name:
@@ -628,7 +629,7 @@ components:
     Clouds:
       title: Clouds
       type: object
-      description: Nature of the clounds
+      description: Nature of the clouds
       properties:
         all:
           type: integer

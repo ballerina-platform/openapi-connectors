@@ -119,7 +119,7 @@ public client class Client {
     # + page - Page number
     # + per_page - Per page record count
     # + return - Population percentage having electricity of each country.
-    @display {label: "Population Percentage Having Electricity"}
+    @display {label: "Get Population% Having Electricity"}
     remote isolated function getAccessToElectricityPercentage(string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricityArr|error? {
         string  path = string `/country/all/indicator/1.1_ACCESS.ELECTRICITY.TOT`;
         map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
@@ -138,7 +138,7 @@ public client class Client {
     # + page - Page number
     # + per_page - Per page record count
     # + return - Yearly population percentage having electricity of the given country.
-    @display {label: "Population Percentage Having Electricity Of Country"}
+    @display {label: "Get Population% Having Electricity By Country"}
     remote isolated function getAccessToElectricityPercentageByCountry(@display {label: "Country Code"} string country_code, string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricityArr|error? {
         string  path = string `/country/${country_code}/indicator/1.1_ACCESS.ELECTRICITY.TOT`;
         map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};

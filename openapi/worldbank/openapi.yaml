@@ -251,7 +251,7 @@ paths:
       description: "Get percentage of population with access to electricity of countries in the world."
       operationId: getAccessToElectricityPercentage
       x-display:
-        label: "Population Percentage Having Electricity"
+        label: "Get Population% Having Electricity"
       parameters:
         - name: date
           in: query
@@ -306,7 +306,7 @@ paths:
       description: "Get percentage of population with access to electricity of a given country."
       operationId: getAccessToElectricityPercentageByCountry
       x-display:
-        label: "Population Percentage Having Electricity Of Country"
+        label: "Get Population% Having Electricity By Country"
       parameters:
         - name: country_code
           in: path

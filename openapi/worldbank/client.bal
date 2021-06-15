@@ -41,14 +41,13 @@ public client class Client {
     # Get population of each country
     #
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Population of each countries
     @display {label: "Get Population"}
-    remote isolated function getPopulation(@display {label: "Date"} string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns CountryPopulationArr|error? {
+    remote isolated function getPopulation(@display {label: "Date"} string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns CountryPopulationArr|error? {
         string  path = string `/country/all/indicator/SP.POP.TOTL`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -60,14 +59,13 @@ public client class Client {
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Yearly population of the given country
     @display {label: "Get Country Population"}
-    remote isolated function getPopulationByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string date, @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns CountryPopulationArr|error? {
+    remote isolated function getPopulationByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string date, @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns CountryPopulationArr|error? {
         string  path = string `/country/${country_code}/indicator/SP.POP.TOTL`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -78,14 +76,13 @@ public client class Client {
     # Get GDP of each country.
     #
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - GDP of each country
     @display {label: "Get GDP"}
-    remote isolated function getGDP(string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns GrossDomesticProductArr|error? {
+    remote isolated function getGDP(string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns GrossDomesticProductArr|error? {
         string  path = string `/country/all/indicator/NY.GDP.MKTP.CD`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -97,14 +94,13 @@ public client class Client {
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Yearly GDP of the given country
     @display {label: "Get GDP By Country"}
-    remote isolated function getGDPByCountry(@display {label: "Country Code"} string country_code, string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns GrossDomesticProductArr|error? {
+    remote isolated function getGDPByCountry(@display {label: "Country Code"} string country_code, string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns GrossDomesticProductArr|error? {
         string  path = string `/country/${country_code}/indicator/NY.GDP.MKTP.CD`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -115,14 +111,13 @@ public client class Client {
     # Get percentage of population with access to electricity of countries in the world.
     #
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Population percentage having electricity of each country.
     @display {label: "Get Population% Having Electricity"}
-    remote isolated function getAccessToElectricityPercentage(string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricityArr|error? {
+    remote isolated function getAccessToElectricityPercentage(string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricityArr|error? {
         string  path = string `/country/all/indicator/1.1_ACCESS.ELECTRICITY.TOT`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -134,14 +129,13 @@ public client class Client {
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Yearly population percentage having electricity of the given country.
     @display {label: "Get Population% Having Electricity By Country"}
-    remote isolated function getAccessToElectricityPercentageByCountry(@display {label: "Country Code"} string country_code, string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricityArr|error? {
+    remote isolated function getAccessToElectricityPercentageByCountry(@display {label: "Country Code"} string country_code, string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricityArr|error? {
         string  path = string `/country/${country_code}/indicator/1.1_ACCESS.ELECTRICITY.TOT`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -152,14 +146,13 @@ public client class Client {
     # Get literacy rate of youth (% of people ages 15-24) of countries in the world.
     #
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Youth literacy rate of each country.
     @display {label: "Get Youth Literacy Rate"}
-    remote isolated function getYouthLiteracyRate(@display {label: "Date"} string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns YouthLiteracyRateArr|error? {
+    remote isolated function getYouthLiteracyRate(@display {label: "Date"} string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns YouthLiteracyRateArr|error? {
         string  path = string `/country/all/indicator/1.1_YOUTH.LITERACY.RATE`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -171,14 +164,13 @@ public client class Client {
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Youth literacy rate of the given country.
     @display {label: "Get Youth Literacy Rate By Country"}
-    remote isolated function getYouthLiteracyRateByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns YouthLiteracyRateArr|error? {
+    remote isolated function getYouthLiteracyRateByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns YouthLiteracyRateArr|error? {
         string  path = string `/country/${country_code}/indicator/1.1_YOUTH.LITERACY.RATE`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -189,14 +181,13 @@ public client class Client {
     # Get government expenditure on primary education of each country
     #
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Government expenditure on primary education of each country.
     @display {label: "Get Government Expenditure On Education"}
-    remote isolated function getGovernmentExpenditureOnPrimaryEducation(@display {label: "Date"} string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns PrimaryEducationExpenditureArr|error? {
+    remote isolated function getGovernmentExpenditureOnPrimaryEducation(@display {label: "Date"} string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns PrimaryEducationExpenditureArr|error? {
         string  path = string `/country/all/indicator/UIS.X.PPP.1.FSGOV`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();
@@ -208,14 +199,13 @@ public client class Client {
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
     # + date - Date-range by year, month or quarter that scopes the result-set.
-    # + format - Format of the response.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Government expenditure on primary education of a country.
     @display {label: "Get Government Expenditure On Education By Country"}
-    remote isolated function getGovernmentExpenditureOnPrimaryEducationByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date = (), @display {label: "Response Format"} string? format = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns PrimaryEducationExpenditureArr|error? {
+    remote isolated function getGovernmentExpenditureOnPrimaryEducationByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date = (), @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns PrimaryEducationExpenditureArr|error? {
         string  path = string `/country/${country_code}/indicator/UIS.X.PPP.1.FSGOV`;
-        map<anydata> queryParam = {date: date, format: format, page: page, per_page: per_page};
+        map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         http:Response httpResponse = check self.clientEp-> get(path);
         json[] payload = <json[]> check httpResponse.getJsonPayload();

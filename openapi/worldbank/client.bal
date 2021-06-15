@@ -40,7 +40,7 @@ public client class Client {
     }
     # Get population of each country
     #
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Population of each countries
@@ -58,7 +58,7 @@ public client class Client {
     # Get population of a country
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Yearly population of the given country
@@ -75,7 +75,7 @@ public client class Client {
     }
     # Get GDP of each country.
     #
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - GDP of each country
@@ -93,7 +93,7 @@ public client class Client {
     # Get GDP of a country.
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Yearly GDP of the given country
@@ -110,7 +110,7 @@ public client class Client {
     }
     # Get percentage of population with access to electricity of countries in the world.
     #
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Population percentage having electricity of each country.
@@ -128,7 +128,7 @@ public client class Client {
     # Get percentage of population with access to electricity of a given country.
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Yearly population percentage having electricity of the given country.
@@ -145,7 +145,7 @@ public client class Client {
     }
     # Get literacy rate of youth (% of people ages 15-24) of countries in the world.
     #
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Youth literacy rate of each country.
@@ -163,7 +163,7 @@ public client class Client {
     # Get literacy rate of youth (% of people ages 15-24) of a country.
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Youth literacy rate of the given country.
@@ -180,7 +180,7 @@ public client class Client {
     }
     # Get government expenditure on primary education of each country
     #
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Government expenditure on primary education of each country.
@@ -198,7 +198,7 @@ public client class Client {
     # Get government expenditure on primary education of a country.
     #
     # + country_code - Country code (Example- AFG, ALB, LKA)
-    # + date - Date-range by year, month or quarter that scopes the result-set.
+    # + date - Date by year (2010), Date-range by year(2005:2010), month(2010M02:2010M08) or quarter(2012Q1:2012Q3) that scopes the result-set.
     # + page - Page number
     # + per_page - Per page record count
     # + return - Government expenditure on primary education of a country.

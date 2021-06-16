@@ -20,6 +20,16 @@ import  ballerina/lang.'string;
 
 type JsonArr json[];
 
+type ErrorResponse record {
+    ErrorMessage[] message;
+};
+
+type ErrorMessage record {
+    string id;
+    string 'key;
+    string value;
+};
+
 # World Bank Data
 #
 # + clientEp - Connector http endpoint
@@ -42,10 +52,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get population of a country
@@ -61,10 +81,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }           
         }
     }
     # Get GDP of each country.
@@ -79,10 +109,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get GDP of a country.
@@ -98,10 +138,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get percentage of population with access to electricity of countries in the world.
@@ -116,10 +166,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get percentage of population with access to electricity of a given country.
@@ -135,10 +195,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get literacy rate of youth (% of people ages 15-24) of countries in the world.
@@ -153,10 +223,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get literacy rate of youth (% of people ages 15-24) of a country.
@@ -172,10 +252,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get government expenditure on primary education of each country
@@ -190,10 +280,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
     # Get government expenditure on primary education of a country.
@@ -209,10 +309,20 @@ public client class Client {
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
         path = path + getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
-        if (payloadArr.length() > 1 && payloadArr[1] != ()) {
-            return payloadArr[1].cloneWithType();            
+        if (payloadArr.length() > 1) {
+            if (payloadArr[1] != ()) {
+                return payloadArr[1].cloneWithType(); 
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            ErrorResponse|error errorResponse = payloadArr[0].cloneWithType(ErrorResponse);
+            if (errorResponse is ErrorResponse) {
+                ErrorMessage[] errorMessage = errorResponse.message;
+                return error(errorMessage[0].value, id = errorMessage[0].id, key = errorMessage[0].key);
+            } else {
+                return error("Invalid Request");
+            }    
         }
     }
 }

@@ -159,6 +159,8 @@ public type PostSubusersRequest record {
 
 public type SuppressionBlocksArr SuppressionBlocks[];
 
+public type SpamReportDetailsArr SpamReportDetails[];
+
 # Client endpoint for Sendgrid API
 #
 # + clientEp - Connector http endpoint
@@ -252,6 +254,24 @@ public client class Client {
         map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         SuppressionBlocksArr response = check self.clientEp-> get(path, accHeaders, targetType = SuppressionBlocksArr);
+        return response;
+    }
+    # Retrieve all spam reports
+    #
+    # + start_time - Refers start of the time range in unix timestamp when a spam report was created (inclusive).
+    # + end_time - Refers end of the time range in unix timestamp when a spam report was created (inclusive).
+    # + 'limit - Limit the number of results to be displayed per page.
+    # + offset - Paging offset. The point in the list to begin displaying results.
+    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + return - Received spam reports
+    @display {label: "Get Suppression Spam Reports"}
+    remote isolated function getSuppressionSpamReports(@display {label: "Start Time"} int? start_time = (), @display {label: "End Time"} int? end_time = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns SpamReportDetailsArr|error {
+        string  path = string `/suppression/spam_reports`;
+        map<anydata> queryParam = {start_time: start_time, end_time: end_time, 'limit: 'limit, offset: offset};
+        path = path + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        SpamReportDetailsArr response = check self.clientEp-> get(path, accHeaders, targetType = SpamReportDetailsArr);
         return response;
     }
 }

@@ -10,6 +10,7 @@ The WorldBank connector consume the data exposed in https://api.sendgrid.com/v3.
 - List all Subusers
 - Create Subuser
 - Retrieve all Blocks
+- Get Suppression Spam Reports
 
 ## Compatibility
 

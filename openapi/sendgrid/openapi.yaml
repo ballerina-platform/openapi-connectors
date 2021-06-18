@@ -1045,6 +1045,74 @@ paths:
       summary: Retrieve all blocks
       tags:
         - Blocks API
+  "/suppression/spam_reports":
+      get:
+        description: >-
+          **This endpoint allows you to retrieve all spam reports.**
+  
+  
+          [Spam reports](https://sendgrid.com/docs/Glossary/spam_reports.html) happen when a recipient indicates that they think your email is [spam](https://sendgrid.com/docs/Glossary/spam.html) and then their email provider reports this to SendGrid.
+  
+  
+          For more information, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Suppressions/spam_reports.html).
+        operationId: GET_suppression-spam_reports
+        x-display:
+          label: Get Suppression Spam Reports
+        parameters:
+          - description: Refers start of the time range in unix timestamp when a spam report
+              was created (inclusive).
+            in: query
+            name: start_time
+            schema:
+              type: integer
+            x-display:
+              label: Start Time
+          - description: Refers end of the time range in unix timestamp when a spam report
+              was created (inclusive).
+            in: query
+            name: end_time
+            schema:
+              type: integer
+            x-display:
+              label: End Time
+          - description: Limit the number of results to be displayed per page.
+            in: query
+            name: limit
+            schema:
+              type: integer
+            x-display:
+              label: Limit
+          - description: Paging offset. The point in the list to begin displaying results.
+            in: query
+            name: offset
+            schema:
+              type: integer
+            x-display:
+              label: Offset
+          - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+        responses:
+          "200":
+            content:
+              application/json:
+                examples:
+                  response:
+                    value:
+                      - created: 1443651141
+                        email: user1@example.com
+                        ip: 10.63.202.100
+                      - created: 1443651154
+                        email: user2@example.com
+                        ip: 10.63.202.100
+                schema:
+                  items:
+                    $ref: '#/components/schemas/SpamReportDetails'
+                  type: array
+            description: "Received spam reports"
+        security:
+          - Authorization: []
+        summary: Retrieve all spam reports
+        tags:
+          - Spam Reports API
 components:
   parameters:
     trait_onBehalfOfSubuser_on-behalf-of:
@@ -1057,6 +1125,23 @@ components:
       x-display: 
         label: Subuser's Username
   schemas:
+    SpamReportDetails:
+      description: Spam report details
+      properties:
+        created:
+          description: A Unix timestamp indicating when the spam report was made.
+          type: integer
+        email:
+          description: The email address of the recipient who marked your message as spam.
+          type: string
+        ip:
+          description: The IP address that the message was sent on.
+          type: string
+      required:
+        - created
+        - email
+        - ip
+      type: object
     subuser_post:
       description: Created subuser's details
       example:

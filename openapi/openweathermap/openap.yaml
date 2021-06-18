@@ -254,6 +254,7 @@ components:
              $ref: '#/components/schemas/Alerts'
           description: Government weather alerts
     Alerts:
+      description: Government weather alerts
       type: object
       properties:
         sender_name:
@@ -367,7 +368,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Weather'
-          description: (more info Weather condition codes)
+          description: More info Weather condition codes
         rain:
           type: number
           description: where available) Precipitation volume, mm
@@ -415,7 +416,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Weather'
-          description: (more info Weather condition codes)
+          description: More info Weather condition codes
         rain:
           $ref: '#/components/schemas/Rain'
           description: Nature of the rain
@@ -476,7 +477,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Weather'
-          description: (more info Weather condition codes)
+          description: More info Weather condition codes
         rain:
           $ref: '#/components/schemas/Rain'
           description: Nature of the rain
@@ -495,7 +496,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Weather'
-          description: (more info Weather condition codes)
+          description: More info Weather condition codes
         base:
           type: string
           description: Internal parameter
@@ -628,7 +629,7 @@ components:
     Clouds:
       title: Clouds
       type: object
-      description: Nature of the clounds
+      description: Nature of the clouds
       properties:
         all:
           type: integer

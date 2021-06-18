@@ -1,7 +1,7 @@
 [package]
 org = "ballerinax"
 name = "covid19"
-version = "0.3.0"
+version = "0.4.0"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
 keywords = ["covid19", "covid19 vaccine"]

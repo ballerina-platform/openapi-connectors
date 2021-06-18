@@ -150,7 +150,7 @@ public client class Client {
     remote isolated function listMeetings(@display {label: "User Id"} string userId, @display {label: "Meeting Type"} string? 'type = "live", @display {label: "Page Size"} int? page_size = 30, @display {label: "Next Page Token"} string? next_page_token = (), @display {label: "Page Number"} string? page_number = ()) returns CompoundListMeetingsResponse|error {
         string  path = string `/users/${userId}/meetings`;
         map<anydata> queryParam = {'type: 'type, page_size: page_size, next_page_token: next_page_token, page_number: page_number};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         CompoundListMeetingsResponse response = check self.clientEp-> get(path, targetType = CompoundListMeetingsResponse);
         return response;
     }
@@ -181,7 +181,7 @@ public client class Client {
     remote isolated function listMeetingRegistrants(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrence_id = (), @display {label: "Registrant Status"} string? status = "approved", @display {label: "Page Size"} int? page_size = 30, @display {label: "Page Number"} int? page_number = 1, @display {label: "Next Page Token"} string? next_page_token = ()) returns CompoundListMeetingRegistrantsResponse|error {
         string  path = string `/meetings/${meetingId}/registrants`;
         map<anydata> queryParam = {occurrence_id: occurrence_id, status: status, page_size: page_size, page_number: page_number, next_page_token: next_page_token};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         CompoundListMeetingRegistrantsResponse response = check self.clientEp-> get(path, targetType = CompoundListMeetingRegistrantsResponse);
         return response;
     }
@@ -195,7 +195,7 @@ public client class Client {
     remote isolated function addMeetingRegistrant(@display {label: "Meeting Id"} int meetingId, CompoundAddMeetingRegistrantRequest payload, @display {label: "Occurence Id"} string? occurrence_ids = ()) returns AddMeetingRegistrantResponse|error {
         string  path = string `/meetings/${meetingId}/registrants`;
         map<anydata> queryParam = {occurrence_ids: occurrence_ids};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -212,7 +212,7 @@ public client class Client {
     remote isolated function getMeetingById(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrence_id = (), @display {label: "Show Previous Occurrences"} boolean? show_previous_occurrences = ()) returns CompoundGetMeetingByIdResponse|error {
         string  path = string `/meetings/${meetingId}`;
         map<anydata> queryParam = {occurrence_id: occurrence_id, show_previous_occurrences: show_previous_occurrences};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         CompoundGetMeetingByIdResponse response = check self.clientEp-> get(path, targetType = CompoundGetMeetingByIdResponse);
         return response;
     }
@@ -227,7 +227,7 @@ public client class Client {
     remote isolated function deleteMeeting(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrence_id = (), @display {label: "Schedule for Reminder"} boolean? schedule_for_reminder = (), @display {label: "Meeting Cancellation Reminder"} string? cancel_meeting_reminder = ()) returns error? {
         string  path = string `/meetings/${meetingId}`;
         map<anydata> queryParam = {occurrence_id: occurrence_id, schedule_for_reminder: schedule_for_reminder, cancel_meeting_reminder: cancel_meeting_reminder};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
          _ = check self.clientEp-> delete(path, request, targetType =http:Response);
@@ -242,7 +242,7 @@ public client class Client {
     remote isolated function listPastMeetingParticipants(@display {label: "Meeting UUID"} string meetingUUID, @display {label: "Page Size"} int? page_size = 30, @display {label: "Next Page Token"} string? next_page_token = ()) returns CompoundListPastMeetingParticipantsResponse|error {
         string  path = string `/past_meetings/${meetingUUID}/participants`;
         map<anydata> queryParam = {page_size: page_size, next_page_token: next_page_token};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         CompoundListPastMeetingParticipantsResponse response = check self.clientEp-> get(path, targetType = CompoundListPastMeetingParticipantsResponse);
         return response;
     }
@@ -260,7 +260,7 @@ public client class Client {
     remote isolated function listWebinarRegistrants(@display {label: "Webinar Id"} int webinarId, @display {label: "Meeting Occurence Id"} string? occurrence_id = (), @display {label: "Status"} string? status = "approved", @display {label: "Tracking Source Id"} string? tracking_source_id = (), @display {label: "Page Size"} int? page_size = 30, @display {label: "Page Number"} int? page_number = 1, @display {label: "Next Page Token"} string? next_page_token = ()) returns CompoundListWebinarRegistrantsResponse|error {
         string  path = string `/webinars/${webinarId}/registrants`;
         map<anydata> queryParam = {occurrence_id: occurrence_id, status: status, tracking_source_id: tracking_source_id, page_size: page_size, page_number: page_number, next_page_token: next_page_token};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         CompoundListWebinarRegistrantsResponse response = check self.clientEp-> get(path, targetType = CompoundListWebinarRegistrantsResponse);
         return response;
     }
@@ -274,7 +274,7 @@ public client class Client {
     remote isolated function listWebinarParticipants(@display {label: "Webinar Id"} string webinarId, @display {label: "Page Size"} int? page_size = 30, @display {label: "Next Page Token"} string? next_page_token = ()) returns ListWebinarParticipantsResponse|error {
         string  path = string `/past_webinars/${webinarId}/participants`;
         map<anydata> queryParam = {page_size: page_size, next_page_token: next_page_token};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         ListWebinarParticipantsResponse response = check self.clientEp-> get(path, targetType = ListWebinarParticipantsResponse);
         return response;
     }
@@ -289,7 +289,7 @@ public client class Client {
     remote isolated function listWebinarAbsentees(@display {label: "Webinar UUID"} string WebinarUUID, @display {label: "Occurence Id"} string? occurrence_id = (), @display {label: "Page Size"} int? page_size = 30, @display {label: "Next Page Token"} string? next_page_token = ()) returns CompoundListWebinarAbsenteesResponse|error {
         string  path = string `/past_webinars/${WebinarUUID}/absentees`;
         map<anydata> queryParam = {occurrence_id: occurrence_id, page_size: page_size, next_page_token: next_page_token};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         CompoundListWebinarAbsenteesResponse response = check self.clientEp-> get(path, targetType = CompoundListWebinarAbsenteesResponse);
         return response;
     }
@@ -299,7 +299,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string {
+isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -313,7 +313,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
             }
             param[param.length()] = "=";
             if  value  is  string {
-                string updateV =  checkpanic url:encode(value, "UTF-8");
+                string updateV =  check url:encode(value, "UTF-8");
                 param[param.length()] = updateV;
             } else {
                 param[param.length()] = value.toString();

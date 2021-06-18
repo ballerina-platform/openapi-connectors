@@ -7,8 +7,11 @@ The WorldBank connector consume the data exposed in https://api.sendgrid.com/v3.
 - Send Mail
 - Retrieve all Alerts
 - Create a new Alert
+- Update Alert by Id
+- Delete Alert by Id
 - List all Subusers
 - Create Subuser
+- Delete Subuser by Name
 - Retrieve all Blocks
 - Get Suppression Spam Reports
 

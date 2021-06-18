@@ -786,6 +786,136 @@ paths:
       summary: Create a new Alert
       tags:
         - Alerts
+  "/alerts/{alert_id}":
+    delete:
+      description: >-
+        **This endpoint allows you to delete an alert.**
+        Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics. 
+        * Usage alerts allow you to set the threshold at which an alert will be sent.
+        * Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+        For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
+      operationId: deleteAlertById
+      x-display:
+        label: Delete Alert by Id
+      parameters:
+        - description: The ID of the alert you would like to retrieve.
+          in: path
+          name: alert_id
+          required: true
+          schema:
+            type: integer
+          x-display:
+            label: Alert Id
+        - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+      responses:
+        "204":
+          description: "Succesful - No Content"
+      security:
+        - Authorization: []
+      summary: Delete an alert
+      tags:
+        - Alerts
+    patch:
+      description: >-
+        **This endpoint allows you to update an alert.**
+        Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics. 
+        * Usage alerts allow you to set the threshold at which an alert will be sent.
+        * Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+        For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
+      operationId: updateAlertbyId
+      x-display:
+        label: Update Alert by Id
+      parameters:
+        - description: The ID of the alert you would like to retrieve.
+          in: path
+          name: alert_id
+          required: true
+          schema:
+            type: integer
+          x-display:
+            label: Alert Id
+        - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                email_to: example@example.com
+              properties:
+                email_to:
+                  description: |-
+                    The new email address you want your alert to be sent to.
+                    Example: test@example.com
+                  type: string
+                frequency:
+                  description: >-
+                    The new frequency at which to send the stats_notification alert.
+                    Example: monthly
+                  type: string
+                percentage:
+                  description: >-
+                    The new percentage threshold at which the usage_limit alert will be
+                    sent.
+                    Example: 90
+                  type: integer
+              type: object
+        description: Alert content to update
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    created_at: 1451520930
+                    email_to: example@example.com
+                    frequency: daily
+                    id: 48
+                    type: stats_notification
+                    updated_at: 1451522691
+              schema:
+                properties:
+                  created_at:
+                    description: A Unix timestamp indicating when the alert was created.
+                    type: integer
+                  email_to:
+                    description: The email address that the alert will be sent to.
+                    type: string
+                  frequency:
+                    description: 'If the alert is of type stats_notification, this indicates how
+                      frequently the stats notifications will be sent. For
+                      example: "daily", "weekly", or "monthly".'
+                    type: string
+                  id:
+                    description: The ID of the alert.
+                    type: integer
+                  percentage:
+                    description: If the alert is of type usage_limit, this indicates the percentage
+                      of email usage that must be reached before the alert will
+                      be sent.
+                    type: integer
+                  type:
+                    description: The type of alert.
+                    enum:
+                      - usage_alert
+                      - stats_notification
+                    type: string
+                  updated_at:
+                    description: A Unix timestamp indicating when the alert was last modified.
+                    type: integer
+                required:
+                  - created_at
+                  - email_to
+                  - id
+                  - type
+                  - updated_at
+                type: object
+          description: "Updated alert details"
+      security:
+        - Authorization: []
+      summary: Update an alert
+      tags:
+        - Alerts
   /subusers:
     get:
       description: >-
@@ -977,6 +1107,40 @@ paths:
       summary: Create Subuser
       tags:
         - Subusers API
+  "/subusers/{subuser_name}":
+    delete:
+      description: >-
+        This endpoint allows you to delete a subuser. This is a permanent
+        action, once deleted a subuser cannot be retrieved.
+        For more information about Subusers:
+        * [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+        * [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+      operationId: deleteSubuserByName
+      x-display: 
+        label: Update Subuser by Subuser Name
+      responses:
+        "204":
+          description: "Successful - No Content"
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/global_ErrorResponse"
+          description: ""
+      security:
+        - Authorization: []
+      summary: Delete a subuser
+      tags:
+        - Subusers API
+    parameters:
+      - in: path
+        name: subuser_name
+        required: true
+        schema:
+          type: string
+        x-display:
+          label: Subuser Name
+        description: Subuser name
   "/suppression/blocks":
     get:
       description: >-
@@ -1313,6 +1477,7 @@ components:
       description: List of errors
       properties:
         errors:
+          description: Error message
           items:
             properties:
               field:

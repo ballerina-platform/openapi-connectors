@@ -143,6 +143,34 @@ public type PostAlertsResponse record {
     int updated_at;
 };
 
+# Alert content to update
+public type UpdateAlertbyIdRequest record {
+    # The new email address you want your alert to be sent to.
+    string email_to?;
+    # The new frequency at which to send the stats_notification alert. Example: monthly
+    string frequency?;
+    # The new percentage threshold at which the usage_limit alert will be sent. Example: 90
+    int percentage?;
+};
+
+# Updated alert details
+public type UpdateAlertbyIdResponse record {
+    # A Unix timestamp indicating when the alert was created.
+    int created_at;
+    # The email address that the alert will be sent to.
+    string email_to;
+    # If the alert is of type stats_notification, this indicates how frequently the stats notifications will be sent. For example: "daily", "weekly", or "monthly".
+    string frequency?;
+    # The ID of the alert.
+    int id;
+    # If the alert is of type usage_limit, this indicates the percentage of email usage that must be reached before the alert will be sent.
+    int percentage?;
+    # The type of alert.
+    string 'type;
+    # A Unix timestamp indicating when the alert was last modified.
+    int updated_at;
+};
+
 public type SubuserArr Subuser[];
 
 # New subuser details
@@ -212,6 +240,37 @@ public client class Client {
         PostAlertsResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PostAlertsResponse);
         return response;
     }
+    # Delete an alert
+    #
+    # + alert_id - The ID of the alert you would like to retrieve.
+    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + return - Succesful - No Content
+    @display {label: "Delete Alert by Id"}
+    remote isolated function deleteAlertById(@display {label: "Alert Id"} int alert_id, @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns error? {
+        string  path = string `/alerts/${alert_id}`;
+        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        //TODO: Update the request as needed;
+         _ = check self.clientEp-> delete(path, request, headers = accHeaders, targetType=http:Response);
+    }
+    # Update an alert
+    #
+    # + alert_id - The ID of the alert you would like to retrieve.
+    # + payload - Alert content to update
+    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + return - Updated alert details
+    @display {label: "Update Alert by Id"}
+    remote isolated function updateAlertbyId(@display {label: "Alert Id"} int alert_id, UpdateAlertbyIdRequest payload, @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns UpdateAlertbyIdResponse|error {
+        string  path = string `/alerts/${alert_id}`;
+        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        UpdateAlertbyIdResponse response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=UpdateAlertbyIdResponse);
+        return response;
+    }
     # List all Subusers
     #
     # + username - The username of this subuser.
@@ -237,6 +296,17 @@ public client class Client {
         request.setPayload(jsonBody);
         SubuserPost response = check self.clientEp->post(path, request, targetType=SubuserPost);
         return response;
+    }
+    # Delete a subuser
+    #
+    # + subuser_name - Subuser name
+    # + return - Successful - No Content
+    @display {label: "Update Subuser by Subuser Name"}
+    remote isolated function deleteSubuserByName(@display {label: "Subuser Name"} string subuser_name) returns error? {
+        string  path = string `/subusers/${subuser_name}`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
     }
     # Retrieve all blocks
     #

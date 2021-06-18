@@ -37,7 +37,7 @@ public client class Client {
     remote isolated function getMyPlaylists(@display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = ()) returns CurrentPlaylistDetails|error {
         string  path = string `/me/playlists`;
         map<anydata> queryParam = {'limit: 'limit, offset: offset};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         CurrentPlaylistDetails response = check self.clientEp-> get(path, targetType = CurrentPlaylistDetails);
         return response;
     }
@@ -45,7 +45,7 @@ public client class Client {
     remote isolated function getPlaylistById(@display {label: "Playlist Id"} string playlist_id, @display {label: "Market"} string? market = (), @display {label: "Fields to Return"} string? fields = (), @display {label: "Additional Types"} string? additional_types = ()) returns PlaylistObject|error {
         string  path = string `/playlists/${playlist_id}`;
         map<anydata> queryParam = {market: market, fields: fields, additional_types: additional_types};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         PlaylistObject response = check self.clientEp-> get(path, targetType = PlaylistObject);
         return response;
     }
@@ -76,7 +76,7 @@ public client class Client {
     remote isolated function getPlaylistTracks(@display {label: "Playlist Id"} string playlist_id, @display {label: "Market"} string market, @display {label: "Fields to Return"} string? fields = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), string? additional_types = ()) returns PlaylistTrackDetails|error {
         string  path = string `/playlists/${playlist_id}/tracks`;
         map<anydata> queryParam = {market: market, fields: fields, 'limit: 'limit, offset: offset, additional_types: additional_types};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         PlaylistTrackDetails response = check self.clientEp-> get(path, targetType = PlaylistTrackDetails);
         return response;
     }
@@ -84,7 +84,7 @@ public client class Client {
     remote isolated function reorderOrReplacePlaylistTracks(@display {label: "Playlist Id"} string playlist_id, PlayListReorderDetails payload, @display {label: "Track URIs"} string? uris = ()) returns SnapshotIdObject|error {
         string  path = string `/playlists/${playlist_id}/tracks`;
         map<anydata> queryParam = {uris: uris};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -95,7 +95,7 @@ public client class Client {
     remote isolated function getPlayslistsByUserID(@display {label: "User Id"} string user_id, @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = ()) returns UserPlayListDetails|error {
         string  path = string `/users/${user_id}/playlists`;
         map<anydata> queryParam = {'limit: 'limit, offset: offset};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         UserPlayListDetails response = check self.clientEp-> get(path, targetType = UserPlayListDetails);
         return response;
     }
@@ -110,7 +110,7 @@ public client class Client {
     }
 }
 
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string {
+isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -124,7 +124,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
             }
             param[param.length()] = "=";
             if  value  is  string {
-                string updateV =  checkpanic url:encode(value, "UTF-8");
+                string updateV =  check url:encode(value, "UTF-8");
                 param[param.length()] = updateV;
             } else {
                 param[param.length()] = value.toString();

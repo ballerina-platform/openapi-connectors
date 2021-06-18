@@ -59,6 +59,16 @@ public type AlertResponse record {
     int updated_at?;
 };
 
+# Spam report details
+public type SpamReportDetails record {
+    # A Unix timestamp indicating when the spam report was made.
+    int created;
+    # The email address of the recipient who marked your message as spam.
+    string email;
+    # The IP address that the message was sent on.
+    string ip;
+};
+
 # Error details
 public type ErrorDetails record {
     # The field that generated the error.

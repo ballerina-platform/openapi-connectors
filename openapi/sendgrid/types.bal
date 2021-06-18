@@ -16,6 +16,7 @@
 
 # List of errors
 public type Errors record {
+    # Error message
     record  { # The field that has the error.
         string? 'field?; # The message the API caller will receive.
         string message?;} [] errors?;

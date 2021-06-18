@@ -26,80 +26,80 @@ if (project.hasProperty("remote")){
 }
 
 // TODO: Remove this cleanup task once the file override enabled
-task cleanup {
-    println "Cleaning up generated code..."
-    Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
-    updatedBallerinaPackages.each {
-        dir->exec{
-            commandLine 'sh', '-c', "find ${dir} -name '*.bal' -type f -delete"
-        }
-    }
-    updatedBallerinaPackages.each {
-        dir->exec{
-            commandLine 'sh', '-c', "find ${dir} -name 'target' -type d -exec rm -rf {} +"
-        }
-    }
-    updatedBallerinaPackages.each {
-        dir->exec{
-            commandLine 'sh', '-c', "find ${dir} -name 'resources' -type d -exec rm -rf {} +"
-        }
-    }
-}
+// task cleanup {
+//     println "Cleaning up generated code..."
+//     Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
+//     updatedBallerinaPackages.each {
+//         dir->exec{
+//             commandLine 'sh', '-c', "find ${dir} -name '*.bal' -type f -delete"
+//         }
+//     }
+//     updatedBallerinaPackages.each {
+//         dir->exec{
+//             commandLine 'sh', '-c', "find ${dir} -name 'target' -type d -exec rm -rf {} +"
+//         }
+//     }
+//     updatedBallerinaPackages.each {
+//         dir->exec{
+//             commandLine 'sh', '-c', "find ${dir} -name 'resources' -type d -exec rm -rf {} +"
+//         }
+//     }
+// }
 
-task codegen {
-    Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
-    updatedBallerinaPackages = Utils.findUpdatedBallerinaPackages(project.projectDir.absolutePath)
+// task codegen {
+//     Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
+//     updatedBallerinaPackages = Utils.findUpdatedBallerinaPackages(project.projectDir.absolutePath)
 
-    exec {
-        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slbeta1"
-    }
+//     exec {
+//         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slbeta1"
+//     }
 
-    for(String updatedPackagePath : updatedBallerinaPackages){
-        List<String> updatedYamlFiles = Utils.findOpenAPIs(updatedPackagePath);
-        println "Code generation..."
-        updatedYamlFiles.each {
-            file->exec{
-                commandLine 'bash', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i ${file} --mode client -o ${updatedPackagePath}"
-            }
-        }
-    }
+//     for(String updatedPackagePath : updatedBallerinaPackages){
+//         List<String> updatedYamlFiles = Utils.findOpenAPIs(updatedPackagePath);
+//         println "Code generation..."
+//         updatedYamlFiles.each {
+//             file->exec{
+//                 commandLine 'bash', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i ${file} --mode client -o ${updatedPackagePath}"
+//             }
+//         }
+//     }
 
-    // Pulling slalpha5 distribution if not available
-    if (project.hasProperty("remote") ) {
-        if (remote) {
-            exec {
-                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
-            }
+//     // Pulling slalpha5 distribution if not available
+//     if (project.hasProperty("remote") ) {
+//         if (remote) {
+//             exec {
+//                 commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
+//             }
 
-            exec {
-                commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
-            }
-        }
-    }
+//             exec {
+//                 commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
+//             }
+//         }
+//     }
 
-    // Changing the build distribution to SL Alpha5
-    exec {
-        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
-    }
+//     // Changing the build distribution to SL Alpha5
+//     exec {
+//         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
+//     }
 
 
-    for (String path : updatedBallerinaPackages) {
-        println "Code building..."
-        exec {
-            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
-        }
-    }
+//     for (String path : updatedBallerinaPackages) {
+//         println "Code building..."
+//         exec {
+//             commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
+//         }
+//     }
 
-    for (String path : updatedBallerinaPackages) {
+//     for (String path : updatedBallerinaPackages) {
 
-        if (!release) {
-            exec {
-                workingDir "${path}"
-                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
-            }
-        }
-    }
-}
+//         if (!release) {
+//             exec {
+//                 workingDir "${path}"
+//                 commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
+//             }
+//         }
+//     }
+// }
 
 task releaseConnector {
     //TODO: check and remove the snapshot part in the ballerina toml

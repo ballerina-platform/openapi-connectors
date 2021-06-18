@@ -36,6 +36,7 @@ public type WeatherForecast record {
     Alerts[] alerts?;
 };
 
+# Government weather alerts
 public type Alerts record {
     # Name of the alert source.
     string sender_name?;
@@ -111,9 +112,9 @@ public type Daily record {
     decimal wind_gust?;
     # Probability of precipitation
     decimal pop?;
-    # (more info Weather condition codes)
+    # More info Weather condition codes
     Weather[] weather?;
-    # where available) Precipitation volume, mm
+    # (where available) Precipitation volume, mm
     decimal rain?;
 };
 
@@ -143,9 +144,9 @@ public type Hourly record {
     decimal wind_gust?;
     # Probability of precipitatio
     decimal pop?;
-    # (more info Weather condition codes)
+    # More info Weather condition codes)
     Weather[] weather?;
-    # Where available) Precipitation volume, mm
+    # (Where available) Precipitation volume, mm
     Rain rain?;
 };
 
@@ -187,7 +188,7 @@ public type ForecastCurrent record {
     decimal wind_deg?;
     # (more info Weather condition codes)
     Weather[] weather?;
-    # where available) Precipitation volume, mm
+    # (where available) Precipitation volume, mm
     Rain rain?;
     # Nature of the Snow
     Snow snow?;
@@ -197,7 +198,7 @@ public type ForecastCurrent record {
 public type CurrentWeatherData record {
     # City geo location
     Coord coord?;
-    # (more info Weather condition codes)
+    # More info Weather condition codes
     Weather[] weather?;
     # Internal parameter
     string base?;
@@ -233,7 +234,7 @@ public type Coord record {
     decimal lat?;
 };
 
-# Weather
+# Weather metadata
 public type Weather record {
     # Weather condition id
     int id?;
@@ -271,7 +272,7 @@ public type Wind record {
     int deg?;
 };
 
-# Nature of the clounds
+# Nature of the clouds
 public type Clouds record {
     # Cloudiness, %
     int 'all?;
@@ -283,7 +284,7 @@ public type Rain record {
     int '\3h?;
 };
 
-# Snow
+# Snow volume information
 public type Snow record {
     # Snow volume for the last 3 hours
     decimal '\3h?;

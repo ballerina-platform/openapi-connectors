@@ -214,12 +214,12 @@ public client class Client {
     }
     # Retrieve all alerts
     #
-    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call.
     # + return - Details related to alerts
     @display {label: "Get All Alerts"}
-    remote isolated function getAlerts(@display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns AlertResponseArr|error {
+    remote isolated function getAlerts(@display {label: "Subuser's Username"} string? onBehalfOf = ()) returns AlertResponseArr|error {
         string  path = string `/alerts`;
-        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         AlertResponseArr response = check self.clientEp-> get(path, accHeaders, targetType = AlertResponseArr);
         return response;
@@ -227,12 +227,12 @@ public client class Client {
     # Create a new Alert
     #
     # + payload - Alert Content
-    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call.
     # + return - Created alert details
     @display {label: "Create Alert"}
-    remote isolated function postAlerts(@display {label: "Alert Content"} PostAlertsRequest payload, @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns PostAlertsResponse|error {
+    remote isolated function postAlerts(@display {label: "Alert Content"} PostAlertsRequest payload, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns PostAlertsResponse|error {
         string  path = string `/alerts`;
-        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -243,12 +243,12 @@ public client class Client {
     # Delete an alert
     #
     # + alert_id - The ID of the alert you would like to retrieve.
-    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call.
     # + return - Succesful - No Content
     @display {label: "Delete Alert by Id"}
-    remote isolated function deleteAlertById(@display {label: "Alert Id"} int alert_id, @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns error? {
+    remote isolated function deleteAlertById(@display {label: "Alert Id"} int alert_id, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns error? {
         string  path = string `/alerts/${alert_id}`;
-        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -258,12 +258,12 @@ public client class Client {
     #
     # + alert_id - The ID of the alert you would like to retrieve.
     # + payload - Alert content to update
-    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call.
     # + return - Updated alert details
     @display {label: "Update Alert by Id"}
-    remote isolated function updateAlertbyId(@display {label: "Alert Id"} int alert_id, UpdateAlertbyIdRequest payload, @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns UpdateAlertbyIdResponse|error {
+    remote isolated function updateAlertbyId(@display {label: "Alert Id"} int alert_id, UpdateAlertbyIdRequest payload, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns UpdateAlertbyIdResponse|error {
         string  path = string `/alerts/${alert_id}`;
-        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -314,14 +314,14 @@ public client class Client {
     # + end_time - Refers end of the time range in unix timestamp when a blocked email was created (inclusive).
     # + 'limit - Limit the number of results to be displayed per page.
     # + offset - The point in the list to begin displaying results.
-    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call.
     # + return - List of all blocks
     @display {label: "Get Suppression Blocks"}
-    remote isolated function getSuppressionBlocks(@display {label: "Start Time"} int? start_time = (), @display {label: "End Time"} int? end_time = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns SuppressionBlocksArr|error {
+    remote isolated function getSuppressionBlocks(@display {label: "Start Time"} int? start_time = (), @display {label: "End Time"} int? end_time = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns SuppressionBlocksArr|error {
         string  path = string `/suppression/blocks`;
         map<anydata> queryParam = {start_time: start_time, end_time: end_time, 'limit: 'limit, offset: offset};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         SuppressionBlocksArr response = check self.clientEp-> get(path, accHeaders, targetType = SuppressionBlocksArr);
         return response;
@@ -332,14 +332,14 @@ public client class Client {
     # + end_time - Refers end of the time range in unix timestamp when a spam report was created (inclusive).
     # + 'limit - Limit the number of results to be displayed per page.
     # + offset - Paging offset. The point in the list to begin displaying results.
-    # + 'on\-behalf\-of - The subuser's username. This header generates the API call as if the subuser account was making the call.
+    # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call.
     # + return - Received spam reports
     @display {label: "Get Suppression Spam Reports"}
-    remote isolated function getSuppressionSpamReports(@display {label: "Start Time"} int? start_time = (), @display {label: "End Time"} int? end_time = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), @display {label: "Subuser's Username"} string? 'on\-behalf\-of = ()) returns SpamReportDetailsArr|error {
+    remote isolated function getSuppressionSpamReports(@display {label: "Start Time"} int? start_time = (), @display {label: "End Time"} int? end_time = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns SpamReportDetailsArr|error {
         string  path = string `/suppression/spam_reports`;
         map<anydata> queryParam = {start_time: start_time, end_time: end_time, 'limit: 'limit, offset: offset};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {'on\-behalf\-of: 'on\-behalf\-of};
+        map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         SpamReportDetailsArr response = check self.clientEp-> get(path, accHeaders, targetType = SpamReportDetailsArr);
         return response;

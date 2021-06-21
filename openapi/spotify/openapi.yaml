@@ -152,6 +152,7 @@ paths:
         content:
           application/json:
             schema:
+              description: Content to update the playlist
               $ref: "#/components/schemas/ChangePlayListDetails"
               type: object
         required: false
@@ -369,6 +370,7 @@ paths:
         content:
           application/json:
             schema:
+              description: Information needed to reorder the playlist
               $ref: "#/components/schemas/PlayListReorderDetails"
         required: false
       responses:
@@ -486,6 +488,7 @@ paths:
         content:
           application/json:
             schema:
+              description: Content of the playlist
               $ref: "#/components/schemas/PlayListDetails"
               type: object
               required: true
@@ -533,6 +536,7 @@ components:
       description: Unexpected error
   schemas:
     PlayListDetails:
+      description: Playlist details 
       properties:
         collaborative:
           description: Defaults to `false` . If `true` the playlist will be collaborative. Note that to create a collaborative playlist you must also set `public` to `false` . To create collaborative playlists you must have granted `playlist-modify-private` and `playlist-modify-public` [scopes](https://developer.spotify.com/documentation/general/guides/authorization-guide/#list-of-scopes) .
@@ -598,6 +602,7 @@ components:
           type: array
       type: object
     PlayListReorderDetails:
+      description: Information needed to reorder the playlist
       properties:
         insert_before:
           description: |-
@@ -666,6 +671,7 @@ components:
           type: integer
       type: object
     ChangePlayListDetails:
+      description: Content to update the playlist
       properties:
         collaborative:
           description: "If `true` , the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. *Note: You can only set `collaborative` to `true` on non-public playlists.*"

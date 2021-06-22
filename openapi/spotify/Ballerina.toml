@@ -1,0 +1,11 @@
+[package]
+org = "ballerinax"
+name = "spotify"
+version = "0.1.0"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["spotify", "spotify playlist"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+
+[build-options]
+observabilityIncluded = true

@@ -1,10 +1,10 @@
 [package]
 org = "ballerinax"
-name = "covid19"
-version = "0.4.0"
-license= ["Apache-2.0"]
+name = "sendgrid"
+version = "0.1.0"
 authors = ["Ballerina"]
-keywords = ["covid19", "covid19 vaccine"]
+license= ["Apache-2.0"]
+keywords = ["sendgrid", "send mail", "sendgrid alerts"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

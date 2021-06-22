@@ -25,6 +25,10 @@ if (project.hasProperty("remote")){
     remote = new Boolean(project.property("remote").toString())
 }
 
+Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
+String openApiPackageDirPath = project.projectDir.absolutePath + "/openapi";
+updatedBallerinaPackages = Utils.findUpdatedBallerinaPackages(openApiPackageDirPath)
+
 // TODO: Remove this cleanup task once the file override enabled
 // task cleanup {
 //     println "Cleaning up generated code..."
@@ -100,6 +104,33 @@ if (project.hasProperty("remote")){
 //         }
 //     }
 // }
+
+// Temporarily added.
+task codeBuild {
+    // Pulling slalpha5 distribution if not available
+    if (project.hasProperty("remote") ) {
+        if (remote) {
+            exec {
+                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
+            }
+
+            exec {
+                commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
+            }
+        }
+    }
+
+    // Changing the build distribution to SL Alpha5
+    exec {
+        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
+    }
+    for (String path : updatedBallerinaPackages) {
+        println "Code building..."
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
+        }
+    }
+}
 
 task releaseConnector {
     //TODO: check and remove the snapshot part in the ballerina toml

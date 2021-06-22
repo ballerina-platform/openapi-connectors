@@ -50,7 +50,7 @@ public client class Client {
     remote isolated function getPopulation(@display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns CountryPopulation[]|error {
         string  path = string `/country/all/indicator/SP.POP.TOTL`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -79,7 +79,7 @@ public client class Client {
     remote isolated function getPopulationByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns CountryPopulation[]|error {
         string  path = string `/country/${country_code}/indicator/SP.POP.TOTL`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -107,7 +107,7 @@ public client class Client {
     remote isolated function getGDP(@display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns GrossDomesticProduct[]|error {
         string  path = string `/country/all/indicator/NY.GDP.MKTP.CD`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -136,7 +136,7 @@ public client class Client {
     remote isolated function getGDPByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns GrossDomesticProduct[]|error {
         string  path = string `/country/${country_code}/indicator/NY.GDP.MKTP.CD`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -164,7 +164,7 @@ public client class Client {
     remote isolated function getAccessToElectricityPercentage(@display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricity[]|error {
         string  path = string `/country/all/indicator/1.1_ACCESS.ELECTRICITY.TOT`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -193,7 +193,7 @@ public client class Client {
     remote isolated function getAccessToElectricityPercentageByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns AccessToElectricity[]|error {
         string  path = string `/country/${country_code}/indicator/1.1_ACCESS.ELECTRICITY.TOT`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -221,7 +221,7 @@ public client class Client {
     remote isolated function getYouthLiteracyRate(@display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns YouthLiteracyRate[]|error {
         string  path = string `/country/all/indicator/1.1_YOUTH.LITERACY.RATE`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -250,7 +250,7 @@ public client class Client {
     remote isolated function getYouthLiteracyRateByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns YouthLiteracyRate[]|error {
         string  path = string `/country/${country_code}/indicator/1.1_YOUTH.LITERACY.RATE`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -278,7 +278,7 @@ public client class Client {
     remote isolated function getGovernmentExpenditureOnPrimaryEducation(@display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns PrimaryEducationExpenditure[]|error {
         string  path = string `/country/all/indicator/UIS.X.PPP.1.FSGOV`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -307,7 +307,7 @@ public client class Client {
     remote isolated function getGovernmentExpenditureOnPrimaryEducationByCountry(@display {label: "Country Code"} string country_code, @display {label: "Date"} string? date="2010", @display {label: "Page Number"} int? page = (), @display {label: "Per Page Record Count"} int? per_page = ()) returns PrimaryEducationExpenditure[]|error {
         string  path = string `/country/${country_code}/indicator/UIS.X.PPP.1.FSGOV`;
         map<anydata> queryParam = {date: date, format: "json", page: page, per_page: per_page};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         json[] payloadArr = check self.clientEp-> get(path, targetType = JsonArr);
         if (payloadArr.length() > 1) {
             if (payloadArr[1] != ()) {
@@ -331,7 +331,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string {
+isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -345,7 +345,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
             }
             param[param.length()] = "=";
             if  value  is  string {
-                string updateV =  checkpanic url:encode(value, "UTF-8");
+                string updateV =  check url:encode(value, "UTF-8");
                 param[param.length()] = updateV;
             } else {
                 param[param.length()] = value.toString();

@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["sendgrid", "send mail", "sendgrid alerts"]
 org = "ballerinax"
 name = "sendgrid"
-version = "0.1.0"
-authors = ["Ballerina"]
-license= ["Apache-2.0"]
-keywords = ["sendgrid", "send mail", "sendgrid alerts"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "0.1.1"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

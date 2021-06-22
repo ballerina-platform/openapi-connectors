@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["open weather map", "weather data", "weather forecast"]
 org = "ballerinax"
 name = "openweathermap"
-version = "0.4.0"
-authors = ["Ballerina"]
-license= ["Apache-2.0"]
-keywords = ["open weather map", "weather data", "weather forecast"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "0.4.1"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

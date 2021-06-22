@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["zoom", "zoom meetings", "zoom webinars"]
 org = "ballerinax"
 name = "zoom"
-version = "0.1.0"
-authors = ["Ballerina"]
-license= ["Apache-2.0"]
-keywords = ["zoom", "zoom meetings", "zoom webinars"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "0.1.1"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["world bank", "world bank indicators"]
 org = "ballerinax"
 name = "worldbank"
-version = "0.5.0"
-authors = ["Ballerina"]
-license= ["Apache-2.0"]
-keywords = ["world bank", "world bank indicators"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "0.5.1"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

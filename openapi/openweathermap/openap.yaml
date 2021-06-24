@@ -23,7 +23,7 @@ paths:
       tags:
       - Current Weather Data
       summary: "Call current weather data for one location"
-      description: "Access current weather data for any location."
+      description: "Access current weather data for any location. **Note**: All parameters are optional, but you must provide at least one parameter. Calling the API by city ID (using the `id` parameter) will provide the most precise location results."
       operationId: getCurretWeatherData
       parameters:
         - $ref: '#/components/parameters/cityName'

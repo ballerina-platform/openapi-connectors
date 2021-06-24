@@ -45,7 +45,7 @@ public client class Client {
     # + lat - Latitude
     # + lon - Longtitude
     # + zip - Zip code. Search by zip code. Example: 95050,us.
-    # + units - Units of measurement.
+    # + units - Temperature in Fahrenheit use `units=imperial`, temperature in Celsius use `units=metric`, temperature in Kelvin is used by default.
     # + lang - Language
     # + mode - Format of response. Possible values are `xml` and `html`. If mode parameter is empty the format is `json` by default.
     # + return - Current weather data of the given location
@@ -62,7 +62,7 @@ public client class Client {
     # + lat - Latitude
     # + lon - Longtitude
     # + exclude - Exclude parts of the weather data from the API response. It should be a comma-delimited list (without spaces).
-    # + units - Units of measurement.
+    # + units - For temperature in Fahrenheit and wind speed in miles/hour, use `units=imperial`. For temperature in Celsius and wind speed in meter/sec, use `units=metric`. Temperature in Kelvin and wind speed in meter/sec is used by defaults.  
     # + lang - Language
     # + return - Weather forecast of the given location
     @display {label: "Weather Forecast"}

@@ -89,7 +89,7 @@ paths:
             type: string 
           x-display: 
             label: Exclude
-        - description: 'Units of measurement.'
+        - description: "For temperature in Fahrenheit and wind speed in miles/hour, use `units=imperial`. For temperature in Celsius and wind speed in meter/sec, use `units=metric`. Temperature in Kelvin and wind speed in meter/sec is used by default, so there is no need to use the units parameter in the API call if you want this."
           in: query
           name: units
           required: false
@@ -184,7 +184,7 @@ components:
     units:
       name: units
       in: query
-      description: 'Units of measurement.'
+      description: 'Temperature in Fahrenheit use units=imperial, temperature in Celsius use units=metric, temperature in Kelvin is used by default.'
       schema:
         type: string
         enum: [standard, metric, imperial]

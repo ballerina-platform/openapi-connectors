@@ -18,8 +18,11 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
+# Please visit [here](https://openweathermap.org/price) and obtain an `API Key`. Choose a subscription according to your requirement. 
+#
+# + apiKeys - Provide your API Key as `appid`. Eg: `{"appid" : "<Your API Key>"}`  
 public type ApiKeysConfig record {
-    map<string|string[]> apiKeys;
+    map<string> apiKeys;
 };
 
 # Client endpoint for OpenWeatherMap API
@@ -35,6 +38,7 @@ public client class Client {
         self.apiKeys = apiKeyConfig.apiKeys;
     }
     # Access current weather data for any location.
+    # **Note**: All parameters are optional, but you must provide at least one parameter. Calling the API by city ID (using the `id` parameter) will provide the most precise location results.
     #
     # + q - City name, or city name and country code. For the query value, type the city name and optionally the country code divided by comma; use ISO 3166 country codes.
     # + id - City ID. Example: `2172797`. The List of city IDs can be downloaded [here](http://bulk.openweathermap.o/sample/).

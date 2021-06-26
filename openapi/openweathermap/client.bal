@@ -18,8 +18,11 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
+# Please visit [here](https://openweathermap.org/price) and obtain an `API Key`. Choose a subscription according to your requirement. 
+#
+# + apiKeys - Provide your API Key as `appid`. Eg: `{"appid" : "<Your API Key>"}`  
 public type ApiKeysConfig record {
-    map<string|string[]> apiKeys;
+    map<string> apiKeys;
 };
 
 # Client endpoint for OpenWeatherMap API
@@ -35,13 +38,14 @@ public client class Client {
         self.apiKeys = apiKeyConfig.apiKeys;
     }
     # Access current weather data for any location.
+    # **Note**: All parameters are optional, but you must provide at least one parameter. Calling the API by city ID (using the `id` parameter) will provide the most precise location results.
     #
     # + q - City name, or city name and country code. For the query value, type the city name and optionally the country code divided by comma; use ISO 3166 country codes.
     # + id - City ID. Example: `2172797`. The List of city IDs can be downloaded [here](http://bulk.openweathermap.o/sample/).
     # + lat - Latitude
     # + lon - Longtitude
     # + zip - Zip code. Search by zip code. Example: 95050,us.
-    # + units - Units of measurement.
+    # + units - Temperature in Fahrenheit use `units=imperial`, temperature in Celsius use `units=metric`, temperature in Kelvin is used by default.
     # + lang - Language
     # + mode - Format of response. Possible values are `xml` and `html`. If mode parameter is empty the format is `json` by default.
     # + return - Current weather data of the given location
@@ -58,7 +62,7 @@ public client class Client {
     # + lat - Latitude
     # + lon - Longtitude
     # + exclude - Exclude parts of the weather data from the API response. It should be a comma-delimited list (without spaces).
-    # + units - Units of measurement.
+    # + units - For temperature in Fahrenheit and wind speed in miles/hour, use `units=imperial`. For temperature in Celsius and wind speed in meter/sec, use `units=metric`. Temperature in Kelvin and wind speed in meter/sec is used by defaults.  
     # + lang - Language
     # + return - Weather forecast of the given location
     @display {label: "Weather Forecast"}

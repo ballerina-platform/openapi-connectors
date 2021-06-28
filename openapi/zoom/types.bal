@@ -75,7 +75,18 @@ public type RegistrantBaseObject record {
 # List of meetings
 public type MeetingList record {
     # List of Meeting objects.
-    record {}[] meetings?;
+    record  { # Meeting description. The length of agenda gets truncated to 250 characters when you list all meetings for a user. To view the complete agenda of a meeting, retrieve details for a single meeting [here](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meeting).
+        string agenda?; # Time of creation. 
+        string created_at?; # Meeting duration.
+        int duration?; # ID of the user who is set as the host of the meeting.
+        string host_id?; # Meeting ID - also known as the meeting number in double (int64) format.
+        int id?; # Join URL.
+        string join_url?; # Meeting start time.
+        string start_time?; # Timezone to format the meeting start time. 
+        string timezone?; # Meeting topic.
+        string topic?; # Meeting Type: 1 - Instant meeting. 2 - Scheduled meeting. 3 - Recurring meeting with no fixed time. 8 - Recurring meeting with fixed time.
+        int 'type?; # Unique Meeting ID. Each meeting instance will generate its own Meeting UUID.
+        string uuid?;} [] meetings?;
 };
 
 # List of meeting participants

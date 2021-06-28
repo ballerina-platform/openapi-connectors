@@ -1,10 +1,9 @@
 [package]
 license = ["Apache-2.0"]
+keywords = ["BitBucket", "Pull Request", "Repository"]
 org = "ballerinax"
 name = "bitbucket"
-version = "0.1.0"
-keywords = ["BitBucket", "Pull Request", "Repository"]
+version = "0.1.1"
 authors = ["Ballerina"]
-
 [build-options]
 observabilityIncluded = true

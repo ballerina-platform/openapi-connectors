@@ -106,7 +106,7 @@ public client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24)
     # + return - COVID-19 related time series for the given country
     @display {label: "Country Status By Time Series"}
-    remote isolated function getTimeSeriesbycountry(@display {label: "Country"} string country, @display {label: "Number Of Days"} string? lastdays = ()) returns CovidHistoricalCountry|error {
+    remote isolated function getTimeSeriesBycountry(@display {label: "Country"} string country, @display {label: "Number Of Days"} string? lastdays = ()) returns CovidHistoricalCountry|error {
         string  path = string `/v3/covid-19/historical/${country}`;
         map<anydata> queryParam = {lastdays: lastdays};
         path = path + check getPathForQueryParam(queryParam);
@@ -119,7 +119,7 @@ public client class Client {
     # + province - Province name. All available names can be found in the /v3/covid-19/historical/{query} endpoint
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24)
     # + return - COVID-19 related time series for the given province
-    @display {label: "Province Status By Time Seires"}
+    @display {label: "Province Status By Time Series"}
     remote isolated function getTimeSeriesByProvince(@display {label: "Country"} string country, @display {label: "Province"} string province, @display {label: "Number of Days"} string? lastdays = ()) returns CovidHistoricalProvince|error {
         string  path = string `/v3/covid-19/historical/${country}/${province}`;
         map<anydata> queryParam = {lastdays: lastdays};

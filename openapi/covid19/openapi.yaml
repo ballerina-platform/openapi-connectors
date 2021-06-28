@@ -286,7 +286,7 @@ paths:
     get:
       tags:
         - 'COVID-19: JHUCSSE'
-      operationId: getTimeSeriesbycountry
+      operationId: getTimeSeriesBycountry
       x-display: 
             label: "Country Status By Time Series"
       parameters:
@@ -320,7 +320,7 @@ paths:
         - 'COVID-19: JHUCSSE'
       operationId: getTimeSeriesByProvince
       x-display: 
-        label: "Province Status By Time Seires"
+        label: "Province Status By Time Series"
       parameters:
         - name: country
           in: path

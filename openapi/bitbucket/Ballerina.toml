@@ -1,0 +1,10 @@
+[package]
+license = ["Apache-2.0"]
+org = "ballerinax"
+name = "bitbucket"
+version = "0.1.0"
+keywords = ["BitBucket", "Pull Request", "Repository"]
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

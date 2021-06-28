@@ -1,0 +1,11 @@
+[package]
+org = "ballerinax"
+name = "medium"
+version = "0.1.0"
+keywords = ["Medium", "Publication"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+authors = ["Ballerina"]
+license = ["Apache-2.0"]
+
+[build-options]
+observabilityIncluded = true

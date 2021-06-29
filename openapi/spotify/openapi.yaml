@@ -155,6 +155,7 @@ paths:
               description: Content to update the playlist
               $ref: "#/components/schemas/ChangePlayListDetails"
               type: object
+        description: "Content to update the playlist"
         required: false
       responses:
         "200":
@@ -169,83 +170,6 @@ paths:
             - playlist-modify-public
             - playlist-modify-private
       summary: Change a Playlist's Details
-      tags:
-        - category-playlists
-  /playlists/{playlist_id}/images:
-    get:
-      description: Get the current image associated with a specific playlist.
-      externalDocs:
-        description: Find more info on the official Spotify Web API Reference
-        url: https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist-cover
-      operationId: getPlaylistCover
-      x-display:
-            label: "Playlist Cover"
-      parameters:
-        - description: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
-          in: path
-          name: playlist_id
-          required: true
-          schema:
-            type: string
-          x-display:
-            label: "Playlist Id"
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ImageObject"
-                type: array
-          description: |-
-            On success, the response body contains a list of [image objects](https://developer.spotify.com/documentation/web-api/reference/#object-imageobject) in JSON format and the HTTP status code in the response header is `200` OK  
-            On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema).
-        default:
-          $ref: "#/components/responses/ErrorResponse"
-      security:
-        - spotify_auth: []
-      summary: Get a Playlist Cover Image
-      tags:
-        - category-playlists
-    put:
-      description: Replace the image used to represent a specific playlist.
-      externalDocs:
-        description: Find more info on the official Spotify Web API Reference
-        url: https://developer.spotify.com/documentation/web-api/reference/#endpoint-upload-custom-playlist-cover
-      operationId: updatePlaylistCover
-      x-display:
-            label: "Update Playlist Cover"
-      parameters:
-        - description: "The content type of the request body: `image/jpeg`"
-          in: header
-          name: Content-Type
-          required: true
-          schema:
-            type: string
-          x-display:
-            label: "Content Type"
-        - description: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
-          in: path
-          name: playlist_id
-          required: true
-          schema:
-            type: string
-          x-display:
-            label: "Playlist Id"
-      responses:
-        "202":
-          description: |-
-            If you get status code `429`, it means that you have sent too many requests.
-            If this happens, have a look in the `Retry-After` header, where you will see a number displayed.
-            This is the amount of seconds that you need to wait, before you can retry sending your requests.
-        default:
-          $ref: "#/components/responses/ErrorResponse"
-      security:
-        - spotify_auth:
-            - ugc-image-upload
-            - playlist-modify-public
-            - playlist-modify-private
-      summary: Upload a Custom Playlist Cover Image
       tags:
         - category-playlists
   /playlists/{playlist_id}/tracks:
@@ -372,6 +296,7 @@ paths:
             schema:
               description: Information needed to reorder the playlist
               $ref: "#/components/schemas/PlayListReorderDetails"
+        description: "Information needed to reorder the playlist"
         required: false
       responses:
         "200":
@@ -492,6 +417,7 @@ paths:
               $ref: "#/components/schemas/PlayListDetails"
               type: object
               required: true
+        description: "Content to create playlist"
       responses:
         "200":
           content:
@@ -526,6 +452,130 @@ paths:
       summary: Create a Playlist
       tags:
         - category-playlists
+  /browse/new-releases:
+    get:
+      description: Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player's "Browse" tab).
+      externalDocs:
+        description: Find more info on the official Spotify Web API Reference
+        url: https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-new-releases
+      operationId: getNewReleses
+      x-display:
+        label: "Get New Releases"
+      parameters:
+        - description: "A country: an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Provide this parameter if you want the list of returned items to be relevant to a particular country. If omitted, the returned items will be relevant to all countries."
+          in: query
+          name: country
+          required: false
+          schema:
+            type: string
+          x-display:
+            label: "Country"
+        - description: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50."
+          in: query
+          name: limit
+          required: false
+          schema:
+            format: int32
+            type: integer
+          x-display:
+            label: "Limit"
+        - description: "The index of the first item to return. Default: 0 (the first object). Use with `limit` to get the next set of items."
+          in: query
+          name: offset
+          required: false
+          schema:
+            format: int32
+            type: integer
+          x-display:
+            label: "Offset"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewReleasesObject"
+          description: |-
+            On success, the HTTP status code in the response header is `200` OK and the response body contains a `message` and an`albums` object. The `albums` object contains an array of simplified [album objects](https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedalbumobject) (wrapped in a [paging object](https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject)) in JSON format. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema).
+
+            Once you have retrieved the list, you can use [Get an Album's Tracks](https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-albums-tracks) to drill down further.
+
+            The results are returned in an order reflected within the Spotify clients, and therefore may not be ordered by date.
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      security:
+        - spotify_auth: []
+      summary: Get All New Releases
+      tags:
+        - category-browse
+  /browse/featured-playlists:
+    get:
+      description: Get a list of Spotify featured playlists (shown, for example, on a Spotify player's 'Browse' tab).
+      externalDocs:
+        description: Find more info on the official Spotify Web API Reference
+        url: https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-featured-playlists
+      operationId: getFeaturedPlaylists
+      x-display:
+        label: "Get Featured Playlists"
+      parameters:
+        - description: "A country: an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Provide this parameter if you want the list of returned items to be relevant to a particular country. If omitted, the returned items will be relevant to all countries."
+          in: query
+          name: country
+          required: false
+          schema:
+            type: string
+          x-display:
+            label: "Country"
+        - description: 'The desired language, consisting of a lowercase [ISO 639-1 language code](http://en.wikipedia.org/wiki/ISO_639-1) and an uppercase [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), joined by an underscore. For example: `es_MX`, meaning "Spanish (Mexico)". Provide this parameter if you want the results returned in a particular language (where available). Note that, if `locale` is not supplied, or if the specified language is not available, all strings will be returned in the Spotify default language (American English). The `locale` parameter, combined with the `country` parameter, may give odd results if not carefully matched. For example `country=SE&locale=de_DE` will return a list of categories relevant to Sweden but as German language strings.'
+          in: query
+          name: locale
+          required: false
+          schema:
+            type: string
+          x-display:
+            label: "Locale"
+        - description: "A timestamp in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601): `yyyy-MM-ddTHH:mm:ss`. Use this parameter to specify the user's local time to get results tailored for that specific date and time in the day. If not provided, the response defaults to the current UTC time. Example: \"2014-10-23T09:00:00\" for a user whose local time is 9AM. If there were no featured playlists (or there is no data) at the specified time, the response will revert to the current UTC time."
+          in: query
+          name: timestamp
+          required: false
+          schema:
+            type: string
+          x-display:
+            label: "Timestamp"
+        - description: "The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50."
+          in: query
+          name: limit
+          required: false
+          schema:
+            format: int32
+            type: integer
+          x-display:
+            label: "Limit"
+        - description: "The index of the first item to return. Default: 0 (the first object). Use with `limit` to get the next set of items."
+          in: query
+          name: offset
+          required: false
+          schema:
+            format: int32
+            type: integer
+          x-display:
+            label: "Offset"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeaturedPlaylistObject"
+          description: |-
+            On success, the HTTP status code in the response header is `200` OK and the response body contains a `message` and a `playlists` object. The `playlists` object contains an array of simplified [playlist objects](https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedplaylistobject) (wrapped in a [paging object](https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject)) in JSON format. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema).
+
+            Once you have retrieved the list of playlist objects, you can use [Get a Playlist](https://developer.spotify.com/web-api/get-playlist/) and [Get a Playlist's Tracks](https://developer.spotify.com/web-api/get-playlists-tracks/) to drill down further.
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      security:
+        - spotify_auth: []
+      summary: Get All Featured Playlists
+      tags:
+        - category-browse
 components:
   responses:
     ErrorResponse:
@@ -535,6 +585,87 @@ components:
             $ref: "#/components/schemas/ErrorResponseObject"
       description: Unexpected error
   schemas:
+    FeaturedPlaylistObject:
+      properties:
+        message:
+          description: ""
+          type: string
+        playlists:
+          description: ""
+          externalDocs:
+            description: Find more info on the official Spotify Web API Reference
+            url: https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
+          properties:
+            href:
+              description: A link to the Web API endpoint returning the full result of the request
+              type: string
+              nullable: true
+            items:
+              description: The requested data.
+              items:
+                $ref: "#/components/schemas/SimplifiedPlaylistObject"
+              type: array
+            limit:
+              description: The maximum number of items in the response (as set in the query or by default).
+              format: int32
+              type: integer
+            next:
+              description: URL to the next page of items. ( `null` if none)
+              type: string
+              nullable: true
+            offset:
+              description: The offset of the items returned (as set in the query or by default)
+              format: int32
+              type: integer
+            previous:
+              description: URL to the previous page of items. ( `null` if none)
+              type: string
+              nullable: true
+            total:
+              description: The total number of items available to return.
+              format: int32
+              type: integer
+          type: object
+      type: object
+    NewReleasesObject:
+      properties:
+        albums:
+          description: ""
+          externalDocs:
+            description: Find more info on the official Spotify Web API Reference
+            url: https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
+          properties:
+            href:
+              description: A link to the Web API endpoint returning the full result of the request
+              type: string
+              nullable: true
+            items:
+              description: The requested data.
+              items:
+                $ref: "#/components/schemas/SimplifiedAlbumObject"
+              type: array
+            limit:
+              description: The maximum number of items in the response (as set in the query or by default).
+              format: int32
+              type: integer
+            next:
+              description: URL to the next page of items. ( `null` if none)
+              type: string
+              nullable: true
+            offset:
+              description: The offset of the items returned (as set in the query or by default)
+              format: int32
+              type: integer
+            previous:
+              description: URL to the previous page of items. ( `null` if none)
+              type: string
+              nullable: true
+            total:
+              description: The total number of items available to return.
+              format: int32
+              type: integer
+          type: object
+      type: object
     PlayListDetails:
       description: Playlist details 
       properties:
@@ -550,6 +681,7 @@ components:
         public:
           description: Defaults to `true` . If `true` the playlist will be public, if `false` it will be private. To be able to create private playlists, the user must have granted the `playlist-modify-private` [scope](https://developer.spotify.com/documentation/general/guides/authorization-guide/#list-of-scopes)
           type: boolean
+          nullable: true
       required:
         - name
       type: object
@@ -586,20 +718,6 @@ components:
           description: The total number of items available to return.
           format: int32
           type: integer
-      type: object
-    PlaylistTrackInsertionDetails:
-      properties:
-        position:
-          description: 'The position to insert the items, a zero-based index. For example, to insert the items in the first position: `position=0` ; to insert the items in the third position: `position=2`. If omitted, the items will be appended to the playlist. Items are added in the order they appear in the uris array. For example: `{"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M"], "position": 3}`'
-          format: int32
-          type: integer
-        uris:
-          description: |-
-            A JSON array of the [Spotify URIs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) to add. For example: `{"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"]}`  
-            A maximum of 100 items can be added in one request. *Note: if the `uris` parameter is present in the query string, any URIs listed here in the body will be ignored.*
-          items:
-            type: string
-          type: array
       type: object
     PlayListReorderDetails:
       description: Information needed to reorder the playlist
@@ -685,6 +803,7 @@ components:
         public:
           description: If `true` the playlist will be public, if `false` it will be private.
           type: boolean
+          nullable: true
       type: object
     CurrentPlaylistDetails:
       externalDocs:
@@ -753,6 +872,7 @@ components:
         public:
           description: "The playlist's public/private status: `true` the playlist is public, `false` the playlist is private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](https://developer.spotify.com/documentation/general/guides/working-with-playlists/)"
           type: boolean
+          nullable: true
         snapshot_id:
           description: The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version
           type: string
@@ -807,6 +927,7 @@ components:
           description: "The image height in pixels. If unknown: `null` or not returned."
           format: int32
           type: integer
+          nullable: true
         url:
           description: The source URL of the image.
           type: string
@@ -814,6 +935,7 @@ components:
           description: "The image width in pixels. If unknown: `null` or not returned."
           format: int32
           type: integer
+          nullable: true
       type: object
     SnapshotIdObject:
       properties:
@@ -842,6 +964,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the playlist.
           type: string
+          nullable: true
         id:
           description: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
           type: string
@@ -858,6 +981,7 @@ components:
         public:
           description: "The playlist's public/private status: `true` the playlist is public, `false` the playlist is private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](https://developer.spotify.com/documentation/general/guides/working-with-playlists/)"
           type: boolean
+          nullable: true
         snapshot_id:
           description: The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version
           type: string
@@ -907,6 +1031,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the followers; `null` if not available. Please note that this will always be set to null, as the Web API does not support it at the moment.
           type: string
+          nullable: true
         total:
           description: The total number of followers.
           format: int32
@@ -926,6 +1051,7 @@ components:
         href:
           description: A link to the Web API endpoint for this user.
           type: string
+          nullable: true
         id:
           description: The [Spotify user ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for this user.
           type: string
@@ -962,6 +1088,7 @@ components:
         href:
           description: A link to the Web API endpoint where full details of the playlist's tracks can be retrieved.
           type: string
+          nullable: true
         total:
           description: Number of tracks in the playlist.
           format: int32
@@ -990,6 +1117,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the episode.
           type: string
+          nullable: true
         html_description:
           description: A description of the episode. This field may contain HTML tags.
           type: string
@@ -1091,6 +1219,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the show.
           type: string
+          nullable: true
         html_description:
           description: A description of the show. This field may contain HTML tags.
           type: string
@@ -1148,6 +1277,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the artist.
           type: string
+          nullable: true
         id:
           description: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
           type: string
@@ -1187,6 +1317,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the album.
           type: string
+          nullable: true
         id:
           description: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
           type: string
@@ -1249,6 +1380,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the artist.
           type: string
+          nullable: true
         id:
           description: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
           type: string
@@ -1306,19 +1438,6 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
           type: string
       type: object
-    TrackRemovingDetails:
-      properties:
-        snapshot_id:
-          description: The playlist's snapshot ID against which you want to make the changes. The API will validate that the specified items exist and in the specified positions and make the changes, even if more recent changes have been made to the playlist.
-          type: string
-        tracks:
-          description: 'An array of objects containing [Spotify URIs](https://developer.spotify.com/spotify-documentation/web-api/#spotify-uris-and-ids) of the tracks or episodes to remove. For example: `{ "tracks": [{ "uri": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh" },{ "uri": "spotify:track:1301WleyT98MSxVHPZCA6M" }] }`. A maximum of 100 objects can be sent at once.'
-          items:
-            type: string
-          type: array
-      required:
-        - tracks
-      type: object
     TrackObject:
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
@@ -1354,6 +1473,7 @@ components:
         href:
           description: A link to the Web API endpoint providing full details of the track.
           type: string
+          nullable: true
         id:
           description: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
           type: string

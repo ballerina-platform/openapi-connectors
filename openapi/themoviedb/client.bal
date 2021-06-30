@@ -18,6 +18,9 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
+# Please visit [here](https://developers.themoviedb.org/) and obtain an `API Key` in the setting.
+#
+# + apiKeys - Provide your API Key as `api_key`. Eg: `{"api_key" : "<Your API Key>"}` 
 public type ApiKeysConfig record {
     map<string|string[]> apiKeys;
 };
@@ -171,7 +174,7 @@ public client class Client {
     remote isolated function getPopularMovies() returns GetPopularMoviesResponse|error {
         string  path = string `/movie/popular`;
         map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         GetPopularMoviesResponse response = check self.clientEp-> get(path, targetType = GetPopularMoviesResponse);
         return response;
     }
@@ -182,7 +185,7 @@ public client class Client {
     remote isolated function getUpcomingMovies() returns GetUpcomingMoviesResponse|error {
         string  path = string `/movie/upcoming`;
         map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         GetUpcomingMoviesResponse response = check self.clientEp-> get(path, targetType = GetUpcomingMoviesResponse);
         return response;
     }
@@ -194,7 +197,7 @@ public client class Client {
     remote isolated function getMovieByMovieId(@display {label: "Movie ID"} int movie_id) returns GetMovieByMovieIdResponse|error {
         string  path = string `/movie/${movie_id}`;
         map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         GetMovieByMovieIdResponse response = check self.clientEp-> get(path, targetType = GetMovieByMovieIdResponse);
         return response;
     }
@@ -205,7 +208,7 @@ public client class Client {
     remote isolated function getTopRatedTvShow() returns GetTopRatedTvShowResponse|error {
         string  path = string `/tv/top_rated`;
         map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         GetTopRatedTvShowResponse response = check self.clientEp-> get(path, targetType = GetTopRatedTvShowResponse);
         return response;
     }
@@ -219,7 +222,7 @@ public client class Client {
     remote isolated function getTvShowByDetails(@display {label: "TV Show ID"} int tv_id, @display {label: "Season Number"} int season_number, @display {label: "Episode Number"} int episode_number) returns GetTvShowByDetailsResponse|error {
         string  path = string `/tv/${tv_id}/season/${season_number}/episode/${episode_number}`;
         map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         GetTvShowByDetailsResponse response = check self.clientEp-> get(path, targetType = GetTvShowByDetailsResponse);
         return response;
     }
@@ -232,7 +235,7 @@ public client class Client {
     remote isolated function searchMovie(@display {label: "Search Text Query"} string query, @display {label: "Movie Release Year"} int? year = ()) returns SearchMovieResponse|error {
         string  path = string `/search/movie`;
         map<anydata> queryParam = {"query": query, "year": year, api_key: self.apiKeys["api_key"]};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         SearchMovieResponse response = check self.clientEp-> get(path, targetType = SearchMovieResponse);
         return response;
     }
@@ -245,7 +248,7 @@ public client class Client {
     remote isolated function searchTvShow(@display {label: "Search Text Query"} string query, @display {label: "First Air Date"} int? firstAirDateYear = ()) returns SearchTvShowResponse|error {
         string  path = string `/search/tv`;
         map<anydata> queryParam = {"query": query, "firstAirDateYear": firstAirDateYear, api_key: self.apiKeys["api_key"]};
-        path = path + getPathForQueryParam(queryParam);
+        path = path + check getPathForQueryParam(queryParam);
         SearchTvShowResponse response = check self.clientEp-> get(path, targetType = SearchTvShowResponse);
         return response;
     }
@@ -255,7 +258,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string {
+isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -269,7 +272,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
             }
             param[param.length()] = "=";
             if  value  is  string {
-                string updateV =  checkpanic url:encode(value, "UTF-8");
+                string updateV =  check url:encode(value, "UTF-8");
                 param[param.length()] = updateV;
             } else {
                 param[param.length()] = value.toString();

@@ -19,7 +19,7 @@ paths:
         label: "Get Popular Movies"
       responses:
         200:
-          description: Get Popular Movies Response
+          description: Get popular movies response
           content:
             application/json:
               schema:
@@ -75,7 +75,7 @@ paths:
         label: "Get Upcoming Movies"
       responses:
         200:
-          description: Get Upcoming Movies Response
+          description: Get upcoming movies response
           content:
             application/json:
               schema:
@@ -153,7 +153,7 @@ paths:
           label: "Movie ID"
       responses:
         200:
-          description: Get Movie By Movie Id Response
+          description: Get movie by movie ID response
           content:
             application/json:
               schema:
@@ -289,7 +289,7 @@ paths:
         label: "Get Top Rated TV Shows"
       responses:
         200:
-          description: Get Top Rated Tv Show Response
+          description: Get top rated TV show response
           content:
             application/json:
               schema:
@@ -376,7 +376,7 @@ paths:
           label: "Episode Number"
       responses:
         200:
-          description: Get Tv Show By Details Response
+          description: Get TV show by details response
           content:
             application/json:
               schema:
@@ -498,7 +498,7 @@ paths:
           label: "Movie Release Year"
       responses:
         200:
-          description: Search Movie Response
+          description: Search movie response
           content:
             application/json:
               schema:
@@ -560,14 +560,14 @@ paths:
           label: "Search Text Query"
       - name: firstAirDateYear
         in: query
-        description: First Air Date
+        description: First air date
         schema:
           type: integer
         x-display: 
           label: "First Air Date"
       responses:
         200:
-          description: Search Tv Show Response
+          description: Search TV show response
           content:
             application/json:
               schema:
@@ -616,7 +616,7 @@ components:
     movie-list-object:
       title: Movie List Object
       type: object
-      description: Movie List Object
+      description: Movie list object
       properties:
         poster_path:
           type: string
@@ -667,7 +667,7 @@ components:
     tv-list-object:
       title: TV List Object
       type: object
-      description: TV List Object
+      description: TV list object
       properties:
         poster_path:
           type: string

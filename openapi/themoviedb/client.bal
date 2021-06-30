@@ -22,7 +22,7 @@ public type ApiKeysConfig record {
     map<string|string[]> apiKeys;
 };
 
-# Get Popular Movies Response
+# Get popular movies response
 public type GetPopularMoviesResponse record {
     # Specify which page to query
     int page?;
@@ -34,7 +34,7 @@ public type GetPopularMoviesResponse record {
     int total_pages?;
 };
 
-# Get Upcoming Movies Response
+# Get upcoming movies response
 public type GetUpcomingMoviesResponse record {
     # Specify which page to query
     int page?;
@@ -48,7 +48,7 @@ public type GetUpcomingMoviesResponse record {
     anydata total_results?;
 };
 
-# Get Movie By Movie Id Response
+# Get movie by movie ID response
 public type GetMovieByMovieIdResponse record {
     # Adult content or not
     boolean adult?;
@@ -90,7 +90,7 @@ public type GetMovieByMovieIdResponse record {
     int vote_count?;
 };
 
-# Get Top Rated Tv Show Response
+# Get top rated TV show response
 public type GetTopRatedTvShowResponse record {
     # Specify which page to query
     int page?;
@@ -102,7 +102,7 @@ public type GetTopRatedTvShowResponse record {
     int total_pages?;
 };
 
-# Get Tv Show By Details Response
+# Get TV show by details response
 public type GetTvShowByDetailsResponse record {
     # Air date of TV show
     string air_date?;
@@ -128,7 +128,7 @@ public type GetTvShowByDetailsResponse record {
     int vote_count?;
 };
 
-# Search Movie Response
+# Search movie response
 public type SearchMovieResponse record {
     # Specify which page to query
     int page?;
@@ -140,7 +140,7 @@ public type SearchMovieResponse record {
     int total_pages?;
 };
 
-# Search Tv Show Response
+# Search TV show response
 public type SearchTvShowResponse record {
     # Specify which page to query
     int page?;
@@ -166,7 +166,7 @@ public client class Client {
     }
     # Get Popular Movies
     #
-    # + return - Get Popular Movies Response
+    # + return - Get popular movies response
     @display {label: "Get Popular Movies"}
     remote isolated function getPopularMovies() returns GetPopularMoviesResponse|error {
         string  path = string `/movie/popular`;
@@ -177,7 +177,7 @@ public client class Client {
     }
     # Get Upcoming Movies
     #
-    # + return - Get Upcoming Movies Response
+    # + return - Get upcoming movies response
     @display {label: "Get Upcoming Movies"}
     remote isolated function getUpcomingMovies() returns GetUpcomingMoviesResponse|error {
         string  path = string `/movie/upcoming`;
@@ -189,7 +189,7 @@ public client class Client {
     # Get Movie Details
     #
     # + movie_id - Movie ID
-    # + return - Get Movie By Movie Id Response
+    # + return - Get movie by movie ID response
     @display {label: "Get Movie Details"}
     remote isolated function getMovieByMovieId(@display {label: "Movie ID"} int movie_id) returns GetMovieByMovieIdResponse|error {
         string  path = string `/movie/${movie_id}`;
@@ -200,7 +200,7 @@ public client class Client {
     }
     # Get Top Rated
     #
-    # + return - Get Top Rated Tv Show Response
+    # + return - Get top rated TV show response
     @display {label: "Get Top Rated TV Shows"}
     remote isolated function getTopRatedTvShow() returns GetTopRatedTvShowResponse|error {
         string  path = string `/tv/top_rated`;
@@ -214,7 +214,7 @@ public client class Client {
     # + tv_id - TV show ID
     # + season_number - TV show season number
     # + episode_number - TV show episode number
-    # + return - Get Tv Show By Details Response
+    # + return - Get TV show by details response
     @display {label: "Get TV Show By Details"}
     remote isolated function getTvShowByDetails(@display {label: "TV Show ID"} int tv_id, @display {label: "Season Number"} int season_number, @display {label: "Episode Number"} int episode_number) returns GetTvShowByDetailsResponse|error {
         string  path = string `/tv/${tv_id}/season/${season_number}/episode/${episode_number}`;
@@ -227,7 +227,7 @@ public client class Client {
     #
     # + query - Text query to search
     # + year - Release year of movie
-    # + return - Search Movie Response
+    # + return - Search movie response
     @display {label: "Search Movies"}
     remote isolated function searchMovie(@display {label: "Search Text Query"} string query, @display {label: "Movie Release Year"} int? year = ()) returns SearchMovieResponse|error {
         string  path = string `/search/movie`;
@@ -239,8 +239,8 @@ public client class Client {
     # Search TV Shows
     #
     # + query - Text query to search
-    # + firstAirDateYear - First Air Date
-    # + return - Search Tv Show Response
+    # + firstAirDateYear - First air date
+    # + return - Search TV show response
     @display {label: "Search TV Shows"}
     remote isolated function searchTvShow(@display {label: "Search Text Query"} string query, @display {label: "First Air Date"} int? firstAirDateYear = ()) returns SearchTvShowResponse|error {
         string  path = string `/search/tv`;

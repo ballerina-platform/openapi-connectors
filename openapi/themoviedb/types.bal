@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Movie List Object
+# Movie list object
 public type MovieListObject record {
     # Poster image path
     string? poster_path?;
@@ -46,7 +46,7 @@ public type MovieListObject record {
     decimal vote_average?;
 };
 
-# TV List Object
+# TV list object
 public type TvListObject record {
     # Poster image path
     string? poster_path?;

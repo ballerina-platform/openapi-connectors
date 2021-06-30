@@ -24,6 +24,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
                 properties:
                   page:
                     type: integer
@@ -80,6 +85,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - dates
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
                 properties:
                   page:
                     type: integer
@@ -158,6 +169,10 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - id
+                  - overview
+                  - title
                 properties:
                   adult:
                     type: boolean
@@ -294,6 +309,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
                 properties:
                   page:
                     type: integer
@@ -346,9 +366,9 @@ paths:
         | **Date** | **Change** |
         | - | - |
         | June 1, 2018 | Added the [translations](#endpoint:5SFwZar3LkP99QMp7) method. |
-      operationId: GET_tv-show-by-details
+      operationId: GET_tv-show-episode
       x-display: 
-        label: "Get TV Show By Details"
+        label: "Get TV Show Episode"
       parameters:
       - name: tv_id
         in: path
@@ -381,6 +401,13 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - crew
+                  - id
+                  - overview
+                  - name
+                  - season_number
+                  - episode_number
                 properties:
                   air_date:
                     type: string
@@ -503,6 +530,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
                 properties:
                   page:
                     type: integer
@@ -572,6 +604,11 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
                 properties:
                   page:
                     type: integer
@@ -617,6 +654,10 @@ components:
       title: Movie List Object
       type: object
       description: Movie list object
+      required:
+        - id
+        - overview
+        - title
       properties:
         poster_path:
           type: string
@@ -668,6 +709,10 @@ components:
       title: TV List Object
       type: object
       description: TV list object
+      required:
+        - id
+        - overview
+        - name
       properties:
         poster_path:
           type: string

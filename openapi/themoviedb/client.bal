@@ -28,27 +28,27 @@ public type ApiKeysConfig record {
 # Get popular movies response
 public type GetPopularMoviesResponse record {
     # Specify which page to query
-    int page?;
+    int page;
     # Movie List Object
-    MovieListObject[] results?;
+    MovieListObject[] results;
     # Total number of results
-    int total_results?;
+    int total_results;
     # Total number of pages
-    int total_pages?;
+    int total_pages;
 };
 
 # Get upcoming movies response
 public type GetUpcomingMoviesResponse record {
     # Specify which page to query
-    int page?;
+    int page;
     # Movie List Object
-    MovieListObject[] results?;
+    MovieListObject[] results;
     # Release date range of movies
-    record  { string maximum?; string minimum?;}  dates?;
+    record  { string maximum?; string minimum?;}  dates;
     # Total number of pages
-    int total_pages?;
+    int total_pages;
     # Total number of results
-    anydata total_results?;
+    anydata total_results;
 };
 
 # Get movie by movie ID response
@@ -62,7 +62,7 @@ public type GetMovieByMovieIdResponse record {
     # Genres of movie
     record  { int id?; string name?;} [] genres?;
     # Movie ID
-    int id?;
+    int id;
     # Original language of movie
     string original_language?;
     # Original title of movie
@@ -84,7 +84,7 @@ public type GetMovieByMovieIdResponse record {
     # Status of movie
     string status?;
     # Title of movie
-    string title?;
+    string title;
     # Contain videos or not
     boolean video?;
     # Vote average
@@ -96,33 +96,33 @@ public type GetMovieByMovieIdResponse record {
 # Get top rated TV show response
 public type GetTopRatedTvShowResponse record {
     # Specify which page to query
-    int page?;
+    int page;
     # TV List Object
-    TvListObject[] results?;
+    TvListObject[] results;
     # Total number of results
-    int total_results?;
+    int total_results;
     # Total number of pages
-    int total_pages?;
+    int total_pages;
 };
 
 # Get TV show by details response
-public type GetTvShowByDetailsResponse record {
+public type GetTvShowEpisodeResponse record {
     # Air date of TV show
     string air_date?;
     # Crew details of TV show
-    record  { int id?; string credit_id?; string name?; string department?; string job?; string? profile_path?;} [] crew?;
+    record  { int id?; string credit_id?; string name?; string department?; string job?; string? profile_path?;} [] crew;
     # Episode number
-    int episode_number?;
+    int episode_number;
     # Guest stars in TV show
     record  { int id?; string name?; string credit_id?; string character?; int 'order?; string? profile_path?;} [] guest_stars?;
     # Crew details of TV show
-    string name?;
+    string name;
     # Overview of TV show
-    string overview?;
+    string overview;
     # TV show ID
-    int id?;
+    int id;
     # Season number
-    int season_number?;
+    int season_number;
     # Still path
     string? still_path?;
     # Vote average
@@ -134,25 +134,25 @@ public type GetTvShowByDetailsResponse record {
 # Search movie response
 public type SearchMovieResponse record {
     # Specify which page to query
-    int page?;
+    int page;
     # Movie List Object
-    MovieListObject[] results?;
+    MovieListObject[] results;
     # Total number of results
-    int total_results?;
+    int total_results;
     # Total number of pages
-    int total_pages?;
+    int total_pages;
 };
 
 # Search TV show response
 public type SearchTvShowResponse record {
     # Specify which page to query
-    int page?;
+    int page;
     # TV List Object
-    TvListObject[] results?;
+    TvListObject[] results;
     # Total number of results
-    int total_results?;
+    int total_results;
     # Total number of pages
-    int total_pages?;
+    int total_pages;
 };
 
 # The Movie Database (TMDB) Client object
@@ -218,12 +218,12 @@ public client class Client {
     # + season_number - TV show season number
     # + episode_number - TV show episode number
     # + return - Get TV show by details response
-    @display {label: "Get TV Show By Details"}
-    remote isolated function getTvShowByDetails(@display {label: "TV Show ID"} int tv_id, @display {label: "Season Number"} int season_number, @display {label: "Episode Number"} int episode_number) returns GetTvShowByDetailsResponse|error {
+    @display {label: "Get TV Show Episode"}
+    remote isolated function getTvShowEpisode(@display {label: "TV Show ID"} int tv_id, @display {label: "Season Number"} int season_number, @display {label: "Episode Number"} int episode_number) returns GetTvShowEpisodeResponse|error {
         string  path = string `/tv/${tv_id}/season/${season_number}/episode/${episode_number}`;
         map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        GetTvShowByDetailsResponse response = check self.clientEp-> get(path, targetType = GetTvShowByDetailsResponse);
+        GetTvShowEpisodeResponse response = check self.clientEp-> get(path, targetType = GetTvShowEpisodeResponse);
         return response;
     }
     # Search Movies

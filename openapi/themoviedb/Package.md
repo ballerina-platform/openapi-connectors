@@ -2,7 +2,7 @@ Connects to The Movie Database (TMDB) from Ballerina.
 
 ## Module Overview
 
-The The Movie Database (TMDB) connector consume the data exposed in https://developers.themoviedb.org/3/. It is currently supporting the following operations.
+The Movie Database (TMDB) connector consume the data exposed in https://developers.themoviedb.org/3/. It is currently supporting the following operations.
 
 - getPopularMovies
 - getUpcomingMovies

@@ -8,11 +8,11 @@ The Spotify Playlist connector consume the data exposed in [https://api.spotify.
 - getPlaylistById
 - createPlaylist
 - updatePlaylist
-- getPlaylistCover
-- updatePlaylistCover
 - getPlaylistTracks
 - reorderOrReplacePlaylistTracks
 - getPlayslistsByUserID
+- getNewReleses
+- getFeaturedPlaylists
 
 
 ## Compatibility

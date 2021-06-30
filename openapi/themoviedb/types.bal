@@ -21,19 +21,19 @@ public type MovieListObject record {
     # Adult content or not
     boolean adult?;
     # Overview of movie
-    string overview?;
+    string overview;
     # Release date
     string release_date?;
     # Genre IDs of movie
     int[] genre_ids?;
     # Movie ID
-    int id?;
+    int id;
     # Original title
     string original_title?;
     # Original language
     string original_language?;
     # Title of movie
-    string title?;
+    string title;
     # Backdrop image path
     string? backdrop_path?;
     # Popularity of movie
@@ -53,13 +53,13 @@ public type TvListObject record {
     # Popularity of TV show
     decimal popularity?;
     # TV show ID
-    int id?;
+    int id;
     # Backdrop image path
     string? backdrop_path?;
     # Vote average
     decimal vote_average?;
     # Overview of TV show
-    string overview?;
+    string overview;
     # First air date of TV show
     string first_air_date?;
     # Origin country
@@ -71,7 +71,7 @@ public type TvListObject record {
     # Vote count
     int vote_count?;
     # Name
-    string name?;
+    string name;
     # Original name of TV show
     string original_name?;
 };

@@ -47,7 +47,7 @@ public type LinkedTrackObject record {
     # A link to the Web API endpoint providing full details of the track.
     string href?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
-    string id?;
+    string id;
     # The object type: "track".
     string 'type?;
     # The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
@@ -73,13 +73,13 @@ public type SimplifiedArtistObject record {
     # A link to the Web API endpoint providing full details of the artist.
     string? href?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
-    string id?;
+    string id;
     # The name of the artist.
-    string name?;
+    string name;
     # The object type: `"artist"`
     string 'type?;
     # The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
-    string uri?;
+    string uri;
 };
 
 # Episode object
@@ -99,7 +99,7 @@ public type EpisodeObject record {
     # A description of the episode. This field may contain HTML tags.
     string html_description?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the episode.
-    string id?;
+    string id;
     # The cover art for the episode in various sizes, widest first.
     ImageObject[] images?;
     # True if the episode is hosted outside of Spotify's CDN.
@@ -140,10 +140,46 @@ public type PlayListDetails record {
     boolean? 'public?;
 };
 
+# Album details
+public type Albums record {
+    # A link to the Web API endpoint returning the full result of the request
+    string? href?;
+    # The requested data.
+    SimplifiedAlbumObject[] items;
+    # The maximum number of items in the response (as set in the query or by default).
+    int 'limit?;
+    # URL to the next page of items. ( `null` if none)
+    string? next?;
+    # The offset of the items returned (as set in the query or by default)
+    int offset?;
+    # URL to the previous page of items. ( `null` if none)
+    string? previous?;
+    # The total number of items available to return.
+    int total?;
+};
+
 # External URL object
 public type ExternalUrlObject record {
     # The [Spotify URL](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the object.
     string spotify?;
+};
+
+# Playlist details
+public type Playlist record {
+    # A link to the Web API endpoint returning the full result of the request
+    string? href?;
+    # The requested data.
+    SimplifiedPlaylistObject[] items?;
+    # The maximum number of items in the response (as set in the query or by default).
+    int 'limit?;
+    # URL to the next page of items. ( `null` if none)
+    string? next?;
+    # The offset of the items returned (as set in the query or by default)
+    int offset?;
+    # URL to the previous page of items. ( `null` if none)
+    string? previous?;
+    # The total number of items available to return.
+    int total?;
 };
 
 # Simplified album object
@@ -153,7 +189,7 @@ public type SimplifiedAlbumObject record {
     # The type of the album: one of "album", "single", or "compilation".
     string album_type?;
     # The artists of the album. Each artist object includes a link in `href` to more detailed information about the artist.
-    SimplifiedArtistObject[] artists?;
+    SimplifiedArtistObject[] artists;
     # The markets in which the album is available: [ISO 3166-1 alpha-2 country codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Note that an album is considered available in a market when at least 1 of its tracks is available in that market.
     string[] available_markets?;
     # External URL object
@@ -161,7 +197,7 @@ public type SimplifiedAlbumObject record {
     # A link to the Web API endpoint providing full details of the album.
     string? href?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
-    string id?;
+    string id;
     # The cover art for the album in various sizes, widest first.
     ImageObject[] images?;
     # The name of the album. In case of an album takedown, the value may be an empty string.
@@ -231,11 +267,11 @@ public type SimplifiedPlaylistObject record {
     # A link to the Web API endpoint providing full details of the playlist.
     string? href?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
-    string id?;
+    string id;
     # Images for the playlist. The array may be empty or contain up to three images. The images are returned by size in descending order. See [Working with Playlists](https://developer.spotify.com/documentation/general/guides/working-with-playlists/). *Note: If returned, the source URL for the image (`url`) is temporary and will expire in less than a day.*
     ImageObject[] images?;
     # The name of the playlist.
-    string name?;
+    string name;
     # Public user object
     PublicUserObject owner?;
     # The playlist's public/private status: `true` the playlist is public, `false` the playlist is private, `null` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](https://developer.spotify.com/documentation/general/guides/working-with-playlists/)
@@ -274,18 +310,28 @@ public type EpisodeRestrictionObject record {
     string reason?;
 };
 
+# Information about the tracks of the playlist. Note, a track object may be `null`. This can happen if a track is no longer available.
+public type Tracks record {
+    # A link to the Web API endpoint returning the full result of the request
+    string href?;
+    # The requested data.
+    PlaylistTrackObject[] items?;
+    # The maximum number of items in the response (as set in the query or by default).
+    int 'limit?;
+    # URL to the next page of items. ( `null` if none)
+    string? next?;
+    # The offset of the items returned (as set in the query or by default)
+    int offset?;
+    # URL to the previous page of items. ( `null` if none)
+    string? previous?;
+    # The total number of items available to return.
+    int total?;
+};
+
 # New release object
-#
-# + albums - Newly released albums
 public type NewReleasesObject record {
-    record  { # A link to the Web API endpoint returning the full result of the request
-        string? href?; # The requested data.
-        SimplifiedAlbumObject[] items?; # The maximum number of items in the response (as set in the query or by default).
-        int 'limit?; # URL to the next page of items. ( `null` if none)
-        string? next?; # The offset of the items returned (as set in the query or by default)
-        int offset?; # URL to the previous page of items. ( `null` if none)
-        string? previous?; # The total number of items available to return.
-        int total?;}  albums?;
+    # Album details
+    Albums albums;
 };
 
 # Image object
@@ -317,7 +363,7 @@ public type PublicUserObject record {
     # A link to the Web API endpoint for this user.
     string? href?;
     # The [Spotify user ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for this user.
-    string id?;
+    string id;
     # The user's profile image.
     ImageObject[] images?;
     # The object type: "user"
@@ -371,7 +417,7 @@ public type TrackObject record {
     # A link to the Web API endpoint providing full details of the track.
     string? href?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
-    string id?;
+    string id;
     # Whether or not the track is from a local file.
     boolean is_local?;
     # Part of the response when [Track Relinking](https://developer.spotify.com/documentation/general/guides/track-relinking-guide/) is applied. If `true` , the track is playable in the given market. Otherwise `false`.
@@ -405,11 +451,11 @@ public type ArtistObject record {
     # A link to the Web API endpoint providing full details of the artist.
     string? href?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
-    string id?;
+    string id;
     # Images of the artist in various sizes, widest first.
     ImageObject[] images?;
     # The name of the artist.
-    string name?;
+    string name;
     # The popularity of the artist. The value will be between 0 and 100, with 100 being the most popular. The artist's popularity is calculated from the popularity of all the artist's tracks.
     int popularity?;
     # The object type: `"artist"`
@@ -419,19 +465,11 @@ public type ArtistObject record {
 };
 
 # Featured playlist object
-#
-# + message - Special note
-# + playlists - Playlists
 public type FeaturedPlaylistObject record {
+    # Message
     string message?;
-    record  { # A link to the Web API endpoint returning the full result of the request
-        string? href?; # The requested data.
-        SimplifiedPlaylistObject[] items?; # The maximum number of items in the response (as set in the query or by default).
-        int 'limit?; # URL to the next page of items. ( `null` if none)
-        string? next?; # The offset of the items returned (as set in the query or by default)
-        int offset?; # URL to the previous page of items. ( `null` if none)
-        string? previous?; # The total number of items available to return.
-        int total?;}  playlists?;
+    # Playlist details
+    Playlist playlists?;
 };
 
 # Snapshot Id object
@@ -465,7 +503,7 @@ public type SimplifiedShowObject record {
     # A description of the show. This field may contain HTML tags.
     string html_description?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the show.
-    string id?;
+    string id;
     # The cover art for the show in various sizes, widest first.
     ImageObject[] images?;
     # True if all of the show's episodes are hosted outside of Spotify's CDN. This field might be `null` in some cases.
@@ -503,7 +541,7 @@ public type PlaylistObject record {
     # A link to the Web API endpoint providing full details of the playlist.
     string href?;
     # The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
-    string id?;
+    string id;
     # Images for the playlist. The array may be empty or contain up to three images. The images are returned by size in descending order. See [Working with Playlists](https://developer.spotify.com/documentation/general/guides/working-with-playlists/). *Note: If returned, the source URL for the image (`url`) is temporary and will expire in less than a day.*
     ImageObject[] images?;
     # The name of the playlist.
@@ -515,14 +553,7 @@ public type PlaylistObject record {
     # The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version
     string snapshot_id?;
     # Information about the tracks of the playlist. Note, a track object may be `null`. This can happen if a track is no longer available.
-    record  { # A link to the Web API endpoint returning the full result of the request
-        string href?; # The requested data.
-        PlaylistTrackObject[] items?; # The maximum number of items in the response (as set in the query or by default).
-        int 'limit?; # URL to the next page of items. ( `null` if none)
-        string? next?; # The offset of the items returned (as set in the query or by default)
-        int offset?; # URL to the previous page of items. ( `null` if none)
-        string? previous?; # The total number of items available to return.
-        int total?;}  tracks?;
+    Tracks tracks?;
     # The object type: "playlist"
     string 'type?;
     # The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.

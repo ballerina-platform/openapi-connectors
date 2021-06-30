@@ -18,7 +18,7 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Please visit [here](https://developers.themoviedb.org/) and obtain an `API Key` in the setting.
+# Please visit [here](https://wwww.themoviedb.org/) and obtain an `API Key` in the settings.
 #
 # + apiKeys - Provide your API Key as `api_key`. Eg: `{"api_key" : "<Your API Key>"}` 
 public type ApiKeysConfig record {

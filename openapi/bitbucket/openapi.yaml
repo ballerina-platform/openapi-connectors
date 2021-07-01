@@ -9,196 +9,319 @@ info:
     email: support@bitbucket.org
   version: "2.0"
 servers:
-- url: https://api.bitbucket.org/2.0
+  - url: https://api.bitbucket.org/2.0
 tags:
-- name: Addon
-  description: |
-    The addon resource is intended to use used by Bitbucket Cloud Connect
-    Apps, and only supports JWT authentication.
-- name: Branch restrictions
-  description: |
-    Repository owners and administrators can set branch management
-    rules on a repository that control what can be pushed by whom.
-    Through these rules, you can enforce a project or team
-    workflow. For example, owners or administrators can:
+  - name: Addon
+    description: |
+      The addon resource is intended to use used by Bitbucket Cloud Connect
+      Apps, and only supports JWT authentication.
+  - name: Branch restrictions
+    description: |
+      Repository owners and administrators can set branch management
+      rules on a repository that control what can be pushed by whom.
+      Through these rules, you can enforce a project or team
+      workflow. For example, owners or administrators can:
 
-    * Limit push powers
-    * Prevent branch deletion
-    * Prevent history re-writes (Git only)
-- name: Branching model
-  description: |
-    The branching model resource is used to modify the branching model
-    for a repository.
+      * Limit push powers
+      * Prevent branch deletion
+      * Prevent history re-writes (Git only)
+  - name: Branching model
+    description: |
+      The branching model resource is used to modify the branching model
+      for a repository.
 
-    You can use the branching model to define a branch based workflow
-    for your repositories. When you map your workflow to branch types,
-    you can ensure that branches are named consistently by configuring
-    which branch types to make available.
-- name: Commit statuses
-  description: |
-    Commit statuses provide a way to tag commits with meta data,
-    like automated build results.
-- name: Commits
-  description: |
-    These are the repository's commits. They are paginated and returned in
-    reverse chronological order, similar to the output of git log.
-- name: Deployments
-  description: |
-    Teams are deploying code faster than ever, thanks to continuous
-    delivery practices and tools like Bitbucket Pipelines. Bitbucket
-    Deployments gives teams visibility into their deployment
-    environments and helps teams to track how far changes have
-    progressed in their deployment pipeline.
-- name: Downloads
-  description: Access the list of download links associated with the repository.
-- name: Issue tracker
-  description: |
-    The issue resources provide functionality for getting information on
-    issues in an issue tracker, creating new issues, updating them and deleting
-    them.
+      You can use the branching model to define a branch based workflow
+      for your repositories. When you map your workflow to branch types,
+      you can ensure that branches are named consistently by configuring
+      which branch types to make available.
+  - name: Commit statuses
+    description: |
+      Commit statuses provide a way to tag commits with meta data,
+      like automated build results.
+  - name: Commits
+    description: |
+      These are the repository's commits. They are paginated and returned in
+      reverse chronological order, similar to the output of git log.
+  - name: Deployments
+    description: |
+      Teams are deploying code faster than ever, thanks to continuous
+      delivery practices and tools like Bitbucket Pipelines. Bitbucket
+      Deployments gives teams visibility into their deployment
+      environments and helps teams to track how far changes have
+      progressed in their deployment pipeline.
+  - name: Downloads
+    description: Access the list of download links associated with the repository.
+  - name: Issue tracker
+    description: |
+      The issue resources provide functionality for getting information on
+      issues in an issue tracker, creating new issues, updating them and deleting
+      them.
 
-    You can access public issues without authentication, but you can't gain access
-    to private repositories' issues. By authenticating, you will get the ability
-    to create issues, as well as access to updating data or deleting issues you
-    have access to.
-- name: Pipelines
-  description: |
-    Bitbucket Pipelines brings continuous delivery to Bitbucket
-    Cloud, empowering teams with full branching to deployment
-    visibility and faster feedback loops.
-- name: Projects
-  description: |
-    Bitbucket Cloud projects make it easier for teams to focus on
-    a goal, product, or process by organizing their repositories.
-- name: Pullrequests
-  description: |
-    Pull requests are a feature that makes it easier for developers
-    to collaborate using Bitbucket. They provide a user-friendly web
-    interface for discussing proposed changes before integrating them
-    into the official project.
-- name: Refs
-  description: |
-    The refs resource allows you access branches and tags in a repository.
-    By default, results will be in the order the underlying source control
-    system returns them and identical to the ordering one sees when running
-    "$ git show-ref". Note that this follows simple lexical ordering of the
-     ref names.
-- name: Reports
-  description: |
-    Code insights provides reports, annotations, and metrics to help you
-    and your team improve code quality in pull requests throughout the code
-    review process. Some of the available code insights are static analysis
-    reports, security scan results, artifact links, unit tests, and build
-    status.
-- name: Repositories
-  description: |
-    A Git repository is a virtual storage of your project. It
-    allows you to save versions of your code, which you can access
-    when needed. The repo resource allows you to access public repos,
-    or repos that belong to a specific workspace.
-- name: Snippets
-  description: |
-    Snippets allow you share code segments or files with yourself, members of
-    your workspace, or the world.
+      You can access public issues without authentication, but you can't gain access
+      to private repositories' issues. By authenticating, you will get the ability
+      to create issues, as well as access to updating data or deleting issues you
+      have access to.
+  - name: Pipelines
+    description: |
+      Bitbucket Pipelines brings continuous delivery to Bitbucket
+      Cloud, empowering teams with full branching to deployment
+      visibility and faster feedback loops.
+  - name: Projects
+    description: |
+      Bitbucket Cloud projects make it easier for teams to focus on
+      a goal, product, or process by organizing their repositories.
+  - name: Pullrequests
+    description: |
+      Pull requests are a feature that makes it easier for developers
+      to collaborate using Bitbucket. They provide a user-friendly web
+      interface for discussing proposed changes before integrating them
+      into the official project.
+  - name: Refs
+    description: |
+      The refs resource allows you access branches and tags in a repository.
+      By default, results will be in the order the underlying source control
+      system returns them and identical to the ordering one sees when running
+      "$ git show-ref". Note that this follows simple lexical ordering of the
+       ref names.
+  - name: Reports
+    description: |
+      Code insights provides reports, annotations, and metrics to help you
+      and your team improve code quality in pull requests throughout the code
+      review process. Some of the available code insights are static analysis
+      reports, security scan results, artifact links, unit tests, and build
+      status.
+  - name: Repositories
+    description: |
+      A Git repository is a virtual storage of your project. It
+      allows you to save versions of your code, which you can access
+      when needed. The repo resource allows you to access public repos,
+      or repos that belong to a specific workspace.
+  - name: Snippets
+    description: |
+      Snippets allow you share code segments or files with yourself, members of
+      your workspace, or the world.
 
-    Like pull requests, repositories and workspaces, the full set of snippets
-    is defined by what the current user has access to. This includes all
-    snippets owned by any of the workspaces the user is a member of, or
-    snippets by other users that the current user is either watching or has
-     collaborated on (for instance by commenting on it).
-- name: Source
-  description: |-
-    Browse the source code in the repository and
-                                  create new commits by uploading.
-- name: Ssh
-  description: |
-    The SSH resource allows you to manage SSH keys.
-- name: Teams
-  description: |
-    The teams resource has been deprecated, and the workspaces
-    endpoint should be used instead.
+      Like pull requests, repositories and workspaces, the full set of snippets
+      is defined by what the current user has access to. This includes all
+      snippets owned by any of the workspaces the user is a member of, or
+      snippets by other users that the current user is either watching or has
+       collaborated on (for instance by commenting on it).
+  - name: Source
+    description: |-
+      Browse the source code in the repository and
+                                    create new commits by uploading.
+  - name: Ssh
+    description: |
+      The SSH resource allows you to manage SSH keys.
+  - name: Teams
+    description: |
+      The teams resource has been deprecated, and the workspaces
+      endpoint should be used instead.
 
-    The teams resource returns all the teams that the authenticated
-    user is associated with.
-- name: Users
-  description: |
-    The users resource allows you to access public information
-    associated with a user account. Most resources in the users
-    endpoint have been deprecated in favor of workspaces.
-- name: Webhooks
-  description: |
-    Webhooks provide a way to configure Bitbucket Cloud to make requests to
-    your server (or another external service) whenever certain events occur in
-    Bitbucket Cloud.
+      The teams resource returns all the teams that the authenticated
+      user is associated with.
+  - name: Users
+    description: |
+      The users resource allows you to access public information
+      associated with a user account. Most resources in the users
+      endpoint have been deprecated in favor of workspaces.
+  - name: Webhooks
+    description: |
+      Webhooks provide a way to configure Bitbucket Cloud to make requests to
+      your server (or another external service) whenever certain events occur in
+      Bitbucket Cloud.
 
-    A webhook consists of:
+      A webhook consists of:
 
-    * A subject -- The resource that generates the events. Currently, this resource
-    is the repository, user account, or team where you create the webhook.
-    * One or more event -- The default event is a repository push, but you can
-    select multiple events that can trigger the webhook.
-    * A URL -- The endpoint where you want Bitbucket to send the event payloads
-    when a matching event happens.
+      * A subject -- The resource that generates the events. Currently, this resource
+      is the repository, user account, or team where you create the webhook.
+      * One or more event -- The default event is a repository push, but you can
+      select multiple events that can trigger the webhook.
+      * A URL -- The endpoint where you want Bitbucket to send the event payloads
+      when a matching event happens.
 
-    There are two parts to getting a webhook to work: creating the webhook and
-    triggering the webhook. After you create a webhook for an event, every time
-    that event occurs, Bitbucket sends a payload request that describes the event
-    to the specified URL. Thus, you can think of webhooks as a kind of
-    notification system.
+      There are two parts to getting a webhook to work: creating the webhook and
+      triggering the webhook. After you create a webhook for an event, every time
+      that event occurs, Bitbucket sends a payload request that describes the event
+      to the specified URL. Thus, you can think of webhooks as a kind of
+      notification system.
 
-    Use webhooks to integrate applications with Bitbucket Cloud. The following
-    use cases provides examples of when you would want to use webhooks:
+      Use webhooks to integrate applications with Bitbucket Cloud. The following
+      use cases provides examples of when you would want to use webhooks:
 
-    * Every time a user pushes commits in a repository, you may want to notify
-    your CI server to start a build.
-    * Every time a user pushes commits or creates a pull request, you may want to
-    display a notification in your application.
-- name: Wiki
-  description: |
-    The wiki is a simple place to keep documents. Some people use it
-    as their project home page. The wiki is a Git repository, so you
-    can clone it and edit it like any other source files.
-- name: Workspaces
-  description: |
-    A workspace is where you create repositories, collaborate on
-    your code, and organize different streams of work in your Bitbucket
-    Cloud account. Workspaces replace the use of teams and users in API
-    calls.
+      * Every time a user pushes commits in a repository, you may want to notify
+      your CI server to start a build.
+      * Every time a user pushes commits or creates a pull request, you may want to
+      display a notification in your application.
+  - name: Wiki
+    description: |
+      The wiki is a simple place to keep documents. Some people use it
+      as their project home page. The wiki is a Git repository, so you
+      can clone it and edit it like any other source files.
+  - name: Workspaces
+    description: |
+      A workspace is where you create repositories, collaborate on
+      your code, and organize different streams of work in your Bitbucket
+      Cloud account. Workspaces replace the use of teams and users in API
+      calls.
 paths:
-  /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}:
+  /repositories/{workspace}:
+    get:
+      tags:
+      - Repositories
+      operationId: listWorkspaces
+      summary: Returns a list of all repositories
+      description: |-
+        Returns a paginated list of all repositories owned by the specified
+        account or UUID.
+
+        The result can be narrowed down based on the authenticated user's role.
+
+        E.g. with `?role=contributor`, only those repositories that the
+        authenticated user has write access to are returned (this includes any
+        repo the user is an admin on, as that implies write access).
+
+        This endpoint also supports filtering and sorting of the results. See
+        [filtering and sorting](../../meta/filtering) for more details.
+      parameters:
+      - name: workspace
+        in: path
+        description: |
+          This can either be the workspace ID (slug) or the workspace UUID
+          surrounded by curly-braces, for example: `{workspace UUID}`.
+        required: true
+        schema:
+          type: string
+      - name: role
+        in: query
+        description: Filters the result based on the authenticated user's role on each repository. member-returns repositories to which the user has explicit read access. contributor- returns repositories to which the user has explicit write access. admin- returns repositories to which the user has explicit administrator access. owner-returns all repositories owned by the current user
+        schema:
+          type: string
+          enum:
+          - admin
+          - contributor
+          - member
+          - owner
+      - name: q
+        in: query
+        description: Query string to narrow down the response as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+        schema:
+          type: string
+      responses:
+        200:
+          description: The repositories owned by the specified account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paginated_repositories'
+        404:
+          description: If the specified account does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        410:
+          description: If the specified account marked as spam.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+      security:
+      - oauth2:
+        - repository
+  /repositories/{workspace}/{repo_slug}/pullrequests:
     get:
       tags:
       - Pullrequests
-      summary: Returns the specified pull request
-      operationId: getPullRequestByID
+      operationId: listPullrequets
+      summary: Returns all pull requests
+      description: Returns all pull requests on the specified repository. By default only open pull requests are returned. This can be controlled using the `state` query parameter. To retrieve pull requests that are in one of multiple states, repeat the `state` parameter for each individual state.
       parameters:
-      - name: pull_request_id
-        in: path
-        description: The id of the pull request
-        required: true
-        schema:
-          type: integer
       - name: repo_slug
         in: path
         description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          This can either be the repository slug or the UUID of the repository,
+          surrounded by curly-braces, for example: `{repository UUID}`.
         required: true
         schema:
           type: string
       - name: workspace
         in: path
         description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          This can either be the workspace ID (slug) or the workspace UUID
+          surrounded by curly-braces, for example: `{workspace UUID}`.
         required: true
         schema:
           type: string
+      - name: state
+        in: query
+        description: Only return pull requests that are in this state. This parameter
+          can be repeated.
+        schema:
+          type: string
+          enum:
+          - MERGED
+          - SUPERSEDED
+          - OPEN
+          - DECLINED
+      responses:
+        200:
+          description: All pull requests on the specified repository.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/paginated_pullrequests'
+        401:
+          description: If the repository is private and the request was not authenticated.
+          content: {}
+        404:
+          description: If the specified repository does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+      security:
+      - oauth2:
+        - pullrequest
+  /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}:
+    get:
+      tags:
+        - Pullrequests
+      summary: Returns the specified pull request
+      operationId: getPullRequestByID
+      parameters:
+        - name: pull_request_id
+          in: path
+          description: The id of the pull request
+          required: true
+          schema:
+            type: integer
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: The pull request object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pullrequest'
+                $ref: "#/components/schemas/pullrequest"
               example:
                 type: pullrequest
                 description: Everything is awesome!
@@ -236,7 +359,7 @@ paths:
                       href: https://bitbucket.org/account/example-username/avatar/
                   nickname: example-username
                   type: user
-                  uuid: '{58021780-82b6-4517-b153-0ae73ce3e4b4}'
+                  uuid: "{58021780-82b6-4517-b153-0ae73ce3e4b4}"
                 close_source_branch: true
                 reviewers: []
                 id: 1
@@ -262,7 +385,7 @@ paths:
                         href: https://bitbucket.org/example-username/bits_and_bobs
                       avatar:
                         href: https://bytebucket.org/ravatar/%7B7708d810-964c-403f-aa6d-4e949280d614%7D?ts=python
-                    uuid: '{7708d810-964c-403f-aa6d-4e949280d614}'
+                    uuid: "{7708d810-964c-403f-aa6d-4e949280d614}"
                 comment_count: 0
                 summary:
                   raw: Everything is awesome!
@@ -291,7 +414,7 @@ paths:
                         href: https://bitbucket.org/example-username/bits_and_bobs
                       avatar:
                         href: https://bytebucket.org/ravatar/%7B7708d810-964c-403f-aa6d-4e949280d614%7D?ts=python
-                    uuid: '{7708d810-964c-403f-aa6d-4e949280d614}'
+                    uuid: "{7708d810-964c-403f-aa6d-4e949280d614}"
                 participants: []
                 state: OPEN
                 task_count: 0
@@ -307,38 +430,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - pullrequest
+        - oauth2:
+            - pullrequest
   /repositories/{workspace}/{repo_slug}:
     get:
       tags:
-      - Repositories
+        - Repositories
       summary: Returns the object describing this repository
       operationId: GetRepositoryDetail
       parameters:
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: {repository UUID}
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: {workspace UUID}
-        required: true
-        schema:
-          type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: {repository UUID}
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: {workspace UUID}
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: The repository object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/repository'
+                $ref: "#/components/schemas/repository"
               example:
                 scm: git
                 website: www.example.com
@@ -348,10 +471,10 @@ paths:
                 fork_policy: allow_forks
                 links:
                   clone:
-                  - href: https://bitbucket.org/example-username/bits_and_bobs.git
-                    name: https
-                  - href: git@bitbucket.org:example-username/bits_and_bobs.git
-                    name: ssh
+                    - href: https://bitbucket.org/example-username/bits_and_bobs.git
+                      name: https
+                    - href: git@bitbucket.org:example-username/bits_and_bobs.git
+                      name: ssh
                   watchers:
                     href: https://api.bitbucket.org/2.0/repositories/example-username/bits_and_bobs/watchers
                   branches:
@@ -394,32 +517,33 @@ paths:
                       href: https://bitbucket.org/account/example-username/avatar/
                   nickname: example-username
                   type: user
-                  uuid: '{58021780-82b6-4517-b153-0ae73ce3e4b4}'
+                  uuid: "{58021780-82b6-4517-b153-0ae73ce3e4b4}"
                 updated_on: 2018-06-20T23:17:33.616037+00:00
                 size: 33348
                 type: repository
                 slug: bits_and_bobs
                 is_private: true
-                uuid: '{7708d810-964c-403f-aa6d-4e949280d614}'
+                uuid: "{7708d810-964c-403f-aa6d-4e949280d614}"
         403:
-          description: If the repository is private and the authenticated user does
+          description:
+            If the repository is private and the authenticated user does
             not have access to it.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
           description: If no repository exists at this location.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - repository
+        - oauth2:
+            - repository
     post:
       tags:
-      - Repositories
+        - Repositories
       summary: Creates a new repository
       description: |-
         Creates a new repository.
@@ -455,26 +579,26 @@ paths:
         and/or the repository name `hablanding` can be replaced by UUIDs.
       operationId: CreateNewRepository
       parameters:
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       requestBody:
         description: The repository that is to be created. Note that most object elements are optional. Elements "owner" and "full_name" are ignored as the URL implies them
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/repository'
+              $ref: "#/components/schemas/repository"
         required: false
       responses:
         200:
@@ -482,7 +606,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/repository'
+                $ref: "#/components/schemas/repository"
               example:
                 scm: git
                 website: www.example.com
@@ -492,10 +616,10 @@ paths:
                 fork_policy: allow_forks
                 links:
                   clone:
-                  - href: https://bitbucket.org/example-username/bits_and_bobs.git
-                    name: https
-                  - href: git@bitbucket.org:example-username/bits_and_bobs.git
-                    name: ssh
+                    - href: https://bitbucket.org/example-username/bits_and_bobs.git
+                      name: https
+                    - href: git@bitbucket.org:example-username/bits_and_bobs.git
+                      name: ssh
                   watchers:
                     href: https://api.bitbucket.org/2.0/repositories/example-username/bits_and_bobs/watchers
                   branches:
@@ -538,33 +662,34 @@ paths:
                       href: https://bitbucket.org/account/example-username/avatar/
                   nickname: example-username
                   type: user
-                  uuid: '{58021780-82b6-4517-b153-0ae73ce3e4b4}'
+                  uuid: "{58021780-82b6-4517-b153-0ae73ce3e4b4}"
                 updated_on: 2018-06-20T23:17:33.616037+00:00
                 size: 33348
                 type: repository
                 slug: bits_and_bobs
                 is_private: true
-                uuid: '{7708d810-964c-403f-aa6d-4e949280d614}'
+                uuid: "{7708d810-964c-403f-aa6d-4e949280d614}"
         400:
-          description: If the input document was invalid, or if the caller lacks the
+          description:
+            If the input document was invalid, or if the caller lacks the
             privilege to create repositories under the targeted account.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         401:
           description: If the request was not authenticated.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - repository:admin
+        - oauth2:
+            - repository:admin
       x-codegen-request-body-name: _body
     delete:
       tags:
-      - Repositories
+        - Repositories
       summary: Deletes the repository
       description: |-
         Deletes the repository. This is an irreversible operation
@@ -572,20 +697,20 @@ paths:
         This does not affect its forks.
       operationId: DeleteRepository
       parameters:
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       responses:
         204:
           description: Indicates successful deletion
@@ -594,99 +719,99 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
           description: If the repository does not exist.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - repository:delete
+        - oauth2:
+            - repository:delete
   /repositories/{workspace}/{repo_slug}/issues/{issue_id}:
     get:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Returns the specified issue
       operationId: getIssueByID
       parameters:
-      - name: issue_id
-        in: path
-        description: The issue id
-        required: true
-        schema:
-          type: string
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: issue_id
+          in: path
+          description: The issue id
+          required: true
+          schema:
+            type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: The issue object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/issue'
+                $ref: "#/components/schemas/issue"
         403:
           description: When the authenticated user isn't authorized to access the issue
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
           description: The specified repository or issue does not exist or does not have the issue tracker enabled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         410:
           description: The specified issue is unavailable
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - issue
+        - oauth2:
+            - issue
     delete:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Deletes the specified issue
       description: |-
         Deletes the specified issue. This requires write access to the repository
       operationId: DeleteIssue
       parameters:
-      - name: issue_id
-        in: path
-        description: The issue id
-        required: true
-        schema:
-          type: string
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: issue_id
+          in: path
+          description: The issue id
+          required: true
+          schema:
+            type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: The issue object
@@ -695,56 +820,66 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
           description: The specified repository or issue does not exist or does not have the issue tracker enabled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - issue:write
+        - oauth2:
+            - issue:write
   /repositories/{workspace}/{repo_slug}/issues:
     get:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Returns the issues in the issue tracker
       operationId: ListIssues
       parameters:
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: Query string to narrow down the response as  https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+          schema:
+            type: string
       responses:
         200:
           description: A paginated list of the issues matching any filter criteria that were provided
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/paginated_issues'
+                $ref: "#/components/schemas/paginated_issues"
         404:
           description: The specified repository does not exist or does not have the issue tracker enabled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - issue
+        - oauth2:
+            - issue
     post:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Creates a new issue
       description: |-
         Creates a new issue.
@@ -756,26 +891,26 @@ paths:
         The authenticated user is used for the issue's `reporter` field.
       operationId: CreateIssue
       parameters:
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       requestBody:
         description: The new issue. The only required element is `title`. All other elements can be omitted from the body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/issue'
+              $ref: "#/components/schemas/issue"
         required: true
       responses:
         201:
@@ -788,33 +923,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/issue'
+                $ref: "#/components/schemas/issue"
         401:
           description: When the request wasn't authenticated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         403:
           description: When the authenticated user isn't authorized to create the issue
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
           description: The specified repository does not exist or does not have the issue tracker enabled.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - issue:write
+        - oauth2:
+            - issue:write
       x-codegen-request-body-name: _body
   /repositories/{workspace}/{repo_slug}/issues/{issue_id}/comments:
     get:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Returns a list of all comments on an issue
       description: |-
         Returns a paginated list of all comments that were made on the
@@ -824,39 +959,39 @@ paths:
         the `sort` query parameter.
       operationId: listComments
       parameters:
-      - name: issue_id
-        in: path
-        description: The issue id
-        required: true
-        schema:
-          type: string
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: issue_id
+          in: path
+          description: The issue id
+          required: true
+          schema:
+            type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: A paginated list of issue comments
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/paginated_issue_comments'
+                $ref: "#/components/schemas/paginated_issue_comments"
       security:
-      - oauth2:
-        - issue
+        - oauth2:
+            - issue
     post:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Creates a new issue comment
       description: |-
         Creates a new issue comment.
@@ -867,34 +1002,34 @@ paths:
           -H 'Content-Type: application/json' \
           -d '{"content": {"raw": "Lorem ipsum."}}'
         ```
-      operationId: CreateNewIssueComment  
+      operationId: CreateNewIssueComment
       parameters:
-      - name: issue_id
-        in: path
-        description: The issue id
-        required: true
-        schema:
-          type: string
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: issue_id
+          in: path
+          description: The issue id
+          required: true
+          schema:
+            type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       requestBody:
         description: The new issue comment object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/issue_comment'
+              $ref: "#/components/schemas/issue_comment"
         required: true
       responses:
         201:
@@ -905,62 +1040,63 @@ paths:
               schema:
                 type: string
         400:
-          description: 'If the input was invalid, or if the comment being created
-            is detected as spam '
+          description:
+            "If the input was invalid, or if the comment being created
+            is detected as spam "
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - issue:write
+        - oauth2:
+            - issue:write
       x-codegen-request-body-name: _body
   /repositories/{workspace}/{repo_slug}/issues/{issue_id}/comments/{comment_id}:
     get:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Returns the specified issue comment object
       operationId: getCommentByID
       parameters:
-      - name: comment_id
-        in: path
-        description: The id of the comment
-        required: true
-        schema:
-          type: integer
-      - name: issue_id
-        in: path
-        description: The issue id
-        required: true
-        schema:
-          type: string
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: comment_id
+          in: path
+          description: The id of the comment
+          required: true
+          schema:
+            type: integer
+        - name: issue_id
+          in: path
+          description: The issue id
+          required: true
+          schema:
+            type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: The issue comment
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/issue_comment'
+                $ref: "#/components/schemas/issue_comment"
       security:
-      - oauth2:
-        - issue
+        - oauth2:
+            - issue
     put:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Updates the content of the specified issue comment
       description: |-
         Updates the content of the specified issue comment. Note that only
@@ -974,38 +1110,38 @@ paths:
         ```
       operationId: UpdateComment
       parameters:
-      - name: comment_id
-        in: path
-        description: The id of the comment
-        required: true
-        schema:
-          type: integer
-      - name: issue_id
-        in: path
-        description: The issue id
-        required: true
-        schema:
-          type: string
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: comment_id
+          in: path
+          description: The id of the comment
+          required: true
+          schema:
+            type: integer
+        - name: issue_id
+          in: path
+          description: The issue id
+          required: true
+          schema:
+            type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}`
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       requestBody:
         description: The updated comment
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/issue_comment'
+              $ref: "#/components/schemas/issue_comment"
         required: true
       responses:
         200:
@@ -1013,139 +1149,140 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/issue_comment'
+                $ref: "#/components/schemas/issue_comment"
         400:
-          description: 'If the input was invalid, or if the update to the comment
-            is detected as spam '
+          description:
+            "If the input was invalid, or if the update to the comment
+            is detected as spam "
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - issue:write
+        - oauth2:
+            - issue:write
       x-codegen-request-body-name: _body
     delete:
       tags:
-      - Issue tracker
+        - Issue tracker
       summary: Deletes the specified comment
       operationId: DeleteComment
       parameters:
-      - name: comment_id
-        in: path
-        description: The id of the comment
-        required: true
-        schema:
-          type: integer
-      - name: issue_id
-        in: path
-        description: The issue id
-        required: true
-        schema:
-          type: string
-      - name: repo_slug
-        in: path
-        description: |
-          This can either be the repository slug or the UUID of the repository
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID
-        required: true
-        schema:
-          type: string
+        - name: comment_id
+          in: path
+          description: The id of the comment
+          required: true
+          schema:
+            type: integer
+        - name: issue_id
+          in: path
+          description: The issue id
+          required: true
+          schema:
+            type: string
+        - name: repo_slug
+          in: path
+          description: |
+            This can either be the repository slug or the UUID of the repository
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID
+          required: true
+          schema:
+            type: string
       responses:
         204:
           description: Indicates successful deletion
       security:
-      - oauth2:
-        - issue:write
+        - oauth2:
+            - issue:write
       x-codegen-request-body-name: _body
   /workspaces/{workspace}:
     get:
       tags:
-      - Workspaces
+        - Workspaces
       summary: Returns the requested workspace
       operationId: getWorkSpaceByID
       parameters:
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID
-        required: true
-        schema:
-          type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: The workspace.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/workspace'
+                $ref: "#/components/schemas/workspace"
         404:
           description: If no workspace exists for the specified name or UUID.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2: []
+        - oauth2: []
   /workspaces/{workspace}/projects/{project_key}:
     get:
       tags:
-      - Projects
-      - Workspaces
+        - Projects
+        - Workspaces
       summary: Returns the requested project
       operationId: getProjectByProjectKey
       parameters:
-      - name: project_key
-        in: path
-        description: |
-          The project in question. This is the actual `key` assigned to the project
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID
-        required: true
-        schema:
-          type: string
+        - name: project_key
+          in: path
+          description: |
+            The project in question. This is the actual `key` assigned to the project
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: The project that is part of a workspace
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/project'
+                $ref: "#/components/schemas/project"
         401:
           description: The request wasn't authenticated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         403:
           description: The requesting user isn't authorized to access the project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
           description: A project isn't hosted at this location
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - project
+        - oauth2:
+            - project
     put:
       tags:
-      - Projects
+        - Projects
       summary: Creates or Updates a project
       description: |-
         Since this endpoint can be used to both update and to create a
@@ -1172,26 +1309,26 @@ paths:
         response.
       operationId: createOrUpdateProject
       parameters:
-      - name: project_key
-        in: path
-        description: |
-          The project in question. This is the actual `key` assigned to the project.
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID
-        required: true
-        schema:
-          type: string
+        - name: project_key
+          in: path
+          description: |
+            The project in question. This is the actual `key` assigned to the project.
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID
+          required: true
+          schema:
+            type: string
       requestBody:
-        description:  The project object
+        description: The project object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/project'
+              $ref: "#/components/schemas/project"
         required: true
       responses:
         200:
@@ -1205,7 +1342,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/project'
+                $ref: "#/components/schemas/project"
         201:
           description: A new project has been created
           headers:
@@ -1216,29 +1353,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/project'
+                $ref: "#/components/schemas/project"
         403:
-          description: The requesting user isn't authorized to update or create the
+          description:
+            The requesting user isn't authorized to update or create the
             project.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
-          description: A workspace doesn't exist at the location. Note that the project's
+          description:
+            A workspace doesn't exist at the location. Note that the project's
             absence from this location doesn't raise a 404, since a PUT at a non-existent
             location can be used to create a new project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - project:write
+        - oauth2:
+            - project:write
       x-codegen-request-body-name: _body
     delete:
       tags:
-      - Projects
+        - Projects
       summary: Deletes a project.
       description: |-
         Deletes this project. This is an irreversible operation.
@@ -1253,151 +1392,45 @@ paths:
         ```
       operationId: deleteProject
       parameters:
-      - name: project_key
-        in: path
-        description: |
-          The project in question. This is the actual `key` assigned
-          to the project.
-        required: true
-        schema:
-          type: string
-      - name: workspace
-        in: path
-        description: |
-          This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
-        required: true
-        schema:
-          type: string
+        - name: project_key
+          in: path
+          description: |
+            The project in question. This is the actual `key` assigned
+            to the project.
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: path
+          description: |
+            This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`
+          required: true
+          schema:
+            type: string
       responses:
         204:
           description: Successful deletion.
         403:
-          description: The requesting user isn't authorized to delete the project
+          description:
+            The requesting user isn't authorized to delete the project
             or the project isn't empty.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
         404:
           description: A project isn't hosted at this location.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
       security:
-      - oauth2:
-        - project:write
+        - oauth2:
+            - project:write
 components:
   schemas:
-    comment:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Comment
-        type: object
-        properties:
-          id:
-            type: integer
-            description: The ID of the comment
-          created_on:
-            type: string
-            format: date-time
-            description: The created date of the comment
-          updated_on:
-            type: string
-            format: date-time
-            nullable: true
-            description: The updated date of the comment
-          content:
-            description: The comment content
-            type: object
-            properties:
-              raw:
-                type: string
-                description: The text as it was typed by a user.
-              markup:
-                type: string
-                description: The type of markup language the raw content is to be
-                  interpreted in.
-                enum:
-                - markdown
-                - creole
-                - plaintext
-              html:
-                type: string
-                description: The user's content rendered as HTML.
-          user:
-            $ref: '#/components/schemas/user'
-          deleted:
-            type: boolean
-            description: Indicates whether the comment is deleted
-          parent:
-            $ref: '#/components/schemas/comment'
-          inline:
-            description: The comment's anchor line detail
-            required:
-            - path
-            type: object
-            properties:
-              to:
-                minimum: 1
-                type: integer
-                description: The comment's anchor line in the new version of the file.
-                  If the 'from' line is also provided, this value will be removed.
-              from:
-                minimum: 1
-                type: integer
-                description: The comment's anchor line in the old version of the file.
-              path:
-                type: string
-                description: The path of the file this comment is anchored to.
-          links:
-            description: links to a resource related to comment object.
-            type: object
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object.
-              html:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object.
-              code:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object.
-        description: The base type for all comments. This type should be considered
-          abstract. Each of the "commentable" resources defines its own subtypes (e.g.
-          `issue_comment`).
-    issue_comment:
-      allOf:
-      - $ref: '#/components/schemas/comment'
-      - title: Issue Comment
-        type: object
-        properties:
-          issue:
-            $ref: '#/components/schemas/issue'
-        description: A issue comment.
-    paginated_issue_comments:
-      title: Paginated Issue Comments
+    paginated_repositories:
+      title: Paginated Repositories
       type: object
       properties:
         size:
@@ -1405,27 +1438,314 @@ components:
           type: integer
           description: Total number of objects in the response. This is an optional
             element that is not provided in all responses, as it can be expensive
+            to compute.
+        page:
+          minimum: 1
+          type: integer
+          description: Page number of the current results. This is an optional element that is not provided in all responses.
+        pagelen:
+          minimum: 1
+          type: integer
+          description: Current number of objects on the existing page. The default value is 10 with 100 being the maximum allowed value. Individual APIs may enforce different values.
+        next:
+          type: string
+          description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
+          format: uri
+        previous:
+          type: string
+          description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
+          format: uri
+        values:
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/repository'
+      description: A paginated list of repositories.
+    comment:
+      allOf:
+        - title: Comment
+          type: object
+          properties:
+            id:
+              type: integer
+              description: The ID of the comment
+            created_on:
+              type: string
+              format: date-time
+              description: The created date of the comment
+            updated_on:
+              type: string
+              format: date-time
+              nullable: true
+              description: The updated date of the comment
+            content:
+              $ref: "#/components/schemas/content"
+            user:
+              $ref: "#/components/schemas/user"
+            deleted:
+              type: boolean
+              description: Indicates whether the comment is deleted
+            parent:
+              $ref: "#/components/schemas/comment"
+            inline:
+              $ref: "#/components/schemas/inline"
+            links:
+              $ref: "#/components/schemas/links"
+          description:
+            The base type for all comments. This type should be considered abstract. Each of the "commentable" resources defines its own subtypes (e.g.`issue_comment`).
+    pullrequest_commit:
+      title: Pull Request Commit
+      type: object
+      properties:
+        hash:
+          pattern: "[0-9a-f]{7,}?"
+          type: string
+    inline:
+      description: The comment's anchor line detail
+      required:
+        - path
+      type: object
+      properties:
+        to:
+          minimum: 1
+          type: integer
+          description: The comment's anchor line in the new version of the file.
+            If the 'from' line is also provided, this value will be removed.
+        from:
+          minimum: 1
+          type: integer
+          description: The comment's anchor line in the old version of the file.
+        path:
+          type: string
+          description: The path of the file this comment is anchored to.
+    link:
+      title: Link
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri
+        name:
+          type: string
+      description: A link to a resource related to this object.
+    clone:
+      type: array
+      items:
+        $ref: "#/components/schemas/link"
+    pullrequest_branch:
+      title: Pull Request Branch
+      type: object
+      properties:
+        name:
+          type: string
+        merge_strategies:
+          type: array
+          description:
+            Available merge strategies, when this endpoint is the destination
+            of the pull request
+          items:
+            type: string
+            enum:
+              - merge_commit
+              - squash
+              - fast_forward
+        default_merge_strategy:
+          type: string
+          description:
+            The default merge strategy, when this endpoint is the destination
+            of the pull request
+    links:
+      title: Links
+      type: object
+      description: links to a resource related to comment object.
+      properties:
+        self:
+          $ref: "#/components/schemas/link"
+        html:
+          $ref: "#/components/schemas/link"
+        code:
+          $ref: "#/components/schemas/link"
+        commits:
+          $ref: "#/components/schemas/link"
+        approve:
+          $ref: "#/components/schemas/link"
+        diff:
+          $ref: "#/components/schemas/link"
+        diffstat:
+          $ref: "#/components/schemas/link"
+        comments:
+          $ref: "#/components/schemas/link"
+        activity:
+          $ref: "#/components/schemas/link"
+        merge:
+          $ref: "#/components/schemas/link"
+        decline:
+          $ref: "#/components/schemas/link"
+        name:
+          type: string
+        avatar:
+          $ref: "#/components/schemas/link"
+        followers:
+          $ref: "#/components/schemas/link"
+        following:
+          $ref: "#/components/schemas/link"
+        repositories:
+          $ref: "#/components/schemas/link"
+        pullrequests:
+          $ref: "#/components/schemas/link"
+        forks:
+          $ref: "#/components/schemas/link"
+        watchers:
+          $ref: "#/components/schemas/link"
+        downloads:
+          $ref: "#/components/schemas/link"
+        clone:
+          $ref: "#/components/schemas/clone"
+        hooks:
+          $ref: "#/components/schemas/link"
+        attachments:
+          $ref: "#/components/schemas/link"
+        watch:
+          $ref: "#/components/schemas/link"
+        vote:
+          $ref: "#/components/schemas/link"
+        members:
+          $ref: "#/components/schemas/link"
+        owners:
+          $ref: "#/components/schemas/link"
+        projects:
+          $ref: "#/components/schemas/link"
+        snippets:
+          $ref: "#/components/schemas/link"
+    title:
+      type: object
+      properties:
+        raw:
+          type: string
+          description: The text as it was typed by a user
+        markup:
+          type: string
+          description: The type of markup language the raw content is to be interpreted in
+          enum:
+            - markdown
+            - creole
+            - plaintext
+        html:
+          type: string
+          description: The user's content rendered as HTML
+    description:
+      type: object
+      properties:
+        raw:
+          type: string
+          description: The text as it was typed by a user
+        markup:
+          type: string
+          description: The type of markup language the raw content is to be interpreted in.
+          enum:
+            - markdown
+            - creole
+            - plaintext
+        html:
+          type: string
+          description: The user's content rendered as HTML
+    reason:
+      type: object
+      properties:
+        raw:
+          type: string
+          description: The text as it was typed by a user
+        markup:
+          type: string
+          description: The type of markup language the raw content is to be interpreted in.
+          enum:
+            - markdown
+            - creole
+            - plaintext
+        html:
+          type: string
+          description: The user's content rendered as HTML
+    rendered:
+      title: Rendered Pull Request Markup
+      type: object
+      properties:
+        title:
+          $ref: "#/components/schemas/title"
+        description:
+          $ref: "#/components/schemas/description"
+        reason:
+          $ref: "#/components/schemas/reason"
+      description: User provided pull request text, interpreted in a markup language and rendered in HTML
+    summary:
+      type: object
+      description: The summary of the pull request
+      properties:
+        raw:
+          type: string
+          description: The text as it was typed by a user
+        markup:
+          type: string
+          description: The type of markup language the raw content is to be interpreted in.
+          enum:
+            - markdown
+            - creole
+            - plaintext
+        html:
+          type: string
+          description: The user's content rendered as HTML
+    merge_commit:
+      title: Pull Request Commit
+      type: object
+      description: The pull request commit
+      properties:
+        hash:
+          pattern: "[0-9a-f]{7,}?"
+          type: string
+    issue_comment:
+      allOf:
+        - $ref: "#/components/schemas/comment"
+        - title: Issue Comment
+          type: object
+          properties:
+            issue:
+              $ref: "#/components/schemas/issue"
+          description: A issue comment.
+    paginated_issue_comments:
+      title: Paginated Issue Comments
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description:
+            Total number of objects in the response. This is an optional
+            element that is not provided in all responses, as it can be expensive
             to compute
         page:
           minimum: 1
           type: integer
-          description: Page number of the current results. This is an optional element
+          description:
+            Page number of the current results. This is an optional element
             that is not provided in all responses
         pagelen:
           minimum: 1
           type: integer
-          description: Current number of objects on the existing page. The default
+          description:
+            Current number of objects on the existing page. The default
             value is 10 with 100 being the maximum allowed value. Individual APIs
             may enforce different values
         next:
           type: string
-          description: Link to the next page if it exists. The last page of a collection
+          description:
+            Link to the next page if it exists. The last page of a collection
             does not have this value. Use this link to navigate the result set and
             refrain from constructing your own URLs
           format: uri
         previous:
           type: string
-          description: Link to previous page if it exists. A collections first page
+          description:
+            Link to previous page if it exists. A collections first page
             does not have this value. This is an optional element that is not provided
             in all responses. Some result sets strictly support forward navigation
             and never provide previous links. Clients must anticipate that backwards
@@ -1438,1213 +1758,609 @@ components:
           uniqueItems: true
           type: array
           items:
-            $ref: '#/components/schemas/issue_comment'
+            $ref: "#/components/schemas/issue_comment"
       description: A paginated list of issue comments
     workspace:
       allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Workspace
-        type: object
-        properties:
-          links:
-            type: object
-            description: Links related to the workspace object
-            properties:
-              avatar:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              html:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              members:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              owners:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              projects:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              repositories:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              snippets:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          uuid:
-            type: string
-            description: The workspace's immutable ID
-          name:
-            type: string
-            description: The name of the workspace
-          slug:
-            type: string
-            description: The short label that identifies this workspace
-          is_private:
-            type: boolean
-            description: |-
-              Indicates whether the workspace is publicly accessible, or whether it is
-              private to the members and consequently only visible to members.
-              Note that private workspaces cannot contain public repositories
-          created_on:
-            type: string
-            format: date-time
-            description: The created date/time of the workspace
-          updated_on:
-            type: string
-            format: date-time
-            description: The last updated date/time of the workspace
-        description: |-
-          A Bitbucket workspace.
-                      Workspaces are used to organize repositories
+        - title: Workspace
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
+            uuid:
+              type: string
+              description: The workspace's immutable ID
+            name:
+              type: string
+              description: The name of the workspace
+            slug:
+              type: string
+              description: The short label that identifies this workspace
+            is_private:
+              type: boolean
+              description: |-
+                Indicates whether the workspace is publicly accessible, or whether it is
+                private to the members and consequently only visible to members.
+                Note that private workspaces cannot contain public repositories
+            created_on:
+              type: string
+              format: date-time
+              description: The created date/time of the workspace
+            updated_on:
+              type: string
+              format: date-time
+              description: The last updated date/time of the workspace
+          description: |-
+            A Bitbucket workspace.
+                        Workspaces are used to organize repositories
     pullrequest_endpoint:
       title: Pull Request Endpoint
       type: object
       properties:
         repository:
-          $ref: '#/components/schemas/repository'
+          $ref: "#/components/schemas/repository"
         branch:
-          title: Pull Request Branch
+          $ref: "#/components/schemas/pullrequest_branch"
+        commit:
+          $ref: "#/components/schemas/pullrequest_commit"
+    pullrequest:
+      allOf:
+        - title: Pull Request
           type: object
           properties:
+            links:
+              $ref: "#/components/schemas/links"
+            id:
+              type: integer
+              description: The pull request's unique ID. Note that pull request IDs are only unique within their associated repository
+            title:
+              type: string
+              description: Title of the pull request
+            rendered:
+              $ref: "#/components/schemas/rendered"
+            summary:
+              $ref: "#/components/schemas/summary"
+            state:
+              type: string
+              description: The pull request's current status
+              enum:
+                - MERGED
+                - SUPERSEDED
+                - OPEN
+                - DECLINED
+            author:
+              $ref: "#/components/schemas/account"
+            source:
+              $ref: "#/components/schemas/pullrequest_endpoint"
+            destination:
+              $ref: "#/components/schemas/pullrequest_endpoint"
+            merge_commit:
+              $ref: "#/components/schemas/merge_commit"
+            comment_count:
+              minimum: 0
+              type: integer
+              description: The number of comments for a specific pull request
+            task_count:
+              minimum: 0
+              type: integer
+              description: The number of open tasks for a specific pull request
+            close_source_branch:
+              type: boolean
+              description: A boolean flag indicating if merging the pull request closes the source branch
+            closed_by:
+              $ref: "#/components/schemas/account"
+            reason:
+              type: string
+              description: Explains why a pull request was declined. This field is only applicable to pull requests in rejected state
+            created_on:
+              type: string
+              description: The ISO8601 timestamp the request was created
+              format: date-time
+            updated_on:
+              type: string
+              description: The ISO8601 timestamp the request was last updated
+              format: date-time
+            reviewers:
+              type: array
+              description:
+                The list of users that were added as reviewers on this pull request when it was created.
+                For performance reasons, the API only includes this list on a pull request's `self` URL.
+              items:
+                $ref: "#/components/schemas/account"
+            participants:
+              type: array
+              description: The list of users that are collaborating on this
+              items:
+                $ref: "#/components/schemas/participant"
+          description: A pull request object
+    component:
+      allOf:
+        - title: Component
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
             name:
               type: string
-            merge_strategies:
-              type: array
-              description: Available merge strategies, when this endpoint is the destination
-                of the pull request
-              items:
-                type: string
-                enum:
-                - merge_commit
-                - squash
-                - fast_forward
-            default_merge_strategy:
+              description: The name of the component
+            id:
+              type: integer
+              description: The ID of the component
+          description: A component as defined in a repository's issue tracker
+    version:
+      allOf:
+        - title: Version
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
+            name:
               type: string
-              description: The default merge strategy, when this endpoint is the destination
-                of the pull request
-        commit:
-          title: Pull Request Commit
+              description: The name of the version
+            id:
+              type: integer
+              description: The ID of the version
+          description: A version as defined in a repository's issue tracker
+    milestone:
+      allOf:
+        - title: Milestone
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
+            name:
+              type: string
+              description: The name of the milestone
+            id:
+              type: integer
+              description: The ID of the milestone
+          description: A milestone as defined in a repository's issue tracker
+    user:
+      allOf:
+        - $ref: "#/components/schemas/account"
+        - title: User
+          type: object
+          properties:
+            is_staff:
+              type: boolean
+              description: Indicates whether the user represents staff
+            account_id:
+              type: string
+              description: The user's Atlassian account ID
+          description: A user object
+    participant:
+      allOf:
+        - title: Participant
+          type: object
+          properties:
+            user:
+              $ref: "#/components/schemas/user"
+            role:
+              type: string
+              description: The type of the participant
+              enum:
+                - PARTICIPANT
+                - REVIEWER
+            approved:
+              type: boolean
+              description: Indicates whether participant is approved
+            state:
+              type: string
+              description: The state of the participant
+              enum:
+                - approved
+                - changes_requested
+            participated_on:
+              type: string
+              description:
+                The ISO8601 timestamp of the participant's action. For approvers,
+                this is the time of their approval. For commenters and pull request
+                reviewers who are not approvers, this is the time they last commented,
+                or null if they have not commented.
+              format: date-time
+          description:
+            Object describing a user's role on resources like commits or
+            pull requests.
+    author:
+      allOf:
+        - title: Author
+          type: object
+          properties:
+            raw:
+              type: string
+              description:
+                The raw author value from the repository. This may be the
+                only value available if the author does not match a user in Bitbucket
+            user:
+              $ref: "#/components/schemas/account"
+          description: The author of a change in a repository
+    base_commit:
+      allOf:
+        - title: Base Commit
           type: object
           properties:
             hash:
-              pattern: '[0-9a-f]{7,}?'
+              pattern: "[0-9a-f]{7,}?"
               type: string
-    pullrequest:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Pull Request
-        type: object
-        properties:
-          links:
-            type: object
-            description: Links related to the pull request object
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              html:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              commits:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              approve:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              diff:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              diffstat:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              comments:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              activity:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              merge:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              decline:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          id:
-            type: integer
-            description: The pull request's unique ID. Note that pull request IDs are only unique within their associated repository
-          title:
-            type: string
-            description: Title of the pull request
-          rendered:
-            title: Rendered Pull Request Markup
-            type: object
-            properties:
-              title:
-                type: object
-                properties:
-                  raw:
-                    type: string
-                    description: The text as it was typed by a user
-                  markup:
-                    type: string
-                    description: The type of markup language the raw content is to be interpreted in
-                    enum:
-                    - markdown
-                    - creole
-                    - plaintext
-                  html:
-                    type: string
-                    description: The user's content rendered as HTML
-              description:
-                type: object
-                properties:
-                  raw:
-                    type: string
-                    description: The text as it was typed by a user
-                  markup:
-                    type: string
-                    description: The type of markup language the raw content is to be interpreted in.
-                    enum:
-                    - markdown
-                    - creole
-                    - plaintext
-                  html:
-                    type: string
-                    description: The user's content rendered as HTML
-              reason:
-                type: object
-                properties:
-                  raw:
-                    type: string
-                    description: The text as it was typed by a user
-                  markup:
-                    type: string
-                    description: The type of markup language the raw content is to be interpreted in.
-                    enum:
-                    - markdown
-                    - creole
-                    - plaintext
-                  html:
-                    type: string
-                    description: The user's content rendered as HTML
-            description: User provided pull request text, interpreted in a markup language and rendered in HTML
-          summary:
-            type: object
-            description: The summary of the pull request
-            properties:
-              raw:
-                type: string
-                description: The text as it was typed by a user
-              markup:
-                type: string
-                description: The type of markup language the raw content is to be interpreted in.
-                enum:
-                - markdown
-                - creole
-                - plaintext
-              html:
-                type: string
-                description: The user's content rendered as HTML
-          state:
-            type: string
-            description: The pull request's current status
-            enum:
-            - MERGED
-            - SUPERSEDED
-            - OPEN
-            - DECLINED
-          author:
-            $ref: '#/components/schemas/account'
-          source:
-            $ref: '#/components/schemas/pullrequest_endpoint'
-          destination:
-            $ref: '#/components/schemas/pullrequest_endpoint'
-          merge_commit:
-            title: Pull Request Commit
-            type: object
-            description: The pull request commit
-            properties:
-              hash:
-                pattern: '[0-9a-f]{7,}?'
-                type: string
-          comment_count:
-            minimum: 0
-            type: integer
-            description: The number of comments for a specific pull request
-          task_count:
-            minimum: 0
-            type: integer
-            description: The number of open tasks for a specific pull request
-          close_source_branch:
-            type: boolean
-            description: A boolean flag indicating if merging the pull request closes the source branch
-          closed_by:
-            $ref: '#/components/schemas/account'
-          reason:
-            type: string
-            description: Explains why a pull request was declined. This field is only applicable to pull requests in rejected state
-          created_on:
-            type: string
-            description: The ISO8601 timestamp the request was created
-            format: date-time
-          updated_on:
-            type: string
-            description: The ISO8601 timestamp the request was last updated
-            format: date-time
-          reviewers:
-            type: array
-            description: The list of users that were added as reviewers on this pull request when it was created. 
-              For performance reasons, the API only includes this list on a pull request's `self` URL.
-            items:
-              $ref: '#/components/schemas/account'
-          participants:
-            type: array
-            description: "        The list of users that are collaborating on this\
-              \ pull request.\n        Collaborators are user that:\n\n        * are\
-              \ added to the pull request as a reviewer (part of the reviewers\n \
-              \         list)\n        * are not explicit reviewers, but have commented\
-              \ on the pull request\n        * are not explicit reviewers, but have\
-              \ approved the pull request\n\n        Each user is wrapped in an object\
-              \ that indicates the user's role and\n        whether they have approved\
-              \ the pull request. For performance reasons,\n        the API only returns\
-              \ this list when an API requests a pull request by\n        id.\n  \
-              \      "
-            items:
-              $ref: '#/components/schemas/participant'
-        description: A pull request object
-    component:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Component
-        type: object
-        properties:
-          links:
-            type: object
-            description: Links to a resource related to this object
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          name:
-            type: string
-            description: The name of the component
-          id:
-            type: integer
-            description: The ID of the component
-        description: A component as defined in a repository's issue tracker
-    version:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Version
-        type: object
-        properties:
-          links:
-            type: object
-            description: The Links related to the version object
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          name:
-            type: string
-            description: The name of the version
-          id:
-            type: integer
-            description: The ID of the version
-        description: A version as defined in a repository's issue tracker
-    milestone:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Milestone
-        type: object
-        properties:
-          links:
-            type: object
-            description: Links related to the milestone object
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          name:
-            type: string
-            description: The name of the milestone
-          id:
-            type: integer
-            description: The ID of the milestone
-        description: A milestone as defined in a repository's issue tracker
-    user:
-      allOf:
-      - $ref: '#/components/schemas/account'
-      - title: User
-        type: object
-        properties:
-          is_staff:
-            type: boolean
-            description: Indicates whether the user represents staff
-          account_id:
-            type: string
-            description: The user's Atlassian account ID
-        description: A user object
-    participant:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Participant
-        type: object
-        properties:
-          user:
-            $ref: '#/components/schemas/user'
-          role:
-            type: string
-            description: The type of the participant
-            enum:
-            - PARTICIPANT
-            - REVIEWER
-          approved:
-            type: boolean
-            description: Indicates whether participant is approved
-          state:
-            type: string
-            description: The state of the participant
-            enum:
-            - approved
-            - changes_requested
-          participated_on:
-            type: string
-            description: The ISO8601 timestamp of the participant's action. For approvers,
-              this is the time of their approval. For commenters and pull request
-              reviewers who are not approvers, this is the time they last commented,
-              or null if they have not commented.
-            format: date-time
-        description: Object describing a user's role on resources like commits or
-          pull requests.
-    author:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Author
-        type: object
-        properties:
-          raw:
-            type: string
-            description: The raw author value from the repository. This may be the
-              only value available if the author does not match a user in Bitbucket
-          user:
-            $ref: '#/components/schemas/account'
-            description: The account of the user
-        description: The author of a change in a repository
-    base_commit:
-      allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Base Commit
-        type: object
-        properties:
-          hash:
-            pattern: '[0-9a-f]{7,}?'
-            type: string
-            description: The hash value of the base commit
-          date:
-            type: string
-            format: date-time
-            description: The date of the base commit
-          author:
-            $ref: '#/components/schemas/author'
-          message:
-            type: string
-            description: The message of the base commit
-          summary:
-            type: object
-            description: The summary of the base commit
-            properties:
-              raw:
-                type: string
-                description: The text as it was typed by a user.
-              markup:
-                type: string
-                description: The type of markup language the raw content is to be interpreted in
-                enum:
-                - markdown
-                - creole
-                - plaintext
-              html:
-                type: string
-                description: The user's content rendered as HTML
-          parents:
-            minItems: 0
-            type: array
-            description: The parent base commit
-            items:
-              $ref: '#/components/schemas/base_commit'
-        description: The common base type for both repository and snippet commits
+              description: The hash value of the base commit
+            date:
+              type: string
+              format: date-time
+              description: The date of the base commit
+            author:
+              $ref: "#/components/schemas/author"
+            message:
+              type: string
+              description: The message of the base commit
+            summary:
+              $ref: "#/components/schemas/summary"
+            parents:
+              minItems: 0
+              type: array
+              description: The parent base commit
+              items:
+                $ref: "#/components/schemas/base_commit"
+          description: The common base type for both repository and snippet commits
     commit:
       allOf:
-      - $ref: '#/components/schemas/base_commit'
-      - title: Commit
-        type: object
-        properties:
-          repository:
-            $ref: '#/components/schemas/repository'
-          participants:
-            minItems: 0
-            type: array
-            description: The participants of the commit
-            items:
-              $ref: '#/components/schemas/participant'
-        description: A repository commit object.
+        - $ref: "#/components/schemas/base_commit"
+        - title: Commit
+          type: object
+          properties:
+            repository:
+              $ref: "#/components/schemas/repository"
+            participants:
+              minItems: 0
+              type: array
+              description: The participants of the commit
+              items:
+                $ref: "#/components/schemas/participant"
+          description: A repository commit object.
     ref:
       title: Ref
       required:
-      - type
+        - type
       type: object
       properties:
         type:
           type: string
           description: The type of the ref object
         links:
-          type: object
-          description: Links releated to the ref object
-          properties:
-            self:
-              title: Link
-              type: object
-              properties:
-                href:
-                  type: string
-                  format: uri
-                name:
-                  type: string
-              description: A link to a resource related to this object
-            commits:
-              title: Link
-              type: object
-              properties:
-                href:
-                  type: string
-                  format: uri
-                name:
-                  type: string
-              description: A link to a resource related to this object
-            html:
-              title: Link
-              type: object
-              properties:
-                href:
-                  type: string
-                  format: uri
-                name:
-                  type: string
-              description: A link to a resource related to this object
+          $ref: "#/components/schemas/links"
         name:
           type: string
           description: The name of the ref.
         target:
-          $ref: '#/components/schemas/commit'
+          $ref: "#/components/schemas/commit"
       description: A ref object, representing a branch or tag in a repository
     branch:
       allOf:
-      - $ref: '#/components/schemas/ref'
-      - title: Branch
-        type: object
-        properties:
-          merge_strategies:
-            type: array
-            description: Available merge strategies for pull requests targeting this branch.
-            items:
+        - $ref: "#/components/schemas/ref"
+        - title: Branch
+          type: object
+          properties:
+            merge_strategies:
+              type: array
+              description: Available merge strategies for pull requests targeting this branch.
+              items:
+                type: string
+                enum:
+                  - merge_commit
+                  - squash
+                  - fast_forward
+            default_merge_strategy:
               type: string
-              enum:
-              - merge_commit
-              - squash
-              - fast_forward
-          default_merge_strategy:
-            type: string
-            description: The default merge strategy for pull requests targeting this branch.
-        description: A branch object, representing a branch in a repository
+              description: The default merge strategy for pull requests targeting this branch.
+          description: A branch object, representing a branch in a repository
     team:
       allOf:
-      - $ref: '#/components/schemas/account'
-      - title: Team
-        type: object
-        description: A team object.
+        - $ref: "#/components/schemas/account"
+        - title: Team
+          type: object
+          description: A team object.
       description: A team object.
     project:
       allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Project
-        type: object
-        properties:
-          links:
-            type: object
-            description: Links related to this project
-            properties:
-              html:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              avatar:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          uuid:
-            type: string
-            description: The project's immutable id
-          key:
-            type: string
-            description: The project's key.
-          owner:
-            $ref: '#/components/schemas/team'
-          name:
-            type: string
-            description: The name of the project
-          description:
-            type: string
-            description: The project description
-          is_private:
-            type: boolean
-            description: |2-
-
-              Indicates whether the project is publicly accessible, or whether it is
-              private to the team and consequently only visible to team members.
-              Note that private projects cannot contain public repositories.
-          created_on:
-            type: string
-            format: date-time
-            description: The created date/time of the project
-          updated_on:
-            type: string
-            format: date-time
-            description: The last updated date/time of the project
-        description: |-
-          A Bitbucket project.
-                      Projects are used by teams to organize repositories
+        - title: Project
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
+            uuid:
+              type: string
+              description: The project's immutable id
+            key:
+              type: string
+              description: The project's key.
+            owner:
+              $ref: "#/components/schemas/team"
+            name:
+              type: string
+              description: The name of the project
+            description:
+              type: string
+              description: The project description
+            is_private:
+              type: boolean
+              description: Indicates whether the project is publicly accessible, or whether it is private to the team and consequently only visible to team members. Note that private projects cannot contain public repositories.
+            created_on:
+              type: string
+              format: date-time
+              description: The created date/time of the project
+            updated_on:
+              type: string
+              format: date-time
+              description: The last updated date/time of the project
+          description: |-
+            A Bitbucket project.
+                        Projects are used by teams to organize repositories
     account:
       allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Account
-        type: object
-        properties:
-          links:
-            description: Links to a resource related to this account object
-            type: object
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              html:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              avatar:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              followers:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              following:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              repositories:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          username:
-            pattern: ^[a-zA-Z0-9_\-]+$
-            type: string
-            description: Username of the account
-          nickname:
-            type: string
-            description: Account name defined by the owner. Should be used instead
-              of the "username" field. Note that "nickname" cannot be used in place
-              of "username" in URLs and queries, as "nickname" is not guaranteed to
-              be unique.
-          account_status:
-            type: string
-            description: The status of the account. Currently the only possible value
-              is "active", but more values may be added in the future
-          display_name:
-            type: string
-            description: Display name of the account
-          website:
-            type: string
-            description: Website of the account
-          created_on:
-            type: string
-            format: date-time
-            description: The created date of the account
-          uuid:
-            type: string
-            description: The UUID of the account
-          has_2fa_enabled:
-            type: boolean
-            description: Indicates whether two factor authentication is on
-        description: An account object.
+        - title: Account
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
+            username:
+              pattern: ^[a-zA-Z0-9_\-]+$
+              type: string
+              description: Username of the account
+            nickname:
+              type: string
+              description:
+                Account name defined by the owner. Should be used instead
+                of the "username" field. Note that "nickname" cannot be used in place
+                of "username" in URLs and queries, as "nickname" is not guaranteed to
+                be unique.
+            account_status:
+              type: string
+              description:
+                The status of the account. Currently the only possible value
+                is "active", but more values may be added in the future
+            display_name:
+              type: string
+              description: Display name of the account
+            website:
+              type: string
+              description: Website of the account
+            created_on:
+              type: string
+              format: date-time
+              description: The created date of the account
+            uuid:
+              type: string
+              description: The UUID of the account
+            has_2fa_enabled:
+              type: boolean
+              description: Indicates whether two factor authentication is on
+          description: An account object.
     repository:
       allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Repository
-        type: object
-        properties:
-          links:
-            type: object
-            description: Links related to the repository object
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              html:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              avatar:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              pullrequests:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              commits:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              forks:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              watchers:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              downloads:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              clone:
-                type: array
-                items:
-                  title: Link
-                  type: object
-                  properties:
-                    href:
-                      type: string
-                      format: uri
-                    name:
-                      type: string
-                  description: A link to a resource related to this object
-              hooks:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          uuid:
-            type: string
-            description: The repository's immutable id. This can be used as a substitute
-              for the slug segment in URLs. Doing this guarantees your URLs will survive
-              renaming of the repository by its owner, or even transfer of the repository
-              to a different user
-          full_name:
-            type: string
-            description: The concatenation of the repository owner's username and
-              the slugified name, e.g. "evzijst/interruptingcow". This is the same
-              string used in Bitbucket URLs
-          is_private:
-            type: boolean
-            description: Indicates whether the repository is private
-          parent:
-            $ref: '#/components/schemas/repository'
-          scm:
-            type: string
-            description: source control
-            enum:
-            - git
-          owner:
-            $ref: '#/components/schemas/account'
-          name:
-            type: string
-            description: The name of the repository
-          description:
-            type: string
-            description:  The description of the repository
-          created_on:
-            type: string
-            format: date-time
-            description: The created data/time of the repository
-          updated_on:
-            type: string
-            format: date-time
-            description: The last updated date/time of the repository
-          size:
-            type: integer
-            description: The size of the repository
-          language:
-            type: string
-            description: The language of the repository
-          has_issues:
-            type: boolean
-            description: Indicates whether repository includes issues
-          has_wiki:
-            type: boolean
-            description: Indicates whether repository has a wiki
-          fork_policy:
-            type: string
-            description: |2
-
-              Controls the rules for forking this repository.
-
-              * **allow_forks**: unrestricted forking
-              * **no_public_forks**: restrict forking to private forks (forks cannot
-                be made public later)
-              * **no_forks**: deny all forking
-            enum:
-            - allow_forks
-            - no_public_forks
-            - no_forks
-          project:
-            $ref: '#/components/schemas/project'
-          mainbranch:
-            $ref: '#/components/schemas/branch'
-        description: A Bitbucket repository.
-    object:
+        - title: Repository
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
+            uuid:
+              type: string
+              description:
+                The repository's immutable id. This can be used as a substitute
+                for the slug segment in URLs. Doing this guarantees your URLs will survive
+                renaming of the repository by its owner, or even transfer of the repository
+                to a different user
+            full_name:
+              type: string
+              description:
+                The concatenation of the repository owner's username and
+                the slugified name, e.g. "evzijst/interruptingcow". This is the same
+                string used in Bitbucket URLs
+            is_private:
+              type: boolean
+              description: Indicates whether the repository is private
+            parent:
+              $ref: "#/components/schemas/repository"
+            scm:
+              type: string
+              description: source control
+              enum:
+                - git
+            owner:
+              $ref: "#/components/schemas/account"
+            name:
+              type: string
+              description: The name of the repository
+            description:
+              type: string
+              description: The description of the repository
+            created_on:
+              type: string
+              format: date-time
+              description: The created data/time of the repository
+            updated_on:
+              type: string
+              format: date-time
+              description: The last updated date/time of the repository
+            size:
+              type: integer
+              description: The size of the repository
+            language:
+              type: string
+              description: The language of the repository
+            has_issues:
+              type: boolean
+              description: Indicates whether repository includes issues
+            has_wiki:
+              type: boolean
+              description: Indicates whether repository has a wiki
+            fork_policy:
+              type: string
+              description: Controls the rules for forking this repository. ()allow_forks)-unrestricted forking (no_public_forks) - restrict forking to private forks (forks cannot be made public later) (no_forks) -deny all forking
+              enum:
+                - allow_forks
+                - no_public_forks
+                - no_forks
+            project:
+              $ref: "#/components/schemas/project"
+            mainbranch:
+              $ref: "#/components/schemas/branch"
+          description: A Bitbucket repository
+    paginated_pullrequests:
+      title: Paginated Pull Requests
       type: object
       properties:
-        type:
+        size:
+          minimum: 0
+          type: integer
+          description: Total number of objects in the response. This is an optional
+            element that is not provided in all responses, as it can be expensive
+            to compute.
+        page:
+          minimum: 1
+          type: integer
+          description: Page number of the current results. This is an optional element
+            that is not provided in all responses.
+        pagelen:
+          minimum: 1
+          type: integer
+          description: Current number of objects on the existing page. The default
+            value is 10 with 100 being the maximum allowed value. Individual APIs
+            may enforce different values.
+        next:
           type: string
-          description: It defines the common `type`
-            element that identifies an object's type and the element as Swagger's `discriminator`
-      description: Base type for most resource objects. It defines the common `type`
-        element that identifies an object's type. It also identifies the element as
-        Swagger's `discriminator`.
-      discriminator:
-        propertyName: type
+          description: Link to the next page if it exists. The last page of a collection
+            does not have this value. Use this link to navigate the result set and
+            refrain from constructing your own URLs.
+          format: uri
+        previous:
+          type: string
+          description: Link to previous page if it exists. A collections first page
+            does not have this value. This is an optional element that is not provided
+            in all responses. Some result sets strictly support forward navigation
+            and never provide previous links. Clients must anticipate that backwards
+            navigation is not always available. Use this link to navigate the result
+            set and refrain from constructing your own URLs.
+          format: uri
+        values:
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/pullrequest'
+      description: A paginated list of pullrequests.
     issue:
       allOf:
-      - $ref: '#/components/schemas/object'
-      - title: Issue
-        type: object
-        properties:
-          links:
-            type: object
-            description: Links related to this issue
-            properties:
-              self:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              html:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              comments:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              attachments:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              watch:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-              vote:
-                title: Link
-                type: object
-                properties:
-                  href:
-                    type: string
-                    format: uri
-                  name:
-                    type: string
-                description: A link to a resource related to this object
-          id:
-            type: integer
-            description: The ID of the issue
-          repository:
-            $ref: '#/components/schemas/repository'
-          title:
-            type: string
-            description: The title of the issue
-          reporter:
-            $ref: '#/components/schemas/user'
-          assignee:
-            $ref: '#/components/schemas/user'
-          created_on:
-            type: string
-            format: date-time
-            description: The created date/time of the issue
-          updated_on:
-            type: string
-            format: date-time
-            nullable: true
-            description: The last updated date/time of the issue
-          edited_on:
-            type: string
-            format: date-time
-            description: The last edited date/time of the issue
-          state:
-            type: string
-            description: The state of the issue
-            enum:
-            - new
-            - open
-            - resolved
-            - on hold
-            - invalid
-            - duplicate
-            - wontfix
-            - closed
-          kind:
-            type: string
-            description: The kind of the issue
-            enum:
-            - bug
-            - enhancement
-            - proposal
-            - task
-          priority:
-            type: string
-            description: The priority level of the issue
-            enum:
-            - trivial
-            - minor
-            - major
-            - critical
-            - blocker
-          milestone:
-            $ref: '#/components/schemas/milestone'
-          version:
-            $ref: '#/components/schemas/version'
-          component:
-            $ref: '#/components/schemas/component'
-          votes:
-            type: integer
-            description: The number of votes
-          content:
-            type: object
-            description: The content of the issue
-            properties:
-              raw:
-                type: string
-                description: The text as it was typed by a user.
-              markup:
-                type: string
-                description: The type of markup language the raw content is to be interpreted in.
-                enum:
-                - markdown
-                - creole
-                - plaintext
-              html:
-                type: string
-                description: The user's content rendered as HTML
-        description: An issue.
+        - title: Issue
+          type: object
+          properties:
+            links:
+              $ref: "#/components/schemas/links"
+            id:
+              type: integer
+              description: The ID of the issue
+            repository:
+              $ref: "#/components/schemas/repository"
+            title:
+              type: string
+              description: The title of the issue
+            reporter:
+              $ref: "#/components/schemas/user"
+            assignee:
+              $ref: "#/components/schemas/user"
+            created_on:
+              type: string
+              format: date-time
+              description: The created date/time of the issue
+            updated_on:
+              type: string
+              format: date-time
+              nullable: true
+              description: The last updated date/time of the issue
+            edited_on:
+              type: string
+              format: date-time
+              description: The last edited date/time of the issue
+              nullable: true
+            state:
+              type: string
+              description: The state of the issue
+              enum:
+                - new
+                - open
+                - resolved
+                - on hold
+                - invalid
+                - duplicate
+                - wontfix
+                - closed
+            kind:
+              type: string
+              description: The kind of the issue
+              enum:
+                - bug
+                - enhancement
+                - proposal
+                - task
+            priority:
+              type: string
+              description: The priority level of the issue
+              enum:
+                - trivial
+                - minor
+                - major
+                - critical
+                - blocker
+            milestone:
+              $ref: "#/components/schemas/milestone"
+            version:
+              $ref: "#/components/schemas/version"
+            component:
+              $ref: "#/components/schemas/component"
+            votes:
+              type: integer
+              description: The number of votes
+            content:
+              $ref: "#/components/schemas/content"
+          description: An issue.
+    content:
+      type: object
+      description: The content of the issue
+      properties:
+        raw:
+          type: string
+          description: The text as it was typed by a user.
+        markup:
+          type: string
+          description: The type of markup language the raw content is to be interpreted in.
+          enum:
+            - markdown
+            - creole
+            - plaintext
+        html:
+          type: string
+          description: The user's content rendered as HTML
+    errorDetail:
+      required:
+        - message
+      type: object
+      description: The error detail
+      properties:
+        message:
+          type: string
+        detail:
+          type: string
     error:
       title: Error
       required:
-      - type
+        - type
       type: object
       properties:
         type:
           type: string
           description: The type of the error
         error:
-          required:
-          - message
-          type: object
-          description: The error detail
-          properties:
-            message:
-              type: string
-            detail:
-              type: string
-            data:
-              type: object
-              properties: {}
-              description: Optional structured data that is endpoint-specific.
-      description: Base type for most resource objects. It defines the common `type`
+          $ref: "#/components/schemas/errorDetail"
+      description:
+        Base type for most resource objects. It defines the common `type`
         element that identifies an object's type. It also identifies the element as
         Swagger's `discriminator`.
     paginated_issues:
@@ -2654,29 +2370,34 @@ components:
         size:
           minimum: 0
           type: integer
-          description: Total number of objects in the response. This is an optional
+          description:
+            Total number of objects in the response. This is an optional
             element that is not provided in all responses, as it can be expensive
             to compute
         page:
           minimum: 1
           type: integer
-          description: Page number of the current results. This is an optional element
+          description:
+            Page number of the current results. This is an optional element
             that is not provided in all responses
         pagelen:
           minimum: 1
           type: integer
-          description: Current number of objects on the existing page. The default
+          description:
+            Current number of objects on the existing page. The default
             value is 10 with 100 being the maximum allowed value. Individual APIs
             may enforce different values
         next:
           type: string
-          description: Link to the next page if it exists. The last page of a collection
+          description:
+            Link to the next page if it exists. The last page of a collection
             does not have this value. Use this link to navigate the result set and
             refrain from constructing your own URLs
           format: uri
         previous:
           type: string
-          description: Link to previous page if it exists. A collections first page
+          description:
+            Link to previous page if it exists. A collections first page
             does not have this value. This is an optional element that is not provided
             in all responses. Some result sets strictly support forward navigation
             and never provide previous links. Clients must anticipate that backwards
@@ -2688,7 +2409,7 @@ components:
           uniqueItems: true
           type: array
           items:
-            $ref: '#/components/schemas/issue'
+            $ref: "#/components/schemas/issue"
           description: An array of issues
       description: A paginated list of issues.
   securitySchemes:
@@ -2702,9 +2423,11 @@ components:
           scopes:
             wiki: Read and modify your repositories' wikis
             pullrequest:write: Read and modify your repositories and their pull requests
-            pipeline:variable: Access your repositories' build pipelines and configure
+            pipeline:variable:
+              Access your repositories' build pipelines and configure
               their variables
-            project:write: Read and modify your workspace's project settings, and
+            project:write:
+              Read and modify your workspace's project settings, and
               read and transfer repositories within your workspace's projects
             pipeline:write: Access and rerun your repositories' build pipelines
             snippet: Read your snippets
@@ -2720,7 +2443,8 @@ components:
             account: Read your account information
             repository:admin: Administer your repositories
             pullrequest: Read your repositories and their pull requests
-            project: Read your workspace's project settings and read repositories
+            project:
+              Read your workspace's project settings and read repositories
               contained within your workspace's projects
             team: Read your team membership information
             team:write: Read and modify your team membership information

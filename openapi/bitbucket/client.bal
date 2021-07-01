@@ -15,6 +15,8 @@
 // under the License.
 
 import  ballerina/http;
+import  ballerina/url;
+import  ballerina/lang.'string;
 
 # Configuration for Bitbucket connector
 #
@@ -32,10 +34,52 @@ public type ClientConfig record {
 @display {label: "Bitbucket Client"}
 public client class Client {
     http:Client clientEp;
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.bitbucket.org/2.0") returns error? {
+    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.bitbucket.org/2.0") 
+                                  returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
         self.clientEp = httpEp;
+    }
+    # Returns a list of all repositories
+    #
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
+    # + role - Filters the result based on the authenticated user's role on each repository. member-returns repositories 
+    # to which the user has explicit read access. contributor- returns repositories to which the user has explicit write 
+    # access. admin- returns repositories to which the user has explicit administrator access. owner-returns all 
+    # repositories owned by the current user
+    # + q - Query string to narrow down the response as  
+    # https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+    # + sort - Field by which the results should be sorted as 
+    # https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+    # + return - The repositories owned by the specified account.
+    @display {label: "List Workspaces"}
+    remote isolated function listWorkspaces(@display {label: "Workspace ID (slug) or UUID"} string workspace, 
+                                            @display {label: "User Role"} string? role = (), 
+                                            @display {label: "Filtering Query"} string? q = (), 
+                                            @display {label: "Sorting Query"} string? sort = ()) returns 
+                                            PaginatedRepositories|error {
+        string  path = string `/repositories/${workspace}`;
+        map<anydata> queryParam = {"role": role, "q": q, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        PaginatedRepositories response = check self.clientEp-> get(path, targetType = PaginatedRepositories);
+        return response;
+    }
+    # Returns all pull requests
+    #
+    # + repo_slug - This can either be the repository slug or the UUID of the repository,
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
+    # + state - Only return pull requests that are in this state. This parameter can be repeated.
+    # + return - All pull requests on the specified repository." +
+    @display {label: "List Pull Requests"}
+    remote isolated function listPullrequests(@display {label: "Repository ID (slug) or UUID"} string repo_slug, 
+                                             @display {label: "Workspace ID (slug) or UUID"} string workspace, 
+                                             @display {label: "State of the Pull Request"} string? state = ()) returns 
+                                             PaginatedPullrequests|error {
+        string  path = string `/repositories/${workspace}/${repo_slug}/pullrequests`;
+        map<anydata> queryParam = {"state": state};
+        path = path + check getPathForQueryParam(queryParam);
+        PaginatedPullrequests response = check self.clientEp-> get(path, targetType = PaginatedPullrequests);
+        return response;
     }
     # Returns the specified pull request
     #
@@ -134,8 +178,8 @@ public client class Client {
     @display {label: "Delete Issue"}
     remote isolated function deleteIssue(@display {label: "Issue ID"} string issue_id, 
                                          @display {label: "Repository ID (slug) or UUID"} string repo_slug, 
-                                         @display {label: "Workspace ID (slug) or UUID"} string workspace) returns error? 
-                                          {
+                                         @display {label: "Workspace ID (slug) or UUID"} string workspace) returns 
+                                         error? {
         string  path = string `/repositories/${workspace}/${repo_slug}/issues/${issue_id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -147,12 +191,20 @@ public client class Client {
     # example: `{repository UUID}`
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
     # example: `{workspace UUID}`
+    # + q - Query string to narrow down the response as
+    # https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
+    # + sort - Field by which the results should be sorted as 
+    # https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
     # + return - A paginated list of the issues matching any filter criteria that were provided
     @display {label: "List Issues"}
     remote isolated function listIssues(@display {label: "Repository ID (slug) or UUID"} string repo_slug, 
-                                        @display {label: "Workspace ID (slug) or UUID"} string workspace) returns 
+                                        @display {label: "Workspace ID (slug) or UUID"} string workspace,
+                                        @display {label: "Filtering Query"} string? q = (), 
+                                        @display {label: "Sorting Query"} string? sort = ()) returns 
                                         PaginatedIssues|error {
         string  path = string `/repositories/${workspace}/${repo_slug}/issues`;
+        map<anydata> queryParam = {"q": q, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
         PaginatedIssues response = check self.clientEp-> get(path, targetType = PaginatedIssues);
         return response;
     }
@@ -330,4 +382,38 @@ public client class Client {
         //TODO: Update the request as needed;
          _ = check self.clientEp-> delete(path, request, targetType =http:Response);
     }
+}
+
+# Generate query path with query parameter.
+#
+# + queryParam - Query parameter map
+# + return - Returns generated Path or error at failure of client initialization
+isolated function  getPathForQueryParam(map<anydata> queryParam) returns string|error {
+    string[] param = [];
+    param[param.length()] = "?";
+    foreach  var [key, value] in  queryParam.entries() {
+        if  value  is  () {
+            _ = queryParam.remove(key);
+        } else {
+            if  string:startsWith( key, "'") {
+                 param[param.length()] = string:substring(key, 1, key.length());
+            } else {
+                param[param.length()] = key;
+            }
+            param[param.length()] = "=";
+            if  value  is  string {
+                string updateV =  check url:encode(value, "UTF-8");
+                param[param.length()] = updateV;
+            } else {
+                param[param.length()] = value.toString();
+            }
+            param[param.length()] = "&";
+        }
+    }
+    _ = param.remove(param.length()-1);
+    if  param.length() ==  1 {
+        _ = param.remove(0);
+    }
+    string restOfPath = string:'join("", ...param);
+    return restOfPath;
 }

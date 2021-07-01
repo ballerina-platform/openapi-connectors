@@ -4,16 +4,35 @@ Connects to Zoom API from Ballerina.
 
 The Zoom connector consume the data exposed in https://api.zoom.us/v2. It is currently supporting the following operations.
 
-- Create Meeting
-- List Meetings
-- Get Meeting by Id
-- Delete Meeting
-- Add Meeting Registrant
-- List Meeting Registrants
-- List Past Meeting Participants
-- List Webinar Registrants
-- List Webinar Participants
-- List Webinar Absentees
+- listMeetings	
+- createMeeting	
+- listMeetingRegistrants	
+- addMeetingRegistrant	
+- getMeetingRegistrantsQuestions	
+- updateMeetingRegistrantQuestions	
+- updateMeetingRegistrantStatus	
+- deleteMeetingregistrant	
+- getMeetingById	
+- deleteMeeting	
+- updateMeeting	
+- updateMeetingStatus	
+- listPastMeetings	
+- listPastMeetingPolls	
+- getPastMeetingDetails	
+- listPastMeetingParticipants	
+- getMeetingPolls	
+- createMeetingPoll	
+- getMeetingPoll	
+- updateMeetingPoll	
+- deleteMeetingPoll	
+- createBatchPolls	
+- getMeetingInvitation	
+- getLiveStreamDetails	
+- updateMeetingLiveStream	
+- listWebinarRegistrants	
+- listWebinarParticipants	
+- listWebinarAbsentees	
+- listMeetingTemplates	
 
 ## Compatibility
 

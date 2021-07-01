@@ -110,7 +110,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostDetails'
+                $ref: '#/components/schemas/PostResponse'
         400:
           description: Required fields were invalid, not specified.
           content: {}
@@ -127,6 +127,13 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
+    PostResponse:
+      title: Post response
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PostDetails'
+      description: Container object for post info
     UserResponse:
       title: User Container
       type: object
@@ -355,7 +362,7 @@ components:
           type: string
           description: The publish status of the post.
         publishedAt:
-          type: string
+          type: integer
           description: The post’s published date. If created as a draft, this field
             will not be present.
           format: date

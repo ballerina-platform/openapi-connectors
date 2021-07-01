@@ -536,17 +536,7 @@ paths:
                       x-display:
                         label: Custom Questions
                       items:
-                        description: Custom Question.
-                        properties:
-                          title:
-                            type: string
-                            x-display:
-                              label: Title
-                          value:
-                            type: string
-                            x-display:
-                              label: Value
-                        type: object
+                        $ref: '#/components/schemas/RegistrantCustomQuestion'
                       type: array
                     email:
                       description: A valid email address of the registrant.
@@ -827,6 +817,297 @@ paths:
       summary: Add meeting registrant
       tags:
         - Meetings
+  "/meetings/{meetingId}/registrants/questions":
+    get:
+      description: >+
+        List registration questions that will be displayed to users while
+        [registering for a
+        meeting](https://support.zoom.us/hc/en-us/articles/211579443-Registration-for-Meetings).<br>
+
+
+        **Scopes:** `meeting:read`, `meeting:read:admin`<br>
+
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+
+      operationId: getMeetingRegistrantsQuestions
+      x-display:
+        label: List Registrant Questions
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          x-display:
+            label: Meeting Id
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    custom_questions:
+                      - required: false
+                        title: How long have you been working?
+                        type: short
+                    questions:
+                      - field_name: address
+                        required: true
+              schema:
+                $ref: '#/components/schemas/RegistrantQuestions'
+          description: |-
+            **HTTP Status Code:** `200`. Meeting Registrant Question object returned
+        "404":
+          description: |-
+            **HTTP Status Code:** `404`<br>
+            Meeting not found
+      security:
+        - OAuth: []
+      summary: "List registration questions "
+      tags:
+        - Meetings
+    patch:
+      description: >+
+        Update registration questions that will be displayed to users while
+        [registering for a
+        meeting](https://support.zoom.us/hc/en-us/articles/211579443-Registration-for-Meetings).<br><br>
+
+        **Scopes:** `meeting:write`, `meeting:write:admin`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+         
+
+      operationId: updateMeetingRegistrantQuestions
+      x-display:
+        label: Update Registration Questions
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrantQuestions'
+        description: Meeting Registrant Questions
+        required: true
+        x-examples:
+          application/json:
+            custom_questions:
+              - required: true
+                title: How long have you been working?
+                type: short
+            questions:
+              - field_name: address
+                required: true
+      responses:
+        "204":
+          description: |-
+            **HTTP Status Code:** `204`. Meeting Registrant Questions Updated
+        "404":
+          description: |-
+            **HTTP Status Code:** `404`<br>
+            Meeting not found.
+      security:
+        - OAuth: []
+      summary: Update registration questions
+      tags:
+        - Meetings
+  "/meetings/{meetingId}/registrants/status":
+    put:
+      description: >-
+        Update a meeting registrant's status by either approving,
+        cancelling or denying a registrant from joining the meeting.<br><br>
+
+        **Scopes:** `meeting:write:admin` `meeting:write`
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium`
+      operationId: updateMeetingRegistrantStatus
+      x-display:
+        label: Update Meeting Registrant's Status
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meting Id
+        - description: The meeting occurrence ID.
+          in: query
+          name: occurrence_id
+          schema:
+            type: string
+          x-display:
+            label: Occurrence Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                action:
+                  description: Registrant Status:<br>`approve` - Approve registrant.<br>`cancel` -
+                    Cancel previously approved registrant's
+                    registration.<br>`deny` - Deny registrant.
+                  enum:
+                    - approve
+                    - cancel
+                    - deny
+                  type: string
+                  x-enum-descriptions:
+                    - Approve registrant
+                    - Cancel previously approved registrant
+                    - Deny registrant
+                registrants:
+                  description: List of registrants.
+                  items:
+                    $ref: "#/components/schemas/RestriantDetails"
+                  maximum: 30
+                  type: array
+              required:
+                - action
+              type: object
+              description: Meeting registrant status update details
+        required: true
+        x-examples:
+          application/json:
+            action: approve
+            registrants:
+              - email: someemail@companyname.com
+                id: "173525362"
+              - email: anotheremail@companyname.com
+                id: "156234353456"
+      responses:
+        "204":
+          description: |-
+            **HTTP Status Code:** `204`. Registrant status updated.
+        "300":
+          description: |-
+            **Error Code:** `300`<br>
+            This meeting has not set registration as required:{meetingId}.
+        "400":
+          description: |+
+            **HTTP Status Code:** `400`<br>
+            **Error Code:** `1010`<br>
+            User does not belong to this account: {accountId}.<br>
+            **Error Code:** `3000`<br>
+            Cannot access meeting information.<br>
+            **Error Code:** `3003`<br>
+            You're not the meeting host.
+
+        "404":
+          description: |
+            **HTTP Status Code:** `404`<br>
+            Meeting or registrant not found.
+            **Error Code:** `1001`<br>
+            User does not exist: {userId}.<br>
+      security:
+        - OAuth: []
+      summary: Update registrant's status
+      tags:
+        - Meetings
+  "/meetings/{meetingId}/registrants/{registrantId}":
+    delete:
+      description: >-
+        Delete a meeting registrant.<br><br>
+
+        **Scopes**: `meeting:write:admin` `meeting:write`<br>
+         <br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+      operationId: deleteMeetingregistrant
+      x-display:
+        label: Delete Meeting Registrant
+      parameters:
+        - description: The meeting occurence ID.
+          in: query
+          name: occurrence_id
+          schema:
+            type: string
+          x-display:
+            label: occurence Id
+        - description: The meeting ID.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            type: integer
+          x-display:
+            label: Meeting Id
+        - description: The meeting registrant ID.
+          in: path
+          name: registrantId
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: Registrant Id
+      responses:
+        "204":
+          description: |-
+            **HTTP status code:** `204` OK
+        "400":
+          description: >-
+            **HTTP status code:** `400` <br>
+
+            Bad Request<br>
+
+
+            **Error code:** `200`<br>
+
+            Only available for paid users: {0}.<br>
+
+
+            **Error code:** `300`<br>
+
+            The value that you entered for the Registrant ID field is invalid. Enter a valid value and try again.<br>
+
+
+            **Error code:** `404` <br>
+
+            Registration has not been enabled for this meeting: {0}.<br>
+
+
+            **Error code:** `1001` <br>
+
+            User {userId} does not exist or does not belong to this account.<br>
+
+
+            **Error code:** `3000` <br>
+
+            Cannot access webinar info. ***Note:** Zoom throws this error when the meetingId is a webinarId.*<br>
+
+            Registrant {0} was not found.
+
+
+            **Error code:** `3001` <br>
+
+            Meeting does not exist: {0}.
+      summary: Delete a meeting registrant
+      tags:
+        - Meetings
   "/meetings/{meetingId}":
     delete:
       description: >+
@@ -1055,6 +1336,1159 @@ paths:
       summary: Get a meeting
       tags:
         - Meetings
+    patch:
+      description: >+
+        Update the details of a meeting.<br>This API has a rate limit of
+        100 requests per day. Therefore, a meeting can only be updated for a
+        maximum of 100 times within a 24 hour window.<br>
+
+        **Scopes:** `meeting:write:admin` `meeting:write`<br>
+         
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+
+      operationId: updateMeeting
+      x-display:
+        label: Update Meeting
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+        - description: "Meeting occurrence id. Support change of agenda, start_time,
+            duration, settings: {host_video, participant_video,
+            join_before_host, mute_upon_entry, waiting_room, watermark,
+            auto_recording}"
+          in: query
+          name: occurrence_id
+          schema:
+            type: string
+          x-display:
+            label: Occurrence Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - properties:
+                    schedule_for:
+                      description: Email or userId if you want to schedule meeting for another user.
+                      type: string
+                  type: object
+                - description: Base object for sessions.
+                  properties:
+                    agenda:
+                      description: Meeting description.
+                      maxLength: 2000
+                      type: string
+                    duration:
+                      description: Meeting duration (minutes). Used for scheduled meetings only.
+                      type: integer
+                    password:
+                      description: >-
+                        Meeting passcode. Passcode may only contain the following
+                        characters: [a-z A-Z 0-9 @ - _ *] and can have a
+                        maximum of 10 characters.
+
+
+                        **Note:** If the account owner or the admin has configured [minimum passcode requirement settings](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604), the passcode value provided here must meet those requirements. <br><br>If the requirements are enabled, you can view those requirements by calling either the [Get User Settings API](https://marketplace.zoom.us/docs/api-reference/zoom-api/users/usersettings) or the  [Get Account Settings](https://marketplace.zoom.us/docs/api-reference/zoom-api/accounts/accountsettings) API. 
+                      maxLength: 10
+                      type: string
+                    recurrence:
+                      $ref: '#/components/schemas/ReccurenceDetails'
+                    settings:
+                      $ref: '#/components/schemas/MeetingSettings'
+                    start_time:
+                      description: Meeting start time. When using a format like
+                        "yyyy-MM-dd'T'HH:mm:ss'Z'", always use GMT time.
+                        When using a format like "yyyy-MM-dd'T'HH:mm:ss",
+                        you should use local time and  specify the time
+                        zone. Only used for scheduled meetings and recurring
+                        meetings with a fixed time.
+                      format: date-time
+                      type: string
+                    template_id:
+                      description: >-
+                        Unique identifier of the meeting template. 
+
+
+                        Use this field if you would like to [schedule the meeting from a meeting template](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates#h_86f06cff-0852-4998-81c5-c83663c176fb). You can retrieve the value of this field by calling the [List meeting templates]() API.
+                      type: string
+                    timezone:
+                      description: Time zone to format start_time. For example, "America/Los_Angeles".
+                        For scheduled meetings only. Please reference our
+                        [time zone](#timezones) list for supported time
+                        zones and their formats.
+                      type: string
+                    topic:
+                      description: Meeting topic.
+                      type: string
+                    tracking_fields:
+                      description: Tracking fields
+                      items:
+                        $ref: '#/components/schemas/TrackingFields'
+                      type: array
+                    type:
+                      default: 2
+                      description: Meeting Types:<br>`1` - Instant meeting.<br>`2` - Scheduled
+                        meeting.<br>`3` - Recurring meeting with no fixed
+                        time.<br>`8` - Recurring meeting with a fixed time.
+                      enum:
+                        - 1
+                        - 2
+                        - 3
+                        - 8
+                      type: integer
+                      x-enum-descriptions:
+                        - Instant Meeting
+                        - Scheduled Meeting
+                        - Recurring Meeting with no fixed time
+                        - Recurring Meeting with fixed time
+                  type: object
+          multipart/form-data:
+            schema:
+              allOf:
+                - properties:
+                    schedule_for:
+                      description: Email or userId if you want to schedule meeting for another user.
+                      type: string
+                  type: object
+                - allOf:
+                    - description: Base object for sessions.
+                      properties:
+                        agenda:
+                          description: Meeting description.
+                          maxLength: 2000
+                          type: string
+                        duration:
+                          description: Meeting duration (minutes). Used for scheduled meetings only.
+                          type: integer
+                        password:
+                          description: >-
+                            Meeting passcode. Passcode may only contain the following
+                            characters: [a-z A-Z 0-9 @ - _ *] and can have a
+                            maximum of 10 characters.
+
+
+                            **Note:** If the account owner or the admin has configured [minimum passcode requirement settings](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604), the passcode value provided here must meet those requirements. <br><br>If the requirements are enabled, you can view those requirements by calling either the [Get User Settings API](https://marketplace.zoom.us/docs/api-reference/zoom-api/users/usersettings) or the  [Get Account Settings](https://marketplace.zoom.us/docs/api-reference/zoom-api/accounts/accountsettings) API. 
+                          maxLength: 10
+                          type: string
+                        recurrence:
+                          description: "Recurrence object. Use this object only for a meeting with type
+                            `8` i.e., a recurring meeting with fixed time. "
+                          properties:
+                            end_date_time:
+                              description: Select the final date on which the meeting will recur before it is
+                                canceled. Should be in UTC time, such as
+                                2017-11-25T12:00:00Z. (Cannot be used with
+                                "end_times".)
+                              format: date-time
+                              type: string
+                            end_times:
+                              default: 1
+                              description: Select how many times the meeting should recur before it is
+                                canceled. (Cannot be used with "end_date_time".)
+                              maximum: 365
+                              type: integer
+                            monthly_day:
+                              default: 1
+                              description: >-
+                                Use this field **only if you're scheduling a recurring meeting of
+                                type** `3` to state which day in a month, the
+                                meeting should recur. The value range is from 1
+                                to 31.
+
+
+                                For instance, if you would like the meeting to recur on 23rd of each month, provide `23` as the value of this field and `1` as the value of the `repeat_interval` field. Instead, if you would like the meeting to recur every three months, on 23rd of the month, change the value of the `repeat_interval` field to `3`.
+                              type: integer
+                            monthly_week:
+                              description: Use this field **only if you're scheduling a recurring meeting of
+                                type** `3` to state the week of the month when
+                                the meeting should recur. If you use this field,
+                                **you must also use the `monthly_week_day` field
+                                to state the day of the week when the meeting
+                                should recur.** <br>`-1` - Last week of the
+                                month.<br>`1` - First week of the month.<br>`2`
+                                - Second week of the month.<br>`3` - Third week
+                                of the month.<br>`4` - Fourth week of the month.
+                              enum:
+                                - -1
+                                - 1
+                                - 2
+                                - 3
+                                - 4
+                              type: integer
+                              x-enum-descriptions:
+                                - Last week
+                                - First week
+                                - Second week
+                                - Third week
+                                - Fourth week
+                            monthly_week_day:
+                              description: >-
+                                Use this field **only if you're scheduling a recurring meeting of
+                                type** `3` to state a specific day in a week
+                                when the monthly meeting should recur. To use
+                                this field, you must also use the `monthly_week`
+                                field. 
+
+
+                                <br>`1` - Sunday.<br>`2` - Monday.<br>`3` - Tuesday.<br>`4` -  Wednesday.<br>`5` - Thursday.<br>`6` - Friday.<br>`7` - Saturday.
+                              enum:
+                                - 1
+                                - 2
+                                - 3
+                                - 4
+                                - 5
+                                - 6
+                                - 7
+                              type: integer
+                              x-enum-descriptions:
+                                - Sunday
+                                - Monday
+                                - Tuesday
+                                - Wednesday
+                                - Thursday
+                                - Friday
+                                - Saturday
+                            repeat_interval:
+                              description: >+
+                                Define the interval at which the meeting should recur. For
+                                instance, if you would like to schedule a
+                                meeting that recurs every two months, you must
+                                set the value of this field as `2` and the value
+                                of the `type` parameter as `3`. 
+
+
+                                For a daily meeting, the maximum interval you can set is `90` days. For a weekly meeting the maximum interval that you can set is  of `12` weeks. For a monthly meeting, there is a maximum of `3` months.
+
+                              type: integer
+                            type:
+                              description: Recurrence meeting types:<br>`1` - Daily.<br>`2` - Weekly.<br>`3` -
+                                Monthly.
+                              enum:
+                                - 1
+                                - 2
+                                - 3
+                              type: integer
+                              x-enum-descriptions:
+                                - Daily
+                                - Weekly
+                                - Monthly
+                            weekly_days:
+                              default: "1"
+                              description: >-
+                                This field is required **if you're scheduling a recurring meeting
+                                of type** `2` to state which day(s) of the week
+                                the meeting should repeat. <br> <br> The value
+                                for this field could be a number between `1` to
+                                `7` in string format. For instance, if the
+                                meeting should recur on Sunday, provide `"1"` as
+                                the value of this field.<br><br> **Note:** If
+                                you would like the meeting to occur on multiple
+                                days of a week, you should provide comma
+                                separated values for this field. For instance,
+                                if the meeting should recur on Sundays and
+                                Tuesdays provide `"1,3"` as the value of this
+                                field.
+
+                                 <br>`1`  - Sunday. <br>`2` - Monday.<br>`3` - Tuesday.<br>`4` -  Wednesday.<br>`5` -  Thursday.<br>`6` - Friday.<br>`7` - Saturday.
+                              enum:
+                                - "1"
+                                - "2"
+                                - "3"
+                                - "4"
+                                - "5"
+                                - "6"
+                                - "7"
+                              type: string
+                          required:
+                            - type
+                          type: object
+                        settings:
+                          allOf:
+                            - description: Meeting settings.
+                              properties:
+                                allow_multiple_devices:
+                                  description: Allow attendees to join the meeting from multiple devices. This
+                                    setting only works for meetings that require
+                                    [registration](https://support.zoom.us/hc/en-us/articles/211579443-Setting-up-registration-for-a-meeting).
+                                  type: boolean
+                                alternative_hosts:
+                                  description: "Alternative host's emails or IDs: multiple values are separated by
+                                    a semicolon."
+                                  type: string
+                                alternative_hosts_email_notification:
+                                  default: true
+                                  description: Flag to determine whether to send email notifications to
+                                    alternative hosts, default value is true.
+                                  type: boolean
+                                approval_type:
+                                  default: 2
+                                  description: >-
+                                    Enable registration and set approval for the registration. Note
+                                    that this feature requires the host to be of
+                                    **Licensed** user type. **Registration
+                                    cannot be enabled for a basic user.**
+                                    <br><br>
+
+
+                                    `0` - Automatically approve.<br>`1` - Manually approve.<br>`2` - No registration required.
+                                  enum:
+                                    - 0
+                                    - 1
+                                    - 2
+                                  type: integer
+                                  x-enum-descriptions:
+                                    - Automatically Approve
+                                    - Manually Approve
+                                    - No Registration Required
+                                approved_or_denied_countries_or_regions:
+                                  description: >
+                                    Approve or block users from specific regions/countries from joining
+                                    this meeting. 
+                                  properties:
+                                    approved_list:
+                                      description: "List of countries/regions from where participants can join this
+                                        meeting. "
+                                      items:
+                                        type: string
+                                      type: array
+                                    denied_list:
+                                      description: "List of countries/regions from where participants can not join
+                                        this meeting. "
+                                      items:
+                                        type: string
+                                      type: array
+                                    enable:
+                                      description: >-
+                                        `true`: Setting enabled to either allow users or block users from
+                                        specific regions to join your meetings.
+                                        <br>
+
+
+                                        `false`: Setting disabled.
+                                      type: boolean
+                                    method:
+                                      description: >-
+                                        Specify whether to allow users from specific regions to join this
+                                        meeting; or block users from specific
+                                        regions from joining this meeting.
+                                        <br><br>
+
+                                        `approve`: Allow users from specific regions/countries to join this meeting. If this setting is selected, the approved regions/countries must be included in the `approved_list`.<br><br>
+
+                                        `deny`: Block users from specific regions/countries from joining this meeting. If this setting is selected, the approved regions/countries must be included in the `denied_list`
+                                      enum:
+                                        - approve
+                                        - deny
+                                      type: string
+                                  type: object
+                                audio:
+                                  default: both
+                                  description: Determine how participants can join the audio portion of the
+                                    meeting.<br>`both` - Both Telephony and
+                                    VoIP.<br>`telephony` - Telephony
+                                    only.<br>`voip` - VoIP only.
+                                  enum:
+                                    - both
+                                    - telephony
+                                    - voip
+                                  type: string
+                                  x-enum-descriptions:
+                                    - Both Telephony and VoIP
+                                    - Telephony only
+                                    - VoIP only
+                                authentication_domains:
+                                  description: If user has configured ["Sign Into Zoom with Specified
+                                    Domains"](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars#h_5c0df2e1-cfd2-469f-bb4a-c77d7c0cca6f)
+                                    option, this will list the domains that are
+                                    authenticated.
+                                  type: string
+                                authentication_exception:
+                                  description: The participants added here will receive unique meeting invite
+                                    links and bypass authentication.
+                                  items:
+                                    properties:
+                                      email:
+                                        description: Email address of the participant.
+                                        format: email
+                                        type: string
+                                      name:
+                                        description: Name of the participant.
+                                        type: string
+                                    type: object
+                                  type: array
+                                authentication_name:
+                                  description: Authentication name set in the [authentication
+                                    profile](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars#h_5c0df2e1-cfd2-469f-bb4a-c77d7c0cca6f).
+                                  type: string
+                                authentication_option:
+                                  description: Meeting authentication option id.
+                                  type: string
+                                auto_recording:
+                                  default: none
+                                  description: Automatic recording:<br>`local` - Record on local.<br>`cloud`
+                                    -  Record on cloud.<br>`none` - Disabled.
+                                  enum:
+                                    - local
+                                    - cloud
+                                    - none
+                                  type: string
+                                  x-enum-descriptions:
+                                    - Record to local device
+                                    - Record to cloud
+                                    - No Recording
+                                breakout_room:
+                                  description: Setting to [pre-assign breakout
+                                    rooms](https://support.zoom.us/hc/en-us/articles/360032752671-Pre-assigning-participants-to-breakout-rooms#h_36f71353-4190-48a2-b999-ca129861c1f4).
+                                  properties:
+                                    enable:
+                                      description: Set the value of this field to `true` if you would like to enable
+                                        the [breakout room
+                                        pre-assign](https://support.zoom.us/hc/en-us/articles/360032752671-Pre-assigning-participants-to-breakout-rooms#h_36f71353-4190-48a2-b999-ca129861c1f4)
+                                        option.
+                                      type: boolean
+                                    rooms:
+                                      description: Create room(s).
+                                      items:
+                                        properties:
+                                          name:
+                                            description: Name of the breakout room.
+                                            type: string
+                                          participants:
+                                            description: Email addresses of the participants who are to be assigned to the
+                                              breakout room.
+                                            items:
+                                              type: string
+                                            type: array
+                                        type: object
+                                      type: array
+                                  type: object
+                                close_registration:
+                                  default: false
+                                  description: Close registration after event date
+                                  type: boolean
+                                cn_meeting:
+                                  default: false
+                                  description: Host meeting in China.
+                                  type: boolean
+                                contact_email:
+                                  description: Contact email for registration
+                                  type: string
+                                contact_name:
+                                  description: Contact name for registration
+                                  type: string
+                                custom_keys:
+                                  description: Custom keys and values assigned to the meeting.
+                                  items:
+                                    properties:
+                                      key:
+                                        description: Custom key associated with the user.
+                                        maxLength: 64
+                                        type: string
+                                      value:
+                                        description: Value of the custom key associated with the user.
+                                        maxLength: 256
+                                        type: string
+                                    type: object
+                                  maxItems: 10
+                                  type: array
+                                encryption_type:
+                                  description: >-
+                                    Choose between enhanced encryption and [end-to-end
+                                    encryption](https://support.zoom.us/hc/en-us/articles/360048660871)
+                                    when starting or a meeting. When using
+                                    end-to-end encryption, several features
+                                    (e.g. cloud recording, phone/SIP/H.323
+                                    dial-in) will be **automatically disabled**.
+                                    <br><br>The value of this field can be one
+                                    of the following:<br>
+
+                                    `enhanced_encryption`: Enhanced encryption. Encryption is stored in the cloud if you enable this option. <br>
+
+
+                                    `e2ee`: [End-to-end encryption](https://support.zoom.us/hc/en-us/articles/360048660871). The encryption key is stored in your local device and can not be obtained by anyone else. Enabling this setting also **disables** the following features: join before host, cloud recording, streaming, live transcription, breakout rooms, polling, 1:1 private chat, and meeting reactions.
+                                  enum:
+                                    - enhanced_encryption
+                                    - e2ee
+                                  type: string
+                                enforce_login:
+                                  description: >-
+                                    Only signed in users can join this meeting.
+
+
+                                    **This field is deprecated and will not be supported in the future.**  <br><br>As an alternative, use the "meeting_authentication", "authentication_option" and "authentication_domains" fields to understand the [authentication configurations](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars) set for the meeting.
+                                  type: boolean
+                                enforce_login_domains:
+                                  description: >-
+                                    Only signed in users with specified domains can join meetings.
+
+
+                                    **This field is deprecated and will not be supported in the future.**  <br><br>As an alternative, use the "meeting_authentication", "authentication_option" and "authentication_domains" fields to understand the [authentication configurations](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars) set for the meeting.
+                                  type: string
+                                global_dial_in_countries:
+                                  description: List of global dial-in countries
+                                  items:
+                                    type: string
+                                  type: array
+                                global_dial_in_numbers:
+                                  description: Global Dial-in Countries/Regions
+                                  items:
+                                    properties:
+                                      city:
+                                        description: City of the number, if any. For example, Chicago.
+                                        type: string
+                                      country:
+                                        description: Country code. For example, BR.
+                                        type: string
+                                      country_name:
+                                        description: Full name of country. For example, Brazil.
+                                        type: string
+                                      number:
+                                        description: Phone number. For example, +1 2332357613.
+                                        type: string
+                                      type:
+                                        description: "Type of number. "
+                                        enum:
+                                          - toll
+                                          - tollfree
+                                        type: string
+                                    type: object
+                                  type: array
+                                host_video:
+                                  description: Start video when the host joins the meeting.
+                                  type: boolean
+                                in_meeting:
+                                  default: false
+                                  description: Host meeting in India.
+                                  type: boolean
+                                jbh_time:
+                                  description: >-
+                                    If the value of "join_before_host" field is set to true, this field
+                                    can be used to indicate time limits within
+                                    which a participant may join a meeting
+                                    before a host. The value of this field can
+                                    be one of the following:
+
+
+                                    *  `0`: Allow participant to join anytime.
+
+                                    *  `5`: Allow participant to join 5 minutes before meeting start time.
+                                     * `10`: Allow participant to join 10 minutes before meeting start time.
+                                  enum:
+                                    - 0
+                                    - 5
+                                    - 10
+                                  type: integer
+                                join_before_host:
+                                  default: false
+                                  description: Allow participants to join the meeting before the host starts the
+                                    meeting. Only used for scheduled or
+                                    recurring meetings.
+                                  type: boolean
+                                language_interpretation:
+                                  properties:
+                                    enable:
+                                      type: boolean
+                                    interpreters:
+                                      description: Information associated with the interpreter.
+                                      items:
+                                        properties:
+                                          email:
+                                            description: Email address of the interpreter.
+                                            format: email
+                                            type: string
+                                          languages:
+                                            description: >-
+                                              Languages for interpretation. The string must contain two [country
+                                              Ids](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries)
+                                              separated by a comma. 
+
+
+                                              For example, if the language is to be interpreted from English to Chinese, the value of this field should be "US,CN".
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                meeting_authentication:
+                                  description: "`true`- Only authenticated users can join meetings."
+                                  type: boolean
+                                mute_upon_entry:
+                                  default: false
+                                  description: Mute participants upon entry.
+                                  type: boolean
+                                participant_video:
+                                  description: Start video when participants join the meeting.
+                                  type: boolean
+                                registrants_confirmation_email:
+                                  description: Send confirmation email to registrants upon successful
+                                    registration.
+                                  type: boolean
+                                registrants_email_notification:
+                                  description: Send email notifications to registrants about approval,
+                                    cancellation, denial of the registration.
+                                    The value of this field must be set to true
+                                    in order to use the
+                                    `registrants_confirmation_email` field.
+                                  type: boolean
+                                registration_type:
+                                  default: 1
+                                  description: Registration type. Used for recurring meeting with fixed time only.
+                                    <br>`1` Attendees register once and can
+                                    attend any of the occurrences.<br>`2`
+                                    Attendees need to register for each
+                                    occurrence to attend.<br>`3` Attendees
+                                    register once and can choose one or more
+                                    occurrences to attend.
+                                  enum:
+                                    - 1
+                                    - 2
+                                    - 3
+                                  type: integer
+                                  x-enum-descriptions:
+                                    - Attendees register once and can attend any
+                                      of the occurrences
+                                    - Attendees need to register for each
+                                      occurrence to attend
+                                    - Attendees register once and can choose one
+                                      or more occurrences to attend
+                                show_share_button:
+                                  description: >-
+                                    Show social share buttons on the meeting registration page.
+
+                                    This setting only works for meetings that require [registration](https://support.zoom.us/hc/en-us/articles/211579443-Setting-up-registration-for-a-meeting).
+                                  type: boolean
+                                use_pmi:
+                                  default: false
+                                  description: Use a personal meeting ID. Only used for scheduled meetings and
+                                    recurring meetings with no fixed time.
+                                  type: boolean
+                                waiting_room:
+                                  default: false
+                                  description: Enable waiting room
+                                  type: boolean
+                                watermark:
+                                  default: false
+                                  description: Add watermark when viewing a shared screen.
+                                  type: boolean
+                              type: object
+                            - properties:
+                                registrants_confirmation_email:
+                                  description: Send confirmation Email to Registrants
+                                  type: boolean
+                              type: object
+                        start_time:
+                          description: Meeting start time. When using a format like
+                            "yyyy-MM-dd'T'HH:mm:ss'Z'", always use GMT time.
+                            When using a format like "yyyy-MM-dd'T'HH:mm:ss",
+                            you should use local time and  specify the time
+                            zone. Only used for scheduled meetings and recurring
+                            meetings with a fixed time.
+                          format: date-time
+                          type: string
+                        template_id:
+                          description: >-
+                            Unique identifier of the meeting template. 
+
+
+                            Use this field if you would like to [schedule the meeting from a meeting template](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates#h_86f06cff-0852-4998-81c5-c83663c176fb). You can retrieve the value of this field by calling the [List meeting templates]() API.
+                          type: string
+                        timezone:
+                          description: Time zone to format start_time. For example, "America/Los_Angeles".
+                            For scheduled meetings only. Please reference our
+                            [time zone](#timezones) list for supported time
+                            zones and their formats.
+                          type: string
+                        topic:
+                          description: Meeting topic.
+                          type: string
+                        tracking_fields:
+                          description: Tracking fields
+                          items:
+                            properties:
+                              field:
+                                description: Tracking fields type
+                                type: string
+                              value:
+                                description: Tracking fields value
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          default: 2
+                          description: Meeting Types:<br>`1` - Instant meeting.<br>`2` - Scheduled
+                            meeting.<br>`3` - Recurring meeting with no fixed
+                            time.<br>`8` - Recurring meeting with a fixed time.
+                          enum:
+                            - 1
+                            - 2
+                            - 3
+                            - 8
+                          type: integer
+                          x-enum-descriptions:
+                            - Instant Meeting
+                            - Scheduled Meeting
+                            - Recurring Meeting with no fixed time
+                            - Recurring Meeting with fixed time
+                      type: object
+                  description: Meeting object
+                  type: object
+        description: Meeting
+        required: true
+        x-examples:
+          application/json:
+            agenda: My Meeting
+            duration: 60
+            password: abcd
+            settings:
+              alternative_hosts: mycohost@someemail.com
+              approval_type: 0
+              global_dial_in_countries:
+                - city: San Jose
+                  country: US
+                  country_name: US
+                  number: +1 1212121212121212
+                  type: toll
+              host_video: false
+              in_meeting: false
+              join_before_host: true
+              mute_upon_entry: false
+              participant_video: false
+              registrants_confirmation_email: true
+              use_pmi: false
+              waiting_room: false
+              watermark: false
+            start_time: 2019-08-30T18:00:00
+            timezone: America/New_York
+            topic: Michael API Test
+            type: 2
+      responses:
+        "204":
+          description: "**HTTP Status Code:** `204`. Meeting updated."
+        "300":
+          description: >
+            **Error Code:** `300`<br>
+
+            Invalid enforce_login_domains, separate multiple domains by semicolon.<br>
+
+            A maximum of {rateLimitNumber} meetings can be created/updated for a single user in one day.
+        "400":
+          description: |
+            **HTTP Status Code:** `400`<br>
+            **Error Code:** `1010`<br>
+            User not found on this account: {accountId}.<br>
+            **Error Code:** `3000`<br>
+            Cannot access meeting information.<br>
+            **Error Code:** `3003`<br>
+            You are not the meeting host.
+        "404":
+          description: |-
+            **HTTP Status Code:** `404`<br>
+            Meeting not found.<br>
+            **Error Code:** `1001`<br>
+            User does not exist: {userId}.<br>
+            **Error Code:** `3001`<br>
+            A meeting with this {meetingId} is not found or has expired.
+      security:
+        - OAuth: []
+      summary: Update a meeting
+      tags:
+        - Meetings  
+  "/meetings/{meetingId}/status":
+    put:
+      description: >-
+        Update the status of a meeting.<br><br>
+
+        **Scopes:** `meeting:write:admin` `meeting:write`
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+      operationId: updateMeetingStatus
+      x-display:
+        label: Update Meeting Status
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+      requestBody:
+        description: Meeting status update details
+        content:
+          application/json:
+            schema:
+              properties:
+                action:
+                  description: >
+                    `end` - End a meeting.<br>
+
+                    `recover` - [Recover](https://support.zoom.us/hc/en-us/articles/360038297111-Recover-a-deleted-meeting) a deleted meeting.
+                  enum:
+                    - end
+                    - recover
+                  type: string
+              type: object
+          multipart/form-data:
+            schema:
+              properties:
+                action:
+                  description: >
+                    `end` - End a meeting.<br>
+
+                    `recover` - [Recover](https://support.zoom.us/hc/en-us/articles/360038297111-Recover-a-deleted-meeting) a deleted meeting.
+                  enum:
+                    - end
+                    - recover
+                  type: string
+              type: object
+        required: true
+        x-examples:
+          application/json:
+            action: end
+      responses:
+        "204":
+          description: |-
+            **HTTP Status Code:** `204`. Meeting updated.
+        "400":
+          description: |-
+            **HTTP Status Code:** `400`<br>
+            **Error Code:** `1010`<br>
+            User does not belong to this account: {accountId}.
+            **Error Code:** `3000`<br>
+            Cannot access meeting info.
+            **Error Code:** `3003`<br>
+            You're not the meeting host.
+            **Error Code:** `3063`<br>
+            Can not end on-premise user's meeting: {meetingId}.
+        "404":
+          description: |+
+            **HTTP Status Code:** `404`<br>
+            Meeting not found.<br>
+            **Error Code:** `1001`<br>
+            Meeting host does not exist: {userId}.
+
+      security:
+        - OAuth: []
+      summary: Update meeting status
+      tags:
+        - Meetings
+  "/past_meetings/{meetingId}/instances":
+    get:
+      description: >-
+        Get a list of ended meeting instances<br><br>
+
+        **Scopes:** `meeting:read:admin` `meeting:read`<br>
+
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium` 
+      operationId: listPastMeetings
+      x-display:
+        label: List Past Meetings
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  meetings:
+                    description: List of ended meeting instances.
+                    items:
+                      $ref: '#/components/schemas/EndedMeetingDetails'
+                    type: array
+                description: List of Meetings
+                title: Meeting instances
+                type: object
+          description: |-
+            **HTTP Status Code:** `200`. List of ended meeting instances returned.
+        "404":
+          description: |-
+            **HTTP Status Code:** `404`<br>
+            Meeting not found.
+      security:
+        - OAuth: []
+      summary: List ended meeting instances
+      tags:
+        - Meetings
+  "/past_meetings/{meetingId}/polls":
+    get:
+      description: >-
+        [Polls](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings)
+        allow the meeting host to survey attendees. Use this API to list poll
+        results of a meeting.<br><br>
+
+
+        **Scopes**: `meeting:read:admin`, `meeting:read`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium` <br>
+        **Prerequisites**:<br>
+
+        * Host user type must be **Pro**.
+
+        * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
+      operationId: listPastMeetingPolls
+      x-display:
+        label: List Meeting Polls
+      parameters:
+        - description: >-
+            The meeting ID or the meeting UUID.  If a meeting ID is provided in
+            the request instead of a UUID, the response will be for the latest
+            meeting instance.
+
+
+            If a UUID starts with "/" or contains "//" (example: "/ajXp112QmuoKj4854875==\"), you must **double encode** the UUID before making an API request.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: Meeting Id
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    id: 123456
+                    questions:
+                      - email: myemail@jksdlfkjdf.djfk
+                        name: Sam S
+                        question_details:
+                          - answer: I am wonderful.
+                            question: How are you?
+                    start_time: 2019-02-01T12:34:12.660Z
+                    title: Learn something new
+                    uuid: gsdjfhsdfkhjdsf
+              schema:
+                properties:
+                  id:
+                    description: '[Meeting
+                      ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-):
+                      Unique identifier of the meeting in "**long**"
+                      format(represented as int64 data type in JSON), also known
+                      as the meeting number.'
+                    format: int64
+                    type: integer
+                  questions:
+                    items:
+                      $ref: '#/components/schemas/UserSubmittedAnswers'
+                    type: array
+                  start_time:
+                    description: The start time of the meeting.
+                    format: date-time
+                    type: string
+                  uuid:
+                    description: Meeting UUID.
+                    type: string
+                type: object
+          description: |-
+            **HTTP Status Code:** `200` **OK**. Polls returned successfully.
+      security:
+        - OAuth: []
+      summary: List past meeting's poll results
+      tags:
+        - Meetings
+    parameters:
+      - in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+  "/past_meetings/{meetingUUID}":
+    get:
+      description: >-
+        Get details on a past meeting. <br><br>
+
+        **Scopes:** `meeting:read:admin` `meeting:read`
+
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+        > **Note**: Please double encode your UUID when using this API if the UUID begins with a '/'or contains '//' in it.
+      operationId: getPastMeetingDetails
+      x-display:
+        label: Get Past Meeting Details
+      parameters:
+        - description: The meeting UUID. Each meeting instance will generate its own
+            Meeting UUID (i.e., after a meeting ends, a new UUID will be
+            generated for the next instance of the meeting). Please double
+            encode your UUID when using it for other API calls if the UUID
+            begins with a '/'or contains '//' in it.
+          in: path
+          name: meetingUUID
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: Meeting UUID
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    duration: integer
+                    end_time: string [date-time]
+                    host_id: integer
+                    id: integer
+                    participants_count: integer
+                    start_time: string [date-time]
+                    topic: string
+                    total_minutes: integer
+                    type: integer
+                    user_email: string
+                    user_name: string
+                    uuid: string [uuid]
+              schema:
+                properties:
+                  duration:
+                    description: Meeting duration.
+                    type: integer
+                  end_time:
+                    description: Meeting end time (GMT).
+                    format: date-time
+                    type: string
+                  host_id:
+                    description: Host ID.
+                    type: string
+                  id:
+                    description: '[Meeting
+                      ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-):
+                      Unique identifier of the meeting in "**long**"
+                      format(represented as int64 data type in JSON), also known
+                      as the meeting number.'
+                    format: int64
+                    type: integer
+                  participants_count:
+                    description: Number of meeting participants.
+                    type: integer
+                  start_time:
+                    description: Meeting start time (GMT).
+                    format: date-time
+                    type: string
+                  topic:
+                    description: Meeting topic.
+                    type: string
+                  total_minutes:
+                    description: Sum of meeting minutes from all participants in the meeting.
+                    type: integer
+                  type:
+                    description: Meeting type.
+                    type: integer
+                  user_email:
+                    description: User email.
+                    type: string
+                  user_name:
+                    description: User display name.
+                    type: string
+                  uuid:
+                    description: Meeting UUID.
+                    format: uuid
+                    type: string
+                type: object
+            application/xml:
+              schema:
+                properties:
+                  duration:
+                    description: Meeting duration.
+                    type: integer
+                  end_time:
+                    description: Meeting end time (GMT).
+                    format: date-time
+                    type: string
+                  host_id:
+                    description: Host ID.
+                    type: string
+                  id:
+                    description: '[Meeting
+                      ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-):
+                      Unique identifier of the meeting in "**long**"
+                      format(represented as int64 data type in JSON), also known
+                      as the meeting number.'
+                    format: int64
+                    type: integer
+                  participants_count:
+                    description: Number of meeting participants.
+                    type: integer
+                  start_time:
+                    description: Meeting start time (GMT).
+                    format: date-time
+                    type: string
+                  topic:
+                    description: Meeting topic.
+                    type: string
+                  total_minutes:
+                    description: Sum of meeting minutes from all participants in the meeting.
+                    type: integer
+                  type:
+                    description: Meeting type.
+                    type: integer
+                  user_email:
+                    description: User email.
+                    type: string
+                  user_name:
+                    description: User display name.
+                    type: string
+                  uuid:
+                    description: Meeting UUID.
+                    format: uuid
+                    type: string
+                type: object
+          description: |-
+            **HTTP Status Code:** `200`. Meeting details returned.
+        "400":
+          description: |
+            **HTTP Status Code:** `400`<br>
+            Meeting not found<br><br>
+            **Error Code:** `1010`<br>
+            User not exist: {userId}<br><br>
+            User {userId} not exist or not belong to this account.<br><br>
+            **Error Code:** `300`<br>
+            Cannot access meeting info.<br><br>
+            **Error Code:** `200`<br>
+            Only available for paid account: {accountId}
+        "404":
+          description: |
+            **HTTP Status Code:** `404`<br>
+            Meeting not found<br><br>
+            **Error Code:** `3001`<br>
+            This meeting is not available or ID is not valid.<br>
+            Meeting ID is invalid or not end.
+      security:
+        - OAuth: []
+      summary: Get past meeting details
+      tags:
+        - Meetings
   "/past_meetings/{meetingUUID}/participants":
     get:
       description: >
@@ -1130,8 +2564,7 @@ paths:
                   - $ref: '#/components/schemas/PaginationObject'
                   - $ref: '#/components/schemas/MeetingPartcipantsList'
           description: |-
-            **HTTP Status Code:** `200`<br>
-            Meeting participants' report returned.
+            **HTTP Status Code:** `200`. Meeting participants' report returned.
         "400":
           description: |+
             **HTTP Status Code:** `400`<br>
@@ -1155,6 +2588,990 @@ paths:
       security:
         - OAuth: []
       summary: List past meeting participants
+      tags:
+        - Meetings
+  "/meetings/{meetingId}/polls":
+    get:
+      description: >-
+        Polls allow the meeting host to survey attendees. Use this API to
+        list
+        [polls](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings)
+        of a meeting.<br><br>
+
+
+        **Scopes**: `meeting:read:admin` `meeting:read`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`<br>
+        **Prerequisites**:<br>
+
+        * Host user type must be **Pro** or higher plan.
+
+        * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
+      operationId: getMeetingPolls
+      x-display:
+        label: Get Meeting Polls
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    polls:
+                      - id: YB33NcABCdg_g1AAAxTQ
+                        questions:
+                          - answers:
+                              - Extremely useful
+                              - Somewhat useful
+                              - Not useful at all
+                            name: How useful was this meeting?
+                            type: multiple
+                        status: notstart
+                        title: Meeting Usefulness
+                    total_records: 1
+              schema:
+                properties:
+                  polls:
+                    description: Array of Polls
+                    items:
+                      $ref: '#/components/schemas/PollDetails'
+                    type: array
+                  total_records:
+                    description: The number of all records available across pages
+                    type: integer
+                description: Poll List
+                title: Poll List
+                type: object
+          description: |-
+            **HTTP Status Code:**. List polls of a Meeting  returned
+        "404":
+          description: |-
+            **Error Code:** `404`
+            Meeting Poll not found
+      security:
+        - OAuth: []
+      summary: List meeting polls
+      tags:
+        - Meetings
+    post:
+      description: >-
+        Polls allow the meeting host to survey attendees. Use this API to
+        create a
+        [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings)
+        for a meeting.<br><br>
+
+
+        **Scopes**: `meeting:write:admin` `meeting:write`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`<br>
+        **Prerequisites**:<br>
+
+        * Host user type must be **Pro** or higher plan.
+
+        * Polling feature must be enabled in the host's account.
+
+        * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
+      operationId: createMeetingPoll
+      x-display:
+        label: Create Meeting Poll
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Poll
+              properties:
+                questions:
+                  description: Array of Polls
+                  items:
+                    $ref: '#/components/schemas/PollQuestions'
+                  type: array
+                title:
+                  description: Title for the poll.
+                  type: string
+              title: Poll
+              type: object
+        description: Meeting poll object
+        required: true
+        x-examples:
+          application/json:
+            questions:
+              - answers:
+                  - Extremely useful
+                  - Somewhat useful
+                  - Not useful at all
+                name: How useful was this meeting?
+                type: multiple
+            title: Meeting Usefulness
+      responses:
+        "201":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    id: abcdaaaeefffhhh
+                    questions:
+                      - answers:
+                          - Extremely useful
+                          - Somewhat useful
+                          - Not useful at all
+                        name: How useful was this meeting?
+                        type: multiple
+                    status: notstart
+                    title: Meeting Usefulness
+              schema:
+                allOf:
+                  - properties:
+                      id:
+                        description: Meeting Poll ID
+                        type: string
+                      status:
+                        description: Status of the Meeting Poll:<br>`notstart` - Poll not
+                          started<br>`started` - Poll started<br>`ended` - Poll
+                          ended<br>`sharing` - Sharing poll results
+                        enum:
+                          - notstart
+                          - started
+                          - ended
+                          - sharing
+                        type: string
+                        x-enum-descriptions:
+                          - Poll not start
+                          - Poll started
+                          - Poll ended
+                          - Poll is sharing
+                    type: object
+                  - description: Poll
+                    properties:
+                      questions:
+                        description: Array of Polls
+                        items:
+                          $ref: '#/components/schemas/PollQuestions'
+                        type: array
+                      title:
+                        description: Title for the poll.
+                        type: string
+                    title: Poll
+                    type: object
+            application/xml:
+              schema:
+                allOf:
+                  - properties:
+                      id:
+                        description: Meeting Poll ID
+                        type: string
+                      status:
+                        description: Status of the Meeting Poll:<br>`notstart` - Poll not
+                          started<br>`started` - Poll started<br>`ended` - Poll
+                          ended<br>`sharing` - Sharing poll results
+                        enum:
+                          - notstart
+                          - started
+                          - ended
+                          - sharing
+                        type: string
+                        x-enum-descriptions:
+                          - Poll not start
+                          - Poll started
+                          - Poll ended
+                          - Poll is sharing
+                    type: object
+                  - description: Poll
+                    properties:
+                      questions:
+                        description: Array of Polls
+                        items:
+                          properties:
+                            answers:
+                              description: Answers to the questions
+                              items:
+                                type: string
+                              type: array
+                            name:
+                              description: Question to be asked to the attendees.
+                              type: string
+                            type:
+                              description: Poll Question & Answer type:<br>`single` - Single
+                                choice<br>`mutliple` - Multiple choice
+                              enum:
+                                - single
+                                - multiple
+                              type: string
+                              x-enum-descriptions:
+                                - single answer
+                                - multiple answer
+                          type: object
+                        type: array
+                      title:
+                        description: Title for the poll.
+                        type: string
+                    title: Poll
+                    type: object
+          description: |-
+            **HTTP Status Code:** `201`. Meeting Poll Created
+          headers:
+            Content-Location:
+              description: Location of created Meeting Poll
+              schema:
+                type: string
+        "404":
+          description: |-
+            **Error Code:** `404` <br>
+            Meeting not found
+      security:
+        - OAuth: []
+      summary: Create a meeting poll
+      tags:
+        - Meetings
+  "/meetings/{meetingId}/polls/{pollId}":
+    delete:
+      description: >-
+        Polls allow the meeting host to survey attendees. Use this API to
+        delete a meeting
+        [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings).<br>
+
+        **Scopes**: `meeting:write:admin` `meeting:write`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light` <br>
+        **Prerequisites**:<br>
+
+        * Host user type must be **Pro**.
+
+        * Polling feature should be enabled in the host's account.
+
+        * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
+      operationId: deleteMeetingPoll
+      x-display:
+        label: Delete Meeting Poll
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+        - description: The poll ID
+          in: path
+          name: pollId
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: Poll Id
+      responses:
+        "204":
+          description: |-
+            **HTTP Status Code:** `204`. Meeting Poll deleted
+        "404":
+          description: |-
+            **Error Code:** `404`
+            Meeting Poll not found
+      security:
+        - OAuth: []
+      summary: Delete a meeting poll
+      tags:
+        - Meetings
+    get:
+      description: >+
+        Polls allow the meeting host to survey attendees. Use this API to
+        get information about a specific meeting
+        [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings).<br><br>
+
+        **Scopes**: `meeting:read:admin` `meeting:read`<br>
+
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+
+
+      operationId: getMeetingPoll
+      x-display:
+        label: Get Meeting Poll
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+        - description: The poll ID
+          in: path
+          name: pollId
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: Poll Id
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    id: abcdaaaeefffhhh
+                    questions:
+                      - answers:
+                          - Extremely useful
+                          - Somewhat useful
+                          - Not useful at all
+                        name: How useful was this meeting?
+                        type: multiple
+                    status: notstart
+                    title: Meeting Usefulness
+              schema:
+                allOf:
+                  - properties:
+                      id:
+                        description: Meeting Poll ID
+                        type: string
+                      status:
+                        description: Status of the Meeting Poll:<br>`notstart` - Poll not
+                          started<br>`started` - Poll started<br>`ended` - Poll
+                          ended<br>`sharing` - Sharing poll results
+                        enum:
+                          - notstart
+                          - started
+                          - ended
+                          - sharing
+                        type: string
+                        x-enum-descriptions:
+                          - Poll not start
+                          - Poll started
+                          - Poll ended
+                          - Poll is sharing
+                    type: object
+                  - description: Poll
+                    properties:
+                      questions:
+                        description: Array of Polls
+                        items:
+                          $ref: '#/components/schemas/PollQuestions'
+                        type: array
+                      title:
+                        description: Title for the poll.
+                        type: string
+                    title: Poll
+                    type: object
+          description: |-
+            **HTTP Status Code:** `200`. Meeting Poll object returned
+        "404":
+          description: |-
+            **Error Code:** `404` <br>
+            Meeting Poll not found.
+      security:
+        - OAuth: []
+      summary: Get a meeting poll
+      tags:
+        - Meetings
+    put:
+      description: >+
+        Polls allow the meeting host to survey attendees. Use this API to
+        update information of a specific meeting
+        [poll](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings)<br><br>
+
+        **Scopes**: `meeting:write:admin` `meeting:write`
+
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light` 
+
+      operationId: updateMeetingPoll
+      x-display:
+        label: Update Meeting Poll
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+        - description: The poll ID
+          in: path
+          name: pollId
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: Poll Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - description: Poll
+                  properties:
+                    questions:
+                      description: Array of Polls
+                      items:
+                        $ref: '#/components/schemas/PollQuestions'
+                      type: array
+                    title:
+                      description: Title for the poll.
+                      type: string
+                  title: Poll
+                  type: object
+        description: Meeting Poll
+        required: true
+        x-examples:
+          application/json:
+            questions:
+              - answers:
+                  - Definitely
+                  - Probably
+                  - Not going to use it again
+                name: Would you like to use our service again?
+                type: multiple
+            title: Meeting Usefulness
+      responses:
+        "204":
+          description: |-
+            **HTTP Status Code:** `204`. Meeting Poll Updated
+        "404":
+          description: |-
+            **Error Code:** `404` <br>
+            Meeting Poll not found
+      security:
+        - OAuth: []
+      summary: Update a meeting poll
+      tags:
+        - Meetings
+  "/meetings/{meetingId}/batch_polls":
+    post:
+      description: >-
+        Polls allow the meeting host to survey attendees. Use this API to
+        create batch
+        [polls](https://support.zoom.us/hc/en-us/articles/213756303-Polling-for-Meetings)
+        for a meeting.<br><br>
+
+
+        **Scopes**: `meeting:write:admin` `meeting:write`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`<br>
+        **Prerequisites**:<br>
+
+        * Host user type must be **Pro** or higher plan.
+
+        * Polling feature must be enabled in the host's account.
+
+        * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
+      operationId: createBatchPolls
+      x-display:
+        label: Create Batch Polls
+      parameters:
+        - in: path
+          name: meetingId
+          required: true
+          schema:
+            type: string
+          description: Meeting Id
+          x-display:
+            label: Meeting Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                questions:
+                  items:
+                    $ref: '#/components/schemas/PollQuestions'
+                  type: array
+                title:
+                  description: Meeting Poll Title.
+                  type: string
+              type: object
+        description: Batch Meeting poll object
+        x-examples:
+          application/json:
+            polls:
+              - questions:
+                  - answers:
+                      - answer 1
+                      - answer 2
+                    name: Question Name
+                    type: multiple
+                  - answers:
+                      - answer 1
+                      - answer 2
+                    name: Question Name 2
+                    type: single
+                title: Meeting Usefulness
+      responses:
+        "201":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    polls:
+                      - id: ex eiusmod
+                        questions:
+                          - answers:
+                              - est officia
+                              - dolor amet consectetur ad
+                              - irure consectetur enim commodo
+                            name: in mollit cillum adipisicing ullamco
+                            type: consectetur magna et
+                          - answers:
+                              - ut ut
+                              - non pariatur dolore eiusmod consectetur
+                              - pariatur deserunt in dolore et
+                              - deserunt exercitation incididunt nostrud dolore
+                              - dolor sit in laboris eiusmod
+                            name: non proident dolor eiusmod consectetur
+                            type: "et deserunt nisi "
+                          - answers:
+                              - dolor mollit
+                              - dolore Lorem voluptate
+                            name: minim
+                            type: velit labore
+                        status: Excepteur Lorem dolor exercitation
+                        title: in dolore culpa ad qui
+                      - id: mollit do
+                        questions:
+                          - answers:
+                              - "culpa "
+                              - aliquip dolore
+                            name: exercitation consectetur officia do
+                            type: id ex consequat culpa
+                          - answers:
+                              - ullamco consequat ut id esse
+                              - veniam eiusmod anim laborum
+                            name: proident ad
+                            type: Lorem nostrud nulla
+                          - answers:
+                              - nostrud voluptate eu velit
+                              - non labore dolor ad eiusmod
+                              - vo
+                            name: sint cillum ut
+                            type: in enim
+                          - answers:
+                              - sunt voluptate
+                              - reprehenderit ea
+                              - sunt aute
+                              - elit
+                            name: eu ullamco
+                            type: anim dolor sunt
+                          - answers:
+                              - nulla Duis
+                            name: sit enim consequat cupidatat
+                            type: cillum adipisicing
+                        status: deserunt id occaecat nisi qui
+                        title: est incididunt in dolore tempor
+                      - id: "qui "
+                        questions:
+                          - answers:
+                              - laboris laborum
+                              - nostrud sit dolore veniam
+                              - sunt commodo amet dolor ex
+                            name: ullamco et pariatur
+                            type: proident
+                          - answers:
+                              - anim magna ut Lorem
+                            name: adipisicing dolor culpa commodo
+                            type: aliquip veniam
+                          - answers:
+                              - "sunt dolor Excepteur amet "
+                              - qui pariatur esse id fugiat
+                              - aliquip
+                            name: laborum nisi
+                            type: in Duis qui Excepteur aute
+                        status: ut Ut esse
+                        title: ullamco dolore
+              schema:
+                properties:
+                  polls:
+                    items:
+                      $ref: '#/components/schemas/AddPollQuestionsResponse'
+                    type: array
+                type: object
+            application/xml:
+              schema:
+                properties:
+                  polls:
+                    items:
+                      properties:
+                        id:
+                          description: Meeting Poll ID
+                          type: string
+                        questions:
+                          items:
+                            properties:
+                              answers:
+                                description: Answers to questons
+                                items:
+                                  type: string
+                                type: array
+                              name:
+                                description: Name of question.
+                                type: string
+                              type:
+                                description: Poll question and answer type.
+                                enum:
+                                  - single
+                                  - multiple
+                                type: string
+                            type: object
+                          type: array
+                        status:
+                          description: Status of the Meeting Poll:<br>`notstart` - Poll not
+                            started<br>`started` - Poll started<br>`ended` -
+                            Poll ended<br>`sharing` - Sharing poll results
+                          enum:
+                            - notstart
+                            - started
+                            - ended
+                            - sharing
+                          type: string
+                          x-enum-descriptions:
+                            - Poll not start
+                            - Poll started
+                            - Poll ended
+                            - Poll is sharing
+                        title:
+                          description: Title for the Poll
+                          type: string
+                      type: object
+                    type: array
+                type: object
+          description:  "**HTTP Status Code:** `201`. Meeting Poll Created"
+        "400":
+          description: |-
+            **HTTP Status Code:** `404` **Not Found** <br>
+            **Error Code:** `300` <br>
+            Invalid Meeting ID.
+            **Error Code:** `300` <br>
+            Meeting id does not exist.
+            **Error Code:** `3000` <br>
+            Cannot access meeting information.
+            **Error Code:** `3001`<br>
+            Meeting does not exist: {meetingId}.<br>
+            **Error Code:** `4400`<br>
+            Polling has not been enabled for this meeting: {meetingId}.
+            **Error Code:** `4400`<br>
+            You can add a maximum of 25 polls.
+      summary: Perform batch poll creation
+      tags:
+        - Meetings
+  "/meetings/{meetingId}/invitation":
+    get:
+      description: >+
+        Retrieve the meeting invite note that was sent for a specific
+        meeting.<br><br>
+
+        **Scopes:** `meeting:read:admin` `meeting:read`<br>
+
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+
+      operationId: getMeetingInvitation
+      x-display:
+        label: Get Meeting Invitation
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    invitation: "Shrijana G is inviting you to a scheduled Zoom meeting.\r
+
+                      \r
+
+                      Topic: MyTestMeeting\r
+
+                      Time: Jul 31, 2019 04:00 PM Pacific
+                      Time (US and Canada)\r
+
+                      \r
+
+                      Join Zoom Meeting\r
+
+                      https://zoom.us/j/000000\r
+
+                      \r
+
+                      One tap mobile\r
+
+                      +000000"
+              schema:
+                description: Meeting invitation details.
+                properties:
+                  invitation:
+                    description: Meeting invitation.
+                    type: string
+                title: Meeting Invitation
+                type: object
+            application/xml:
+              schema:
+                description: Meeting invitation details.
+                properties:
+                  invitation:
+                    description: Meeting invitation.
+                    type: string
+                title: Meeting Invitation
+                type: object
+          description: |-
+            **HTTP Status Code:** `200`<br>
+            Meeting invitation returned.
+      security:
+        - OAuth: []
+      summary: Get meeting invitation
+      tags:
+        - Meetings
+  "/meetings/{meetingId}/livestream":
+    get:
+      description: >+
+        Zoom allows users to [live stream a
+        meeting](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service)
+        to a custom platform. Use this API to get a meeting's live stream
+        configuration details such as Stream URL, Stream Key and Page
+        URL.<br><br>
+
+        **Prerequisites:**<br>
+
+        * Meeting host must be a licensed user with a Pro or higher plan.<br>
+
+        * Live streaming details must have been [configured](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service#h_01589a6f-a40a-4e18-a448-cb746e52ebc5) for the meeting.<br><br>
+
+        **Scopes:** `meeting:read:admin` `meeting:read`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+
+
+
+      operationId: getLiveStreamDetails
+      x-display:
+        label: Get Live Stream Details
+      parameters:
+        - description: Unique identifier of the meeting.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: Meeting Id
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    page_url: https://somecompany.com/livestream/123
+                    stream_key: Contact It@somecompany.com
+                    stream_url: https://somecompany.com/livestream
+              schema:
+                properties:
+                  page_url:
+                    description: Live streaming page URL. This is the URL using which anyone can
+                      view the live stream of the meeting.
+                    type: string
+                  stream_key:
+                    description: Stream Key.
+                    type: string
+                  stream_url:
+                    description: Stream URL.
+                    type: string
+                type: object
+            application/xml:
+              schema:
+                properties:
+                  page_url:
+                    description: Live streaming page URL. This is the URL using which anyone can
+                      view the live stream of the meeting.
+                    type: string
+                  stream_key:
+                    description: Stream Key.
+                    type: string
+                  stream_url:
+                    description: Stream URL.
+                    type: string
+                type: object
+          description: |+
+            **HTTP Status Code:** `200` **OK**.  Live Stream details returned.
+
+        "400":
+          description: |+
+            **HTTP Status Code:** `400` **Bad Request**<br>
+            **Error Code:** `300`<br>
+            Missing meetingId<br>
+            Invalid meetingId<br><br>
+            **Error Code:** `1010`<br>
+            User does not belong to this account: {accountId}
+
+
+        "404":
+          description: |+
+            **HTTP Status Code:** `404` **Not Found**<br>
+            **Error Code:** `1001`<br>
+            User {userId} does not exist.
+
+      summary: Get live stream details
+      tags:
+        - Meetings
+    patch:
+      description: >+
+        Zoom allows users to [live stream a
+        meeting](https://support.zoom.us/hc/en-us/articles/115001777826-Live-Streaming-Meetings-or-Webinars-Using-a-Custom-Service)
+        to a custom platform. Use this API to update a meeting's live stream
+        information.<br><br>
+
+        **Prerequisites:**<br>
+
+        * Meeting host must have a Pro license.<br>
+
+        **Scopes:** `meeting:write:admin` `meeting:write`<br>
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
+
+
+      operationId: updateMeetingLiveStream
+      x-display:
+        label: Update Meeting Live Stream
+      parameters:
+        - description: >-
+            The meeting ID in **long** format. The data type of this field is
+            "long"(represented as int64 in JSON).
+
+
+            While storing it in your database, store it as a **long** data type and **not as an integer**, as the Meeting IDs can be longer than 10 digits.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            format: int64
+            type: integer
+          x-display:
+            label: Meeting Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Meeting live stream.
+              properties:
+                page_url:
+                  description: The livestream page URL.
+                  format: uri
+                  maxLength: 1024
+                  type: string
+                stream_key:
+                  description: Stream name and key.
+                  maxLength: 512
+                  type: string
+                stream_url:
+                  description: Streaming URL.
+                  maxLength: 1024
+                  type: string
+              required:
+                - stream_url
+                - stream_key
+              type: object
+          multipart/form-data:
+            schema:
+              description: Meeting live stream.
+              properties:
+                page_url:
+                  description: The livestream page URL.
+                  format: uri
+                  maxLength: 1024
+                  type: string
+                stream_key:
+                  description: Stream name and key.
+                  maxLength: 512
+                  type: string
+                stream_url:
+                  description: Streaming URL.
+                  maxLength: 1024
+                  type: string
+              required:
+                - stream_url
+                - stream_key
+              type: object
+        description: Meeting
+        required: true
+        x-examples:
+          application/json:
+            page_url: mycompany.com/livestream/123
+            stream_key: Contact it@mycompany.com
+            stream_url: mycompany.com/livestream
+      responses:
+        "204":
+          description: |-
+            **HTTP Status Code:** `204`. Meeting live stream updated.
+        "300":
+          description: "**Error Code:** `300` <br>Missing meetingId <br> Invalid meetingId."
+        "400":
+          description: |-
+            **HTTP Status Code:** `400`<br>**Error Code:** `1010` <br>
+             User does not belong to this account: {accountId}.<br>
+             **Error Code:** `3000` Cannot access webinar info.
+        "404":
+          description: >
+            **HTTP Status Code:** `404`<br>**Error Code:** `1001` <br>User
+            {userId} does not exist.
+      security:
+        - OAuth: []
+      summary: Update a live stream
       tags:
         - Meetings
   "/webinars/{webinarId}/registrants":
@@ -1420,18 +3837,7 @@ paths:
                   participants:
                     description: ParticipantsDetails
                     items:
-                      properties:
-                        id:
-                          description: Unique identifier of the participant.
-                          type: string
-                        name:
-                          description: Name of the participant.
-                          type: string
-                        user_email:
-                          description: Email address of the participant.
-                          format: email
-                          type: string
-                      type: object
+                      $ref: '#/components/schemas/PartcipantDetails'
                     type: array
                   total_records:
                     description: The total number of records available across all pages.
@@ -1634,8 +4040,366 @@ paths:
       summary: List webinar absentees
       tags:
         - Webinars
+  "/users/{userId}/meeting_templates":
+    get:
+      description: >
+        Use this API to list [meeting
+        templates](https://support.zoom.us/hc/en-us/articles/360036559151-Meeting-templates)
+        that are available to be used by a user.
+
+
+        **Scope:** `meeting:read` or `meeting:read:admin`
+
+         **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium`
+      operationId: listMeetingTemplates
+      x-display:
+        label: List Meeting Templates
+      parameters:
+        - description: Unique identifier of the user. Retrieve the value of this field by
+            calling the [List
+            users](https://marketplace.zoom.us/docs/api-reference/zoom-api/users/users)
+            API.
+          in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          x-display:
+            label: User Id
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    templates:
+                      - id: AdxbhxCzKgSiWAw
+                        name: My meeting template
+                        type: 1
+                      - id: eYshgdftw4-5_MUSQ
+                        name: Zoom meeting template for daily sync
+                        type: 2
+                    total_records: 2
+              schema:
+                properties:
+                  templates:
+                    items:
+                      $ref: '#/components/schemas/TemplateDetails'
+                    type: array
+                  total_records:
+                    description: Total records found for this request.
+                    type: integer
+                type: object
+            application/xml:
+              schema:
+                properties:
+                  templates:
+                    items:
+                      properties:
+                        id:
+                          description: Unique identifier of the template.
+                          type: string
+                        name:
+                          description: Name of the template.
+                          type: string
+                        type:
+                          description: >-
+                            Type of the template. The value of this field can be one of the
+                            following:<br>
+
+                            `1`: meeting template <br>
+
+                            `2`: admin meeting template
+                          type: integer
+                      type: object
+                    type: array
+                  total_records:
+                    description: Total records found for this request.
+                    type: integer
+                type: object
+          description: "**HTTP Status Code:** `200` **OK**"
+        "404":
+          description: |-
+            **HTTP Status Code:** `404` **Not Found** <br>
+            **Error Code:** `1001`<br> User not exist: {userId}.<br>
+            User {userId} does not exist or does not belong to this account.
+      summary: List meeting templates
+      tags:
+        - Meetings
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
 components:
   schemas:
+    TemplateDetails:
+      description: Template details
+      properties:
+        id:
+          description: Unique identifier of the template.
+          type: string
+        name:
+          description: Name of the template.
+          type: string
+        type:
+          description: >-
+            Type of the template. The value of this field can be one of the
+            following:<br>
+
+            `1`: meeting template <br>
+
+            `2`: admin meeting template
+          type: integer
+      type: object
+    PollDetails:
+      allOf:
+        - properties:
+            id:
+              description: ID of Poll
+              type: string
+            status:
+              description: Status of Poll:<br>`notstart` - Poll not started<br>`started` -
+                Poll started<br>`ended` - Poll
+                ended<br>`sharing` - Sharing poll results
+              enum:
+                - notstart
+                - started
+                - ended
+                - sharing
+              type: string
+              x-enum-descriptions:
+                - Poll not start
+                - Poll started
+                - Poll ended
+                - Poll is sharing
+        - description: Poll
+          properties:
+            questions:
+              description: Array of Polls
+              items:
+                $ref: '#/components/schemas/PollQuestions'
+              type: array
+            title:
+              description: Title for the poll.
+              type: string
+          title: Poll
+          type: object
+    UserSubmittedAnswers:
+      description: Answers submitted by users
+      properties:
+        email:
+          description: Email address of the user who submitted answers to the poll.
+          type: string
+        name:
+          description: Name of the user who submitted answers to the poll. If "anonymous"
+            option is enabled for a poll, the participant's
+            polling information will be kept anonymous and the
+            value of `name` field will be "Anonymous Attendee".
+          type: string
+        question_details:
+          items:
+            $ref: '#/components/schemas/PollQuestionAnswer'
+          type: array
+      type: object
+    PollQuestionAnswer:
+      description: Answers submitted for poll questions
+      properties:
+        answer:
+          description: Answer submitted by the user.
+          type: string
+        date_time:
+          description: Date and time at which the answer to the poll was submitted.
+          format: date-time
+          type: string
+        polling_id:
+          description: Unique identifier of the poll.
+          type: string
+        question:
+          description: Question asked during the poll.
+          type: string
+      type: object
+    EndedMeetingDetails:
+      properties:
+        start_time:
+          description: Start time
+          format: date-time
+          type: string
+        uuid:
+          description: >+
+            Meeting UUID. Unique meeting ID. Each meeting instance will
+            generate its own Meeting UUID (i.e., after a
+            meeting ends, a new UUID will be generated
+            for the next instance of the meeting).
+            Please double encode your UUID when using it
+            for API calls if the UUID begins with a
+            '/'or contains '//' in it.
+
+          type: string
+      description: Ended meeting details
+    RestriantDetails:
+      properties:
+        email:
+          type: string
+          description: Registrant email
+        id:
+          type: string
+          description: Registrant Id
+      type: object
+      description: Registrant's details
+    CustomQuestions:
+      properties:
+        answers:
+          description: Answer choices for the question. Can not be used for `short`
+            question type as this type of question requires
+            registrants to type out the answer.
+          items:
+            type: string
+          type: array
+        required:
+          description: Indicates whether or not the custom question is required to be
+            answered by participants or not.
+          type: boolean
+        title:
+          description: Title of the custom question.
+          type: string
+        type:
+          description: Type of the question being asked.
+          enum:
+            - short
+            - single
+          type: string
+          x-enum-descriptions:
+            - Short Answer
+            - Single Answer
+      type: object
+    CustomRegistrantQuestions:
+      properties:
+        field_name:
+          description: Field name of the question.
+          enum:
+            - address
+            - city
+            - country
+            - zip
+            - state
+            - phone
+            - industry
+            - org
+            - job_title
+            - purchasing_time_frame
+            - role_in_purchase_process
+            - no_of_employees
+            - comments
+          type: string
+          x-enum-descriptions:
+            - Address
+            - City
+            - Country/Region
+            - Zip/Postal Code
+            - State/Province
+            - Phone
+            - Industry
+            - Organization
+            - Job Title
+            - Purchasing Time Frame
+            - Role in Purchase Process
+            - Number of Employees
+            - Questions & Comments
+        required:
+          description: Indicates whether or not the displayed fields are required to be
+            filled out by registrants.
+          type: boolean
+      type: object
+    RegistrantQuestions:
+      description: Meeting Registrant Questions
+      properties:
+        custom_questions:
+          description: Array of Registrant Custom Questions
+          items:
+            $ref: '#/components/schemas/CustomQuestions'
+          type: array
+        questions:
+          description: Array of Registrant Questions
+          items:
+           $ref: '#/components/schemas/CustomRegistrantQuestions'
+          type: array
+      title: Meeting Registrant Questions
+      type: object
+    AddPollQuestionsResponse:
+      description: Response received from adding poll quetions
+      properties:
+        id:
+          description: Meeting Poll ID
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/PollQuestions'
+          type: array
+        status:
+          description: Status of the Meeting Poll:<br>`notstart` - Poll not
+            started<br>`started` - Poll started<br>`ended` -
+            Poll ended<br>`sharing` - Sharing poll results
+          enum:
+            - notstart
+            - started
+            - ended
+            - sharing
+          type: string
+          x-enum-descriptions:
+            - Poll not start
+            - Poll started
+            - Poll ended
+            - Poll is sharing
+        title:
+          description: Title for the Poll
+          type: string
+      type: object
+    PollQuestions:
+      description: Poll questions
+      properties:
+        answers:
+          description: Possible answers for the question.
+          items:
+            type: string
+          type: array
+        name:
+          description: Name of the question.
+          type: string
+        type:
+          description: Question type:<br>`single` - Single choice<br>`mutliple` - Multiple
+            choice
+          enum:
+            - single
+            - multiple
+          type: string
+      type: object
+    TrackingFields:
+      properties:
+        field:
+          description: Tracking fields type
+          type: string
+        value:
+          description: Tracking fields value
+          type: string
+      type: object
+    MeetingTrackingDetails:
+      properties:
+        field:
+          description: Label of the tracking field.
+          type: string
+          x-display:
+            label: Label
+        value:
+          description: Tracking fields value
+          type: string
+          x-display:
+            label: Value
+      required:
+        - field
+      type: object
     MeetingDetails:
       description: Base object for meeting
       x-display:
@@ -1696,20 +4460,7 @@ components:
           x-display:
             label: Tracking Fields
           items:
-            properties:
-              field:
-                description: Label of the tracking field.
-                type: string
-                x-display:
-                  label: Label
-              value:
-                description: Tracking fields value
-                type: string
-                x-display:
-                  label: Value
-            required:
-              - field
-            type: object
+            $ref: '#/components/schemas/MeetingTrackingDetails'
           type: array
         type:
           default: 2
@@ -1766,10 +4517,108 @@ components:
           type: string
       type: object
       description: Detailed Meeting Metadata
+    ApprovalAndDenialInfo:
+      description: "Approve or block users from specific regions/countries from joining this meeting."
+      x-display:
+        label: Approval or Denial Info
+      properties:
+        approved_list:
+          description: "List of countries/regions from where participants can join this meeting. "
+          items:
+            type: string
+          type: array
+          x-display:
+            label: Approved Regions List
+        denied_list:
+          description: "List of countries/regions from where participants can not join this meeting. "
+          items:
+            type: string
+          type: array
+          x-display:
+            label: Denied Regions List
+        enable:
+          description: "`true`: Setting enabled to either allow users or block users from specific regions to join your meetings.  `false`: Setting disabled."
+          type: boolean
+          x-display:
+            label: Enable 
+        method:
+          description: "Specify whether to allow users from specific regions to join thismeeting; or block users from specific regions from oining this meeting. Values: approve or deny"
+          enum:
+            - approve
+            - deny
+          type: string
+          x-display:
+            label: Method
+      type: object
+    BreakoutRoomSettings:
+      description: "Setting to pre-assign breakout rooms"
+      x-display:
+        label: Breakout Room Settings
+      properties:
+        enable:
+          description: "Set the value of this field to `true` if you would like to enable the pre-assigned breakout rooms. "
+          type: boolean
+          x-display:
+            label: Enable Pre-Assigned Breakout Rooms
+        rooms:
+          description: Create room(s).
+          x-display:
+            label: Breakout Room Details
+          items:
+            $ref: '#/components/schemas/BreakoutRoomsDetails'
+          type: array
+      type: object
+    BreakoutRoomsDetails:
+      properties:
+        name:
+          description: Name of the breakout room.
+          type: string
+          x-display:
+            label: Name
+        participants:
+          description: "Email addresses of the participants who are to be assigned to the breakout room."
+          items:
+            type: string
+          x-display:
+            label: Participant List
+          type: array
+      type: object
+    LanguageInterpretationDetails:
+      description: "Language interpretation for meetings. "
+      x-display:
+        label: Language Interpretation
+      properties:
+        enable:
+          description: "Indicate whether or not you would like to enable language interpretation or this meeting."
+          type: boolean
+          x-display:
+            label: Enable
+        interpreters:
+          description: Information associated with the interpreter.
+          x-display:
+            label: interpreter Information
+          items:
+            $ref: '#/components/schemas/InterpreterDetails'
+          type: array
+      type: object
+    InterpreterDetails:
+      properties:
+        email:
+          description: Email address of the interpreter.
+          format: email
+          type: string
+          x-display:
+            label: Email
+        languages:
+          description: "Languages for interpretation. The string must contain two separated by a comma. For example, if the language is to be interpreted from English to Chinese, the value of this field should be US,CN."
+          type: string
+          x-display:
+            label: Languages
+      type: object
     MeetingSettingsInRequest:
       description: Meeting settings
       x-display:
-                    label: Meeting Settings
+        label: Meeting Settings
       properties:
         additional_data_center_regions:
           description: "Enable additional data center regions for this meeting. Provide the value in  the form of array of country code(s) for the countries which are available as data center regions"
@@ -1809,38 +4658,7 @@ components:
             - Manually Approve
             - No Registration Required
         approved_or_denied_countries_or_regions:
-          description: "Approve or block users from specific regions/countries from joining this meeting."
-          x-display:
-            label: Approval or Denial Info
-          properties:
-            approved_list:
-              description: "List of countries/regions from where participants can join this meeting. "
-              items:
-                type: string
-              type: array
-              x-display:
-                label: Approved Regions List
-            denied_list:
-              description: "List of countries/regions from where participants can not join this meeting. "
-              items:
-                type: string
-              type: array
-              x-display:
-                label: Denied Regions List
-            enable:
-              description: "`true`: Setting enabled to either allow users or block users from specific regions to join your meetings.  `false`: Setting disabled."
-              type: boolean
-              x-display:
-                label: Enable 
-            method:
-              description: "Specify whether to allow users from specific regions to join thismeeting; or block users from specific regions from oining this meeting. Values: approve or deny"
-              enum:
-                - approve
-                - deny
-              type: string
-              x-display:
-                label: Method
-          type: object
+          $ref: '#/components/schemas/ApprovalAndDenialInfo'
         audio:
           default: both
           description: "Determine how participants can join the audio portion of the  meeting. both : Both Telephony and VoIP, telephony :Telephony only, voip:VoIP only."
@@ -1880,36 +4698,7 @@ components:
           x-display:
             label: Auto Recording
         breakout_room:
-          description: "Setting to pre-assign breakout rooms"
-          x-display:
-            label: Breakout Room Settings
-          properties:
-            enable:
-              description: "Set the value of this field to `true` if you would like to enable the pre-assigned breakout rooms. "
-              type: boolean
-              x-display:
-                label: Enable Pre-Assigned Breakout Rooms
-            rooms:
-              description: Create room(s).
-              x-display:
-                label: Breakout Room Details
-              items:
-                properties:
-                  name:
-                    description: Name of the breakout room.
-                    type: string
-                    x-display:
-                      label: Name
-                  participants:
-                    description: "Email addresses of the participants who are to be assigned to the breakout room."
-                    items:
-                      type: string
-                    x-display:
-                      label: Participant List
-                    type: array
-                type: object
-              type: array
-          type: object
+          $ref: '#/components/schemas/BreakoutRoomSettings'
         close_registration:
           default: false
           description: Close registration after event date
@@ -1974,35 +4763,7 @@ components:
           x-display:
             label: Enable Join Before Host
         language_interpretation:
-          description: "Language interpretation for meetings. "
-          x-display:
-            label: Language Interpretation
-          properties:
-            enable:
-              description: "Indicate whether or not you would like to enable language interpretation or this meeting."
-              type: boolean
-              x-display:
-                label: Enable
-            interpreters:
-              description: Information associated with the interpreter.
-              x-display:
-                label: interpreter Information
-              items:
-                properties:
-                  email:
-                    description: Email address of the interpreter.
-                    format: email
-                    type: string
-                    x-display:
-                      label: Email
-                  languages:
-                    description: "Languages for interpretation. The string must contain two separated by a comma. For example, if the language is to be interpreted from English to Chinese, the value of this field should be US,CN."
-                    type: string
-                    x-display:
-                      label: Languages
-                type: object
-              type: array
-          type: object
+          $ref: '#/components/schemas/LanguageInterpretationDetails'
         meeting_authentication:
           description: "Only authenticated users can join meeting if the value of this field is set to `true`."
           type: boolean
@@ -2070,191 +4831,118 @@ components:
           x-display:
             label: Enable Watermark
       type: object
-    RegistrantBaseObject:
-      description: Registrant base object
-      properties:
-        address:
-          description: Registrant's address.
-          type: string
-        city:
-          description: Registrant's city.
-          type: string
-        comments:
-          description: A field that allows registrants to provide any questions or
-            comments that they might have.
-          type: string
-        country:
-          description: Registrant's country. The value of this field must be in two-letter
-            abbreviated form and must match the ID field provided in
-            the
-            [Countries](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries)
-            table.
-          type: string
-        custom_questions:
-          description: Custom questions.
-          items:
-            description: Custom Question.
-            properties:
-              title:
-                type: string
-              value:
-                type: string
-            type: object
-          type: array
-        email:
-          description: A valid email address of the registrant.
-          maxLength: 128
-          type: string
-        first_name:
-          description: Registrant's first name.
-          maxLength: 64
-          type: string
-        industry:
-          description: Registrant's Industry.
-          type: string
-        job_title:
-          description: Registrant's job title.
-          type: string
-        last_name:
-          description: Registrant's last name.
-          maxLength: 64
-          type: string
-        no_of_employees:
-          description: "Number of Employees: `1-20`, `21-50`, `51-100`, `101-500`, `500-1,000`, `1,001-5,000`, `5,001-10,000`, `More than 10,000`"
-          type: string
-        org:
-          description: Registrant's Organization.
-          type: string
-        phone:
-          description: Registrant's Phone number.
-          type: string
-        purchasing_time_frame:
-          description: >-
-            This field can be included to gauge interest of webinar attendees
-            towards buying your product or service.
-
-
-            Purchasing Time Frame:`Within a month``1-3 months``4-6 months``More than 6 months``No timeframe`
-          type: string
-        role_in_purchase_process:
-          description: "Role in Purchase Process: `Decision Maker`, `Evaluator/Recommender`, `Influencer`, `Not involved` "
-          type: string
-        state:
-          description: Registrant's State/Province.
-          type: string
-        zip:
-          description: Registrant's Zip/Postal Code.
-          type: string
-      required:
-        - email
-        - first_name
-      type: object
     RegistrantsList:
       description: Meeting Registrnats's Details 
       properties:
         registrants:
           description: List of registrant objects.
           items:
-            allOf:
-              - properties:
-                  id:
-                    description: Registrant ID.
-                    type: string
-                type: object
-              - description: Registrant base object
-                properties:
-                  address:
-                    description: Registrant's address.
-                    type: string
-                  city:
-                    description: Registrant's city.
-                    type: string
-                  comments:
-                    description: A field that allows registrants to provide any questions or
-                      comments that they might have.
-                    type: string
-                  country:
-                    description: Registrant's country.
-                    type: string
-                  custom_questions:
-                    description: Custom questions.
-                    items:
-                      description: Custom Question.
-                      properties:
-                        title:
-                          type: string
-                        value:
-                          type: string
-                      type: object
-                    type: array
-                  email:
-                    description: A valid email address of the registrant.
-                    maxLength: 128
-                    type: string
-                  first_name:
-                    description: Registrant's first name.
-                    maxLength: 64
-                    type: string
-                  industry:
-                    description: Registrant's Industry.
-                    type: string
-                  job_title:
-                    description: Registrant's job title.
-                    type: string
-                  last_name:
-                    description: Registrant's last name.
-                    maxLength: 64
-                    type: string
-                  no_of_employees:
-                    description: "Number of Employees: `1-20`, `21-50`, `51-100`, `101-500`, `500-1,000`, `1,001-5,000`, `5,001-10,000`, `More than 10,000`"
-                    type: string
-                  org:
-                    description: Registrant's Organization.
-                    type: string
-                  phone:
-                    description: Registrant's Phone number.
-                    type: string
-                  purchasing_time_frame:
-                    description: >-
-                      This field can be included to gauge interest of webinar attendees
-                      towards buying your product or
-                      service.
-
-
-                      Purchasing Time Frame:`Within a month``1-3 months``4-6 months``More than 6 months``No timeframe`
-                    type: string
-                  role_in_purchase_process:
-                    description: "Role in Purchase Process: `Decision Maker`, `Evaluator/Recommender`, `Influencer`, `Not involved` "
-                    type: string
-                  state:
-                    description: Registrant's State/Province.
-                    type: string
-                  zip:
-                    description: Registrant's Zip/Postal Code.
-                    type: string
-                required:
-                  - email
-                  - first_name
-                type: object
-              - properties:
-                  create_time:
-                    description: The time at which the registrant registered.
-                    format: date-time
-                    type: string
-                  join_url:
-                    description: The URL using which an approved registrant can join the webinar.
-                    format: string
-                    type: string
-                  status:
-                    description: "The status of the registrant's registration.  `approved`: User
-                      has been successfully approved for the
-                      webinar. `pending`:  The
-                      registration is still pending.
-                      `denied`: User has been denied from
-                      joining the webinar."
-                    type: string
-                type: object
-          type: array       
+            $ref: '#/components/schemas/RegistrantDetails'
+          type: array   
+    RegistrantCustomQuestion:
+      description: Custom Question.
+      properties:
+        title:
+          type: string
+          description: Question title
+        value:
+          type: string
+          description: Question value
+      type: object
+    RegistrantDetails:
+      allOf:
+        - properties:
+            id:
+              description: Registrant ID.
+              type: string
+          type: object
+        - description: Registrant base object
+          properties:
+            address:
+              description: Registrant's address.
+              type: string
+            city:
+              description: Registrant's city.
+              type: string
+            comments:
+              description: A field that allows registrants to provide any questions or
+                comments that they might have.
+              type: string
+            country:
+              description: Registrant's country.
+              type: string
+            custom_questions:
+              description: Custom questions.
+              items:
+                $ref: '#/components/schemas/RegistrantCustomQuestion'
+              type: array
+            email:
+              description: A valid email address of the registrant.
+              maxLength: 128
+              type: string
+            first_name:
+              description: Registrant's first name.
+              maxLength: 64
+              type: string
+            industry:
+              description: Registrant's Industry.
+              type: string
+            job_title:
+              description: Registrant's job title.
+              type: string
+            last_name:
+              description: Registrant's last name.
+              maxLength: 64
+              type: string
+            no_of_employees:
+              description: "Number of Employees: `1-20`, `21-50`, `51-100`, `101-500`, `500-1,000`, `1,001-5,000`, `5,001-10,000`, `More than 10,000`"
+              type: string
+            org:
+              description: Registrant's Organization.
+              type: string
+            phone:
+              description: Registrant's Phone number.
+              type: string
+            purchasing_time_frame:
+              description: >-
+                This field can be included to gauge interest of webinar attendees
+                towards buying your product or
+                service.
+  
+  
+                Purchasing Time Frame:`Within a month``1-3 months``4-6 months``More than 6 months``No timeframe`
+              type: string
+            role_in_purchase_process:
+              description: "Role in Purchase Process: `Decision Maker`, `Evaluator/Recommender`, `Influencer`, `Not involved` "
+              type: string
+            state:
+              description: Registrant's State/Province.
+              type: string
+            zip:
+              description: Registrant's Zip/Postal Code.
+              type: string
+          required:
+            - email
+            - first_name
+          type: object
+        - properties:
+            create_time:
+              description: The time at which the registrant registered.
+              format: date-time
+              type: string
+            join_url:
+              description: The URL using which an approved registrant can join the webinar.
+              format: string
+              type: string
+            status:
+              description: "The status of the registrant's registration.  `approved`: User
+                has been successfully approved for the
+                webinar. `pending`:  The
+                registration is still pending.
+                `denied`: User has been denied from
+                joining the webinar."
+              type: string
+          type: object
     PaginationObject:
       description: Pagination Object
       properties:
@@ -2276,6 +4964,87 @@ components:
         total_records:
           description: The total number of all the records available across pages.
           type: integer
+      type: object
+    ApprovedOrDeniedCountriesDetails:
+      description: >
+        Approve or block users from specific regions/countries from joining
+        this meeting. 
+      properties:
+        approved_list:
+          description: "List of countries/regions from where participants can join this
+            meeting. "
+          items:
+            type: string
+          type: array
+        denied_list:
+          description: "List of countries/regions from where participants can not join
+            this meeting. "
+          items:
+            type: string
+          type: array
+        enable:
+          description: >-
+            `true`: Setting enabled to either allow users or block users from
+            specific regions to join your meetings. 
+
+
+            `false`: Setting disabled.
+          type: boolean
+        method:
+          description: >-
+            Specify whether to allow users from specific regions to join this
+            meeting; or block users from specific regions
+            from joining this meeting. 
+
+            `approve`: Allow users from specific regions/countries to join this meeting. If this setting is selected, the approved regions/countries must be included in the `approved_list`.
+
+            `deny`: Block users from specific regions/countries from joining this meeting. If this setting is selected, the approved regions/countries must be included in the `denied_list`
+          enum:
+            - approve
+            - deny
+          type: string
+      type: object
+    ParticipantDetails:
+      properties:
+        email:
+          description: Email address of the participant.
+          format: email
+          type: string
+        name:
+          description: Name of the participant.
+          type: string
+      type: object
+    CustomKeys:
+      properties:
+        key:
+          description: Custom key associated with the user.
+          maxLength: 64
+          type: string
+        value:
+          description: Value of the custom key associated with the user.
+          maxLength: 256
+          type: string
+      type: object
+    GlobalDialInNumbersDetails:
+      properties:
+        city:
+          description: City of the number, if any. For example, Chicago.
+          type: string
+        country:
+          description: Country code. For example, BR.
+          type: string
+        country_name:
+          description: Full name of country. For example, Brazil.
+          type: string
+        number:
+          description: Phone number. For example, +1 2332357613.
+          type: string
+        type:
+          description: "Type of number. "
+          enum:
+            - toll
+            - tollfree
+          type: string
       type: object
     MeetingSettings:
       description: Meeting settings
@@ -2307,44 +5076,7 @@ components:
             - Manually Approve
             - No Registration Required
         approved_or_denied_countries_or_regions:
-          description: >
-            Approve or block users from specific regions/countries from joining
-            this meeting. 
-          properties:
-            approved_list:
-              description: "List of countries/regions from where participants can join this
-                meeting. "
-              items:
-                type: string
-              type: array
-            denied_list:
-              description: "List of countries/regions from where participants can not join
-                this meeting. "
-              items:
-                type: string
-              type: array
-            enable:
-              description: >-
-                `true`: Setting enabled to either allow users or block users from
-                specific regions to join your meetings. 
-
-
-                `false`: Setting disabled.
-              type: boolean
-            method:
-              description: >-
-                Specify whether to allow users from specific regions to join this
-                meeting; or block users from specific regions
-                from joining this meeting. 
-
-                `approve`: Allow users from specific regions/countries to join this meeting. If this setting is selected, the approved regions/countries must be included in the `approved_list`.
-
-                `deny`: Block users from specific regions/countries from joining this meeting. If this setting is selected, the approved regions/countries must be included in the `denied_list`
-              enum:
-                - approve
-                - deny
-              type: string
-          type: object
+          $ref: '#/components/schemas/ApprovedOrDeniedCountriesDetails'
         audio:
           default: both
           description: "Determine how participants can join the audio portion of the  meeting. both : Both Telephony and VoIP, telephony :Telephony only, voip:VoIP only."
@@ -2367,15 +5099,7 @@ components:
           description: The participants added here will receive unique meeting invite
             links and bypass authentication.
           items:
-            properties:
-              email:
-                description: Email address of the participant.
-                format: email
-                type: string
-              name:
-                description: Name of the participant.
-                type: string
-            type: object
+            $ref: '#/components/schemas/ParticipantDetails'
           type: array
         authentication_name:
           description: Authentication name set in the [authentication
@@ -2397,31 +5121,7 @@ components:
             - Record to cloud
             - No Recording
         breakout_room:
-          description: Setting to [pre-assign breakout
-            rooms](https://support.zoom.us/hc/en-us/articles/360032752671-Pre-assigning-participants-to-breakout-rooms#h_36f71353-4190-48a2-b999-ca129861c1f4).
-          properties:
-            enable:
-              description: Set the value of this field to `true` if you would like to enable
-                the [breakout room
-                pre-assign](https://support.zoom.us/hc/en-us/articles/360032752671-Pre-assigning-participants-to-breakout-rooms#h_36f71353-4190-48a2-b999-ca129861c1f4)
-                option.
-              type: boolean
-            rooms:
-              description: Create room(s).
-              items:
-                properties:
-                  name:
-                    description: Name of the breakout room.
-                    type: string
-                  participants:
-                    description: Email addresses of the participants who are to be assigned to the
-                      breakout room.
-                    items:
-                      type: string
-                    type: array
-                type: object
-              type: array
-          type: object
+          $ref: '#/components/schemas/BreakoutRoomSettings'
         close_registration:
           default: false
           description: Close registration after event date
@@ -2439,16 +5139,7 @@ components:
         custom_keys:
           description: Custom keys and values assigned to the meeting.
           items:
-            properties:
-              key:
-                description: Custom key associated with the user.
-                maxLength: 64
-                type: string
-              value:
-                description: Value of the custom key associated with the user.
-                maxLength: 256
-                type: string
-            type: object
+            $ref: '#/components/schemas/CustomKeys'
           maxItems: 10
           type: array
         encryption_type:
@@ -2491,26 +5182,7 @@ components:
         global_dial_in_numbers:
           description: Global Dial-in Countries/Regions
           items:
-            properties:
-              city:
-                description: City of the number, if any. For example, Chicago.
-                type: string
-              country:
-                description: Country code. For example, BR.
-                type: string
-              country_name:
-                description: Full name of country. For example, Brazil.
-                type: string
-              number:
-                description: Phone number. For example, +1 2332357613.
-                type: string
-              type:
-                description: "Type of number. "
-                enum:
-                  - toll
-                  - tollfree
-                type: string
-            type: object
+            $ref: '#/components/schemas/GlobalDialInNumbersDetails'
           type: array
         host_video:
           description: Start video when the host joins the meeting.
@@ -2543,30 +5215,7 @@ components:
             meetings.
           type: boolean
         language_interpretation:
-          description: "Language interpretation for meetings. "
-          properties:
-            enable:
-              type: boolean
-            interpreters:
-              description: Information associated with the interpreter.
-              items:
-                properties:
-                  email:
-                    description: Email address of the interpreter.
-                    format: email
-                    type: string
-                  languages:
-                    description: >-
-                      Languages for interpretation. The string must contain two [country
-                      Ids](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries)
-                      separated by a comma. 
-
-
-                      For example, if the language is to be interpreted from English to Chinese, the value of this field should be "US,CN".
-                    type: string
-                type: object
-              type: array
-          type: object
+          $ref: '#/components/schemas/LanguageInterpretationDetails'
         meeting_authentication:
           description: "`true` - Only authenticated users can join meetings."
           type: boolean
@@ -2752,6 +5401,49 @@ components:
       required:
         - type
       type: object
+    MeetingOccurenceDetails:
+      description: Occurence object. This object is only returned for Recurring Webinars.
+      properties:
+        duration:
+          description: Duration.
+          type: integer
+        occurrence_id:
+          description: "Occurrence ID: Unique Identifier that identifies an occurrence of
+            a recurring webinar. [Recurring
+            webinars](https://support.zoom.us/hc/en-us/arti\
+            cles/216354763-How-to-Schedule-A-Recurring-Webi\
+            nar) can have a maximum of 50 occurrences."
+          type: string
+        start_time:
+          description: Start time.
+          format: date-time
+          type: string
+        status:
+          description: Occurrence status.
+          type: string
+      type: object
+    RequestedMeetingTrackingDetails:
+      properties:
+        field:
+          description: Label of the tracking field.
+          type: string
+        value:
+          description: Value for the field.
+          type: string
+        visible:
+          description: >-
+            Indicates whether the [tracking
+            field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields)
+            is visible in the meeting scheduling options in
+            the Zoom Web Portal or not.
+
+
+            `true`: Tracking field is visible. 
+
+
+            `false`: Tracking field is not visible to the users in the meeting options in the Zoom Web Portal but the field was used while scheduling this meeting via API. An invisible tracking field can be used by users while scheduling meetings via API only. 
+          type: boolean
+      type: object
     RequestedMeetingDetails:
       description: Meeting object
       properties:
@@ -2776,27 +5468,7 @@ components:
         occurrences:
           description: Array of occurrence objects.
           items:
-            description: Occurence object. This object is only returned for Recurring
-              Webinars.
-            properties:
-              duration:
-                description: Duration.
-                type: integer
-              occurrence_id:
-                description: "Occurrence ID: Unique Identifier that identifies an occurrence of
-                  a recurring webinar. [Recurring
-                  webinars](https://support.zoom.us/hc/en-us/arti\
-                  cles/216354763-How-to-Schedule-A-Recurring-Webi\
-                  nar) can have a maximum of 50 occurrences."
-                type: string
-              start_time:
-                description: Start time.
-                format: date-time
-                type: string
-              status:
-                description: Occurrence status.
-                type: string
-            type: object
+            $ref: '#/components/schemas/MeetingOccurenceDetails'
           type: array
         password:
           description: >+
@@ -2839,27 +5511,7 @@ components:
         tracking_fields:
           description: Tracking fields
           items:
-            properties:
-              field:
-                description: Label of the tracking field.
-                type: string
-              value:
-                description: Value for the field.
-                type: string
-              visible:
-                description: >-
-                  Indicates whether the [tracking
-                  field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields)
-                  is visible in the meeting scheduling options in
-                  the Zoom Web Portal or not.
-
-
-                  `true`: Tracking field is visible. 
-
-
-                  `false`: Tracking field is not visible to the users in the meeting options in the Zoom Web Portal but the field was used while scheduling this meeting via API. An invisible tracking field can be used by users while scheduling meetings via API only. 
-                type: boolean
-            type: object
+            $ref: '#/components/schemas/RequestedMeetingTrackingDetails'
           type: array
         type:
           default: 2
@@ -2906,6 +5558,61 @@ components:
       type: object
       required:
         - id
+    MeetingObject:
+      properties:
+        agenda:
+          description: Meeting description. The length of agenda gets truncated to 250
+            characters when you list all meetings for a user. To
+            view the complete agenda of a meeting, retrieve
+            details for a single meeting
+            [here](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meeting).
+          type: string
+        created_at:
+          description: "Time of creation. "
+          format: date-time
+          type: string
+        duration:
+          description: Meeting duration.
+          type: integer
+        host_id:
+          description: ID of the user who is set as the host of the meeting.
+          type: string
+        id:
+          description: Meeting ID - also known as the meeting number in double (int64)
+            format.
+          format: int64
+          type: integer
+        join_url:
+          description: Join URL.
+          type: string
+        start_time:
+          description: Meeting start time.
+          format: date-time
+          type: string
+        timezone:
+          description: "Timezone to format the meeting start time. "
+          type: string
+        topic:
+          description: Meeting topic.
+          type: string
+        type:
+          description: "Meeting Type: 1 - Instant meeting. 2 - Scheduled meeting. 3 - Recurring meeting with no fixed time. 8 - Recurring meeting with fixed time."
+          enum:
+            - 1
+            - 2
+            - 3
+            - 8
+          type: integer
+          x-enum-descriptions:
+            - Instant Meeting
+            - Scheduled Meeting
+            - Recurring Meeting with no fixed time
+            - Recurring Meeting with fixed time
+        uuid:
+          description: Unique Meeting ID. Each meeting instance will generate its own
+            Meeting UUID.
+          type: string
+      type: object
     MeetingList:
       description: List of meetings
       title: Group List
@@ -2914,60 +5621,7 @@ components:
         meetings:
           description: List of Meeting objects.
           items:
-            properties:
-                agenda:
-                  description: Meeting description. The length of agenda gets truncated to 250
-                    characters when you list all meetings for a user. To
-                    view the complete agenda of a meeting, retrieve
-                    details for a single meeting
-                    [here](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meeting).
-                  type: string
-                created_at:
-                  description: "Time of creation. "
-                  format: date-time
-                  type: string
-                duration:
-                  description: Meeting duration.
-                  type: integer
-                host_id:
-                  description: ID of the user who is set as the host of the meeting.
-                  type: string
-                id:
-                  description: Meeting ID - also known as the meeting number in double (int64)
-                    format.
-                  format: int64
-                  type: integer
-                join_url:
-                  description: Join URL.
-                  type: string
-                start_time:
-                  description: Meeting start time.
-                  format: date-time
-                  type: string
-                timezone:
-                  description: "Timezone to format the meeting start time. "
-                  type: string
-                topic:
-                  description: Meeting topic.
-                  type: string
-                type:
-                  description: "Meeting Type: 1 - Instant meeting. 2 - Scheduled meeting. 3 - Recurring meeting with no fixed time. 8 - Recurring meeting with fixed time."
-                  enum:
-                    - 1
-                    - 2
-                    - 3
-                    - 8
-                  type: integer
-                  x-enum-descriptions:
-                    - Instant Meeting
-                    - Scheduled Meeting
-                    - Recurring Meeting with no fixed time
-                    - Recurring Meeting with fixed time
-                uuid:
-                  description: Unique Meeting ID. Each meeting instance will generate its own
-                    Meeting UUID.
-                  type: string
-            type: object
+            $ref: '#/components/schemas/MeetingObject'
           type: array
     MeetingPartcipantsList:
       description: List of meeting participants 

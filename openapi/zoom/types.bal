@@ -14,42 +14,111 @@
 // specific language governing permissions and limitations
 // under the License.
 
+public type RequestedMeetingTrackingDetails record {
+    # Label of the tracking field.
+    string 'field?;
+    # Value for the field.
+    string value?;
+    # Indicates whether the [tracking field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields) is visible in the meeting scheduling options in the Zoom Web Portal or not.
+    boolean visible?;
+};
+
+public type TrackingFields record {
+    # Tracking fields type
+    string 'field?;
+    # Tracking fields value
+    string value?;
+};
+
 # Meeting Registrnats's Details
 public type RegistrantsList record {
     # List of registrant objects.
-    anydata[] registrants?;
+    RegistrantDetails[] registrants?;
 };
 
-# Pagination Object
-public type PaginationObject record {
-    # The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
-    string next_page_token?;
-    # The number of pages returned for the request made.
-    int page_count?;
-    # This field has been deprecated.
-    int page_number?;
-    # The number of records returned with a single API call.
-    int page_size?;
-    # The total number of all the records available across pages.
-    int total_records?;
+public type InterpreterDetails record {
+    # Email address of the interpreter.
+    string email?;
+    # Languages for interpretation. The string must contain two separated by a comma. For example, if the language is to be interpreted from English to Chinese, the value of this field should be US,CN.
+    string languages?;
+};
+
+# Details of the breakout rooms
+public type BreakoutRoomsDetails record {
+    # Name of the breakout room.
+    string name?;
+    # Email addresses of the participants who are to be assigned to the breakout room.
+    string[] participants?;
+};
+
+# Custom Question.
+public type RegistrantCustomQuestion record {
+    # Question title
+    string title?;
+    # Question value
+    string value?;
+};
+
+# List of meeting participants
+public type MeetingPartcipantsList record {
+    # Array of meeting participant objects.
+    WebinarParticipantDetails[] participants?;
+};
+
+# Ended meeting details
+public type EndedMeetingDetails record {
+    # Start time
+    string start_time?;
+    # Meeting UUID. Unique meeting ID. Each meeting instance will generate its own Meeting UUID (i.e., after a meeting ends, a new UUID will be generated for the next instance of the meeting). Please double encode your UUID when using it for API calls if the UUID begins with a '/'or contains '//' in it.
+    string uuid?;
+};
+
+# Poll questions
+public type PollQuestions record {
+    # Possible answers for the question.
+    string[] answers?;
+    # Name of the question.
+    string name?;
+    # Question type:<br>`single` - Single choice<br>`mutliple` - Multiple choice
+    string 'type?;
+};
+
+# Webinar participant's details
+public type WebinarParticipantDetails record {
+    # Universally unique identifier of the Participant. It is the same as the User ID of the participant if the participant joins the meeting by logging into Zoom. If the participant joins the meeting without logging in, the value of this field will be blank.
+    string id;
+    # Participant display name.
+    string name?;
+    # Email address of the user. This field will be returned if the user logged into Zoom to join the meeting.
+    string user_email?;
+};
+
+# Meeting Registrant Questions
+public type RegistrantQuestions record {
+    # Array of Registrant Custom Questions
+    CustomQuestions[] custom_questions?;
+    # Array of Registrant Questions
+    CustomRegistrantQuestions[] questions?;
 };
 
 # Registrant base object
-public type RegistrantBaseObject record {
+public type RegistrantDetails record {
+    # Registrant ID.
+    string id;
     # Registrant's address.
     string address?;
     # Registrant's city.
     string city?;
     # A field that allows registrants to provide any questions or comments that they might have.
     string comments?;
-    # Registrant's country. The value of this field must be in two-letter abbreviated form and must match the ID field provided in the [Countries](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries) table.
+    # Registrant's country.
     string country?;
     # Custom questions.
-    record  { string title?; string value?;} [] custom_questions?;
+    RegistrantCustomQuestion[] custom_questions?;
     # A valid email address of the registrant.
-    string email;
+    string email?;
     # Registrant's first name.
-    string first_name;
+    string first_name?;
     # Registrant's Industry.
     string industry?;
     # Registrant's job title.
@@ -70,39 +139,239 @@ public type RegistrantBaseObject record {
     string state?;
     # Registrant's Zip/Postal Code.
     string zip?;
+    # The time at which the registrant registered.
+    string create_time?;
+    # The URL using which an approved registrant can join the webinar.
+    string join_url?;
+    # The status of the registrant's registration.  `approved`: User has been successfully approved for the webinar. `pending`:  The registration is still pending. `denied`: User has been denied from joining the webinar.
+    string status?;
+};
+
+# Occurence object. This object is only returned for Recurring Webinars.
+public type MeetingOccurenceDetails record {
+    # Duration.
+    int duration?;
+    # Occurrence ID: Unique Identifier that identifies an occurrence of a recurring webinar. [Recurring webinars](https://support.zoom.us/hc/en-us/articles/216354763-How-to-Schedule-A-Recurring-Webinar) can have a maximum of 50 occurrences.
+    string occurrence_id?;
+    # Start time.
+    string start_time?;
+    # Occurrence status.
+    string status?;
+};
+
+# Registrant's details
+public type RestriantDetails record {
+    # Registrant email
+    string email?;
+    # Registrant Id
+    string id;
+};
+
+# Setting to pre-assign breakout rooms
+public type BreakoutRoomSettings record {
+    # Set the value of this field to `true` if you would like to enable the pre-assigned breakout rooms. 
+    boolean enable?;
+    # Create room(s).
+    BreakoutRoomsDetails[] rooms?;
+};
+
+# Answers submitted for poll questions
+public type PollQuestionAnswer record {
+    # Answer submitted by the user.
+    string answer?;
+    # Date and time at which the answer to the poll was submitted.
+    string date_time?;
+    # Unique identifier of the poll.
+    string polling_id?;
+    # Question asked during the poll.
+    string question?;
+};
+
+public type GlobalDialInNumbersDetails record {
+    # City of the number, if any. For example, Chicago.
+    string city?;
+    # Country code. For example, BR.
+    string country?;
+    # Full name of country. For example, Brazil.
+    string country_name?;
+    # Phone number. For example, +1 2332357613.
+    string number?;
+    # Type of number. 
+    string 'type?;
+};
+
+# Language interpretation for meetings. 
+public type LanguageInterpretationDetails record {
+    # Indicate whether or not you would like to enable language interpretation or this meeting.
+    boolean enable?;
+    # Information associated with the interpreter.
+    InterpreterDetails[] interpreters?;
+};
+
+# Meeting participant's details
+public type ParticipantDetails record {
+    # Email address of the participant.
+    string email?;
+    # Name of the participant.
+    string name?;
+};
+
+# Meeting object
+public type RequestedMeetingDetails record {
+    # Agenda
+    string agenda?;
+    # The date and time at which this meeting was created.
+    string created_at?;
+    # Meeting duration.
+    int duration?;
+    # H.323/SIP room system password
+    string h323_password?;
+    # URL for participants to join the meeting. This URL should only be shared with users that you would like to invite for the meeting.
+    string join_url?;
+    # Array of occurrence objects.
+    MeetingOccurenceDetails[] occurrences?;
+    # Meeting password. Password may only contain the following characters: `[a-z A-Z 0-9 @ - _ * !]`
+    string password?;
+    # Personal Meeting Id. Only used for scheduled meetings and recurring meetings with no fixed time.
+    int pmi?;
+    # Recurrence related meeting informations
+    ReccurenceDetails recurrence?;
+    # Meeting settings
+    MeetingSettings settings?;
+    # Meeting start date-time in UTC/GMT. Example: "2020-03-31T12:02:00Z"
+    string start_time?;
+    # URL to start the meeting. This URL should only be used by the host of the meeting and **should not be shared with anyone other than the host** of the meeting as anyone with this URL will be able to login to the Zoom Client as the host of the meeting.
+    string start_url?;
+    # Timezone to format start_time
+    string timezone?;
+    # Meeting topic
+    string topic?;
+    # Tracking fields
+    RequestedMeetingTrackingDetails[] tracking_fields?;
+    # Meeting Type
+    int 'type?;
+};
+
+# Meeting polls
+public type PollDetails record {
+    # Array of Polls
+    PollQuestions[] questions?;
+    # Title for the poll.
+    string title?;
+};
+
+# Approve or block users from specific regions/countries from joining this meeting. 
+public type ApprovedOrDeniedCountriesDetails record {
+    # List of countries/regions from where participants can join this meeting. 
+    string[] approved_list?;
+    # List of countries/regions from where participants can not join this meeting. 
+    string[] denied_list?;
+    # `true`: Setting enabled to either allow users or block users from specific regions to join your meetings. 
+    boolean enable?;
+    # Specify whether to allow users from specific regions to join this meeting; or block users from specific regions from joining this meeting. 
+    string method?;
+};
+
+# Recurrence related meeting informations
+public type ReccurenceDetails record {
+    # Select the final date on which the meeting will recur before it is canceled. Should be in UTC time, such as 2017-11-25T12:00:00Z. (Cannot be used with "end_times".)
+    string end_date_time?;
+    # Select how many times the meeting should recur before it is canceled. (Cannot be used with "end_date_time".)
+    int end_times?;
+    # Use this field **only if you're scheduling a recurring meeting of type** `3` to state which day in a month, the meeting should recur. The value range is from 1 to 31.
+    int monthly_day?;
+    # Use this field **only if you're scheduling a recurring meeting of type** `3` to state the week of the month when the meeting should recur. If you use this field, **you must also use the `monthly_week_day` field to state the day of the week when the meeting should recur.** `-1` - Last week of the month.`1` - First week of the month.`2` - Second week of the month.`3` - Third week of the month.`4` - Fourth week of the month.
+    int monthly_week?;
+    # Use this field **only if you're scheduling a recurring meeting of type** `3` to state a specific day in a week when the monthly meeting should recur. To use this field, you must also use the `monthly_week` field. 
+    int monthly_week_day?;
+    # Define the interval at which the meeting should recur. For instance, if you would like to schedule a meeting that recurs every two months, you must set the value of this field as `2` and the value of the `type` parameter as `3`. 
+    int repeat_interval?;
+    # Recurrence meeting types:`1` - Daily.`2` - Weekly.`3` - Monthly.
+    int 'type;
+    # This field is required **if you're scheduling a recurring meeting of type** `2` to state which day(s) of the week the meeting should repeat.   The value for this field could be a number between `1` to `7` in string format. For instance, if the meeting should recur on Sunday, provide `"1"` as the value of this field. **Note:** If you would like the meeting to occur on multiple days of a week, you should provide comma separated values for this field. For instance, if the meeting should recur on Sundays and Tuesdays provide `"1,3"` as the value of this field.
+    string weekly_days?;
+};
+
+# Detailed meeting information
+public type MeetingObject record {
+    # Meeting description. The length of agenda gets truncated to 250 characters when you list all meetings for a user. To view the complete agenda of a meeting, retrieve details for a single meeting [here](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meeting).
+    string agenda?;
+    # Time of creation. 
+    string created_at?;
+    # Meeting duration.
+    int duration?;
+    # ID of the user who is set as the host of the meeting.
+    string host_id?;
+    # Meeting ID - also known as the meeting number in double (int64) format.
+    int id?;
+    # Join URL.
+    string join_url?;
+    # Meeting start time.
+    string start_time?;
+    # Timezone to format the meeting start time. 
+    string timezone?;
+    # Meeting topic.
+    string topic?;
+    # Meeting Type: 1 - Instant meeting. 2 - Scheduled meeting. 3 - Recurring meeting with no fixed time. 8 - Recurring meeting with fixed time.
+    int 'type?;
+    # Unique Meeting ID. Each meeting instance will generate its own Meeting UUID.
+    string uuid?;
+};
+
+public type CustomKeys record {
+    # Custom key associated with the user.
+    string 'key?;
+    # Value of the custom key associated with the user.
+    string value?;
+};
+
+# Pagination Object
+public type PaginationObject record {
+    # The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
+    string next_page_token?;
+    # The number of pages returned for the request made.
+    int page_count?;
+    # This field has been deprecated.
+    int page_number?;
+    # The number of records returned with a single API call.
+    int page_size?;
+    # The total number of all the records available across pages.
+    int total_records?;
 };
 
 # List of meetings
 public type MeetingList record {
     # List of Meeting objects.
-    record  { # Meeting description. The length of agenda gets truncated to 250 characters when you list all meetings for a user. To view the complete agenda of a meeting, retrieve details for a single meeting [here](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meeting).
-        string agenda?; # Time of creation. 
-        string created_at?; # Meeting duration.
-        int duration?; # ID of the user who is set as the host of the meeting.
-        string host_id?; # Meeting ID - also known as the meeting number in double (int64) format.
-        int id?; # Join URL.
-        string join_url?; # Meeting start time.
-        string start_time?; # Timezone to format the meeting start time. 
-        string timezone?; # Meeting topic.
-        string topic?; # Meeting Type: 1 - Instant meeting. 2 - Scheduled meeting. 3 - Recurring meeting with no fixed time. 8 - Recurring meeting with fixed time.
-        int 'type?; # Unique Meeting ID. Each meeting instance will generate its own Meeting UUID.
-        string uuid?;} [] meetings?;
+    MeetingObject[] meetings?;
 };
 
-# List of meeting participants
-public type MeetingPartcipantsList record {
-    # Array of meeting participant objects.
-    PartcipantDetails[] participants?;
-};
-
-# Participant's details
-public type PartcipantDetails record {
-    # Universally unique identifier of the Participant. It is the same as the User ID of the participant if the participant joins the meeting by logging into Zoom. If the participant joins the meeting without logging in, the value of this field will be blank.
-    string id?;
-    # Participant display name.
+# Answers submitted by users
+public type UserSubmittedAnswers record {
+    # Email address of the user who submitted answers to the poll.
+    string email?;
+    # Name of the user who submitted answers to the poll. If "anonymous" option is enabled for a poll, the participant's polling information will be kept anonymous and the value of `name` field will be "Anonymous Attendee".
     string name?;
-    # Email address of the user. This field will be returned if the user logged into Zoom to join the meeting.
-    string user_email?;
+    # Answers submitted for poll questions
+    PollQuestionAnswer[] question_details?;
+};
+
+# Response received from adding poll quetions
+public type AddPollQuestionsResponse record {
+    # Meeting Poll ID
+    string id;
+    # Answers for poll questions
+    PollQuestions[] questions?;
+    # Status of the Meeting Poll:<br>`notstart` - Poll not started<br>`started` - Poll started<br>`ended` - Poll ended<br>`sharing` - Sharing poll results
+    string status?;
+    # Title for the Poll
+    string title?;
+};
+
+public type CustomRegistrantQuestions record {
+    # Field name of the question.
+    string field_name?;
+    # Indicates whether or not the displayed fields are required to be filled out by registrants.
+    boolean required?;
 };
 
 # Meeting settings
@@ -116,31 +385,21 @@ public type MeetingSettings record {
     # The default value is `2`. To enable registration required, set the approval type to `0` or `1`.  `0` - Automatically approve. `1` - Manually approve. `2` - No registration required.
     int approval_type?;
     # Approve or block users from specific regions/countries from joining this meeting. 
-    record  { # List of countries/regions from where participants can join this meeting. 
-        string[] approved_list?; # List of countries/regions from where participants can not join this meeting. 
-        string[] denied_list?; # `true`: Setting enabled to either allow users or block users from specific regions to join your meetings. 
-        boolean enable?; # Specify whether to allow users from specific regions to join this meeting; or block users from specific regions from joining this meeting. 
-        string method?;}  approved_or_denied_countries_or_regions?;
+    ApprovedOrDeniedCountriesDetails approved_or_denied_countries_or_regions?;
     # Determine how participants can join the audio portion of the  meeting. both : Both Telephony and VoIP, telephony :Telephony only, voip:VoIP only.
     string audio?;
     # If user has configured ["Sign Into Zoom with Specified Domains"](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars#h_5c0df2e1-cfd2-469f-bb4a-c77d7c0cca6f) option, this will list the domains that are authenticated.
     string authentication_domains?;
     # The participants added here will receive unique meeting invite links and bypass authentication.
-    record  { # Email address of the participant.
-        string email?; # Name of the participant.
-        string name?;} [] authentication_exception?;
+    ParticipantDetails[] authentication_exception?;
     # Authentication name set in the [authentication profile](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars#h_5c0df2e1-cfd2-469f-bb4a-c77d7c0cca6f).
     string authentication_name?;
     # Specify the authentication type for users to join a meeting with `meeting_authentication` setting set to `true`. 
     string authentication_option?;
     # Automatic recording: `local` - Record on local. `cloud` - Record on cloud. `none` - Disabled.
     string auto_recording?;
-    # Setting to [pre-assign breakout rooms](https://support.zoom.us/hc/en-us/articles/360032752671-Pre-assigning-participants-to-breakout-rooms#h_36f71353-4190-48a2-b999-ca129861c1f4).
-    record  { # Set the value of this field to `true` if you would like to enable the [breakout room pre-assign](https://support.zoom.us/hc/en-us/articles/360032752671-Pre-assigning-participants-to-breakout-rooms#h_36f71353-4190-48a2-b999-ca129861c1f4) option.
-        boolean enable?; # Create room(s).
-        record  { # Name of the breakout room.
-            string name?; # Email addresses of the participants who are to be assigned to the breakout room.
-            string[] participants?;} [] rooms?;}  breakout_room?;
+    # Setting to pre-assign breakout rooms
+    BreakoutRoomSettings breakout_room?;
     # Close registration after event date
     boolean close_registration?;
     # Host meeting in China.
@@ -150,9 +409,7 @@ public type MeetingSettings record {
     # Contact name for registration
     string contact_name?;
     # Custom keys and values assigned to the meeting.
-    record  { # Custom key associated with the user.
-        string 'key?; # Value of the custom key associated with the user.
-        string value?;} [] custom_keys?;
+    CustomKeys[] custom_keys?;
     # Choose between enhanced encryption and [end-to-end encryption](https://support.zoom.us/hc/en-us/articles/360048660871) when starting or a meeting. When using end-to-end encryption, several features (e.g. cloud recording, phone/SIP/H.323 dial-in) will be **automatically disabled**. The value of this field can be one of the following:
     string encryption_type?;
     # Only signed in users can join this meeting.
@@ -162,12 +419,7 @@ public type MeetingSettings record {
     # List of global dial-in countries
     string[] global_dial_in_countries?;
     # Global Dial-in Countries/Regions
-    record  { # City of the number, if any. For example, Chicago.
-        string city?; # Country code. For example, BR.
-        string country?; # Full name of country. For example, Brazil.
-        string country_name?; # Phone number. For example, +1 2332357613.
-        string number?; # Type of number. 
-        string 'type?;} [] global_dial_in_numbers?;
+    GlobalDialInNumbersDetails[] global_dial_in_numbers?;
     # Start video when the host joins the meeting.
     boolean host_video?;
     # Host meeting in India.
@@ -177,10 +429,7 @@ public type MeetingSettings record {
     # Allow participants to join the meeting before the host starts the meeting. Only used for scheduled or recurring meetings.
     boolean join_before_host?;
     # Language interpretation for meetings. 
-    record  { boolean enable?; # Information associated with the interpreter.
-        record  { # Email address of the interpreter.
-            string email?; # Languages for interpretation. The string must contain two [country Ids](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries) separated by a comma. 
-            string languages?;} [] interpreters?;}  language_interpretation?;
+    LanguageInterpretationDetails language_interpretation?;
     # `true` - Only authenticated users can join meetings.
     boolean meeting_authentication?;
     # Mute participants upon entry.
@@ -203,6 +452,18 @@ public type MeetingSettings record {
     boolean watermark?;
 };
 
+# Approve or block users from specific regions/countries from joining this meeting.
+public type ApprovalAndDenialInfo record {
+    # List of countries/regions from where participants can join this meeting. 
+    string[] approved_list?;
+    # List of countries/regions from where participants can not join this meeting. 
+    string[] denied_list?;
+    # `true`: Setting enabled to either allow users or block users from specific regions to join your meetings.  `false`: Setting disabled.
+    boolean enable?;
+    # Specify whether to allow users from specific regions to join thismeeting; or block users from specific regions from oining this meeting. Values: approve or deny
+    string method?;
+};
+
 # Detailed Meeting Metadata
 public type MeetingFullMetadata record {
     # Unique identifier of the scheduler who scheduled this meeting on behalf of the host. This field is only returned if you used "schedule_for" option in the [Create a Meeting API request](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate).
@@ -215,6 +476,35 @@ public type MeetingFullMetadata record {
     int id?;
     # Unique meeting ID. Each meeting instance will generate its own Meeting UUID (i.e., after a meeting ends, a new UUID will be generated for the next instance of the meeting). You can retrieve a list of UUIDs from past meeting instances using [this API](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/pastmeetings) . Please double encode your UUID when using it for API calls if the UUID begins with a '/'or contains '//' in it.
     string uuid?;
+};
+
+# Template details
+public type TemplateDetails record {
+    # Unique identifier of the template.
+    string id;
+    # Name of the template.
+    string name?;
+    # Type of the template. The value of this field can be one of the following:<br>
+    int 'type?;
+};
+
+public type CustomQuestions record {
+    # Answer choices for the question. Can not be used for `short` question type as this type of question requires registrants to type out the answer.
+    string[] answers?;
+    # Indicates whether or not the custom question is required to be answered by participants or not.
+    boolean required?;
+    # Title of the custom question.
+    string title?;
+    # Type of the question being asked.
+    string 'type?;
+};
+
+#Meeting tracking details
+public type MeetingTrackingDetails record {
+    # Label of the tracking field.
+    string 'field;
+    # Tracking fields value
+    string value?;
 };
 
 # Meeting Metadata
@@ -252,53 +542,8 @@ public type MeetingDetails record {
     # Meeting topic.
     string topic?;
     # Tracking fields
-    record  { # Label of the tracking field.
-        string 'field; # Tracking fields value
-        string value?;} [] tracking_fields?;
+    MeetingTrackingDetails[] tracking_fields?;
     # Meeting Type: 1 - Instant meeting. 2 - Scheduled meeting. 3 - Recurring meeting with no fixed time. 8 - Recurring meeting with fixed time.
-    int 'type?;
-};
-
-# Meeting object
-public type RequestedMeetingDetails record {
-    # Agenda
-    string agenda?;
-    # The date and time at which this meeting was created.
-    string created_at?;
-    # Meeting duration.
-    int duration?;
-    # H.323/SIP room system password
-    string h323_password?;
-    # URL for participants to join the meeting. This URL should only be shared with users that you would like to invite for the meeting.
-    string join_url?;
-    # Array of occurrence objects.
-    record  { # Duration.
-        int duration?; # Occurrence ID: Unique Identifier that identifies an occurrence of a recurring webinar. [Recurring webinars](https://support.zoom.us/hc/en-us/articles/216354763-How-to-Schedule-A-Recurring-Webinar) can have a maximum of 50 occurrences.
-        string occurrence_id?; # Start time.
-        string start_time?; # Occurrence status.
-        string status?;} [] occurrences?;
-    # Meeting password. Password may only contain the following characters: `[a-z A-Z 0-9 @ - _ * !]`
-    string password?;
-    # Personal Meeting Id. Only used for scheduled meetings and recurring meetings with no fixed time.
-    int pmi?;
-    # Recurrence related meeting informations
-    ReccurenceDetails recurrence?;
-    # Meeting settings
-    MeetingSettings settings?;
-    # Meeting start date-time in UTC/GMT. Example: "2020-03-31T12:02:00Z"
-    string start_time?;
-    # URL to start the meeting. This URL should only be used by the host of the meeting and **should not be shared with anyone other than the host** of the meeting as anyone with this URL will be able to login to the Zoom Client as the host of the meeting.
-    string start_url?;
-    # Timezone to format start_time
-    string timezone?;
-    # Meeting topic
-    string topic?;
-    # Tracking fields
-    record  { # Label of the tracking field.
-        string 'field?; # Value for the field.
-        string value?; # Indicates whether the [tracking field](https://support.zoom.us/hc/en-us/articles/115000293426-Scheduling-Tracking-Fields) is visible in the meeting scheduling options in the Zoom Web Portal or not.
-        boolean visible?;} [] tracking_fields?;
-    # Meeting Type
     int 'type?;
 };
 
@@ -315,11 +560,7 @@ public type MeetingSettingsInRequest record {
     # The default value is `2`. To enable registration required, set the approval type to `0` or `1`.  `0` - Automatically approve. `1` - Manually approve. `2` - No registration required.
     int approval_type?;
     # Approve or block users from specific regions/countries from joining this meeting.
-    record  { # List of countries/regions from where participants can join this meeting. 
-        string[] approved_list?; # List of countries/regions from where participants can not join this meeting. 
-        string[] denied_list?; # `true`: Setting enabled to either allow users or block users from specific regions to join your meetings.  `false`: Setting disabled.
-        boolean enable?; # Specify whether to allow users from specific regions to join thismeeting; or block users from specific regions from oining this meeting. Values: approve or deny
-        string method?;}  approved_or_denied_countries_or_regions?;
+    ApprovalAndDenialInfo approved_or_denied_countries_or_regions?;
     # Determine how participants can join the audio portion of the  meeting. both : Both Telephony and VoIP, telephony :Telephony only, voip:VoIP only.
     string audio?;
     # Meeting authentication domains. This option, allows you to specify the rule so that Zoom users, whose email address contains a certain domain, can join the meeting.
@@ -329,11 +570,7 @@ public type MeetingSettingsInRequest record {
     # Automatic recording: local - Record on local.cloud - Record on cloud.none - Disabled.
     string auto_recording?;
     # Setting to pre-assign breakout rooms
-    record  { # Set the value of this field to `true` if you would like to enable the pre-assigned breakout rooms. 
-        boolean enable?; # Create room(s).
-        record  { # Name of the breakout room.
-            string name?; # Email addresses of the participants who are to be assigned to the breakout room.
-            string[] participants?;} [] rooms?;}  breakout_room?;
+    BreakoutRoomSettings breakout_room?;
     # Close registration after event date
     boolean close_registration?;
     # Host meeting in China.
@@ -355,11 +592,7 @@ public type MeetingSettingsInRequest record {
     # Allow participants to join the meeting before the host starts the meeting. This field can only used for scheduled or recurring meetings.
     boolean join_before_host?;
     # Language interpretation for meetings. 
-    record  { # Indicate whether or not you would like to enable language interpretation or this meeting.
-        boolean enable?; # Information associated with the interpreter.
-        record  { # Email address of the interpreter.
-            string email?; # Languages for interpretation. The string must contain two separated by a comma. For example, if the language is to be interpreted from English to Chinese, the value of this field should be US,CN.
-            string languages?;} [] interpreters?;}  language_interpretation?;
+    LanguageInterpretationDetails language_interpretation?;
     # Only authenticated users can join meeting if the value of this field is set to `true`.
     boolean meeting_authentication?;
     # Mute participants upon entry.
@@ -378,24 +611,4 @@ public type MeetingSettingsInRequest record {
     boolean waiting_room?;
     # Add watermark when viewing a shared screen.
     boolean watermark?;
-};
-
-# Recurrence related meeting informations
-public type ReccurenceDetails record {
-    # Select the final date on which the meeting will recur before it is canceled. Should be in UTC time, such as 2017-11-25T12:00:00Z. (Cannot be used with "end_times".)
-    string end_date_time?;
-    # Select how many times the meeting should recur before it is canceled. (Cannot be used with "end_date_time".)
-    int end_times?;
-    # Use this field **only if you're scheduling a recurring meeting of type** `3` to state which day in a month, the meeting should recur. The value range is from 1 to 31.
-    int monthly_day?;
-    # Use this field **only if you're scheduling a recurring meeting of type** `3` to state the week of the month when the meeting should recur. If you use this field, **you must also use the `monthly_week_day` field to state the day of the week when the meeting should recur.** `-1` - Last week of the month.`1` - First week of the month.`2` - Second week of the month.`3` - Third week of the month.`4` - Fourth week of the month.
-    int monthly_week?;
-    # Use this field **only if you're scheduling a recurring meeting of type** `3` to state a specific day in a week when the monthly meeting should recur. To use this field, you must also use the `monthly_week` field. 
-    int monthly_week_day?;
-    # Define the interval at which the meeting should recur. For instance, if you would like to schedule a meeting that recurs every two months, you must set the value of this field as `2` and the value of the `type` parameter as `3`. 
-    int repeat_interval?;
-    # Recurrence meeting types:`1` - Daily.`2` - Weekly.`3` - Monthly.
-    int 'type;
-    # This field is required **if you're scheduling a recurring meeting of type** `2` to state which day(s) of the week the meeting should repeat.   The value for this field could be a number between `1` to `7` in string format. For instance, if the meeting should recur on Sunday, provide `"1"` as the value of this field. **Note:** If you would like the meeting to occur on multiple days of a week, you should provide comma separated values for this field. For instance, if the meeting should recur on Sundays and Tuesdays provide `"1,3"` as the value of this field.
-    string weekly_days?;
 };

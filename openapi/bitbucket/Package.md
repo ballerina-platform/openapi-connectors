@@ -20,6 +20,8 @@ The BitBucket connector consume the data exposed in https://developer.atlassian.
 - Get Pull Request By ID
 - Get Repository Detail
 - Get WorkSpace By ID
+- list Pull Requests
+- list Workspaces
 
 
 ## Compatibility

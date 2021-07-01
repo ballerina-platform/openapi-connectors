@@ -43,8 +43,8 @@ public type GetUpcomingMoviesResponse record {
     int page;
     # Movie List Object
     MovieListObject[] results;
-    # Release date range of movies
-    record  { string maximum?; string minimum?;}  dates;
+    # Release date range
+    ReleaseDateRange dates;
     # Total number of pages
     int total_pages;
     # Total number of results
@@ -60,7 +60,7 @@ public type GetMovieByMovieIdResponse record {
     # Budget of movie
     int budget?;
     # Genres of movie
-    record  { int id?; string name?;} [] genres?;
+    Genre[] genres?;
     # Movie ID
     int id;
     # Original language of movie
@@ -72,15 +72,15 @@ public type GetMovieByMovieIdResponse record {
     # Poster image path
     string? poster_path?;
     # Movie production companies
-    record  { string name?; int id?; string origin_country?;} [] production_companies?;
+    ProductionCompany[] production_companies?;
     # Countries where movie produced
-    record  { string iso_3166_1?; string name?;} [] production_countries?;
+    ProductionCountry[] production_countries?;
     # Release date of movie
     string release_date?;
     # Revenue genereted by movie
     int revenue?;
     # Languages spoken in movie
-    record  { string iso_639_1?; string name?;} [] spoken_languages?;
+    SpokenLanguage[] spoken_languages?;
     # Status of movie
     string status?;
     # Title of movie
@@ -258,7 +258,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

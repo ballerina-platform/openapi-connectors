@@ -1,0 +1,9 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["TMDB", "Movie", "TV Show"]
+org = "ballerinax"
+name = "themoviedb"
+version = "0.1.1"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

@@ -392,21 +392,7 @@ paths:
                     type: array
                     description: Crew details of TV show
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        credit_id:
-                          type: string
-                        name:
-                          type: string
-                        department:
-                          type: string
-                        job:
-                          type: string
-                        profile_path:
-                          type: string
-                          nullable: true
+                      $ref: '#/components/schemas/crew'
                   episode_number:
                     type: integer
                     description: Episode number
@@ -414,21 +400,7 @@ paths:
                     type: array
                     description: Guest stars in TV show
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        name:
-                          type: string
-                        credit_id:
-                          type: string
-                        character:
-                          type: string
-                        order:
-                          type: integer
-                        profile_path:
-                          type: string
-                          nullable: true
+                      $ref: '#/components/schemas/guest-star'
                   name:
                     type: string
                     description: Crew details of TV show

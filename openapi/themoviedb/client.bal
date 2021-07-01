@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 # Please visit [here](https://wwww.themoviedb.org/) and obtain an `API Key` in the settings.
 #

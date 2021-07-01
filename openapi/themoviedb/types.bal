@@ -14,6 +14,40 @@
 // specific language governing permissions and limitations
 // under the License.
 
+# Crew details of TV show
+public type Crew record {
+    # Crew ID
+    int id;
+    # Credit ID of crew
+    string credit_id?;
+    # Name of the crew
+    string name;
+    # Crew department
+    string department?;
+    # Job of the crew
+    string job?;
+    # Profile image path
+    string? profile_path?;
+};
+
+# Production company
+public type ProductionCompany record {
+    # Production company name
+    string name;
+    # Production company ID
+    int id;
+    # Country of production company
+    string? origin_country?;
+};
+
+# Release date range
+public type ReleaseDateRange record {
+    # Maximum date of release
+    string maximum;
+    # Minimum date of release
+    string minimum;
+};
+
 # Movie list object
 public type MovieListObject record {
     # Poster image path
@@ -46,6 +80,30 @@ public type MovieListObject record {
     decimal vote_average?;
 };
 
+# Genere of movie
+public type Genre record {
+    # Genre ID
+    int id;
+    # Genre name
+    string name;
+};
+
+# Guest star details of TV show
+public type GuestStar record {
+    # Guest star ID
+    int id;
+    # Name of the guest star
+    string name;
+    # Credit ID of guest star
+    string credit_id?;
+    # Character of guest star
+    string character?;
+    # Order of guest star
+    string 'order?;
+    # Profile image path
+    string? profile_path?;
+};
+
 # TV list object
 public type TvListObject record {
     # Poster image path
@@ -74,4 +132,20 @@ public type TvListObject record {
     string name;
     # Original name of TV show
     string original_name?;
+};
+
+# Spoken language
+public type SpokenLanguage record {
+    # Standard for representation of languages
+    string iso_639_1;
+    # Spoken language name
+    string name;
+};
+
+# Production country
+public type ProductionCountry record {
+    # Standard for representation of country names
+    string iso_3166_1;
+    # Production country name
+    string name;
 };

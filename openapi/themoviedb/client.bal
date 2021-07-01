@@ -110,11 +110,11 @@ public type GetTvShowEpisodeResponse record {
     # Air date of TV show
     string air_date?;
     # Crew details of TV show
-    record  { int id?; string credit_id?; string name?; string department?; string job?; string? profile_path?;} [] crew;
+    Crew[] crew;
     # Episode number
     int episode_number;
     # Guest stars in TV show
-    record  { int id?; string name?; string credit_id?; string character?; int 'order?; string? profile_path?;} [] guest_stars?;
+    GuestStar[] guest_stars?;
     # Crew details of TV show
     string name;
     # Overview of TV show
@@ -162,7 +162,8 @@ public type SearchTvShowResponse record {
 public client class Client {
     http:Client clientEp;
     map<string|string[]> apiKeys;
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.themoviedb.org/3") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, 
+                                  string serviceUrl = "https://api.themoviedb.org/3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeys = apiKeyConfig.apiKeys;
@@ -258,10 +259,10 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam) returns string|error {
     string[] param = [];
     param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
+    foreach  var [key, value] in queryParam.entries() {
         if  value  is  () {
             _ = queryParam.remove(key);
         } else {

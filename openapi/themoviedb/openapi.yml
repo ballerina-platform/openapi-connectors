@@ -1,0 +1,877 @@
+openapi: 3.0.1
+info:
+  title: The Movie Database (TMDB)
+  description: |-
+    The Movie Database (TMDB) Client object
+  version: "3"
+  x-display:
+    label: The Movie Database (TMDB) Client
+servers:
+- url: https://api.themoviedb.org/3
+paths:
+  /movie/popular:
+    get:
+      summary: Get Popular Movies
+      description: Get a list of the current popular movies on TMDB. This list updates
+        daily.
+      operationId: GET_popular-movies
+      x-display: 
+        label: "Get Popular Movies"
+      responses:
+        200:
+          description: Get popular movies response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
+                properties:
+                  page:
+                    type: integer
+                    description: Specify which page to query
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/movie-list-object'
+                    description: Movie List Object
+                  total_results:
+                    type: integer
+                    description: Total number of results
+                  total_pages:
+                    type: integer
+                    description: Total number of pages
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+      security:
+      - api_key: []
+  /movie/upcoming:
+    get:
+      summary: Get Upcoming Movies
+      description: |-
+        Get a list of upcoming movies in theatres. This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.
+
+        You can optionally specify a `region` prameter which will narrow the search to only look for theatrical release dates within the specified country.
+      operationId: GET_upcoming-movies
+      x-display: 
+        label: "Get Upcoming Movies"
+      responses:
+        200:
+          description: Get upcoming movies response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - dates
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
+                properties:
+                  page:
+                    type: integer
+                    description: Specify which page to query
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/movie-list-object'
+                    description: Movie List Object
+                  dates:
+                    type: object
+                    description: Release date range of movies
+                    $ref: '#/components/schemas/release-date-range'
+                  total_pages:
+                    type: integer
+                    description: Total number of pages
+                  total_results:
+                    description: Total number of results
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+      security:
+      - api_key: []
+  /movie/{movie_id}:
+    get:
+      summary: Get Movie Details
+      description: |-
+        Get the primary information about a movie.
+
+        Supports `append_to_response`. Read more about this [here](#docTextSection:JdZq8ctmcxNqyLQjp).
+
+        #### Recent Changes
+
+        | **Date** | **Change** |
+        | - | - |
+        | November 20, 2020 | A `watch/providers` method has been added to show what providers (eg. streaming) are available and where.|
+      operationId: GET_movie-by-movie_id
+      x-display: 
+        label: "Get Movie Details"
+      parameters:
+      - name: movie_id
+        in: path
+        description: Movie ID
+        required: true
+        schema:
+          type: integer
+        x-display: 
+          label: "Movie ID"
+      responses:
+        200:
+          description: Get movie by movie ID response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - overview
+                  - title
+                properties:
+                  adult:
+                    type: boolean
+                    description: Adult content or not
+                  backdrop_path:
+                    type: string
+                    description: Backdrop image path
+                    nullable: true
+                  budget:
+                    type: integer
+                    description: Budget of movie
+                  genres:
+                    type: array
+                    description: Genres of movie
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/genre'
+                  id:
+                    type: integer
+                    description: Movie ID
+                  original_language:
+                    type: string
+                    description: Original language of movie
+                  original_title:
+                    type: string
+                    description: Original title of movie
+                  popularity:
+                    type: number
+                    description: Popularity of movie
+                  poster_path:
+                    type: string
+                    description: Poster image path
+                    nullable: true
+                  production_companies:
+                    type: array
+                    description: Movie production companies
+                    items:
+                      $ref: '#/components/schemas/production-company'
+                  production_countries:
+                    type: array
+                    description: Countries where movie produced
+                    items:
+                      $ref: '#/components/schemas/production-country'
+                  release_date:
+                    type: string
+                    format: date
+                    description: Release date of movie
+                  revenue:
+                    type: integer
+                    description: Revenue genereted by movie
+                  spoken_languages:
+                    type: array
+                    description: Languages spoken in movie
+                    items:
+                      $ref: '#/components/schemas/spoken-language'
+                  status:
+                    type: string
+                    description: Status of movie
+                    enum:
+                    - Rumored
+                    - Planned
+                    - In Production
+                    - Post Production
+                    - Released
+                    - Canceled
+                  title:
+                    type: string
+                    description: Title of movie
+                  video:
+                    type: boolean
+                    description: Contain videos or not
+                  vote_average:
+                    type: number
+                    description: Vote average
+                  vote_count:
+                    type: integer
+                    description: Vote count
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+      security:
+      - api_key: []
+  /tv/top_rated:
+    get:
+      summary: Get Top Rated
+      description: Get a list of the top rated TV shows on TMDB
+      operationId: GET_top_rated-tv-show
+      x-display: 
+        label: "Get Top Rated TV Shows"
+      responses:
+        200:
+          description: Get top rated TV show response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
+                properties:
+                  page:
+                    type: integer
+                    description: Specify which page to query
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/tv-list-object'
+                    description: TV List Object
+                  total_results:
+                    type: integer
+                    description: Total number of results
+                  total_pages:
+                    type: integer
+                    description: Total number of pages
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+      security:
+      - api_key: []
+  /tv/{tv_id}/season/{season_number}/episode/{episode_number}:
+    get:
+      summary: Get Details
+      description: |-
+        Get the TV episode details by id.
+
+        Supports `append_to_response`. Read more about this [here](#docTextSection:JdZq8ctmcxNqyLQjp).
+
+        #### Recent Changes
+
+        | **Date** | **Change** |
+        | - | - |
+        | June 1, 2018 | Added the [translations](#endpoint:5SFwZar3LkP99QMp7) method. |
+      operationId: GET_tv-show-episode
+      x-display: 
+        label: "Get TV Show Episode"
+      parameters:
+      - name: tv_id
+        in: path
+        description: TV show ID
+        required: true
+        schema:
+          type: integer
+        x-display: 
+          label: "TV Show ID"
+      - name: season_number
+        in: path
+        description: TV show season number
+        required: true
+        schema:
+          type: integer
+        x-display: 
+          label: "Season Number"
+      - name: episode_number
+        in: path
+        description: TV show episode number
+        required: true
+        schema:
+          type: integer
+        x-display: 
+          label: "Episode Number"
+      responses:
+        200:
+          description: Get TV show by details response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - crew
+                  - id
+                  - overview
+                  - name
+                  - season_number
+                  - episode_number
+                properties:
+                  air_date:
+                    type: string
+                    format: date
+                    description: Air date of TV show
+                  crew:
+                    type: array
+                    description: Crew details of TV show
+                    items:
+                      $ref: '#/components/schemas/crew'
+                  episode_number:
+                    type: integer
+                    description: Episode number
+                  guest_stars:
+                    type: array
+                    description: Guest stars in TV show
+                    items:
+                      $ref: '#/components/schemas/guest-star'
+                  name:
+                    type: string
+                    description: Crew details of TV show
+                  overview:
+                    type: string
+                    description: Overview of TV show
+                  id:
+                    type: integer
+                    description: TV show ID
+                  season_number:
+                    type: integer
+                    description: Season number
+                  still_path:
+                    type: string
+                    nullable: true
+                    description: Still path
+                  vote_average:
+                    type: number
+                    description: Vote average
+                  vote_count:
+                    type: integer
+                    description: Vote count
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+      security:
+      - api_key: []
+  /search/movie:
+    get:
+      summary: Search Movies
+      description: Search for movies
+      operationId: search-movie
+      x-display: 
+        label: "Search Movies"
+      parameters:
+      - name: query
+        in: query
+        description: Text query to search
+        required: true
+        schema:
+          type: string
+        x-display: 
+          label: "Search Text Query"
+      - name: year
+        in: query
+        description: Release year of movie
+        schema:
+          type: integer
+        x-display: 
+          label: "Movie Release Year"
+      responses:
+        200:
+          description: Search movie response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
+                properties:
+                  page:
+                    type: integer
+                    description: Specify which page to query
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/movie-list-object'
+                    description: Movie List Object
+                  total_results:
+                    type: integer
+                    description: Total number of results
+                  total_pages:
+                    type: integer
+                    description: Total number of pages
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+      security:
+      - api_key: []
+  /search/tv:
+    get:
+      summary: Search TV Shows
+      description: Search for a TV show
+      operationId: search-tv-show
+      x-display: 
+        label: "Search TV Shows"
+      parameters:
+      - name: query
+        in: query
+        description: Text query to search
+        required: true
+        schema:
+          type: string
+        x-display: 
+          label: "Search Text Query"
+      - name: firstAirDateYear
+        in: query
+        description: First air date
+        schema:
+          type: integer
+        x-display: 
+          label: "First Air Date"
+      responses:
+        200:
+          description: Search TV show response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - page
+                  - results
+                  - total_results
+                  - total_pages
+                properties:
+                  page:
+                    type: integer
+                    description: Specify which page to query
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/tv-list-object'
+                    description: TV List Object
+                  total_results:
+                    type: integer
+                    description: Total number of results
+                  total_pages:
+                    type: integer
+                    description: Total number of pages
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_message:
+                    type: string
+                  status_code:
+                    type: integer
+      security:
+      - api_key: []
+components:
+  schemas:
+    movie-list-object:
+      title: Movie List Object
+      type: object
+      description: Movie list object
+      required:
+        - id
+        - overview
+        - title
+      properties:
+        poster_path:
+          type: string
+          description: Poster image path
+          nullable: true
+        adult:
+          type: boolean
+          description: Adult content or not
+        overview:
+          type: string
+          description: Overview of movie
+        release_date:
+          type: string
+          description: Release date
+        genre_ids:
+          type: array
+          description: Genre IDs of movie
+          items:
+            type: integer
+        id:
+          type: integer
+          description: Movie ID
+        original_title:
+          type: string
+          description: Original title
+        original_language:
+          type: string
+          description: Original language
+        title:
+          type: string
+          description: Title of movie
+        backdrop_path:
+          type: string
+          description: Backdrop image path
+          nullable: true
+        popularity:
+          type: number
+          description: Popularity of movie 
+        vote_count:
+          type: integer
+          description: Vote count
+        video:
+          type: boolean
+          description: Video available or not
+        vote_average:
+          type: number
+          description: Vote average
+    tv-list-object:
+      title: TV List Object
+      type: object
+      description: TV list object
+      required:
+        - id
+        - overview
+        - name
+      properties:
+        poster_path:
+          type: string
+          description: Poster image path
+          nullable: true
+        popularity:
+          type: number
+          description: Popularity of TV show 
+        id:
+          type: integer
+          description: TV show ID
+        backdrop_path:
+          type: string
+          description: Backdrop image path
+          nullable: true
+        vote_average:
+          type: number
+          description: Vote average
+        overview:
+          type: string
+          description: Overview of TV show 
+        first_air_date:
+          type: string
+          description: First air date of TV show 
+        origin_country:
+          type: array
+          description: Origin country
+          items:
+            type: string
+        genre_ids:
+          type: array
+          description: Genre IDs of TV show 
+          items:
+            type: integer
+        original_language:
+          type: string
+          description: Original language
+        vote_count:
+          type: integer
+          description: Vote count
+        name:
+          type: string
+          description: Name
+        original_name:
+          type: string
+          description: Original name of TV show    
+    release-date-range:
+      required:
+        - maximum
+        - minimum
+      title: Release Date Range
+      type: object
+      description: Release date range
+      properties:
+        maximum:
+          type: string
+          description: Maximum date of release
+        minimum:
+          type: string
+          description: Minimum date of release
+    genre:
+      required:
+        - name
+        - id
+      title: Genere Of Movie
+      type: object
+      description: Genere of movie
+      properties:
+        id:
+          type: integer
+          description: Genre ID
+        name:
+          type: string
+          description: Genre name
+    production-company:
+      required:
+        - name
+        - id
+      title: Production Company
+      type: object
+      description: Production company
+      properties:
+        name:
+          type: string
+          description: Production company name
+        id:
+          type: integer
+          description: Production company ID
+        origin_country:
+          type: string
+          description: Country of production company
+          nullable: true
+    production-country:
+      required:
+        - iso_3166_1
+        - name
+      title: Production Country
+      type: object
+      description: Production country
+      properties:
+        iso_3166_1:
+          type: string
+          description: Standard for representation of country names
+        name:
+          type: string
+          description: Production country name
+    spoken-language:
+      required:
+        - iso_639_1
+        - name
+      title: Spoken Language
+      type: object
+      description: Spoken language
+      properties:
+        iso_639_1:
+          type: string
+          description: Standard for representation of languages
+        name:
+          type: string
+          description: Spoken language name
+    crew:
+      required:
+        - id
+        - name
+      title: Crew Details Of TV Show
+      type: object
+      description: Crew details of TV show
+      properties:
+        id:
+          type: integer
+          description: Crew ID
+        credit_id:
+          type: string
+          description: Credit ID of crew
+        name:
+          type: string
+          description: Name of the crew
+        department:
+          type: string
+          description: Crew department
+        job:
+          type: string
+          description: Job of the crew
+        profile_path:
+          type: string
+          description: Profile image path
+          nullable: true
+    guest-star:
+      required:
+        - id
+        - name
+      title: Guest Star Details Of TV Show
+      type: object
+      description: Guest star details of TV show
+      properties:
+        id:
+          type: integer
+          description: Guest star ID
+        name:
+          type: string
+          description: Name of the guest star
+        credit_id:
+          type: string
+          description: Credit ID of guest star
+        character:
+          type: string
+          description: Character of guest star
+        order:
+          type: string
+          description: Order of guest star
+        profile_path:
+          type: string
+          description: Profile image path
+          nullable: true
+  responses:
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status_code:
+                type: integer
+              status_message:
+                type: string
+    404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status_message:
+                type: string
+              status_code:
+                type: integer
+  parameters:
+    session_id:
+      name: session_id
+      in: query
+      required: true
+      schema:
+        type: string
+    guest_session_id:
+      name: guest_session_id
+      in: query
+      schema:
+        type: string
+  securitySchemes:
+    api_key:
+      type: apiKey
+      description: API key to authorize requests
+      name: api_key
+      in: query

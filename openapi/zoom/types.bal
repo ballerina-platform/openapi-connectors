@@ -78,9 +78,9 @@ public type PollQuestions record {
     # Possible answers for the question.
     string[] answers?;
     # Name of the question.
-    string name?;
+    string name;
     # Question type:<br>`single` - Single choice<br>`mutliple` - Multiple choice
-    string 'type?;
+    string 'type;
 };
 
 # Webinar participant's details
@@ -116,9 +116,9 @@ public type RegistrantDetails record {
     # Custom questions.
     RegistrantCustomQuestion[] custom_questions?;
     # A valid email address of the registrant.
-    string email?;
+    string email;
     # Registrant's first name.
-    string first_name?;
+    string first_name;
     # Registrant's Industry.
     string industry?;
     # Registrant's job title.
@@ -160,7 +160,7 @@ public type MeetingOccurenceDetails record {
 };
 
 # Registrant's details
-public type RestriantDetails record {
+public type SimplifiedRegistrantDetails record {
     # Registrant email
     string email?;
     # Registrant Id
@@ -182,9 +182,9 @@ public type PollQuestionAnswer record {
     # Date and time at which the answer to the poll was submitted.
     string date_time?;
     # Unique identifier of the poll.
-    string polling_id?;
+    string polling_id;
     # Question asked during the poll.
-    string question?;
+    string question;
 };
 
 public type GlobalDialInNumbersDetails record {
@@ -195,7 +195,7 @@ public type GlobalDialInNumbersDetails record {
     # Full name of country. For example, Brazil.
     string country_name?;
     # Phone number. For example, +1 2332357613.
-    string number?;
+    string number;
     # Type of number. 
     string 'type?;
 };
@@ -211,7 +211,7 @@ public type LanguageInterpretationDetails record {
 # Meeting participant's details
 public type ParticipantDetails record {
     # Email address of the participant.
-    string email?;
+    string email;
     # Name of the participant.
     string name?;
 };
@@ -221,17 +221,17 @@ public type RequestedMeetingDetails record {
     # Agenda
     string agenda?;
     # The date and time at which this meeting was created.
-    string created_at?;
+    string created_at;
     # Meeting duration.
     int duration?;
     # H.323/SIP room system password
     string h323_password?;
     # URL for participants to join the meeting. This URL should only be shared with users that you would like to invite for the meeting.
-    string join_url?;
+    string join_url;
     # Array of occurrence objects.
     MeetingOccurenceDetails[] occurrences?;
     # Meeting password. Password may only contain the following characters: `[a-z A-Z 0-9 @ - _ * !]`
-    string password?;
+    string password;
     # Personal Meeting Id. Only used for scheduled meetings and recurring meetings with no fixed time.
     int pmi?;
     # Recurrence related meeting informations
@@ -239,13 +239,13 @@ public type RequestedMeetingDetails record {
     # Meeting settings
     MeetingSettings settings?;
     # Meeting start date-time in UTC/GMT. Example: "2020-03-31T12:02:00Z"
-    string start_time?;
+    string start_time;
     # URL to start the meeting. This URL should only be used by the host of the meeting and **should not be shared with anyone other than the host** of the meeting as anyone with this URL will be able to login to the Zoom Client as the host of the meeting.
     string start_url?;
     # Timezone to format start_time
     string timezone?;
     # Meeting topic
-    string topic?;
+    string topic;
     # Tracking fields
     RequestedMeetingTrackingDetails[] tracking_fields?;
     # Meeting Type
@@ -257,7 +257,7 @@ public type PollDetails record {
     # Array of Polls
     PollQuestions[] questions?;
     # Title for the poll.
-    string title?;
+    string title;
 };
 
 # Approve or block users from specific regions/countries from joining this meeting. 
@@ -301,13 +301,13 @@ public type MeetingObject record {
     # Meeting duration.
     int duration?;
     # ID of the user who is set as the host of the meeting.
-    string host_id?;
+    string host_id;
     # Meeting ID - also known as the meeting number in double (int64) format.
-    int id?;
+    int id;
     # Join URL.
-    string join_url?;
+    string join_url;
     # Meeting start time.
-    string start_time?;
+    string start_time;
     # Timezone to format the meeting start time. 
     string timezone?;
     # Meeting topic.
@@ -473,7 +473,7 @@ public type MeetingFullMetadata record {
     # ID of the user who is set as host of meeting.
     string host_id?;
     # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
-    int id?;
+    int id;
     # Unique meeting ID. Each meeting instance will generate its own Meeting UUID (i.e., after a meeting ends, a new UUID will be generated for the next instance of the meeting). You can retrieve a list of UUIDs from past meeting instances using [this API](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/pastmeetings) . Please double encode your UUID when using it for API calls if the UUID begins with a '/'or contains '//' in it.
     string uuid?;
 };

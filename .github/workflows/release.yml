@@ -32,7 +32,7 @@ jobs:
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: release/file-update
-          base: main
+          base: slalpha5
           title: Update file hashes
           body: |
             Update file hashes

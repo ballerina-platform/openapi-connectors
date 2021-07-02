@@ -4,7 +4,7 @@ name: CI
 on:
   pull_request:
     branches:
-      - main
+      - slalpha5
     types:
       - opened
       

@@ -4,7 +4,7 @@ keywords = ["world bank", "world bank indicators"]
 org = "ballerinax"
 name = "worldbank"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.5.1"
+version = "0.7.0-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

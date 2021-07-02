@@ -25,6 +25,7 @@ import  ballerina/lang.'string;
 public client class Client {
     http:Client clientEp;
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://disease.sh") returns error? {
+        clientConfig.cache.enabled = false; // TODO: A temporary fix for the OOM, please remove after fixing the ballerina/http
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
     }

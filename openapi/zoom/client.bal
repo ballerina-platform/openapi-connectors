@@ -51,9 +51,9 @@ public type CompoundAddMeetingRegistrantRequest record {
     # Custom questions.
     RegistrantCustomQuestion[] custom_questions?;
     # A valid email address of the registrant.
-    string email?;
+    string email;
     # Registrant's first name.
-    string first_name?;
+    string first_name;
     # Registrant's Industry.
     string industry?;
     # Registrant's job title.
@@ -79,7 +79,7 @@ public type CompoundAddMeetingRegistrantRequest record {
 # Add meeting registrant respond
 public type AddMeetingRegistrantResponse record {
     # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
-    int id?;
+    int id;
     # Unique URL for this registrant to join the meeting. This URL should only be shared with the registrant for whom the API request was made.
     string join_url?;
     # Unique identifier of the registrant.
@@ -94,7 +94,7 @@ public type UpdateMeetingRegistrantStatusRequest record {
     # Registrant Status:<br>`approve` - Approve registrant.<br>`cancel` - Cancel previously approved registrant's registration.<br>`deny` - Deny registrant.
     string action;
     # List of registrants.
-    RestriantDetails[] registrants?;
+    SimplifiedRegistrantDetails[] registrants?;
 };
 
 public type CompoundGetMeetingByIdResponse record {
@@ -145,7 +145,7 @@ public type ListPastMeetingsResponse record {
 # **HTTP Status Code:** `200` **OK**. Polls returned successfully.
 public type ListPastMeetingPollsResponse record {
     # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
-    int id?;
+    int id;
     # Answers submitted by users.
     UserSubmittedAnswers[] questions?;
     # The start time of the meeting.
@@ -163,7 +163,7 @@ public type GetPastMeetingDetailsResponse record {
     # Host ID.
     string host_id?;
     # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
-    int id?;
+    int id;
     # Number of meeting participants.
     int participants_count?;
     # Meeting start time (GMT).
@@ -260,15 +260,15 @@ public type GetLiveStreamDetailsResponse record {
     # Live streaming page URL. This is the URL using which anyone can view the live stream of the meeting.
     string page_url?;
     # Stream Key.
-    string stream_key?;
+    string stream_key;
     # Stream URL.
-    string stream_url?;
+    string stream_url;
 };
 
 # Meeting
 public type UpdateMeetingLiveStreamRequest record {
     # The livestream page URL.
-    string page_url?;
+    string page_url;
     # Stream name and key.
     string stream_key;
     # Streaming URL.

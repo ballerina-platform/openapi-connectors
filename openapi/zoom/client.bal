@@ -23,16 +23,19 @@ public type ClientConfig record {
     http:ClientSecureSocket secureSocketConfig?;
 };
 
+# List of meetings
 public type CompoundListMeetingsResponse record {
     *PaginationObject;
     *MeetingList;
 };
 
+# Response received from meeting creation
 public type CompoundCreateMeetingResponse record {
     *MeetingMetadata;
     *RequestedMeetingDetails;
 };
 
+# List of meeting registrants
 public type CompoundListMeetingRegistrantsResponse record {
     *PaginationObject;
     *RegistrantsList;
@@ -90,6 +93,7 @@ public type AddMeetingRegistrantResponse record {
     string topic?;
 };
 
+# Meeting registrant update request
 public type UpdateMeetingRegistrantStatusRequest record {
     # Registrant Status:<br>`approve` - Approve registrant.<br>`cancel` - Cancel previously approved registrant's registration.<br>`deny` - Deny registrant.
     string action;
@@ -97,6 +101,7 @@ public type UpdateMeetingRegistrantStatusRequest record {
     SimplifiedRegistrantDetails[] registrants?;
 };
 
+# Meeting details 
 public type CompoundGetMeetingByIdResponse record {
     *MeetingFullMetadata;
     *RequestedMeetingDetails;
@@ -136,13 +141,13 @@ public type UpdateMeetingStatusRequest record {
     string action?;
 };
 
-# **HTTP Status Code:** `200`. List of ended meeting instances returned.
+# List of ended meeting instances returned. **HTTP Status Code:** `200`. 
 public type ListPastMeetingsResponse record {
     # List of ended meeting instances.
     EndedMeetingDetails[] meetings?;
 };
 
-# **HTTP Status Code:** `200` **OK**. Polls returned successfully.
+# Polls returned successfully. **HTTP Status Code:** `200` **OK**. 
 public type ListPastMeetingPollsResponse record {
     # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
     int id;
@@ -154,7 +159,7 @@ public type ListPastMeetingPollsResponse record {
     string uuid?;
 };
 
-# **HTTP Status Code:** `200`. Meeting details returned.
+# Meeting details returned. **HTTP Status Code:** `200`. 
 public type GetPastMeetingDetailsResponse record {
     # Meeting duration.
     int duration?;
@@ -182,12 +187,13 @@ public type GetPastMeetingDetailsResponse record {
     string uuid?;
 };
 
+# List of past meeting participants
 public type CompoundListPastMeetingParticipantsResponse record {
     *PaginationObject;
     *MeetingPartcipantsList;
 };
 
-# **HTTP Status Code:**. List polls of a Meeting  returned
+# List polls of a Meeting  returned. **HTTP Status Code:**.
 public type GetMeetingPollsResponse record {
     # Array of Polls
     PollDetails[] polls?;
@@ -203,7 +209,7 @@ public type CreateMeetingPollRequest record {
     string title?;
 };
 
-# Poll
+# Response received from poll creation
 public type CompoundCreateMeetingPollResponse record {
     # Meeting Poll ID
     string id?;
@@ -215,7 +221,7 @@ public type CompoundCreateMeetingPollResponse record {
     string title?;
 };
 
-# Poll
+# Meeting poll details
 public type CompoundGetMeetingPollResponse record {
     # Meeting Poll ID
     string id?;
@@ -227,7 +233,7 @@ public type CompoundGetMeetingPollResponse record {
     string title?;
 };
 
-# Poll
+# Updated poll request 
 public type CompoundUpdateMeetingPollRequest record {
     # Array of Polls
     PollQuestions[] questions?;
@@ -235,7 +241,7 @@ public type CompoundUpdateMeetingPollRequest record {
     string title?;
 };
 
-# Batch Meeting poll object
+# Batch meeting poll object
 public type CreateBatchPollsRequest record {
     # Array of Poll Questions
     PollQuestions[] questions?;
@@ -243,19 +249,19 @@ public type CreateBatchPollsRequest record {
     string title?;
 };
 
-# **HTTP Status Code:** `201`. Meeting Poll Created
+# Meeting poll created. **HTTP Status Code:** `201`. 
 public type CreateBatchPollsResponse record {
     # create batch poll response
     AddPollQuestionsResponse[] polls?;
 };
 
-# **HTTP Status Code:** `200`<br>
+# Meeting invitation. **HTTP Status Code:** `200`.
 public type GetMeetingInvitationResponse record {
     # Meeting invitation.
     string invitation?;
 };
 
-# **HTTP Status Code:** `200` **OK**.  Live Stream details returned.
+# Live Stream details returned. **HTTP Status Code:** `200` **OK**.  
 public type GetLiveStreamDetailsResponse record {
     # Live streaming page URL. This is the URL using which anyone can view the live stream of the meeting.
     string page_url?;
@@ -265,7 +271,7 @@ public type GetLiveStreamDetailsResponse record {
     string stream_url;
 };
 
-# Meeting
+# Meeting live stream update request. 
 public type UpdateMeetingLiveStreamRequest record {
     # The livestream page URL.
     string page_url;
@@ -275,6 +281,7 @@ public type UpdateMeetingLiveStreamRequest record {
     string stream_url;
 };
 
+# List of webinar registrants  
 public type CompoundListWebinarRegistrantsResponse record {
     *PaginationObject;
     *RegistrantsList;
@@ -294,12 +301,13 @@ public type ListWebinarParticipantsResponse record {
     int total_records?;
 };
 
+# List of webinar absentees  
 public type CompoundListWebinarAbsenteesResponse record {
     *PaginationObject;
     *RegistrantsList;
 };
 
-# **HTTP Status Code:** `200` **OK**
+# List of meeting templates. **HTTP Status Code:** `200` **OK**
 public type ListMeetingTemplatesResponse record {
     # template details
     TemplateDetails[] templates?;

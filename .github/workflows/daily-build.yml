@@ -1,0 +1,32 @@
+name: Daily build
+
+# Controls when the action will run.
+on: 
+  schedule:
+    - cron: '30 2 * * *'
+
+jobs:
+  dailyBuild:
+    runs-on: ubuntu-latest
+    container:
+      image: ballerina/ballerina:swan-lake-beta1
+      options: --user root
+    steps:
+      - uses: actions/checkout@v1 
+      - name: Build with Gradle
+        env:
+          BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
+          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          GRADLE_USER_HOME: ~/.gradle
+        run: |
+          ./gradlew build -Prelease=false -Premote=true -Ppublishing=false
+
+      - name: Publish Github Package
+        env:
+          packageUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
+          packagePAT: ${{ secrets.BALLERINA_BOT_TOKEN }}
+          publishUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
+          publishPAT: ${{ secrets.CONNECTOR_PUBLISH_PAT }}
+          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+        run: |
+          ./gradlew publish -Prelease=false -Premote=true -Ppublishing=true   

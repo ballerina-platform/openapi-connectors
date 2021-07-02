@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+# Meeting tracking details
 public type RequestedMeetingTrackingDetails record {
     # Label of the tracking field.
     string 'field?;
@@ -23,6 +24,7 @@ public type RequestedMeetingTrackingDetails record {
     boolean visible?;
 };
 
+# Meeting tracking fields 
 public type TrackingFields record {
     # Tracking fields type
     string 'field?;
@@ -36,6 +38,7 @@ public type RegistrantsList record {
     RegistrantDetails[] registrants?;
 };
 
+# Interpreter details 
 public type InterpreterDetails record {
     # Email address of the interpreter.
     string email?;
@@ -488,6 +491,7 @@ public type TemplateDetails record {
     int 'type?;
 };
 
+# List of custom questions 
 public type CustomQuestions record {
     # Answer choices for the question. Can not be used for `short` question type as this type of question requires registrants to type out the answer.
     string[] answers?;

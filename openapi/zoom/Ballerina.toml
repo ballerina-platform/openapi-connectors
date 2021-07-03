@@ -4,7 +4,7 @@ keywords = ["zoom", "zoom meetings", "zoom webinars"]
 org = "ballerinax"
 name = "zoom"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.3.0-SNAPSHOT"
+version = "0.3.1-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

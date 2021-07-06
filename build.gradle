@@ -119,23 +119,6 @@ if (isPublishing){
 
 // Temporarily added.
 task codeBuild {
-    // if (project.hasProperty("remote") ) {
-        // Pulling slalpha5 distribution if not available
-        // if (remote) {
-        //     exec {
-        //         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
-        //     }
-
-        //     exec {
-        //         commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
-        //     }
-
-        //     // Changing the build distribution to SL Alpha5
-        //     exec {
-        //         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
-        //     }
-        // }
-    // }
 
     for (String path : updatedBallerinaPackages) {
         Utils.removeSnapshotSuffixFromVersion(path);
@@ -180,18 +163,17 @@ task releaseConnector {
 }
 
 // Daily build configurations
-def packageOrg = "ballerinax"
-def platform = "java11"
-def artifactCacheParent = file("${project.projectDir}/build/cache_parent/")
-
-def packageName = "";
-def packageVersion = "";
 
 task copyDistribution {
+
+    def packageOrg = "ballerinax"
+    def platform = "java11"
+    def artifactCacheParent = file("${project.projectDir}/build/cache_parent/")
+
     if (isPublishing) {
         for(String packagePath: ballerinaPackages) {
-            packageName = Utils.getPackageName(packagePath);
-            packageVersion = Utils.getPackageVersion(packagePath);
+            def packageName = Utils.getPackageName(packagePath);
+            def packageVersion = Utils.getPackageVersion(packagePath);
             mkdir "${project.projectDir}/openapi/${packageName}/target/bala"
             def pathToBala = file("${project.projectDir}/openapi/${packageName}/target/bala")
 
@@ -215,7 +197,7 @@ task copyDistribution {
 
 task createArtifactZip(type: Zip) {
     if (isPublishing){
-        println("Create Zip Artifact");
+        println("Creating Zip Artifact");
         from "${buildDir}/cache_parent"
         archiveName 'distribution.zip'
         destinationDir(file("${buildDir}/distribution"))
@@ -224,7 +206,7 @@ task createArtifactZip(type: Zip) {
 
 publishing {
     if (isPublishing){
-        println("Package published");
+        println("Publishing Packages");
         publications {
             mavenJava(MavenPublication) {
                 artifact source: createArtifactZip, extension: 'zip'

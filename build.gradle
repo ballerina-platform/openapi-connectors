@@ -119,26 +119,25 @@ if (isPublishing){
 
 // Temporarily added.
 task codeBuild {
-    if (project.hasProperty("remote") ) {
+    // if (project.hasProperty("remote") ) {
         // Pulling slalpha5 distribution if not available
-        if (remote) {
-            exec {
-                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
-            }
+        // if (remote) {
+        //     exec {
+        //         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
+        //     }
 
-            exec {
-                commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
-            }
+        //     exec {
+        //         commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
+        //     }
 
-            // Changing the build distribution to SL Alpha5
-            exec {
-                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
-            }
-        }
-    }
+        //     // Changing the build distribution to SL Alpha5
+        //     exec {
+        //         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
+        //     }
+        // }
+    // }
 
     for (String path : updatedBallerinaPackages) {
-        print "Code building..."
         Utils.removeSnapshotSuffixFromVersion(path);
         exec {
             commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"

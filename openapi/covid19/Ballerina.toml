@@ -4,7 +4,7 @@ keywords = ["covid19", "covid19 vaccine"]
 org = "ballerinax"
 name = "covid19"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.7.0-SNAPSHOT"
+version = "0.7.1-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

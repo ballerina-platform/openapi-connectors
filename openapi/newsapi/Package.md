@@ -7,8 +7,8 @@ Connects to News API from Ballerina
 |       News API Version        |         **V2**        |
 
 ### Package Overview
-The <jira> is a [Ballerina](https://ballerina.io/) connector for Jira.
-This package provides the capability to easily access Jira.
+The <newsapi> is a [Ballerina](https://ballerina.io/) connector for News API.
+This package provides the capability to easily access News API.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 ### Useful Links

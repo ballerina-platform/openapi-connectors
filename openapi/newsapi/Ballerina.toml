@@ -1,0 +1,9 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["News API", "Headlines", "Articles", "News"]
+org = "ballerinax"
+name = "newsapi"
+version = "0.1.1"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

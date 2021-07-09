@@ -10,7 +10,7 @@ News API connector consume the data exposed in https://newsapi.org/v2. It is sup
 
 ### Prerequisites
 
-	* News API Account
+- News API Account
 
 ### Obtaining tokens
 
@@ -58,8 +58,7 @@ newsapi:Client myclient = check new newsapi:Client(config, {}, "https://newsapi.
 ```
 #### Step 3: Get top headlines
 ```ballerina
-    newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
-    log:printInfo(result.toString());
+newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
 ```
 
 ## Snippets
@@ -67,16 +66,13 @@ Snippets of some operations.
 
 ### Get top articles
 ```ballerina
-    newsapi:WSNewsTopHeadlineResponse articleResult = check myclient->listArticles(1, 5, domains="bbc.co.uk");
-    log:printInfo(articleResult.toString());    
+newsapi:WSNewsTopHeadlineResponse articleResult = check myclient->listArticles(1, 5, domains="bbc.co.uk");
 ```
 ### Get top headlines
 ```ballerina
-    newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
-    log:printInfo(result.toString());
+newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
 ```
 ### Get sources
 ```ballerina
-    newsapi:WSNewsSourcesResponse result = check myclient->listSources(country="us");
-    log:printInfo(result.toString());
+newsapi:WSNewsSourcesResponse result = check myclient->listSources(country="us");
 ```

@@ -1,0 +1,432 @@
+openapi: 3.0.0
+info:
+  title: News API - "News(articles, headlines and sources) across world from https://newsapi.org/v2"
+  description: Client endpoint for News API
+  version: 2.0.0
+  x-display:
+    label: News API Client
+servers:
+- url: https://newsapi.org/v2
+paths:
+  /sources:
+    get:
+      summary: Returns a list of news sources or blogs
+      description: This operation returns subset of news publishers that top headlines
+      operationId: listSources
+      x-display:
+        label: "List News Sources"
+      parameters: 
+        - in: query
+          name: language
+          description: 'Find sources that display news in a specific language. 
+                        Possible options: ar de en es fr he it nl no pt ru se ud zh. Default: all languages'
+          schema: 
+            type: string
+            enum: [ar,de,en,es,fr,he,it,nl,no,pt,ru,se,ud,zh]
+          x-display: 
+            label: "Language"
+        - in: query
+          name: country
+          description: 'Find sources that display news in a specific country. Default: all countries'
+          schema: 
+            type: string
+            enum: [ae, ar, at, au, be, bg, br, ca, ch, cn, co, cu, cz, de, eg, es, fr, gb, gr, hk, hu, id, ie, il, in, it, is, jp, kr, lt, lv, ma, mx, my, ng, nl, no, nz, ph, pk, pl, pt, ro, rs, ru, sa, se, sg, si, sk, th, tr, tw, ua, us, ve, za, zh]
+          x-display: 
+            label: "Country"
+        - in: query
+          name: category
+          description: 'Find sources that display news of this category. Default: all categories'
+          schema: 
+            type: string
+            enum: 
+              - business
+              - entertainment
+              - general
+              - health
+              - science
+              - sports
+              - technology
+          x-display: 
+            label: "Category"
+      responses:
+        '200':
+          description: "Record containing list of news sources"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsSourcesResponse'
+        '400':
+          description: "Bad Request. Request was unacceptable, often due to a missing or misconfigured parameter"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '401':
+          description: "Unauthorized. Your API key was missing from request, or wasn't correct"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '429':
+          description: "Too Many Requests. You made too many requests within a window of time and have been rate limited"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '500':
+          description: "Server Error. Something went wrong on our side"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+  /top-headlines:
+    get:
+      summary: Returns a list of top headlines
+      description: List of top headlines (articles)
+      operationId: listTopHeadlines
+      x-display:
+        label: "List Top Headlines"
+      parameters:
+        - in: query
+          name: q
+          description: 'Keywords or a phrase to search for'
+          schema:
+            type: string
+            nullable: true
+          x-display: 
+            label: "Keyword"
+        - in: query
+          name: sources
+          description: "Comma-seperated string of source identifiers for news sources or blogs"
+          schema:
+            type: string
+            nullable: true
+          x-display: 
+            label: "Sources"
+        - in: query
+          name: country
+          description: 'Find sources that display news in a specific country. Default: all countries'
+          schema:
+            type: string
+            enum: [ae, ar, at, au, be, bg, br, ca, ch, cn, co, cu, cz, de, eg, es, fr, gb, gr, hk, hu, id, ie, il, in, it, is, jp, kr, lt, lv, ma, mx, my, ng, nl, no, nz, ph, pk, pl, pt, ro, rs, ru, sa, se, sg, si, sk, th, tr, tw, ua, us, ve, za, zh]
+          x-display: 
+            label: "Country"
+        - in: query
+          name: category
+          description: 'Find sources that display news of this category. Default: all categories'
+          schema: 
+            type: string
+            enum: 
+              - business
+              - entertainment
+              - general
+              - health
+              - science
+              - sports
+              - technology
+          x-display: 
+            label: "Category"
+        - in: query
+          name: page
+          description: "Use this to page through results if total results found is greater than page size"
+          schema:
+            type: integer
+            minimum: 0
+          x-display: 
+            label: "Page Number"
+        - in: query
+          name: pageSize
+          description: "Number of results to return per page (request). 20 is default, 100 is maximum"
+          schema:
+            type: integer
+            default: 20
+          x-display: 
+            label: "Page Size"
+      responses:
+        '200':
+          description: "Record containing list of top headlines"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsTopHeadlineResponse'
+        '400':
+          description: "Bad Request. Request was unacceptable, often due to a missing or misconfigured parameter"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '401':
+          description: "Unauthorized. Your API key was missing from request, or wasn't correct"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '429':
+          description: "Too Many Requests. You made too many requests within a window of time and have been rate limited"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '500':
+          description: "Server Error. Something went wrong on our side"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+  /everything:
+    get:
+      summary: Returns list of articles
+      description: List of articles
+      operationId: listArticles
+      x-display:
+        label: "List Articles"
+      parameters:
+        - in: query
+          name: q
+          description: "Keywords or phrases to search for in article title and body. Complete value for query must be URL-encoded"
+          schema:
+            type: string
+            nullable: true
+          x-display: 
+            label: "Keyword"
+        - in: query
+          name: qInTitle
+          description: "Keywords or phrases to search for in article title only. Complete value for qInTitle must be URL-encoded"
+          schema:
+            type: string
+            nullable: true
+          x-display: 
+            label: "Title Keyword"
+        - in: query
+          name: sources
+          description: "Comma-seperated string of source identifiers (maximum 20) for news sources or blogs"
+          schema:
+            type: string
+            nullable: true
+          x-display: 
+            label: "Sources"
+        - in: query
+          name: domains
+          description: "Comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to restrict search"
+          schema:
+            type: string
+            nullable: true
+          x-display: 
+            label: "Domains To Include"
+        - in: query
+          name: excludeDomains
+          description: "Comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to remove from results"
+          schema:
+            type: string
+            nullable: true
+          x-display: 
+            label: "Domains To Exclude"
+        - in: query
+          name: from
+          description: "Date and optional time for oldest article allowed. This should be in ISO 8601 format (e.g. 2021-02-15 or 2021-02-15T19:07:40) Default: oldest according to pricing plan"
+          schema:
+            type: string
+            format: date
+            nullable: true
+            example: "2021-01-30"
+          x-display: 
+            label: "From"
+        - in: query
+          name: to
+          description: "Date and optional time for newest article allowed. This should be in ISO 8601 format (e.g. 2021-02-15 or 2021-02-15T19:07:40) Default: newest according to pricing plan"
+          schema:
+            type: string
+            format: date
+            nullable: true
+            example: "2021-01-30"
+          x-display: 
+            label: "To"
+        - in: query
+          name: language
+          description: 'Find sources that display news in a specific language. Possible options: ar de en es fr he it nl no pt ru se ud zh .Default: all languages'
+          schema:
+            type: string
+            enum: [ar,de,en,es,fr,he,it,nl,no,pt,ru,se,ud,zh]
+          x-display: 
+            label: "Language"
+        - in: query
+          name: sortBy
+          description: 'Order to sort articles in. Possible options: relevancy, popularity, publishedAt'
+          schema:
+            type: string
+            enum: [relevancy, popularity, publishedAt]
+          x-display: 
+            label: "Sort By"
+        - in: query
+          name: page
+          description: "Use this to page through results"
+          required: true
+          schema:
+            type: integer
+            default: 0
+            nullable: false
+          x-display: 
+            label: "Page Number"
+        - in: query
+          description: "Number of results to return per page. 20 is default, 100 is maximum"
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            default: 20
+            nullable: false
+          x-display: 
+            label: "Page Size"
+      responses:
+        '200':
+          description: "Record containing list of articles"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsTopHeadlineResponse'
+        '400':
+          description: "Bad Request. Request was unacceptable, often due to a missing or misconfigured parameter"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '401':
+          description: "Unauthorized. Your API key was missing from request, or wasn't correct"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '429':
+          description: "Too Many Requests. You made too many requests within a window of time and have been rate limited"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+        '500':
+          description: "Server Error. Something went wrong on our side"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WSNewsErrorResponse'
+
+components:
+  securitySchemes:
+    api_key:
+      name: apiKey
+      type: apiKey
+      in: query
+
+  schemas:
+    WSNewsErrorResponse:
+      description: 'News API error response'
+      type: object
+      properties:
+        status: 
+          type: string
+          description: 'If request was successful or not. Options: ok, error. In case of ok, below two properties will not be present'
+        code:
+          type: string
+          description: 'Short code identifying type of error returned'
+        message:
+          type: string
+          description: 'Fuller description of error, usually including how to fix it'
+    WSNewsTopHeadlineResponse:
+      type: object
+      description: 'Record representing top headlines'
+      properties:
+        status:
+          type: string
+          description: 'If request was successful or not. Options: ok, error. In case of error a code and message property will be populated'
+        totalResults:
+          type: integer
+          description: 'Total number of results available for request. Only a limited number are shown at a time though, so use page parameter in requests to page through them'
+        articles:
+          type: array
+          description: 'Results of request'
+          items:
+            $ref: '#/components/schemas/WSNewsArticle'
+    WSNewsSourcesResponse:
+      type: object
+      description: 'Record representing list sources'
+      properties:
+        status:
+          type: string
+          description: 'If request was successful or not. Options: ok, error. In case of ok, below two properties will not be present'
+        sources:
+          type: array
+          description: 'Results of request'
+          items:
+            $ref: '#/components/schemas/WSNewsSource'
+    WSNewsSource:
+      type: object
+      description: 'Record representing source of a news articles'
+      properties:
+        id:
+          type: string
+          description: 'Identifier of news source. You can use this with our other endpoints'
+          nullable: true
+        name:
+          type: string
+          description: 'Name of news source'
+        description:
+          type: string
+          description: 'Description of news source'
+        url:
+          type: string
+          format: url
+          description: 'URL of homepage'
+        category:
+          type: string
+          description: 'Find sources that display news of this category. Default: all categories'
+          enum: 
+            - business
+            - entertainment
+            - general
+            - health
+            - science
+            - sports
+            - technology
+        language:
+          type: string
+          enum: [ar,de,en,es,fr,he,it,nl,no,pt,ru,se,ud,zh]
+          description: 'Find sources that display news in a specific language. Possible options: ar de en es fr he it nl no pt ru se ud zh .Default: all languages'
+        country:
+          type: string
+          description: 'Find sources that display news in a specific country. Default: all countries'
+          enum: [ae, ar, at, au, be, bg, br, ca, ch, cn, co, cu, cz, de, eg, es, fr, gb, gr, hk, hu, id, ie, il, in, it, is, jp, kr, lt, lv, ma, mx, my, ng, nl, no, nz, ph, pk, pl, pt, ro, rs, ru, sa, se, sg, si, sk, th, tr, tw, ua, us, ve, za, zh]
+    WSNewsArticle:
+      type: object
+      description: 'Record representing a news article'
+      properties:
+        source:
+          $ref: '#/components/schemas/WSNewsSource'
+        author:
+          type: string
+          description: 'Author of article'
+          nullable: true
+        title:
+          type: string
+          description: 'Headline or title of article'
+        description:
+          type: string
+          description: 'Description or snippet from article'
+          nullable: true
+        url:
+          type: string
+          format: url
+          description: 'Direct URL to article'
+          nullable: true
+        urlToImage:
+          type: string
+          format: url
+          description: 'URL to a relevant image for article'
+          nullable: true
+        publishedAt:
+          type: string
+          description: 'Date and time that article was published, in UTC (+000)'
+        content:
+          type: string
+          description: 'Unformatted content of article, where available. This is truncated to 200 chars'
+          nullable: true
+security:
+  - apiKey: []

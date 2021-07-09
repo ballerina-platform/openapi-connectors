@@ -3,11 +3,11 @@ Connects to News API from Ballerina
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    |  **Swan Lake Beat 2** |
+| Ballerina Language Version    |  **Swan Lake Beta 2** |
 |       News API Version        |         **V2**        |
 
 ### Package Overview
-The <newsapi> is a [Ballerina](https://ballerina.io/) connector for News API.
+The `newsapi` is a [Ballerina](https://ballerina.io/) connector for News API.
 This package provides the capability to easily access News API.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)

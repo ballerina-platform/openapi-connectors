@@ -74,12 +74,12 @@ jira:ProjectArr result = check myclient->getAllProjects();
 ```
 ### Create a project
 ```ballerina
-newsapi:CreateProjectDetails details = {
+jira:CreateProjectDetails details = {
     name : "<Project_Name>", 
     'key : "<Project_Key>", 
     projectTypeKey : "software", 
     leadAccountId: "<Lead_Account_ID>"
 };
 
-newsapi:ProjectIdentifiers result = check myclient->createProject(details);
+jira:ProjectIdentifiers result = check myclient->createProject(details);
 ```

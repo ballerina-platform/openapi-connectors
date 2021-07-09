@@ -12,7 +12,7 @@ jobs:
   container:
     runs-on: ubuntu-latest
     container:
-      image: ballerina/ballerina:swan-lake-beta1
+      image: ballerina/ballerina:nightly
       options: --user root
     steps:
       - uses: actions/checkout@v1
@@ -22,4 +22,4 @@ jobs:
           JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
           GRADLE_USER_HOME: ~/.gradle
         run: |
-          ./gradlew build -Prelease=false -Premote=true
+          ./gradlew build -Prelease=false -Premote=true -Ppublishing=false

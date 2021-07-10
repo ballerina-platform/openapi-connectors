@@ -1,56 +1,17 @@
-Connects to News API from Ballerina.
+Connects to News API from Ballerina
 
-## Module Overview
+#### Compatibility
+|                               | Version               |
+|-------------------------------|-----------------------|
+| Ballerina Language Version    |  **Swan Lake Beta 2** |
+|       News API Version        |         **V2**        |
 
-News API connector consume the data exposed in https://newsapi.org/v2. It is currently supporting the following operations.
-
-- listArticles
-- listTopHeadlines
-- listSources
-
-## Compatibility
-
-| Ballerina Language Versions  |             News API              |
-|:----------------------------:|:---------------------------------:|
-|       Swan Lake Alpha 5      |                V2                 |
-
-# Quickstart
-
-## Authorization
-
-To utilize News API users have to obtain API key given by [News API](https://newsapi.org/register)
-
-To obtain an API Key please follow these steps
-* Go to [News API](https://newsapi.org/) and register a new account
-* Submit information in register form
-* After submitting needed information API Key can be obtained
-
-Then provide the obtained API Key in client configuration.
-
-### Client configuration
-
-```ballerina
-    import ballerinax/newsapi;
-
-    ApiKeysConfig config = {
-        apiKeys : {
-            apiKey : "<your apiKey>"
-        }
-    }
-
-    newsapi:Client myclient = check new newsapi:Client(config, {}, "https://newsapi.org/v2");
-};
-```
-### Get Top Headlines
-
-```ballerina
-    WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
-    log:printInfo(result.toString());
-```
-
-### Get Top Articles
-
-```ballerina
-    WSNewsTopHeadlineResponse articleResult = check myclient->listArticles(1, 5, domains="bbc.co.uk");
-    log:printInfo(articleResult.toString());    
-```
+### Package Overview
+The `newsapi` is a [Ballerina](https://ballerina.io/) connector for News API.
+This package provides the capability to easily access News API.
+### Report Issues
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
+### Useful Links
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

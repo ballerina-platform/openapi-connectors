@@ -1,0 +1,1617 @@
+openapi: 3.0.0
+info:
+  title: Livestorm - Public API
+  description: |
+    Client endpoint for Livestorm Public API
+    The Livestorm API is organized around REST principles.
+    In addition, all request and response bodies, including errors, are encoded in JSON format.
+  termsOfService: https://livestorm.co/terms/
+  contact:
+    name: Contact
+    url: https://support.livestorm.co
+    email: help@livestorm.co
+  version: '1'
+  x-display:
+    label: Livestorm Public API Client
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: api.livestorm.co/v1
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    Event:
+      type: object
+      description: Event response
+      properties:
+        id:
+          type: string
+          description: Event ID
+        type:
+          type: string
+          description: Event type
+        attributes:
+          "$ref": "#/components/schemas/EventAttribute"
+    Owner:
+      type: object
+      description: Owner details
+      properties:
+        id:
+          type: string
+          description: Owner ID
+        type:
+          type: string
+          description: Type
+        attributes:
+          "$ref": "#/components/schemas/OwnerAttribute"
+    Meta:
+      type: object
+      description: Metadata
+      properties:
+        record_count:
+          type: integer
+          description: Total record count
+        page_count:
+          type: integer
+          description: Page count
+        items_per_page:
+          type: integer
+          description: Items per page
+    EventData:
+      type: object
+      description: Event post data
+      properties:
+        type:
+          type: string
+          default: events
+          description: Event type
+          example: events
+        attributes:
+          "$ref": "#/components/schemas/EventRequestAttribute"
+        relationships:
+          "$ref": "#/components/schemas/EventRelationship"
+    SessionData:
+      type: object
+      description: Add Session data
+      properties:
+        type:
+          type: string
+          default: sessions
+          description: Event type
+          example: sessions
+        attributes:
+          "$ref": "#/components/schemas/SessionRequestAttribute"
+        relationships:
+          "$ref": "#/components/schemas/SessionRelationship"
+    PeopleData:
+      type: object
+      description: Add People data
+      properties:
+        type:
+          type: string
+          default: people
+          description: Event type
+          example: people
+        attributes:
+          "$ref": "#/components/schemas/PeopleRequestAttribute"
+    EventRequestAttribute:
+      type: object
+      description: Event request attributes
+      properties:
+        copy_from_event_id:
+          type: string
+          x-nullable: true
+          description: Event ID to copy
+          example: 356b514f-333e-47d5-b5f2-3a4278b14072
+        owner_id:
+          type: string
+          x-nullable: false
+          description: Owner ID
+          example: f035b51d-5135-47ee-b1fc-4e92508f312a
+        title:
+          type: string
+          x-nullable: false
+          description: Event title
+          example: New event
+        slug:
+          type: string
+          x-nullable: false
+          description: Event slug
+          example: my-awesome-slug
+    SessionRequestAttribute:
+      type: object
+      description: Session request attributes
+      properties:
+        estimated_started_at:
+          type: string
+          x-nullable: true
+          description: Estimated started time
+        timezone:
+          type: string
+          x-nullable: false
+          description: Time zone
+    PeopleRequestAttribute:
+      type: object
+      description: People request attributes
+      properties:
+        referrer:
+          type: string
+          x-nullable: true
+          description: Referrer detail
+        utm_source:
+          type: string
+          x-nullable: false
+          description: UTM tracking source
+        utm_medium:
+          type: string
+          x-nullable: true
+          description: UTM medium
+        utm_term:
+          type: string
+          x-nullable: false
+          description: UTM term
+        utm_content:
+          type: string
+          x-nullable: true
+          description: UTM content
+        utm_campaign:
+          type: string
+          x-nullable: false
+          description: UTM campaign
+    OwnerAttribute:
+      type: object
+      description: Owner attributes
+      properties:
+        role:
+          type: string
+          x-nullable: false
+          description: Role of owner
+        created_at:
+          type: integer
+          x-nullable: false
+          description: Created timestamp
+        updated_at:
+          type: integer
+          x-nullable: false
+          description: Updated timestamp
+        timezone:
+          type: string
+          x-nullable: false
+          description: Timezone
+        first_name:
+          type: string
+          x-nullable: false
+          description: First name
+        last_name:
+          type: string
+          x-nullable: false
+          description: Last name
+        email:
+          type: string
+          x-nullable: false
+          description: Email
+        avatar_link:
+          type: string
+          x-nullable: false
+          nullable: true
+          description: Avatar link
+    EventAttribute:
+      type: object
+      description: Event attributes
+      properties:
+        title:
+          type: string
+          x-nullable: false
+          description: Event title
+          example: New event
+        slug:
+          type: string
+          x-nullable: false
+          description: Event slug
+          example: my-awesome-slug
+        registration_link:
+          type: string
+          x-nullable: true
+          description: Event title
+          example: https://app.livestorm.co/p/4d584b01-6319-4d19-a420-c67156273b76
+        estimated_duration:
+          type: integer
+          x-nullable: true
+          description: Estimated duration
+          example: 20      
+        registration_page_enabled:
+          type: boolean
+          x-nullable: true
+          description: Registration page enabled or not
+          example: true
+        everyone_can_speak:
+          type: boolean
+          x-nullable: true
+          description: Everyone can speack or not
+          example: true    
+        description:
+          type: string
+          x-nullable: true
+          nullable: true
+          description: Description about event
+          example: It is a webinar
+        language:
+          type: string
+          x-nullable: true
+          description: Event language
+          example: en      
+        published_at:
+          type: integer
+          x-nullable: true
+          description: Updated timestamp
+          example: 1625606595
+        created_at:
+          type: integer
+          x-nullable: true
+          description: Created timestamp
+          example: 1625606595  
+        updated_at:
+          type: integer
+          x-nullable: true
+          description: Updated timestamp
+          example: 1625606595       
+        owner:
+          "$ref": "#/components/schemas/Owner"
+        sessions_count:
+          type: integer
+          x-nullable: true
+          description: Number of sessions
+          example: 1  
+        fields:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Field"
+          x-nullable: true
+          description: Fields available
+    Field:
+      type: object
+      description: Event fields
+      properties:
+        id:
+          type: string
+          x-nullable: true
+          description: Event field ID
+          example: email  
+        type:
+          type: string
+          x-nullable: true
+          description: Type of fields
+          example: text  
+        order:
+          type: integer
+          x-nullable: true
+          description: Order of fields
+          example: 1  
+        required:
+          type: boolean
+          x-nullable: true
+          description: Required or not
+          example: true  
+    EventRelationship:
+      type: object
+      description: Event releationship
+      properties:
+        sessions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Session"
+          x-nullable: true
+          description: Event session
+    SessionRelationship:
+      type: object
+      description: Session releationship
+      properties:
+        people:
+          type: array
+          items:
+            "$ref": "#/components/schemas/People"
+          x-nullable: true
+          description: People
+    Session:
+      type: object
+      description: Event session
+      properties:
+        type:
+          type: string
+          x-nullable: false
+          description: Session type
+        id:
+          type: string
+          x-nullable: false
+          description: Session ID
+        attributes:
+          "$ref": "#/components/schemas/SessionAttribute"
+    SessionAttribute:
+      type: object
+      description: Event session attribute
+      properties:
+        event_type_id:
+          type: string
+          description: Event type ID
+        status:
+          type: string
+          description: Session status
+        timezone:
+          type: string
+          description: Time zone
+        room_link:
+          type: string
+          description: Url link to room
+        attendees_count:
+          type: string
+          description: Number of Attendees
+        duration:
+          type: string
+          description: Session duration
+        estimated_started_at:
+          type: string
+          description: Estimated started time
+        started_at:
+          type: string
+          description: Started time
+        ended_at:
+          type: string
+          description: Ended time
+        canceled_at:
+          type: string
+          description: Canceled time
+        created_at:
+          type: string
+          description: Created time
+        updated_at:
+          type: string
+          description: Updated time
+        registrants_count:
+          type: string
+          description: Number of registrants
+    People:
+      type: object
+      description: Event session
+      properties:
+        type:
+          type: string
+          x-nullable: false
+          description: People type
+        id:
+          type: string
+          x-nullable: false
+          description: People ID
+        attributes:
+          "$ref": "#/components/schemas/PeopleAttribute"
+    PeopleAttribute:
+      type: object
+      description: People attribute
+      properties:
+        role:
+          type: string
+          description: Role assigned to
+        created_at:
+          type: string
+          description: Created time
+        updated_at:
+          type: string
+          description: Updated time
+        timezone:
+          type: string
+          description: Time zone
+        first_name:
+          type: string
+          description: First name
+        last_name:
+          type: string
+          description: Last name
+        email:
+          type: string
+          description: Email address
+        avatar_link:
+          type: string
+          description: Avatar url link
+tags:
+- name: Events
+  description: Webinars and Scheduled Meeting
+- name: Sessions
+  description: Webinar Session and Meeting
+- name: People
+  description: Participant and Team Member
+paths:
+  "/events":
+    get:
+      summary: List Events
+      tags:
+      - Events
+      description: List all your organization's events.
+      operationId: "listEvents"
+      security:
+      - api_key: []
+      x-display:
+        label: Get List Of Events
+      parameters:
+      - name: pageNumber
+        in: query
+        schema:
+          type: string
+        description: Page index to be returned
+        required: false
+        x-display:
+          label: Page Number
+      - name: pageSize
+        in: query
+        schema:
+          type: string
+        description: Number of record to be returned by page
+        required: false
+        x-display:
+          label: Page Size
+      - name: filterTitle
+        in: query
+        schema:
+          type: string
+        description: Filter events by title
+        required: false
+        x-display:
+          label: Title Filter
+      - name: filterEveryoneCanSpeak
+        in: query
+        schema:
+          type: string
+        description: Filter events by everyone can speak
+        required: false
+        x-display:
+          label: Filter By Everyone Can Speak Or Not
+      responses:
+        '200':
+          description: Fetch List
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Event Data
+                    items:
+                      $ref: '#/components/schemas/Event'
+                  meta:
+                    "$ref": "#/components/schemas/Meta"
+                required:
+                - data
+              examples:
+                application/vnd.api+json:
+                  value:
+                    data:
+                    - id: 30e06351-55b1-4908-8480-a9a7723eebcb
+                      type: events
+                      attributes:
+                        title: loggins1
+                        slug: tempore-quisquam
+                        registration_link: https://app.livestorm.co/p/30e06351-55b1-4908-8480-a9a7723eebcb
+                        estimated_duration: 30
+                        registration_page_enabled: true
+                        everyone_can_speak: false
+                        description: Quia ullam est. Explicabo cumque laboriosam.
+                          Eligendi earum delectus.1
+                        language: en
+                        published_at: 0
+                        created_at: 1633046400
+                        updated_at: 1633046400
+                        owner:
+                          id: 58bfd6bb-c5a2-4a90-8d78-42b9ab7f9439
+                          type: people
+                          attributes:
+                            role: team_member
+                            created_at: 1620049466
+                            updated_at: 1620049466
+                            timezone: Europe/Paris
+                            first_name: Rhonda-4
+                            last_name: Pataki-4
+                            email: 4-ellie@ritchiesenger.io
+                            avatar_link: 
+                        sessions_count: 1
+                        fields:
+                        - id: email
+                          type: text
+                          order: 0
+                          required: true
+                        - id: first_name
+                          type: text
+                          order: 1
+                          required: true
+                        - id: last_name
+                          type: text
+                          order: 2
+                          required: true
+                        - id: avatar
+                          type: file
+                          order: 3
+                          required: false
+                        - id: input_text
+                          type: text
+                          order: 4
+                          custom: true
+                          required: true
+                        - id: select_radio
+                          type: multiple
+                          order: 5
+                          custom: true
+                          options:
+                            items:
+                            - value: Choice A
+                            - value: Choice B
+                            - value: Choice C
+                            multiple_answers: false
+                          required: true
+                        - id: select_checkbox
+                          type: multiple
+                          order: 6
+                          custom: true
+                          options:
+                            items:
+                            - value: Choice A
+                            - value: Choice B
+                            - value: Choice C
+                            multiple_answers: true
+                          required: true
+                    meta:
+                      record_count: 1
+                      page_count: 1
+                      items_per_page: 1
+          headers:
+            RateLimit-Montly-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current month
+            RateLimit-Montly-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current month
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current rate limit
+                window (1 second)
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+        '401':
+          description: Authentication failed
+          content: {}
+    post:
+      summary: Create a new event
+      tags:
+      - Events
+      description: Create a new Event.
+      operationId: "createEvent"
+      security:
+      - api_key: []
+      x-display:
+        label: Create Event
+      parameters: []
+      responses:
+        '201':
+          description: Create event response
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                description: Create new event response
+                properties:
+                  data:
+                    description: Record to represent 'Event',
+                    $ref: '#/components/schemas/Event'
+                    required:
+                    - data
+        '400':
+          description: Bad request
+          content: {}
+        '401':
+          description: Authentication failed
+          content: {}
+        '422':
+          description: Team member not found
+          content: {}
+        '429':
+          description: Too Many Requests
+          content: {}
+          headers:
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of remaining requests for the current period
+                (1 second)
+            Retry-After:
+              schema:
+                type: integer
+              description: The number of seconds you are required to wait before the
+                next successful request
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: A timestamp of when the limit will be reset
+      requestBody:
+        description: "Request payload to create event"
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              description: PosteventsRequest
+              properties:
+                data:
+                  "$ref": "#/components/schemas/EventData"
+  "/events/{id}":
+    get:
+      summary: Retrieve an Event
+      tags:
+      - Events
+      description: Get the details of an Event.
+      operationId: "getEventByID"
+      security:
+      - api_key: []
+      x-display:
+        label: Get Event By Event ID
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: string
+        description: Event ID
+        required: true
+        x-display:
+          label: Event ID
+      responses:
+        '200':
+          description: Get detail
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                description: Get an event by ID response
+                properties:
+                  data:
+                    description: Record to represent 'Event',
+                    $ref: '#/components/schemas/Event'
+                    required:
+                    - data
+          headers:
+            RateLimit-Montly-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current month
+            RateLimit-Montly-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current month
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current rate limit
+                window (1 second)
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+        '401':
+          description: Authentication failed
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '429':
+          description: Too Many Requests
+          content: {}
+          headers:
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of remaining requests for the current period
+                (1 second)
+            Retry-After:
+              schema:
+                type: integer
+              description: The number of seconds you are required to wait before the
+                next successful request
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: A timestamp of when the limit will be reset
+  "/events/{id}/sessions":
+    get:
+      summary: List Sessions for an Event
+      tags:
+      - Events
+      description: List all the Sessions that belong to the given Event.
+      operationId: "listSessionByEvent"
+      security:
+      - api_key: []
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: string
+        description: Event ID
+        required: true
+      - name: pageNumber
+        in: query
+        schema:
+          type: string
+        description: Page index to be returned
+        required: false
+      - name: pageSize
+        in: query
+        schema:
+          type: string
+        description: Number of record to be returned by page
+        required: false
+      - name: filterStatus
+        in: query
+        schema:
+          type: string
+        description: 'Filter Sessions by status : ''upcoming'', ''live'', ''on_demand'',
+          ''past'', ''past_not_started'', ''canceled'', ''draft'''
+        required: false
+      - name: filterDateFrom
+        in: query
+        schema:
+          type: string
+        description: Filter Sessions which â€˜estimated_started_atâ€™ attribute starts
+          from the given date (expressed as a Unix timestamp or an ISO 8601 date).
+        required: false
+      - name: filterDateTo
+        in: query
+        schema:
+          type: string
+        description: Filter Sessions which â€˜estimated_started_atâ€™ attribute ends with
+          the given date (expressed as a Unix timestamp or an ISO 8601 date).
+        required: false
+      - name: include
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - event
+            - people
+        description: Include Related Data
+        required: false
+      responses:
+        '200':
+          description: Fetch List
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Data
+                    items:
+                      allOf:
+                      - "$ref": "#/components/schemas/Event"
+                      - type: object
+                        properties:
+                          attributes:
+                            type: object
+                            description: Attributes
+                            properties:
+                              event_type_id:
+                                type: string
+                                x-nullable: true
+                                description: ''
+                              status:
+                                type: string
+                                x-nullable: false
+                                description: ''
+                              timezone:
+                                type: string
+                                x-nullable: false
+                                description: ''
+                              room_link:
+                                type: string
+                                x-nullable: false
+                                description: ''
+                              attendees_count:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                              duration:
+                                type: integer
+                                x-nullable: true
+                                description: ''
+                              estimated_started_at:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                              started_at:
+                                type: integer
+                                x-nullable: true
+                                description: ''
+                              ended_at:
+                                type: integer
+                                x-nullable: true
+                                description: ''
+                              canceled_at:
+                                type: integer
+                                x-nullable: true
+                                description: ''
+                              created_at:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                              updated_at:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                              registrants_count:
+                                type: integer
+                                x-nullable: true
+                                description: ''
+                  meta:
+                    "$ref": "#/components/schemas/Meta"
+                required:
+                - data
+              examples:
+                application/vnd.api+json:
+                  value:
+                    data:
+                    - id: ad77dadf-af08-4c60-b4b4-4aee48bb0192
+                      type: sessions
+                      attributes:
+                        event_id: a1448868-eebc-43e8-a9b6-4365d3c73982
+                        status: draft
+                        timezone: Europe/Paris
+                        room_link: https://app.livestorm.co/p/a1448868-eebc-43e8-a9b6-4365d3c73982/live?s=ad77dadf-af08-4c60-b4b4-4aee48bb0192
+                        attendees_count: 0
+                        duration: 
+                        estimated_started_at: 1617461103
+                        started_at: 0
+                        ended_at: 0
+                        canceled_at: 0
+                        created_at: 1617461103
+                        updated_at: 1617461103
+                        registrants_count: 3
+                    meta:
+                      record_count: 1
+                      page_count: 1
+                      items_per_page: 1
+          headers:
+            RateLimit-Montly-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current month
+            RateLimit-Montly-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current month
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current rate limit
+                window (1 second)
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+        '401':
+          description: Authentication failed
+          content: {}
+        '404':
+          description: Event Not found
+          content: {}
+        '429':
+          description: Too Many Requests
+          content: {}
+          headers:
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of remaining requests for the current period
+                (1 second)
+            Retry-After:
+              schema:
+                type: integer
+              description: The number of seconds you are required to wait before the
+                next successful request
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: A timestamp of when the limit will be reset
+    post:
+      summary: Create a new event session
+      tags:
+      - Events
+      description: Create a new Event Session.
+      operationId: "createEventSession"
+      security:
+      - api_key: []
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: string
+        description: Event ID
+        required: true
+      responses:
+        '201':
+          description: Create event session response
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                description: Create session response
+                properties:
+                  data:
+                    description: Record to represent 'Session',
+                    $ref: '#/components/schemas/Session'
+                    required:
+                    - data
+              examples:
+                application/vnd.api+json:
+                  value:
+                    data:
+                      id: 66aa688c-4f57-415c-9fd4-1d7ab6753792
+                      type: sessions
+                      attributes:
+                        event_id: 9a6518b2-b3d1-4f71-9fad-cd6723eddbe2
+                        status: draft
+                        timezone: America/New_York
+                        room_link: https://app.livestorm.co/p/9a6518b2-b3d1-4f71-9fad-cd6723eddbe2/live?s=66aa688c-4f57-415c-9fd4-1d7ab6753792
+                        attendees_count: 0
+                        duration: 
+                        estimated_started_at: 1620135907
+                        started_at: 0
+                        ended_at: 0
+                        canceled_at: 0
+                        created_at: 1620049507
+                        updated_at: 1620049507
+                        registrants_count: 2
+                      relationships:
+                        people:
+                          data:
+                          - type: people
+                            id: 243d6585-0eb3-4dbf-9675-fd7c2e025dd6
+                          - type: people
+                            id: 572184dc-f784-4432-b944-ca78094d2dbb
+                    included:
+                    - id: 243d6585-0eb3-4dbf-9675-fd7c2e025dd6
+                      type: people
+                      attributes:
+                        role: participant
+                        created_at: 1620049507
+                        updated_at: 1620049507
+                        timezone: Europe/Berlin
+                        first_name: Big Bob Pataki-73
+                        last_name: Ronnie Matthews-73
+                        email: 73-dawn_kerluke@corkery.biz
+                        avatar_link: 
+                        registrant_detail:
+                          event_id: 9a6518b2-b3d1-4f71-9fad-cd6723eddbe2
+                          session_id: 66aa688c-4f57-415c-9fd4-1d7ab6753792
+                          created_at: 1620049507
+                          updated_at: 1620049507
+                          fields:
+                          - id: email
+                            type: text
+                            value: 
+                            required: true
+                          - id: first_name
+                            type: text
+                            value: 
+                            required: true
+                          - id: last_name
+                            type: text
+                            value: 
+                            required: true
+                          - id: avatar
+                            type: file
+                            value: 
+                            required: false
+                          - id: input_text
+                            type: text
+                            value: 
+                            custom: true
+                            required: true
+                          - id: select_radio
+                            type: multiple
+                            value: []
+                            custom: true
+                            required: true
+                          - id: select_checkbox
+                            type: multiple
+                            value: []
+                            custom: true
+                            required: true
+                          referrer: 
+                          utm_source: 
+                          utm_medium: 
+                          utm_term: 
+                          utm_content: 
+                          utm_campaign: 
+                          browser_version: 
+                          browser_name: 
+                          os_name: 
+                          os_version: 
+                          screen_height: 
+                          screen_width: 
+                          ip_city: 
+                          ip_country_code: 
+                          ip_country_name: 
+                          password_key: a83cf533f8adf1c31dbf85
+                          connection_link: https://app.livestorm.co/p/9a6518b2-b3d1-4f71-9fad-cd6723eddbe2/live?email=73-dawn_kerluke%40corkery.biz&key=a83cf533f8adf1c31dbf85&s=66aa688c-4f57-415c-9fd4-1d7ab6753792
+                          attended: false
+                          attendance_rate: 
+                          attendance_duration: 0
+                          is_highlighted: false
+                          is_guest_speaker: false
+                        messages_count: 0
+                        questions_count: 0
+                        votes_count: 0
+                        up_votes_count: 0
+                    - id: 572184dc-f784-4432-b944-ca78094d2dbb
+                      type: people
+                      attributes:
+                        role: team_member
+                        created_at: 1620049506
+                        updated_at: 1620049506
+                        timezone: Europe/Paris
+                        first_name: Mickey-122
+                        last_name: Phil-122
+                        email: 122-marcelo@douglaswyman.info
+                        avatar_link: 
+                        registrant_detail:
+                          event_id: 9a6518b2-b3d1-4f71-9fad-cd6723eddbe2
+                          session_id: 66aa688c-4f57-415c-9fd4-1d7ab6753792
+                          created_at: 1620049507
+                          updated_at: 1620049507
+                          fields:
+                          - id: email
+                            type: text
+                            value: 122-marcelo@douglaswyman.info
+                            required: true
+                          - id: first_name
+                            type: text
+                            value: Mickey-122
+                            required: true
+                          - id: last_name
+                            type: text
+                            value: Phil-122
+                            required: true
+                          - id: avatar
+                            type: file
+                            value: 
+                            required: false
+                          - id: input_text
+                            type: text
+                            value: 
+                            custom: true
+                            required: true
+                          - id: select_radio
+                            type: multiple
+                            value: []
+                            custom: true
+                            required: true
+                          - id: select_checkbox
+                            type: multiple
+                            value: []
+                            custom: true
+                            required: true
+                          referrer: 
+                          utm_source: 
+                          utm_medium: 
+                          utm_term: 
+                          utm_content: 
+                          utm_campaign: 
+                          browser_version: 
+                          browser_name: 
+                          os_name: 
+                          os_version: 
+                          screen_height: 
+                          screen_width: 
+                          ip_city: 
+                          ip_country_code: 
+                          ip_country_name: 
+                          password_key: 
+                          connection_link: https://app.livestorm.co/p/9a6518b2-b3d1-4f71-9fad-cd6723eddbe2/live?email=122-marcelo%40douglaswyman.info&s=66aa688c-4f57-415c-9fd4-1d7ab6753792
+                          attended: false
+                          attendance_rate: 
+                          attendance_duration: 0
+                          is_highlighted: false
+                          is_guest_speaker: false
+                        messages_count: 0
+                        questions_count: 0
+                        votes_count: 0
+                        up_votes_count: 0
+        '400':
+          description: Bad request
+          content: {}
+        '401':
+          description: Authentication failed
+          content: {}
+        '404':
+          description: Event Not found
+          content: {}
+        '422':
+          description: Team member not found
+          content: {}
+        '429':
+          description: Too Many Requests
+          content: {}
+          headers:
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of remaining requests for the current period
+                (1 second)
+            Retry-After:
+              schema:
+                type: integer
+              description: The number of seconds you are required to wait before the
+                next successful request
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: A timestamp of when the limit will be reset
+      requestBody:
+        description: "Request payload to add event session"
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              description: PostSessionRequest
+              properties:
+                data:
+                  "$ref": "#/components/schemas/SessionData"
+  "/sessions/{id}/people":
+    get:
+      summary: List People for a Session
+      tags:
+      - Sessions
+      description: List all the People (participants and team members) associated
+        to a Session.
+      operationId: "listSessionPeople"
+      security:
+      - api_key: []
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: string
+        description: Session ID
+        required: true
+      - name: pageNumber
+        in: query
+        schema:
+          type: string
+        description: Page index to be returned
+        required: false
+      - name: pageSize
+        in: query
+        schema:
+          type: string
+        description: Number of record to be returned by page
+        required: false
+      - name: filterRole
+        in: query
+        schema:
+          type: string
+        description: 'Filter People by role : ''participant'', ''team_member'''
+        required: false
+      - name: filterAttended
+        in: query
+        schema:
+          type: boolean
+        description: Filter People that attend or not the Session
+        required: false
+      - name: filterEmail
+        in: query
+        schema:
+          type: string
+        description: Filter People by their email (exact match)
+        required: false
+      - name: include
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - event
+            - session
+        description: Include Related Data
+        required: false
+      responses:
+        '200':
+          description: Fetch List
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Data
+                    items:
+                      allOf:
+                      - "$ref": "#/components/schemas/Event"
+                      - type: object
+                        properties:
+                          attributes:
+                            type: object
+                            description: Attributes
+                            properties:
+                              role:
+                                type: string
+                                x-nullable: false
+                                description: ''
+                              created_at:
+                                type: integer
+                                x-nullable: true
+                                description: ''
+                              updated_at:
+                                type: integer
+                                x-nullable: true
+                                description: ''
+                              timezone:
+                                type: string
+                                x-nullable: true
+                                description: ''
+                              first_name:
+                                type: string
+                                x-nullable: true
+                                description: ''
+                              last_name:
+                                type: string
+                                x-nullable: true
+                                description: ''
+                              email:
+                                type: string
+                                x-nullable: true
+                                description: ''
+                              avatar_link:
+                                type: string
+                                x-nullable: true
+                                description: ''
+                              registrant_detail:
+                                type: object
+                                x-nullable: true
+                                description: ''
+                                items:
+                                  type: object
+                                  properties:
+                                    event_id:
+                                      type: string
+                                      x-nullable: false
+                                      description: ''
+                                    created_at:
+                                      type: string
+                                      x-nullable: false
+                                      description: ''
+                                    updated_at:
+                                      type: string
+                                      x-nullable: false
+                                      description: ''
+                                    fields:
+                                      type: array
+                                      x-nullable: false
+                                      description: ''
+                                      items:
+                                        type: object
+                                        properties:
+                                          id:
+                                            type: string
+                                            x-nullable: false
+                                            description: ''
+                                          type:
+                                            type: string
+                                            x-nullable: false
+                                            description: ''
+                                          order:
+                                            type: integer
+                                            x-nullable: false
+                                            description: ''
+                                          required:
+                                            type: string
+                                            x-nullable: false
+                                            description: ''
+                              messages_count:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                              questions_count:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                              votes_count:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                              up_votes_count:
+                                type: integer
+                                x-nullable: false
+                                description: ''
+                  meta:
+                    "$ref": "#/components/schemas/Meta"
+                required:
+                - data
+              examples:
+                application/vnd.api+json:
+                  value:
+                    data:
+                    - id: 7f15d2c6-44a6-4af1-a7d1-f150c437a038
+                      type: people
+                      attributes:
+                        role: team_member
+                        created_at: 1620049483
+                        updated_at: 1620049483
+                        timezone: Europe/Paris
+                        first_name: Alphonse-47
+                        last_name: Wittenburg-47
+                        email: 47-meghann.kuvalis@parkertremblay.com
+                        avatar_link: 
+                        registrant_detail:
+                          event_id: de589603-b00e-470a-9ee0-fb92b38b248d
+                          session_id: 4360a77b-688d-48aa-b8ca-28d82a3a5aaf
+                          created_at: 1620049483
+                          updated_at: 1620049483
+                          fields:
+                          - id: email
+                            type: text
+                            value: 47-meghann.kuvalis@parkertremblay.com
+                            required: true
+                          - id: first_name
+                            type: text
+                            value: Alphonse-47
+                            required: true
+                          - id: last_name
+                            type: text
+                            value: Wittenburg-47
+                            required: true
+                          - id: avatar
+                            type: file
+                            value: 
+                            required: false
+                          referrer: 
+                          utm_source: 
+                          utm_medium: 
+                          utm_term: 
+                          utm_content: 
+                          utm_campaign: 
+                          browser_version: 60.0.3112.64
+                          browser_name: Chrome
+                          os_name: Chrome OS
+                          os_version: 8172.45.0
+                          screen_height: 
+                          screen_width: 
+                          ip_city: 
+                          ip_country_code: 
+                          ip_country_name: 
+                          password_key: 
+                          connection_link: https://app.livestorm.co/p/de589603-b00e-470a-9ee0-fb92b38b248d/live?email=47-meghann.kuvalis%40parkertremblay.com&s=4360a77b-688d-48aa-b8ca-28d82a3a5aaf
+                          attended: false
+                          attendance_rate: 
+                          attendance_duration: 0
+                          is_highlighted: true
+                          is_guest_speaker: false
+                        messages_count: 0
+                        questions_count: 0
+                        votes_count: 0
+                        up_votes_count: 0
+                    meta:
+                      record_count: 1
+                      page_count: 1
+                      items_per_page: 1
+          headers:
+            RateLimit-Montly-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current month
+            RateLimit-Montly-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current month
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of requests remaining for the current rate limit
+                window (1 second)
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+        '401':
+          description: Authentication failed
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '429':
+          description: Too Many Requests
+          content: {}
+          headers:
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of remaining requests for the current period
+                (1 second)
+            Retry-After:
+              schema:
+                type: integer
+              description: The number of seconds you are required to wait before the
+                next successful request
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: A timestamp of when the limit will be reset
+    post:
+      summary: Register a participant to a Session
+      tags:
+      - Sessions
+      description: Register a participant to an Session.
+      operationId: "registerPeopleForSession"
+      security:
+      - api_key: []
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: string
+        description: Session ID
+        required: true
+      responses:
+        '201':
+          description: Register participant response
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                description: Register participant response
+                properties:
+                  data:
+                    description: Record to represent 'People',
+                    $ref: '#/components/schemas/People'
+                    required:
+                    - data
+              examples:
+                application/vnd.api+json:
+                  value:
+                    data:
+                      id: 630c51f5-5048-4be5-a6bb-8333d7eb7d3f
+                      type: people
+                      attributes:
+                        role: participant
+                        created_at: 1620049487
+                        updated_at: 1620049487
+                        timezone: 
+                        first_name: Jean-Baptiste
+                        last_name: Smith
+                        email: jean-baptiste@mysite.co
+                        avatar_link: 
+                        registrant_detail:
+                          event_id: e9df316a-0931-442c-b64a-3ae8559ed2fd
+                          session_id: a5aeec59-c2d6-474b-a0c5-c10f53075bf4
+                          created_at: 1620049487
+                          updated_at: 1620049487
+                          fields:
+                          - id: email
+                            type: text
+                            value: jean-baptiste@mysite.co
+                            required: true
+                          - id: first_name
+                            type: text
+                            value: Jean-Baptiste
+                            required: true
+                          - id: last_name
+                            type: text
+                            value: Smith
+                            required: true
+                          - id: avatar
+                            type: file
+                            value: 
+                            required: false
+                          referrer: referrer
+                          utm_source: utm_source
+                          utm_medium: utm_medium
+                          utm_term: utm_term
+                          utm_content: utm_content
+                          utm_campaign: utm_campaign
+                          browser_version: 
+                          browser_name: 
+                          os_name: 
+                          os_version: 
+                          screen_height: 
+                          screen_width: 
+                          ip_city: 
+                          ip_country_code: 
+                          ip_country_name: 
+                          password_key: d03ce263db9998b5f0eb62
+                          connection_link: https://app.livestorm.co/p/e9df316a-0931-442c-b64a-3ae8559ed2fd/live?email=jean-baptiste%40mysite.co&key=d03ce263db9998b5f0eb62&s=a5aeec59-c2d6-474b-a0c5-c10f53075bf4
+                          attended: false
+                          attendance_rate: 
+                          attendance_duration: 0
+                          is_highlighted: false
+                          is_guest_speaker: false
+                        messages_count: 0
+                        questions_count: 0
+                        votes_count: 0
+                        up_votes_count: 0
+        '400':
+          description: Bad request
+          content: {}
+        '401':
+          description: Authentication failed
+          content: {}
+        '404':
+          description: Not found
+          content: {}
+        '429':
+          description: Too Many Requests
+          content: {}
+          headers:
+            RateLimit-Interval-Limit:
+              schema:
+                type: integer
+              description: The number of allowed requests for the current period (1
+                second)
+            RateLimit-Interval-Remaining:
+              schema:
+                type: integer
+              description: The number of remaining requests for the current period
+                (1 second)
+            Retry-After:
+              schema:
+                type: integer
+              description: The number of seconds you are required to wait before the
+                next successful request
+            RateLimit-Reset:
+              schema:
+                type: integer
+              description: A timestamp of when the limit will be reset
+      requestBody:
+        description: "Request payload to add participant to session"
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              description: RegisterPeopleRequest
+              properties:
+                data:
+                  "$ref": "#/components/schemas/PeopleData"

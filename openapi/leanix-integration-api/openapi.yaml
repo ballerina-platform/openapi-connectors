@@ -1,0 +1,2478 @@
+openapi: 3.0.1
+info:
+  title: Integration API
+  version: 1.0.0
+servers:
+- url: https://eu.leanix.net/services/integration-api/v1
+- url: https://us.leanix.net/services/integration-api/v1
+security:
+- token: []
+tags:
+- name: examples
+- name: configurations
+- name: synchronizationRuns
+paths:
+  /examples/starterExample:
+    get:
+      tags:
+      - examples
+      description: Returns a starter example including an Input object and processor
+        configuration
+      responses:
+        200:
+          description: Returns a complete input example with processor configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputWithProcessorConfig'
+  /examples/advancedExample:
+    get:
+      tags:
+      - examples
+      description: Returns an advanced example including an Input object and processor
+        configuration
+      responses:
+        200:
+          description: Returns a complete input example with processor configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputWithProcessorConfig'
+  /configurations:
+    get:
+      tags:
+      - configurations
+      description: Returns a list of available processor configurations
+      operationId: getProcessorConfigurations
+      parameters:
+      - name: connectorType
+        in: query
+        description: The type of connector that is used
+        schema:
+          type: string
+      - name: connectorId
+        in: query
+        description: The identifier of the connector instance
+        schema:
+          type: string
+      - name: connectorVersion
+        in: query
+        description: The version of the connector that is expected to process this
+          LDIF file
+        schema:
+          type: string
+      - name: processingDirection
+        in: query
+        description: The data flow direction, could be [inbound, outbound]
+        schema:
+          type: string
+          enum:
+          - inbound
+          - outbound
+      - name: processingMode
+        in: query
+        description: The processing mode, could be [partial, full]
+        schema:
+          type: string
+          enum:
+          - partial
+          - full
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorConfiguration'
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+    put:
+      tags:
+      - configurations
+      description: Inserts a new processor configuration or updates an existing one
+      operationId: upsertProcessorConfiguration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessorConfiguration'
+        required: false
+      responses:
+        204:
+          description: Upsert successful.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - configurations
+      description: Delete a single processor configuration
+      operationId: deleteProcessorConfiguration
+      parameters:
+      - name: connectorType
+        in: query
+        description: The type of connector that is used
+        schema:
+          type: string
+      - name: connectorId
+        in: query
+        description: The identifier of the connector instance
+        schema:
+          type: string
+      - name: connectorVersion
+        in: query
+        description: The version of the connector that is expected to process this
+          LDIF file
+        schema:
+          type: string
+      - name: processingDirection
+        in: query
+        description: The data flow direction, could be [inbound, outbound]
+        schema:
+          type: string
+          enum:
+          - inbound
+          - outbound
+      - name: processingMode
+        in: query
+        description: The processing mode, could be [partial, full]
+        schema:
+          type: string
+          enum:
+          - partial
+          - full
+      responses:
+        400:
+          description: Not all necessary fields are set in parameters.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+        404:
+          description: No such processor configuration found.
+          content: {}
+        422:
+          description: Could not process the given processor configuration.
+          content: {}
+        default:
+          description: successful operation
+          content: {}
+  /synchronizationRuns:
+    get:
+      tags:
+      - synchronizationRuns
+      description: Returns the status of all existing synchronization runs
+      operationId: getSynchronizationRunsStatusList
+      responses:
+        200:
+          description: A list containing current status of all available synchronization
+            runs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatusResponse'
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+    post:
+      tags:
+      - synchronizationRuns
+      description: Creates a synchronization run.
+      operationId: createSynchronizationRun
+      parameters:
+      - name: start
+        in: query
+        description: If true the created run will be enqueued to be started
+        schema:
+          type: boolean
+          default: false
+      - name: test
+        in: query
+        description: If true a dry run without any changes will be performed. This
+          parameter requires the start parameter to be set to true as well
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Input'
+        required: false
+      responses:
+        200:
+          description: Returns the ID of the new synchronization run.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatusResponse'
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+      x-codegen-request-body-name: body
+  /synchronizationRuns/{id}/start:
+    post:
+      tags:
+      - synchronizationRuns
+      description: Starts an existing but not yet started synchronization run
+      operationId: startSynchronizationRun
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the synchronization run
+        required: true
+        schema:
+          type: string
+      - name: test
+        in: query
+        description: If true a dry run without any changes will be performed
+        schema:
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: The synchronization run was successfully started and is now
+            in progress
+          content: {}
+        400:
+          description: The synchronization run was already started earlier. It is
+            not possible to start the same synchronization run twice.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+        404:
+          description: No synchronization run with the given id exists.
+          content: {}
+  /synchronizationRuns/{id}/progress:
+    get:
+      tags:
+      - synchronizationRuns
+      description: Shows the progress of a synchronization run, it gives updated counters
+        of the run level that is in execution.
+      operationId: getSynchronizationRunProgress
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the synchronization run
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The synchronization run exists and progress information was
+            searched.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncRunInboundProgressReport'
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+        404:
+          description: No synchronization run with the given id exists.
+          content: {}
+  /synchronizationRuns/{id}/stop:
+    post:
+      tags:
+      - synchronizationRuns
+      description: Stops a running synchronization run
+      operationId: stopSynchronizationRun
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the synchronization run
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The synchronization run was successfully stopped.
+          content: {}
+        400:
+          description: The synchronization is not yet pending or running. It is not
+            possible to stop a synchronization that is not pending or running.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+        404:
+          description: No synchronization run with the given id exists.
+          content: {}
+  /synchronizationRuns/{id}/status:
+    get:
+      tags:
+      - synchronizationRuns
+      description: Returns the status of an existing synchronization run
+      operationId: getSynchronizationRunStatus
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the synchronization run
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Returns the status of an existing synchronization run.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+        404:
+          description: No synchronization run with the given id exists.
+          content: {}
+  /synchronizationRuns/{id}/results:
+    get:
+      tags:
+      - synchronizationRuns
+      description: Returns the results of a finished synchronization run
+      operationId: getSynchronizationRunResults
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the synchronization run
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Returns the results of a finished synchronization run.
+          content: {}
+        204:
+          description: This code is returned, when the inbound run has no LDIF to
+            produce, or when the LDIF is not yet ready.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+        404:
+          description: No synchronization run with the given id exists.
+          content: {}
+  /synchronizationRuns/{id}/resultsUrl:
+    get:
+      tags:
+      - synchronizationRuns
+      description: Returns the url to the results of a finished synchronization run
+      operationId: getSynchronizationRunResultsUrl
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the synchronization run
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Returns the url to the results of a finished synchronization
+            run or in case the run exists but is not yet finished a null value for
+            the url.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+        404:
+          description: No synchronization run with the given id exists.
+          content: {}
+  /synchronizationRuns/{id}/warnings:
+    get:
+      tags:
+      - synchronizationRuns
+      description: Returns the warnings of a synchronization run
+      operationId: getSynchronizationRunWarnings
+      parameters:
+      - name: offset
+        in: query
+        description: The zero-based index of the first element to retrieve
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: The number of elements that should be retrieved
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+      - name: id
+        in: path
+        description: The ID of the synchronization run
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Returns the warnings of a synchronization run.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+  /synchronizationRuns/withConfig:
+    post:
+      tags:
+      - synchronizationRuns
+      description: Starts a new synchronization run using the processor configuration
+        and input object provided in the request.
+      operationId: createSynchronizationRunWithConfig
+      parameters:
+      - name: start
+        in: query
+        description: If true the created run will be enqueued to be started
+        schema:
+          type: boolean
+          default: false
+      - name: test
+        in: query
+        description: If true a dry run without any changes will be performed. This
+          parameter requires the start parameter to be set to true as well
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputWithProcessorConfig'
+        required: false
+      responses:
+        200:
+          description: Successful operation, the response contains the ID of the run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationRun'
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+      x-codegen-request-body-name: body
+  /synchronizationRuns/withUrlInput:
+    post:
+      tags:
+      - synchronizationRuns
+      description: Starts a new synchronization run using a DataProvider information
+        to obtain the LDIF input
+      operationId: createSynchronizationRunWithUrlInput
+      parameters:
+      - name: start
+        in: query
+        description: If true the created run will be enqueued to be started
+        schema:
+          type: boolean
+          default: false
+      - name: test
+        in: query
+        description: If true a dry run without any changes will be performed. This
+          parameter requires the start parameter to be set to true as well
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataProvider'
+        required: false
+      responses:
+        200:
+          description: Successful operation, the response contains the ID of the run
+            and the processor configuration selected for the run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationRunWithConfiguration'
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+      x-codegen-request-body-name: body
+  /synchronizationRuns/withExecutionGroup:
+    post:
+      tags:
+      - synchronizationRuns
+      description: Starts a new synchronization run using combined processor configuration
+        within an execution group and input object provided in the request.
+      operationId: createSynchronizationRunWithExecutionGroup
+      parameters:
+      - name: groupName
+        in: query
+        description: The name of execution group
+        schema:
+          type: string
+      - name: start
+        in: query
+        description: If true the created run will be enqueued to be started
+        schema:
+          type: boolean
+          default: false
+      - name: test
+        in: query
+        description: If true a dry run without any changes will be performed. This
+          parameter requires the start parameter to be set to true as well
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Input'
+        required: false
+      responses:
+        200:
+          description: Successful operation, the response contains the ID of the run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SynchronizationRunWithConfiguration'
+        400:
+          description: Execution group contains processor configurations that are
+            incompatible (both 'processingDirection' and 'processingMode' must be
+            the same).
+          content: {}
+        404:
+          description: No processor configuration is found for the given execution
+            group.
+          content: {}
+      x-codegen-request-body-name: body
+  /fastSynchronizationRuns:
+    post:
+      tags:
+      - fastSynchronizationRuns
+      description: Creates a fast synchronization run.
+      operationId: createSynchronizationFastRun
+      parameters:
+      - name: test
+        in: query
+        description: If true a dry run without any changes will be performed
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Input'
+        required: false
+      responses:
+        200:
+          description: Results of the execution, it includes error messages and statistics
+            about the run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FastRunResponse'
+        400:
+          description: Fast execution does not support outbound yet.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+      x-codegen-request-body-name: body
+  /fastSynchronizationRuns/withConfig:
+    post:
+      tags:
+      - fastSynchronizationRuns
+      description: Starts a new fast run synchronization using the processor configuration
+        and input object provided in the request.
+      operationId: createSynchronizationFastRunWithConfig
+      parameters:
+      - name: test
+        in: query
+        description: If true a dry run without any changes will be performed
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputWithProcessorConfig'
+        required: false
+      responses:
+        200:
+          description: Results of the execution, it includes error messages and statistics
+            about the run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FastRunResponse'
+        400:
+          description: Fast execution does not support outbound yet.
+          content: {}
+        403:
+          description: The user is not allowed to use this endpoint.
+          content: {}
+      x-codegen-request-body-name: body
+  /storages/azure:
+    get:
+      tags:
+      - storages
+      description: Provides storage resources that can be used for synchronisation
+        runs. It creates a blob file in Azure Storage.
+      operationId: createInAzure
+      responses:
+        200:
+          description: A new blob file was created and its ready for writing in Azure
+            Blob Storage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageManagerResponse'
+        500:
+          description: Internal error during the provisioning of a new blob file.
+          content: {}
+components:
+  schemas:
+    ChunkInformation:
+      type: object
+      properties:
+        firstDataObject:
+          minimum: 0
+          type: integer
+          description: Index of the first data object in this chunk
+          format: int64
+          readOnly: true
+        lastDataObject:
+          minimum: 0
+          type: integer
+          description: Index of the last data object in this chunk
+          format: int64
+          readOnly: true
+        maxDataObject:
+          minimum: 0
+          type: integer
+          description: Index of the last data object over all chunks
+          format: int64
+          readOnly: true
+    Content:
+      required:
+      - data
+      - id
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of content defined by this entry
+          readOnly: true
+          example: Deployment
+        id:
+          type: string
+          description: The (External) ID that identifies the fact sheet
+          readOnly: true
+          example: 684c16bf-198c-11f9-9d08-926300573fbf
+        data:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: Processor specific fields that correspond to changes
+          readOnly: true
+          example:
+            app: chartmuseum
+            chart: chartmuseum-1.8.4
+            heritage: Tiller
+            name: chartmuseum-chartmuseum
+            release: chartmuseum
+            clusterName: leanix-westeurope-int-aks
+      description: An object containing all necessary information about changes that
+        are going to be made by the processors
+    Credentials:
+      type: object
+      properties:
+        apiToken:
+          type: string
+          description: The API token that is used for executing the synchronization
+            run
+          readOnly: true
+        useTechnicalUser:
+          type: boolean
+          description: Whether to use the technical user of the workspace to execute
+            the synchronization run. If true, 'apiToken' field will be ignored.
+          readOnly: true
+          default: false
+      description: Credential settting for synchronization run
+    DataProvider:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The url from which the inbound LDIF should be downloaded from
+          readOnly: true
+        type:
+          type: string
+          description: The type of storage provider. Use 'azureStorage' to optimize
+            for Azure Storage, or null for other types.
+          readOnly: true
+      description: Definition of the provider which provides the inbound LDIF
+      example:
+        url: https://...
+        type: azureStorage
+    DeletionScope:
+      type: object
+      properties:
+        maximumDeletionRatio:
+          type: object
+          properties: {}
+          description: Maximum Ratio (percentage) between elements to be deleted compared
+            to size of the scope. If this limit is violated the deletion is canceled
+        factSheets:
+          type: array
+          description: The scopes for fact sheet entities
+          items:
+            $ref: '#/components/schemas/FactSheetDeletionScope'
+        relations:
+          type: array
+          description: The scopes for fact sheet entities
+          items:
+            $ref: '#/components/schemas/RelationDeletionScope'
+        tags:
+          type: array
+          description: The scopes for fact sheet entities
+          items:
+            $ref: '#/components/schemas/TagDeletionScope'
+        subscriptions:
+          type: array
+          description: The scopes for subscriptions entities
+          items:
+            $ref: '#/components/schemas/SubscriptionDeletionScope'
+        documents:
+          type: array
+          description: The scopes for document entities
+          items:
+            $ref: '#/components/schemas/DocumentDeletionScope'
+        impacts:
+          type: array
+          description: The scopes for impact entities
+          items:
+            $ref: '#/components/schemas/ImpactDeletionScope'
+      description: Definition of the entities to be removed if they are not touched
+        by the processor configuration
+    DocumentDeletionScope:
+      type: object
+      properties:
+        documentMatches:
+          type: object
+          description: A list of matching patterns that document names have to match
+            to be considered for deletion
+          readOnly: true
+        scope:
+          $ref: '#/components/schemas/Scope'
+        advanced:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe the advanced filter settings.
+          readOnly: true
+      description: The criteria for selection of documents.
+    DocumentInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - required:
+        - identifier
+        type: object
+        properties:
+          identifier:
+            $ref: '#/components/schemas/IdentifierWithSearchScopeTemplate'
+          updates:
+            type: array
+            description: A list of changes that are performed to the specified fact
+              sheet
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/PatchTemplate'
+    ExternalIdSetTemplate:
+      required:
+      - ids
+      - type
+      type: object
+      properties:
+        ids:
+          type: string
+          description: The ExternalIDs of the fact sheets
+          readOnly: true
+          example: ${content.exIds}
+        type:
+          $ref: '#/components/schemas/KeyTemplate'
+      description: The template that generates one or more fact sheet identifiers
+        using the ExternalID of the fact sheets
+    ExternalIdTemplate:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/KeyTemplate'
+        type:
+          $ref: '#/components/schemas/KeyTemplate'
+      description: The template that generates the fact sheet identifier using the
+        ExternalID of the fact sheet
+    FactSheetInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - required:
+        - identifier
+        - type
+        type: object
+        properties:
+          type:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: An expression resolving to a Fact Sheet type present in the
+              data model of your LeanIX workspace
+            readOnly: true
+            example: Application
+          identifier:
+            $ref: '#/components/schemas/IdentifierWithSearchScopeTemplate'
+          updates:
+            type: array
+            description: A list of changes that are performed to the specified fact
+              sheet
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/PatchTemplate'
+          read:
+            $ref: '#/components/schemas/ReadFactSheetSection'
+    SearchScope:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/Scope'
+        filter:
+          type: object
+          description: The JUEL expression to filter results from search scope. References
+            to LDIF fields are allowed here
+          readOnly: true
+          example: ${lx.factsheet.name == data.displayName}
+        multipleMatchesAllowed:
+          type: object
+          description: True is multiple matches are allowed for the target fact sheets
+            to update. False if only one match is allowed
+          readOnly: true
+          example: ${lx.factsheet.name == data.displayName}
+        scopeFromBookmark:
+          type: object
+          description: String or JUEL expression that define bookmark that wil be
+            used for selecting factsheets.
+          readOnly: true
+          example: ${data.bookmarkId}
+        projectionScope:
+          type: object
+          properties: {}
+          description: The projection query request for obtaining projection PointOfViews,
+            create this section as documented in projection endpoint (https://app.leanix.net/openapi-explorer/?urls.primaryName=Impacts).
+            Every item from the PointOfViews response can be used in JUEL expressions
+            by ${lx.projection}
+          readOnly: true
+          example:
+            filters:
+            - type: factSheetType
+              types:
+              - ITComponent
+            attributes:
+            - name: id
+              type: field
+              field: id
+            - name: description
+              type: field
+              field: description
+            pointsOfView:
+            - id: current
+              changeSet:
+                type: dateOnly
+                date: 2020-02-21
+      description: The criteria for selecting fact sheets and filter in combination
+        with LDIF data
+      example:
+        scope:
+          facetFilters:
+          - keys:
+            - ${header.customFields.fsType}
+            facetKey: FactSheetTypes
+            operator: ${header.customFields.operator}
+          - keys:
+            - 1d063fa9-fa36-4988-a06e-412a4c5744f4
+            facetKey: Subscriptions
+            operator: OR
+          ids:
+          - ${anotherJUEL}
+        expr: ${lx.factsheet.name == data.displayName}
+        multipleMatchesAllowed: true
+        scopeFromBookmark: ${data.bookmarkId}
+    ReadFactSheetSection:
+      type: object
+      properties:
+        metrics:
+          $ref: '#/components/schemas/MetricsMeasurement'
+        fields:
+          type: array
+          description: A list of fields that are required to get from Fact Sheet
+          readOnly: true
+          example:
+          - name
+          - description
+          - location
+          - lifecycle
+          items:
+            type: string
+        relations:
+          $ref: '#/components/schemas/RequiredRelationInfo'
+        tags:
+          $ref: '#/components/schemas/TagFilter'
+        subscriptions:
+          $ref: '#/components/schemas/SubscriptionFilter'
+        documents:
+          $ref: '#/components/schemas/DocumentFilter'
+        impacts:
+          $ref: '#/components/schemas/ImpactFilter'
+        noNullForOrdinal:
+          type: boolean
+          description: A flag to determine the fallback response in the function lx.toOrdinal(...).
+            A true (default if absent) makes the value returned by lx.toOrdinal(...)
+            to be zero for non-found cases. False will make the returned value equals
+            NULL.
+          readOnly: true
+          default: true
+        multipleFields:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe which factSheet fields from the
+            data model are selected
+          readOnly: true
+          example: ${dm.factSheetField.name=='description' && dm.factSheetField.type=='STRING'
+            && dm.factSheetType=='Application'}
+      description: Define the components that will be available for JUEL expression
+        under the symbol 'lx'.
+      example:
+        read:
+          metrics: {}
+    DocumentFilter:
+      type: object
+      properties:
+        filter:
+          type: string
+          description: The document names to filter for
+          readOnly: true
+    ImpactFilter:
+      type: object
+      properties:
+        readAll:
+          type: boolean
+          description: A flag that specifies whether to read impacts belonging to
+            Fact Sheet
+          readOnly: true
+          default: false
+    SubscriptionFilter:
+      type: object
+      properties:
+        types:
+          type: array
+          description: The subscription types to retrieve
+          readOnly: true
+          items:
+            type: string
+    TagFilter:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: The tag groups to retrieve
+          readOnly: true
+          items:
+            type: string
+        multipleGroups:
+          type: array
+          description: 'Create list of tag group names by evaluating juel expression.
+            It iterates all tagGroups in Workspace, tag group currently iterated over
+            is available as “dm.tagGroup” in the JUEL expression, example: ${dm.tagGroup.name==''TagGroupsName''}'
+          readOnly: true
+          items:
+            type: string
+    RequiredRelationInfo:
+      type: object
+      properties:
+        filter:
+          type: array
+          description: The relation types to filter for
+          readOnly: true
+          items:
+            type: string
+        fields:
+          type: array
+          description: The names of the fields of a relation that are be available
+          readOnly: true
+          items:
+            type: string
+        targetFields:
+          type: array
+          description: The names of the fields of the target Fact Sheet that are available
+          readOnly: true
+          items:
+            type: string
+        constrainingRelations:
+          type: boolean
+          description: Whether to get constraining relations of relations
+          readOnly: true
+          default: false
+        multipleFields:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe which relation fields from the
+            data model are selected
+          example: ${dm.relationField.name=='description' && dm.relationField.type=='STRING'
+            && dm.relationType=='relToParent'}
+        multipleFilters:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe which relation type to filter
+            for
+          example: ${dm.relationType=='relToParent'}
+        multipleTargetFields:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe which factSheet fields on the
+            target factSheet are selected
+          example: ${dm.factSheetField.name=='description' && dm.factSheetField.type=='STRING'
+            && dm.relationType=='relToParent' && dm.factSheetType=='Application'}
+    MetricsMeasurement:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name to be used for this measurement in the context of
+            'lx.metrics.'.
+        measurement:
+          type: string
+          description: The name of the measurement as it is known in the workspace.
+        fieldName:
+          type: string
+          description: The name of the field that belongs to the measurement where
+            the data will be collected.
+        groupBy:
+          type: string
+          description: Optional, grouping criteria, it is a time duration value, e.g.
+            '1d'.
+        start:
+          type: string
+          description: Optional, start of the period of time to fetch data. If 'start'
+            is defined, then at least 'end' or 'duration' must be also defined
+        end:
+          type: string
+          description: Optional, end of the period of time to fetch data, must be
+            defined based on the 'start' field.
+        duration:
+          type: string
+          description: Optional, the duration expression (time interval) to express
+            the period of time to fetch data. ISO-8601 duration format PnDTnHnMn is
+            expected
+        rules:
+          $ref: '#/components/schemas/MetricRules'
+      description: Specify multiple measurements that are fetched along with the processing
+        Fact Sheet, it is possible to use juel expression in any of the values
+      example:
+        read:
+          metrics: {}
+    MetricRules:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Identify the key for the rule
+        comparator:
+          type: string
+          description: Identify the operation that is used to compare values
+        compareWith:
+          type: string
+          description: The value used in the comparison operation
+      description: Specify the condition to collect data. Juel expression can be used
+        in all corresponding values.
+      example:
+        read:
+          key: factSheetId
+          comparator: =
+          compareWith: ${lx.factsheet.id}
+    FilterConfig:
+      type: object
+      properties:
+        type:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The regular expression of the content type this filter config
+            should accept
+          readOnly: true
+          example: Deployment
+        id:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The regular expression of the content id this filter config
+            should accept
+          readOnly: true
+        advanced:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe the advanced filter settings.
+          readOnly: true
+        onRead:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe the onRead filter settings.
+          readOnly: true
+        updatedAtDuration:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to limit Fact Sheets that have changes since
+            a given data. ISO-8601 duration format PnDTnHnMn is used
+          readOnly: true
+      description: Defines a filter for the content data that this processor is able
+        to evaluate
+    IdentifierSetTemplate:
+      type: object
+      properties:
+        external:
+          $ref: '#/components/schemas/ExternalIdSetTemplate'
+        internal:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: Internal identifiers of the Fact Sheet assigned by LeanIX
+          readOnly: true
+          example: ${data.ids}
+      description: A template representing one or more identifiers of Fact Sheets
+    IdentifierTemplate:
+      type: object
+      properties:
+        external:
+          $ref: '#/components/schemas/ExternalIdTemplate'
+        internal:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An internal identifier of the Fact Sheet assigned by LeanIX
+          readOnly: true
+          example: ${content.id}
+      description: A template representing a unique identifier of a Fact Sheet when
+        evaluated
+    IdentifierWithSearchScopeTemplate:
+      type: object
+      properties:
+        external:
+          $ref: '#/components/schemas/ExternalIdTemplate'
+        internal:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An internal identifier of the Fact Sheet assigned by LeanIX
+          readOnly: true
+          example: ${content.id}
+        search:
+          $ref: '#/components/schemas/SearchScope'
+      description: A template representing the conditions for obtaining the fact sheets
+        to been evaluated. Includes an identifier for internal, external Id, or a
+        search criteria to obtain multiple fact sheets to evaluate
+    DataConsumer:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The type of data consumer (one of 'leanixStorage' or 'azureStorage').
+          example: Deployment
+      description: Define the target location to which the outbound result LDIF should
+        be uploaded to
+      discriminator:
+        propertyName: type
+    LeanIxStorageDataConsumer:
+      description: Upload the outbound result LDFI to the default cloud storage provided
+        by LeanIX
+      allOf:
+      - $ref: '#/components/schemas/DataConsumer'
+    AzureStorageDataConsumer:
+      description: Upload the outbound result LDFI to the target Azure storage account
+        and container
+      allOf:
+      - $ref: '#/components/schemas/DataConsumer'
+    ImpactInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - required:
+        - identifier
+        type: object
+        properties:
+          identifier:
+            $ref: '#/components/schemas/IdentifierWithSearchScopeTemplate'
+          updates:
+            type: array
+            description: A list of changes that are performed to the specified fact
+              sheet
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/PatchTemplate'
+          read:
+            $ref: '#/components/schemas/ReadFactSheetSection'
+    InboundProcessor:
+      required:
+      - processorType
+      type: object
+      properties:
+        processorType:
+          type: string
+          description: The type that identifies this processor (one of 'inboundFactSheet',
+            'inboundRelation', 'inboundTag', 'inboundDocument', 'inboundSubscription',
+            'inboundMetrics', 'inboundImpact', 'variableProcessor')
+          readOnly: true
+          example: inboundFactSheet
+        processorName:
+          type: string
+          description: A not necessarily unique name for this processor
+          readOnly: true
+          example: FactSheetCreator
+        processorDescription:
+          type: string
+          description: A description for this processor
+          readOnly: true
+          example: Creates Fact Sheets in LeanIX
+        filter:
+          $ref: '#/components/schemas/FilterConfig'
+        run:
+          minimum: 0
+          type: integer
+          description: Order of processor execution. Processors with high numbers
+            are executed after such processors with low number. A value greater or
+            equal 0 is expected for this value
+          format: int32
+          readOnly: true
+        enabled:
+          type: boolean
+          description: Whether this processor is executed or not. Default is true.
+          readOnly: true
+        forEach:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression which targets a content property with a list.
+            Processing will be done for each element in the list.
+          readOnly: true
+          example: ${data.documents}
+        variables:
+          type: array
+          description: A list of variables. Each variable consists of a key and a
+            value. Both fields can contain EL expressions. The expression in key must
+            be evaluated to a single element while the expression in value will be
+            evaluated to a list. The EL expressions are evaluated after a processor
+            has run for a data object and the values will be provided in the next
+            run of the running synchronization.
+          readOnly: true
+          example:
+            example:
+            - key: ${data.key}
+              value: ${data.tags}
+            - key: var2
+              value: ${content.id}
+          items:
+            $ref: '#/components/schemas/VariableKeyValueTemplate'
+        mode:
+          type: string
+          description: The operation mode of this processor. It can be either 'delete',
+            or 'createOrUpdate'.
+          readOnly: true
+        logLevel:
+          type: string
+          description: The log level of this processor. It can be 'off', 'warning'
+            or 'debug'.
+          readOnly: true
+      discriminator:
+        propertyName: processorType
+    InboundProcessorConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/ProcessorConfiguration'
+      - required:
+        - connectorId
+        - connectorType
+        - connectorVersion
+        - processingDirection
+        type: object
+        properties:
+          connectorType:
+            type: string
+            description: The type of connector that is used
+            example: lxKubernetes
+          connectorId:
+            type: string
+            description: The identifier of the connector instance
+            example: Kub Dev-001
+          connectorVersion:
+            type: string
+            description: The version of the connector that is expected to process
+              this LDIF file
+            example: 1.2.0
+          processingDirection:
+            type: string
+            description: The data flow direction, must be [inbound]
+            default: inbound
+            enum:
+            - inbound
+          processingMode:
+            type: string
+            description: The processing mode, could be [partial, full]
+            default: partial
+            enum:
+            - partial
+            - full
+          processors:
+            type: array
+            description: The list of processors used to evaluate the LDIF data
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/InboundProcessor'
+          deletionScope:
+            type: object
+            properties: {}
+            description: The deletion scope definition used to delete untouched entities
+              on a 'full' sync mode
+            readOnly: true
+          variables:
+            type: object
+            additionalProperties:
+              type: object
+              properties: {}
+            description: The global variable definition used to define default values
+            readOnly: true
+          dataProvider:
+            type: object
+            properties: {}
+            description: Definition of the provider which provides the inbound LDIF.
+            readOnly: true
+          credentials:
+            type: object
+            properties: {}
+            description: Credentials setting for the synchronization run.
+            readOnly: true
+          targetLdif:
+            $ref: '#/components/schemas/TargetLdifConfiguration'
+          defaultInput:
+            type: object
+            properties: {}
+            description: The default LDIF for testing with this processor configuration.
+    StorageManagerResponse:
+      required:
+      - SAS
+      - expireAt
+      type: object
+      properties:
+        expireAt:
+          type: string
+          description: The date until the SAS url for the new blob file is valid.
+          example: 2021-04-10T13:08:53.939604Z
+        SAS:
+          type: string
+          description: The Shared Accesss Signature (SAS)
+          example: https://folder.blob.core.windows.net/integration-api/Pa840823
+    Input:
+      required:
+      - connectorId
+      - connectorType
+      - connectorVersion
+      - processingDirection
+      type: object
+      properties:
+        connectorType:
+          type: string
+          description: The type of connector that is used
+          example: lxKubernetes
+        connectorId:
+          type: string
+          description: The identifier of the connector instance
+          example: Kub Dev-001
+        connectorVersion:
+          type: string
+          description: The version of the connector that is expected to process this
+            LDIF file
+          example: 1.2.0
+        processingDirection:
+          type: string
+          description: The data flow direction, could be [inbound, outbound]
+          example: inbound
+          enum:
+          - inbound
+          - outbound
+        processingMode:
+          type: string
+          description: The processing mode, could be [partial, full]
+          default: partial
+          enum:
+          - partial
+          - full
+      discriminator:
+        propertyName: processingDirection
+    InputWithProcessorConfig:
+      required:
+      - input
+      - processorConfiguration
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/Input'
+        processorConfiguration:
+          $ref: '#/components/schemas/ProcessorConfiguration'
+    SyncRunInboundProgressReport:
+      type: object
+      properties:
+        processedContentCount:
+          type: integer
+          description: Number of elements processed from content in the current run
+            level for Inbound processing.
+          example: 4872
+        errorCount:
+          type: integer
+          description: Number of errors in the current run level, valid for Inbound
+        graphQLRequestCount:
+          type: integer
+          description: Number of GraphQL request made to Pathfinder backend in the
+            current run level, not applicable for Outbound
+        runLevelIndex:
+          type: integer
+          description: Identifier of the run level being executed, valid only for
+            Inbound processing.
+          example: 2
+        status:
+          type: integer
+          description: Status of the synchronization Job
+        contentsCount:
+          type: integer
+          description: Number of elements build in the output content. Valid for Outbound
+        warningsCount:
+          type: integer
+          description: Number of warnings detected during Outbound processing
+        itemsInScopeCount:
+          type: integer
+          description: Number of elements found in the Outbound Scope or the Scope
+            of the processors
+    KeyTemplate:
+      required:
+      - expr
+      type: object
+      properties:
+        expr:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The basic expression that is evaluated by the EL based on the
+            content data
+          readOnly: true
+          example: description
+        regexReplace:
+          $ref: '#/components/schemas/RegexReplace'
+    KeyValueTemplate:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The basic expression of key
+          readOnly: true
+        value:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The basic expression of value
+          readOnly: true
+    LeanIxDataInterchangeFormat:
+      description: Represents a LeanIX Data Interchange Format (LDIF)
+      allOf:
+      - $ref: '#/components/schemas/Input'
+      - required:
+        - connectorId
+        - connectorType
+        - connectorVersion
+        - lxVersion
+        - processingDirection
+        type: object
+        properties:
+          connectorType:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The type of connector that is used
+            readOnly: true
+            example: lxKubernetes
+          connectorId:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The identifier of the connector instance
+            readOnly: true
+            example: Kub Dev-001
+          connectorVersion:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The version of the connector that is expected to process
+              this LDIF file
+            readOnly: true
+            example: 1.2.0
+          lxVersion:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The target API version
+            readOnly: true
+            example: 1.0.0
+          lxWorkspace:
+            type: string
+            description: The optional target workspace
+            readOnly: true
+          description:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: A customer added, arbitrary description for any kind of grouping,
+              notification or note purpose
+            readOnly: true
+            example: Imports kubernetes data into LeanIX
+          processingDirection:
+            type: string
+            description: The direction of the data flow
+            readOnly: true
+            default: inbound
+            enum:
+            - inbound
+          processingMode:
+            type: string
+            description: Optional additional options to parse this LDIF request
+            readOnly: true
+            default: partial
+            enum:
+            - partial
+            - full
+          chunkInformation:
+            $ref: '#/components/schemas/ChunkInformation'
+          customFields:
+            type: object
+            additionalProperties:
+              type: object
+              properties: {}
+            description: Global variables accessible from all data processors.
+            readOnly: true
+          content:
+            type: array
+            description: The list of content changes that are applied within this
+              LDIF
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/Content'
+    MetricsInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - type: object
+        properties:
+          updates:
+            type: array
+            description: A set of values that specify the metrics point that is created.
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/PatchTemplate'
+    OutboundFieldTemplate:
+      required:
+      - key
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/KeyTemplate'
+        mode:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: Either 'list' or 'selectFirst'. Defines if the field should
+            be written as a list or as a single element.
+          readOnly: true
+          example: selectFirst
+          default: selectFirst
+        values:
+          type: array
+          description: A list of expressions for multiple values, e.g. for multi select
+            fields
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ValueTemplate'
+        forEach:
+          $ref: '#/components/schemas/ValueForEachTemplate'
+        optional:
+          type: boolean
+          description: Whether this value is optional. If true, then missing value
+            error will not be reported
+          readOnly: true
+          default: false
+    OutboundInput:
+      allOf:
+      - $ref: '#/components/schemas/Input'
+      - required:
+        - connectorId
+        - connectorType
+        - connectorVersion
+        - processingDirection
+        type: object
+        properties:
+          connectorType:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The type of connector that is used
+            readOnly: true
+            example: lxKubernetes
+          connectorId:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The identifier of the connector instance
+            readOnly: true
+            example: Kub Dev-001
+          connectorVersion:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The version of the connector that is expected to process
+              this LDIF file
+            readOnly: true
+            example: 1.2.0
+          processingDirection:
+            type: string
+            description: The direction of the data flow.
+            readOnly: true
+            default: outbound
+            enum:
+            - outbound
+          processingMode:
+            type: string
+            description: Optional additional options to parse this LDIF request
+            readOnly: true
+            default: partial
+            enum:
+            - partial
+          description:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: A customer added, arbitrary description for any kind of grouping,
+              notification or note purpose
+            readOnly: true
+    OutboundProcessor:
+      required:
+      - processorType
+      type: object
+      properties:
+        processorType:
+          type: string
+          description: The type that identifies this processor ('outboundFactSheet')
+          readOnly: true
+          example: outboundFactSheet
+        processorName:
+          type: string
+          description: A not necessarily unique name for this processor
+          readOnly: true
+          example: OutputProcessor_Application_FactSheets
+        processorDescription:
+          type: string
+          description: A description for this processor
+          readOnly: true
+          example: Reads 'Application' Fact Sheet data from LeanIX and transforms
+            it into an arbitrary output format.
+        filter:
+          $ref: '#/components/schemas/FilterConfig'
+        enabled:
+          type: boolean
+          description: Whether this processor is executed or not. Default is true.
+          readOnly: true
+        scope:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: A list of facet filters which limit which Fact Sheets are considered
+            for output
+          readOnly: true
+          example:
+          - facetKey: FactSheetTypes
+            operator: OR
+            keys:
+            - Application
+        fields:
+          type: array
+          description: A list of fields that are required to get from Fact Sheet
+          readOnly: true
+          example:
+          - name
+          - description
+          - location
+          - lifecycle
+          items:
+            type: string
+        relations:
+          $ref: '#/components/schemas/OutboundRequiredRelationInfo'
+        tags:
+          $ref: '#/components/schemas/OutboundTagFilter'
+        subscriptions:
+          $ref: '#/components/schemas/OutboundSubscriptionFilter'
+        documents:
+          $ref: '#/components/schemas/OutboundDocumentFilter'
+        dataConsumer:
+          $ref: '#/components/schemas/DataConsumer'
+        metrics:
+          $ref: '#/components/schemas/MetricsMeasurement'
+        output:
+          type: array
+          description: A list of fields that are constructed an exported Fact Sheet
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/OutboundFieldTemplate'
+        noNullForOrdinal:
+          type: boolean
+          description: A flag to determine the fallback response in the function lx.toOrdinal(...).
+            A true (default if absent) makes the value returned by lx.toOrdinal(...)
+            to be zero for non-found cases. False will make the returned value equals
+            NULL.
+          readOnly: true
+          default: true
+        multipleFields:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe which factSheet fields from the
+            data model are selected
+          readOnly: true
+          example: ${dm.factSheetField.name=='description' && dm.factSheetField.type=='STRING'
+            && dm.factSheetType=='Application'}
+    OutboundProcessorConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/ProcessorConfiguration'
+      - required:
+        - connectorId
+        - connectorType
+        - connectorVersion
+        - processingDirection
+        - scope
+        type: object
+        properties:
+          connectorType:
+            type: string
+            description: The type of connector that is used
+            example: lxKubernetes
+          connectorId:
+            type: string
+            description: The identifier of the connector instance
+            example: Kub Dev-001
+          connectorVersion:
+            type: string
+            description: The version of the connector that is expected to process
+              this LDIF file
+            example: 1.2.0
+          processingDirection:
+            type: string
+            description: The data flow direction, must be [outbound]
+            default: outbound
+            enum:
+            - outbound
+          processingMode:
+            type: string
+            description: The processing mode, could be [partial]
+            default: partial
+            enum:
+            - partial
+          scope:
+            type: object
+            additionalProperties:
+              type: object
+              properties: {}
+            description: A list of facet filters to limit which Fact Sheets are considered
+              for output
+            example:
+            - facetKey: FactSheetTypes
+              operator: OR
+              keys:
+              - Application
+          processors:
+            type: array
+            description: The list of processors used to evaluate the LDIF data
+            items:
+              $ref: '#/components/schemas/OutboundProcessor'
+          dataConsumer:
+            $ref: '#/components/schemas/DataConsumer'
+          defaultInput:
+            type: object
+            properties: {}
+            description: The default outbound input for testing with this processor
+              configuration.
+    OutboundRequiredRelationInfo:
+      type: object
+      properties:
+        filter:
+          type: array
+          description: The relation types to filter for
+          readOnly: true
+          items:
+            type: string
+        fields:
+          type: array
+          description: The names of the fields of a relation that are be available
+          readOnly: true
+          items:
+            type: string
+        targetFields:
+          type: array
+          description: The names of the fields of the target Fact Sheet that are available
+          readOnly: true
+          items:
+            type: string
+        constrainingRelations:
+          type: boolean
+          description: Whether to get constraining relations of relations
+          readOnly: true
+          default: false
+    OutboundTagFilter:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: The tag groups to retrieve
+          readOnly: true
+          items:
+            type: string
+    OutboundSubscriptionFilter:
+      type: object
+      properties:
+        types:
+          type: array
+          description: The subscription types to retrieve
+          readOnly: true
+          items:
+            type: string
+    OutboundDocumentFilter:
+      type: object
+      properties:
+        filter:
+          type: string
+          description: The document names to filter for
+          readOnly: true
+    PatchTemplate:
+      required:
+      - key
+      - values
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/KeyTemplate'
+        op:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: Defines the operation that is used. Data can be added or updated
+          readOnly: true
+          example: replace
+          default: replace
+        values:
+          type: array
+          description: A list of expressions for multiple values, e.g. for multi select
+            fields
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ValueTemplate'
+        optional:
+          type: boolean
+          description: Whether this value is optional. If true, then missing value
+            error will not be reported
+          readOnly: true
+          default: false
+        forEach:
+          $ref: '#/components/schemas/ValueForEachTemplate'
+      description: The template of a key/value pair that defines an abstract change
+        to the data
+      example:
+        key:
+          expr: description
+          regexReplace:
+            match: ^(.*)$
+            replace: $1
+        values:
+        - expr: ${data.name}, ${data.release}
+          regexReplace:
+            match: ^(.*)$
+            replace: $1
+    ProcessorConfiguration:
+      required:
+      - connectorId
+      - connectorType
+      - connectorVersion
+      - processingDirection
+      type: object
+      properties:
+        connectorType:
+          type: string
+          description: The type of connector that is used
+          example: lxKubernetes
+        connectorId:
+          type: string
+          description: The identifier of the connector instance
+          example: Kub Dev-001
+        connectorVersion:
+          type: string
+          description: The version of the connector that is expected to process this
+            LDIF file
+          example: 1.2.0
+        processingDirection:
+          type: string
+          description: The data flow direction, could be [inbound, outbound]
+          example: inbound
+          enum:
+          - inbound
+          - outbound
+        processingMode:
+          type: string
+          description: The processing mode, could be [partial, full]
+          default: partial
+          enum:
+          - partial
+          - full
+      discriminator:
+        propertyName: processingDirection
+    RegexReplace:
+      type: object
+      properties:
+        match:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The matching pattern
+          readOnly: true
+          example: ^(.*)$
+          default: ^(.*)$
+        replace:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The replacement pattern
+          readOnly: true
+          example: $1
+          default: $1
+      description: The combination of a matching and a replacement pattern. The default
+        matching pattern selects the whole string in group 1, while the default replace
+        pattern replaces the matches with group 1
+    RelationInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - required:
+        - from
+        - to
+        - type
+        type: object
+        properties:
+          type:
+            maxLength: 500
+            minLength: 0
+            type: string
+            description: The relation type
+            readOnly: true
+            example: relApplicationToITComponent
+          from:
+            $ref: '#/components/schemas/IdentifierTemplate'
+          to:
+            $ref: '#/components/schemas/IdentifierTemplate'
+          updates:
+            type: array
+            description: A list of changes that are performed to the specified relation
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/PatchTemplate'
+    RelationDeletionScope:
+      type: object
+      properties:
+        relationTypes:
+          type: array
+          description: A list of relation types like 'relToParent', 'relToChild'
+          readOnly: true
+          items:
+            type: string
+        scope:
+          $ref: '#/components/schemas/Scope'
+        advanced:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe the advanced filter settings.
+          readOnly: true
+      description: The criteria for selection of relations.
+    Scope:
+      type: object
+      description: 'The criteria for selection of entities. In case you use facetFilters
+        inside, it is possible to use Juel expressions inside ''keys'', for example:
+        ${customFields.factSheetType}'
+      example:
+        ids: []
+        facetFilters:
+        - keys:
+          - UserGroup
+          facetKey: FactSheetTypes
+          operator: OR
+    FactSheetOwnerDeletion:
+      type: object
+      properties:
+        fieldName:
+          type: string
+          description: The name of the factSheet field that keep the list of owners
+            for a factSheet
+          readOnly: true
+        ownerId:
+          type: string
+          description: The value that represents ownership for factSheets, if this
+            value is found in fieldName, it will be removed
+          readOnly: true
+      description: Defines the factSheet field that controls the deletion, which will
+        be done only if the value represents an empty list
+    StatusResponse:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the synchronization run
+          readOnly: true
+        status:
+          type: string
+          description: The status of the synchronization run
+          readOnly: true
+          enum:
+          - CREATED
+          - PENDING
+          - IN_PROGRESS
+          - FINISHED
+          - STOPPED
+          - FAILED
+        description:
+          type: string
+          description: The optional description that was provided as part of the Input
+            object.
+          readOnly: true
+    SubscriptionInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - required:
+        - identifier
+        type: object
+        properties:
+          identifier:
+            $ref: '#/components/schemas/IdentifierWithSearchScopeTemplate'
+          updates:
+            type: array
+            description: A list of changes that are performed to the specified subscription
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/PatchTemplate'
+    SubscriptionScopes:
+      type: object
+      properties:
+        roles:
+          type: array
+          description: List of role names
+          items:
+            type: string
+        type:
+          type: string
+          description: Type of role, like RESPONSIBLE
+      description: The criteria to select subscriptions
+    SubscriptionDeletionScope:
+      type: object
+      properties:
+        subscriptionScopes:
+          type: array
+          description: The combinations of type and roles for subscriptions
+          items:
+            $ref: '#/components/schemas/SubscriptionScopes'
+        scope:
+          $ref: '#/components/schemas/Scope'
+        advanced:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe the advanced filter settings.
+          readOnly: true
+      description: The criteria to select subscriptions
+    FactSheetDeletionScope:
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/FactSheetOwnerDeletion'
+        scope:
+          $ref: '#/components/schemas/Scope'
+      description: The criteria to select fact sheets and activate the deletion.
+    ImpactDeletionScope:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/Scope'
+        advanced:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe the advanced filter settings.
+          readOnly: true
+      description: The criteria to select impacts for deletion
+    MaximumDeletionRatio:
+      type: object
+      properties:
+        factSheets:
+          type: integer
+          description: The maximum ratio for deletion in fact sheets
+        subscriptions:
+          type: integer
+          description: The maximum ratio for deletion in subscriptions
+        documents:
+          type: integer
+          description: The maximum ratio for deletion in documents
+        relations:
+          type: integer
+          description: The maximum ratio for deletion in relations
+        tags:
+          type: integer
+          description: The maximum ratio for deletion in tags
+      description: The ratio limits for each type of deletion scope
+    SynchronizationRun:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID to distinguish this LDIF instance from other LDIF
+            instances
+          readOnly: true
+    FastRunResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status result of the run, like FINISHED, FAILED.
+          readOnly: true
+        warnings:
+          type: array
+          description: A list of error/warnings messages found during the execution.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Warning'
+        stats:
+          $ref: '#/components/schemas/FastRunStatsReport'
+        results:
+          type: object
+          properties: {}
+          description: Output ldif when writeToLdif processor is used.
+          readOnly: true
+    Warning:
+      type: object
+      properties:
+        processor:
+          $ref: '#/components/schemas/Processor'
+        content:
+          type: string
+          description: The content ID element from the LDIF that was processed when
+            this warning was generated.
+          readOnly: true
+        message:
+          type: string
+          description: The error message
+          readOnly: true
+        detail:
+          type: string
+          description: Additional information to complement the error message
+          readOnly: true
+        category:
+          type: string
+          description: An internal category that identifies of processing category
+            where the warning was originated.
+          readOnly: true
+        status:
+          type: string
+          description: An identifier of the type of alert. Possible values are WARNING,
+            ERROR
+          readOnly: true
+    Processor:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the processor as defined by the processor configuration
+          readOnly: true
+        index:
+          type: integer
+          description: An internal integer value used to identify the processor
+          readOnly: true
+    FastRunStatsReport:
+      type: object
+      properties:
+        duration:
+          type: string
+          description: The duration of the execution expressed in ISO-8601 format
+            PnDTnHnMn
+          readOnly: true
+        processedContentCount:
+          type: integer
+          description: The number of elements processed as given by the LDIF input
+            content
+          readOnly: true
+        processorCount:
+          type: integer
+          description: The number or processors that were part of the execution
+          readOnly: true
+    SynchronizationRunWithConfiguration:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID to distinguish this LDIF instance from other LDIF
+            instances
+          readOnly: true
+        processorConfiguration:
+          $ref: '#/components/schemas/ProcessorConfiguration'
+    TagDeletionScope:
+      type: object
+      properties:
+        tagScopes:
+          type: array
+          description: A list of tag and tag group combinations.
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/TagScope'
+        scope:
+          $ref: '#/components/schemas/Scope'
+        advanced:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression to describe the advanced filter settings.
+          readOnly: true
+      description: The criteria for selection of tags.
+    TagInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - type: object
+        properties:
+          identifier:
+            $ref: '#/components/schemas/IdentifierWithSearchScopeTemplate'
+          factSheets:
+            $ref: '#/components/schemas/IdentifierSetTemplate'
+          updates:
+            type: array
+            description: A list of changes that are performed to the specified tag
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/PatchTemplate'
+    TagScope:
+      type: object
+      properties:
+        group:
+          type: string
+          description: 'The group name or the regular expression pattern '
+          readOnly: true
+        tag:
+          type: string
+          description: 'The tag name or the regular expression pattern '
+          readOnly: true
+      description: A combination of tag and tag group.
+    TargetLdifConfiguration:
+      type: object
+      properties:
+        ldifKeys:
+          type: array
+          description: A list of key-value pairs that evaluates to be the keys of
+            the new LDIF
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/KeyValueTemplate'
+        dataConsumer:
+          $ref: '#/components/schemas/DataConsumer'
+      description: Configuration for the created LDIF, in case 'writeToLdif' is used
+    ValueForEachTemplate:
+      type: object
+      properties:
+        elementOf:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The JUEL expressing targeting a list
+          readOnly: true
+        filter:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The filter to apply to each element
+          readOnly: true
+      description: An object that contains information about how the value should
+        be expanded according to a list field
+    ValueTemplate:
+      type: object
+      properties:
+        expr:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression that evaluates to a single value. Use 'map'
+            to evaluate to whole json object
+          readOnly: true
+        regexMatch:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: If this regex does not match on the evaluated 'expr' then this
+            value template is ignored. Can not be used with 'map'
+          readOnly: true
+        regexReplace:
+          $ref: '#/components/schemas/RegexReplace'
+        map:
+          type: array
+          description: A list of key-value pairs that evaluates to a json object.
+            Use 'expr' to evaluate to a single value
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/KeyValueTemplate'
+        forEach:
+          $ref: '#/components/schemas/ValueForEachTemplate'
+        object:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: An EL expression that evaluates to an arbitrary data object.
+      description: A value template describes the mapping from an incoming object
+        to a single value or a json object
+    VariableInboundProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - type: object
+    VariableKeyValueTemplate:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The basic expression of key
+          readOnly: true
+        value:
+          maxLength: 500
+          minLength: 0
+          type: string
+          description: The basic expression of value
+          readOnly: true
+    WriteToLdifProcessor:
+      allOf:
+      - $ref: '#/components/schemas/InboundProcessor'
+      - type: object
+        properties:
+          identifier:
+            $ref: '#/components/schemas/IdentifierWithSearchScopeTemplate'
+          updates:
+            type: array
+            description: A list of changes that are performed to the specified fact
+              sheet
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/OutboundFieldTemplate'
+          read:
+            $ref: '#/components/schemas/ReadFactSheetSection'
+  parameters:
+    connectorId:
+      name: connectorId
+      in: query
+      description: The identifier of the connector instance
+      schema:
+        type: string
+    connectorType:
+      name: connectorType
+      in: query
+      description: The type of connector that is used
+      schema:
+        type: string
+    connectorVersion:
+      name: connectorVersion
+      in: query
+      description: The version of the connector that is expected to process this LDIF
+        file
+      schema:
+        type: string
+    processingDirection:
+      name: processingDirection
+      in: query
+      description: The data flow direction, could be [inbound, outbound]
+      schema:
+        type: string
+        enum:
+        - inbound
+        - outbound
+    processingMode:
+      name: processingMode
+      in: query
+      description: The processing mode, could be [partial, full]
+      schema:
+        type: string
+        enum:
+        - partial
+        - full
+    syncRunId:
+      name: id
+      in: path
+      description: The ID of the synchronization run
+      required: true
+      schema:
+        type: string
+    test:
+      name: test
+      in: query
+      description: If true a dry run without any changes will be performed
+      schema:
+        type: boolean
+        default: false
+    testWithStart:
+      name: test
+      in: query
+      description: If true a dry run without any changes will be performed. This parameter
+        requires the start parameter to be set to true as well
+      schema:
+        type: boolean
+        default: false
+    start:
+      name: start
+      in: query
+      description: If true the created run will be enqueued to be started
+      schema:
+        type: boolean
+        default: false
+  securitySchemes:
+    token:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /services/mtm/v1/oauth2/token
+          scopes: {}

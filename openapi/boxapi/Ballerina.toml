@@ -1,0 +1,9 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["Box", "File", "Folder"]
+org = "ballerinax"
+name = "boxapi"
+version = "0.1.0-SANPSHOT"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

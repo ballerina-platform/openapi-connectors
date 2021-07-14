@@ -6,7 +6,7 @@ import  ballerina/lang.'string;
 #
 # + apiKeys - Provide your API Key as `Authorization`. Eg: `{"Authorization" : "<Your API Key>"}`  
 public type ApiKeysConfig record {
-    map<string|string[]> apiKeys;
+    map<string> apiKeys;
 };
 
 # Fetch List

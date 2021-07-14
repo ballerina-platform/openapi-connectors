@@ -1,22 +1,22 @@
 Connects to Novel Covid19 API from Ballerina.
 
-## Module Overview
+### Package Overview
+The `covid19` is a [Ballerina](https://ballerina.io/) connector for [Novel Covid19 API](https://disease.sh).  
 
-The Covid19 connector consume the data exposed in https://disease.sh. It is currently supporting the following operations.
+This package provides the capability to easily access Novel Covid19 AP.
 
-- Global Status
-- USA State Status
-- Continent Status
-- Country Status
-- Gloal Status By Time Series
-- Country Status By Time Series
-- Province Status By Time Seires
-- Vaccine Trial Data
-- Global Vaccine Administration
-- Vaccine Coverage By Country
+#### Compatibility
+|                               | Version               |
+|-------------------------------|-----------------------|
+| Ballerina Language Version    | **Swan Lake Beta2**   |
+| API Version                   | **3.0.0**             |
 
-## Compatibility
+### Report Issues
 
-| Ballerina Language Versions  | Novel Covid19 API |
-|:----------------------------:|:-----------------:|
-|  Swan Lake Alpha 5           |   3.0.0           |
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
+
+### Useful Links
+
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

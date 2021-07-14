@@ -1,56 +1,24 @@
-Conncets to Spotify Playlist API from Ballerina. 
+Conncets to Spotify API from Ballerina. 
 
-## Module Overview
+### Package Overview
 
-The Spotify Playlist connector consume the data exposed in [https://api.spotify.com](https://api.spotify.com/v1). It is currently supporting following operations.
+The `ballerinax/spotify` is a [Ballerina](https://ballerina.io/) connector for Spotify API.
 
-- getMyPlaylists
-- getPlaylistById
-- createPlaylist
-- updatePlaylist
-- getPlaylistTracks
-- reorderOrReplacePlaylistTracks
-- getPlayslistsByUserID
-- getNewReleses
-- getFeaturedPlaylists
+This package provides the capability to easily access most commonly used Spotify Playlist API and Browse API related endpoints. 
 
+#### Compatibility
 
-## Compatibility
+|                               | Version                       |
+|-------------------------------|-------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta2** |
+| Spotify Playlist API          | **v1**                       |
 
-|                       |    Version                  |
-|:---------------------:|:---------------------------:|
-| Ballerina Language    | Swan-Lake-Alpha5            |
-| Spotify Playlist API  | v1                          |
+### Report Issues
 
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 
-# Quickstart
+### Useful Links
 
-## Obtain Tokens for Authentication
-
-Spotify Web API follows OAuth 2.0 mechanism for authentication. Please follow below steps to get tokens to access the API
-
-1. Create a Spotify account
-2. Register your application inSpotify developer portal
-2. Use Client Id and Client Secret to get access token or refresh token.
-
-Please see [here](https://developer.spotify.com/documentation/web-api/quick-start/) for more details. 
-
-Then provide the tokens to configure the client. 
-
-### Client configuration
-
-```ballerina
-    import ballerinax/spotify;
-
-    spotify:ClientConfig clientConfig = {
-        authConfig : {
-            refreshUrl = "<Refresh URL>"
-            refreshToken = "<Refresh Token>"
-            clientId = "<Client Id>"
-            clientSecret = "<Client Secret>"
-        }
-    };
-
-    spotify:Client spotifyClient = new spotify:Client(clientConfig);
-```
-    
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

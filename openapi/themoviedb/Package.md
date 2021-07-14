@@ -1,56 +1,17 @@
-Connects to The Movie Database (TMDB) from Ballerina.
+Connects to The Movie Database(TMDB) from Ballerina
 
-## Module Overview
+#### Compatibility
+| | Version |
+|-------------------------------|-----------------------|
+| Ballerina Language Version | **Swan Lake Alpha 5** |
+| TMDB API Version | **V2** |
 
-The Movie Database (TMDB) connector consume the data exposed in https://developers.themoviedb.org/3/. It is currently supporting the following operations.
-
-- getPopularMovies
-- getUpcomingMovies
-- getMovieByMovieId
-- getTopRatedTvShow
-- getTvShowByDetails
-- searchMovie
-- searchTvShow
-
-
-## Compatibility
-
-| Ballerina Language Versions  |   The Movie Database (TMDB) API   |
-|:----------------------------:|:---------------------------------:|
-|       Swan Lake Alpha 5      |                V3                 |
-
-# Quickstart
-
-## Authorization
-
-To utilize The Movie Database (TMDB) API users have to obtain API key given by [TMDB](https://www.themoviedb.org/)
-
-To obtain an API Key please follow these steps
-* Go to [TMDB](https://www.themoviedb.org/) and create an account
-* Click the "Settings"
-* Click the "API" tab in the left sidebar
-* Click "Create" or "click here" on the API page
-
-Then provide the obtained API Key in client configuration.
-
-### Client configuration
-
-```ballerina
-    import ballerinax/themoviedb;
-
-    ApiKeysConfig config = {
-        apiKeys : {
-            api_key : "<your appid>"
-        }
-    }
-
-    themoviedb:Client myclient = check new themoviedb:Client(config);
-
-};
-```
-### Get Upcoming Movies
-
-```ballerina
-    GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies();
-    log:printInfo(result.toString());
-```
+### Package Overview
+The `themoviedb` is a [Ballerina](https://ballerina.io/) connector for The Movie Database(TMDB) API.
+This package provides the capability to easily access The Movie Database(TMDB) API.
+### Report Issues
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
+### Useful Links
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

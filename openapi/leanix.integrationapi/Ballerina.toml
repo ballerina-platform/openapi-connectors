@@ -5,5 +5,7 @@ org = "ballerinax"
 name = "leanix.integrationapi"
 version = "0.1.1-SNAPSHOT"
 authors = ["Ballerina"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+
 [build-options]
 observabilityIncluded = true

@@ -42,8 +42,7 @@ public type Message record {
     int timestamp?;
 };
 
-// TODO: Will be available after fixing https://github.com/ballerina-platform/ballerina-openapi/issues/373
-// public type  InlineResponse2xx ChannelDetails[]|string[];
+public type  InlineResponse2xx ChannelDetails[];
 
 # A ChannelStatus instance.
 public type ChannelStatus record {

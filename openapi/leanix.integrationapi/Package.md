@@ -2,7 +2,7 @@ Connects to LeanIX Integration API from Ballerina.
 
 ## Module Overview
 
-LeanIX Integration API connector consume the data exposed in https://eu.leanix.net/services/integration-api/v1.
+LeanIX Integration API connector consume the data exposed in https://eu.leanix.net/services/integration-api/v1/docs/.
 
 ## Compatibility
 
@@ -11,7 +11,7 @@ LeanIX Integration API connector consume the data exposed in https://eu.leanix.n
 |       Swan Lake Alpha 5      |                 V1               |
 
 ### Package Overview
-The `leanix.integrationapi` is a [Ballerina](https://ballerina.io/) connector for LeanIX Integration API.
+The `ballerinax/leanix.integrationapi` is a [Ballerina](https://ballerina.io/) connector for LeanIX Integration API.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 ### Useful Links

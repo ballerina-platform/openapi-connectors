@@ -28,29 +28,32 @@ public type ClientConfig record {
 # + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
+    # Client initialization.
+    #
+    # + clientConfig - Client configuration details
+    # + serviceUrl - Connector server URL
+    # + return - Error at failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://rest.ably.io") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
         self.clientEp = httpEp;
     }
-    // TODO: Will be available after fixing https://github.com/ballerina-platform/ballerina-openapi/issues/373
-    // # Enumerate all active channels of the application
-    // #
-    // # + xAblyVersion - The version of the API you wish to use.
-    // # + format - The response format you would like
-    // # + 'limit - Optionally specifies the maximum number of results to return. A limit greater than 1000 is unsupported
-    // # + prefix - Optionally limits the query to only those channels whose name starts with the given prefix
-    // # + 'by - optionally specifies whether to return just channel names (by=id) or ChannelDetails (by=value)
-    // # + return - OK
-    // remote isolated function getMetadataOfAllChannels(string? xAblyVersion = (), string? format = (), int? 'limit = 100, string? prefix = (), string? 'by = ()) returns InlineResponse2xx|error {
-    //     string  path = string `/channels`;
-    //     map<anydata> queryParam = {"format": format, "limit": 'limit, "prefix": prefix, "by": 'by};
-    //     path = path + check getPathForQueryParam(queryParam);
-    //     map<any> headerValues = {"X-Ably-Version": xAblyVersion};
-    //     map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-    //     InlineResponse2xx response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2xx);
-    //     return response;
-    // }
+    # Enumerate all active channels of the application
+    #
+    # + xAblyVersion - The version of the API you wish to use.
+    # + format - The response format you would like
+    # + 'limit - Optionally specifies the maximum number of results to return. A limit greater than 1000 is unsupported
+    # + prefix - Optionally limits the query to only those channels whose name starts with the given prefix
+    # + return - OK
+    remote isolated function getMetadataOfAllChannels(string? xAblyVersion = (), string? format = (), int? 'limit = 100, string? prefix = ()) returns InlineResponse2xx|error {
+        string  path = string `/channels`;
+        map<anydata> queryParam = {"format": format, "limit": 'limit, "prefix": prefix};
+        path = path + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"X-Ably-Version": xAblyVersion};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        InlineResponse2xx response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2xx);
+        return response;
+    }
     # Get metadata of a channel
     #
     # + channel_id - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
@@ -184,7 +187,7 @@ public client class Client {
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function subscribePushDeviceToChannel(Body1 payload, string? xAblyVersion = (), string? format = ()) returns error? {
+    remote isolated function subscribePushDeviceToChannel(Body1 payload, string? xAblyVersion = (), string? format = ()) returns http:Response|error {
         string  path = string `/push/channelSubscriptions`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
@@ -193,7 +196,8 @@ public client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        return response;
     }
     # Delete a registered device's update token
     #
@@ -203,7 +207,7 @@ public client class Client {
     # + deviceId - Must be set when clientId is empty, cannot be used with clientId.
     # + clientId - Must be set when deviceId is empty, cannot be used with deviceId.
     # + return - OK
-    remote isolated function deletePushDeviceDetails(string? xAblyVersion = (), string? format = (), string? 'channel = (), string? deviceId = (), string? clientId = ()) returns error? {
+    remote isolated function deletePushDeviceDetails(string? xAblyVersion = (), string? format = (), string? 'channel = (), string? deviceId = (), string? clientId = ()) returns http:Response|error {
         string  path = string `/push/channelSubscriptions`;
         map<anydata> queryParam = {"format": format, "channel": 'channel, "deviceId": deviceId, "clientId": clientId};
         path = path + check getPathForQueryParam(queryParam);
@@ -211,7 +215,8 @@ public client class Client {
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, headers = accHeaders, targetType=http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        return response;
     }
     # List all channels with at least one subscribed device
     #
@@ -269,7 +274,7 @@ public client class Client {
     # + deviceId - Optional filter to restrict to devices associated with that deviceId. Cannot be used with clientId.
     # + clientId - Optional filter to restrict to devices associated with that clientId. Cannot be used with deviceId.
     # + return - OK
-    remote isolated function unregisterAllPushDevices(string? xAblyVersion = (), string? format = (), string? deviceId = (), string? clientId = ()) returns error? {
+    remote isolated function unregisterAllPushDevices(string? xAblyVersion = (), string? format = (), string? deviceId = (), string? clientId = ()) returns http:Response|error {
         string  path = string `/push/deviceRegistrations`;
         map<anydata> queryParam = {"format": format, "deviceId": deviceId, "clientId": clientId};
         path = path + check getPathForQueryParam(queryParam);
@@ -277,7 +282,8 @@ public client class Client {
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, headers = accHeaders, targetType=http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        return response;
     }
     # Get a device registration
     #
@@ -319,7 +325,7 @@ public client class Client {
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function unregisterPushDevice(string device_id, string? xAblyVersion = (), string? format = ()) returns error? {
+    remote isolated function unregisterPushDevice(string device_id, string? xAblyVersion = (), string? format = ()) returns http:Response|error {
         string  path = string `/push/deviceRegistrations/${device_id}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
@@ -327,7 +333,8 @@ public client class Client {
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, headers = accHeaders, targetType=http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        return response;
     }
     # Update a device registration
     #
@@ -369,7 +376,7 @@ public client class Client {
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function publishPushNotificationToDevices(Body4 payload, string? xAblyVersion = (), string? format = ()) returns error? {
+    remote isolated function publishPushNotificationToDevices(Body4 payload, string? xAblyVersion = (), string? format = ()) returns http:Response|error {
         string  path = string `/push/publish`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
@@ -378,7 +385,8 @@ public client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        return response;
     }
     # Retrieve usage statistics for an application
     #

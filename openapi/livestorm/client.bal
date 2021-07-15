@@ -81,7 +81,12 @@ public type RegisterPeopleForSessionResponse record {
 @display {label: "Livestorm Public API Client"}
 public client class Client {
     http:Client clientEp;
-    map<string|string[]> apiKeys;
+    map<string> apiKeys;
+    # Initializes the Box API client endpoint.
+    #
+    # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
+    # + clientConfig - Client configuration for client
+    # + serviceUrl - Url where service is exposed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.livestorm.co/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

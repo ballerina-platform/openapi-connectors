@@ -82,7 +82,7 @@ public type RegisterPeopleForSessionResponse record {
 public client class Client {
     http:Client clientEp;
     map<string> apiKeys;
-    # Initializes the Box API client endpoint.
+    # Initializes the Livestorm client endpoint.
     #
     # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
     # + clientConfig - Client configuration details

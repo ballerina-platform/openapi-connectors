@@ -11,7 +11,7 @@ Box Platform API connector consume the data exposed in https://api.box.com/2.0. 
 |       Swan Lake Beta 2       |                 V2                |
 
 ### Package Overview
-The `boxapi` is a [Ballerina](https://ballerina.io/) connector for Box Platform.
+The `ballerinax/boxapi` is a [Ballerina](https://ballerina.io/) connector for Box Platform.
 This package provides the capability to easily access Box Platform.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)

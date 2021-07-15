@@ -85,8 +85,8 @@ public client class Client {
     # Initializes the Box API client endpoint.
     #
     # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
-    # + clientConfig - Client configuration for client
-    # + serviceUrl - Url where service is exposed
+    # + clientConfig - Client configuration details
+    # + serviceUrl - Connector server URL
     # + return -  Error at failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.livestorm.co/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);

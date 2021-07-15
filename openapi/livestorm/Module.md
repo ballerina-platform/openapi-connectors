@@ -21,9 +21,9 @@ Livestorm connector consume the data exposed in https://api.livestorm.co/v1. It 
 To utilize Livestorm users have to obtain API key given by [Livestorm](https://app.livestorm.co/#/signup)
 
 To obtain an API Key please follow these steps
-    * Go to [Livestorm](https://app.livestorm.co/#/signup) and register a new account
-    * Submit information in register form
-    * After submitting needed information API Key can be obtained by navigating to Account settings->Integration->Public API->Generate a token
+   * Go to [Livestorm](https://app.livestorm.co/#/signup) and register a new account
+   * Submit information in register form
+   * After submitting needed information API Key can be obtained by navigating to Account settings->Integration->Public API->Generate a token
 
 Then provide the obtained API Key in client configuration.
 

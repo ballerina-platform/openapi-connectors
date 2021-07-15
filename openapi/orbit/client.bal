@@ -2,6 +2,10 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
+# Configuration for Orbit connector
+#
+# + authConfig - BearerTokenConfig Grant Configuration
+# + secureSocketConfig - SSL connection configuration
 public type ClientConfig record {
     http:BearerTokenConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;

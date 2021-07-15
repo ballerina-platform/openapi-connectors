@@ -87,6 +87,7 @@ public client class Client {
     # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
     # + clientConfig - Client configuration for client
     # + serviceUrl - Url where service is exposed
+    # + return -  Error at failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.livestorm.co/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

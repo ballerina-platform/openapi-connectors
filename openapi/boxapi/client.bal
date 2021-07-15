@@ -16,6 +16,11 @@ public type ClientConfig record {
 # + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
+    # Client initialization for Box API.
+    #
+    # + clientConfig - Client configuration details
+    # + serviceUrl - Connector server URL
+    # + return -  Error at failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.box.com/2.0") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });

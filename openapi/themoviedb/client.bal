@@ -22,7 +22,7 @@ import ballerina/lang.'string;
 #
 # + apiKeys - Provide your API Key as `api_key`. Eg: `{"api_key" : "<Your API Key>"}` 
 public type ApiKeysConfig record {
-    map<string|string[]> apiKeys;
+    map<string> apiKeys;
 };
 
 # Get popular movies response

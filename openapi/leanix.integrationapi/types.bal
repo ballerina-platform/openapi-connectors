@@ -331,6 +331,7 @@ public type LeanIxDataInterchangeFormat record {
     string processingDirection?;
     # Optional additional options to parse this LDIF request
     string processingMode?;
+    # Chunk information
     ChunkInformation chunkInformation?;
     # Global variables accessible from all data processors.
     record {} customFields?;
@@ -363,7 +364,9 @@ public type OutboundTagFilter record {
 
 # The template that generates the fact sheet identifier using the ExternalID of the fact sheet
 public type ExternalIdTemplate record {
+    # Id
     KeyTemplate id;
+    # Type
     KeyTemplate 'type;
 };
 
@@ -595,6 +598,7 @@ public type ChunkInformation record {
 
 # The template of a key/value pair that defines an abstract change to the data
 public type PatchTemplate record {
+    # Key template
     KeyTemplate 'key;
     # Defines the operation that is used. Data can be added or updated
     string op?;
@@ -631,10 +635,15 @@ public type ReadFactSheetSection record {
     MetricsMeasurement metrics?;
     # A list of fields that are required to get from Fact Sheet
     string[] fields?;
+    # Required relation info
     RequiredRelationInfo relations?;
+    # Tag filter
     TagFilter tags?;
+    # Subscription filter
     SubscriptionFilter subscriptions?;
+    # Document filter
     DocumentFilter documents?;
+    # Impact filter
     ImpactFilter impacts?;
     # A flag to determine the fallback response in the function lx.toOrdinal(...). A true (default if absent) makes the value returned by lx.toOrdinal(...) to be zero for non-found cases. False will make the returned value equals NULL.
     boolean noNullForOrdinal?;
@@ -646,6 +655,7 @@ public type ReadFactSheetSection record {
 public type ExternalIdSetTemplate record {
     # The ExternalIDs of the fact sheets
     string ids;
+    # Key template
     KeyTemplate 'type;
 };
 

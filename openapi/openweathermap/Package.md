@@ -1,68 +1,24 @@
 Connects to Openweathermap API from Ballerina.
 
-## Module Overview
+### Package Overview
 
-The Open Weather Map connector consume the data exposed in [openweathermap.org](https://openweathermap.org/). It is currently supporting the following operations.
+The `ballerinax/openweathermap` is a [Ballerina](https://ballerina.io/) connector for [openweathermap.org](https://openweathermap.org/).
 
-### Get Current Weather Data
+This package provides the capability to easily access current weather data and weather forecasts across the world.
 
-Can be used to access current weather data for any location on Earth including over 200,000 cities.
+#### Compatibility
 
-For more details please check [here](https://openweathermap.org/current)
+|                               | Version                       |
+|-------------------------------|-------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta2** |
+| Openweathermap API Version    | **2.5**                       |
 
-### Get Weather Forecast
+### Report Issues
 
-Can be used to access current weather, minute forecast for 1 hour, hourly forecast for 48 hours, daily forecast for 7 days and government weather alerts.
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 
-For more details please check [here](https://openweathermap.org/api/one-call-api)
+### Useful Links
 
-## Compatibility
-
-| Ballerina Language Versions  | OpenWeatherMap API |
-|:----------------------------:|:------------------:|
-|  Swan Lake Alpha 5           |   2.5              |
-
-
-# Quickstart
-
-## Authorization
-
-To access the Open Weather API users need to have an API key given by [openweathermap.org](https://openweathermap.org/)
-
-To obtain an API Key please follow these steps
-* Go to openweathermap.org and create an account
-    - You can choose a subscription matching with your requirements
-* Go to [My API Keys](https://home.openweathermap.org/api_keys) and generate a new API Key
-
-Then provide the obtained API Key in client configuration.
-
-### Client configuration
-
-```ballerina
-    import ballerinax/openweathermap;
-
-    ApiKeysConfig config = {
-        apiKeys : {
-            appid : "<your appid>"
-        }
-    }
-
-    openweathermap:Client myclient = check new openweathermap:Client(config);
-
-};
-```
-### Get Current Weather Data
-
-```ballerina
-    CurrentWeatherData result = check weatherclient->getCurretWeatherData("Colombo");
-    log:printInfo("Colombo Current Weather data : " + result.toString());
-
-```
-
-### Get Weather Forecast
-
-```ballerina
-    CurrentWeatherData result = check weatherclient->getWeatherForecast(lat = "6.93194", lon = "79.847778");
-    log:printInfo("Colombo Weather Forecast : " + result.toString());
-```
-    
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

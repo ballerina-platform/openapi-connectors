@@ -3,7 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["LeanIX", "LeanIX Integration API"]
 org = "ballerinax"
 name = "leanix.integrationapi"
-version = "0.1.0-SNAPSHOT"
+version = "0.2.0-SNAPSHOT"
 authors = ["Ballerina"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 

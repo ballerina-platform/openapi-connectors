@@ -2,7 +2,7 @@
 license = ["Apache-2.0"]
 keywords = ["Orbit", "Activity", "Member"]
 org = "ballerinax"
-name = "orbit"
+name = "orbitcrm"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "0.1.0-SNAPSHOT"
 authors = ["Ballerina"]

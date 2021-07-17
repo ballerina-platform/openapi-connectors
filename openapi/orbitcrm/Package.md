@@ -5,10 +5,10 @@ Connects to Orbit CRM from Ballerina.
 Orbit CRM connector consume the data exposed in https://app.orbit.love/api/v1. It is currently supporting all operations found in Orbit API docmentation.
 
 ## Compatibility
-
-| Ballerina Language Versions  |             Orbit API             |
-|:----------------------------:|:---------------------------------:|
-|       Swan Lake Beta 2       |                 V1                |
+|                               | Version                       |
+|-------------------------------|-------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta2** |
+| Orbit API Version             | **V1**                        |
 
 ### Package Overview
 The `ballerinax/orbitcrm` is a [Ballerina](https://ballerina.io/) connector for Orbit CRM.

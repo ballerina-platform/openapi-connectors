@@ -7,8 +7,8 @@ Connects to Apple App Store Connect API from Ballerina
 | API Version                   | **1.4.1**               |
 
 ### Package Overview
-The `appleappstore` is a [Ballerina](https://ballerina.io/) connector for *Apple App Store*.
-This package provides the capability to easily access *App Store API*.
+The `apple.appstore` is a [Ballerina](https://ballerina.io/) connector for *Apple App Store*.
+This package provides the capability to easily access *Apple App Store API*.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)
 ### Useful Links

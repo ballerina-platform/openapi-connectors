@@ -5,10 +5,10 @@ Connects to ISBNdb from Ballerina.
  ISBNdb connector consume the data exposed in https://api2.isbndb.com/. It is currently supporting the all the operations available.
 
 ## Compatibility
-
-| Ballerina Language Versions  |              ISBNdb API           |
-|:----------------------------:|:---------------------------------:|
-|       Swan Lake Alpha 5      |                 V2                |
+|                               | Version                         |
+|-------------------------------|---------------------------------|
+|  Ballerina Language Version   | **Ballerina Swan Lake Alpha 5** |
+|           ISBNdb API          | **V2**                          |
 
 ### Package Overview
 The `ballerinax/isbndb` is a [Ballerina](https://ballerina.io/) connector for  ISBNdb.

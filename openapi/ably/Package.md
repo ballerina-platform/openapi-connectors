@@ -5,9 +5,10 @@ The `ballerinax/ably` is a [Ballerina](https://ballerina.io/) connector for Ably
 This package provides the capability to easily access Ably.
 
 #### Compatibility
-| Ballerina Language Versions  |           Ably REST API           |
-|:----------------------------:|:---------------------------------:|
-|       Swan Lake Alpha 5      |               V1.1.0              |
+|                               | Version                        |
+|-------------------------------|--------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Alpha 5**|
+| Ably REST API Version         | **V1.1.0**                     | 
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

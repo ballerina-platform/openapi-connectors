@@ -1,14 +1,13 @@
-Connects to BIS statistical data and metadata from Ballerina
+Connects to SoundCloud services from Ballerina
 
 ### Package Overview
-The `ballerinax/bisstats` is a [Ballerina](https://ballerina.io/) connector for BIS statistical data and metadata.
-This package provides the capability to easily access BIS statistical data and metadata.
+The `ballerinax/soundcloud` is a [Ballerina](https://ballerina.io/) connector for soundcloud.com services.
+This package provides the capability to build applications that enable users to engage with tracks on SoundCloud.
 
 #### Compatibility
-|                               | Version                        |
-|-------------------------------|--------------------------------|
-| Ballerina Language Version    | **Ballerina Swan Lake Alpha 5**|
-| BIS SDMX Restful API Version  | **V1**                         | 
+| Ballerina Language Versions  |      SoundCloud Restful API      |
+|:----------------------------:|:--------------------------------:|
+|       Swan Lake Alpha5        |             1.0.0                |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

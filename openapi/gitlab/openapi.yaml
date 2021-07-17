@@ -1,0 +1,733 @@
+openapi: 3.0.0
+tags:
+  - name: version
+    description: Version
+  - name: access_requests
+    description: Access requests for projects and groups
+  - name: access_tokens
+    description: Access tokens for projects
+info:
+  description: |
+    Client endpoint for GitLab API
+  version: v4
+  title: GitLab API
+  termsOfService: 'https://about.gitlab.com/terms/'
+  license:
+    name: CC BY-SA 4.0
+    url: 'https://gitlab.com/gitlab-org/gitlab/-/blob/master/LICENSE'
+servers:
+  - url: 'https://gitlab.com/api/'
+security:
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Private-Token
+paths:
+  /v4/version:
+    get:
+      tags:
+        - version
+      summary: Retrieve version information for this GitLab instance.
+      operationId: getVersion
+      x-display:
+        label: Get GitLab Instance Version
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: VersionResponse
+                description: GitLab version info
+                type: object
+                properties:
+                  version:
+                    description: "GitLab version"
+                    type: "string"
+                  revision:
+                    description: "Revision number"
+                    type: "string"
+              examples:
+                Example:
+                  value:
+                    version: 13.3.0-pre
+                    revision: f2b05afebb0
+        '401':
+          description: Unauthorized
+  /v4/projects/{id}/access_requests:
+    get:
+      description: Lists access requests for a project
+      summary: List access requests for a project
+      operationId: accessRequestsProjects_get
+      x-display:
+        label: List Access Requests
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: The ID or URL-encoded path of the project owned by the authenticated userr.
+          required: true
+          schema:
+            type: string
+            # oneOf:
+            #   - type: integer
+            #   - type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: ProjectAccessResponse
+                description: Access request info
+                type: object
+                properties:
+                  id:
+                    description: "The ID or URL-encoded path of the project owned by the authenticated user"
+                    type: integer
+                  username:
+                    description: "Username"
+                    type: string
+                  name:
+                    description: "Actual name"
+                    type: string
+                  state:
+                    description: "If user is active or not"
+                    type: string
+                  created_at:
+                    description: "Created date/time"
+                    type: string
+                  requested_at:
+                    description: "Requested date/time"
+                    type: string
+              example:
+                - id: 1
+                  username: raymond_smith
+                  name: Raymond Smith
+                  state: active
+                  created_at: '2012-10-22T14:13:35Z'
+                  requested_at: '2012-10-22T14:13:35Z'
+                - id: 2
+                  username: john_doe
+                  name: John Doe
+                  state: active
+                  created_at: '2012-10-22T14:13:35Z'
+                  requested_at: '2012-10-22T14:13:35Z'
+        '401':
+          description: Unauthorized
+    post:
+      description: Requests access for the authenticated user to a project
+      summary: Requests access for the authenticated user to a project
+      operationId: accessRequestsProjects_post
+      x-display:
+        label: Request Access to a Project
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: >-
+            The ID or URL-encoded path of the project owned by the authenticated
+            user.
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: ProjectAccessRequest
+                description: Access request info
+                type: object
+                properties:
+                  id:
+                    description: "The ID or URL-encoded path of the project owned by the authenticated user"
+                    type: integer
+                  username:
+                    description: "Username"
+                    type: string
+                  name:
+                    description: "Actual name"
+                    type: string
+                  state:
+                    description: "If user is active or not"
+                    type: string
+                  created_at:
+                    description: "Created date/time"
+                    type: string
+                  requested_at:
+                    description: "Requested date/time"
+                    type: string
+              example:
+                id: 1
+                username: raymond_smith
+                name: Raymond Smith
+                state: active
+                created_at: '2012-10-22T14:13:35Z'
+                requested_at: '2012-10-22T14:13:35Z'
+        '401':
+          description: Unauthorized
+  /v4/projects/{id}/access_requests/{user_id}/approve:
+    put:
+      description: Approves access for the authenticated user to a project
+      summary: Approves access for the authenticated user to a project
+      operationId: accessRequestsProjectsApprove_put
+      x-display:
+        label: Approve Access to User
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: >-
+            The ID or URL-encoded path of the project owned by the authenticated
+            user.
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+        - name: user_id
+          in: path
+          description: The userID of the access requester
+          required: true
+          schema:
+            type: integer
+        - name: access_level
+          in: query
+          description: >-
+            A valid project access level.  0 = no access , 10 = guest, 20 =
+            reporter, 30 = developer, 40 = Maintainer.  Default is 30.'
+          required: false
+          schema:
+            enum:
+              - 0
+              - 10
+              - 20
+              - 30
+              - 40
+            default: 30
+            type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: ProjectAccessApprove
+                description: Access request info
+                type: object
+                properties:
+                  id:
+                    description: "The ID or URL-encoded path of the project owned by the authenticated user"
+                    type: integer
+                  username:
+                    description: "Username"
+                    type: string
+                  name:
+                    description: "Actual name"
+                    type: string
+                  state:
+                    description: "If user is active or not"
+                    type: string
+                  created_at:
+                    description: "Created date/time"
+                    type: string
+                  access_level:
+                    description: "A valid access level (defaults: 30, the Developer role)"
+                    type: integer
+              example:
+                id: 1
+                username: raymond_smith
+                name: Raymond Smith
+                state: active
+                created_at: '2012-10-22T14:13:35Z'
+                access_level: 20
+        '401':
+          description: Unauthorized
+  /v4/projects/{id}/access_requests/{user_id}:
+    delete:
+      description: Denies a project access request for the given user
+      summary: Denies a project access request for the given user
+      operationId: accessRequestProjectsDeny_delete
+      x-display:
+        label: Reject Access Request from User
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: >-
+            The ID or URL-encoded path of the project owned by the authenticated
+            user.
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+        - name: user_id
+          in: path
+          description: The user ID of the access requester
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Unauthorized
+  /v4/groups/{id}/access_requests:
+    get:
+      description: List access requests for a group
+      summary: List access requests for a group
+      operationId: accessRequestsGroups_get
+      x-display:
+        label: List Access Requests for Group
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: >-
+            The ID or URL-encoded path of the group owned by the authenticated
+            user.
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: GroupAccessResponse
+                description: Access request info
+                type: object
+                properties:
+                  id:
+                    description: "The ID or URL-encoded path of the project owned by the authenticated user"
+                    type: integer
+                  username:
+                    description: "Username"
+                    type: string
+                  name:
+                    description: "Actual name"
+                    type: string
+                  state:
+                    description: "If user is active or not"
+                    type: string
+                  created_at:
+                    description: "Created date/time"
+                    type: string
+                  requested_at:
+                    description: "Requested date/time"
+                    type: string
+              example:
+                - id: 1
+                  username: raymond_smith
+                  name: Raymond Smith
+                  state: active
+                  created_at: '2012-10-22T14:13:35Z'
+                  requested_at: '2012-10-22T14:13:35Z'
+                - id: 2
+                  username: john_doe
+                  name: John Doe
+                  state: active
+                  created_at: '2012-10-22T14:13:35Z'
+                  requested_at: '2012-10-22T14:13:35Z'
+        '401':
+          description: Unauthorized
+    post:
+      description: Requests access for the authenticated user to a group
+      summary: Requests access for the authenticated user to a group
+      operationId: accessRequestsGroups_post
+      x-display:
+        label: Request Access to a Group
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: >-
+            The ID or URL-encoded path of the group owned by the authenticated
+            user.
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: GroupAccessRequest
+                description: Access request info
+                type: object
+                properties:
+                  id:
+                    description: "The ID or URL-encoded path of the project owned by the authenticated user"
+                    type: integer
+                  username:
+                    description: "Username"
+                    type: string
+                  name:
+                    description: "Actual name"
+                    type: string
+                  state:
+                    description: "If user is active or not"
+                    type: string
+                  created_at:
+                    description: "Created date/time"
+                    type: string
+                  requested_at:
+                    description: "Requested date/time"
+                    type: string
+              example:
+                id: 1
+                username: raymond_smith
+                name: Raymond Smith
+                state: active
+                created_at: '2012-10-22T14:13:35Z'
+                requested_at: '2012-10-22T14:13:35Z'
+        '401':
+          description: Unauthorized
+  /v4/groups/{id}/access_requests/{user_id}/approve:
+    put:
+      description: Approves access for the authenticated user to a group
+      summary: Approves access for the authenticated user to a group
+      operationId: accessRequestsGroupsApprove_put
+      x-display:
+        label: Approve Access Request to a Group
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: >-
+            The ID or URL-encoded path of the group owned by the authenticated
+            user.
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+        - name: user_id
+          in: path
+          description: The userID of the access requester
+          required: true
+          schema:
+            type: integer
+        - name: access_level
+          in: query
+          description: >-
+            A valid group access level.  0 = no access , 10 = Guest, 20 =
+            Reporter, 30 = Developer, 40 = Maintainer, 50 = Owner.  Default is
+            30.
+          required: false
+          schema:
+            enum:
+              - 0
+              - 10
+              - 20
+              - 30
+              - 40
+              - 50
+            default: 30
+            type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: GroupAccessApprove
+                description: Access request info
+                type: object
+                properties:
+                  id:
+                    description: "The ID or URL-encoded path of the project owned by the authenticated user"
+                    type: integer
+                  username:
+                    description: "Username"
+                    type: string
+                  name:
+                    description: "Actual name"
+                    type: string
+                  state:
+                    description: "If user is active or not"
+                    type: string
+                  created_at:
+                    description: "Created date/time"
+                    type: string
+                  access_level:
+                    description: "A valid access level (defaults: 30, the Developer role)"
+                    type: integer
+              example:
+                id: 1
+                username: raymond_smith
+                name: Raymond Smith
+                state: active
+                created_at: '2012-10-22T14:13:35Z'
+                access_level: 20
+        '401':
+          description: Unauthorized
+  /v4/groups/{id}/access_requests/{user_id}:
+    delete:
+      description: Denies a group access request for the given user
+      summary: Denies a group access request for the given user
+      operationId: accessRequestsGroupsDeny_delete
+      x-display:
+        label: Delete Access Request to a Group
+      tags:
+        - access_requests
+      parameters:
+        - name: id
+          in: path
+          description: >-
+            The ID or URL-encoded path of the group owned by the authenticated
+            user.
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+        - name: user_id
+          in: path
+          description: The userID of the access requester
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Unauthorized
+  /v4/projects/{id}/access_tokens:
+    get:
+      description: Lists access tokens for a project
+      summary: List access tokens for a project
+      operationId: accessTokens_get
+      x-display:
+        label: List Access Tokens for a Project
+      tags:
+        - access_tokens
+      parameters:
+        - name: id
+          in: path
+          description: The ID or URL-encoded path of the project
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: AccessTokenList
+                description: Access token info
+                type: object
+                properties:
+                  user_id:
+                    description: "User ID"
+                    type: integer
+                  # scopes:
+                  #   description: "List of scopes"
+                  #   type: array
+                  name:
+                    description: "The name of the project access token"
+                    type: string
+                  expires_at:
+                    description: "The token expires at midnight UTC on that date"
+                    type: string
+                  id:
+                    description: "The ID or URL-encoded path of the project"
+                    type: integer
+                  active:
+                    description: "If token is active or not"
+                    type: boolean
+                  created_at:
+                    description: "The token creation date/time"
+                    type: string
+                  revoked:
+                    description: "Is the token is revoked"
+                    type: boolean
+              example:
+                user_id: 141
+                scopes:
+                  - api
+                name: token
+                expires_at: '2022-01-31'
+                id: 42
+                active: true
+                created_at: '2021-01-20T14:13:35Z'
+                revoked: false
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+    post:
+      description: Creates an access token for a project
+      summary: Creates an access token for a project
+      operationId: accessTokens_post
+      x-display:
+        label: Create Access Tokens for a Project
+      tags:
+        - access_tokens
+      parameters:
+        - name: id
+          in: path
+          description: The ID or URL-encoded path of the project
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+        - name: name
+          in: query
+          description: The name of the project access token
+          required: true
+          schema:
+            type: string
+        - name: scopes
+          in: query
+          description: Defines read and write permissions for the token
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - api
+                - read_api
+                - read_registry
+                - write_registry
+                - read_repository
+                - write_repository
+        - name: expires_at
+          in: query
+          description: >-
+            Date when the token expires. Time of day is Midnight UTC of that
+            date.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                title: AccessTokenList
+                description: Access token info
+                type: object
+                properties:
+                  user_id:
+                    description: "User ID"
+                  #   type: integer
+                  # scopes:
+                  #   description: "List of scopes"
+                  #   type: array
+                  name:
+                    description: "The name of the project access token"
+                    type: string
+                  expires_at:
+                    description: "The token expires at midnight UTC on that date"
+                    type: string
+                  id:
+                    description: "The ID or URL-encoded path of the project"
+                    type: integer
+                  active:
+                    description: "If token is active or not"
+                    type: boolean
+                  created_at:
+                    description: "The token creation date/time"
+                    type: string
+                  revoked:
+                    description: "Is the token is revoked"
+                    type: boolean
+              example:
+                user_id: 166
+                scopes:
+                  - api
+                  - read_repository
+                name: test
+                expires_at: '2022-01-31'
+                id: 58
+                active: true
+                created_at: '2021-01-20T14:13:35Z'
+                revoked: false
+                token: D4y...Wzr
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  /v4/projects/{id}/access_tokens/{token_id}':
+    delete:
+      description: Revokes an access token
+      summary: Revokes an access token
+      operationId: accessTokens_delete
+      x-display:
+        label: Revoke an Access Token
+      tags:
+        - access_tokens
+      parameters:
+        - name: id
+          in: path
+          description: The ID or URL-encoded path of the project
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+        - name: token_id
+          in: path
+          description: The ID of the project access token
+          required: true
+          schema:
+            type: string
+          # schema:
+          #   oneOf:
+          #     - type: integer
+          #     - type: string
+      responses:
+        '204':
+          description: No content if successfully revoked
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found

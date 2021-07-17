@@ -278,69 +278,6 @@ public type InlineResponse2009 record {
     int web_id?;
 };
 
-# Contains an array of facebook ads.
-#
-public type InlineResponse2008 record {
-    record {# Unique ID of an Outreach
-        string id?; # Web ID
-        int web_id?; # Title or name of an Outreach
-        string name?; # Supported Campaign, Ad, Page type
-        string 'type?; # Campaign, Ad, or Page status
-        string status?; # Outreach report availability
-        boolean show_report?; string create_time?; string start_time?; string updated_at?; string canceled_at?; string published_time?; boolean has_segment?; record  { int opens?; int unique_opens?; decimal open_rate?; int clicks?; int subscriber_clicks?; decimal click_rate?; int visits?; int unique_visits?; decimal conversion_rate?; int subscribes?; record  { decimal total_revenue?; string currency_code?; decimal average_order_revenue?;}  ecommerce?; decimal impressions?; int reach?; int engagements?; int total_sent?;}  report_summary?; # List settings for the outreach
-        record  { # The unique list id.
-            string list_id?; # The status of the list used, namely if it's deleted or disabled.
-            boolean list_is_active?; # The name of the list.
-            string list_name?; # A description of the [segment](https://mailchimp.com/help/save-and-manage-segments/) used for the campaign. Formatted as a string marked up with HTML.
-            string segment_text?; # Count of the recipients on the associated list. Formatted as an integer.
-            int recipient_count?; # An object representing all segmentation options. This object should contain a `saved_segment_id` to use an existing segment, or you can create a new segment by including both `match` and `conditions` options.
-            record  { # The id for an existing saved segment.
-                int saved_segment_id?; # The prebuilt segment id, if a prebuilt segment has been designated for this campaign.
-                string prebuilt_segment_id?; # Segment match type.
-                string 'match?; # Segment match conditions. There are multiple possible types, see the [condition types documentation](https://mailchimp.com/developer/marketing/docs/alternative-schemas/#segment-condition-schemas).
-                record {}[] conditions?;}  segment_opts?;}  recipients?; # The URL of the thumbnail for this outreach
-        string thumbnail?; string email_source_name?; string paused_at?; string end_time?; boolean needs_attention?; boolean was_canceled_by_facebook?; # Check if this ad is connected to a facebook page
-        boolean is_connected?; # Check if this ad has audience setup
-        boolean has_audience?; # Check if this ad has content
-        boolean has_content?; # Channel settings
-        record  { # Is this for facebook feed
-            boolean fb_placement_feed?; # Is this for facebook audience
-            boolean fb_placement_audience?; # Is this for instagram feed
-            boolean ig_placement_feed?;}  'channel?; # Check if this ad is connected to a facebook page
-        record  { # Feedback regarding the content of this Ad.
-            string content?; # Feedback regarding the audience of this Ad.
-            string audience?; # Feedback regarding the budget of this Ad.
-            string budget?; # Feedback regarding the compliance of this Ad.
-            string compliance?;}  feedback?; # Connected Site
-        record  { # The ID of this connected site.
-            int id?; # The name of the connected site
-            string name?; # The URL for this connected site.
-            string url?;}  site?; # Audience settings
-        record  { # Type of the audience
-            string 'type?; # List or Facebook based audience
-            string source_type?; record  { # Email source name
-                string name?; # Type of the email source
-                string 'type?; # Is the source reference a segment
-                boolean is_segment?; # Segment type if this source is tied to a segment
-                string segment_type?; # Associated list name to the source
-                string list_name?;}  email_source?; # To include list contacts as part of audience
-            boolean include_source_in_target?; # To find similar audience in given country
-            string lookalike_country_code?; record  { int gender?; int min_age?; int max_age?; record  { string[] countries?; string[] regions?; string[] cities?; string[] zips?;}  locations?; record  { string name?;} [] interests?;}  targeting_specs?;}  audience?; record  { # Duration of the ad in seconds
-            int duration?; # Total budget of the ad
-            decimal total_amount?; # Currency code
-            string currency_code?;}  budget?; record  { string title?; string link_url?; string message?; string description?; string image_url?; string call_to_action?; record  { string name?; string link_url?; string description?; string image_url?; string call_to_action?;} [] attachments?;}  content?; # A list of link types and descriptions for the API schema documents.
-        record  { # As with an HTML 'rel' attribute, this describes the type of link.
-            string rel?; # This property contains a fully-qualified URL that can be called to retrieve the linked resource or perform the linked action.
-            string href?; # The HTTP method that should be used when accessing the URL defined in 'href'.
-            string method?; # For GETs, this is a URL representing the schema that the response should conform to.
-            string targetSchema?; # For HTTP methods that can receive bodies (POST and PUT), this is a URL representing the schema that the body should conform to.
-            string schema?;} [] _links?;}[] facebook_ads?; # Facebook ad
-    # The total number of items matching the query regardless of pagination.
-    int total_items?;
-    # A list of link types and descriptions for the API schema documents.
-    ResourceLink[] _links?;
-};
-
 # The clicks and visits data from the last five weeks.
 public type WeeklyClicksAndVisitsData record {
     # The total number of clicks in a week.
@@ -7539,57 +7476,6 @@ public type CampaignReportSummary record {
     decimal click_rate?;
     # E-Commerce stats for a campaign.
     EcommerceReport1 ecommerce?;
-};
-
-# A collection of Facebook ads.
-public type InlineResponse20010 record {
-    record {# Unique ID of an Outreach
-        string id?; # Web ID
-        int web_id?; # Title or name of an Outreach
-        string name?; # Supported Campaign, Ad, Page type
-        string 'type?; # Campaign, Ad, or Page status
-        string status?; # Outreach report availability
-        boolean show_report?; string create_time?; string start_time?; string updated_at?; string canceled_at?; string published_time?; boolean has_segment?; record  { int opens?; int unique_opens?; decimal open_rate?; int clicks?; int subscriber_clicks?; decimal click_rate?; int visits?; int unique_visits?; decimal conversion_rate?; int subscribes?; record  { decimal total_revenue?; string currency_code?; decimal average_order_revenue?;}  ecommerce?; decimal impressions?; int reach?; int engagements?; int total_sent?;}  report_summary?; # List settings for the outreach
-        record  { # The unique list id.
-            string list_id?; # The status of the list used, namely if it's deleted or disabled.
-            boolean list_is_active?; # The name of the list.
-            string list_name?; # A description of the [segment](https://mailchimp.com/help/save-and-manage-segments/) used for the campaign. Formatted as a string marked up with HTML.
-            string segment_text?; # Count of the recipients on the associated list. Formatted as an integer.
-            int recipient_count?; # An object representing all segmentation options. This object should contain a `saved_segment_id` to use an existing segment, or you can create a new segment by including both `match` and `conditions` options.
-            record  { # The id for an existing saved segment.
-                int saved_segment_id?; # The prebuilt segment id, if a prebuilt segment has been designated for this campaign.
-                string prebuilt_segment_id?; # Segment match type.
-                string 'match?; # Segment match conditions. There are multiple possible types, see the [condition types documentation](https://mailchimp.com/developer/marketing/docs/alternative-schemas/#segment-condition-schemas).
-                record {}[] conditions?;}  segment_opts?;}  recipients?; # The URL of the thumbnail for this outreach
-        string thumbnail?; string email_source_name?; string paused_at?; string end_time?; boolean needs_attention?; boolean was_canceled_by_facebook?; # Channel settings
-        record  { # Is this for facebook feed
-            boolean fb_placement_feed?; # Is this for facebook audience
-            boolean fb_placement_audience?; # Is this for instagram feed
-            boolean ig_placement_feed?;}  'channel?; # Audience settings
-        record  { # Type of the audience
-            string 'type?; # List or Facebook based audience
-            string source_type?; record  { # Email source name
-                string name?; # Type of the email source
-                string 'type?; # Is the source reference a segment
-                boolean is_segment?; # Segment type if this source is tied to a segment
-                string segment_type?; # Associated list name to the source
-                string list_name?;}  email_source?; # To include list contacts as part of audience
-            boolean include_source_in_target?; # To find similar audience in given country
-            string lookalike_country_code?; record  { int gender?; int min_age?; int max_age?; record  { string[] countries?; string[] regions?; string[] cities?; string[] zips?;}  locations?; record  { string name?;} [] interests?;}  targeting_specs?;}  audience?; record  { # Duration of the ad in seconds
-            int duration?; # Total budget of the ad
-            decimal total_amount?; # Currency code
-            string currency_code?;}  budget?; # Report summary of facebook ad
-        record  { int reach?; int impressions?; int clicks?; decimal click_rate?; int unique_clicks?; int first_time_buyers?; record  { decimal total_revenue?; string currency_code?;}  ecommerce?; int total_products_sold?; int total_orders?; record  { decimal amount?; string currency_code?;}  average_order_amount?; record  { decimal amount?; string currency_code?;}  cost_per_click?; record  { decimal amount?; string currency_code?;}  average_daily_budget?; int likes?; int comments?; int shares?; boolean has_extended_ad_duration?; record  { string datetime?; string timezone?;}  extended_at?; decimal return_on_investment?;}  fb_ad_report_summary?; record  { record  { string date?; int clicks?;} [] clicks?; record  { string date?; int impressions?;} [] impressions?; record  { string date?; decimal revenue?;} [] revenue?;}  audience_activity?; # A list of link types and descriptions for the API schema documents.
-        record  { # As with an HTML 'rel' attribute, this describes the type of link.
-            string rel?; # This property contains a fully-qualified URL that can be called to retrieve the linked resource or perform the linked action.
-            string href?; # The HTTP method that should be used when accessing the URL defined in 'href'.
-            string method?; # For GETs, this is a URL representing the schema that the response should conform to.
-            string targetSchema?; # For HTTP methods that can receive bodies (POST and PUT), this is a URL representing the schema that the body should conform to.
-            string schema?;} [] _links?;}[] facebook_ads?; # Facebook ads 
-    # The total number of items matching the query regardless of pagination.
-    int total_items?;
-    # A list of link types and descriptions for the API schema documents.
-    ResourceLink[] _links?;
 };
 
 # A collection of landing pages.

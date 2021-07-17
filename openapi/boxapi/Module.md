@@ -2,7 +2,7 @@
 
 Box Platform API connector consume the data exposed in https://api.box.com/2.0. It is currently supporting operations except metadata operations.
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 

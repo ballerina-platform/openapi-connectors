@@ -2,7 +2,7 @@
 
 Jira Cloud platform API connector consume the data exposed in https://your-domain.atlassian.net. It is currently supporting the Project, Issues and User related operations.
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 

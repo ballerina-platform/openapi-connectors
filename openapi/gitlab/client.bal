@@ -48,7 +48,8 @@ public client class Client {
     @display {label: "Get GitLab Instance Version"}
     remote isolated function getVersion() returns VersionResponse|error {
         string  path = string `/v4/version`;
-        map<string|string[]> accHeaders = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         VersionResponse response = check self.clientEp-> get(path, accHeaders, targetType = VersionResponse);
         return response;
     }
@@ -59,7 +60,7 @@ public client class Client {
     @display {label: "List Access Requests"}
     remote isolated function accessrequestsprojectsGet(string id) returns ProjectAccessResponse|error {
         string  path = string `/v4/projects/${id}/access_requests`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ProjectAccessResponse response = check self.clientEp-> get(path, accHeaders, targetType = ProjectAccessResponse);
         return response;
@@ -71,7 +72,7 @@ public client class Client {
     @display {label: "Request Access to a Project"}
     remote isolated function accessrequestsprojectsPost(string id) returns ProjectAccessRequest|error {
         string  path = string `/v4/projects/${id}/access_requests`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -89,7 +90,7 @@ public client class Client {
         string  path = string `/v4/projects/${id}/access_requests/${user_id}/approve`;
         map<anydata> queryParam = {"access_level": accessLevel};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -104,7 +105,7 @@ public client class Client {
     @display {label: "Reject Access Request from User"}
     remote isolated function accessrequestprojectsdenyDelete(string id, int user_id) returns error? {
         string  path = string `/v4/projects/${id}/access_requests/${user_id}`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -117,7 +118,7 @@ public client class Client {
     @display {label: "List Access Requests for Group"}
     remote isolated function accessrequestsgroupsGet(string id) returns GroupAccessResponse|error {
         string  path = string `/v4/groups/${id}/access_requests`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GroupAccessResponse response = check self.clientEp-> get(path, accHeaders, targetType = GroupAccessResponse);
         return response;
@@ -129,7 +130,7 @@ public client class Client {
     @display {label: "Request Access to a Group"}
     remote isolated function accessrequestsgroupsPost(string id) returns GroupAccessRequest|error {
         string  path = string `/v4/groups/${id}/access_requests`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -147,7 +148,7 @@ public client class Client {
         string  path = string `/v4/groups/${id}/access_requests/${user_id}/approve`;
         map<anydata> queryParam = {"access_level": accessLevel};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -162,7 +163,7 @@ public client class Client {
     @display {label: "Delete Access Request to a Group"}
     remote isolated function accessrequestsgroupsdenyDelete(string id, int user_id) returns error? {
         string  path = string `/v4/groups/${id}/access_requests/${user_id}`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -175,7 +176,7 @@ public client class Client {
     @display {label: "List Access Tokens for a Project"}
     remote isolated function accesstokensGet(string id) returns AccessTokenList|error {
         string  path = string `/v4/projects/${id}/access_tokens`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         AccessTokenList response = check self.clientEp-> get(path, accHeaders, targetType = AccessTokenList);
         return response;
@@ -192,7 +193,7 @@ public client class Client {
         string  path = string `/v4/projects/${id}/access_tokens`;
         map<anydata> queryParam = {"name": name, "scopes": scopes, "expires_at": expiresAt};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -207,7 +208,7 @@ public client class Client {
     @display {label: "Revoke an Access Token"}
     remote isolated function accesstokensDelete(string id, string token_id) returns error? {
         string  path = string `/v4/projects/${id}/access_tokens/${token_id}'`;
-        map<any> headerValues = {'Private\-Token: self.apiKeys.get("Private-Token")};
+        map<any> headerValues = {'Private\-Token: self.apiKeys["Private-Token"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;

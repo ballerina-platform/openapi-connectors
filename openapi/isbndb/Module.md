@@ -2,7 +2,7 @@
 
  ISBNdb connector consume the data exposed in https://api2.isbndb.com/. It is currently supporting the all the operations provided by ISBNdb.
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 

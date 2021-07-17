@@ -54,11 +54,11 @@ Snippets of some operations.
 
 ### Get list of activities
 ```ballerina
-orbitcrm:json result = check baseClient->activities(<Workspace_ID>);
+orbitcrm:json result = check baseClient->getActivitiesInWorkspace(<Workspace_ID>);
 ```
 ### Get available workspaces
 ```ballerina
-orbitcrm:json result = check myclient->workspaces();
+orbitcrm:json result = check myclient->getWorkspaces();
 ```
 ### Get activity detail
 ```ballerina

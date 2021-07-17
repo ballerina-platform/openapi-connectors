@@ -1,3 +1,19 @@
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
 # This type is used to define the physical address of an inventory location.
 public type Address record {
     # The first line of a street address. This field is required for store inventory locations that will be holding In-Store Pickup inventory. A street address is not required if the inventory location is not holding In-Store Pickup Inventory. This field will be returned if defined for an inventory location. Max length: 128
@@ -6,7 +22,7 @@ public type Address record {
     string addressLine2?;
     # The city in which the inventory location resides. This field is required for store inventory locations that will be holding In-Store Pickup inventory. For warehouse locations, this field is technically optional, as a postalCode can be used instead of city/stateOrProvince pair, and then the city is just derived from this postal/zip code. This field is returned if defined for an inventory location. Max length: 128
     string city?;
-    # The country in which the address resides, represented as two-letter ISO 3166 country code. For example, US represents the United States, and DE represents Germany. Max length: 2 For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/inventory/types/CountryCodeEnum"'>eBay API documentation</a>
+    # The country in which the address resides, represented as two-letter ISO 3166 country code. For example, US represents the United States, and DE represents Germany. Max length: 2 For implementation help, refer to <a href='https://developer.ebay.com/api-docs/sell/inventory/types/CountryCodeEnum'>eBay API documentation</a>
     string country?;
     # The county in which the address resides. This field is returned if defined for an inventory location.
     string county?;

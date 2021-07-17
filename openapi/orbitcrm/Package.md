@@ -1,8 +1,8 @@
-Connects to Orbit from Ballerina.
+Connects to Orbit CRM from Ballerina.
 
 ## Module Overview
 
-Orbit connector consume the data exposed in https://app.orbit.love/api/v1. It is currently supporting all operations found in Orbit API docmentation.
+Orbit CRM connector consume the data exposed in https://app.orbit.love/api/v1. It is currently supporting all operations found in Orbit API docmentation.
 
 ## Compatibility
 
@@ -11,8 +11,8 @@ Orbit connector consume the data exposed in https://app.orbit.love/api/v1. It is
 |       Swan Lake Beta 2       |                 V1                |
 
 ### Package Overview
-The `ballerinax/orbit` is a [Ballerina](https://ballerina.io/) connector for Orbit.
-This package provides the capability to easily access Orbit.
+The `ballerinax/orbitcrm` is a [Ballerina](https://ballerina.io/) connector for Orbit CRM.
+This package provides the capability to easily access Orbit CRM.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 ### Useful Links

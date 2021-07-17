@@ -1,6 +1,6 @@
 ## Overview
 
-Orbit connector consume the data exposed in https://orbit.org/v2. It is supporting all operations provided by Orbit API.
+Orbit CRM connector consume the data exposed in https://orbit.org/v2. It is supporting all operations provided by Orbit API.
 
 ## Obtaining tokens
 
@@ -24,10 +24,10 @@ Then provide the obtained API token in client configuration.
 ### Client configuration
 
 #### Step 1: Import Orbit module
-First, import the ballerinax/orbit module into the Ballerina project.
+First, import the ballerinax/orbitcrm module into the Ballerina project.
 
 ```ballerina
-import ballerinax/orbit;
+import ballerinax/orbitcrm;
 ```
 #### Step 2: Configure the connection credentials.
 
@@ -40,13 +40,13 @@ token = "<Bearer_token">
 
 ```ballerina
 configurable http:BearerTokenConfig & readonly authConfig = ?;
-orbit:ClientConfig clientConfig = {authConfig : authConfig};
+orbitcrm:ClientConfig clientConfig = {authConfig : authConfig};
 
-orbit:Client myclient = check new orbit:Client(clientConfig, {}, "https://app.orbit.love/api/v1");
+orbitcrm:Client myclient = check new orbitcrm:Client(clientConfig, {}, "https://app.orbit.love/api/v1");
 ```
 #### Step 3: Get activities
 ```ballerina
-orbit:json result = check myclient->getActivitiesById(<Workspace_ID>);
+orbitcrm:json result = check myclient->getActivitiesById(<Workspace_ID>);
 ```
 
 ## Snippets
@@ -54,13 +54,13 @@ Snippets of some operations.
 
 ### Get list of activities
 ```ballerina
-orbit:json result = check baseClient->activities(<Workspace_ID>);
+orbitcrm:json result = check baseClient->activities(<Workspace_ID>);
 ```
 ### Get available workspaces
 ```ballerina
-orbit:json result = check myclient->workspaces();
+orbitcrm:json result = check myclient->workspaces();
 ```
 ### Get activity detail
 ```ballerina
-orbit:json result = check myclient->getActivitiesById(<Workspace_ID>,<Activity_ID>);
+orbitcrm:json result = check myclient->getActivitiesById(<Workspace_ID>,<Activity_ID>);
 ```

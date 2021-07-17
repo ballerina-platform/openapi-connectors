@@ -10,7 +10,7 @@ Livestorm connector consume the data exposed in https://api.livestorm.co/v1. It 
 - listSessionPeople
 - registerPeopleForSession
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 

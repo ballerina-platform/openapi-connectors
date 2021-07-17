@@ -4,11 +4,11 @@ Connects to Jira Cloud platform API from Ballerina.
 
 Jira Cloud platform API connector consume the data exposed in https://your-domain.atlassian.net. It is currently supporting the Project, Issues and User related operations.
 
-## Compatibility
-
-| Ballerina Language Versions  |      Jira Cloud platform API      |
-|:----------------------------:|:---------------------------------:|
-|       Swan Lake Beta 2       |                 V2                |
+#### Compatibility
+|                               | Version               |
+|-------------------------------|-----------------------|
+| Ballerina Language Version    |  **Swan Lake Beta 2** |
+|   Jira Cloud platform API     |         **V2**        |
 
 ### Package Overview
 The `jira` is a [Ballerina](https://ballerina.io/) connector for Jira.

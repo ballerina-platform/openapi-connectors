@@ -26,6 +26,11 @@ public type ClientConfig record {
 # + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
+    # Client initialization.
+    #
+    # + clientConfig - Client configuration details
+    # + serviceUrl - Connector server URL
+    # + return - Returns error at failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.appstoreconnect.apple.com/") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -182,11 +187,12 @@ public client class Client {
     #
     # + id - the id of the requested resource
     # + return - Success (no content)
-    remote isolated function appscreenshotsDeleteInstance(string id) returns error? {
+    remote isolated function appscreenshotsDeleteInstance(string id) returns http:Response|error {
         string  path = string `/v1/appScreenshots/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -426,11 +432,12 @@ public client class Client {
     #
     # + id - the id of the requested resource
     # + return - Success (no content)
-    remote isolated function bundleidsDeleteInstance(string id) returns error? {
+    remote isolated function bundleidsDeleteInstance(string id) returns http:Response|error {
         string  path = string `/v1/bundleIds/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -485,11 +492,12 @@ public client class Client {
     #
     # + id - the id of the requested resource
     # + return - Success (no content)
-    remote isolated function certificatesDeleteInstance(string id) returns error? {
+    remote isolated function certificatesDeleteInstance(string id) returns http:Response|error {
         string  path = string `/v1/certificates/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     #
     # + filterName - filter by attribute 'name'
@@ -570,11 +578,12 @@ public client class Client {
     #
     # + id - the id of the requested resource
     # + return - Success (no content)
-    remote isolated function enduserlicenseagreementsDeleteInstance(string id) returns error? {
+    remote isolated function enduserlicenseagreementsDeleteInstance(string id) returns http:Response|error {
         string  path = string `/v1/endUserLicenseAgreements/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -667,11 +676,12 @@ public client class Client {
     #
     # + id - the id of the requested resource
     # + return - Success (no content)
-    remote isolated function profilesDeleteInstance(string id) returns error? {
+    remote isolated function profilesDeleteInstance(string id) returns http:Response|error {
         string  path = string `/v1/profiles/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     #
     # + filterEmail - filter by attribute 'email'
@@ -719,11 +729,12 @@ public client class Client {
     #
     # + id - the id of the requested resource
     # + return - Success (no content)
-    remote isolated function userinvitationsDeleteInstance(string id) returns error? {
+    remote isolated function userinvitationsDeleteInstance(string id) returns http:Response|error {
         string  path = string `/v1/userInvitations/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     #
     # + filterRoles - filter by attribute 'roles'
@@ -760,11 +771,12 @@ public client class Client {
     #
     # + id - the id of the requested resource
     # + return - Success (no content)
-    remote isolated function usersDeleteInstance(string id) returns error? {
+    remote isolated function usersDeleteInstance(string id) returns http:Response|error {
         string  path = string `/v1/users/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -1021,12 +1033,13 @@ public client class Client {
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function appsBetatestersDeleteToManyRelationship(string id, AppBetaTestersLinkagesRequest payload) returns error? {
+    remote isolated function appsBetatestersDeleteToManyRelationship(string id, AppBetaTestersLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/apps/${id}/relationships/betaTesters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> delete(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->delete(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -1160,12 +1173,13 @@ public client class Client {
     # + id - the id of the requested resource
     # + payload - Related linkage
     # + return - Success (no content)
-    remote isolated function buildsAppencryptiondeclarationUpdateToOneRelationship(string id, BuildAppEncryptionDeclarationLinkageRequest payload) returns error? {
+    remote isolated function buildsAppencryptiondeclarationUpdateToOneRelationship(string id, BuildAppEncryptionDeclarationLinkageRequest payload) returns http:Response|error {
         string  path = string `/v1/builds/${id}/relationships/appEncryptionDeclaration`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> patch(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->patch(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -1216,23 +1230,25 @@ public client class Client {
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function buildsBetagroupsCreateToManyRelationship(string id, BuildBetaGroupsLinkagesRequest payload) returns error? {
+    remote isolated function buildsBetagroupsCreateToManyRelationship(string id, BuildBetaGroupsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/builds/${id}/relationships/betaGroups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> post(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function buildsBetagroupsDeleteToManyRelationship(string id, BuildBetaGroupsLinkagesRequest payload) returns error? {
+    remote isolated function buildsBetagroupsDeleteToManyRelationship(string id, BuildBetaGroupsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/builds/${id}/relationships/betaGroups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> delete(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->delete(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -1285,23 +1301,25 @@ public client class Client {
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function buildsIndividualtestersCreateToManyRelationship(string id, BuildIndividualTestersLinkagesRequest payload) returns error? {
+    remote isolated function buildsIndividualtestersCreateToManyRelationship(string id, BuildIndividualTestersLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/builds/${id}/relationships/individualTesters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> post(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function buildsIndividualtestersDeleteToManyRelationship(string id, BuildIndividualTestersLinkagesRequest payload) returns error? {
+    remote isolated function buildsIndividualtestersDeleteToManyRelationship(string id, BuildIndividualTestersLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/builds/${id}/relationships/individualTesters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> delete(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->delete(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -1401,34 +1419,37 @@ public client class Client {
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function gamecenterenabledversionsCompatibleversionsCreateToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns error? {
+    remote isolated function gamecenterenabledversionsCompatibleversionsCreateToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/gameCenterEnabledVersions/${id}/relationships/compatibleVersions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> post(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function gamecenterenabledversionsCompatibleversionsDeleteToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns error? {
+    remote isolated function gamecenterenabledversionsCompatibleversionsDeleteToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/gameCenterEnabledVersions/${id}/relationships/compatibleVersions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> delete(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->delete(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function gamecenterenabledversionsCompatibleversionsReplaceToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns error? {
+    remote isolated function gamecenterenabledversionsCompatibleversionsReplaceToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/gameCenterEnabledVersions/${id}/relationships/compatibleVersions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> patch(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->patch(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
@@ -1511,34 +1532,37 @@ public client class Client {
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function usersVisibleappsCreateToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns error? {
+    remote isolated function usersVisibleappsCreateToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/users/${id}/relationships/visibleApps`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> post(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function usersVisibleappsDeleteToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns error? {
+    remote isolated function usersVisibleappsDeleteToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/users/${id}/relationships/visibleApps`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> delete(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->delete(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource
     # + payload - List of related linkages
     # + return - Success (no content)
-    remote isolated function usersVisibleappsReplaceToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns error? {
+    remote isolated function usersVisibleappsReplaceToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns http:Response|error {
         string  path = string `/v1/users/${id}/relationships/visibleApps`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> patch(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->patch(path, request, targetType=http:Response);
+        return response;
     }
     #
     # + id - the id of the requested resource

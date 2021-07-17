@@ -162,7 +162,7 @@ paths:
                     type: activity_type
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get all activity types
       tags:
         - Activity Types
@@ -184,7 +184,7 @@ paths:
                   type: user
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get info about the current user
       tags:
         - Users
@@ -207,7 +207,7 @@ paths:
                     type: workspace
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get all workspaces for the current user
       tags:
         - Workspaces
@@ -325,13 +325,13 @@ paths:
                     type: activity
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get a workspace
       tags:
         - Workspaces
   "/{workspace_id}/activities":
-    operationId: getActivitiesInWorkspace
     get:
+      operationId: getActivitiesInWorkspace
       parameters:
         - in: path
           name: workspace_id
@@ -558,7 +558,7 @@ paths:
                   prev: null
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: List activities for a workspace
       tags:
         - Activities
@@ -744,7 +744,7 @@ paths:
                     - has blocked this identity
           description: unprocessible
       security:
-        - bearer: []
+        - Bearer: []
       summary: Create a Custom or a Content activity for a new or existing member
       tags:
         - Activities
@@ -872,12 +872,13 @@ paths:
                     type: user
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get an activity in the workspace
       tags:
         - Activities
   "/{workspace_id}/members":
     get:
+      operationId: getMembers
       parameters:
         - in: path
           name: workspace_id
@@ -1105,11 +1106,12 @@ paths:
                   prev: null
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: List members in a workspace
       tags:
         - Members
     post:
+      operationId: postMembers
       description: This method is useful when you know a member's identity in another system and want to create or update the corresponding Orbit member. Identities can be specified in the identity object or member attributes like member.github. If no member exists, a new member will be created and linked to any provided identities.
       parameters:
         - in: path
@@ -1305,12 +1307,13 @@ paths:
                     - has blocked this identity
           description: unprocessable
       security:
-        - bearer: []
+        - Bearer: []
       summary: Create or update a member
       tags:
         - Members
   "/{workspace_id}/members/find":
     get:
+      operationId: findMembers
       description: Provide a source and one of username/uid/email params to return a member with that identity, if one exists. Common values for source include github, twitter, and email.
       parameters:
         - in: path
@@ -1421,12 +1424,13 @@ paths:
                 errors: No member matching this identity was found
           description: Not found
       security:
-        - bearer: []
+        - Bearer: []
       summary: Find a member by an identity
       tags:
         - Members
   "/{workspace_id}/members/{id}":
     delete:
+      operationId: deleteMembersById
       parameters:
         - in: path
           name: workspace_id
@@ -1445,11 +1449,12 @@ paths:
           content: {}
           description: member deleted
       security:
-        - bearer: []
+        - Bearer: []
       summary: Delete a member
       tags:
         - Members
     get:
+      operationId: getMembersById
       parameters:
         - in: path
           name: workspace_id
@@ -1522,11 +1527,12 @@ paths:
                     type: spec_identity
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get a member
       tags:
         - Members
     put:
+      operationId: updateMembersById
       parameters:
         - in: path
           name: workspace_id
@@ -1551,12 +1557,13 @@ paths:
           content: {}
           description: member updated
       security:
-        - bearer: []
+        - Bearer: []
       summary: Update a member
       tags:
         - Members
   "/{workspace_id}/members/{member_id}/activities":
     get:
+      operationId: getActivities
       parameters:
         - in: path
           name: workspace_id
@@ -1701,11 +1708,12 @@ paths:
                   prev: null
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: List activities for a member
       tags:
         - Activities
     post:
+      operationId: postActivities
       parameters:
         - in: path
           name: workspace_id
@@ -1837,12 +1845,13 @@ paths:
                     - can't be blank
           description: unprocessable entity
       security:
-        - bearer: []
+        - Bearer: []
       summary: Create a Custom or a Content activity for a member
       tags:
         - Activities
   "/{workspace_id}/members/{member_id}/activities/{id}":
     delete:
+      operationId: deleteActivityById
       parameters:
         - in: path
           name: workspace_id
@@ -1867,11 +1876,12 @@ paths:
           content: {}
           description: activity deleted
       security:
-        - bearer: []
+        - Bearer: []
       summary: Delete a post activity
       tags:
         - Activities
     put:
+      operationId: updateActivityById
       parameters:
         - in: path
           name: workspace_id
@@ -1904,12 +1914,13 @@ paths:
         "422":
           description: unprocessable entity
       security:
-        - bearer: []
+        - Bearer: []
       summary: Update a custom activity for a member
       tags:
         - Activities
   "/{workspace_id}/members/{member_id}/identities":
     delete:
+      operationId: deleteIdentities
       parameters:
         - in: path
           name: workspace_id
@@ -1923,12 +1934,6 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        description: Remove member identity
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/identity"
       responses:
         "204":
           content: {}
@@ -1942,11 +1947,12 @@ paths:
                     - is not attached to this member
           description: identity is invalid or not attached to member
       security:
-        - bearer: []
+        - Bearer: []
       summary: Remove identity from a member
       tags:
         - Members
     post:
+      operationId: postIdentities
       parameters:
         - in: path
           name: workspace_id
@@ -1995,12 +2001,13 @@ paths:
                     - must be present
           description: identity is invalid
       security:
-        - bearer: []
+        - Bearer: []
       summary: Add identity to a member
       tags:
         - Members
   "/{workspace_id}/members/{member_id}/notes":
     get:
+      operationId: getNotes
       parameters:
         - in: path
           name: workspace_id
@@ -2100,11 +2107,12 @@ paths:
                   prev: null
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get the member's notes
       tags:
         - Notes
     post:
+      operationId: postNotes
       parameters:
         - in: path
           name: workspace_id
@@ -2147,12 +2155,13 @@ paths:
                   type: note
           description: note created
       security:
-        - bearer: []
+        - Bearer: []
       summary: Create a note
       tags:
         - Notes
   "/{workspace_id}/members/{member_id}/notes/{id}":
     put:
+      operationId: updateNoteById
       parameters:
         - in: path
           name: workspace_id
@@ -2183,12 +2192,13 @@ paths:
           content: {}
           description: note updated
       security:
-        - bearer: []
+        - Bearer: []
       summary: Update a note
       tags:
         - Notes
   "/{workspace_id}/reports":
     get:
+      operationId: getReports
       parameters:
         - in: path
           name: workspace_id
@@ -2277,13 +2287,14 @@ paths:
                   type: statistics
           description: success
       security:
-        - bearer: []
+        - Bearer: []
       summary: Get a workspace stats
       tags:
         - Reports
 components:
   schemas:
     Activity:
+      description: Activities are instances of community participation and contribution.
       properties:
         activity_type:
           description: The type of activity - what action was done by the member
@@ -2367,12 +2378,16 @@ components:
         - source
       type: object
     member:
+      description: Members are the people in the community. 
       properties:
         bio:
+          description: The member’s bio
           type: string
         birthday:
+          description: The member’s birthday, e.g. August 1
           type: string
         company:
+          description: The member’s company
           type: string
         devto:
           description: The member's dev.to username
@@ -2387,14 +2402,19 @@ components:
           description: The member's LinkedIn username, without the in/ or pub/
           type: string
         location:
+          description: The member’s location. That field is not normalized and reflects what can be found in the member’s identities.
           type: string
         name:
+          description: The member’s name
           type: string
         pronouns:
+          description: The member’s pronouns
           type: string
         shipping_address:
+          description: The member’s shipping address
           type: string
         slug:
+          description: The member’s slug in the Orbit app
           type: string
         tag_list:
           description: "Deprecated: Please use the tags attribute instead"
@@ -2406,15 +2426,19 @@ components:
           description: Adds tags to member; comma-separated string or array
           type: string
         teammate:
+          description: Whether the member is a teammate
           type: boolean
         title:
+          description: The member’s title
           type: string
         tshirt:
+          description: The member’s tshirt size
           type: string
         twitter:
-          description: The member's Twitter username
+          description: The member’s Twitter username, if available. null otherwise
           type: string
         url:
+          description: The URL listed by the member in one of their profiles
           type: string
       type: object
     member_and_identity:
@@ -2425,8 +2449,10 @@ components:
           $ref: "#/components/schemas/member"
       type: object
     note:
+      description: A member's notes are free-form areas to attach information to a member's profile.
       properties:
         body:
+          description: The body of member's note
           type: string
       required:
         - body
@@ -2460,7 +2486,5 @@ components:
   securitySchemes:
     Bearer:
       description: Provide a Authorization header with format 'Bearer <api_key>'. This is the recommended approach. Make sure to include the 'Bearer' part in the text box here.
-      in: header
       scheme: bearer
-      name: Authorization
       type: http

@@ -5,9 +5,10 @@ The `ballerinax/bisstats` is a [Ballerina](https://ballerina.io/) connector for 
 This package provides the capability to easily access BIS statistical data and metadata.
 
 #### Compatibility
-| Ballerina Language Versions  |      BIS SDMX Restful API        |
-|:----------------------------:|:--------------------------------:|
-|       Swan Lake Beta 2       |                 V1               |
+|                               | Version                        |
+|-------------------------------|--------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta 2** |
+| BIS SDMX Restful API Version  | **V1**                         | 
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

@@ -18,22 +18,19 @@ currently supporting following operations.
 - Send Message
 - Update Webhook
 
+This module supports v1 version.
 
-## Compatibility
+## Configuring Connector
 
-|                       |    Version                  |
-|:---------------------:|:---------------------------:|
-| Ballerina Language    | Swan-Lake-Beta2             |
-| BulkSMS API           | v1                          |
+### Prerequisites
+- A bulkSMS account
 
-
-# Quickstart
-
-## Obtain Tokens for Authentication
-
+### Obtaining tokens
 * Provide the username and password for the Authentication.
 
-### Client configuration
+## Quickstart
+
+* Get user profile
 
 1.  Add Config.toml file including the username and password as follows,
 ```
@@ -53,13 +50,13 @@ import ballerina/log;
     //Client Initialization
     configurable http:CredentialsConfig & readonly authConfig = ?;
     ClientConfig clientConfig = {authConfig : authConfig};
-    Client baseClient = check new Client(clientConfig);
+    bulksms:Client baseClient = check new Client(clientConfig);
 ```
 4. Use the client to call its remote functions as the following code
 ```
     //Calling getProfile remote function  of the created client
     var profile = baseClient->getProfile();
-    if profile is Profile {
+    if profile is bulksms:Profile {
         log:printInfo(profile.toString());
     } else {
         log:printError(profile.toString());

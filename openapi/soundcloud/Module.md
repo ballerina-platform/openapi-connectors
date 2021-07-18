@@ -6,7 +6,7 @@ This module supports REST API version 1.0.0 for soundcloud.
 ## Configuring Connector
 
 ### Prerequisites
-- An soundcloud Account
+- A soundcloud account
 
 ### Obtaining tokens
 

@@ -5,9 +5,11 @@ The `ballerinax/soundcloud` is a [Ballerina](https://ballerina.io/) connector fo
 This package provides the capability to build applications that enable users to engage with tracks on SoundCloud.
 
 #### Compatibility
-| Ballerina Language Versions  |      SoundCloud Restful API      |
-|:----------------------------:|:--------------------------------:|
-|       Swan Lake Beta2        |             1.0.0                |
+|                              | Version                         |
+|:----------------------------:|:-------------------------------:|
+|  Ballerina Language Versions |  **Ballerina Swan Lake Beta 2** |
+|   SoundCloud API             |  **1.0.0**                      |
+
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

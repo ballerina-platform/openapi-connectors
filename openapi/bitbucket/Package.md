@@ -9,7 +9,7 @@ The BitBucket connector consume the data exposed in https://developer.atlassian.
 |                              | Version                         |
 |:----------------------------:|:-------------------------------:|
 |   Ballerina Language Versions|  **Ballerina Swan Lake Beta 2** |
-|   Bitbucket API              |   2.0                           |
+|   Bitbucket API              |   **2.0**                       |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

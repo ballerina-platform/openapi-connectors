@@ -25,7 +25,7 @@ This module supports REST API version 2.0 for BitBucket.
 6. Use the following link as the refresh URL
     `https://bitbucket.org/site/oauth2/access_token`
 
-7. For more information, Please refer this [link](https://developer.atlassian.com/bitbucket/api/2/reference/?utm_source=%2Fbitbucket%2Fapi%2F2%2Freference&utm_medium=302)
+7. For more information, refer this [link](https://developer.atlassian.com/bitbucket/api/2/reference/?utm_source=%2Fbitbucket%2Fapi%2F2%2Freference&utm_medium=302)
  
 ## Quickstart
 
@@ -39,7 +39,7 @@ import ballerinax/bitbucket;
 Step 2: Configure the connection credentials.
 Please follow the above mentioned configuration steps to obtain the tokens.
 ```ballerina
-BitBucket:ClientConfig configuration = {
+bitbucket:ClientConfig configuration = {
     authConfig: {
         clientId: "<Client Id>",
         clientSecret: "<Client Secret>",

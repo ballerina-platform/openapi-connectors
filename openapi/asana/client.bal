@@ -1,26 +1,45 @@
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 # Configuration for Asana connector
 #
-# + authConfig - BearerTokenConfig or OAuth2 Refresh Token Grant Configuration
-# + secureSocketConfig - SSL connection configuration
+# + authConfig - Bearer token configuration or OAuth2 refresh token grant configuration
+# + secureSocketConfig - Secure socket configuration  
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# This is a generated connector for [Asana API v1.0](https://developers.asana.com/docs) OpenAPI specification.
+# This API enables you to help teams organize, track and manage their work.
+# For additional help getting started with the API, visit [Asana API](https://developers.asana.com).
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create an [Asana API Account](https://asana.com/create-account) 
+    # and obtain tokens following [this guide](https://developers.asana.com/docs/authentication).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://app.asana.com/api/1.0") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -28,12 +47,12 @@ public client class Client {
     }
     # Get an attachment
     #
-    # + attachment_gid - Globally unique identifier for the attachment.
+    # + attachmentGid - Globally unique identifier for the attachment.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the record for a single attachment.
-    remote isolated function getAttachment(string attachment_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse200|error {
-        string  path = string `/attachments/${attachment_gid}`;
+    remote isolated function getAttachment(string attachmentGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse200|error {
+        string  path = string `/attachments/${attachmentGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
@@ -41,12 +60,12 @@ public client class Client {
     }
     # Delete an attachment
     #
-    # + attachment_gid - Globally unique identifier for the attachment.
+    # + attachmentGid - Globally unique identifier for the attachment.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully deleted the specified attachment.
-    remote isolated function deleteAttachment(string attachment_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/attachments/${attachment_gid}`;
+    remote isolated function deleteAttachment(string attachmentGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/attachments/${attachmentGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -90,12 +109,12 @@ public client class Client {
     }
     # Get a custom field
     #
-    # + custom_field_gid - Globally unique identifier for the custom field.
+    # + customFieldGid - Globally unique identifier for the custom field.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the complete definition of a custom field’s metadata.
-    remote isolated function getCustomField(string custom_field_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse201|error {
-        string  path = string `/custom_fields/${custom_field_gid}`;
+    remote isolated function getCustomField(string customFieldGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse201|error {
+        string  path = string `/custom_fields/${customFieldGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse201 response = check self.clientEp-> get(path, targetType = InlineResponse201);
@@ -103,13 +122,13 @@ public client class Client {
     }
     # Update a custom field
     #
-    # + custom_field_gid - Globally unique identifier for the custom field.
+    # + customFieldGid - Globally unique identifier for the custom field.
     # + payload - The custom field object with all updated properties.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - The custom field was successfully updated.
-    remote isolated function updateCustomField(string custom_field_gid, Body2 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse201|error {
-        string  path = string `/custom_fields/${custom_field_gid}`;
+    remote isolated function updateCustomField(string customFieldGid, Body2 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse201|error {
+        string  path = string `/custom_fields/${customFieldGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -120,12 +139,12 @@ public client class Client {
     }
     # Delete a custom field
     #
-    # + custom_field_gid - Globally unique identifier for the custom field.
+    # + customFieldGid - Globally unique identifier for the custom field.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - The custom field was successfully deleted.
-    remote isolated function deleteCustomField(string custom_field_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/custom_fields/${custom_field_gid}`;
+    remote isolated function deleteCustomField(string customFieldGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/custom_fields/${customFieldGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -135,15 +154,15 @@ public client class Client {
     }
     # Create an enum option
     #
-    # + custom_field_gid - Globally unique identifier for the custom field.
+    # + customFieldGid - Globally unique identifier for the custom field.
     # + payload - The enum option object to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Custom field enum option successfully created.
-    remote isolated function createEnumOptionForCustomField(string custom_field_gid, Body3 payload, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2011|error {
-        string  path = string `/custom_fields/${custom_field_gid}/enum_options`;
+    remote isolated function createEnumOptionForCustomField(string customFieldGid, Body3 payload, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2011|error {
+        string  path = string `/custom_fields/${customFieldGid}/enum_options`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -154,13 +173,13 @@ public client class Client {
     }
     # Reorder a custom field's enum
     #
-    # + custom_field_gid - Globally unique identifier for the custom field.
+    # + customFieldGid - Globally unique identifier for the custom field.
     # + payload - The enum option object to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Custom field enum option successfully reordered.
-    remote isolated function insertEnumOptionForCustomField(string custom_field_gid, Body4 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2011|error {
-        string  path = string `/custom_fields/${custom_field_gid}/enum_options/insert`;
+    remote isolated function insertEnumOptionForCustomField(string customFieldGid, Body4 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2011|error {
+        string  path = string `/custom_fields/${customFieldGid}/enum_options/insert`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -171,13 +190,13 @@ public client class Client {
     }
     # Update an enum option
     #
-    # + enum_option_gid - Globally unique identifier for the enum option.
+    # + enumOptionGid - Globally unique identifier for the enum option.
     # + payload - The enum option object to update
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully updated the specified custom field enum.
-    remote isolated function updateEnumOption(string enum_option_gid, Body5 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2011|error {
-        string  path = string `/enum_options/${enum_option_gid}`;
+    remote isolated function updateEnumOption(string enumOptionGid, Body5 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2011|error {
+        string  path = string `/enum_options/${enumOptionGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -202,12 +221,12 @@ public client class Client {
     }
     # Get a job by id
     #
-    # + job_gid - Globally unique identifier for the job.
+    # + jobGid - Globally unique identifier for the job.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved Job.
-    remote isolated function getJob(string job_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
-        string  path = string `/jobs/${job_gid}`;
+    remote isolated function getJob(string jobGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
+        string  path = string `/jobs/${jobGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2004 response = check self.clientEp-> get(path, targetType = InlineResponse2004);
@@ -233,12 +252,12 @@ public client class Client {
     }
     # Get details on an org export request
     #
-    # + organization_export_gid - Globally unique identifier for the organization export.
+    # + organizationExportGid - Globally unique identifier for the organization export.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved organization export object.
-    remote isolated function getOrganizationExport(string organization_export_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2012|error {
-        string  path = string `/organization_exports/${organization_export_gid}`;
+    remote isolated function getOrganizationExport(string organizationExportGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2012|error {
+        string  path = string `/organization_exports/${organizationExportGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2012 response = check self.clientEp-> get(path, targetType = InlineResponse2012);
@@ -246,14 +265,14 @@ public client class Client {
     }
     # Get teams in an organization
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Returns the team records for all teams in the organization or workspace accessible to the authenticated user.
-    remote isolated function getTeamsForOrganization(string workspace_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2005|error {
-        string  path = string `/organizations/${workspace_gid}/teams`;
+    remote isolated function getTeamsForOrganization(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2005|error {
+        string  path = string `/organizations/${workspaceGid}/teams`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
@@ -278,12 +297,12 @@ public client class Client {
     }
     # Get a portfolio membership
     #
-    # + portfolio_membership_gid - Globally unique identifier for the portfolio membership
+    # + portfolioMembershipGid - Globally unique identifier for the portfolio membership
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested portfolio membership.
-    remote isolated function getPortfolioMembership(string portfolio_membership_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2007|error {
-        string  path = string `/portfolio_memberships/${portfolio_membership_gid}`;
+    remote isolated function getPortfolioMembership(string portfolioMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2007|error {
+        string  path = string `/portfolio_memberships/${portfolioMembershipGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2007 response = check self.clientEp-> get(path, targetType = InlineResponse2007);
@@ -323,12 +342,12 @@ public client class Client {
     }
     # Get a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested portfolio.
-    remote isolated function getPortfolio(string portfolio_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2013|error {
-        string  path = string `/portfolios/${portfolio_gid}`;
+    remote isolated function getPortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2013|error {
+        string  path = string `/portfolios/${portfolioGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2013 response = check self.clientEp-> get(path, targetType = InlineResponse2013);
@@ -336,13 +355,13 @@ public client class Client {
     }
     # Update a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + payload - The updated fields for the portfolio.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully updated the portfolio.
-    remote isolated function updatePortfolio(string portfolio_gid, Body8 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2013|error {
-        string  path = string `/portfolios/${portfolio_gid}`;
+    remote isolated function updatePortfolio(string portfolioGid, Body8 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2013|error {
+        string  path = string `/portfolios/${portfolioGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -353,12 +372,12 @@ public client class Client {
     }
     # Delete a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully deleted the specified portfolio.
-    remote isolated function deletePortfolio(string portfolio_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/portfolios/${portfolio_gid}`;
+    remote isolated function deletePortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/portfolios/${portfolioGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -368,12 +387,12 @@ public client class Client {
     }
     # Add a custom field to a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + payload - Information about the custom field setting.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + return - Successfully added the custom field to the portfolio.
-    remote isolated function addCustomFieldSettingForPortfolio(string portfolio_gid, Body9 payload, boolean? optPretty = ()) returns InlineResponse2001|error {
-        string  path = string `/portfolios/${portfolio_gid}/addCustomFieldSetting`;
+    remote isolated function addCustomFieldSettingForPortfolio(string portfolioGid, Body9 payload, boolean? optPretty = ()) returns InlineResponse2001|error {
+        string  path = string `/portfolios/${portfolioGid}/addCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -384,13 +403,13 @@ public client class Client {
     }
     # Add a portfolio item
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + payload - Information about the item being inserted.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added the item to the portfolio.
-    remote isolated function addItemForPortfolio(string portfolio_gid, Body10 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/portfolios/${portfolio_gid}/addItem`;
+    remote isolated function addItemForPortfolio(string portfolioGid, Body10 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/portfolios/${portfolioGid}/addItem`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -401,13 +420,13 @@ public client class Client {
     }
     # Add users to a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + payload - Information about the members being added.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added members to the portfolio.
-    remote isolated function addMembersForPortfolio(string portfolio_gid, Body11 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/portfolios/${portfolio_gid}/addMembers`;
+    remote isolated function addMembersForPortfolio(string portfolioGid, Body11 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/portfolios/${portfolioGid}/addMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -418,14 +437,14 @@ public client class Client {
     }
     # Get a portfolio's custom fields
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved custom field settings objects for a portfolio.
-    remote isolated function getCustomFieldSettingsForPortfolio(string portfolio_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2009|error {
-        string  path = string `/portfolios/${portfolio_gid}/custom_field_settings`;
+    remote isolated function getCustomFieldSettingsForPortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2009|error {
+        string  path = string `/portfolios/${portfolioGid}/custom_field_settings`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2009 response = check self.clientEp-> get(path, targetType = InlineResponse2009);
@@ -433,14 +452,14 @@ public client class Client {
     }
     # Get portfolio items
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested portfolio's items.
-    remote isolated function getItemsForPortfolio(string portfolio_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20010|error {
-        string  path = string `/portfolios/${portfolio_gid}/items`;
+    remote isolated function getItemsForPortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20010|error {
+        string  path = string `/portfolios/${portfolioGid}/items`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
@@ -448,15 +467,15 @@ public client class Client {
     }
     # Get memberships from a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + user - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested portfolio's memberships.
-    remote isolated function getPortfolioMembershipsForPortfolio(string portfolio_gid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2006|error {
-        string  path = string `/portfolios/${portfolio_gid}/portfolio_memberships`;
+    remote isolated function getPortfolioMembershipsForPortfolio(string portfolioGid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2006|error {
+        string  path = string `/portfolios/${portfolioGid}/portfolio_memberships`;
         map<anydata> queryParam = {"user": user, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2006 response = check self.clientEp-> get(path, targetType = InlineResponse2006);
@@ -464,12 +483,12 @@ public client class Client {
     }
     # Remove a custom field from a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + payload - Information about the custom field setting being removed.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + return - Successfully removed the custom field from the portfolio.
-    remote isolated function removeCustomFieldSettingForPortfolio(string portfolio_gid, Body12 payload, boolean? optPretty = ()) returns InlineResponse2001|error {
-        string  path = string `/portfolios/${portfolio_gid}/removeCustomFieldSetting`;
+    remote isolated function removeCustomFieldSettingForPortfolio(string portfolioGid, Body12 payload, boolean? optPretty = ()) returns InlineResponse2001|error {
+        string  path = string `/portfolios/${portfolioGid}/removeCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -480,13 +499,13 @@ public client class Client {
     }
     # Remove a portfolio item
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + payload - Information about the item being removed.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully removed the item from the portfolio.
-    remote isolated function removeItemForPortfolio(string portfolio_gid, Body13 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/portfolios/${portfolio_gid}/removeItem`;
+    remote isolated function removeItemForPortfolio(string portfolioGid, Body13 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/portfolios/${portfolioGid}/removeItem`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -497,13 +516,13 @@ public client class Client {
     }
     # Remove users from a portfolio
     #
-    # + portfolio_gid - Globally unique identifier for the portfolio.
+    # + portfolioGid - Globally unique identifier for the portfolio.
     # + payload - Information about the members being removed.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully removed the members from the portfolio.
-    remote isolated function removeMembersForPortfolio(string portfolio_gid, Body14 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/portfolios/${portfolio_gid}/removeMembers`;
+    remote isolated function removeMembersForPortfolio(string portfolioGid, Body14 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/portfolios/${portfolioGid}/removeMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -514,12 +533,12 @@ public client class Client {
     }
     # Get a project membership
     #
-    # + project_membership_gid - Globally unique identifier for the project membership.
+    # + projectMembershipGid - Globally unique identifier for the project membership.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested project membership.
-    remote isolated function getProjectMembership(string project_membership_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20011|error {
-        string  path = string `/project_memberships/${project_membership_gid}`;
+    remote isolated function getProjectMembership(string projectMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20011|error {
+        string  path = string `/project_memberships/${projectMembershipGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20011 response = check self.clientEp-> get(path, targetType = InlineResponse20011);
@@ -527,12 +546,12 @@ public client class Client {
     }
     # Get a project status
     #
-    # + project_status_gid - The project status update to get.
+    # + projectStatusGid - The project status update to get.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the specified project's status updates.
-    remote isolated function getProjectStatus(string project_status_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20012|error {
-        string  path = string `/project_statuses/${project_status_gid}`;
+    remote isolated function getProjectStatus(string projectStatusGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20012|error {
+        string  path = string `/project_statuses/${projectStatusGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20012 response = check self.clientEp-> get(path, targetType = InlineResponse20012);
@@ -540,12 +559,12 @@ public client class Client {
     }
     # Delete a project status
     #
-    # + project_status_gid - The project status update to get.
+    # + projectStatusGid - The project status update to get.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully deleted the specified project status.
-    remote isolated function deleteProjectStatus(string project_status_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/project_statuses/${project_status_gid}`;
+    remote isolated function deleteProjectStatus(string projectStatusGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/project_statuses/${projectStatusGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -588,12 +607,12 @@ public client class Client {
     }
     # Get a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested project.
-    remote isolated function getProject(string project_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string  path = string `/projects/${project_gid}`;
+    remote isolated function getProject(string projectGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
+        string  path = string `/projects/${projectGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2014 response = check self.clientEp-> get(path, targetType = InlineResponse2014);
@@ -601,13 +620,13 @@ public client class Client {
     }
     # Update a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - The updated fields for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully updated the project.
-    remote isolated function updateProject(string project_gid, Body16 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string  path = string `/projects/${project_gid}`;
+    remote isolated function updateProject(string projectGid, Body16 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
+        string  path = string `/projects/${projectGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -618,12 +637,12 @@ public client class Client {
     }
     # Delete a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully deleted the specified project.
-    remote isolated function deleteProject(string project_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/projects/${project_gid}`;
+    remote isolated function deleteProject(string projectGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/projects/${projectGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -633,12 +652,12 @@ public client class Client {
     }
     # Add a custom field to a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - Information about the custom field setting.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + return - Successfully added the custom field to the project.
-    remote isolated function addCustomFieldSettingForProject(string project_gid, Body17 payload, boolean? optPretty = ()) returns InlineResponse20013|error {
-        string  path = string `/projects/${project_gid}/addCustomFieldSetting`;
+    remote isolated function addCustomFieldSettingForProject(string projectGid, Body17 payload, boolean? optPretty = ()) returns InlineResponse20013|error {
+        string  path = string `/projects/${projectGid}/addCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -649,13 +668,13 @@ public client class Client {
     }
     # Add followers to a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - Information about the followers being added.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added followers to the project.
-    remote isolated function addFollowersForProject(string project_gid, Body18 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/projects/${project_gid}/addFollowers`;
+    remote isolated function addFollowersForProject(string projectGid, Body18 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/projects/${projectGid}/addFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -666,13 +685,13 @@ public client class Client {
     }
     # Add users to a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - Information about the members being added.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added members to the project.
-    remote isolated function addMembersForProject(string project_gid, Body19 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/projects/${project_gid}/addMembers`;
+    remote isolated function addMembersForProject(string projectGid, Body19 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/projects/${projectGid}/addMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -683,14 +702,14 @@ public client class Client {
     }
     # Get a project's custom fields
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved custom field settings objects for a project.
-    remote isolated function getCustomFieldSettingsForProject(string project_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2009|error {
-        string  path = string `/projects/${project_gid}/custom_field_settings`;
+    remote isolated function getCustomFieldSettingsForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2009|error {
+        string  path = string `/projects/${projectGid}/custom_field_settings`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2009 response = check self.clientEp-> get(path, targetType = InlineResponse2009);
@@ -698,13 +717,13 @@ public client class Client {
     }
     # Duplicate a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - Describes the duplicate's name and the elements that will be duplicated.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created the job to handle duplication.
-    remote isolated function duplicateProject(string project_gid, Body20 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
-        string  path = string `/projects/${project_gid}/duplicate`;
+    remote isolated function duplicateProject(string projectGid, Body20 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
+        string  path = string `/projects/${projectGid}/duplicate`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -715,15 +734,15 @@ public client class Client {
     }
     # Get memberships from a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + user - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested project's memberships.
-    remote isolated function getProjectMembershipsForProject(string project_gid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20014|error {
-        string  path = string `/projects/${project_gid}/project_memberships`;
+    remote isolated function getProjectMembershipsForProject(string projectGid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20014|error {
+        string  path = string `/projects/${projectGid}/project_memberships`;
         map<anydata> queryParam = {"user": user, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20014 response = check self.clientEp-> get(path, targetType = InlineResponse20014);
@@ -731,14 +750,14 @@ public client class Client {
     }
     # Get statuses from a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified project's status updates.
-    remote isolated function getProjectStatusesForProject(string project_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20015|error {
-        string  path = string `/projects/${project_gid}/project_statuses`;
+    remote isolated function getProjectStatusesForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20015|error {
+        string  path = string `/projects/${projectGid}/project_statuses`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20015 response = check self.clientEp-> get(path, targetType = InlineResponse20015);
@@ -746,13 +765,13 @@ public client class Client {
     }
     # Create a project status
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - The project status to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created a new story.
-    remote isolated function createProjectStatusForProject(string project_gid, Body21 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20012|error {
-        string  path = string `/projects/${project_gid}/project_statuses`;
+    remote isolated function createProjectStatusForProject(string projectGid, Body21 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20012|error {
+        string  path = string `/projects/${projectGid}/project_statuses`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -763,12 +782,12 @@ public client class Client {
     }
     # Remove a custom field from a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - Information about the custom field setting being removed.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + return - Successfully removed the custom field from the project.
-    remote isolated function removeCustomFieldSettingForProject(string project_gid, Body22 payload, boolean? optPretty = ()) returns InlineResponse2001|error {
-        string  path = string `/projects/${project_gid}/removeCustomFieldSetting`;
+    remote isolated function removeCustomFieldSettingForProject(string projectGid, Body22 payload, boolean? optPretty = ()) returns InlineResponse2001|error {
+        string  path = string `/projects/${projectGid}/removeCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -779,13 +798,13 @@ public client class Client {
     }
     # Remove followers from a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - Information about the followers being removed.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully removed followers from the project.
-    remote isolated function removeFollowersForProject(string project_gid, Body23 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/projects/${project_gid}/removeFollowers`;
+    remote isolated function removeFollowersForProject(string projectGid, Body23 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/projects/${projectGid}/removeFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -796,13 +815,13 @@ public client class Client {
     }
     # Remove users from a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - Information about the members being removed.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully removed the members from the project.
-    remote isolated function removeMembersForProject(string project_gid, Body24 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/projects/${project_gid}/removeMembers`;
+    remote isolated function removeMembersForProject(string projectGid, Body24 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/projects/${projectGid}/removeMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -813,14 +832,14 @@ public client class Client {
     }
     # Get sections in a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved sections in project.
-    remote isolated function getSectionsForProject(string project_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20016|error {
-        string  path = string `/projects/${project_gid}/sections`;
+    remote isolated function getSectionsForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20016|error {
+        string  path = string `/projects/${projectGid}/sections`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20016 response = check self.clientEp-> get(path, targetType = InlineResponse20016);
@@ -828,13 +847,13 @@ public client class Client {
     }
     # Create a section in a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - The section to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created the specified section.
-    remote isolated function createSectionForProject(string project_gid, Body25 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
-        string  path = string `/projects/${project_gid}/sections`;
+    remote isolated function createSectionForProject(string projectGid, Body25 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
+        string  path = string `/projects/${projectGid}/sections`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -845,13 +864,13 @@ public client class Client {
     }
     # Move or Insert sections
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + payload - The section's move action.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully moved the specified section.
-    remote isolated function insertSectionForProject(string project_gid, Body26 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/projects/${project_gid}/sections/insert`;
+    remote isolated function insertSectionForProject(string projectGid, Body26 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/projects/${projectGid}/sections/insert`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -862,14 +881,14 @@ public client class Client {
     }
     # Get task count of a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested project's task counts.
-    remote isolated function getTaskCountsForProject(string project_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20017|error {
-        string  path = string `/projects/${project_gid}/task_counts`;
+    remote isolated function getTaskCountsForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20017|error {
+        string  path = string `/projects/${projectGid}/task_counts`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20017 response = check self.clientEp-> get(path, targetType = InlineResponse20017);
@@ -877,14 +896,14 @@ public client class Client {
     }
     # Get tasks from a project
     #
-    # + project_gid - Globally unique identifier for the project.
+    # + projectGid - Globally unique identifier for the project.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested project's tasks.
-    remote isolated function getTasksForProject(string project_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string  path = string `/projects/${project_gid}/tasks`;
+    remote isolated function getTasksForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
+        string  path = string `/projects/${projectGid}/tasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -892,12 +911,12 @@ public client class Client {
     }
     # Get a section
     #
-    # + section_gid - The globally unique identifier for the section.
+    # + sectionGid - The globally unique identifier for the section.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved section.
-    remote isolated function getSection(string section_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
-        string  path = string `/sections/${section_gid}`;
+    remote isolated function getSection(string sectionGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
+        string  path = string `/sections/${sectionGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2015 response = check self.clientEp-> get(path, targetType = InlineResponse2015);
@@ -905,13 +924,13 @@ public client class Client {
     }
     # Update a section
     #
-    # + section_gid - The globally unique identifier for the section.
+    # + sectionGid - The globally unique identifier for the section.
     # + payload - The section to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully updated the specified section.
-    remote isolated function updateSection(string section_gid, Body27 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
-        string  path = string `/sections/${section_gid}`;
+    remote isolated function updateSection(string sectionGid, Body27 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
+        string  path = string `/sections/${sectionGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -922,12 +941,12 @@ public client class Client {
     }
     # Delete a section
     #
-    # + section_gid - The globally unique identifier for the section.
+    # + sectionGid - The globally unique identifier for the section.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully deleted the specified section.
-    remote isolated function deleteSection(string section_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/sections/${section_gid}`;
+    remote isolated function deleteSection(string sectionGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/sections/${sectionGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -937,13 +956,13 @@ public client class Client {
     }
     # Add task to section
     #
-    # + section_gid - The globally unique identifier for the section.
+    # + sectionGid - The globally unique identifier for the section.
     # + payload - The task and optionally the insert location.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added the task.
-    remote isolated function addTaskForSection(string section_gid, Body28 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/sections/${section_gid}/addTask`;
+    remote isolated function addTaskForSection(string sectionGid, Body28 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/sections/${sectionGid}/addTask`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -954,14 +973,14 @@ public client class Client {
     }
     # Get tasks from a section
     #
-    # + section_gid - The globally unique identifier for the section.
+    # + sectionGid - The globally unique identifier for the section.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the section's tasks.
-    remote isolated function getTasksForSection(string section_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string  path = string `/sections/${section_gid}/tasks`;
+    remote isolated function getTasksForSection(string sectionGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
+        string  path = string `/sections/${sectionGid}/tasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -969,14 +988,14 @@ public client class Client {
     }
     # Get a story
     #
-    # + story_gid - Globally unique identifier for the story.
+    # + storyGid - Globally unique identifier for the story.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified story.
-    remote isolated function getStory(string story_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20019|error {
-        string  path = string `/stories/${story_gid}`;
+    remote isolated function getStory(string storyGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20019|error {
+        string  path = string `/stories/${storyGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20019 response = check self.clientEp-> get(path, targetType = InlineResponse20019);
@@ -984,13 +1003,13 @@ public client class Client {
     }
     # Update a story
     #
-    # + story_gid - Globally unique identifier for the story.
+    # + storyGid - Globally unique identifier for the story.
     # + payload - The comment story to update.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the specified story.
-    remote isolated function updateStory(string story_gid, Body29 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20019|error {
-        string  path = string `/stories/${story_gid}`;
+    remote isolated function updateStory(string storyGid, Body29 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20019|error {
+        string  path = string `/stories/${storyGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1001,12 +1020,12 @@ public client class Client {
     }
     # Delete a story
     #
-    # + story_gid - Globally unique identifier for the story.
+    # + storyGid - Globally unique identifier for the story.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully deleted the specified story.
-    remote isolated function deleteStory(string story_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/stories/${story_gid}`;
+    remote isolated function deleteStory(string storyGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/stories/${storyGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1047,14 +1066,14 @@ public client class Client {
     }
     # Get a tag
     #
-    # + tag_gid - Globally unique identifier for the tag.
+    # + tagGid - Globally unique identifier for the tag.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified tag.
-    remote isolated function getTag(string tag_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2016|error {
-        string  path = string `/tags/${tag_gid}`;
+    remote isolated function getTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2016|error {
+        string  path = string `/tags/${tagGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2016 response = check self.clientEp-> get(path, targetType = InlineResponse2016);
@@ -1062,14 +1081,14 @@ public client class Client {
     }
     # Update a tag
     #
-    # + tag_gid - Globally unique identifier for the tag.
+    # + tagGid - Globally unique identifier for the tag.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully updated the specified tag.
-    remote isolated function updateTag(string tag_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2016|error {
-        string  path = string `/tags/${tag_gid}`;
+    remote isolated function updateTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2016|error {
+        string  path = string `/tags/${tagGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1079,14 +1098,14 @@ public client class Client {
     }
     # Delete a tag
     #
-    # + tag_gid - Globally unique identifier for the tag.
+    # + tagGid - Globally unique identifier for the tag.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully deleted the specified tag.
-    remote isolated function deleteTag(string tag_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2001|error {
-        string  path = string `/tags/${tag_gid}`;
+    remote isolated function deleteTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2001|error {
+        string  path = string `/tags/${tagGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1096,14 +1115,14 @@ public client class Client {
     }
     # Get tasks from a tag
     #
-    # + tag_gid - Globally unique identifier for the tag.
+    # + tagGid - Globally unique identifier for the tag.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the tasks associated with the specified tag.
-    remote isolated function getTasksForTag(string tag_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string  path = string `/tags/${tag_gid}/tasks`;
+    remote isolated function getTasksForTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
+        string  path = string `/tags/${tagGid}/tasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -1147,12 +1166,12 @@ public client class Client {
     }
     # Get a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the specified task.
-    remote isolated function getTask(string task_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string  path = string `/tasks/${task_gid}`;
+    remote isolated function getTask(string taskGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
+        string  path = string `/tasks/${taskGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2017 response = check self.clientEp-> get(path, targetType = InlineResponse2017);
@@ -1160,13 +1179,13 @@ public client class Client {
     }
     # Update a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The task to update.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully updated the specified task.
-    remote isolated function updateTask(string task_gid, Body32 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string  path = string `/tasks/${task_gid}`;
+    remote isolated function updateTask(string taskGid, Body32 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
+        string  path = string `/tasks/${taskGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1177,12 +1196,12 @@ public client class Client {
     }
     # Delete a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully deleted the specified task.
-    remote isolated function deleteTask(string task_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}`;
+    remote isolated function deleteTask(string taskGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1192,13 +1211,13 @@ public client class Client {
     }
     # Set dependencies for a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The list of tasks to set as dependencies.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully set the specified dependencies on the task.
-    remote isolated function addDependenciesForTask(string task_gid, Body33 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}/addDependencies`;
+    remote isolated function addDependenciesForTask(string taskGid, Body33 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}/addDependencies`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1209,13 +1228,13 @@ public client class Client {
     }
     # Set dependents for a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The list of tasks to add as dependents.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully set the specified dependents on the given task.
-    remote isolated function addDependentsForTask(string task_gid, Body34 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20018|error {
-        string  path = string `/tasks/${task_gid}/addDependents`;
+    remote isolated function addDependentsForTask(string taskGid, Body34 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20018|error {
+        string  path = string `/tasks/${taskGid}/addDependents`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1226,13 +1245,13 @@ public client class Client {
     }
     # Add followers to a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The followers to add to the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added the specified followers to the task.
-    remote isolated function addFollowersForTask(string task_gid, Body35 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}/addFollowers`;
+    remote isolated function addFollowersForTask(string taskGid, Body35 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}/addFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1243,13 +1262,13 @@ public client class Client {
     }
     # Add a project to a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The project to add the task to.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added the specified project to the task.
-    remote isolated function addProjectForTask(string task_gid, Body36 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}/addProject`;
+    remote isolated function addProjectForTask(string taskGid, Body36 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}/addProject`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1260,13 +1279,13 @@ public client class Client {
     }
     # Add a tag to a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The tag to add to the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully added the specified tag to the task.
-    remote isolated function addTagForTask(string task_gid, Body37 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}/addTag`;
+    remote isolated function addTagForTask(string taskGid, Body37 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}/addTag`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1277,14 +1296,14 @@ public client class Client {
     }
     # Get attachments for a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the compact records for all attachments on the task.
-    remote isolated function getAttachmentsForTask(string task_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20021|error {
-        string  path = string `/tasks/${task_gid}/attachments`;
+    remote isolated function getAttachmentsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20021|error {
+        string  path = string `/tasks/${taskGid}/attachments`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20021 response = check self.clientEp-> get(path, targetType = InlineResponse20021);
@@ -1292,15 +1311,15 @@ public client class Client {
     }
     # Upload an attachment
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The file you want to upload.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully uploaded the attachment to the task.
-    remote isolated function createAttachmentForTask(string task_gid, AttachmentRequest payload, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse200|error {
-        string  path = string `/tasks/${task_gid}/attachments`;
+    remote isolated function createAttachmentForTask(string taskGid, AttachmentRequest payload, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse200|error {
+        string  path = string `/tasks/${taskGid}/attachments`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1309,14 +1328,14 @@ public client class Client {
     }
     # Get dependencies from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified task's dependencies.
-    remote isolated function getDependenciesForTask(string task_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string  path = string `/tasks/${task_gid}/dependencies`;
+    remote isolated function getDependenciesForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
+        string  path = string `/tasks/${taskGid}/dependencies`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -1324,14 +1343,14 @@ public client class Client {
     }
     # Get dependents from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified dependents of the task.
-    remote isolated function getDependentsForTask(string task_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string  path = string `/tasks/${task_gid}/dependents`;
+    remote isolated function getDependentsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
+        string  path = string `/tasks/${taskGid}/dependents`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -1339,13 +1358,13 @@ public client class Client {
     }
     # Duplicate a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - Describes the duplicate's name and the fields that will be duplicated.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created the job to handle duplication.
-    remote isolated function duplicateTask(string task_gid, Body38 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
-        string  path = string `/tasks/${task_gid}/duplicate`;
+    remote isolated function duplicateTask(string taskGid, Body38 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
+        string  path = string `/tasks/${taskGid}/duplicate`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1356,14 +1375,14 @@ public client class Client {
     }
     # Get projects a task is in
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the projects for the given task.
-    remote isolated function getProjectsForTask(string task_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20010|error {
-        string  path = string `/tasks/${task_gid}/projects`;
+    remote isolated function getProjectsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20010|error {
+        string  path = string `/tasks/${taskGid}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
@@ -1371,13 +1390,13 @@ public client class Client {
     }
     # Unlink dependencies from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The list of tasks to unlink as dependencies.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully unlinked the dependencies from the specified task.
-    remote isolated function removeDependenciesForTask(string task_gid, Body39 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20022|error {
-        string  path = string `/tasks/${task_gid}/removeDependencies`;
+    remote isolated function removeDependenciesForTask(string taskGid, Body39 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20022|error {
+        string  path = string `/tasks/${taskGid}/removeDependencies`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1388,13 +1407,13 @@ public client class Client {
     }
     # Unlink dependents from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The list of tasks to remove as dependents.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully unlinked the specified tasks as dependents.
-    remote isolated function removeDependentsForTask(string task_gid, Body40 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20022|error {
-        string  path = string `/tasks/${task_gid}/removeDependents`;
+    remote isolated function removeDependentsForTask(string taskGid, Body40 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20022|error {
+        string  path = string `/tasks/${taskGid}/removeDependents`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1405,13 +1424,13 @@ public client class Client {
     }
     # Remove followers from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The followers to remove from the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully removed the specified followers from the task.
-    remote isolated function removeFollowerForTask(string task_gid, Body41 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}/removeFollowers`;
+    remote isolated function removeFollowerForTask(string taskGid, Body41 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}/removeFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1422,13 +1441,13 @@ public client class Client {
     }
     # Remove a project from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The project to remove the task from.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully removed the specified project from the task.
-    remote isolated function removeProjectForTask(string task_gid, Body42 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}/removeProject`;
+    remote isolated function removeProjectForTask(string taskGid, Body42 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}/removeProject`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1439,13 +1458,13 @@ public client class Client {
     }
     # Remove a tag from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The tag to remove from the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully removed the specified tag from the task.
-    remote isolated function removeTagForTask(string task_gid, Body43 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/tasks/${task_gid}/removeTag`;
+    remote isolated function removeTagForTask(string taskGid, Body43 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/tasks/${taskGid}/removeTag`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1456,13 +1475,13 @@ public client class Client {
     }
     # Set the parent of a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The new parent of the subtask.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully changed the parent of the specified subtask.
-    remote isolated function setParentForTask(string task_gid, Body44 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string  path = string `/tasks/${task_gid}/setParent`;
+    remote isolated function setParentForTask(string taskGid, Body44 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
+        string  path = string `/tasks/${taskGid}/setParent`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1473,14 +1492,14 @@ public client class Client {
     }
     # Get stories from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified task's stories.
-    remote isolated function getStoriesForTask(string task_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20023|error {
-        string  path = string `/tasks/${task_gid}/stories`;
+    remote isolated function getStoriesForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20023|error {
+        string  path = string `/tasks/${taskGid}/stories`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20023 response = check self.clientEp-> get(path, targetType = InlineResponse20023);
@@ -1488,13 +1507,13 @@ public client class Client {
     }
     # Create a story on a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The story to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created a new story.
-    remote isolated function createStoryForTask(string task_gid, Body45 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20019|error {
-        string  path = string `/tasks/${task_gid}/stories`;
+    remote isolated function createStoryForTask(string taskGid, Body45 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20019|error {
+        string  path = string `/tasks/${taskGid}/stories`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1505,14 +1524,14 @@ public client class Client {
     }
     # Get subtasks from a task
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified task's subtasks.
-    remote isolated function getSubtasksForTask(string task_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string  path = string `/tasks/${task_gid}/subtasks`;
+    remote isolated function getSubtasksForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
+        string  path = string `/tasks/${taskGid}/subtasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -1520,13 +1539,13 @@ public client class Client {
     }
     # Create a subtask
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + payload - The new subtask to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created the specified subtask.
-    remote isolated function createSubtaskForTask(string task_gid, Body46 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string  path = string `/tasks/${task_gid}/subtasks`;
+    remote isolated function createSubtaskForTask(string taskGid, Body46 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
+        string  path = string `/tasks/${taskGid}/subtasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1537,14 +1556,14 @@ public client class Client {
     }
     # Get a task's tags
     #
-    # + task_gid - Globally unique identifier for the task.
+    # + taskGid - Globally unique identifier for the task.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the tags for the given task.
-    remote isolated function getTagsForTask(string task_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20020|error {
-        string  path = string `/tasks/${task_gid}/tags`;
+    remote isolated function getTagsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20020|error {
+        string  path = string `/tasks/${taskGid}/tags`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20020 response = check self.clientEp-> get(path, targetType = InlineResponse20020);
@@ -1569,12 +1588,12 @@ public client class Client {
     }
     # Get a team membership
     #
-    # + team_membership_gid - Globally unique identifier for the team membership.
+    # + teamMembershipGid - Globally unique identifier for the team membership.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested team membership.
-    remote isolated function getTeamMembership(string team_membership_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20025|error {
-        string  path = string `/team_memberships/${team_membership_gid}`;
+    remote isolated function getTeamMembership(string teamMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20025|error {
+        string  path = string `/team_memberships/${teamMembershipGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20025 response = check self.clientEp-> get(path, targetType = InlineResponse20025);
@@ -1600,14 +1619,14 @@ public client class Client {
     }
     # Get a team
     #
-    # + team_gid - Globally unique identifier for the team.
+    # + teamGid - Globally unique identifier for the team.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successsfully retrieved the record for a single team.
-    remote isolated function getTeam(string team_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2018|error {
-        string  path = string `/teams/${team_gid}`;
+    remote isolated function getTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2018|error {
+        string  path = string `/teams/${teamGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2018 response = check self.clientEp-> get(path, targetType = InlineResponse2018);
@@ -1615,13 +1634,13 @@ public client class Client {
     }
     # Add a user to a team
     #
-    # + team_gid - Globally unique identifier for the team.
+    # + teamGid - Globally unique identifier for the team.
     # + payload - The user to add to the team.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Returns the full user record for the added user.
-    remote isolated function addUserForTeam(string team_gid, Body48 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
-        string  path = string `/teams/${team_gid}/addUser`;
+    remote isolated function addUserForTeam(string teamGid, Body48 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
+        string  path = string `/teams/${teamGid}/addUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1632,15 +1651,15 @@ public client class Client {
     }
     # Get a team's projects
     #
-    # + team_gid - Globally unique identifier for the team.
+    # + teamGid - Globally unique identifier for the team.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + archived - Only return projects whose `archived` field takes on the value of this parameter.
     # + return - Successfully retrieved the requested team's projects.
-    remote isolated function getProjectsForTeam(string team_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = (), boolean? archived = ()) returns InlineResponse20010|error {
-        string  path = string `/teams/${team_gid}/projects`;
+    remote isolated function getProjectsForTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = (), boolean? archived = ()) returns InlineResponse20010|error {
+        string  path = string `/teams/${teamGid}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "archived": archived};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
@@ -1648,13 +1667,13 @@ public client class Client {
     }
     # Create a project in a team
     #
-    # + team_gid - Globally unique identifier for the team.
+    # + teamGid - Globally unique identifier for the team.
     # + payload - The new project to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created the specified project.
-    remote isolated function createProjectForTeam(string team_gid, Body49 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string  path = string `/teams/${team_gid}/projects`;
+    remote isolated function createProjectForTeam(string teamGid, Body49 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
+        string  path = string `/teams/${teamGid}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1665,13 +1684,13 @@ public client class Client {
     }
     # Remove a user from a team
     #
-    # + team_gid - Globally unique identifier for the team.
+    # + teamGid - Globally unique identifier for the team.
     # + payload - The user to remove from the team.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Returns an empty data record
-    remote isolated function removeUserForTeam(string team_gid, Body50 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/teams/${team_gid}/removeUser`;
+    remote isolated function removeUserForTeam(string teamGid, Body50 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/teams/${teamGid}/removeUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1682,14 +1701,14 @@ public client class Client {
     }
     # Get memberships from a team
     #
-    # + team_gid - Globally unique identifier for the team.
+    # + teamGid - Globally unique identifier for the team.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested team's memberships.
-    remote isolated function getTeamMembershipsForTeam(string team_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20024|error {
-        string  path = string `/teams/${team_gid}/team_memberships`;
+    remote isolated function getTeamMembershipsForTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20024|error {
+        string  path = string `/teams/${teamGid}/team_memberships`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20024 response = check self.clientEp-> get(path, targetType = InlineResponse20024);
@@ -1697,13 +1716,13 @@ public client class Client {
     }
     # Get users in a team
     #
-    # + team_gid - Globally unique identifier for the team.
+    # + teamGid - Globally unique identifier for the team.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + offset - Offset token.
     # + return - Returns the user records for all the members of the team, including guests and limited access users
-    remote isolated function getUsersForTeam(string team_gid, boolean? optPretty = (), string[]? optFields = (), string? offset = ()) returns InlineResponse20027|error {
-        string  path = string `/teams/${team_gid}/users`;
+    remote isolated function getUsersForTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), string? offset = ()) returns InlineResponse20027|error {
+        string  path = string `/teams/${teamGid}/users`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20027 response = check self.clientEp-> get(path, targetType = InlineResponse20027);
@@ -1711,12 +1730,12 @@ public client class Client {
     }
     # Get a user task list
     #
-    # + user_task_list_gid - Globally unique identifier for the user task list.
+    # + userTaskListGid - Globally unique identifier for the user task list.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the user task list.
-    remote isolated function getUserTaskList(string user_task_list_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20028|error {
-        string  path = string `/user_task_lists/${user_task_list_gid}`;
+    remote isolated function getUserTaskList(string userTaskListGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20028|error {
+        string  path = string `/user_task_lists/${userTaskListGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20028 response = check self.clientEp-> get(path, targetType = InlineResponse20028);
@@ -1724,15 +1743,15 @@ public client class Client {
     }
     # Get tasks from a user task list
     #
-    # + user_task_list_gid - Globally unique identifier for the user task list.
+    # + userTaskListGid - Globally unique identifier for the user task list.
     # + completedSince - Only return tasks that are either incomplete or that have been completed since this time. Accepts a date-time string or the keyword *now*.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the user task list's tasks.
-    remote isolated function getTasksForUserTaskList(string user_task_list_gid, string? completedSince = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string  path = string `/user_task_lists/${user_task_list_gid}/tasks`;
+    remote isolated function getTasksForUserTaskList(string userTaskListGid, string? completedSince = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
+        string  path = string `/user_task_lists/${userTaskListGid}/tasks`;
         map<anydata> queryParam = {"completed_since": completedSince, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -1756,12 +1775,12 @@ public client class Client {
     }
     # Get a user
     #
-    # + user_gid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+    # + userGid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Returns the user specified.
-    remote isolated function getUser(string user_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
-        string  path = string `/users/${user_gid}`;
+    remote isolated function getUser(string userGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
+        string  path = string `/users/${userGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20026 response = check self.clientEp-> get(path, targetType = InlineResponse20026);
@@ -1769,14 +1788,14 @@ public client class Client {
     }
     # Get a user's favorites
     #
-    # + user_gid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+    # + userGid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + resourceType - The resource type of favorites to be returned.
     # + workspace - The workspace in which to get favorites.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Returns the specified user's favorites.
-    remote isolated function getFavoritesForUser(string user_gid, string resourceType, string workspace, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20029|error {
-        string  path = string `/users/${user_gid}/favorites`;
+    remote isolated function getFavoritesForUser(string userGid, string resourceType, string workspace, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20029|error {
+        string  path = string `/users/${userGid}/favorites`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "resource_type": resourceType, "workspace": workspace};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20029 response = check self.clientEp-> get(path, targetType = InlineResponse20029);
@@ -1784,15 +1803,15 @@ public client class Client {
     }
     # Get memberships from a user
     #
-    # + user_gid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+    # + userGid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + workspace - Globally unique identifier for the workspace.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested users's memberships.
-    remote isolated function getTeamMembershipsForUser(string user_gid, string workspace, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20024|error {
-        string  path = string `/users/${user_gid}/team_memberships`;
+    remote isolated function getTeamMembershipsForUser(string userGid, string workspace, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20024|error {
+        string  path = string `/users/${userGid}/team_memberships`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "workspace": workspace};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20024 response = check self.clientEp-> get(path, targetType = InlineResponse20024);
@@ -1800,15 +1819,15 @@ public client class Client {
     }
     # Get teams for a user
     #
-    # + user_gid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+    # + userGid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + organization - The workspace or organization to filter teams on.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Returns the team records for all teams in the organization or workspace to which the given user is assigned.
-    remote isolated function getTeamsForUser(string user_gid, string organization, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2005|error {
-        string  path = string `/users/${user_gid}/teams`;
+    remote isolated function getTeamsForUser(string userGid, string organization, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2005|error {
+        string  path = string `/users/${userGid}/teams`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "organization": organization};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
@@ -1816,13 +1835,13 @@ public client class Client {
     }
     # Get a user's task list
     #
-    # + user_gid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+    # + userGid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + workspace - The workspace in which to get the user task list.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the user's task list.
-    remote isolated function getUserTaskListForUser(string user_gid, string workspace, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20028|error {
-        string  path = string `/users/${user_gid}/user_task_list`;
+    remote isolated function getUserTaskListForUser(string userGid, string workspace, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20028|error {
+        string  path = string `/users/${userGid}/user_task_list`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "workspace": workspace};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20028 response = check self.clientEp-> get(path, targetType = InlineResponse20028);
@@ -1830,14 +1849,14 @@ public client class Client {
     }
     # Get workspace memberships for a user
     #
-    # + user_gid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+    # + userGid - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested user's workspace memberships.
-    remote isolated function getWorkspaceMembershipsForUser(string user_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20030|error {
-        string  path = string `/users/${user_gid}/workspace_memberships`;
+    remote isolated function getWorkspaceMembershipsForUser(string userGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20030|error {
+        string  path = string `/users/${userGid}/workspace_memberships`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20030 response = check self.clientEp-> get(path, targetType = InlineResponse20030);
@@ -1877,12 +1896,12 @@ public client class Client {
     }
     # Get a webhook
     #
-    # + webhook_gid - Globally unique identifier for the webhook.
+    # + webhookGid - Globally unique identifier for the webhook.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested webhook.
-    remote isolated function getWebhook(string webhook_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2019|error {
-        string  path = string `/webhooks/${webhook_gid}`;
+    remote isolated function getWebhook(string webhookGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2019|error {
+        string  path = string `/webhooks/${webhookGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2019 response = check self.clientEp-> get(path, targetType = InlineResponse2019);
@@ -1890,12 +1909,12 @@ public client class Client {
     }
     # Delete a webhook
     #
-    # + webhook_gid - Globally unique identifier for the webhook.
+    # + webhookGid - Globally unique identifier for the webhook.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested webhook.
-    remote isolated function deleteWebhook(string webhook_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/webhooks/${webhook_gid}`;
+    remote isolated function deleteWebhook(string webhookGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/webhooks/${webhookGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1905,12 +1924,12 @@ public client class Client {
     }
     # Get a workspace membership
     #
-    # + workspace_membership_gid - Globally unique identifier for the workspace membership
+    # + workspaceMembershipGid - Globally unique identifier for the workspace membership
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved the requested workspace membership.
-    remote isolated function getWorkspaceMembership(string workspace_membership_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20032|error {
-        string  path = string `/workspace_memberships/${workspace_membership_gid}`;
+    remote isolated function getWorkspaceMembership(string workspaceMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20032|error {
+        string  path = string `/workspace_memberships/${workspaceMembershipGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20032 response = check self.clientEp-> get(path, targetType = InlineResponse20032);
@@ -1932,12 +1951,12 @@ public client class Client {
     }
     # Get a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Return the full workspace record.
-    remote isolated function getWorkspace(string workspace_gid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20034|error {
-        string  path = string `/workspaces/${workspace_gid}`;
+    remote isolated function getWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20034|error {
+        string  path = string `/workspaces/${workspaceGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20034 response = check self.clientEp-> get(path, targetType = InlineResponse20034);
@@ -1945,13 +1964,13 @@ public client class Client {
     }
     # Update a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + payload - The workspace object with all updated properties.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Update for the workspace was successful.
-    remote isolated function updateWorkspace(string workspace_gid, Body52 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20034|error {
-        string  path = string `/workspaces/${workspace_gid}`;
+    remote isolated function updateWorkspace(string workspaceGid, Body52 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20034|error {
+        string  path = string `/workspaces/${workspaceGid}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1962,13 +1981,13 @@ public client class Client {
     }
     # Add a user to a workspace or organization
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + payload - The user to add to the workspace.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - The user was added successfully to the workspace or organization.
-    remote isolated function addUserForWorkspace(string workspace_gid, Body53 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
-        string  path = string `/workspaces/${workspace_gid}/addUser`;
+    remote isolated function addUserForWorkspace(string workspaceGid, Body53 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
+        string  path = string `/workspaces/${workspaceGid}/addUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1979,14 +1998,14 @@ public client class Client {
     }
     # Get a workspace's custom fields
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved all custom fields for the given workspace.
-    remote isolated function getCustomFieldsForWorkspace(string workspace_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20035|error {
-        string  path = string `/workspaces/${workspace_gid}/custom_fields`;
+    remote isolated function getCustomFieldsForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20035|error {
+        string  path = string `/workspaces/${workspaceGid}/custom_fields`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20035 response = check self.clientEp-> get(path, targetType = InlineResponse20035);
@@ -1994,15 +2013,15 @@ public client class Client {
     }
     # Get all projects in a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + archived - Only return projects whose `archived` field takes on the value of this parameter.
     # + return - Successfully retrieved the requested workspace's projects.
-    remote isolated function getProjectsForWorkspace(string workspace_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = (), boolean? archived = ()) returns InlineResponse20010|error {
-        string  path = string `/workspaces/${workspace_gid}/projects`;
+    remote isolated function getProjectsForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = (), boolean? archived = ()) returns InlineResponse20010|error {
+        string  path = string `/workspaces/${workspaceGid}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "archived": archived};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
@@ -2010,13 +2029,13 @@ public client class Client {
     }
     # Create a project in a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + payload - The new project to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created a new project in the specified workspace.
-    remote isolated function createProjectForWorkspace(string workspace_gid, Body54 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string  path = string `/workspaces/${workspace_gid}/projects`;
+    remote isolated function createProjectForWorkspace(string workspaceGid, Body54 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
+        string  path = string `/workspaces/${workspaceGid}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2027,13 +2046,13 @@ public client class Client {
     }
     # Remove a user from a workspace or organization
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + payload - The user to remove from the workspace.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - The user was removed successfully to the workspace or organization.
-    remote isolated function removeUserForWorkspace(string workspace_gid, Body55 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string  path = string `/workspaces/${workspace_gid}/removeUser`;
+    remote isolated function removeUserForWorkspace(string workspaceGid, Body55 payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
+        string  path = string `/workspaces/${workspaceGid}/removeUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2044,14 +2063,14 @@ public client class Client {
     }
     # Get tags in a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the specified set of tags.
-    remote isolated function getTagsForWorkspace(string workspace_gid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20020|error {
-        string  path = string `/workspaces/${workspace_gid}/tags`;
+    remote isolated function getTagsForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20020|error {
+        string  path = string `/workspaces/${workspaceGid}/tags`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20020 response = check self.clientEp-> get(path, targetType = InlineResponse20020);
@@ -2059,13 +2078,13 @@ public client class Client {
     }
     # Create a tag in a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + payload - The tag to create.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully created the newly specified tag.
-    remote isolated function createTagForWorkspace(string workspace_gid, Body56 payload, boolean? optPretty = (), string[]? optFields = ()) returns Body56|error {
-        string  path = string `/workspaces/${workspace_gid}/tags`;
+    remote isolated function createTagForWorkspace(string workspaceGid, Body56 payload, boolean? optPretty = (), string[]? optFields = ()) returns Body56|error {
+        string  path = string `/workspaces/${workspaceGid}/tags`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2076,7 +2095,7 @@ public client class Client {
     }
     # Search tasks in a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + text - Performs full-text search on both task name and description
@@ -2135,8 +2154,8 @@ public client class Client {
     # + sortBy - One of `due_date`, `created_at`, `completed_at`, `likes`, or `modified_at`, defaults to `modified_at`
     # + sortAscending - Default `false`
     # + return - Successfully retrieved the section's tasks.
-    remote isolated function searchTasksForWorkspace(string workspace_gid, boolean? optPretty = (), string[]? optFields = (), string? text = (), string resourceSubtype = "milestone", string? assigneeAny = (), string? assigneeNot = (), string? portfoliosAny = (), string? projectsAny = (), string? projectsNot = (), string? projectsAll = (), string? sectionsAny = (), string? sectionsNot = (), string? sectionsAll = (), string? tagsAny = (), string? tagsNot = (), string? tagsAll = (), string? teamsAny = (), string? followersAny = (), string? followersNot = (), string? createdByAny = (), string? createdByNot = (), string? assignedByAny = (), string? assignedByNot = (), string? likedByAny = (), string? likedByNot = (), string? commentedOnByAny = (), string? commentedOnByNot = (), string? dueOnBefore = (), string? dueOnAfter = (), string? dueOn = (), string? dueAtBefore = (), string? dueAtAfter = (), string? startOnBefore = (), string? startOnAfter = (), string? startOn = (), string? createdOnBefore = (), string? createdOnAfter = (), string? createdOn = (), string? createdAtBefore = (), string? createdAtAfter = (), string? completedOnBefore = (), string? completedOnAfter = (), string? completedOn = (), string? completedAtBefore = (), string? completedAtAfter = (), string? modifiedOnBefore = (), string? modifiedOnAfter = (), string? modifiedOn = (), string? modifiedAtBefore = (), string? modifiedAtAfter = (), boolean? isBlocking = (), boolean? isBlocked = (), boolean? hasAttachment = (), boolean? completed = (), boolean? isSubtask = (), string sortBy = "modified_at", boolean sortAscending = false) returns InlineResponse20018|error {
-        string  path = string `/workspaces/${workspace_gid}/tasks/search`;
+    remote isolated function searchTasksForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), string? text = (), string resourceSubtype = "milestone", string? assigneeAny = (), string? assigneeNot = (), string? portfoliosAny = (), string? projectsAny = (), string? projectsNot = (), string? projectsAll = (), string? sectionsAny = (), string? sectionsNot = (), string? sectionsAll = (), string? tagsAny = (), string? tagsNot = (), string? tagsAll = (), string? teamsAny = (), string? followersAny = (), string? followersNot = (), string? createdByAny = (), string? createdByNot = (), string? assignedByAny = (), string? assignedByNot = (), string? likedByAny = (), string? likedByNot = (), string? commentedOnByAny = (), string? commentedOnByNot = (), string? dueOnBefore = (), string? dueOnAfter = (), string? dueOn = (), string? dueAtBefore = (), string? dueAtAfter = (), string? startOnBefore = (), string? startOnAfter = (), string? startOn = (), string? createdOnBefore = (), string? createdOnAfter = (), string? createdOn = (), string? createdAtBefore = (), string? createdAtAfter = (), string? completedOnBefore = (), string? completedOnAfter = (), string? completedOn = (), string? completedAtBefore = (), string? completedAtAfter = (), string? modifiedOnBefore = (), string? modifiedOnAfter = (), string? modifiedOn = (), string? modifiedAtBefore = (), string? modifiedAtAfter = (), boolean? isBlocking = (), boolean? isBlocked = (), boolean? hasAttachment = (), boolean? completed = (), boolean? isSubtask = (), string sortBy = "modified_at", boolean sortAscending = false) returns InlineResponse20018|error {
+        string  path = string `/workspaces/${workspaceGid}/tasks/search`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "text": text, "resource_subtype": resourceSubtype, "assignee.any": assigneeAny, "assignee.not": assigneeNot, "portfolios.any": portfoliosAny, "projects.any": projectsAny, "projects.not": projectsNot, "projects.all": projectsAll, "sections.any": sectionsAny, "sections.not": sectionsNot, "sections.all": sectionsAll, "tags.any": tagsAny, "tags.not": tagsNot, "tags.all": tagsAll, "teams.any": teamsAny, "followers.any": followersAny, "followers.not": followersNot, "created_by.any": createdByAny, "created_by.not": createdByNot, "assigned_by.any": assignedByAny, "assigned_by.not": assignedByNot, "liked_by.any": likedByAny, "liked_by.not": likedByNot, "commented_on_by.any": commentedOnByAny, "commented_on_by.not": commentedOnByNot, "due_on.before": dueOnBefore, "due_on.after": dueOnAfter, "due_on": dueOn, "due_at.before": dueAtBefore, "due_at.after": dueAtAfter, "start_on.before": startOnBefore, "start_on.after": startOnAfter, "start_on": startOn, "created_on.before": createdOnBefore, "created_on.after": createdOnAfter, "created_on": createdOn, "created_at.before": createdAtBefore, "created_at.after": createdAtAfter, "completed_on.before": completedOnBefore, "completed_on.after": completedOnAfter, "completed_on": completedOn, "completed_at.before": completedAtBefore, "completed_at.after": completedAtAfter, "modified_on.before": modifiedOnBefore, "modified_on.after": modifiedOnAfter, "modified_on": modifiedOn, "modified_at.before": modifiedAtBefore, "modified_at.after": modifiedAtAfter, "is_blocking": isBlocking, "is_blocked": isBlocked, "has_attachment": hasAttachment, "completed": completed, "is_subtask": isSubtask, "sort_by": sortBy, "sort_ascending": sortAscending};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
@@ -2144,7 +2163,7 @@ public client class Client {
     }
     # Get objects via typeahead
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + resourceType - The type of values the typeahead should return. You can choose from one of the following: `custom_field`, `project`, `portfolio`, `tag`, `task`, and `user`. Note that unlike in the names of endpoints, the types listed here are in singular form (e.g. `task`). Using multiple types is not yet supported.
     # + 'type - *Deprecated: new integrations should prefer the resource_type field.*
     # + query - The string that will be used to search for relevant objects. If an empty string is passed in, the API will currently return an empty result set.
@@ -2152,8 +2171,8 @@ public client class Client {
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + return - Successfully retrieved objects via a typeahead search algorithm.
-    remote isolated function typeaheadForWorkspace(string workspace_gid, string resourceType, string 'type = "user", string? query = (), int? count = (), boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20036|error {
-        string  path = string `/workspaces/${workspace_gid}/typeahead`;
+    remote isolated function typeaheadForWorkspace(string workspaceGid, string resourceType, string 'type = "user", string? query = (), int? count = (), boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20036|error {
+        string  path = string `/workspaces/${workspaceGid}/typeahead`;
         map<anydata> queryParam = {"resource_type": resourceType, "type": 'type, "query": query, "count": count, "opt_pretty": optPretty, "opt_fields": optFields};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20036 response = check self.clientEp-> get(path, targetType = InlineResponse20036);
@@ -2161,13 +2180,13 @@ public client class Client {
     }
     # Get users in a workspace or organization
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + offset - Offset token.
     # + return - Return the users in the specified workspace or org.
-    remote isolated function getUsersForWorkspace(string workspace_gid, boolean? optPretty = (), string[]? optFields = (), string? offset = ()) returns InlineResponse20027|error {
-        string  path = string `/workspaces/${workspace_gid}/users`;
+    remote isolated function getUsersForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), string? offset = ()) returns InlineResponse20027|error {
+        string  path = string `/workspaces/${workspaceGid}/users`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20027 response = check self.clientEp-> get(path, targetType = InlineResponse20027);
@@ -2175,15 +2194,15 @@ public client class Client {
     }
     # Get the workspace memberships for a workspace
     #
-    # + workspace_gid - Globally unique identifier for the workspace or organization.
+    # + workspaceGid - Globally unique identifier for the workspace or organization.
     # + user - A string identifying a user. This can either be the string "me", an email, or the gid of a user.
     # + optPretty - Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.
     # + optFields - Defines fields to return.
     # + 'limit - Results per page.
     # + offset - Offset token.
     # + return - Successfully retrieved the requested workspace's memberships.
-    remote isolated function getWorkspaceMembershipsForWorkspace(string workspace_gid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20030|error {
-        string  path = string `/workspaces/${workspace_gid}/workspace_memberships`;
+    remote isolated function getWorkspaceMembershipsForWorkspace(string workspaceGid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20030|error {
+        string  path = string `/workspaces/${workspaceGid}/workspace_memberships`;
         map<anydata> queryParam = {"user": user, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse20030 response = check self.clientEp-> get(path, targetType = InlineResponse20030);
@@ -2195,7 +2214,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

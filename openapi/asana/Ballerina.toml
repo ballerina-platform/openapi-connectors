@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Asana", "Project", "Task"]
+keywords = ["asana", "projects", "tasks","freemium"]
 org = "ballerinax"
 name = "asana"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

@@ -4,7 +4,7 @@ keywords = ["News API", "Headlines", "Articles", "News"]
 org = "ballerinax"
 name = "newsapi"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.1-SNAPSHOT"
+version = "0.1.2-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

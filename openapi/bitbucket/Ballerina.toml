@@ -3,7 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["BitBucket", "Pull Request", "Repository"]
 org = "ballerinax"
 name = "bitbucket"
-version = "0.2.2-SNAPSHOT"
+version = "0.2.3-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

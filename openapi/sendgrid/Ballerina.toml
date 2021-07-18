@@ -4,7 +4,7 @@ keywords = ["sendgrid", "send mail", "sendgrid alerts"]
 org = "ballerinax"
 name = "sendgrid"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.2.2-SNAPSHOT"
+version = "0.2.3-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

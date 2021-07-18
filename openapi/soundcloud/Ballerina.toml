@@ -1,11 +1,10 @@
 [package]
-org = "ballerinax"
-name = "soundcloud"
-version = "0.1.0"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-authors = ["Ballerina"]
 license = ["Apache-2.0"]
 keywords = ["SoundCloud", "Music"]
-
+org = "ballerinax"
+name = "soundcloud"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "0.1.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

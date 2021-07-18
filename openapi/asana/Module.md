@@ -1,6 +1,6 @@
 ## Overview
 
-Asana API connector consume the data exposed in https://app.asana.com/api/1.0. It is supporting the following operations.
+Asana API connector consume the data exposed in https://app.asana.com/api/1.0. It is supporting the operations available in official API documentation.
 
 ## Configuring Connector
 

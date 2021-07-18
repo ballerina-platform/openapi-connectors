@@ -76,6 +76,11 @@ public type UserArr User[];
 # + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
+    # Client initialization for Jira connector.
+    #
+    # + clientConfig - Client configuration details
+    # + serviceUrl - Connector server URL
+    # + return - Returns error at failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://your-domain.atlassian.net") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });

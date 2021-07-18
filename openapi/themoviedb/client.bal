@@ -162,6 +162,12 @@ public type SearchTvShowResponse record {
 public client class Client {
     http:Client clientEp;
     map<string|string[]> apiKeys;
+    # TMDB Client initialization.
+    #
+    # + apiKeyConfig - API key configuration detail
+    # + clientConfig - Client configuration details
+    # + serviceUrl - Connector server URL
+    # + return - Returns error at failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, 
                                   string serviceUrl = "https://api.themoviedb.org/3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);

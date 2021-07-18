@@ -7,7 +7,7 @@ Connects to Livestorm from Ballerina
 |       Livestorm Version       |         **V1**        |
 
 ### Package Overview
-The `livestorm` is a [Ballerina](https://ballerina.io/) connector for Livestorm.
+The `ballerinax/livestorm` is a [Ballerina](https://ballerina.io/) connector for Livestorm.
 This package provides the capability to easily access Livestorm.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)

@@ -13,9 +13,9 @@ Asana API connector consume the data exposed in https://app.asana.com/api/1.0. I
 To utilize Asana API users have to obtain token given by [Asana API](https://asana.com/create-account)
 
 To obtain an token please follow these steps
-    * Go to [Asana API](https://asana.com/create-account) and register a new account
-    * Submit information in register form
-    * After submitting needed information token can be obtained from [Developer app console](https://app.asana.com/0/developer-console) by creating an app and get an access token. 
+   * Go to [Asana API](https://asana.com/create-account) and register a new account
+   * Submit information in register form
+   * After submitting needed information token can be obtained from [Developer app console](https://app.asana.com/0/developer-console) by creating an app and get an access token. 
 
 Then provide the obtained token in client configuration.
 

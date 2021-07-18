@@ -1,32 +1,26 @@
 ## Overview
 
-Asana API connector consume the data exposed in https://app.asana.com/api/1.0. It is supporting the following operations.
+This is a generated connector for [Asana API v1.0](https://developers.asana.com/docs) OpenAPI specification.
 
-## Configuring Connector
+This API enables you to help teams organize, track and manage their work. For additional help getting started with the API, visit [Asana API](https://developers.asana.com).
 
-### Prerequisites
-
-- Asana API Account
-
-### Obtaining tokens
-
-To utilize Asana API users have to obtain token given by [Asana API](https://asana.com/create-account)
-
-To obtain an token please follow these steps
-    * Go to [Asana API](https://asana.com/create-account) and register a new account
-    * Submit information in register form
-    * After submitting needed information token can be obtained from [Developer app console](https://app.asana.com/0/developer-console) by creating an app and get an access token. 
-
-Then provide the obtained token in client configuration.
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create [Asana Account](https://asana.com/create-account)
+* Obtaining tokens
+   1. Log into [Asana Account](https://app.asana.com/-/login)
+   2. Token can be obtained from [Developer app console](https://app.asana.com/0/developer-console) by creating an app and get an access token. 
 
 ## Quickstart
 
-#### Step 1: Import Asana API module
+To use the Asana connector in your Ballerina application, update the .bal file as follows:
+
+### Step 1: Import connector
 First, import the ballerinax/asana module into the Ballerina project.
 ```ballerina
 import ballerinax/asana;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Create a new connector instance
 ```ballerina
 configurable http:BearerTokenConfig & readonly authConfig = ?;
 
@@ -36,23 +30,24 @@ asana:ClientConfig clientConfig = {
 
 asana:Client myclient = check new asana:Client(clientConfig, "https://app.asana.com/api/1.0");
 ```
-#### Step 3: Get tasks
-```ballerina
-asana:InlineResponse20018 result = check myclient->getTasks(completedSince="2021-07-16T01:25:40+05:30", project="1200611263773935");
-```
+### Step 3: Invoke connector operation
+1. You can get tasks related to a specific project.
+    ```ballerina
+    asana:InlineResponse20018 result = check myclient->getTasks(completedSince="2021-07-16T01:25:40+05:30", project="1200611263773935");
+    ```
+2. Use `bal run` command to compile and run the Ballerina program. 
 
-## Snippets
-Snippets of some operations.
-
-### Get users
+## Quick reference
+The following code snippets shows how the connector operations can be used in different scenarios after initializing the client.
+* Get users
 ```ballerina
 asana:InlineResponse20027 result = check myclient->getUsers();
 ```
-### Get projects
+* Get projects
 ```ballerina
 asana:InlineResponse20010 result = check myclient->getProjects();
 ```
-### Get tasks
+* Get tasks
 ```ballerina
 asana:InlineResponse20018 result = check myclient->getTasks(completedSince="2021-07-16T01:25:40+05:30", project="1200611263773935");
 ```

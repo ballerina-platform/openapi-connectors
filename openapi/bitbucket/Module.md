@@ -7,7 +7,7 @@ This module supports REST API version 2.0 for BitBucket.
 ## Configuring Connector
 
 ### Prerequisites
-- An BitBucket Account
+- A bitbucket account
 
 ### Obtaining tokens
 1. Go to the Bitbucket account and navigate to your workspace.
@@ -39,7 +39,7 @@ import ballerinax/bitbucket;
 Step 2: Configure the connection credentials.
 Please follow the above mentioned configuration steps to obtain the tokens.
 ```ballerina
-BitBucket:ClientConfig configuration = {
+bitbucket:ClientConfig configuration = {
     authConfig: {
         clientId: "<Client Id>",
         clientSecret: "<Client Secret>",
@@ -55,7 +55,7 @@ Step 3: Get Issue By Id
 
 ```ballerina
 public function main() {
-    Issue|error response = bitBucketClient->getIssueByID(issueId, repoWithIssueTracker, workspace);
+    bitbucket;Issue|error response = bitBucketClient->getIssueByID(issueId, repoWithIssueTracker, workspace);
 }
 ``` 
 
@@ -63,15 +63,15 @@ public function main() {
 
 * Create an issue
 ```ballerina
-    Issue newIssue = {
-        title: "Test issue 2",
-        state: "open"
-    };
-    Issue|error response = bitBucketClient->createIssue("<repoWithIssueTrackerId>", "<workspaceId>", newIssue);
+bitbucket:Issue newIssue = {
+    title: "Test issue 2",
+    state: "open"
+};
+bitbucket:Issue|error response = bitBucketClient->createIssue("<repoWithIssueTrackerId>", "<workspaceId>", newIssue);
 ```
 
 * Get comment by ID
 
 ```ballerina
-Comment|error response = bitBucketClient->getCommentByID("<commentId>", "<issueId">, "<repoWithIssueTrackerId>", "<workspaceId>");
+bitbucket:Comment|error response = bitBucketClient->getCommentByID("<commentId>", "<issueId">, "<repoWithIssueTrackerId>", "<workspaceId>");
 ```

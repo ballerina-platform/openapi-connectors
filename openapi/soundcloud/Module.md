@@ -10,7 +10,7 @@ This module supports REST API version 1.0.0 for soundcloud.
 
 ### Obtaining tokens
 
-1. Please follow this [link](https://developers.soundcloud.com/docs/api/guide) to obtain tokens
+1. Follow this [link](https://developers.soundcloud.com/docs/api/guide) to obtain tokens
 
  
 ## Quickstart

@@ -49,7 +49,7 @@ import ballerina/log;
 ```ballerina
     //Client Initialization
     configurable http:CredentialsConfig & readonly authConfig = ?;
-    ClientConfig clientConfig = {authConfig : authConfig};
+    bulksms:ClientConfig clientConfig = {authConfig : authConfig};
     bulksms:Client baseClient = check new Client(clientConfig);
 ```
 4. Use the client to call its remote functions as the following code

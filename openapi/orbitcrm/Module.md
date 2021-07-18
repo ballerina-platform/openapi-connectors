@@ -2,7 +2,7 @@
 
 Orbit CRM connector consume the data exposed in https://orbit.org/v2. It is supporting all operations provided by Orbit API.
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 

@@ -10,7 +10,7 @@ The Movie Database (TMDB) connector consume the data exposed in https://develope
 - searchMovie
 - searchTvShow
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 

@@ -60,6 +60,7 @@ public client class Client {
         return response;
     }
     #
+    # + payload - Process configuration payload
     # + return - Upsert successful.
     remote isolated function upsertProcessorConfiguration(ProcessorConfiguration payload) returns http:Response | error {
         string  path = string `/configurations`;
@@ -93,6 +94,7 @@ public client class Client {
         return response;
     }
     #
+    # + payload - Input payload
     # + 'start - If true the created run will be enqueued to be started
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well
     # + return - Returns the ID of the new synchronization run.
@@ -174,6 +176,7 @@ public client class Client {
         return response;
     }
     #
+    # + payload - Input with processor config payload
     # + 'start - If true the created run will be enqueued to be started
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well
     # + return - Successful operation, the response contains the ID of the run.
@@ -188,6 +191,7 @@ public client class Client {
         return response;
     }
     #
+    # + payload - Data provider payload
     # + 'start - If true the created run will be enqueued to be started
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well
     # + return - Successful operation, the response contains the ID of the run and the processor configuration selected for the run.
@@ -202,6 +206,7 @@ public client class Client {
         return response;
     }
     #
+    # + payload - Input payload
     # + groupName - The name of execution group
     # + 'start - If true the created run will be enqueued to be started
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well
@@ -217,6 +222,7 @@ public client class Client {
         return response;
     }
     #
+    # + payload - Input payload
     # + test - If true a dry run without any changes will be performed
     # + return - Results of the execution, it includes error messages and statistics about the run.
     remote isolated function createSynchronizationFastRun(Input payload, boolean? test = false) returns FastRunResponse|error {
@@ -230,6 +236,7 @@ public client class Client {
         return response;
     }
     #
+    # + payload - Input with processing config payload
     # + test - If true a dry run without any changes will be performed
     # + return - Results of the execution, it includes error messages and statistics about the run.
     remote isolated function createSynchronizationFastRunWithConfig(InputWithProcessorConfig payload, boolean? test = false) returns FastRunResponse|error {

@@ -4,10 +4,11 @@ Connects to BulkSMS.com services from Ballerina
 The `ballerinax/bulksms` is a [Ballerina](https://ballerina.io/) connector for bulkSMS SMS services.
 This package provides the capability to easily access BulkSMS service related operations.
 
-#### Compatibility
-| Ballerina Language Versions  |      BulkSMS Restful API        |
-|:----------------------------:|:--------------------------------:|
-|       Swan Lake Beta 2      |                 V1               |
+## Compatibility
+|                              | Version                         |
+|:----------------------------:|:-------------------------------:|
+|  Ballerina Language Versions |  **Ballerina Swan Lake Beta 2** |
+|   BulkSMS API                |   **v1**                        |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

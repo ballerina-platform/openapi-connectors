@@ -7,7 +7,7 @@ Connects to The Movie Database(TMDB) from Ballerina
 |       TMDB API Version        |         **V2**        |
 
 ### Package Overview
-The `themoviedb` is a [Ballerina](https://ballerina.io/) connector for The Movie Database(TMDB) API.
+The `ballerinax/themoviedb` is a [Ballerina](https://ballerina.io/) connector for The Movie Database(TMDB) API.
 This package provides the capability to easily access The Movie Database(TMDB) API.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)

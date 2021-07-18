@@ -4,11 +4,11 @@ Connects to Box Platform API from Ballerina.
 
 Box Platform API connector consume the data exposed in https://api.box.com/2.0. It is currently supporting operations except metadata operations.
 
-## Compatibility
-
-| Ballerina Language Versions  |           Box Platform API        |
-|:----------------------------:|:---------------------------------:|
-|       Swan Lake Beta 2       |                 V2                |
+#### Compatibility
+|                               | Version               |
+|-------------------------------|-----------------------|
+| Ballerina Language Version    |  **Swan Lake Beta 2** |
+|       Box Platform API        |         **V2**        |
 
 ### Package Overview
 The `ballerinax/boxapi` is a [Ballerina](https://ballerina.io/) connector for Box Platform.

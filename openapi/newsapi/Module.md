@@ -6,7 +6,7 @@ News API connector consume the data exposed in https://newsapi.org/v2. It is sup
 - listTopHeadlines
 - listSources
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 

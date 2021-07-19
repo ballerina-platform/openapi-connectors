@@ -20,7 +20,7 @@ To utilize Xero users have to obtain token given by [Xero](https://developer.xer
 First, import the ballerinax/xero.accounts module into the Ballerina project.
 
 ```ballerina
-import ballerinax/xero.accounts;
+import ballerinax/xero.accounts as accounts;
 ```
 #### Step 2: Configure the connection credentials.
 
@@ -33,11 +33,11 @@ token = "<Token">
 
 ```ballerina
 configurable http:BearerTokenConfig & readonly authConfig = ?;
-orbit:ClientConfig clientConfig = {authConfig : authConfig};
+accounts:ClientConfig clientConfig = {authConfig : authConfig};
 
-orbit:Client myclient = check new orbit:Client(clientConfig, "https://api.xero.com/api.xro/2.0");
+accounts:Client myclient = check new accounts:Client(clientConfig, "https://api.xero.com/api.xro/2.0");
 ```
 #### Step 3: Get purchase orders
 ```ballerina
-orbit:PurchaseOrders result = check myclient->getPurchaseOrders(<Tenant_ID>);
+accounts:PurchaseOrders result = check myclient->getPurchaseOrders(<Tenant_ID>);
 ```

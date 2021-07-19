@@ -4,8 +4,7 @@ keywords = ["mailchimp", "campaigns", "marketing"]
 org = "ballerinax"
 name = "mailchimp"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.1-SNAPSHOT"
 authors = ["Ballerina"]
- 
 [build-options]
 observabilityIncluded = true

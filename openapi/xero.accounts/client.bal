@@ -1,24 +1,44 @@
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
-# Configuration record for Jira
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
+
+# Configuration for Xero Accounts connector
 #
-# + authConfig - Basic authentication or CredentialsConfig Configuration Tokens
-# + secureSocketConfig - Secure Socket Configuration 
+# + authConfig - Bearer token configuration or OAuth2 refresh token grant configuration
+# + secureSocketConfig - Secure socket configuration  
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# The Xero Accounts API exposes accounting related functions of the Xero.
+# Accounting application and can be used for a variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data.
+public isolated client class Client {
+    final http:Client clientEp;
+    # This is a generated connector from [Xero](https://www.xero.com/) OpenAPI specification.
+    # The connector initialization requires setting the API credentials.
+    # Create a [Xero account](https://developer.xero.com/app/manage).
+    # During initialization you can pass either http:BearerTokenConfig if you have a bearer token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
     #
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.xero.com/api.xro/2.0") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -58,10 +78,10 @@ public client class Client {
     # Retrieves a single chart of accounts by using a unique account Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
+    # + accountID - Unique identifier for Account object
     # + return - Success - return response of type Accounts array with one Account
-    remote isolated function getAccount(string xeroTenantId, string AccountID) returns Accounts|error {
-        string  path = string `/Accounts/${AccountID}`;
+    remote isolated function getAccount(string xeroTenantId, string accountID) returns Accounts|error {
+        string  path = string `/Accounts/${accountID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Accounts response = check self.clientEp-> get(path, accHeaders, targetType = Accounts);
@@ -70,11 +90,11 @@ public client class Client {
     # Updates a chart of accounts
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
+    # + accountID - Unique identifier for Account object
     # + payload - Request of type Accounts array with one Account
     # + return - Success - update existing Account and return response of type Accounts array with updated Account
-    remote isolated function updateAccount(string xeroTenantId, string AccountID, Accounts payload) returns Accounts|error {
-        string  path = string `/Accounts/${AccountID}`;
+    remote isolated function updateAccount(string xeroTenantId, string accountID, Accounts payload) returns Accounts|error {
+        string  path = string `/Accounts/${accountID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -86,10 +106,10 @@ public client class Client {
     # Deletes a chart of accounts
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
+    # + accountID - Unique identifier for Account object
     # + return - Success - delete existing Account and return response of type Accounts array with deleted Account
-    remote isolated function deleteAccount(string xeroTenantId, string AccountID) returns Accounts|error {
-        string  path = string `/Accounts/${AccountID}`;
+    remote isolated function deleteAccount(string xeroTenantId, string accountID) returns Accounts|error {
+        string  path = string `/Accounts/${accountID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -100,10 +120,10 @@ public client class Client {
     # Retrieves attachments for a specific accounts by using a unique account Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
+    # + accountID - Unique identifier for Account object
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function getAccountAttachments(string xeroTenantId, string AccountID) returns Attachments|error {
-        string  path = string `/Accounts/${AccountID}/Attachments`;
+    remote isolated function getAccountAttachments(string xeroTenantId, string accountID) returns Attachments|error {
+        string  path = string `/Accounts/${accountID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -112,12 +132,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific account using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
-    # + AttachmentID - Unique identifier for Attachment object
+    # + accountID - Unique identifier for Account object
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Account as binary data
-    remote isolated function getAccountAttachmentById(string xeroTenantId, string AccountID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/Accounts/${AccountID}/Attachments/${AttachmentID}`;
+    remote isolated function getAccountAttachmentById(string xeroTenantId, string accountID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/Accounts/${accountID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -126,12 +146,12 @@ public client class Client {
     # Retrieves an attachment for a specific account by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
-    # + FileName - Name of the attachment
+    # + accountID - Unique identifier for Account object
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Account as binary data
-    remote isolated function getAccountAttachmentByFileName(string xeroTenantId, string AccountID, string FileName, string contentType) returns string|error {
-        string  path = string `/Accounts/${AccountID}/Attachments/${FileName}`;
+    remote isolated function getAccountAttachmentByFileName(string xeroTenantId, string accountID, string fileName, string contentType) returns string|error {
+        string  path = string `/Accounts/${accountID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -140,12 +160,12 @@ public client class Client {
     # Creates an attachment on a specific account
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
-    # + FileName - Name of the attachment
+    # + accountID - Unique identifier for Account object
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function createAccountAttachmentByFileName(string xeroTenantId, string AccountID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Accounts/${AccountID}/Attachments/${FileName}`;
+    remote isolated function createAccountAttachmentByFileName(string xeroTenantId, string accountID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Accounts/${accountID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -155,12 +175,12 @@ public client class Client {
     # Updates attachment on a specific account by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + AccountID - Unique identifier for Account object
-    # + FileName - Name of the attachment
+    # + accountID - Unique identifier for Account object
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function updateAccountAttachmentByFileName(string xeroTenantId, string AccountID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Accounts/${AccountID}/Attachments/${FileName}`;
+    remote isolated function updateAccountAttachmentByFileName(string xeroTenantId, string accountID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Accounts/${accountID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -204,10 +224,10 @@ public client class Client {
     # Retrieves history from a specific batch payment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BatchPaymentID - Unique identifier for BatchPayment
+    # + batchPaymentID - Unique identifier for BatchPayment
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getBatchPaymentHistory(string xeroTenantId, string BatchPaymentID) returns HistoryRecords|error {
-        string  path = string `/BatchPayments/${BatchPaymentID}/History`;
+    remote isolated function getBatchPaymentHistory(string xeroTenantId, string batchPaymentID) returns HistoryRecords|error {
+        string  path = string `/BatchPayments/${batchPaymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -216,11 +236,11 @@ public client class Client {
     # Creates a history record for a specific batch payment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BatchPaymentID - Unique identifier for BatchPayment
+    # + batchPaymentID - Unique identifier for BatchPayment
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createBatchPaymentHistoryRecord(string xeroTenantId, string BatchPaymentID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/BatchPayments/${BatchPaymentID}/History`;
+    remote isolated function createBatchPaymentHistoryRecord(string xeroTenantId, string batchPaymentID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/BatchPayments/${batchPaymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -288,11 +308,11 @@ public client class Client {
     # Retrieves a single spent or received money transaction by using a unique bank transaction Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type BankTransactions array with a specific BankTransaction
-    remote isolated function getBankTransaction(string xeroTenantId, string BankTransactionID, int? unitdp = ()) returns BankTransactions|error {
-        string  path = string `/BankTransactions/${BankTransactionID}`;
+    remote isolated function getBankTransaction(string xeroTenantId, string bankTransactionID, int? unitdp = ()) returns BankTransactions|error {
+        string  path = string `/BankTransactions/${bankTransactionID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -303,12 +323,12 @@ public client class Client {
     # Updates a single spent or received money transaction
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
     # + payload - BankTransactions with an array of BankTransaction objects
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type BankTransactions array with updated BankTransaction
-    remote isolated function updateBankTransaction(string xeroTenantId, string BankTransactionID, BankTransactions payload, int? unitdp = ()) returns BankTransactions|error {
-        string  path = string `/BankTransactions/${BankTransactionID}`;
+    remote isolated function updateBankTransaction(string xeroTenantId, string bankTransactionID, BankTransactions payload, int? unitdp = ()) returns BankTransactions|error {
+        string  path = string `/BankTransactions/${bankTransactionID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -322,10 +342,10 @@ public client class Client {
     # Retrieves any attachments from a specific bank transactions
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
     # + return - Success - return response of type Attachments array with 0 to n Attachment
-    remote isolated function getBankTransactionAttachments(string xeroTenantId, string BankTransactionID) returns Attachments|error {
-        string  path = string `/BankTransactions/${BankTransactionID}/Attachments`;
+    remote isolated function getBankTransactionAttachments(string xeroTenantId, string bankTransactionID) returns Attachments|error {
+        string  path = string `/BankTransactions/${bankTransactionID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -334,12 +354,12 @@ public client class Client {
     # Retrieves specific attachments from a specific BankTransaction using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
-    # + AttachmentID - Unique identifier for Attachment object
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for BankTransaction as binary data
-    remote isolated function getBankTransactionAttachmentById(string xeroTenantId, string BankTransactionID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/BankTransactions/${BankTransactionID}/Attachments/${AttachmentID}`;
+    remote isolated function getBankTransactionAttachmentById(string xeroTenantId, string bankTransactionID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/BankTransactions/${bankTransactionID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -348,12 +368,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific bank transaction by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
-    # + FileName - Name of the attachment
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for BankTransaction as binary data
-    remote isolated function getBankTransactionAttachmentByFileName(string xeroTenantId, string BankTransactionID, string FileName, string contentType) returns string|error {
-        string  path = string `/BankTransactions/${BankTransactionID}/Attachments/${FileName}`;
+    remote isolated function getBankTransactionAttachmentByFileName(string xeroTenantId, string bankTransactionID, string fileName, string contentType) returns string|error {
+        string  path = string `/BankTransactions/${bankTransactionID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -362,12 +382,12 @@ public client class Client {
     # Creates an attachment for a specific bank transaction by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
-    # + FileName - Name of the attachment
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of Attachments array of Attachment
-    remote isolated function createBankTransactionAttachmentByFileName(string xeroTenantId, string BankTransactionID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/BankTransactions/${BankTransactionID}/Attachments/${FileName}`;
+    remote isolated function createBankTransactionAttachmentByFileName(string xeroTenantId, string bankTransactionID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/BankTransactions/${bankTransactionID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -377,12 +397,12 @@ public client class Client {
     # Updates a specific attachment from a specific bank transaction by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
-    # + FileName - Name of the attachment
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of Attachments array of Attachment
-    remote isolated function updateBankTransactionAttachmentByFileName(string xeroTenantId, string BankTransactionID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/BankTransactions/${BankTransactionID}/Attachments/${FileName}`;
+    remote isolated function updateBankTransactionAttachmentByFileName(string xeroTenantId, string bankTransactionID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/BankTransactions/${bankTransactionID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -392,10 +412,10 @@ public client class Client {
     # Retrieves history from a specific bank transaction using a unique bank transaction Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getBankTransactionsHistory(string xeroTenantId, string BankTransactionID) returns HistoryRecords|error {
-        string  path = string `/BankTransactions/${BankTransactionID}/History`;
+    remote isolated function getBankTransactionsHistory(string xeroTenantId, string bankTransactionID) returns HistoryRecords|error {
+        string  path = string `/BankTransactions/${bankTransactionID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -404,11 +424,11 @@ public client class Client {
     # Creates a history record for a specific bank transactions
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransactionID - Xero generated unique identifier for a bank transaction
+    # + bankTransactionID - Xero generated unique identifier for a bank transaction
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createBankTransactionHistoryRecord(string xeroTenantId, string BankTransactionID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/BankTransactions/${BankTransactionID}/History`;
+    remote isolated function createBankTransactionHistoryRecord(string xeroTenantId, string bankTransactionID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/BankTransactions/${bankTransactionID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -451,10 +471,10 @@ public client class Client {
     # Retrieves specific bank transfers by using a unique bank transfer Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
     # + return - Success - return response of BankTransfers array with one BankTransfer
-    remote isolated function getBankTransfer(string xeroTenantId, string BankTransferID) returns BankTransfers|error {
-        string  path = string `/BankTransfers/${BankTransferID}`;
+    remote isolated function getBankTransfer(string xeroTenantId, string bankTransferID) returns BankTransfers|error {
+        string  path = string `/BankTransfers/${bankTransferID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         BankTransfers response = check self.clientEp-> get(path, accHeaders, targetType = BankTransfers);
@@ -463,10 +483,10 @@ public client class Client {
     # Retrieves attachments from a specific bank transfer
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
     # + return - Success - return response of Attachments array of 0 to N Attachment for a Bank Transfer
-    remote isolated function getBankTransferAttachments(string xeroTenantId, string BankTransferID) returns Attachments|error {
-        string  path = string `/BankTransfers/${BankTransferID}/Attachments`;
+    remote isolated function getBankTransferAttachments(string xeroTenantId, string bankTransferID) returns Attachments|error {
+        string  path = string `/BankTransfers/${bankTransferID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -475,12 +495,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific bank transfer using a unique attachment ID
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
-    # + AttachmentID - Unique identifier for Attachment object
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of binary data from the Attachment to a Bank Transfer
-    remote isolated function getBankTransferAttachmentById(string xeroTenantId, string BankTransferID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/BankTransfers/${BankTransferID}/Attachments/${AttachmentID}`;
+    remote isolated function getBankTransferAttachmentById(string xeroTenantId, string bankTransferID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/BankTransfers/${bankTransferID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -489,12 +509,12 @@ public client class Client {
     # Retrieves a specific attachment on a specific bank transfer by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
-    # + FileName - Name of the attachment
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of binary data from the Attachment to a Bank Transfer
-    remote isolated function getBankTransferAttachmentByFileName(string xeroTenantId, string BankTransferID, string FileName, string contentType) returns string|error {
-        string  path = string `/BankTransfers/${BankTransferID}/Attachments/${FileName}`;
+    remote isolated function getBankTransferAttachmentByFileName(string xeroTenantId, string bankTransferID, string fileName, string contentType) returns string|error {
+        string  path = string `/BankTransfers/${bankTransferID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -502,12 +522,12 @@ public client class Client {
     }
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
-    # + FileName - Name of the attachment
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of Attachments array of 0 to N Attachment for a Bank Transfer
-    remote isolated function createBankTransferAttachmentByFileName(string xeroTenantId, string BankTransferID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/BankTransfers/${BankTransferID}/Attachments/${FileName}`;
+    remote isolated function createBankTransferAttachmentByFileName(string xeroTenantId, string bankTransferID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/BankTransfers/${bankTransferID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -516,12 +536,12 @@ public client class Client {
     }
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
-    # + FileName - Name of the attachment
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of Attachments array of 0 to N Attachment for a Bank Transfer
-    remote isolated function updateBankTransferAttachmentByFileName(string xeroTenantId, string BankTransferID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/BankTransfers/${BankTransferID}/Attachments/${FileName}`;
+    remote isolated function updateBankTransferAttachmentByFileName(string xeroTenantId, string bankTransferID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/BankTransfers/${bankTransferID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -531,10 +551,10 @@ public client class Client {
     # Retrieves history from a specific bank transfer using a unique bank transfer Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getBankTransferHistory(string xeroTenantId, string BankTransferID) returns HistoryRecords|error {
-        string  path = string `/BankTransfers/${BankTransferID}/History`;
+    remote isolated function getBankTransferHistory(string xeroTenantId, string bankTransferID) returns HistoryRecords|error {
+        string  path = string `/BankTransfers/${bankTransferID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -543,11 +563,11 @@ public client class Client {
     # Creates a history record for a specific bank transfer
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BankTransferID - Xero generated unique identifier for a bank transfer
+    # + bankTransferID - Xero generated unique identifier for a bank transfer
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createBankTransferHistoryRecord(string xeroTenantId, string BankTransferID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/BankTransfers/${BankTransferID}/History`;
+    remote isolated function createBankTransferHistoryRecord(string xeroTenantId, string bankTransferID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/BankTransfers/${bankTransferID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -570,10 +590,10 @@ public client class Client {
     # Retrieves a specific branding theme using a unique branding theme Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BrandingThemeID - Unique identifier for a Branding Theme
+    # + brandingThemeID - Unique identifier for a Branding Theme
     # + return - Success - return response of type BrandingThemes with one BrandingTheme
-    remote isolated function getBrandingTheme(string xeroTenantId, string BrandingThemeID) returns BrandingThemes|error {
-        string  path = string `/BrandingThemes/${BrandingThemeID}`;
+    remote isolated function getBrandingTheme(string xeroTenantId, string brandingThemeID) returns BrandingThemes|error {
+        string  path = string `/BrandingThemes/${brandingThemeID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         BrandingThemes response = check self.clientEp-> get(path, accHeaders, targetType = BrandingThemes);
@@ -582,10 +602,10 @@ public client class Client {
     # Retrieves the payment services for a specific branding theme
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BrandingThemeID - Unique identifier for a Branding Theme
+    # + brandingThemeID - Unique identifier for a Branding Theme
     # + return - Success - return response of type PaymentServices array with 0 to N PaymentService
-    remote isolated function getBrandingThemePaymentServices(string xeroTenantId, string BrandingThemeID) returns PaymentServices|error {
-        string  path = string `/BrandingThemes/${BrandingThemeID}/PaymentServices`;
+    remote isolated function getBrandingThemePaymentServices(string xeroTenantId, string brandingThemeID) returns PaymentServices|error {
+        string  path = string `/BrandingThemes/${brandingThemeID}/PaymentServices`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PaymentServices response = check self.clientEp-> get(path, accHeaders, targetType = PaymentServices);
@@ -594,11 +614,11 @@ public client class Client {
     # Creates a new custom payment service for a specific branding theme
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BrandingThemeID - Unique identifier for a Branding Theme
+    # + brandingThemeID - Unique identifier for a Branding Theme
     # + payload - PaymentService object in body of request
     # + return - Success - return response of type PaymentServices array with newly created PaymentService
-    remote isolated function createBrandingThemePaymentServices(string xeroTenantId, string BrandingThemeID, PaymentService payload) returns PaymentServices|error {
-        string  path = string `/BrandingThemes/${BrandingThemeID}/PaymentServices`;
+    remote isolated function createBrandingThemePaymentServices(string xeroTenantId, string brandingThemeID, PaymentService payload) returns PaymentServices|error {
+        string  path = string `/BrandingThemes/${brandingThemeID}/PaymentServices`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -626,10 +646,10 @@ public client class Client {
     # Retrieves a specific budgets, which includes budget lines
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + BudgetID - Unique identifier for Budgets
+    # + budgetID - Unique identifier for Budgets
     # + return - Success - return response of type Invoices array with specified Invoices
-    remote isolated function getBudget(string xeroTenantId, string BudgetID) returns Budgets|error {
-        string  path = string `/Budgets/${BudgetID}`;
+    remote isolated function getBudget(string xeroTenantId, string budgetID) returns Budgets|error {
+        string  path = string `/Budgets/${budgetID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Budgets response = check self.clientEp-> get(path, accHeaders, targetType = Budgets);
@@ -694,10 +714,10 @@ public client class Client {
     # Retrieves a specific contact by contact number in a Xero organisation
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactNumber - This field is read only on the Xero contact screen, used to identify contacts in external systems (max length = 50).
+    # + contactNumber - This field is read only on the Xero contact screen, used to identify contacts in external systems (max length = 50).
     # + return - Success - return response of type Contacts array with a unique Contact
-    remote isolated function getContactByContactNumber(string xeroTenantId, string ContactNumber) returns Contacts|error {
-        string  path = string `/Contacts/${ContactNumber}`;
+    remote isolated function getContactByContactNumber(string xeroTenantId, string contactNumber) returns Contacts|error {
+        string  path = string `/Contacts/${contactNumber}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Contacts response = check self.clientEp-> get(path, accHeaders, targetType = Contacts);
@@ -706,10 +726,10 @@ public client class Client {
     # Retrieves a specific contacts in a Xero organisation using a unique contact Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
+    # + contactID - Unique identifier for a Contact
     # + return - Success - return response of type Contacts array with a unique Contact
-    remote isolated function getContact(string xeroTenantId, string ContactID) returns Contacts|error {
-        string  path = string `/Contacts/${ContactID}`;
+    remote isolated function getContact(string xeroTenantId, string contactID) returns Contacts|error {
+        string  path = string `/Contacts/${contactID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Contacts response = check self.clientEp-> get(path, accHeaders, targetType = Contacts);
@@ -718,11 +738,11 @@ public client class Client {
     # Updates a specific contact in a Xero organisation
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
+    # + contactID - Unique identifier for a Contact
     # + payload - an array of Contacts containing single Contact object with properties to update
     # + return - Success - return response of type Contacts array with an updated Contact
-    remote isolated function updateContact(string xeroTenantId, string ContactID, Contacts payload) returns Contacts|error {
-        string  path = string `/Contacts/${ContactID}`;
+    remote isolated function updateContact(string xeroTenantId, string contactID, Contacts payload) returns Contacts|error {
+        string  path = string `/Contacts/${contactID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -734,10 +754,10 @@ public client class Client {
     # Retrieves attachments for a specific contact in a Xero organisation
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
+    # + contactID - Unique identifier for a Contact
     # + return - Success - return response of type Attachments array with 0 to N Attachment
-    remote isolated function getContactAttachments(string xeroTenantId, string ContactID) returns Attachments|error {
-        string  path = string `/Contacts/${ContactID}/Attachments`;
+    remote isolated function getContactAttachments(string xeroTenantId, string contactID) returns Attachments|error {
+        string  path = string `/Contacts/${contactID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -746,12 +766,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific contact using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
-    # + AttachmentID - Unique identifier for Attachment object
+    # + contactID - Unique identifier for a Contact
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Contact as binary data
-    remote isolated function getContactAttachmentById(string xeroTenantId, string ContactID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/Contacts/${ContactID}/Attachments/${AttachmentID}`;
+    remote isolated function getContactAttachmentById(string xeroTenantId, string contactID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/Contacts/${contactID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -760,12 +780,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific contact by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
-    # + FileName - Name of the attachment
+    # + contactID - Unique identifier for a Contact
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Contact as binary data
-    remote isolated function getContactAttachmentByFileName(string xeroTenantId, string ContactID, string FileName, string contentType) returns string|error {
-        string  path = string `/Contacts/${ContactID}/Attachments/${FileName}`;
+    remote isolated function getContactAttachmentByFileName(string xeroTenantId, string contactID, string fileName, string contentType) returns string|error {
+        string  path = string `/Contacts/${contactID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -773,12 +793,12 @@ public client class Client {
     }
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
-    # + FileName - Name of the attachment
+    # + contactID - Unique identifier for a Contact
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with an newly created Attachment
-    remote isolated function createContactAttachmentByFileName(string xeroTenantId, string ContactID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Contacts/${ContactID}/Attachments/${FileName}`;
+    remote isolated function createContactAttachmentByFileName(string xeroTenantId, string contactID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Contacts/${contactID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -787,12 +807,12 @@ public client class Client {
     }
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
-    # + FileName - Name of the attachment
+    # + contactID - Unique identifier for a Contact
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with an updated Attachment
-    remote isolated function updateContactAttachmentByFileName(string xeroTenantId, string ContactID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Contacts/${ContactID}/Attachments/${FileName}`;
+    remote isolated function updateContactAttachmentByFileName(string xeroTenantId, string contactID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Contacts/${contactID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -802,10 +822,10 @@ public client class Client {
     # Retrieves CIS settings for a specific contact in a Xero organisation
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
+    # + contactID - Unique identifier for a Contact
     # + return - Success - return response of type CISSettings for a specific Contact
-    remote isolated function getContactCISSettings(string xeroTenantId, string ContactID) returns CISSettings|error {
-        string  path = string `/Contacts/${ContactID}/CISSettings`;
+    remote isolated function getContactCISSettings(string xeroTenantId, string contactID) returns CISSettings|error {
+        string  path = string `/Contacts/${contactID}/CISSettings`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         CISSettings response = check self.clientEp-> get(path, accHeaders, targetType = CISSettings);
@@ -814,10 +834,10 @@ public client class Client {
     # Retrieves history records for a specific contact
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
+    # + contactID - Unique identifier for a Contact
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getContactHistory(string xeroTenantId, string ContactID) returns HistoryRecords|error {
-        string  path = string `/Contacts/${ContactID}/History`;
+    remote isolated function getContactHistory(string xeroTenantId, string contactID) returns HistoryRecords|error {
+        string  path = string `/Contacts/${contactID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -826,11 +846,11 @@ public client class Client {
     # Creates a new history record for a specific contact
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactID - Unique identifier for a Contact
+    # + contactID - Unique identifier for a Contact
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createContactHistory(string xeroTenantId, string ContactID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Contacts/${ContactID}/History`;
+    remote isolated function createContactHistory(string xeroTenantId, string contactID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Contacts/${contactID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -872,10 +892,10 @@ public client class Client {
     # Retrieves a specific contact group by using a unique contact group Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactGroupID - Unique identifier for a Contact Group
+    # + contactGroupID - Unique identifier for a Contact Group
     # + return - Success - return response of type Contact Groups array with a specific Contact Group
-    remote isolated function getContactGroup(string xeroTenantId, string ContactGroupID) returns ContactGroups|error {
-        string  path = string `/ContactGroups/${ContactGroupID}`;
+    remote isolated function getContactGroup(string xeroTenantId, string contactGroupID) returns ContactGroups|error {
+        string  path = string `/ContactGroups/${contactGroupID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ContactGroups response = check self.clientEp-> get(path, accHeaders, targetType = ContactGroups);
@@ -884,11 +904,11 @@ public client class Client {
     # Updates a specific contact group
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactGroupID - Unique identifier for a Contact Group
+    # + contactGroupID - Unique identifier for a Contact Group
     # + payload - an array of Contact groups with Name of specific group to update
     # + return - Success - return response of type Contact Groups array of updated Contact Group
-    remote isolated function updateContactGroup(string xeroTenantId, string ContactGroupID, ContactGroups payload) returns ContactGroups|error {
-        string  path = string `/ContactGroups/${ContactGroupID}`;
+    remote isolated function updateContactGroup(string xeroTenantId, string contactGroupID, ContactGroups payload) returns ContactGroups|error {
+        string  path = string `/ContactGroups/${contactGroupID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -900,11 +920,11 @@ public client class Client {
     # Creates contacts to a specific contact group
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactGroupID - Unique identifier for a Contact Group
+    # + contactGroupID - Unique identifier for a Contact Group
     # + payload - Contacts with array of contacts specifying the ContactID to be added to ContactGroup in body of request
     # + return - Success - return response of type Contacts array of added Contacts
-    remote isolated function createContactGroupContacts(string xeroTenantId, string ContactGroupID, Contacts payload) returns Contacts|error {
-        string  path = string `/ContactGroups/${ContactGroupID}/Contacts`;
+    remote isolated function createContactGroupContacts(string xeroTenantId, string contactGroupID, Contacts payload) returns Contacts|error {
+        string  path = string `/ContactGroups/${contactGroupID}/Contacts`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -916,10 +936,10 @@ public client class Client {
     # Deletes all contacts from a specific contact group
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactGroupID - Unique identifier for a Contact Group
+    # + contactGroupID - Unique identifier for a Contact Group
     # + return - Success - return response 204 no content
-    remote isolated function deleteContactGroupContacts(string xeroTenantId, string ContactGroupID) returns http:Response|error {
-        string  path = string `/ContactGroups/${ContactGroupID}/Contacts`;
+    remote isolated function deleteContactGroupContacts(string xeroTenantId, string contactGroupID) returns http:Response|error {
+        string  path = string `/ContactGroups/${contactGroupID}/Contacts`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -930,11 +950,11 @@ public client class Client {
     # Deletes a specific contact from a contact group using a unique contact Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ContactGroupID - Unique identifier for a Contact Group
-    # + ContactID - Unique identifier for a Contact
+    # + contactGroupID - Unique identifier for a Contact Group
+    # + contactID - Unique identifier for a Contact
     # + return - Success - return response 204 no content
-    remote isolated function deleteContactGroupContact(string xeroTenantId, string ContactGroupID, string ContactID) returns http:Response|error {
-        string  path = string `/ContactGroups/${ContactGroupID}/Contacts/${ContactID}`;
+    remote isolated function deleteContactGroupContact(string xeroTenantId, string contactGroupID, string contactID) returns http:Response|error {
+        string  path = string `/ContactGroups/${contactGroupID}/Contacts/${contactID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1001,11 +1021,11 @@ public client class Client {
     # Retrieves a specific credit note using a unique credit note Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
+    # + creditNoteID - Unique identifier for a Credit Note
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Credit Notes array with a unique CreditNote
-    remote isolated function getCreditNote(string xeroTenantId, string CreditNoteID, int? unitdp = ()) returns CreditNotes|error {
-        string  path = string `/CreditNotes/${CreditNoteID}`;
+    remote isolated function getCreditNote(string xeroTenantId, string creditNoteID, int? unitdp = ()) returns CreditNotes|error {
+        string  path = string `/CreditNotes/${creditNoteID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1016,12 +1036,12 @@ public client class Client {
     # Updates a specific credit note
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
+    # + creditNoteID - Unique identifier for a Credit Note
     # + payload - an array of Credit Notes containing credit note details to update
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Credit Notes array with updated CreditNote
-    remote isolated function updateCreditNote(string xeroTenantId, string CreditNoteID, CreditNotes payload, int? unitdp = ()) returns CreditNotes|error {
-        string  path = string `/CreditNotes/${CreditNoteID}`;
+    remote isolated function updateCreditNote(string xeroTenantId, string creditNoteID, CreditNotes payload, int? unitdp = ()) returns CreditNotes|error {
+        string  path = string `/CreditNotes/${creditNoteID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1035,10 +1055,10 @@ public client class Client {
     # Retrieves attachments for a specific credit notes
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
+    # + creditNoteID - Unique identifier for a Credit Note
     # + return - Success - return response of type Attachments array with all Attachment for specific Credit Note
-    remote isolated function getCreditNoteAttachments(string xeroTenantId, string CreditNoteID) returns Attachments|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/Attachments`;
+    remote isolated function getCreditNoteAttachments(string xeroTenantId, string creditNoteID) returns Attachments|error {
+        string  path = string `/CreditNotes/${creditNoteID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -1047,12 +1067,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific credit note using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
-    # + AttachmentID - Unique identifier for Attachment object
+    # + creditNoteID - Unique identifier for a Credit Note
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Credit Note as binary data
-    remote isolated function getCreditNoteAttachmentById(string xeroTenantId, string CreditNoteID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/Attachments/${AttachmentID}`;
+    remote isolated function getCreditNoteAttachmentById(string xeroTenantId, string creditNoteID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/CreditNotes/${creditNoteID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1061,12 +1081,12 @@ public client class Client {
     # Retrieves a specific attachment on a specific credit note by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
-    # + FileName - Name of the attachment
+    # + creditNoteID - Unique identifier for a Credit Note
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Credit Note as binary data
-    remote isolated function getCreditNoteAttachmentByFileName(string xeroTenantId, string CreditNoteID, string FileName, string contentType) returns string|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/Attachments/${FileName}`;
+    remote isolated function getCreditNoteAttachmentByFileName(string xeroTenantId, string creditNoteID, string fileName, string contentType) returns string|error {
+        string  path = string `/CreditNotes/${creditNoteID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1075,13 +1095,13 @@ public client class Client {
     # Creates an attachment for a specific credit note
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
-    # + FileName - Name of the attachment
+    # + creditNoteID - Unique identifier for a Credit Note
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + includeOnline - Allows an attachment to be seen by the end customer within their online invoice
     # + return - Success - return response of type Attachments array with newly created Attachment for specific Credit Note
-    remote isolated function createCreditNoteAttachmentByFileName(string xeroTenantId, string CreditNoteID, string FileName, string payload, boolean includeOnline = false) returns Attachments|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/Attachments/${FileName}`;
+    remote isolated function createCreditNoteAttachmentByFileName(string xeroTenantId, string creditNoteID, string fileName, string payload, boolean includeOnline = false) returns Attachments|error {
+        string  path = string `/CreditNotes/${creditNoteID}/Attachments/${fileName}`;
         map<anydata> queryParam = {"IncludeOnline": includeOnline};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1093,12 +1113,12 @@ public client class Client {
     # Updates attachments on a specific credit note by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
-    # + FileName - Name of the attachment
+    # + creditNoteID - Unique identifier for a Credit Note
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with updated Attachment for specific Credit Note
-    remote isolated function updateCreditNoteAttachmentByFileName(string xeroTenantId, string CreditNoteID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/Attachments/${FileName}`;
+    remote isolated function updateCreditNoteAttachmentByFileName(string xeroTenantId, string creditNoteID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/CreditNotes/${creditNoteID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1108,10 +1128,10 @@ public client class Client {
     # Retrieves credit notes as PDF files
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
+    # + creditNoteID - Unique identifier for a Credit Note
     # + return - Success - return response of binary data from the Attachment to a Credit Note
-    remote isolated function getCreditNoteAsPdf(string xeroTenantId, string CreditNoteID) returns string|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/pdf`;
+    remote isolated function getCreditNoteAsPdf(string xeroTenantId, string creditNoteID) returns string|error {
+        string  path = string `/CreditNotes/${creditNoteID}/pdf`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1120,12 +1140,12 @@ public client class Client {
     # Creates allocation for a specific credit note
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
+    # + creditNoteID - Unique identifier for a Credit Note
     # + payload - Allocations with array of Allocation object in body of request.
     # + summarizeErrors - If false return 200 OK and mix of successfully created objects and any with validation errors
     # + return - Success - return response of type Allocations array with newly created Allocation for specific Credit Note
-    remote isolated function createCreditNoteAllocation(string xeroTenantId, string CreditNoteID, Allocations payload, boolean summarizeErrors = false) returns Allocations|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/Allocations`;
+    remote isolated function createCreditNoteAllocation(string xeroTenantId, string creditNoteID, Allocations payload, boolean summarizeErrors = false) returns Allocations|error {
+        string  path = string `/CreditNotes/${creditNoteID}/Allocations`;
         map<anydata> queryParam = {"summarizeErrors": summarizeErrors};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1139,10 +1159,10 @@ public client class Client {
     # Retrieves history records of a specific credit note
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
+    # + creditNoteID - Unique identifier for a Credit Note
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getCreditNoteHistory(string xeroTenantId, string CreditNoteID) returns HistoryRecords|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/History`;
+    remote isolated function getCreditNoteHistory(string xeroTenantId, string creditNoteID) returns HistoryRecords|error {
+        string  path = string `/CreditNotes/${creditNoteID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -1151,11 +1171,11 @@ public client class Client {
     # Retrieves history records of a specific credit note
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + CreditNoteID - Unique identifier for a Credit Note
+    # + creditNoteID - Unique identifier for a Credit Note
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createCreditNoteHistory(string xeroTenantId, string CreditNoteID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/CreditNotes/${CreditNoteID}/History`;
+    remote isolated function createCreditNoteHistory(string xeroTenantId, string creditNoteID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/CreditNotes/${creditNoteID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1249,10 +1269,10 @@ public client class Client {
     # Retrieves a specific employee used in Xero payrun using a unique employee Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + EmployeeID - Unique identifier for a Employee
+    # + employeeID - Unique identifier for a Employee
     # + return - Success - return response of type Employees array with specified Employee
-    remote isolated function getEmployee(string xeroTenantId, string EmployeeID) returns Employees|error {
-        string  path = string `/Employees/${EmployeeID}`;
+    remote isolated function getEmployee(string xeroTenantId, string employeeID) returns Employees|error {
+        string  path = string `/Employees/${employeeID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Employees response = check self.clientEp-> get(path, accHeaders, targetType = Employees);
@@ -1292,10 +1312,10 @@ public client class Client {
     # Retrieves a specific expense claim using a unique expense claim Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ExpenseClaimID - Unique identifier for a ExpenseClaim
+    # + expenseClaimID - Unique identifier for a ExpenseClaim
     # + return - Success - return response of type ExpenseClaims array with specified ExpenseClaim
-    remote isolated function getExpenseClaim(string xeroTenantId, string ExpenseClaimID) returns ExpenseClaims|error {
-        string  path = string `/ExpenseClaims/${ExpenseClaimID}`;
+    remote isolated function getExpenseClaim(string xeroTenantId, string expenseClaimID) returns ExpenseClaims|error {
+        string  path = string `/ExpenseClaims/${expenseClaimID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ExpenseClaims response = check self.clientEp-> get(path, accHeaders, targetType = ExpenseClaims);
@@ -1304,11 +1324,11 @@ public client class Client {
     # Updates a specific expense claims
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ExpenseClaimID - Unique identifier for a ExpenseClaim
+    # + expenseClaimID - Unique identifier for a ExpenseClaim
     # + payload - ExpenseClaims with an array of ExpenseClaim objects
     # + return - Success - return response of type ExpenseClaims array with updated ExpenseClaim
-    remote isolated function updateExpenseClaim(string xeroTenantId, string ExpenseClaimID, ExpenseClaims payload) returns ExpenseClaims|error {
-        string  path = string `/ExpenseClaims/${ExpenseClaimID}`;
+    remote isolated function updateExpenseClaim(string xeroTenantId, string expenseClaimID, ExpenseClaims payload) returns ExpenseClaims|error {
+        string  path = string `/ExpenseClaims/${expenseClaimID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1320,10 +1340,10 @@ public client class Client {
     # Retrieves history records of a specific expense claim
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ExpenseClaimID - Unique identifier for a ExpenseClaim
+    # + expenseClaimID - Unique identifier for a ExpenseClaim
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getExpenseClaimHistory(string xeroTenantId, string ExpenseClaimID) returns HistoryRecords|error {
-        string  path = string `/ExpenseClaims/${ExpenseClaimID}/History`;
+    remote isolated function getExpenseClaimHistory(string xeroTenantId, string expenseClaimID) returns HistoryRecords|error {
+        string  path = string `/ExpenseClaims/${expenseClaimID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -1332,11 +1352,11 @@ public client class Client {
     # Creates a history record for a specific expense claim
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ExpenseClaimID - Unique identifier for a ExpenseClaim
+    # + expenseClaimID - Unique identifier for a ExpenseClaim
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createExpenseClaimHistory(string xeroTenantId, string ExpenseClaimID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/ExpenseClaims/${ExpenseClaimID}/History`;
+    remote isolated function createExpenseClaimHistory(string xeroTenantId, string expenseClaimID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/ExpenseClaims/${expenseClaimID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1411,11 +1431,11 @@ public client class Client {
     # Retrieves a specific sales invoice or purchase bill using a unique invoice Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Invoices array with specified Invoices
-    remote isolated function getInvoice(string xeroTenantId, string InvoiceID, int? unitdp = ()) returns Invoices|error {
-        string  path = string `/Invoices/${InvoiceID}`;
+    remote isolated function getInvoice(string xeroTenantId, string invoiceID, int? unitdp = ()) returns Invoices|error {
+        string  path = string `/Invoices/${invoiceID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1426,12 +1446,12 @@ public client class Client {
     # Updates a specific sales invoices or purchase bills
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + payload - Invoices with an array of Invoice objects
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Invoices array with updated Invoice
-    remote isolated function updateInvoice(string xeroTenantId, string InvoiceID, Invoices payload, int? unitdp = ()) returns Invoices|error {
-        string  path = string `/Invoices/${InvoiceID}`;
+    remote isolated function updateInvoice(string xeroTenantId, string invoiceID, Invoices payload, int? unitdp = ()) returns Invoices|error {
+        string  path = string `/Invoices/${invoiceID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1445,10 +1465,10 @@ public client class Client {
     # Retrieves invoices or purchase bills as PDF files
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + return - Success - return response of byte array pdf version of specified Invoices
-    remote isolated function getInvoiceAsPdf(string xeroTenantId, string InvoiceID) returns string|error {
-        string  path = string `/Invoices/${InvoiceID}/pdf`;
+    remote isolated function getInvoiceAsPdf(string xeroTenantId, string invoiceID) returns string|error {
+        string  path = string `/Invoices/${invoiceID}/pdf`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1457,10 +1477,10 @@ public client class Client {
     # Retrieves attachments for a specific invoice or purchase bill
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + return - Success - return response of type Attachments array of Attachments for specified Invoices
-    remote isolated function getInvoiceAttachments(string xeroTenantId, string InvoiceID) returns Attachments|error {
-        string  path = string `/Invoices/${InvoiceID}/Attachments`;
+    remote isolated function getInvoiceAttachments(string xeroTenantId, string invoiceID) returns Attachments|error {
+        string  path = string `/Invoices/${invoiceID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -1469,12 +1489,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific invoices or purchase bills by using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
-    # + AttachmentID - Unique identifier for Attachment object
+    # + invoiceID - Unique identifier for an Invoice
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Invoice as binary data
-    remote isolated function getInvoiceAttachmentById(string xeroTenantId, string InvoiceID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/Invoices/${InvoiceID}/Attachments/${AttachmentID}`;
+    remote isolated function getInvoiceAttachmentById(string xeroTenantId, string invoiceID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/Invoices/${invoiceID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1483,12 +1503,12 @@ public client class Client {
     # Retrieves an attachment from a specific invoice or purchase bill by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
-    # + FileName - Name of the attachment
+    # + invoiceID - Unique identifier for an Invoice
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Invoice as binary data
-    remote isolated function getInvoiceAttachmentByFileName(string xeroTenantId, string InvoiceID, string FileName, string contentType) returns string|error {
-        string  path = string `/Invoices/${InvoiceID}/Attachments/${FileName}`;
+    remote isolated function getInvoiceAttachmentByFileName(string xeroTenantId, string invoiceID, string fileName, string contentType) returns string|error {
+        string  path = string `/Invoices/${invoiceID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1497,13 +1517,13 @@ public client class Client {
     # Creates an attachment for a specific invoice or purchase bill by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
-    # + FileName - Name of the attachment
+    # + invoiceID - Unique identifier for an Invoice
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + includeOnline - Allows an attachment to be seen by the end customer within their online invoice
     # + return - Success - return response of type Attachments array with newly created Attachment
-    remote isolated function createInvoiceAttachmentByFileName(string xeroTenantId, string InvoiceID, string FileName, string payload, boolean includeOnline = false) returns Attachments|error {
-        string  path = string `/Invoices/${InvoiceID}/Attachments/${FileName}`;
+    remote isolated function createInvoiceAttachmentByFileName(string xeroTenantId, string invoiceID, string fileName, string payload, boolean includeOnline = false) returns Attachments|error {
+        string  path = string `/Invoices/${invoiceID}/Attachments/${fileName}`;
         map<anydata> queryParam = {"IncludeOnline": includeOnline};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1515,12 +1535,12 @@ public client class Client {
     # Updates an attachment from a specific invoices or purchase bill by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
-    # + FileName - Name of the attachment
+    # + invoiceID - Unique identifier for an Invoice
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with updated Attachment
-    remote isolated function updateInvoiceAttachmentByFileName(string xeroTenantId, string InvoiceID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Invoices/${InvoiceID}/Attachments/${FileName}`;
+    remote isolated function updateInvoiceAttachmentByFileName(string xeroTenantId, string invoiceID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Invoices/${invoiceID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1530,10 +1550,10 @@ public client class Client {
     # Retrieves a URL to an online invoice
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + return - Success - return response of type OnlineInvoice array with one OnlineInvoice
-    remote isolated function getOnlineInvoice(string xeroTenantId, string InvoiceID) returns OnlineInvoices|error {
-        string  path = string `/Invoices/${InvoiceID}/OnlineInvoice`;
+    remote isolated function getOnlineInvoice(string xeroTenantId, string invoiceID) returns OnlineInvoices|error {
+        string  path = string `/Invoices/${invoiceID}/OnlineInvoice`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         OnlineInvoices response = check self.clientEp-> get(path, accHeaders, targetType = OnlineInvoices);
@@ -1542,11 +1562,11 @@ public client class Client {
     # Sends a copy of a specific invoice to related contact via email
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + payload - Invoices with an array of Invoice objects
     # + return - Success - return response 204 no content
-    remote isolated function emailInvoice(string xeroTenantId, string InvoiceID, RequestEmpty payload) returns http:Response|error {
-        string  path = string `/Invoices/${InvoiceID}/Email`;
+    remote isolated function emailInvoice(string xeroTenantId, string invoiceID, RequestEmpty payload) returns http:Response|error {
+        string  path = string `/Invoices/${invoiceID}/Email`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1558,10 +1578,10 @@ public client class Client {
     # Retrieves history records for a specific invoice
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getInvoiceHistory(string xeroTenantId, string InvoiceID) returns HistoryRecords|error {
-        string  path = string `/Invoices/${InvoiceID}/History`;
+    remote isolated function getInvoiceHistory(string xeroTenantId, string invoiceID) returns HistoryRecords|error {
+        string  path = string `/Invoices/${invoiceID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -1570,11 +1590,11 @@ public client class Client {
     # Creates a history record for a specific invoice
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + InvoiceID - Unique identifier for an Invoice
+    # + invoiceID - Unique identifier for an Invoice
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createInvoiceHistory(string xeroTenantId, string InvoiceID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Invoices/${InvoiceID}/History`;
+    remote isolated function createInvoiceHistory(string xeroTenantId, string invoiceID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Invoices/${invoiceID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1652,11 +1672,11 @@ public client class Client {
     # Retrieves a specific item using a unique item Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ItemID - Unique identifier for an Item
+    # + itemID - Unique identifier for an Item
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Items array with specified Item
-    remote isolated function getItem(string xeroTenantId, string ItemID, int? unitdp = ()) returns Items|error {
-        string  path = string `/Items/${ItemID}`;
+    remote isolated function getItem(string xeroTenantId, string itemID, int? unitdp = ()) returns Items|error {
+        string  path = string `/Items/${itemID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1667,12 +1687,12 @@ public client class Client {
     # Updates a specific item
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ItemID - Unique identifier for an Item
+    # + itemID - Unique identifier for an Item
     # + payload - Items with an array of Item objects
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Items array with updated Item
-    remote isolated function updateItem(string xeroTenantId, string ItemID, Items payload, int? unitdp = ()) returns Items|error {
-        string  path = string `/Items/${ItemID}`;
+    remote isolated function updateItem(string xeroTenantId, string itemID, Items payload, int? unitdp = ()) returns Items|error {
+        string  path = string `/Items/${itemID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -1686,10 +1706,10 @@ public client class Client {
     # Deletes a specific item
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ItemID - Unique identifier for an Item
+    # + itemID - Unique identifier for an Item
     # + return - Success - return response 204 no content
-    remote isolated function deleteItem(string xeroTenantId, string ItemID) returns http:Response|error {
-        string  path = string `/Items/${ItemID}`;
+    remote isolated function deleteItem(string xeroTenantId, string itemID) returns http:Response|error {
+        string  path = string `/Items/${itemID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1700,10 +1720,10 @@ public client class Client {
     # Retrieves history for a specific item
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ItemID - Unique identifier for an Item
+    # + itemID - Unique identifier for an Item
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getItemHistory(string xeroTenantId, string ItemID) returns HistoryRecords|error {
-        string  path = string `/Items/${ItemID}/History`;
+    remote isolated function getItemHistory(string xeroTenantId, string itemID) returns HistoryRecords|error {
+        string  path = string `/Items/${itemID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -1712,11 +1732,11 @@ public client class Client {
     # Creates a history record for a specific item
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ItemID - Unique identifier for an Item
+    # + itemID - Unique identifier for an Item
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createItemHistory(string xeroTenantId, string ItemID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Items/${ItemID}/History`;
+    remote isolated function createItemHistory(string xeroTenantId, string itemID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Items/${itemID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1744,10 +1764,10 @@ public client class Client {
     # Retrieves a specific journal using a unique journal Id.
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + JournalID - Unique identifier for a Journal
+    # + journalID - Unique identifier for a Journal
     # + return - Success - return response of type Journals array with specified Journal
-    remote isolated function getJournal(string xeroTenantId, string JournalID) returns Journals|error {
-        string  path = string `/Journals/${JournalID}`;
+    remote isolated function getJournal(string xeroTenantId, string journalID) returns Journals|error {
+        string  path = string `/Journals/${journalID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Journals response = check self.clientEp-> get(path, accHeaders, targetType = Journals);
@@ -1790,10 +1810,10 @@ public client class Client {
     # Retrieves a specific linked transaction (billable expenses) using a unique linked transaction Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + LinkedTransactionID - Unique identifier for a LinkedTransaction
+    # + linkedTransactionID - Unique identifier for a LinkedTransaction
     # + return - Success - return response of type LinkedTransactions array with a specified LinkedTransaction
-    remote isolated function getLinkedTransaction(string xeroTenantId, string LinkedTransactionID) returns LinkedTransactions|error {
-        string  path = string `/LinkedTransactions/${LinkedTransactionID}`;
+    remote isolated function getLinkedTransaction(string xeroTenantId, string linkedTransactionID) returns LinkedTransactions|error {
+        string  path = string `/LinkedTransactions/${linkedTransactionID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         LinkedTransactions response = check self.clientEp-> get(path, accHeaders, targetType = LinkedTransactions);
@@ -1802,11 +1822,11 @@ public client class Client {
     # Updates a specific linked transactions (billable expenses)
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + LinkedTransactionID - Unique identifier for a LinkedTransaction
+    # + linkedTransactionID - Unique identifier for a LinkedTransaction
     # + payload - LinkedTransactions with an array of LinkedTransaction objects
     # + return - Success - return response of type LinkedTransactions array with updated LinkedTransaction
-    remote isolated function updateLinkedTransaction(string xeroTenantId, string LinkedTransactionID, LinkedTransactions payload) returns LinkedTransactions|error {
-        string  path = string `/LinkedTransactions/${LinkedTransactionID}`;
+    remote isolated function updateLinkedTransaction(string xeroTenantId, string linkedTransactionID, LinkedTransactions payload) returns LinkedTransactions|error {
+        string  path = string `/LinkedTransactions/${linkedTransactionID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1818,10 +1838,10 @@ public client class Client {
     # Deletes a specific linked transactions (billable expenses)
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + LinkedTransactionID - Unique identifier for a LinkedTransaction
+    # + linkedTransactionID - Unique identifier for a LinkedTransaction
     # + return - Success - return response 204 no content
-    remote isolated function deleteLinkedTransaction(string xeroTenantId, string LinkedTransactionID) returns http:Response|error {
-        string  path = string `/LinkedTransactions/${LinkedTransactionID}`;
+    remote isolated function deleteLinkedTransaction(string xeroTenantId, string linkedTransactionID) returns http:Response|error {
+        string  path = string `/LinkedTransactions/${linkedTransactionID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1885,10 +1905,10 @@ public client class Client {
     # Retrieves a specific manual journal
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
+    # + manualJournalID - Unique identifier for a ManualJournal
     # + return - Success - return response of type ManualJournals array with a specified ManualJournals
-    remote isolated function getManualJournal(string xeroTenantId, string ManualJournalID) returns ManualJournals|error {
-        string  path = string `/ManualJournals/${ManualJournalID}`;
+    remote isolated function getManualJournal(string xeroTenantId, string manualJournalID) returns ManualJournals|error {
+        string  path = string `/ManualJournals/${manualJournalID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ManualJournals response = check self.clientEp-> get(path, accHeaders, targetType = ManualJournals);
@@ -1897,11 +1917,11 @@ public client class Client {
     # Updates a specific manual journal
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
+    # + manualJournalID - Unique identifier for a ManualJournal
     # + payload - ManualJournals with an array of ManualJournal objects
     # + return - Success - return response of type ManualJournals array with an updated ManualJournal
-    remote isolated function updateManualJournal(string xeroTenantId, string ManualJournalID, ManualJournals payload) returns ManualJournals|error {
-        string  path = string `/ManualJournals/${ManualJournalID}`;
+    remote isolated function updateManualJournal(string xeroTenantId, string manualJournalID, ManualJournals payload) returns ManualJournals|error {
+        string  path = string `/ManualJournals/${manualJournalID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1913,10 +1933,10 @@ public client class Client {
     # Retrieves attachment for a specific manual journal
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
+    # + manualJournalID - Unique identifier for a ManualJournal
     # + return - Success - return response of type Attachments array with all Attachments for a ManualJournals
-    remote isolated function getManualJournalAttachments(string xeroTenantId, string ManualJournalID) returns Attachments|error {
-        string  path = string `/ManualJournals/${ManualJournalID}/Attachments`;
+    remote isolated function getManualJournalAttachments(string xeroTenantId, string manualJournalID) returns Attachments|error {
+        string  path = string `/ManualJournals/${manualJournalID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -1925,12 +1945,12 @@ public client class Client {
     # Allows you to retrieve a specific attachment from a specific manual journal using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
-    # + AttachmentID - Unique identifier for Attachment object
+    # + manualJournalID - Unique identifier for a ManualJournal
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Manual Journal as binary data
-    remote isolated function getManualJournalAttachmentById(string xeroTenantId, string ManualJournalID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/ManualJournals/${ManualJournalID}/Attachments/${AttachmentID}`;
+    remote isolated function getManualJournalAttachmentById(string xeroTenantId, string manualJournalID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/ManualJournals/${manualJournalID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1939,12 +1959,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific manual journal by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
-    # + FileName - Name of the attachment
+    # + manualJournalID - Unique identifier for a ManualJournal
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Manual Journal as binary data
-    remote isolated function getManualJournalAttachmentByFileName(string xeroTenantId, string ManualJournalID, string FileName, string contentType) returns string|error {
-        string  path = string `/ManualJournals/${ManualJournalID}/Attachments/${FileName}`;
+    remote isolated function getManualJournalAttachmentByFileName(string xeroTenantId, string manualJournalID, string fileName, string contentType) returns string|error {
+        string  path = string `/ManualJournals/${manualJournalID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -1953,12 +1973,12 @@ public client class Client {
     # Creates a specific attachment for a specific manual journal by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
-    # + FileName - Name of the attachment
+    # + manualJournalID - Unique identifier for a ManualJournal
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with a newly created Attachment for a ManualJournals
-    remote isolated function createManualJournalAttachmentByFileName(string xeroTenantId, string ManualJournalID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/ManualJournals/${ManualJournalID}/Attachments/${FileName}`;
+    remote isolated function createManualJournalAttachmentByFileName(string xeroTenantId, string manualJournalID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/ManualJournals/${manualJournalID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1968,12 +1988,12 @@ public client class Client {
     # Updates a specific attachment from a specific manual journal by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
-    # + FileName - Name of the attachment
+    # + manualJournalID - Unique identifier for a ManualJournal
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with an update Attachment for a ManualJournals
-    remote isolated function updateManualJournalAttachmentByFileName(string xeroTenantId, string ManualJournalID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/ManualJournals/${ManualJournalID}/Attachments/${FileName}`;
+    remote isolated function updateManualJournalAttachmentByFileName(string xeroTenantId, string manualJournalID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/ManualJournals/${manualJournalID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -1983,10 +2003,10 @@ public client class Client {
     # Retrieves history for a specific manual journal
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
+    # + manualJournalID - Unique identifier for a ManualJournal
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getManualJournalsHistory(string xeroTenantId, string ManualJournalID) returns HistoryRecords|error {
-        string  path = string `/ManualJournals/${ManualJournalID}/History`;
+    remote isolated function getManualJournalsHistory(string xeroTenantId, string manualJournalID) returns HistoryRecords|error {
+        string  path = string `/ManualJournals/${manualJournalID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -1995,11 +2015,11 @@ public client class Client {
     # Creates a history record for a specific manual journal
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ManualJournalID - Unique identifier for a ManualJournal
+    # + manualJournalID - Unique identifier for a ManualJournal
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createManualJournalHistoryRecord(string xeroTenantId, string ManualJournalID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/ManualJournals/${ManualJournalID}/History`;
+    remote isolated function createManualJournalHistoryRecord(string xeroTenantId, string manualJournalID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/ManualJournals/${manualJournalID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2033,10 +2053,10 @@ public client class Client {
     # Retrieves the CIS settings for the Xero organistaion.
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + OrganisationID - The unique Xero identifier for an organisation
+    # + organisationID - The unique Xero identifier for an organisation
     # + return - Success - return response of type Organisation array with specified Organisation
-    remote isolated function getOrganisationCISSettings(string xeroTenantId, string OrganisationID) returns CISOrgSettings|error {
-        string  path = string `/Organisation/${OrganisationID}/CISSettings`;
+    remote isolated function getOrganisationCISSettings(string xeroTenantId, string organisationID) returns CISOrgSettings|error {
+        string  path = string `/Organisation/${organisationID}/CISSettings`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         CISOrgSettings response = check self.clientEp-> get(path, accHeaders, targetType = CISOrgSettings);
@@ -2063,10 +2083,10 @@ public client class Client {
     # Retrieves a specific overpayment using a unique overpayment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + OverpaymentID - Unique identifier for a Overpayment
+    # + overpaymentID - Unique identifier for a Overpayment
     # + return - Success - return response of type Overpayments array with specified Overpayments
-    remote isolated function getOverpayment(string xeroTenantId, string OverpaymentID) returns Overpayments|error {
-        string  path = string `/Overpayments/${OverpaymentID}`;
+    remote isolated function getOverpayment(string xeroTenantId, string overpaymentID) returns Overpayments|error {
+        string  path = string `/Overpayments/${overpaymentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Overpayments response = check self.clientEp-> get(path, accHeaders, targetType = Overpayments);
@@ -2075,12 +2095,12 @@ public client class Client {
     # Creates a single allocation for a specific overpayment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + OverpaymentID - Unique identifier for a Overpayment
+    # + overpaymentID - Unique identifier for a Overpayment
     # + payload - Allocations array with Allocation object in body of request
     # + summarizeErrors - If false return 200 OK and mix of successfully created objects and any with validation errors
     # + return - Success - return response of type Allocations array with all Allocation for Overpayments
-    remote isolated function createOverpaymentAllocations(string xeroTenantId, string OverpaymentID, Allocations payload, boolean summarizeErrors = false) returns Allocations|error {
-        string  path = string `/Overpayments/${OverpaymentID}/Allocations`;
+    remote isolated function createOverpaymentAllocations(string xeroTenantId, string overpaymentID, Allocations payload, boolean summarizeErrors = false) returns Allocations|error {
+        string  path = string `/Overpayments/${overpaymentID}/Allocations`;
         map<anydata> queryParam = {"summarizeErrors": summarizeErrors};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -2094,10 +2114,10 @@ public client class Client {
     # Retrieves history records of a specific overpayment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + OverpaymentID - Unique identifier for a Overpayment
+    # + overpaymentID - Unique identifier for a Overpayment
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getOverpaymentHistory(string xeroTenantId, string OverpaymentID) returns HistoryRecords|error {
-        string  path = string `/Overpayments/${OverpaymentID}/History`;
+    remote isolated function getOverpaymentHistory(string xeroTenantId, string overpaymentID) returns HistoryRecords|error {
+        string  path = string `/Overpayments/${overpaymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -2106,11 +2126,11 @@ public client class Client {
     # Creates a history record for a specific overpayment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + OverpaymentID - Unique identifier for a Overpayment
+    # + overpaymentID - Unique identifier for a Overpayment
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createOverpaymentHistory(string xeroTenantId, string OverpaymentID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Overpayments/${OverpaymentID}/History`;
+    remote isolated function createOverpaymentHistory(string xeroTenantId, string overpaymentID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Overpayments/${overpaymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2172,10 +2192,10 @@ public client class Client {
     # Retrieves a specific payment for invoices and credit notes using a unique payment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PaymentID - Unique identifier for a Payment
+    # + paymentID - Unique identifier for a Payment
     # + return - Success - return response of type Payments array for specified Payment
-    remote isolated function getPayment(string xeroTenantId, string PaymentID) returns Payments|error {
-        string  path = string `/Payments/${PaymentID}`;
+    remote isolated function getPayment(string xeroTenantId, string paymentID) returns Payments|error {
+        string  path = string `/Payments/${paymentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Payments response = check self.clientEp-> get(path, accHeaders, targetType = Payments);
@@ -2184,11 +2204,11 @@ public client class Client {
     # Updates a specific payment for invoices and credit notes
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PaymentID - Unique identifier for a Payment
+    # + paymentID - Unique identifier for a Payment
     # + payload - Payment detete status
     # + return - Success - return response of type Payments array for updated Payment
-    remote isolated function deletePayment(string xeroTenantId, string PaymentID, PaymentDelete payload) returns Payments|error {
-        string  path = string `/Payments/${PaymentID}`;
+    remote isolated function deletePayment(string xeroTenantId, string paymentID, PaymentDelete payload) returns Payments|error {
+        string  path = string `/Payments/${paymentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2200,10 +2220,10 @@ public client class Client {
     # Retrieves history records of a specific payment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PaymentID - Unique identifier for a Payment
+    # + paymentID - Unique identifier for a Payment
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getPaymentHistory(string xeroTenantId, string PaymentID) returns HistoryRecords|error {
-        string  path = string `/Payments/${PaymentID}/History`;
+    remote isolated function getPaymentHistory(string xeroTenantId, string paymentID) returns HistoryRecords|error {
+        string  path = string `/Payments/${paymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -2212,11 +2232,11 @@ public client class Client {
     # Creates a history record for a specific payment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PaymentID - Unique identifier for a Payment
+    # + paymentID - Unique identifier for a Payment
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createPaymentHistory(string xeroTenantId, string PaymentID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Payments/${PaymentID}/History`;
+    remote isolated function createPaymentHistory(string xeroTenantId, string paymentID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Payments/${paymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2272,10 +2292,10 @@ public client class Client {
     # Allows you to retrieve a specified prepayments
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PrepaymentID - Unique identifier for a PrePayment
+    # + prepaymentID - Unique identifier for a PrePayment
     # + return - Success - return response of type Prepayments array for a specified Prepayment
-    remote isolated function getPrepayment(string xeroTenantId, string PrepaymentID) returns Prepayments|error {
-        string  path = string `/Prepayments/${PrepaymentID}`;
+    remote isolated function getPrepayment(string xeroTenantId, string prepaymentID) returns Prepayments|error {
+        string  path = string `/Prepayments/${prepaymentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Prepayments response = check self.clientEp-> get(path, accHeaders, targetType = Prepayments);
@@ -2284,12 +2304,12 @@ public client class Client {
     # Allows you to create an Allocation for prepayments
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PrepaymentID - Unique identifier for a PrePayment
+    # + prepaymentID - Unique identifier for a PrePayment
     # + payload - Allocations with an array of Allocation object in body of request
     # + summarizeErrors - If false return 200 OK and mix of successfully created objects and any with validation errors
     # + return - Success - return response of type Allocations array of Allocation for all Prepayment
-    remote isolated function createPrepaymentAllocations(string xeroTenantId, string PrepaymentID, Allocations payload, boolean summarizeErrors = false) returns Allocations|error {
-        string  path = string `/Prepayments/${PrepaymentID}/Allocations`;
+    remote isolated function createPrepaymentAllocations(string xeroTenantId, string prepaymentID, Allocations payload, boolean summarizeErrors = false) returns Allocations|error {
+        string  path = string `/Prepayments/${prepaymentID}/Allocations`;
         map<anydata> queryParam = {"summarizeErrors": summarizeErrors};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -2303,10 +2323,10 @@ public client class Client {
     # Retrieves history record for a specific prepayment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PrepaymentID - Unique identifier for a PrePayment
+    # + prepaymentID - Unique identifier for a PrePayment
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getPrepaymentHistory(string xeroTenantId, string PrepaymentID) returns HistoryRecords|error {
-        string  path = string `/Prepayments/${PrepaymentID}/History`;
+    remote isolated function getPrepaymentHistory(string xeroTenantId, string prepaymentID) returns HistoryRecords|error {
+        string  path = string `/Prepayments/${prepaymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -2315,11 +2335,11 @@ public client class Client {
     # Creates a history record for a specific prepayment
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PrepaymentID - Unique identifier for a PrePayment
+    # + prepaymentID - Unique identifier for a PrePayment
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createPrepaymentHistory(string xeroTenantId, string PrepaymentID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Prepayments/${PrepaymentID}/History`;
+    remote isolated function createPrepaymentHistory(string xeroTenantId, string prepaymentID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Prepayments/${prepaymentID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2386,10 +2406,10 @@ public client class Client {
     # Retrieves specific purchase order as PDF files using a unique purchase order Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
+    # + purchaseOrderID - Unique identifier for an Purchase Order
     # + return - Success - return response of byte array pdf version of specified Purchase Orders
-    remote isolated function getPurchaseOrderAsPdf(string xeroTenantId, string PurchaseOrderID) returns string|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/pdf`;
+    remote isolated function getPurchaseOrderAsPdf(string xeroTenantId, string purchaseOrderID) returns string|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/pdf`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2398,10 +2418,10 @@ public client class Client {
     # Retrieves a specific purchase order using a unique purchase order Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
+    # + purchaseOrderID - Unique identifier for an Purchase Order
     # + return - Success - return response of type PurchaseOrder array for specified PurchaseOrder
-    remote isolated function getPurchaseOrder(string xeroTenantId, string PurchaseOrderID) returns PurchaseOrders|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}`;
+    remote isolated function getPurchaseOrder(string xeroTenantId, string purchaseOrderID) returns PurchaseOrders|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PurchaseOrders response = check self.clientEp-> get(path, accHeaders, targetType = PurchaseOrders);
@@ -2410,11 +2430,11 @@ public client class Client {
     # Updates a specific purchase order
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
+    # + purchaseOrderID - Unique identifier for an Purchase Order
     # + payload - PurchaseOrders with an array of PurchaseOrder objects
     # + return - Success - return response of type PurchaseOrder array for updated PurchaseOrder
-    remote isolated function updatePurchaseOrder(string xeroTenantId, string PurchaseOrderID, PurchaseOrders payload) returns PurchaseOrders|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}`;
+    remote isolated function updatePurchaseOrder(string xeroTenantId, string purchaseOrderID, PurchaseOrders payload) returns PurchaseOrders|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2426,10 +2446,10 @@ public client class Client {
     # Retrieves a specific purchase order using purchase order number
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderNumber - Unique identifier for a PurchaseOrder
+    # + purchaseOrderNumber - Unique identifier for a PurchaseOrder
     # + return - Success - return response of type PurchaseOrder array for specified PurchaseOrder
-    remote isolated function getPurchaseOrderByNumber(string xeroTenantId, string PurchaseOrderNumber) returns PurchaseOrders|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderNumber}`;
+    remote isolated function getPurchaseOrderByNumber(string xeroTenantId, string purchaseOrderNumber) returns PurchaseOrders|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderNumber}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PurchaseOrders response = check self.clientEp-> get(path, accHeaders, targetType = PurchaseOrders);
@@ -2438,10 +2458,10 @@ public client class Client {
     # Retrieves history for a specific purchase order
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
+    # + purchaseOrderID - Unique identifier for an Purchase Order
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getPurchaseOrderHistory(string xeroTenantId, string PurchaseOrderID) returns HistoryRecords|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/History`;
+    remote isolated function getPurchaseOrderHistory(string xeroTenantId, string purchaseOrderID) returns HistoryRecords|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -2450,11 +2470,11 @@ public client class Client {
     # Creates a history record for a specific purchase orders
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
+    # + purchaseOrderID - Unique identifier for an Purchase Order
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createPurchaseOrderHistory(string xeroTenantId, string PurchaseOrderID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/History`;
+    remote isolated function createPurchaseOrderHistory(string xeroTenantId, string purchaseOrderID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2466,10 +2486,10 @@ public client class Client {
     # Retrieves attachments for a specific purchase order
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
+    # + purchaseOrderID - Unique identifier for an Purchase Order
     # + return - Success - return response of type Attachments array of Purchase Orders
-    remote isolated function getPurchaseOrderAttachments(string xeroTenantId, string PurchaseOrderID) returns Attachments|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/Attachments`;
+    remote isolated function getPurchaseOrderAttachments(string xeroTenantId, string purchaseOrderID) returns Attachments|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -2478,12 +2498,12 @@ public client class Client {
     # Retrieves specific attachment for a specific purchase order using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
-    # + AttachmentID - Unique identifier for Attachment object
+    # + purchaseOrderID - Unique identifier for an Purchase Order
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Account as binary data
-    remote isolated function getPurchaseOrderAttachmentById(string xeroTenantId, string PurchaseOrderID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/Attachments/${AttachmentID}`;
+    remote isolated function getPurchaseOrderAttachmentById(string xeroTenantId, string purchaseOrderID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2492,12 +2512,12 @@ public client class Client {
     # Retrieves a specific attachment for a specific purchase order by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
-    # + FileName - Name of the attachment
+    # + purchaseOrderID - Unique identifier for an Purchase Order
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Purchase Order as binary data
-    remote isolated function getPurchaseOrderAttachmentByFileName(string xeroTenantId, string PurchaseOrderID, string FileName, string contentType) returns string|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/Attachments/${FileName}`;
+    remote isolated function getPurchaseOrderAttachmentByFileName(string xeroTenantId, string purchaseOrderID, string fileName, string contentType) returns string|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2506,12 +2526,12 @@ public client class Client {
     # Creates attachment for a specific purchase order
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
-    # + FileName - Name of the attachment
+    # + purchaseOrderID - Unique identifier for an Purchase Order
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function createPurchaseOrderAttachmentByFileName(string xeroTenantId, string PurchaseOrderID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/Attachments/${FileName}`;
+    remote isolated function createPurchaseOrderAttachmentByFileName(string xeroTenantId, string purchaseOrderID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2521,12 +2541,12 @@ public client class Client {
     # Updates a specific attachment for a specific purchase order by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + PurchaseOrderID - Unique identifier for an Purchase Order
-    # + FileName - Name of the attachment
+    # + purchaseOrderID - Unique identifier for an Purchase Order
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function updatePurchaseOrderAttachmentByFileName(string xeroTenantId, string PurchaseOrderID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/PurchaseOrders/${PurchaseOrderID}/Attachments/${FileName}`;
+    remote isolated function updatePurchaseOrderAttachmentByFileName(string xeroTenantId, string purchaseOrderID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/PurchaseOrders/${purchaseOrderID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2595,10 +2615,10 @@ public client class Client {
     # Retrieves a specific quote using a unique quote Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
+    # + quoteID - Unique identifier for an Quote
     # + return - Success - return response of type Quotes array with specified Quote
-    remote isolated function getQuote(string xeroTenantId, string QuoteID) returns Quotes|error {
-        string  path = string `/Quotes/${QuoteID}`;
+    remote isolated function getQuote(string xeroTenantId, string quoteID) returns Quotes|error {
+        string  path = string `/Quotes/${quoteID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Quotes response = check self.clientEp-> get(path, accHeaders, targetType = Quotes);
@@ -2607,11 +2627,11 @@ public client class Client {
     # Updates a specific quote
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
+    # + quoteID - Unique identifier for an Quote
     # + payload - Quotes with an array of Quote objects
     # + return - Success - return response of type Quotes array with updated Quote
-    remote isolated function updateQuote(string xeroTenantId, string QuoteID, Quotes payload) returns Quotes|error {
-        string  path = string `/Quotes/${QuoteID}`;
+    remote isolated function updateQuote(string xeroTenantId, string quoteID, Quotes payload) returns Quotes|error {
+        string  path = string `/Quotes/${quoteID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2623,10 +2643,10 @@ public client class Client {
     # Retrieves history records of a specific quote
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
+    # + quoteID - Unique identifier for an Quote
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getQuoteHistory(string xeroTenantId, string QuoteID) returns HistoryRecords|error {
-        string  path = string `/Quotes/${QuoteID}/History`;
+    remote isolated function getQuoteHistory(string xeroTenantId, string quoteID) returns HistoryRecords|error {
+        string  path = string `/Quotes/${quoteID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -2635,11 +2655,11 @@ public client class Client {
     # Creates a history record for a specific quote
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
+    # + quoteID - Unique identifier for an Quote
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createQuoteHistory(string xeroTenantId, string QuoteID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Quotes/${QuoteID}/History`;
+    remote isolated function createQuoteHistory(string xeroTenantId, string quoteID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Quotes/${quoteID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2651,10 +2671,10 @@ public client class Client {
     # Retrieves a specific quote as a PDF file using a unique quote Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
+    # + quoteID - Unique identifier for an Quote
     # + return - Success - return response of byte array pdf version of specified Quotes
-    remote isolated function getQuoteAsPdf(string xeroTenantId, string QuoteID) returns string|error {
-        string  path = string `/Quotes/${QuoteID}/pdf`;
+    remote isolated function getQuoteAsPdf(string xeroTenantId, string quoteID) returns string|error {
+        string  path = string `/Quotes/${quoteID}/pdf`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2663,10 +2683,10 @@ public client class Client {
     # Retrieves attachments for a specific quote
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
+    # + quoteID - Unique identifier for an Quote
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function getQuoteAttachments(string xeroTenantId, string QuoteID) returns Attachments|error {
-        string  path = string `/Quotes/${QuoteID}/Attachments`;
+    remote isolated function getQuoteAttachments(string xeroTenantId, string quoteID) returns Attachments|error {
+        string  path = string `/Quotes/${quoteID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -2675,12 +2695,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific quote using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
-    # + AttachmentID - Unique identifier for Attachment object
+    # + quoteID - Unique identifier for an Quote
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Quote as binary data
-    remote isolated function getQuoteAttachmentById(string xeroTenantId, string QuoteID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/Quotes/${QuoteID}/Attachments/${AttachmentID}`;
+    remote isolated function getQuoteAttachmentById(string xeroTenantId, string quoteID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/Quotes/${quoteID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2689,12 +2709,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific quote by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
-    # + FileName - Name of the attachment
+    # + quoteID - Unique identifier for an Quote
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Quote as binary data
-    remote isolated function getQuoteAttachmentByFileName(string xeroTenantId, string QuoteID, string FileName, string contentType) returns string|error {
-        string  path = string `/Quotes/${QuoteID}/Attachments/${FileName}`;
+    remote isolated function getQuoteAttachmentByFileName(string xeroTenantId, string quoteID, string fileName, string contentType) returns string|error {
+        string  path = string `/Quotes/${quoteID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2703,12 +2723,12 @@ public client class Client {
     # Creates attachment for a specific quote
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
-    # + FileName - Name of the attachment
+    # + quoteID - Unique identifier for an Quote
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function createQuoteAttachmentByFileName(string xeroTenantId, string QuoteID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Quotes/${QuoteID}/Attachments/${FileName}`;
+    remote isolated function createQuoteAttachmentByFileName(string xeroTenantId, string quoteID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Quotes/${quoteID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2718,12 +2738,12 @@ public client class Client {
     # Updates a specific attachment from a specific quote by filename
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + QuoteID - Unique identifier for an Quote
-    # + FileName - Name of the attachment
+    # + quoteID - Unique identifier for an Quote
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array of Attachment
-    remote isolated function updateQuoteAttachmentByFileName(string xeroTenantId, string QuoteID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Quotes/${QuoteID}/Attachments/${FileName}`;
+    remote isolated function updateQuoteAttachmentByFileName(string xeroTenantId, string quoteID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Quotes/${quoteID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2768,11 +2788,11 @@ public client class Client {
     # Retrieves a specific draft expense claim receipt by using a unique receipt Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
+    # + receiptID - Unique identifier for a Receipt
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Receipts array for a specified Receipt
-    remote isolated function getReceipt(string xeroTenantId, string ReceiptID, int? unitdp = ()) returns Receipts|error {
-        string  path = string `/Receipts/${ReceiptID}`;
+    remote isolated function getReceipt(string xeroTenantId, string receiptID, int? unitdp = ()) returns Receipts|error {
+        string  path = string `/Receipts/${receiptID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -2783,12 +2803,12 @@ public client class Client {
     # Updates a specific draft expense claim receipts
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
+    # + receiptID - Unique identifier for a Receipt
     # + payload - Receipts with an array of Receipt objects
     # + unitdp - e.g. unitdp=4 – (Unit Decimal Places) You can opt in to use four decimal places for unit amounts
     # + return - Success - return response of type Receipts array for updated Receipt
-    remote isolated function updateReceipt(string xeroTenantId, string ReceiptID, Receipts payload, int? unitdp = ()) returns Receipts|error {
-        string  path = string `/Receipts/${ReceiptID}`;
+    remote isolated function updateReceipt(string xeroTenantId, string receiptID, Receipts payload, int? unitdp = ()) returns Receipts|error {
+        string  path = string `/Receipts/${receiptID}`;
         map<anydata> queryParam = {"unitdp": unitdp};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
@@ -2802,10 +2822,10 @@ public client class Client {
     # Retrieves attachments for a specific expense claim receipt
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
+    # + receiptID - Unique identifier for a Receipt
     # + return - Success - return response of type Attachments array of Attachments for a specified Receipt
-    remote isolated function getReceiptAttachments(string xeroTenantId, string ReceiptID) returns Attachments|error {
-        string  path = string `/Receipts/${ReceiptID}/Attachments`;
+    remote isolated function getReceiptAttachments(string xeroTenantId, string receiptID) returns Attachments|error {
+        string  path = string `/Receipts/${receiptID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -2814,12 +2834,12 @@ public client class Client {
     # Retrieves a specific attachments from a specific expense claim receipts by using a unique attachment Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
-    # + AttachmentID - Unique identifier for Attachment object
+    # + receiptID - Unique identifier for a Receipt
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Receipt as binary data
-    remote isolated function getReceiptAttachmentById(string xeroTenantId, string ReceiptID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/Receipts/${ReceiptID}/Attachments/${AttachmentID}`;
+    remote isolated function getReceiptAttachmentById(string xeroTenantId, string receiptID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/Receipts/${receiptID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2828,12 +2848,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific expense claim receipts by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
-    # + FileName - Name of the attachment
+    # + receiptID - Unique identifier for a Receipt
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Receipt as binary data
-    remote isolated function getReceiptAttachmentByFileName(string xeroTenantId, string ReceiptID, string FileName, string contentType) returns string|error {
-        string  path = string `/Receipts/${ReceiptID}/Attachments/${FileName}`;
+    remote isolated function getReceiptAttachmentByFileName(string xeroTenantId, string receiptID, string fileName, string contentType) returns string|error {
+        string  path = string `/Receipts/${receiptID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2842,12 +2862,12 @@ public client class Client {
     # Creates an attachment on a specific expense claim receipts by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
-    # + FileName - Name of the attachment
+    # + receiptID - Unique identifier for a Receipt
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with newly created Attachment for a specified Receipt
-    remote isolated function createReceiptAttachmentByFileName(string xeroTenantId, string ReceiptID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Receipts/${ReceiptID}/Attachments/${FileName}`;
+    remote isolated function createReceiptAttachmentByFileName(string xeroTenantId, string receiptID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Receipts/${receiptID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2857,12 +2877,12 @@ public client class Client {
     # Updates a specific attachment on a specific expense claim receipts by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
-    # + FileName - Name of the attachment
+    # + receiptID - Unique identifier for a Receipt
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with updated Attachment for a specified Receipt
-    remote isolated function updateReceiptAttachmentByFileName(string xeroTenantId, string ReceiptID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/Receipts/${ReceiptID}/Attachments/${FileName}`;
+    remote isolated function updateReceiptAttachmentByFileName(string xeroTenantId, string receiptID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/Receipts/${receiptID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2872,10 +2892,10 @@ public client class Client {
     # Retrieves a history record for a specific receipt
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
+    # + receiptID - Unique identifier for a Receipt
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getReceiptHistory(string xeroTenantId, string ReceiptID) returns HistoryRecords|error {
-        string  path = string `/Receipts/${ReceiptID}/History`;
+    remote isolated function getReceiptHistory(string xeroTenantId, string receiptID) returns HistoryRecords|error {
+        string  path = string `/Receipts/${receiptID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -2884,11 +2904,11 @@ public client class Client {
     # Creates a history record for a specific receipt
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReceiptID - Unique identifier for a Receipt
+    # + receiptID - Unique identifier for a Receipt
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createReceiptHistory(string xeroTenantId, string ReceiptID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/Receipts/${ReceiptID}/History`;
+    remote isolated function createReceiptHistory(string xeroTenantId, string receiptID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/Receipts/${receiptID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2915,10 +2935,10 @@ public client class Client {
     # Retrieves a specific repeating invoice by using a unique repeating invoice Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
     # + return - Success - return response of type Repeating Invoices array with a specified Repeating Invoice
-    remote isolated function getRepeatingInvoice(string xeroTenantId, string RepeatingInvoiceID) returns RepeatingInvoices|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}`;
+    remote isolated function getRepeatingInvoice(string xeroTenantId, string repeatingInvoiceID) returns RepeatingInvoices|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         RepeatingInvoices response = check self.clientEp-> get(path, accHeaders, targetType = RepeatingInvoices);
@@ -2927,10 +2947,10 @@ public client class Client {
     # Retrieves attachments from a specific repeating invoice
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
     # + return - Success - return response of type Attachments array with all Attachments for a specified Repeating Invoice
-    remote isolated function getRepeatingInvoiceAttachments(string xeroTenantId, string RepeatingInvoiceID) returns Attachments|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}/Attachments`;
+    remote isolated function getRepeatingInvoiceAttachments(string xeroTenantId, string repeatingInvoiceID) returns Attachments|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}/Attachments`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Attachments response = check self.clientEp-> get(path, accHeaders, targetType = Attachments);
@@ -2939,12 +2959,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific repeating invoice
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
-    # + AttachmentID - Unique identifier for Attachment object
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + attachmentID - Unique identifier for Attachment object
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Repeating Invoice as binary data
-    remote isolated function getRepeatingInvoiceAttachmentById(string xeroTenantId, string RepeatingInvoiceID, string AttachmentID, string contentType) returns string|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}/Attachments/${AttachmentID}`;
+    remote isolated function getRepeatingInvoiceAttachmentById(string xeroTenantId, string repeatingInvoiceID, string attachmentID, string contentType) returns string|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}/Attachments/${attachmentID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2953,12 +2973,12 @@ public client class Client {
     # Retrieves a specific attachment from a specific repeating invoices by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
-    # + FileName - Name of the attachment
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + fileName - Name of the attachment
     # + contentType - The mime type of the attachment file you are retrieving i.e image/jpg, application/pdf
     # + return - Success - return response of attachment for Repeating Invoice as binary data
-    remote isolated function getRepeatingInvoiceAttachmentByFileName(string xeroTenantId, string RepeatingInvoiceID, string FileName, string contentType) returns string|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}/Attachments/${FileName}`;
+    remote isolated function getRepeatingInvoiceAttachmentByFileName(string xeroTenantId, string repeatingInvoiceID, string fileName, string contentType) returns string|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId, "contentType": contentType};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, accHeaders, targetType = string);
@@ -2967,12 +2987,12 @@ public client class Client {
     # Creates an attachment from a specific repeating invoices by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
-    # + FileName - Name of the attachment
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with updated Attachment for a specified Repeating Invoice
-    remote isolated function createRepeatingInvoiceAttachmentByFileName(string xeroTenantId, string RepeatingInvoiceID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}/Attachments/${FileName}`;
+    remote isolated function createRepeatingInvoiceAttachmentByFileName(string xeroTenantId, string repeatingInvoiceID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2982,12 +3002,12 @@ public client class Client {
     # Updates a specific attachment from a specific repeating invoices by file name
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
-    # + FileName - Name of the attachment
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + fileName - Name of the attachment
     # + payload - Byte array of file in body of request
     # + return - Success - return response of type Attachments array with specified Attachment for a specified Repeating Invoice
-    remote isolated function updateRepeatingInvoiceAttachmentByFileName(string xeroTenantId, string RepeatingInvoiceID, string FileName, string payload) returns Attachments|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}/Attachments/${FileName}`;
+    remote isolated function updateRepeatingInvoiceAttachmentByFileName(string xeroTenantId, string repeatingInvoiceID, string fileName, string payload) returns Attachments|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}/Attachments/${fileName}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -2997,10 +3017,10 @@ public client class Client {
     # Retrieves history record for a specific repeating invoice
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
     # + return - Success - return response of HistoryRecords array of 0 to N HistoryRecord
-    remote isolated function getRepeatingInvoiceHistory(string xeroTenantId, string RepeatingInvoiceID) returns HistoryRecords|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}/History`;
+    remote isolated function getRepeatingInvoiceHistory(string xeroTenantId, string repeatingInvoiceID) returns HistoryRecords|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         HistoryRecords response = check self.clientEp-> get(path, accHeaders, targetType = HistoryRecords);
@@ -3009,11 +3029,11 @@ public client class Client {
     # Creates a  history record for a specific repeating invoice
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + RepeatingInvoiceID - Unique identifier for a Repeating Invoice
+    # + repeatingInvoiceID - Unique identifier for a Repeating Invoice
     # + payload - HistoryRecords containing an array of HistoryRecord objects in body of request
     # + return - Success - return response of type HistoryRecords array of HistoryRecord objects
-    remote isolated function createRepeatingInvoiceHistory(string xeroTenantId, string RepeatingInvoiceID, HistoryRecords payload) returns HistoryRecords|error {
-        string  path = string `/RepeatingInvoices/${RepeatingInvoiceID}/History`;
+    remote isolated function createRepeatingInvoiceHistory(string xeroTenantId, string repeatingInvoiceID, HistoryRecords payload) returns HistoryRecords|error {
+        string  path = string `/RepeatingInvoices/${repeatingInvoiceID}/History`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -3108,10 +3128,10 @@ public client class Client {
     # Retrieves a specific report using a unique ReportID
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + ReportID - Unique identifier for a Report
+    # + reportID - Unique identifier for a Report
     # + return - Success - return response of type ReportWithRows
-    remote isolated function getReportFromId(string xeroTenantId, string ReportID) returns ReportWithRows|error {
-        string  path = string `/Reports/${ReportID}`;
+    remote isolated function getReportFromId(string xeroTenantId, string reportID) returns ReportWithRows|error {
+        string  path = string `/Reports/${reportID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ReportWithRows response = check self.clientEp-> get(path, accHeaders, targetType = ReportWithRows);
@@ -3291,10 +3311,10 @@ public client class Client {
     # Retrieves specific tracking categories and options using a unique tracking category Id
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + TrackingCategoryID - Unique identifier for a TrackingCategory
+    # + trackingCategoryID - Unique identifier for a TrackingCategory
     # + return - Success - return response of type TrackingCategories array of specified TrackingCategory
-    remote isolated function getTrackingCategory(string xeroTenantId, string TrackingCategoryID) returns TrackingCategories|error {
-        string  path = string `/TrackingCategories/${TrackingCategoryID}`;
+    remote isolated function getTrackingCategory(string xeroTenantId, string trackingCategoryID) returns TrackingCategories|error {
+        string  path = string `/TrackingCategories/${trackingCategoryID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         TrackingCategories response = check self.clientEp-> get(path, accHeaders, targetType = TrackingCategories);
@@ -3303,11 +3323,11 @@ public client class Client {
     # Updates a specific tracking category
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + TrackingCategoryID - Unique identifier for a TrackingCategory
+    # + trackingCategoryID - Unique identifier for a TrackingCategory
     # + payload - TrackingCategories with an array of TrackingCategory objects
     # + return - Success - return response of type TrackingCategories array of updated TrackingCategory
-    remote isolated function updateTrackingCategory(string xeroTenantId, string TrackingCategoryID, TrackingCategory payload) returns TrackingCategories|error {
-        string  path = string `/TrackingCategories/${TrackingCategoryID}`;
+    remote isolated function updateTrackingCategory(string xeroTenantId, string trackingCategoryID, TrackingCategory payload) returns TrackingCategories|error {
+        string  path = string `/TrackingCategories/${trackingCategoryID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -3319,10 +3339,10 @@ public client class Client {
     # Deletes a specific tracking category
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + TrackingCategoryID - Unique identifier for a TrackingCategory
+    # + trackingCategoryID - Unique identifier for a TrackingCategory
     # + return - Success - return response of type TrackingCategories array of deleted TrackingCategory
-    remote isolated function deleteTrackingCategory(string xeroTenantId, string TrackingCategoryID) returns TrackingCategories|error {
-        string  path = string `/TrackingCategories/${TrackingCategoryID}`;
+    remote isolated function deleteTrackingCategory(string xeroTenantId, string trackingCategoryID) returns TrackingCategories|error {
+        string  path = string `/TrackingCategories/${trackingCategoryID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -3333,11 +3353,11 @@ public client class Client {
     # Creates options for a specific tracking category
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + TrackingCategoryID - Unique identifier for a TrackingCategory
+    # + trackingCategoryID - Unique identifier for a TrackingCategory
     # + payload - TrackingOption object in body of request
     # + return - Success - return response of type TrackingOptions array of options for a specified category
-    remote isolated function createTrackingOptions(string xeroTenantId, string TrackingCategoryID, TrackingOption payload) returns TrackingOptions|error {
-        string  path = string `/TrackingCategories/${TrackingCategoryID}/Options`;
+    remote isolated function createTrackingOptions(string xeroTenantId, string trackingCategoryID, TrackingOption payload) returns TrackingOptions|error {
+        string  path = string `/TrackingCategories/${trackingCategoryID}/Options`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -3349,12 +3369,12 @@ public client class Client {
     # Updates a specific option for a specific tracking category
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + TrackingCategoryID - Unique identifier for a TrackingCategory
-    # + TrackingOptionID - Unique identifier for a Tracking Option
+    # + trackingCategoryID - Unique identifier for a TrackingCategory
+    # + trackingOptionID - Unique identifier for a Tracking Option
     # + payload - TrackingOptios with an array of TrackingOption objects
     # + return - Success - return response of type TrackingOptions array of options for a specified category
-    remote isolated function updateTrackingOptions(string xeroTenantId, string TrackingCategoryID, string TrackingOptionID, TrackingOption payload) returns TrackingOptions|error {
-        string  path = string `/TrackingCategories/${TrackingCategoryID}/Options/${TrackingOptionID}`;
+    remote isolated function updateTrackingOptions(string xeroTenantId, string trackingCategoryID, string trackingOptionID, TrackingOption payload) returns TrackingOptions|error {
+        string  path = string `/TrackingCategories/${trackingCategoryID}/Options/${trackingOptionID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -3366,11 +3386,11 @@ public client class Client {
     # Deletes a specific option for a specific tracking category
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + TrackingCategoryID - Unique identifier for a TrackingCategory
-    # + TrackingOptionID - Unique identifier for a Tracking Option
+    # + trackingCategoryID - Unique identifier for a TrackingCategory
+    # + trackingOptionID - Unique identifier for a Tracking Option
     # + return - Success - return response of type TrackingOptions array of remaining options for a specified category
-    remote isolated function deleteTrackingOptions(string xeroTenantId, string TrackingCategoryID, string TrackingOptionID) returns TrackingOptions|error {
-        string  path = string `/TrackingCategories/${TrackingCategoryID}/Options/${TrackingOptionID}`;
+    remote isolated function deleteTrackingOptions(string xeroTenantId, string trackingCategoryID, string trackingOptionID) returns TrackingOptions|error {
+        string  path = string `/TrackingCategories/${trackingCategoryID}/Options/${trackingOptionID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -3397,10 +3417,10 @@ public client class Client {
     # Retrieves a specific user
     #
     # + xeroTenantId - Xero identifier for Tenant
-    # + UserID - Unique identifier for a User
+    # + userID - Unique identifier for a User
     # + return - Success - return response of type Users array of specified User
-    remote isolated function getUser(string xeroTenantId, string UserID) returns Users|error {
-        string  path = string `/Users/${UserID}`;
+    remote isolated function getUser(string xeroTenantId, string userID) returns Users|error {
+        string  path = string `/Users/${userID}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Users response = check self.clientEp-> get(path, accHeaders, targetType = Users);
@@ -3412,7 +3432,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -3446,7 +3466,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

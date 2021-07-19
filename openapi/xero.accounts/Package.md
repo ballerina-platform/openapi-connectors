@@ -1,17 +1,19 @@
-Connects to Xero Accounts from Ballerina
+Connects to [Xero Accounts API](https://developer.xero.com/documentation/api/accounting/overview) from Ballerina
 
-#### Compatibility
-|                               | Version               |
-|-------------------------------|-----------------------|
-|  Ballerina Language Version   |  **Swan Lake Beta 2** |
-|  Xero Accounting API Version  |       **2.13.4**      |
+## Package overview
+The `ballerinax/xero.accounts` is a [Ballerina](https://ballerina.io/) connector for Xero Accounts. This connector can be used for a variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data.
 
-### Package Overview
-The `ballerinax/xero.accounts` is a [Ballerina](https://ballerina.io/) connector for Xero Accounts.
-This package provides the capability to easily access Xero Accounts.
-### Report Issues
+This module supports [Xero Accounts API V2.14.4](https://developer.xero.com/documentation/api/accounting/overview).
+
+### Compatibility
+|                     | Version                   |
+|---------------------|---------------------------|
+| Ballerina Language  | Ballerina Swan Lake Beta2 |
+| Xero Accounting API | 2.13.4                    |
+
+## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
-### Useful Links
-- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+## Useful links
+- Discuss code changes of the Ballerina project via [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
 - Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
 - Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

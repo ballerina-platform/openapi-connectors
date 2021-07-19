@@ -7,6 +7,15 @@ info:
     name: "Xero Platform Team"
     email: "api@xero.com"
     url: "https://developer.xero.com"
+  description:
+    The Xero Accounts API exposes accounting related functions of the Xero.
+    
+    Accounting application and can be used for a variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data.
+  x-init-description: |-
+    This is a generated connector from [Xero](https://www.xero.com/) OpenAPI specification.
+    The connector initialization requires setting the API credentials.
+    Create a [Xero account](https://developer.xero.com/app/manage).
+    During initialization you can pass either http:BearerTokenConfig if you have a bearer token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
 servers:
   - description: The Xero Accounting API exposes accounting and related functions of the main Xero application and can be used for a variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data via our reports endpoint.
     url: https://api.xero.com/api.xro/2.0
@@ -22940,7 +22949,6 @@ components:
           - CREDITCARD
           - PAYPAL
           - NONE
-          - ''
         CurrencyCode:
           $ref: '#/components/schemas/CurrencyCode'
           type: string
@@ -22992,7 +23000,6 @@ components:
             - CISLABOURINCOME
             - CISLIABILITY
             - CISMATERIALS
-            - ''
         ReportingCode:
           description: Shown if set
           type: string
@@ -24521,7 +24528,6 @@ components:
         - ZMW
         - ZMK
         - ZWD
-        - "" 
     Employees:
       type: object
       x-isObjectArray: true

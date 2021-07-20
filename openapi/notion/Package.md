@@ -6,9 +6,10 @@ The `ballerinax/notion` is a [Ballerina](https://ballerina.io/) connector for No
 This package provides the capability to easily access Notion API.
 
 #### Compatibility
-| Ballerina Language Versions  |      Notion API                  |
-|:----------------------------:|:--------------------------------:|
-|       Swan Lake Alpha5       |            2021-05-13           |
+|                                   |             Version             |
+|:---------------------------------:|:-------------------------------:|
+|       Ballerina Language Versions |            **Swan Lake Alpha5** |
+|       Notion API                  |            **2021-05-13(v1)**   |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

@@ -1013,6 +1013,65 @@ paths:
       summary: Append block children
       tags:
         - Blocks
+  "/v1/databases":
+    post:
+      description: Create a database
+      operationId: createDatabase
+      parameters:
+        - in: header
+          name: Notion-Version
+          description: API Version
+          schema:
+            type: string
+            default: "2021-05-13"
+      requestBody:
+        description: Page information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DatabaseBodyParams"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatabaseBodyParams"
+          description: 200 Success - Create a database
+      summary: Create a database
+      tags:
+        - Database
+    get:
+      description: Returns a paginated list of databases for the workspace
+      operationId: listAllDatabases
+      parameters:
+        - in: query
+          name: start_cursor
+          required: false
+          description: If supplied, this endpoint will return a page of results starting after the cursor provided. If not supplied, this endpoint will return the first page of results.
+          schema:
+            type: string
+        - in: query
+          name: page_size
+          required: false
+          description: The number of items from the full list desired in the response. Maximum- 100
+          schema:
+            type: integer
+        - in: header
+          name: Notion-Version
+          description: API Version
+          schema:
+            type: string
+            default: "2021-05-13" 
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatabaseResponse"
+          description: 200 Success - List all databases
+      summary: List all databases
+      tags:
+        - Database
   "/v1/databases/{id}":
     get:
       description: "Retrieves a database object using the ID specified in the request path. "
@@ -1623,6 +1682,33 @@ paths:
       summary: Query a Database
       tags:
         - Databases
+  "/v1/pages":
+    post:
+      description: Creates a new page in the specified database or as a child of an existing page
+      operationId: createPage
+      summary: Create a page
+      parameters:
+        - in: header
+          name: Notion-Version
+          description: API Version
+          schema:
+            type: string
+            default: "2021-05-13" 
+      tags:
+        - Pages
+      requestBody:
+        description: Page information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PageBodyParams"
+      responses:
+        "200":
+          description: 200 Success - Create Page
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResponse"
   "/v1/pages/{id}":
     get:
       description: "Retrieves a Page object using the ID in the request path. This endpoint exposes page properties, not page content. "
@@ -2036,6 +2122,39 @@ paths:
       summary: "Update Page properties "
       tags:
         - Pages
+  "/v1/users":
+    get:
+      description: Returns a paginated list of Users for the workspace
+      operationId: listAllUsers
+      parameters:
+        - in: query
+          name: start_cursor
+          required: false
+          description: If supplied, this endpoint will return a page of results starting after the cursor provided. If not supplied, this endpoint will return the first page of results.
+          schema:
+            type: string
+        - in: query
+          name: page_size
+          required: false
+          description: The number of items from the full list desired in the response. Maximum- 100
+          schema:
+            type: integer
+        - in: header
+          name: Notion-Version
+          description: API Version
+          schema:
+            type: string
+            default: "2021-05-13" 
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUsers"
+          description: 200 Success - List all users
+      summary: List all users
+      tags:
+        - Users
   "/v1/users/{id}":
     get:
       description: Retrieve a user object using the ID specified in the request path.
@@ -2164,12 +2283,80 @@ paths:
           example: ""
           type: string
           default: "2021-05-13"
+  "/v1/search":
+    post:
+      description: Searches all pages and child pages that are shared with the integration and the results may include databases
+      operationId: searchPages
+      summary: Searches all pages and child pages
+      parameters:
+        - in: header
+          name: Notion-Version
+          description: API Version
+          schema:
+            type: string
+            default: "2021-05-13" 
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: 200 Success - List all user 
 components:
   securitySchemes:
     BearerToken: 
       type: http
       scheme: bearer  
   schemas:
+    SearchBody:
+      description: Search request body parameters
+      properties:
+        query:
+          type: string
+          description: When supplied, limits which pages are returned by comparing the query to the page title
+        sort:
+          $ref: "#/components/schemas/Sorting"
+        filter:
+          $ref: "#/components/schemas/Filtering"
+        start_cursor:
+          type: string
+          description: If supplied, this endpoint will return a page of results starting after the cursor provided or else this endpoint will return the first page of results
+        page_size:
+          type: integer
+          description: The number of items from the full list desired in the response. Maximum- 100
+    Sorting:
+      description: When supplied, sorts the results based on the provided criteria
+      properties:
+        direction:
+          description: The direction to sort. Possible values include ascending and descending
+          type: string
+        timestamp:
+          description: The name of the timestamp to sort against. Possible values include last_edited_time
+          type: string
+    Filtering:
+      description: When supplied, filters the results based on the provided criteria
+      properties:
+        value: 
+          description: The value of the property to filter the results by and Possible values for object type include page or database
+          type: string
+        property:
+          description: The name of the property to filter by.
+          type: string
+    PaginatedUsers:
+      description: The response body for users list
+      properties:
+        results:
+          description: Array of Users
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        next_cursor:
+          type: string
+          nullable: true
+          description: Next curser position of the user list
+        has_more:
+          type: boolean
+          description: Indicates whether there are more user records or not 
     PageUpdateRequestBody:
       description: The request body for page update
       properties:
@@ -2212,6 +2399,21 @@ components:
             type: object
           type: array
       type: object
+    PaginatedDatabases:
+      description: The response body for users list
+      properties:
+        results:
+          description: Array of Users
+          type: array
+          items:
+            $ref: "#/components/schemas/Database"
+        next_cursor:
+          type: string
+          nullable: true
+          description: Next curser position of the user list
+        has_more:
+          type: boolean
+          description: Indicates whether there are more user records or not 
     ObjectProperties:
       description: Object Properties
       properties:
@@ -2785,18 +2987,6 @@ components:
           description: The object type "page"
           example: page
           type: string
-        parent:
-          description: The parent page
-          properties:
-            database_id:
-              description: The database ID
-              example: 8e2c2b76-9e1d-47d2-87b9-ed3035d607ae
-              type: string
-            type:
-              description: The object type
-              example: database_id
-              type: string
-          type: object
         properties:
           $ref: "#/components/schemas/ObjectProperties"
       type: object
@@ -2832,4 +3022,210 @@ components:
           example: person
           type: string
       type: object
-  
+    PageProperties:
+      description: Page properties
+      properties:
+        name:
+          description: The ID of the property
+          type: string
+        type:
+          type: string
+          description: Type of the property
+      type: object
+    DatabaseTitle:
+      description: Page properties
+      properties:
+        plain_text:
+          description: The plain text without annotations
+          type: string
+        href:
+          description: The URL of any link or internal Notion mention in this text, if any
+          type: string
+        type:
+          type: string
+          description: Type of this rich text object. Possible values are- "text", "mention", "equation"
+        annotation:
+          $ref: "#/components/schemas/Annotations"
+      type: object
+    Annotations:
+      description: Style information which applies to the whole rich text object
+      properties:
+        bold:
+          type: boolean
+          description: Whether the text is bolded
+        italic:
+          type: boolean
+          description: Whether the text is italic
+        strikethrough:
+          type: boolean
+          description: Whether the text is struck through
+        underline:
+          type: boolean
+          description: Whether the text is underlined
+        code:
+          type: boolean
+          description: Whether the text is "code style"
+        color:
+          type: string
+          description: Color of the text. Possible values are- "default", "gray", "brown", "orange", "yellow", "green", "blue", "purple", "pink", "red", "gray_background", "brown_background", "orange_background", "yellow_background", "green_background", "blue_background", "purple_background", "pink_background", "red_background"
+    PageParent:
+      description: Parent Page Detail
+      properties:
+        database_id:
+          description: Database ID
+          type: string
+      type: object
+    DatabaseParent:
+      description: Parent Page Detail
+      properties:
+        page_id:
+          description: Database ID
+          type: string
+      type: object
+    PageChildren:
+      description: Page content for the new page
+      type: array
+      items: 
+        type: object
+        description: Page content for the new pag
+        properties:
+          object:
+            description: Always "block"
+            type: string
+            default: "block"
+          type:
+            description: Type of block
+            type: string
+          paragraph:
+            $ref: "#/components/schemas/blockContent"
+          heading_1:
+            $ref: "#/components/schemas/blockContent"
+          heading_2:
+            $ref: "#/components/schemas/blockContent"
+          heading_3:
+            $ref: "#/components/schemas/blockContent"
+          bulleted_list_item:
+            $ref: "#/components/schemas/blockContent"
+          numbered_list_item:
+            $ref: "#/components/schemas/blockContent"
+          to_do:
+            $ref: "#/components/schemas/blockContent"
+          child_page:
+            $ref: "#/components/schemas/blockContent"           
+    PageBodyParams:
+      description: PageDetail
+      properties:
+        properties:
+          $ref: "#/components/schemas/PageProperties"
+        parent:
+          $ref: "#/components/schemas/PageParent"
+        children:
+          $ref: "#/components/schemas/PageChildren"
+    DatabaseBodyParams:
+      description: DatabaseDetails
+      properties:
+        properties: 
+          description: Property schema of database
+          $ref: "#/components/schemas/DatabaseProperties"
+        parent: 
+          description: A page parent
+          $ref: "#/components/schemas/DatabaseParent"
+        title:
+          description: Property schema of database
+          type: array
+          items: 
+            $ref: "#/components/schemas/DatabaseTitle"
+    DatabaseProperties:
+      description: Property schema of database. The keys are the names of properties as they appear in Notion and the values are property schema objects
+      properties:
+        title:
+          type: string
+          description: Each database must have exactly one database property schema object of type "title". This database property controls the title that appears at the top of the page when the page is opened.
+        rich_text:
+          type: string
+          description: Text database property schema objects
+        number:
+          description: Number database property schema object
+          type: object
+          properties:
+            format: 
+              description: How the number is displayed in Notion. Potential values include- number, number_with_commas, percent, dollar, euro, pound, yen, ruble, rupee, won, yuan
+              type: string
+        select:
+          description: Select database property schema object
+          $ref: "#/components/schemas/SelectOptions"
+        multi_select:
+          type: array
+          description: Multi-select database property schema object
+          items:
+            $ref: "#/components/schemas/SelectOptions"
+        date:
+          type: string
+          description: Date database property schema
+        people:
+          type: string
+          description: People database property schema
+        files:
+          type: string
+          description: File database property schema object
+        checkbox:
+          type: string
+          description: Checkbox database property schema object
+        url:
+          type: string
+          description: URL database property schema object
+        email:
+          type: string
+          description: Email database property schema object
+        phone_number:
+          type: string
+          description: Phone number database property schema object
+        last_edited_time: 
+          type: string
+          description: Last edited time database property schema object
+        last_edited_by: 
+          type: string
+          description: Last edited by database property schema object
+        created_time: 
+          type: string
+          description: Created time database property schema object
+        created_by: 
+          type: string
+          description: Created by database property schema object
+    SelectOptions:
+      description: Select option
+      type: object
+      properties:
+        name: 
+          type: string
+          description: Name of the option as it appears in Notion
+        color: 
+          type: string
+          description: Color of the option. Possible values include- default, gray, brown, orange, yellow, green, blue, purple, pink, red
+    blockContent:
+      description: Block content
+      type: object
+      properties:
+        text:
+          description: block objects
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                description: block objects
+                type: array
+                items:
+                  $ref: "#/components/schemas/blockContent"
+              children:
+                description: Any nested children blocks
+                type: array
+                items:
+                  $ref: "#/components/schemas/blockContent"
+              checked:
+                description: Whether the to_do is checked or not
+                type: boolean
+              content:
+                description: Content of a block element
+                type: string
+                

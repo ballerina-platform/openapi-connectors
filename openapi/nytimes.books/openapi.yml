@@ -2,7 +2,13 @@ openapi: 3.0.0
 servers:
   - url: https://api.nytimes.com/svc/books/v3
 info:
-  description: The Books API provides information about book reviews and The New York Times bestsellers lists.
+  description: |-
+    The Books API provides information about book reviews and The New York Times bestsellers lists.
+    For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview)
+  x-init-description: |-
+    This is a generated connector from [NYTimes](https://developer.nytimes.com) OpenAPI specification.
+    The connector initialization requires setting the API credentials.
+    Create an [New York Times Account](https://developer.nytimes.com/accounts/create) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   termsOfService: http://developer.nytimes.com/tou
   title: Books API
   version: 3.0.0
@@ -93,7 +99,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list
+          description: Best seller list
           content:
             application/json:
               examples:
@@ -288,7 +294,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller history list
+          description: Best seller history list
           content:
             application/json:
               examples:
@@ -421,7 +427,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list names
+          description: Best seller list names
           content:
             application/json:
               examples:
@@ -498,7 +504,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list overview
+          description: Best seller list overview
           content:
             application/json:
               examples:
@@ -671,7 +677,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list by date
+          description: Best seller list by date
           content:
             application/json:
               examples:
@@ -844,7 +850,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns reviews
+          description: Reviews
           content:
             application/json:
               examples:
@@ -908,6 +914,8 @@ paths:
 components:
   securitySchemes:
     api-key:
+      description: All requests on the New York Times Books API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `api-key`.
       in: query
       name: api-key
       type: apiKey
+      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<your API key>\"}`" 

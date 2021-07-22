@@ -73,7 +73,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -86,7 +86,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -99,7 +99,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -112,7 +112,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -125,7 +125,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }

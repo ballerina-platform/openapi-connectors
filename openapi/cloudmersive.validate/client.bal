@@ -49,7 +49,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ParseAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ParseAddressResponse);
         return response;
     }
@@ -62,7 +62,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateAddressResponse);
         return response;
     }
@@ -75,7 +75,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         NormalizeAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=NormalizeAddressResponse);
         return response;
     }
@@ -88,7 +88,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateCityResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCityResponse);
         return response;
     }
@@ -101,7 +101,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateStateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateStateResponse);
         return response;
     }
@@ -114,7 +114,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidatePostalCodeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidatePostalCodeResponse);
         return response;
     }
@@ -127,7 +127,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -151,7 +151,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -164,7 +164,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -177,7 +177,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -190,7 +190,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         GetTimezonesResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GetTimezonesResponse);
         return response;
     }
@@ -203,7 +203,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateAddressResponse);
         return response;
     }
@@ -216,7 +216,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ReverseGeocodeAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ReverseGeocodeAddressResponse);
         return response;
     }
@@ -238,7 +238,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         PublicHolidaysResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PublicHolidaysResponse);
         return response;
     }
@@ -251,7 +251,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         DateTimeStandardizedParseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DateTimeStandardizedParseResponse);
         return response;
     }
@@ -264,7 +264,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         DateTimeStandardizedParseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DateTimeStandardizedParseResponse);
         return response;
     }
@@ -277,7 +277,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         CheckResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CheckResponse);
         return response;
     }
@@ -290,7 +290,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         DomainQualityResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DomainQualityResponse);
         return response;
     }
@@ -303,7 +303,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         WhoisResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=WhoisResponse);
         return response;
     }
@@ -316,7 +316,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateUrlResponseSyntaxOnly);
         return response;
     }
@@ -329,7 +329,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateUrlResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateUrlResponseFull);
         return response;
     }
@@ -342,7 +342,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateUrlResponseSyntaxOnly);
         return response;
     }
@@ -355,7 +355,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         PhishingCheckResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PhishingCheckResponse);
         return response;
     }
@@ -368,7 +368,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         IsAdminPathResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IsAdminPathResponse);
         return response;
     }
@@ -381,7 +381,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         UrlSafetyCheckResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlSafetyCheckResponseFull);
         return response;
     }
@@ -394,7 +394,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         UrlSsrfResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlSsrfResponseFull);
         return response;
     }
@@ -407,7 +407,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         UrlSsrfResponseBatch response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlSsrfResponseBatch);
         return response;
     }
@@ -420,7 +420,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         UrlHtmlSsrfResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlHtmlSsrfResponseFull);
         return response;
     }
@@ -433,7 +433,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         AddressVerifySyntaxOnlyResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=AddressVerifySyntaxOnlyResponse);
         return response;
     }
@@ -446,7 +446,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         AddressGetServersResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=AddressGetServersResponse);
         return response;
     }
@@ -459,7 +459,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         FullEmailValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FullEmailValidationResponse);
         return response;
     }
@@ -472,7 +472,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         IPIntelligenceResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPIntelligenceResponse);
         return response;
     }
@@ -485,7 +485,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         GeolocateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GeolocateResponse);
         return response;
     }
@@ -498,7 +498,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         GeolocateStreetAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GeolocateStreetAddressResponse);
         return response;
     }
@@ -511,7 +511,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         IPThreatResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPThreatResponse);
         return response;
     }
@@ -524,7 +524,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         TorNodeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TorNodeResponse);
         return response;
     }
@@ -537,7 +537,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         BotCheckResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BotCheckResponse);
         return response;
     }
@@ -550,7 +550,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         IPReverseDNSLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPReverseDNSLookupResponse);
         return response;
     }
@@ -563,7 +563,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         LeadEnrichmentResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LeadEnrichmentResponse);
         return response;
     }
@@ -576,7 +576,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         FullNameValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FullNameValidationResponse);
         return response;
     }
@@ -589,7 +589,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         FirstNameValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FirstNameValidationResponse);
         return response;
     }
@@ -602,7 +602,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         LastNameValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LastNameValidationResponse);
         return response;
     }
@@ -615,7 +615,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         GetGenderResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GetGenderResponse);
         return response;
     }
@@ -628,7 +628,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         ValidateIdentifierResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateIdentifierResponse);
         return response;
     }
@@ -641,7 +641,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         PhoneNumberValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PhoneNumberValidationResponse);
         return response;
     }
@@ -656,7 +656,7 @@ public client class Client {
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         SqlInjectionDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SqlInjectionDetectionResult);
         return response;
     }
@@ -669,7 +669,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         SqlInjectionCheckBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SqlInjectionCheckBatchResponse);
         return response;
     }
@@ -682,7 +682,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         XssProtectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XssProtectionResult);
         return response;
     }
@@ -695,7 +695,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         XssProtectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XssProtectionResult);
         return response;
     }
@@ -708,7 +708,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         XssProtectionBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XssProtectionBatchResponse);
         return response;
     }
@@ -721,7 +721,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         HtmlSsrfDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=HtmlSsrfDetectionResult);
         return response;
     }
@@ -738,7 +738,7 @@ public client class Client {
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         XxeDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XxeDetectionResult);
         return response;
     }
@@ -751,7 +751,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         XxeDetectionBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XxeDetectionBatchResponse);
         return response;
     }
@@ -764,7 +764,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         UserAgentValidateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserAgentValidateResponse);
         return response;
     }
@@ -777,7 +777,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         VatLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=VatLookupResponse);
         return response;
     }

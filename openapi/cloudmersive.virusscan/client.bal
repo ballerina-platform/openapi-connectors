@@ -79,7 +79,7 @@ public client class Client {
         map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
+        request.setJsonPayload(jsonBody);
         WebsiteScanResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=WebsiteScanResult);
         return response;
     }

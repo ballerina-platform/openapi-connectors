@@ -1,0 +1,3793 @@
+openapi: 3.0.1
+info:
+  title: validateapi
+  description: The validation APIs help you validate data. Check if an E-mail address
+    is real. Check if a domain is real. Check up on an IP address, and even where
+    it is located. All this and much more is available in the validation API.
+  version: v1
+servers:
+- url: https://testapi.cloudmersive.com/
+paths:
+  /validate/address/parse:
+    post:
+      tags:
+      - Address
+      summary: Parse an unstructured input text string into an international, formatted
+        address
+      description: Uses machine learning and Natural Language Processing (NLP) to
+        handle a wide array of cases, including non-standard and unstructured address
+        strings across a wide array of countries and address formatting norms.
+      operationId: Address_Parse String
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseAddressRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ParseAddressRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseAddressResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ParseAddressResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ParseAddressResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ParseAddressResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/street-address:
+    post:
+      tags:
+      - Address
+      summary: Validate a street address
+      description: Determines if an input structured street address is valid or invalid.  If
+        the address is valid, also returns the latitude and longitude of the address.  Supports
+        all major international addresses.
+      operationId: Address_Validate Address
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateAddressRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateAddressRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/street-address/normalize:
+    post:
+      tags:
+      - Address
+      summary: Normalize a street address
+      description: Normalizes an input structured street address is valid or invalid.  If
+        the address is valid, also returns the latitude and longitude of the address.  Supports
+        all major international addresses.
+      operationId: Address_Normalize Address
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateAddressRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateAddressRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NormalizeAddressResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/NormalizeAddressResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/NormalizeAddressResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/NormalizeAddressResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/city:
+    post:
+      tags:
+      - Address
+      summary: Validate a City and State/Province combination, get location information
+        about it
+      description: Checks if the input city and state name or code is valid, and returns
+        information about it such as normalized City name, State name and more.  Supports
+        all major international addresses.
+      operationId: Address_Validate City
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCityRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCityRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCityResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCityResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCityResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCityResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/state:
+    post:
+      tags:
+      - Address
+      summary: Validate a state or province, name or abbreviation, get location information
+        about it
+      description: Checks if the input state name or code is valid, and returns information
+        about it such as normalized State name and more.  Supports all major countries.
+      operationId: Address_Validate State
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateStateRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateStateRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateStateResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateStateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateStateResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateStateResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/postal-code:
+    post:
+      tags:
+      - Address
+      summary: Validate a postal code, get location information about it
+      description: Checks if the input postal code is valid, and returns information
+        about it such as City, State and more.  Supports all major countries.
+      operationId: Address_Validate Postal Code
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatePostalCodeRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidatePostalCodeRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatePostalCodeResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidatePostalCodeResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidatePostalCodeResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidatePostalCodeResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/country:
+    post:
+      tags:
+      - Address
+      summary: Validate and normalize country information, return ISO 3166-1 country
+        codes and country name
+      description: Validates and normalizes country information, and returns key information
+        about a country, as well as whether it is a member of the European Union.  Also
+        returns distinct time zones in the country.
+      operationId: Address_Country
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/country/list:
+    post:
+      tags:
+      - Address
+      summary: Get a list of ISO 3166-1 countries
+      description: Enumerates the list of ISO 3166-1 countries, including name, country
+        codes, and more.
+      operationId: Address_Country List
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryListResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/CountryListResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CountryListResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/CountryListResult'
+      security:
+      - Apikey: []
+  /validate/address/country/check-eu-membership:
+    post:
+      tags:
+      - Address
+      summary: Check if a country is a member of the European Union (EU)
+      description: Checks if the input country is a member of the European Union or
+        not.
+      operationId: Address_Check EUMembership
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/country/get-currency:
+    post:
+      tags:
+      - Address
+      summary: Get the currency of the input country
+      description: Gets the currency information for the input country, including
+        the ISO three-letter country code, currency symbol, and English currency name.
+      operationId: Address_Get Country Currency
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/country/get-region:
+    post:
+      tags:
+      - Address
+      summary: Get the region, subregion and continent of the country
+      description: Gets the continent information including region and subregion for
+        the input country.
+      operationId: Address_Get Country Region
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCountryRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateCountryResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/country/get-timezones:
+    post:
+      tags:
+      - Address
+      summary: Gets IANA/Olsen time zones for a country
+      description: Gets the IANA/Olsen time zones for a country.
+      operationId: Address_Get Timezone
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTimezonesRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/GetTimezonesRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTimezonesResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GetTimezonesResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GetTimezonesResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GetTimezonesResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/geocode:
+    post:
+      tags:
+      - Address
+      summary: Geocode a street address into latitude and longitude
+      description: Geocodes a street address into latitude and longitude.
+      operationId: Address_Geocode
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateAddressRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateAddressRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateAddressResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/address/geocode/reverse:
+    post:
+      tags:
+      - Address
+      summary: Reverse geocode a lattitude and longitude into an address
+      description: Converts lattitude and longitude coordinates into an address through
+        reverse-geocoding.
+      operationId: Address_Reverse Geocode Address
+      requestBody:
+        description: Input reverse geocoding request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReverseGeocodeAddressRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ReverseGeocodeAddressRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReverseGeocodeAddressResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ReverseGeocodeAddressResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ReverseGeocodeAddressResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ReverseGeocodeAddressResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/date-time/get/now:
+    get:
+      tags:
+      - DateTime
+      summary: Get current date and time as of now
+      description: Gets the current date and time.  Response time is syncronized with
+        atomic clocks, and represents a monotonic, centrally available, consistent
+        clock.
+      operationId: Date Time_Get Now Simple
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DateTimeNowResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/DateTimeNowResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DateTimeNowResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/DateTimeNowResult'
+      security:
+      - Apikey: []
+  /validate/date-time/get/holidays:
+    post:
+      tags:
+      - DateTime
+      summary: Get public holidays in the specified country and year
+      description: Enumerates all public holidays in a given country for a given year.  Supports
+        over 100 countries.
+      operationId: Date Time_Get Public Holidays
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPublicHolidaysRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/GetPublicHolidaysRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicHolidaysResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PublicHolidaysResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublicHolidaysResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/PublicHolidaysResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/date-time/parse/date-time/structured:
+    post:
+      tags:
+      - DateTime
+      summary: Parses a standardized date and time string into a date and time
+      description: Parses a structured date and time string into a date time object.  This
+        is intended for standardized date strings that adhere to formatting conventions,
+        rather than natural language input.
+      operationId: Date Time_Parse Standard Date Time
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DateTimeStandardizedParseRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DateTimeStandardizedParseRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/date-time/parse/date-time/natural-language:
+    post:
+      tags:
+      - DateTime
+      summary: Parses a free-form natural language date and time string into a date
+        and time
+      description: Parses an unstructured, free-form, natural language date and time
+        string into a date time object.  This is intended for lightweight human-entered
+        input, such as "tomorrow at 3pm" or "tuesday".
+      operationId: Date Time_Parse Natural Language Date Time
+      requestBody:
+        description: Input request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DateTimeNaturalLanguageParseRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DateTimeNaturalLanguageParseRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/DateTimeStandardizedParseResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/domain/check:
+    post:
+      tags:
+      - Domain
+      summary: Validate a domain name
+      description: Check whether a domain name is valid or not.  API performs a live
+        validation by contacting DNS services to validate the existence of the domain
+        name.
+      operationId: Domain_Check
+      requestBody:
+        description: Domain name to check, for example "cloudmersive.com".  The input
+          is a string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/CheckResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CheckResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/CheckResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: domain
+  /validate/domain/quality-score:
+    post:
+      tags:
+      - Domain
+      summary: Validate a domain name's quality score
+      description: Check the quality of a domain name.  Supports over 9 million domain
+        names.  Higher quality scores indicate more trust and authority in the domain
+        name, with values ranging from 0.0 (low quality) to 10.0 (maximum quality).
+      operationId: Domain_Quality Score
+      requestBody:
+        description: Domain name to check, for example "cloudmersive.com".
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainQualityResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/DomainQualityResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DomainQualityResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/DomainQualityResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: domain
+  /validate/domain/whois:
+    post:
+      tags:
+      - Domain
+      summary: Get WHOIS information for a domain
+      description: Validate whether a domain name exists, and also return the full
+        WHOIS record for that domain name.  WHOIS records include all the registration
+        details of the domain name, such as information about the domain's owners.
+      operationId: Domain_Post
+      requestBody:
+        description: Domain name to check, for example "cloudmersive.com".   The input
+          is a string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhoisResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/WhoisResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WhoisResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/WhoisResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: domain
+  /validate/domain/url/syntax-only:
+    post:
+      tags:
+      - Domain
+      summary: Validate a URL syntactically
+      description: Validate whether a URL is syntactically valid (does not check endpoint
+        for validity).  Accepts various types of input and produces a well-formed
+        URL as output.
+      operationId: Domain_Url Syntax Only
+      requestBody:
+        description: Input URL information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateUrlRequestSyntaxOnly'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateUrlRequestSyntaxOnly'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/domain/url/full:
+    post:
+      tags:
+      - Domain
+      summary: Validate a URL fully
+      description: Validate whether a URL is syntactically valid (does not check endpoint
+        for validity), whether it exists, and whether the endpoint is up and passes
+        virus scan checks.  Accepts various types of input and produces a well-formed
+        URL as output.
+      operationId: Domain_Url Full
+      requestBody:
+        description: Input URL request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateUrlRequestFull'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateUrlRequestFull'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseFull'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseFull'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseFull'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseFull'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/domain/url/get-top-level-domain:
+    post:
+      tags:
+      - Domain
+      summary: Get top-level domain name from URL
+      description: Gets the top-level domain name from a URL, such as mydomain.com.
+      operationId: Domain_Get Top Level Domain From Url
+      requestBody:
+        description: Input URL information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateUrlRequestSyntaxOnly'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateUrlRequestSyntaxOnly'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateUrlResponseSyntaxOnly'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/domain/url/phishing-threat-check:
+    post:
+      tags:
+      - Domain
+      summary: Check a URL for Phishing threats
+      description: Checks if an input URL is at risk of being an Phishing (fake login
+        page, or other page designed to collect information via social engineering)
+        threat or attack.
+      operationId: Domain_Phishing Check
+      requestBody:
+        description: Input URL request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhishingCheckRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PhishingCheckRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhishingCheckResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PhishingCheckResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PhishingCheckResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/PhishingCheckResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/domain/url/is-admin-path:
+    post:
+      tags:
+      - Domain
+      summary: Check if path is a high-risk or vulnerable server administration path
+      description: Check if the input URL or relative path is a server Administration
+        Path, and therefore a risk or vulnerability for remote access.
+      operationId: Domain_Is Admin Path
+      requestBody:
+        description: URL or relative path to check, e.g. "/admin/login".  The input
+          is a string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsAdminPathResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IsAdminPathResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/IsAdminPathResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/IsAdminPathResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/domain/url/safety-threat-check:
+    post:
+      tags:
+      - Domain
+      summary: Check a URL for safety threats
+      description: Checks if an input URL is at risk of being a safety threat through
+        malware, unwanted software, or social engineering threats.
+      operationId: Domain_Safety Check
+      requestBody:
+        description: Input URL request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlSafetyCheckRequestFull'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UrlSafetyCheckRequestFull'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlSafetyCheckResponseFull'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UrlSafetyCheckResponseFull'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UrlSafetyCheckResponseFull'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/UrlSafetyCheckResponseFull'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/domain/url/ssrf-threat-check:
+    post:
+      tags:
+      - Domain
+      summary: Check a URL for SSRF threats
+      description: Checks if an input URL is at risk of being an SSRF (Server-side
+        request forgery) threat or attack.
+      operationId: Domain_Ssrf Check
+      requestBody:
+        description: Input URL request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlSsrfRequestFull'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UrlSsrfRequestFull'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseFull'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseFull'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseFull'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseFull'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/domain/url/ssrf-threat-check/batch:
+    post:
+      tags:
+      - Domain
+      summary: Check a URL for SSRF threats in batches
+      description: Batch-checks if input URLs are at risk of being an SSRF (Server-side
+        request forgery) threat or attack.
+      operationId: Domain_Ssrf Check Batch
+      requestBody:
+        description: Input URL request as a batch of multiple URLs
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlSsrfRequestBatch'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UrlSsrfRequestBatch'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseBatch'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseBatch'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseBatch'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/UrlSsrfResponseBatch'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/domain/url/ssrf-threat-check/html-embedded:
+    post:
+      tags:
+      - Domain
+      summary: Check a URL for HTML embedded SSRF threats
+      description: Checks if an input URL HTML is at risk of containing one or more
+        embedded SSRF (Server-side request forgery) threats or attacks.
+      operationId: Domain_Url Html Ssrf Check
+      requestBody:
+        description: Input URL request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlHtmlSsrfRequestFull'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UrlHtmlSsrfRequestFull'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlHtmlSsrfResponseFull'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UrlHtmlSsrfResponseFull'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UrlHtmlSsrfResponseFull'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/UrlHtmlSsrfResponseFull'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/email/address/syntaxOnly:
+    post:
+      tags:
+      - Email
+      summary: Validate email adddress for syntactic correctness only
+      description: Validate whether a given email address is syntactically correct
+        via a limited local-only check.  Use the address/full API to do a full validation.
+      operationId: Email_Post
+      requestBody:
+        description: Email address to validate, e.g. "support@cloudmersive.com".    The
+          input is a string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressVerifySyntaxOnlyResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AddressVerifySyntaxOnlyResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AddressVerifySyntaxOnlyResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/AddressVerifySyntaxOnlyResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/email/address/servers:
+    post:
+      tags:
+      - Email
+      summary: Partially check whether an email address is valid
+      description: Validate an email address by identifying whether its parent domain
+        has email servers defined.  This call is less limited than syntaxOnly but
+        not as comprehensive as address/full.
+      operationId: Email_Address Get Servers
+      requestBody:
+        description: Email address to validate, e.g. "support@cloudmersive.com".    The
+          input is a string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressGetServersResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AddressGetServersResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AddressGetServersResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/AddressGetServersResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: email
+  /validate/email/address/full:
+    post:
+      tags:
+      - Email
+      summary: Fully validate an email address
+      description: Performs a full validation of the email address.  Checks for syntactic
+        correctness, identifies the mail server in question if any, and then contacts
+        the email server to validate the existence of the account - without sending
+        any emails.
+      operationId: Email_Full Validation
+      requestBody:
+        description: Email address to validate, e.g. "support@cloudmersive.com".    The
+          input is a string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullEmailValidationResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FullEmailValidationResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FullEmailValidationResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FullEmailValidationResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: email
+  /validate/ip/intelligence:
+    post:
+      tags:
+      - IPAddress
+      summary: Get intelligence on an IP address
+      description: Identify key intelligence about an IP address, including if it
+        is a known threat IP, known bot, Tor exit node, as well as the location of
+        the IP address.
+      operationId: IPAddress_Ip Intelligence
+      requestBody:
+        description: IP address to process, e.g. "55.55.55.55".  The input is a string
+          so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IPIntelligenceResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IPIntelligenceResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/IPIntelligenceResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/IPIntelligenceResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/ip/geolocate:
+    post:
+      tags:
+      - IPAddress
+      summary: Geolocate an IP address
+      description: Identify an IP address Country, State/Provence, City, Zip/Postal
+        Code, etc.  Useful for security and UX applications.
+      operationId: IPAddress_Post
+      requestBody:
+        description: IP address to geolocate, e.g. "55.55.55.55".  The input is a
+          string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeolocateResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GeolocateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GeolocateResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GeolocateResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/ip/geolocate/street-address:
+    post:
+      tags:
+      - IPAddress
+      summary: Geolocate an IP address to a street address
+      description: Identify an IP address's street address.  Useful for security and
+        UX applications.
+      operationId: IPAddress_Geolocate Street Address
+      requestBody:
+        description: IP address to geolocate, e.g. "55.55.55.55".  The input is a
+          string so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeolocateStreetAddressResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GeolocateStreetAddressResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GeolocateStreetAddressResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GeolocateStreetAddressResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/ip/is-threat:
+    post:
+      tags:
+      - IPAddress
+      summary: Check if IP address is a known threat
+      description: Check if the input IP address is a known threat IP address.  Checks
+        against known bad IPs, botnets, compromised servers, and other lists of threats.
+      operationId: IPAddress_Is Threat
+      requestBody:
+        description: IP address to check, e.g. "55.55.55.55".  The input is a string
+          so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IPThreatResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IPThreatResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/IPThreatResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/IPThreatResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/ip/is-tor-node:
+    post:
+      tags:
+      - IPAddress
+      summary: Check if IP address is a Tor node server
+      description: Check if the input IP address is a Tor exit node server.  Tor servers
+        are a type of privacy-preserving technology that can hide the original IP
+        address who makes a request.
+      operationId: IPAddress_Is Tor Node
+      requestBody:
+        description: IP address to check, e.g. "55.55.55.55".  The input is a string
+          so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TorNodeResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TorNodeResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TorNodeResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/TorNodeResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/ip/is-bot:
+    post:
+      tags:
+      - IPAddress
+      summary: Check if IP address is a Bot client
+      description: Check if the input IP address is a Bot, robot, or otherwise a non-user
+        entity.  Leverages real-time signals to check against known high-probability
+        bots..
+      operationId: IPAddress_Is Bot
+      requestBody:
+        description: IP address to check, e.g. "55.55.55.55".  The input is a string
+          so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BotCheckResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BotCheckResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BotCheckResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/BotCheckResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/ip/reverse-domain-lookup:
+    post:
+      tags:
+      - IPAddress
+      summary: Perform a reverse domain name (DNS) lookup on an IP address
+      description: Gets the domain name, if any, associated with the IP address.
+      operationId: IPAddress_Reverse Domain Lookup
+      requestBody:
+        description: IP address to check, e.g. "55.55.55.55".  The input is a string
+          so be sure to enclose it in double-quotes.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IPReverseDNSLookupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/IPReverseDNSLookupResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/IPReverseDNSLookupResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/IPReverseDNSLookupResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/lead-enrichment/lead/enrich:
+    post:
+      tags:
+      - LeadEnrichment
+      summary: Enrich an input lead with additional fields of data
+      operationId: Lead Enrichment_Enrich Lead
+      requestBody:
+        description: Input lead with known fields set, and unknown fields left blank
+          (null)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadEnrichmentRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/LeadEnrichmentRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadEnrichmentResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LeadEnrichmentResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/LeadEnrichmentResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/LeadEnrichmentResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/name/full-name:
+    post:
+      tags:
+      - Name
+      summary: Parse and validate a full name
+      description: Parses a full name string (e.g. "Mr. Jon van der Waal Jr.") into
+        its component parts (and returns these component parts), and then validates
+        whether it is a valid name string or not
+      operationId: Name_Validate Full Name
+      requestBody:
+        description: Validation request information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FullNameValidationRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FullNameValidationRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullNameValidationResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FullNameValidationResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FullNameValidationResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FullNameValidationResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/name/first:
+    post:
+      tags:
+      - Name
+      summary: Validate a first name
+      description: Determines if a string is a valid first name (given name)
+      operationId: Name_Validate First Name
+      requestBody:
+        description: Validation request information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirstNameValidationRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FirstNameValidationRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirstNameValidationResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/FirstNameValidationResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/FirstNameValidationResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/FirstNameValidationResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/name/last:
+    post:
+      tags:
+      - Name
+      summary: Validate a last name
+      description: Determines if a string is a valid last name (surname)
+      operationId: Name_Validate Last Name
+      requestBody:
+        description: Validation request information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LastNameValidationRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/LastNameValidationRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastNameValidationResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LastNameValidationResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/LastNameValidationResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/LastNameValidationResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/name/get-gender:
+    post:
+      tags:
+      - Name
+      summary: Get the gender of a first name
+      description: Determines the gender of a first name (given name)
+      operationId: Name_Get Gender
+      requestBody:
+        description: Gender request information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetGenderRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/GetGenderRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGenderResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GetGenderResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GetGenderResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GetGenderResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/name/identifier:
+    post:
+      tags:
+      - Name
+      summary: Validate a code identifier
+      description: Determines if the input name is a valid technical / code identifier.  Configure
+        input rules such as whether whitespace, hyphens, underscores, etc. are allowed.  For
+        example, a valid identifier might be "helloWorld" but not "hello*World".
+      operationId: Name_Identifier
+      requestBody:
+        description: Identifier validation request information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateIdentifierRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ValidateIdentifierRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateIdentifierResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidateIdentifierResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateIdentifierResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateIdentifierResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+  /validate/phonenumber/basic:
+    post:
+      tags:
+      - PhoneNumber
+      summary: Validate phone number (basic)
+      description: Validate a phone number by analyzing the syntax
+      operationId: Phone Number_Syntax Only
+      requestBody:
+        description: Phone number to validate in a PhoneNumberValidateRequest object.  Try
+          a phone number such as "1.800.463.3339", and either leave DefaultCountryCode
+          blank or use "US".
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumberValidateRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumberValidateRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberValidationResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberValidationResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberValidationResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberValidationResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/check/sql-injection:
+    post:
+      tags:
+      - TextInput
+      summary: Check text input for SQL Injection (SQLI) attacks
+      description: Detects SQL Injection (SQLI) attacks from text input.
+      operationId: Text Input_Check Sql Injection
+      parameters:
+      - name: detectionLevel
+        in: header
+        description: Set to Normal to target a high-security SQL Injection detection
+          level with a very low false positive rate; select High to target a very-high
+          security SQL Injection detection level with higher false positives.  Default
+          is Normal (recommended).
+        schema:
+          type: string
+      requestBody:
+        description: User-facing text input.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionDetectionResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionDetectionResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionDetectionResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionDetectionResult'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/check/sql-injection/batch:
+    post:
+      tags:
+      - TextInput
+      summary: Check and protect multiple text inputs for SQL Injection (SQLI) attacks
+        in batch
+      description: Detects SQL Injection (SQLI) attacks from multiple text inputs.  Output
+        preverses order of input items.
+      operationId: Text Input_Check Sql Injection Batch
+      requestBody:
+        description: User-facing text input.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SqlInjectionCheckBatchRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SqlInjectionCheckBatchRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionCheckBatchResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionCheckBatchResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionCheckBatchResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SqlInjectionCheckBatchResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/check/xss:
+    post:
+      tags:
+      - TextInput
+      summary: Check text input for Cross-Site-Scripting (XSS) attacks
+      description: Detects XSS (Cross-Site-Scripting) attacks from text input.
+      operationId: Text Input_Check Xss
+      requestBody:
+        description: User-facing text input.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/protect/xss:
+    post:
+      tags:
+      - TextInput
+      summary: Protect text input from Cross-Site-Scripting (XSS) attacks through
+        normalization
+      description: Detects and removes XSS (Cross-Site-Scripting) attacks from text
+        input through normalization.  Returns the normalized result, as well as information
+        on whether the original input contained an XSS risk.
+      operationId: Text Input_Protect Xss
+      requestBody:
+        description: User-facing text input.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/XssProtectionResult'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/check-and-protect/xss/batch:
+    post:
+      tags:
+      - TextInput
+      summary: Check and protect multiple text inputs for Cross-Site-Scripting (XSS)
+        attacks in batch
+      description: Detects XSS (Cross-Site-Scripting) attacks from multiple text inputs.  Output
+        preverses order of input items.
+      operationId: Text Input_Check Xss Batch
+      requestBody:
+        description: User-facing text input.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/XssProtectionBatchRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/XssProtectionBatchRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XssProtectionBatchResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/XssProtectionBatchResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/XssProtectionBatchResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/XssProtectionBatchResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/html/check/ssrf:
+    post:
+      tags:
+      - TextInput
+      summary: Protect html input from Server-side Request Forgery (SSRF) attacks
+      description: Detects SSRF (Server-side request forgery) attacks and unsafe URL
+        attacks from HTML text input, where attackers can attempt to access unsafe
+        local or network paths in the server environment by injecting them into HTML.
+      operationId: Text Input_Check Html Ssrf
+      requestBody:
+        description: User-facing HTML input.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HtmlSsrfDetectionResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/HtmlSsrfDetectionResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HtmlSsrfDetectionResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/HtmlSsrfDetectionResult'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/check/xxe:
+    post:
+      tags:
+      - TextInput
+      summary: Protect text input from XML External Entity (XXE) attacks
+      description: Detects XXE (XML External Entity) attacks from text input.
+      operationId: Text Input_Check Xxe
+      parameters:
+      - name: allowInternetUrls
+        in: header
+        description: 'Optional: Set to true to allow Internet-based dependency URLs
+          for DTDs and other XML External Entitites, set to false to block.  Default
+          is false.'
+        schema:
+          type: boolean
+      - name: knownSafeUrls
+        in: header
+        description: 'Optional: Comma separated list of fully-qualified URLs that
+          will automatically be considered safe.'
+        schema:
+          type: string
+      - name: knownUnsafeUrls
+        in: header
+        description: 'Optional: Comma separated list of fully-qualified URLs that
+          will automatically be considered unsafe.'
+        schema:
+          type: string
+      requestBody:
+        description: User-facing text input.
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionResult'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /validate/text-input/check/xxe/batch:
+    post:
+      tags:
+      - TextInput
+      summary: Protect text input from XML External Entity (XXE) attacks
+      description: Detects XXE (XML External Entity) attacks from text input.
+      operationId: Text Input_Check Xxe Batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/XxeDetectionBatchRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/XxeDetectionBatchRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionBatchResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionBatchResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionBatchResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/XxeDetectionBatchResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/useragent/parse:
+    post:
+      tags:
+      - UserAgent
+      summary: Parse an HTTP User-Agent string, identify robots
+      description: Uses a parsing system and database to parse the User-Agent into
+        its structured component parts, such as Browser, Browser Version, Browser
+        Engine, Operating System, and importantly, Robot identification.
+      operationId: User Agent_Parse
+      requestBody:
+        description: Input parse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAgentValidateRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserAgentValidateRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAgentValidateResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UserAgentValidateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserAgentValidateResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/UserAgentValidateResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: request
+  /validate/vat/lookup:
+    post:
+      tags:
+      - Vat
+      summary: Validate a VAT number
+      description: Checks if a VAT code is valid, and if it is, returns more information
+        about it.  The first two letters of the VAT number must be letters that indicate
+        the country, such as LU20260743.  Possible country codes include Austria (AT),
+        Belgium (BE), Bulgaria (BG), Cyprus (CY), Czech Republic (CZ), Germany (DE),
+        Denmark (DK), Estonia (EE), Greece (EL), Spain (ES), Finland (FI), France
+        (FR), United Kingdom (GB), Croatia (HR), Hungary (HU), Ireland (IE), Italy
+        (IT), Lithuania (LT), Luxembourg (LU), Latvia (LV), Malta (MT), The Netherlands
+        (NL), Poland (PL), Portugal (PT), Romania (RO), Sweden (SE), Slovenia (SI),
+        Slovakia (SK).
+      operationId: Vat_Vat Lookup
+      requestBody:
+        description: Input VAT code
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VatLookupRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/VatLookupRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VatLookupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/VatLookupResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VatLookupResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/VatLookupResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: input
+components:
+  schemas:
+    ParseAddressRequest:
+      type: object
+      properties:
+        AddressString:
+          type: string
+          description: A mailing address or street address formatted as a single text
+            string; this will be parsed into its components
+        CapitalizationMode:
+          type: string
+          description: 'Optional; indicates how the parsed output should be capitalized;
+            default is Title Case; possible values are: "Uppercase" will set the capitalization
+            to UPPER CASE; "Lowercase" will set the capitalization to lower case;
+            "Titlecase" will set the capitalization to Title Case; and "Originalcase"
+            will preserve the original casing as much as possible'
+      description: Request to parse an address formatted as a string/free text into
+        a structured address
+    ParseAddressResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the parsing operation was successful, false otherwise
+        Building:
+          type: string
+          description: The name of the building, house or structure if applicable,
+            such as "Cloudmersive Building 2".  This will often by null.
+          nullable: true
+        StreetNumber:
+          type: string
+          description: The street number or house number of the address.  For example,
+            in the address "1600 Pennsylvania Avenue NW" the street number would be
+            "1600".  This value will typically be populated for most addresses.
+        Street:
+          type: string
+          description: The name of the street or road of the address.  For example,
+            in the address "1600 Pennsylvania Avenue NW" the street number would be
+            "Pennsylvania Avenue NW".
+        City:
+          type: string
+          description: The city of the address.
+        StateOrProvince:
+          type: string
+          description: The state or province of the address.
+        PostalCode:
+          type: string
+          description: The postal code or zip code of the address.
+        CountryFullName:
+          type: string
+          description: Country of the address, if present in the address.  If not
+            included in the address it will be null.
+          nullable: true
+        ISOTwoLetterCode:
+          type: string
+          description: Two-letter ISO 3166-1 country code
+          nullable: true
+      description: Result of parsing an address into its component parts
+    ValidateAddressRequest:
+      type: object
+      properties:
+        StreetAddress:
+          type: string
+          description: Required; Street address to validate, such as '2950 Buskirk
+            Ave.'
+        City:
+          type: string
+          description: Required; City part of the addrerss to validate, such as 'Walnut
+            Creek'
+        StateOrProvince:
+          type: string
+          description: Required; State or province of the address to validate, such
+            as 'CA' or 'California'
+        PostalCode:
+          type: string
+          description: Optional (recommended); Zip code or postal code of the address
+            to validate, such as '94597'
+        CountryFullName:
+          type: string
+          description: Optional (recommended); Name of the country, such as 'United
+            States'.  If left blank, and CountryCode is also left blank, will default
+            to United States.  Global countries are supported.
+        CountryCode:
+          type: string
+          description: Optional; two-letter country code (Two-letter ISO 3166-1 country
+            code) of the country.  If left blank, and CountryFullName is also left
+            blank, will default to United States.  Global countries are supported.
+      description: Request to Validate a Street Address
+    ValidateAddressResponse:
+      type: object
+      properties:
+        ValidAddress:
+          type: boolean
+          description: True if the address is valid, false otherwise
+        Latitude:
+          type: number
+          description: If the address is valid, the degrees latitude of the validated
+            address, null otherwise
+          format: double
+          nullable: true
+        Longitude:
+          type: number
+          description: If the address is valid, the degrees longitude of the validated
+            address, null otherwise
+          format: double
+          nullable: true
+      description: Result of validating a street address
+    NormalizeAddressResponse:
+      type: object
+      properties:
+        ValidAddress:
+          type: boolean
+          description: True if the address is valid, false otherwise
+        Building:
+          type: string
+          description: The name of the building, house or structure if applicable,
+            such as "Cloudmersive Building 2".  This will often by null.
+          nullable: true
+        StreetNumber:
+          type: string
+          description: The street number or house number of the address.  For example,
+            in the address "1600 Pennsylvania Avenue NW" the street number would be
+            "1600".  This value will typically be populated for most addresses.
+        Street:
+          type: string
+          description: The name of the street or road of the address.  For example,
+            in the address "1600 Pennsylvania Avenue NW" the street number would be
+            "Pennsylvania Avenue NW".
+        City:
+          type: string
+          description: The city of the address.
+        StateOrProvince:
+          type: string
+          description: The state or province of the address.
+        PostalCode:
+          type: string
+          description: The postal code or zip code of the address.
+        CountryFullName:
+          type: string
+          description: Country of the address, if present in the address.  If not
+            included in the address it will be null.
+          nullable: true
+        ISOTwoLetterCode:
+          type: string
+          description: Two-letter ISO 3166-1 country code
+        Latitude:
+          type: number
+          description: If the address is valid, the degrees latitude of the validated
+            address, null otherwise
+          format: double
+          nullable: true
+        Longitude:
+          type: number
+          description: If the address is valid, the degrees longitude of the validated
+            address, null otherwise
+          format: double
+          nullable: true
+      description: Result of validating a street address
+    ValidateCityRequest:
+      type: object
+      properties:
+        City:
+          type: string
+          description: 'Required: City of the address to validate, such as ''San Francisco''
+            or ''London'''
+        StateOrProvince:
+          type: string
+          description: 'Required: State or province of the address to validate, such
+            as ''California'' or ''CA'''
+        CountryFullName:
+          type: string
+          description: Optional (recommended); Name of the country, such as 'United
+            States'.  If left blank, and CountryCode is also left blank, will default
+            to United States.  Global countries are supported.
+        CountryCode:
+          type: string
+          description: Optional; two-letter country code (Two-letter ISO 3166-1 country
+            code) of the country.  If left blank, and CountryFullName is also left
+            blank, will default to United States.  Global countries are supported.
+      description: Request to Validate a City and State or Province in a country
+    ValidateCityResponse:
+      type: object
+      properties:
+        ValidCity:
+          type: boolean
+          description: True if the city is valid, false otherwise
+        City:
+          type: string
+          description: If valid, City corresponding to the input postal code, such
+            as 'Walnut Creek'
+        StateOrProvince:
+          type: string
+          description: If valid; State or province corresponding to the input state
+            name, such as 'CA' or 'California'
+        Latitude:
+          type: number
+          description: If the postal code is valid, the degrees latitude of the centroid
+            of the state, null otherwise
+          format: double
+          nullable: true
+        Longitude:
+          type: number
+          description: If the postal code is valid, the degrees longitude of the centroid
+            of the state, null otherwise
+          format: double
+          nullable: true
+      description: Result of validating a city
+    ValidateStateRequest:
+      type: object
+      properties:
+        StateOrProvince:
+          type: string
+          description: 'Required: State or province of the address to validate, such
+            as ''California'' or ''CA'''
+        CountryFullName:
+          type: string
+          description: Optional (recommended); Name of the country, such as 'United
+            States'.  If left blank, and CountryCode is also left blank, will default
+            to United States.  Global countries are supported.
+        CountryCode:
+          type: string
+          description: Optional; two-letter country code (Two-letter ISO 3166-1 country
+            code) of the country.  If left blank, and CountryFullName is also left
+            blank, will default to United States.  Global countries are supported.
+      description: Request to Validate a State or Province in a country
+    ValidateStateResponse:
+      type: object
+      properties:
+        ValidState:
+          type: boolean
+          description: True if the address is valid, false otherwise
+        StateOrProvince:
+          type: string
+          description: If valid; State or province corresponding to the input state
+            name, such as 'CA' or 'California'
+        Latitude:
+          type: number
+          description: If the postal code is valid, the degrees latitude of the centroid
+            of the state, null otherwise
+          format: double
+          nullable: true
+        Longitude:
+          type: number
+          description: If the postal code is valid, the degrees longitude of the centroid
+            of the state, null otherwise
+          format: double
+          nullable: true
+      description: Result of validating a state
+    ValidatePostalCodeRequest:
+      type: object
+      properties:
+        PostalCode:
+          type: string
+          description: 'Required: Zip code or postal code of the address to validate,
+            such as ''94597'''
+        CountryFullName:
+          type: string
+          description: Optional (recommended); Name of the country, such as 'United
+            States'.  If left blank, and CountryCode is also left blank, will default
+            to United States.  Global countries are supported.
+        CountryCode:
+          type: string
+          description: Optional; two-letter country code (Two-letter ISO 3166-1 country
+            code) of the country.  If left blank, and CountryFullName is also left
+            blank, will default to United States.  Global countries are supported.
+      description: Request to Validate a Postal Code
+    ValidatePostalCodeResponse:
+      type: object
+      properties:
+        ValidPostalCode:
+          type: boolean
+          description: True if the Postal Code is valid, false otherwise
+        City:
+          type: string
+          description: If valid, City corresponding to the input postal code, such
+            as 'Walnut Creek'
+        StateOrProvince:
+          type: string
+          description: If valid; State or province corresponding to the input postal
+            code, such as 'CA' or 'California'
+        Latitude:
+          type: number
+          description: If the postal code is valid, the degrees latitude of the centroid
+            of the postal code, null otherwise
+          format: double
+          nullable: true
+        Longitude:
+          type: number
+          description: If the postal code is valid, the degrees longitude of the centroid
+            of the postal code, null otherwise
+          format: double
+          nullable: true
+      description: Result of validating a postal code
+    ValidateCountryRequest:
+      type: object
+      properties:
+        RawCountryInput:
+          type: string
+          description: Raw country input - can be a two-letter code (FIPS 10-4 or
+            ISO 3166-1), three-letter code (ISO 3166-1) or country name
+      description: Input parameter to a country validation request
+    ValidateCountryResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if successful, false otherwise
+        CountryFullName:
+          type: string
+          description: Full name of the country
+        ISOTwoLetterCode:
+          type: string
+          description: Two-letter ISO 3166-1 country code
+        FIPSTwoLetterCode:
+          type: string
+          description: Two-letter FIPS 10-4 country code
+        ThreeLetterCode:
+          type: string
+          description: Three-letter ISO 3166-1 country code
+        IsEuropeanUnionMember:
+          type: boolean
+          description: True if this country is currently a member of the European
+            Union (EU), false otherwise
+        Timezones:
+          type: array
+          description: Time zones (IANA/Olsen) in the country
+          items:
+            $ref: '#/components/schemas/Timezone'
+        ISOCurrencyCode:
+          type: string
+          description: ISO 4217 currency three-letter code associated with the country
+        CurrencySymbol:
+          type: string
+          description: Symbol associated with the currency
+        CurrencyEnglishName:
+          type: string
+          description: Full name of the currency
+        Region:
+          type: string
+          description: Region (continent) in which the country is located; possible
+            values are None, Europe, Americas, Asia, Africa, Oceania
+        Subregion:
+          type: string
+          description: Subregion in which the country is located; possible values
+            are None, NorthernEurope, WesternEurope, SouthernEurope, EasternEurope,
+            CentralAmerica, NorthernAmerica, SouthAmerica, EasternAfrica, MiddleAfrica,
+            NorthernAfrica , SouthernAfrica , WesternAfrica , CentralAsia , EasternAsia
+            , SouthernAsia , SouthEasternAsia , WesternAsia , Southern , Middle ,
+            AustraliaandNewZealand , Melanesia , Polynesia , Micronesia , Caribbean,
+      description: Result of performing a country validation operation
+    Timezone:
+      type: object
+      properties:
+        Name:
+          type: string
+          description: Name of the Time Zone
+        BaseUTCOffset:
+          type: string
+          description: UTC offset for this time zone
+        Now:
+          type: string
+          description: The current time (Now) in this time zone
+          format: date-time
+      description: IANA/Olsen time zone
+    CountryListResult:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        Countries:
+          type: array
+          description: List of current ISO 3166-1 countries in the world
+          items:
+            $ref: '#/components/schemas/CountryDetails'
+      description: Result of enumerating available countries
+    CountryDetails:
+      type: object
+      properties:
+        CountryName:
+          type: string
+          description: Name of the country
+        ThreeLetterCode:
+          type: string
+          description: Three-letter ISO 3166-1 country code
+        ISOTwoLetterCode:
+          type: string
+          description: Two-letter ISO 3166-1 country code
+        IsEuropeanUnionMember:
+          type: boolean
+          description: True if this country is currently a member of the European
+            Union (EU), false otherwise
+        ISOCurrencyCode:
+          type: string
+          description: ISO 4217 currency three-letter code associated with the country
+        CurrencySymbol:
+          type: string
+          description: Symbol associated with the currency
+        CurrencyEnglishName:
+          type: string
+          description: Full name of the currency
+        Region:
+          type: string
+          description: Region (continent) in which the country is located; possible
+            values are None, Europe, Americas, Asia, Africa, Oceania
+        Subregion:
+          type: string
+          description: Subregion in which the country is located; possible values
+            are None, NorthernEurope, WesternEurope, SouthernEurope, EasternEurope,
+            CentralAmerica, NorthernAmerica, SouthAmerica, EasternAfrica, MiddleAfrica,
+            NorthernAfrica , SouthernAfrica , WesternAfrica , CentralAsia , EasternAsia
+            , SouthernAsia , SouthEasternAsia , WesternAsia , Southern , Middle ,
+            AustraliaandNewZealand , Melanesia , Polynesia , Micronesia , Caribbean,
+      description: Details of one country
+    GetTimezonesRequest:
+      type: object
+      properties:
+        CountryCodeOrName:
+          type: string
+          description: Can be the two-letter, three-letter country codes or country
+            name
+      description: Request to get time zones for a country
+    GetTimezonesResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if successful, false otherwise
+        CountryFullName:
+          type: string
+          description: Full name of the country
+        ISOTwoLetterCode:
+          type: string
+          description: Two-letter ISO 3166-1 country code
+        FIPSTwoLetterCode:
+          type: string
+          description: Two-letter FIPS 10-4 country code
+        ThreeLetterCode:
+          type: string
+          description: Three-letter ISO 3166-1 country code
+        Timezones:
+          type: array
+          description: Time zones (IANA/Olsen) in the country
+          items:
+            $ref: '#/components/schemas/Timezone'
+      description: Result of performing a get time zones operation
+    ReverseGeocodeAddressRequest:
+      type: object
+      properties:
+        Latitude:
+          type: number
+          description: Latitude coordinate in WGS84 format
+          format: double
+        Longitude:
+          type: number
+          description: Longitude coordinate in WGS84 format
+          format: double
+      description: Request to reverse geocode a Street Address
+    ReverseGeocodeAddressResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the address operation was successful, false otherwise
+        StreetAddress:
+          type: string
+          description: Street address to validate, such as '2950 Buskirk Ave.'
+        City:
+          type: string
+          description: City part of the addrerss to validate, such as 'Walnut Creek'
+        StateOrProvince:
+          type: string
+          description: State or province of the address to validate, such as 'CA'
+            or 'California'
+        PostalCode:
+          type: string
+          description: Zip code or postal code of the address to validate, such as
+            '94597'
+        CountryFullName:
+          type: string
+          description: Name of the country, such as 'United States'.  Global countries
+            are supported.
+        CountryCode:
+          type: string
+          description: Three-letter ISO 3166-1 country code
+      description: Result of reverse geocoding a street address
+    DateTimeNowResult:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if successful, false otherwise
+        Now:
+          type: string
+          description: Current date, time, and time zone in standard JSON date format
+          format: date-time
+        NowGmt:
+          type: string
+          description: Current GMT-time-zone date, time, and time zone in standard
+            JSON date format
+          format: date-time
+      description: Current date and time response
+    GetPublicHolidaysRequest:
+      type: object
+      properties:
+        RawCountryInput:
+          type: string
+          description: Two-letter code (FIPS 10-4 or ISO 3166-1) of the country; if
+            not specified, defaults to United States
+        Year:
+          type: integer
+          description: Optional - the year in which to retrieve the holidays; if left
+            blank (0) it will default to the current year
+          format: int32
+      description: Input parameter to a country validation request
+    PublicHolidaysResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if successful, false otherwise
+        PublicHolidays:
+          type: array
+          description: Public holidays in the requested country and year
+          items:
+            $ref: '#/components/schemas/PublicHolidayOccurrence'
+      description: Result of performing a get public holidays request operation
+    PublicHolidayOccurrence:
+      type: object
+      properties:
+        EnglishName:
+          type: string
+          description: Name of the holiday in English
+        LocalName:
+          type: string
+          description: Local name of the holiday
+        OccurrenceDate:
+          type: string
+          description: Date of the holiday (start time)
+          format: date-time
+        HolidayType:
+          type: string
+          description: 'Type of the holiday; possible values are: Public, Bank, School,
+            Authorities, Optional, Observance'
+        Nationwaide:
+          type: boolean
+          description: True if the holiday is celebrated in all locales in the country,
+            false otherwise
+      description: Public holiday occurrence
+    DateTimeStandardizedParseRequest:
+      type: object
+      properties:
+        RawDateTimeInput:
+          type: string
+          description: Raw string input of a standard-formatted date and time for
+            parsing
+        CountryCode:
+          type: string
+          description: 'Optional: specify the two-letter country code to optimzie
+            date formatting; default is US'
+      description: Input parameter to a date time parsing request
+    DateTimeStandardizedParseResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if successful, false otherwise
+        ParsedDateResult:
+          type: string
+          description: Result of performing a date time parsing
+          format: date-time
+        Year:
+          type: integer
+          description: Year of the parsed date time result
+          format: int32
+        Month:
+          type: integer
+          description: Month of the parsed date time result
+          format: int32
+        Day:
+          type: integer
+          description: Day of the parsed date time result
+          format: int32
+        Hour:
+          type: integer
+          description: Hour of the parsed date time result (24-hour)
+          format: int32
+        Minute:
+          type: integer
+          description: Minute of the parsed date time result
+          format: int32
+        Second:
+          type: integer
+          description: Second of the parsed date time result
+          format: int32
+        DayOfWeek:
+          type: string
+          description: Day of week
+      description: Result of performing a date time parsing
+    DateTimeNaturalLanguageParseRequest:
+      type: object
+      properties:
+        RawDateTimeInput:
+          type: string
+          description: Raw string input of a natural language-formatted date and time
+            for parsing
+      description: Input parameter to a date time parsing request
+    CheckResponse:
+      type: object
+      properties:
+        ValidDomain:
+          type: boolean
+          description: True if the domain name was valid, false if it is not
+      description: Result of a validation operation
+    DomainQualityResponse:
+      type: object
+      properties:
+        DomainQualityScore:
+          type: number
+          description: The quality score of the domain name; possible values are 0.0
+            to 10.0 with 10.0 being the highest and 0.0 being the lowest quality.
+          format: double
+      description: Result of performing a domain quality score operation
+    WhoisResponse:
+      type: object
+      properties:
+        ValidDomain:
+          type: boolean
+          description: True if the domain is valid, false if it is not
+        RegistrantName:
+          type: string
+          description: Name of the domain registrant
+        RegistrantOrganization:
+          type: string
+          description: Organization name of the domain registrant
+        RegistrantEmail:
+          type: string
+          description: Email address of the domain registrant
+        RegistrantStreetNumber:
+          type: string
+          description: Street number of the address of the domain registrant, if available
+        RegistrantStreet:
+          type: string
+          description: Street name of the address of the domain registrant, if available
+        RegistrantCity:
+          type: string
+          description: City of the domain registrant, if available
+        RegistrantStateOrProvince:
+          type: string
+          description: State or Province of the address of the domain registrant,
+            if available
+        RegistrantPostalCode:
+          type: string
+          description: Postal code of the address of the domain registrant, if available
+        RegistrantCountry:
+          type: string
+          description: Country of the address of the domain registrant, if available
+        RegistrantRawAddress:
+          type: string
+          description: Raw address string of the domain registrant, if available
+        RegistrantTelephone:
+          type: string
+          description: Telephone number of the address of the domain registrant
+        WhoisServer:
+          type: string
+          description: Server used to lookup WHOIS information (may change based on
+            lookup).
+        RawTextRecord:
+          type: string
+          description: WHOIS raw text record
+        CreatedDt:
+          type: string
+          description: Creation date for the record
+          format: date-time
+      description: Result of a WHOIS operation
+    ValidateUrlRequestSyntaxOnly:
+      type: object
+      properties:
+        URL:
+          type: string
+          description: URL to validate
+      description: Request to determine if a URL is valid
+    ValidateUrlResponseSyntaxOnly:
+      type: object
+      properties:
+        ValidURL:
+          type: boolean
+          description: True if the URL is valid, false otherwise
+        WellFormedURL:
+          type: string
+          description: Well-formed version of the URL
+        TopLevelDomainName:
+          type: string
+          description: The top-level domain name of the URL, e.g. mydomain.com
+      description: Result of validating a URL with syntax only
+    ValidateUrlRequestFull:
+      type: object
+      properties:
+        URL:
+          type: string
+          description: URL to validate
+      description: Request to determine if a URL is valid
+    ValidateUrlResponseFull:
+      type: object
+      properties:
+        ValidURL:
+          type: boolean
+          description: True if the URL has valid syntax, a valid domain, a valid endpoint,
+            and passes virus scan checks; false otherwise
+        Valid_Syntax:
+          type: boolean
+          description: True if the URL has valid syntax, false otherwise
+        Valid_Domain:
+          type: boolean
+          description: True if the domain name is valid and exists, false otherwise
+        Valid_Endpoint:
+          type: boolean
+          description: True if the endpoint is up and responsive and passes a virus
+            scan check, false otherwise
+        WellFormedURL:
+          type: string
+          description: Well-formed version of the URL
+      description: Result of validating a URL with full validation
+    PhishingCheckRequest:
+      type: object
+      properties:
+        URL:
+          type: string
+          description: URL to validate
+      description: Request to determine if a URL is a Phishing threat
+    PhishingCheckResponse:
+      type: object
+      properties:
+        CleanURL:
+          type: boolean
+          description: True if the URL is clean, false if it is at risk of containing
+            a Phishing threat or attack
+        ThreatType:
+          type: string
+          description: Threat type of the Phishing threat; possible values are VerifiedPhishingURL,
+            UnverifiedPhishingURL, or VerifiedPhishingDomain
+      description: Result of checking a URL for Phishing threats
+    IsAdminPathResponse:
+      type: object
+      properties:
+        IsAdminPathNode:
+          type: boolean
+          description: True if the input IP address is an Admin Path, and false otherwise
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+      description: Result of performing an Admin Path operation
+    UrlSafetyCheckRequestFull:
+      type: object
+      properties:
+        URL:
+          type: string
+          description: URL to validate
+      description: Request to determine if a URL is a safety threat check
+    UrlSafetyCheckResponseFull:
+      type: object
+      properties:
+        CleanURL:
+          type: boolean
+          description: True if the URL is clean, false if it is at risk of containing
+            a safety threat or attack
+        ThreatType:
+          type: string
+          description: Threat type identified, if any; possible values are "ForcedDownload",
+            "VirusesAndMalware", "Phishing"
+      description: Result of checking a URL for safety threats
+    UrlSsrfRequestFull:
+      type: object
+      properties:
+        URL:
+          type: string
+          description: URL to validate
+        BlockedDomains:
+          type: array
+          description: Top level domains that you do not want to allow access to,
+            e.g. mydomain.com - will block all subdomains as well
+          items:
+            type: string
+      description: Request to determine if a URL is an SSRF threat check
+    UrlSsrfResponseFull:
+      type: object
+      properties:
+        CleanURL:
+          type: boolean
+          description: True if the URL is clean, false if it is at risk of containing
+            an SSRF threat or attack
+        ThreatLevel:
+          type: string
+          description: Threat level of the URL; possible values are High, Medium,
+            Low and None
+      description: Result of checking a URL for SSRF threats
+    UrlSsrfRequestBatch:
+      type: object
+      properties:
+        InputItems:
+          type: array
+          description: Input URLs to check for SSRF threats
+          items:
+            $ref: '#/components/schemas/UrlSsrfRequestFull'
+      description: Batch operation to perform SSRF threat checks on multiple URLs
+    UrlSsrfResponseBatch:
+      type: object
+      properties:
+        OutputItems:
+          type: array
+          description: Results of the operation, with indexes matched to input values
+          items:
+            $ref: '#/components/schemas/UrlSsrfResponseFull'
+      description: Result of performing SSRF threat checks on multiple URLs
+    UrlHtmlSsrfRequestFull:
+      type: object
+      properties:
+        URL:
+          type: string
+          description: URL to validate
+      description: Request to determine if a URL contains HTML-embedded SSRF threats
+    UrlHtmlSsrfResponseFull:
+      type: object
+      properties:
+        CleanURL:
+          type: boolean
+          description: True if the URL is clean, false if it is at risk of containing
+            an SSRF threat or attack
+        HttpResponseCode:
+          type: integer
+          description: HTTP response code from the URL
+          format: int32
+      description: Result of checking a URL for HTML-embedded SSRF threats
+    AddressVerifySyntaxOnlyResponse:
+      type: object
+      properties:
+        ValidAddress:
+          type: boolean
+          description: True if the email address is syntactically valid, false if
+            it is not
+        Domain:
+          type: string
+          description: Domain name of the email address
+        IsFreeEmailProvider:
+          type: boolean
+          description: True if the email domain name is a free provider (typically
+            a free to sign up web email provider for consumers / personal use), false
+            otherwise.
+        IsDisposable:
+          type: boolean
+          description: True if the email address is a disposable email address, false
+            otherwise; these disposable providers are not typically used to receive
+            email and so will have a low likelihood of opening mail sent there.
+      description: Syntactic validity of email address
+    AddressGetServersResponse:
+      type: object
+      properties:
+        Success:
+          type: boolean
+          description: True if partial address validation was successufl, false otherwise
+        Servers:
+          type: array
+          description: Email servers for this email address
+          items:
+            type: string
+      description: Result of a partial email address validation
+    FullEmailValidationResponse:
+      type: object
+      properties:
+        ValidAddress:
+          type: boolean
+          description: True if the email address is valid overall, false otherwise
+        MailServerUsedForValidation:
+          type: string
+          description: Email server connected to for verification
+        Valid_Syntax:
+          type: boolean
+          description: True if the syntax of the email address is valid, false otherwise.  This
+            is one component of ValidAddress, but not the only one.
+        Valid_Domain:
+          type: boolean
+          description: True if the domain name of the email address is valid, false
+            otherwise.  This is one component of ValidAddress, but not the only one.
+        Valid_SMTP:
+          type: boolean
+          description: True if the email address was verified by the remote server,
+            false otherwise.  This is one component of ValidAddress, but not the only
+            one.
+        IsCatchallDomain:
+          type: boolean
+          description: True if the domain is a catch-all domain name, false otherwise.  Catch-all
+            domain names, while rare, always accept inbound email to ensure they do
+            not lose any potentially useful emails.  Catch-all domain names can occassionally
+            be configured to first accept and store all inbound email, but then later
+            send a bounce email back to the sender after a delayed period of time.
+        Domain:
+          type: string
+          description: Domain name of the email address
+        IsFreeEmailProvider:
+          type: boolean
+          description: True if the email domain name is a free provider (typically
+            a free to sign up web email provider for consumers / personal use), false
+            otherwise.
+        IsDisposable:
+          type: boolean
+          description: True if the email address is a disposable email address, false
+            otherwise; these disposable providers are not typically used to receive
+            email and so will have a low likelihood of opening mail sent there.
+      description: Full email addresss validation result
+    IPIntelligenceResponse:
+      type: object
+      properties:
+        IsBot:
+          type: boolean
+          description: True if the IP address is a known bot, otherwise false
+        IsTorNode:
+          type: boolean
+          description: True if the IP address is a known Tor exit node, otherwise
+            false
+        IsThreat:
+          type: boolean
+          description: True if the IP address is a known threat IP, otherwise false
+        IsEU:
+          type: boolean
+          description: True if the IP address is in the European Union, otherwise
+            false
+        Location:
+          $ref: '#/components/schemas/GeolocateResponse'
+        CurrencyCode:
+          type: string
+          description: ISO 4217 currency code for the IP address location
+        CurrencyName:
+          type: string
+          description: Name of the currency in English
+        RegionArea:
+          type: string
+          description: Region (continent) in which the country is located; possible
+            values are None, Europe, Americas, Asia, Africa, Oceania
+        SubregionArea:
+          type: string
+          description: Subregion in which the country is located; possible values
+            are None, NorthernEurope, WesternEurope, SouthernEurope, EasternEurope,
+            CentralAmerica, NorthernAmerica, SouthAmerica, EasternAfrica, MiddleAfrica,
+            NorthernAfrica , SouthernAfrica , WesternAfrica , CentralAsia , EasternAsia
+            , SouthernAsia , SouthEasternAsia , WesternAsia , Southern , Middle ,
+            AustraliaandNewZealand , Melanesia , Polynesia , Micronesia , Caribbean,
+      description: IP address intelligence result
+    GeolocateResponse:
+      type: object
+      properties:
+        CountryCode:
+          type: string
+          description: Two-letter country code of IP address
+        CountryName:
+          type: string
+          description: Country name of IP address
+        City:
+          type: string
+          description: City of IP address
+        RegionCode:
+          type: string
+          description: State/region code of IP address
+        RegionName:
+          type: string
+          description: State/region of IP address
+        ZipCode:
+          type: string
+          description: Zip or postal code of IP address
+        TimezoneStandardName:
+          type: string
+          description: Timezone of IP address
+        Latitude:
+          type: number
+          description: Latitude of IP address
+          format: double
+        Longitude:
+          type: number
+          description: Longitude of IP address
+          format: double
+      description: Geolocation result of performing an IP address geolocation operation.  This
+        product includes GeoLite2 data created by MaxMind, available from www.maxmind.com.
+    GeolocateStreetAddressResponse:
+      type: object
+      properties:
+        CountryCode:
+          type: string
+          description: Two-letter country code of IP address
+        CountryName:
+          type: string
+          description: Country name of IP address
+        StreetAddress:
+          type: string
+          description: Street address of IP address
+        City:
+          type: string
+          description: City of IP address
+        RegionName:
+          type: string
+          description: State/region of IP address
+        ZipCode:
+          type: string
+          description: Zip or postal code of IP address
+      description: Geolocation street address result
+    IPThreatResponse:
+      type: object
+      properties:
+        IsThreat:
+          type: boolean
+          description: True if the input IP address is a threat, false otherwise
+        ThreatType:
+          type: string
+          description: Specifies the type of IP threat; possible values include Blocklist,
+            Botnet, WebBot
+      description: Result of performing a IP threat check on an IP address
+    TorNodeResponse:
+      type: object
+      properties:
+        IsTorNode:
+          type: boolean
+          description: True if the input IP address is a Tor exit node, false otherwise
+      description: Result of performing a Tor node check on an IP address
+    BotCheckResponse:
+      type: object
+      properties:
+        IsBot:
+          type: boolean
+          description: True if the input IP address is a Bot or Robot, false otherwise
+      description: Result of performing a Bot check on an IP address
+    IPReverseDNSLookupResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if a domain was found, false otherwise
+        HostName:
+          type: string
+          description: Host name (fully-qualified) associated with the IP address,
+            if any
+      description: Result of performing a Reverse Domain (DNS) lookup on an IP address
+    LeadEnrichmentRequest:
+      type: object
+      properties:
+        ContactBusinessEmail:
+          type: string
+          description: The person's business email address for the lead
+        ContactFirstName:
+          type: string
+          description: The person's first name for the lead
+        ContactLastName:
+          type: string
+          description: The person's last name for the lead
+        CompanyName:
+          type: string
+          description: Name of the company for the lead
+        CompanyDomainName:
+          type: string
+          description: Domain name / website for the lead
+        CompanyHouseNumber:
+          type: string
+          description: House number of the address of the company for the lead
+        CompanyStreet:
+          type: string
+          description: Street name of the address of the company for the lead
+        CompanyCity:
+          type: string
+          description: City of the address of the company for the lead
+        CompanyStateOrProvince:
+          type: string
+          description: State or Province of the address of the company for the lead
+        CompanyPostalCode:
+          type: string
+          description: Postal Code of the address of the company for the lead
+        CompanyCountry:
+          type: string
+          description: Country of the address of the company for the lead
+        CompanyCountryCode:
+          type: string
+          description: Country Code (2-letter ISO 3166-1) of the address of the company
+            for the lead
+        CompanyTelephone:
+          type: string
+          description: Telephone of the company office for the lead
+        CompanyVATNumber:
+          type: string
+          description: VAT number of the company for the lead
+      description: Input lead contact; fill in known fields to extend them with matched
+        field values
+    LeadEnrichmentResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        LeadType:
+          type: string
+          description: The type of the lead; possible types are Junk (a single individual
+            using a disposable/throwaway email address); Individual (a single individual,
+            typically a consumer, not purchasing on behalf of a business); SmallBusiness
+            (a small business, typically with fewer than 100 employees); MediumBusiness
+            (a medium business, larger than 100 employees but fewer than 1000 employees);
+            Enterprise (a large business with greater than 1000 employees); Business
+            (a business customer of unknown size)
+        ContactBusinessEmail:
+          type: string
+          description: The person's business email address for the lead
+        ContactFirstName:
+          type: string
+          description: The person's first name for the lead
+        ContactLastName:
+          type: string
+          description: The person's last name for the lead
+        ContactGender:
+          type: string
+          description: Gender for contact name; possible values are Male, Female,
+            and Neutral (can be applied to Male or Female).  Requires ContactFirstName.
+        CompanyName:
+          type: string
+          description: Name of the company for the lead
+        CompanyDomainName:
+          type: string
+          description: Domain name / website for the lead
+        CompanyHouseNumber:
+          type: string
+          description: House number of the address of the company for the lead
+        CompanyStreet:
+          type: string
+          description: Street name of the address of the company for the lead
+        CompanyCity:
+          type: string
+          description: City of the address of the company for the lead
+        CompanyStateOrProvince:
+          type: string
+          description: State or Province of the address of the company for the lead
+        CompanyPostalCode:
+          type: string
+          description: Postal Code of the address of the company for the lead
+        CompanyCountry:
+          type: string
+          description: Country Name of the address of the company for the lead
+        CompanyCountryCode:
+          type: string
+          description: Country Code (2-letter ISO 3166-1) of the address of the company
+            for the lead
+        CompanyTelephone:
+          type: string
+          description: Telephone of the company office for the lead
+        CompanyVATNumber:
+          type: string
+          description: VAT number of the company for the lead
+        EmployeeCount:
+          type: integer
+          description: Count of employees at the company (estimated), if available
+          format: int32
+      description: Result of the lead enrichment process
+    FullNameValidationRequest:
+      type: object
+      properties:
+        FullNameString:
+          type: string
+          description: Full name to process as a free-form string; supports many components
+            such as First Name, Middle Name, Last Name, Title, Nickname, Suffix, and
+            Display Name
+      description: Request to validate a full name string
+    FullNameValidationResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the validation operation was successful, false otherwise
+        ValidationResult_FirstName:
+          type: string
+          description: 'Possible values are: ValidFirstName, ValidUnknownFirstName,
+            InvalidSpamInput, InvalidCharacters, InvalidEmpty'
+        ValidationResult_LastName:
+          type: string
+          description: 'Possible values are: ValidLastName, ValidUnknownLastName,
+            InvalidSpamInput, InvalidCharacters, InvalidEmpty'
+        Title:
+          type: string
+          description: The person's title (if supplied), e.g. "Mr." or "Ms."
+        FirstName:
+          type: string
+          description: The first name (given name)
+        MiddleName:
+          type: string
+          description: The middle name(s); if there are multiple names they will be
+            separated by spaces
+        LastName:
+          type: string
+          description: The last name (surname)
+        NickName:
+          type: string
+          description: Nickname (if supplied)
+        Suffix:
+          type: string
+          description: Suffix to the name, e.g. "Jr." or "Sr."
+        DisplayName:
+          type: string
+          description: The full display name of the name
+      description: Result of a full name validation operation
+    FirstNameValidationRequest:
+      type: object
+      properties:
+        FirstName:
+          type: string
+          description: First name to process
+      description: Request to validate a first name
+    FirstNameValidationResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the validation operation was successful, false otherwise
+        ValidationResult:
+          type: string
+          description: 'Possible values are: ValidFirstName, ValidUnknownFirstName,
+            InvalidSpamInput, InvalidCharacters, InvalidEmpty'
+      description: Result of a first name validation operation
+    LastNameValidationRequest:
+      type: object
+      properties:
+        LastName:
+          type: string
+          description: Last name to process
+      description: Request to validate a last name
+    LastNameValidationResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the validation operation was successful, false otherwise
+        ValidationResult:
+          type: string
+          description: 'Possible values are: ValidLastName, ValidUnknownLastName,
+            InvalidSpamInput, InvalidCharacters, InvalidEmpty'
+      description: Result of a last name validation operation
+    GetGenderRequest:
+      type: object
+      properties:
+        FirstName:
+          type: string
+          description: Input first name (given name) to get the gender of
+        CountryCode:
+          type: string
+          description: Optional; the country for this name, possible values are "US",
+            "LY", "NI", "TT", "MK", "KZ", "BO", "UG", "TZ", "CL", "SI", "MA", "RW",
+            "VN", "AW", "CY", "BH", "SG", "ZA", "MU", "BR", "TN", "KH", "US", "TH",
+            "TW", "UY", "DO", "CO", "UA", "QA", "BY", "SN", "SD", "FJ", "LB", "BE",
+            "ML", "LV", "FR", "TM", "NG", "EC", "NO", "SL", "CR", "PA", "GE", "CH",
+            "KR", "RS", "ZM", "FI", "BF", "MC", "AU", "GA", "LS", "RU", "IN", "SE",
+            "LK", "BZ", "MX", "GH", "AF", "TJ", "BN", "DZ", "CM", "GR", "MD", "HN",
+            "AT", "NZ", "SV", "GW", "NA", "AR", "MZ", "PK", "MN", "IQ", "BW", "VE",
+            "PT", "BS", "AL", "TG", "ID", "ET", "CF", "JP", "BB", "PH", "CU", "BD",
+            "AO", "SM", "LC", "ME", "RO", "DA"  "NI", "LO", "ES", "EE", "IL", "ZW",
+            "MW", "LU", "IR", "SC", "NL", "JO", "AM", "DE", "GL", "OM", "DK", "HR",
+            "LI", "TD", "KM", "BA", "GM", "GD", "CA", "CZ", "MR", "ST", "IS", "LR",
+            "IE", "VC", "AE", "KG", "DJ", "TR", "KE", "NE", "UZ", "CN", "GQ", "SK",
+            "BJ", "MG", "BT", "EG", "PL", "IT", "SA", "MY", "CI", "AG", "AD", "KS",
+            "HU", "CG", "KP", "DM", "GN", "GT", "NP", "JM", "LA", "GB", "BG", "HT",
+            "PE", "AZ", "LT", "SZ", "PY", "MT", "VA", "SY"
+      description: Request to get the gender from a first name
+    GetGenderResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if successful, false otherwise
+        Gender:
+          type: string
+          description: Gender for this name; possible values are Male, Female, and
+            Neutral (can be applied to Male or Female)
+      description: Result of the GetGender operation
+    ValidateIdentifierRequest:
+      type: object
+      properties:
+        Input:
+          type: string
+          description: Text string identifier input
+        AllowWhitespace:
+          type: boolean
+          description: True if whitespace is allowed in the identifier, false otherwise
+        AllowHyphens:
+          type: boolean
+          description: True if hyphens are allowd in the identifier, false otherwise
+        AllowUnderscore:
+          type: boolean
+          description: True if underscores are allowed in the identifier, false otherwise
+        AllowNumbers:
+          type: boolean
+          description: True if numbers are allowed in the identifier, false otherwise
+        AllowPeriods:
+          type: boolean
+          description: True if periods are allowed in the identifier, false otherwise
+        MaxLength:
+          type: integer
+          description: Optional; maximum length, if any, of the identifier
+          format: int32
+        MinLength:
+          type: integer
+          description: Optional; minimum length, if any, of the identifier
+          format: int32
+      description: Identifier validation request, including the input identifier as
+        well as various identifier rules
+    ValidateIdentifierResponse:
+      type: object
+      properties:
+        ValidIdentifier:
+          type: boolean
+          description: True if the input identifier is valid, false otherwise
+        Error:
+          type: string
+          description: 'Resulting error from the identifier validation; possible errors
+            are: "InputIsEmpty", "ContainsWhitespace", "ContainsNumbers", "ContainsHyphen",
+            "ContainsUnderscore", "ContainsPeriod", "TooShort", "TooLong", "ContainsSpecialCharacters"'
+      description: Result of performing an identifier validation operation
+    PhoneNumberValidateRequest:
+      type: object
+      properties:
+        PhoneNumber:
+          type: string
+          description: Raw phone number string to parse as input for validation
+        DefaultCountryCode:
+          type: string
+          description: Optional, default country code.  If left blank, will default
+            to "US".
+      description: Request to validate a phone number
+    PhoneNumberValidationResponse:
+      type: object
+      properties:
+        IsValid:
+          type: boolean
+          description: True if the phone number is valid, false otherwise
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false if there was an
+            error during validation.  See IsValid for validation result.
+        PhoneNumberType:
+          type: string
+          description: "Type of phone number; possible values are: FixedLine, Mobile,\
+            \ FixedLineOrMobile, TollFree, PremiumRate, \r\nSharedCost, Voip, PersonalNumber,\
+            \ Pager, Uan, Voicemail, Unknown"
+        E164Format:
+          type: string
+          description: E.164 format of the phone number
+        InternationalFormat:
+          type: string
+          description: Internaltional format of the phone number
+        NationalFormat:
+          type: string
+          description: National format of the phone number
+        CountryCode:
+          type: string
+          description: Two digit country code of the phone number
+        CountryName:
+          type: string
+          description: User-friendly long name of the country for the phone number
+      description: Result from validating a phone number
+    SqlInjectionDetectionResult:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        ContainedSqlInjectionAttack:
+          type: boolean
+          description: True if the input contained SQL Injection attacks, false otherwise
+        OriginalInput:
+          type: string
+          description: Original input string
+      description: Result of performing an SQL Injection protection operation
+    SqlInjectionCheckBatchRequest:
+      type: object
+      properties:
+        RequestItems:
+          type: array
+          description: Multiple items to detect for SQL Injection
+          items:
+            $ref: '#/components/schemas/SqlInjectionCheckRequestItem'
+        DetectionLevel:
+          type: string
+          description: Set to Normal to target a high-security SQL Injection detection
+            level with a very low false positive rate; select High to target a very-high
+            security SQL Injection detection level with higher false positives.  Default
+            is Normal (recommended).
+      description: Input to a batch SQL Injection detection operation
+    SqlInjectionCheckRequestItem:
+      type: object
+      properties:
+        InputText:
+          type: string
+          description: Individual input text item to check for SQL Injection
+      description: Individual item to protect for SQL Injection
+    SqlInjectionCheckBatchResponse:
+      type: object
+      properties:
+        ResultItems:
+          type: array
+          description: Results from performing a batch SQL Injection detection operation;
+            order is preserved from input data
+          items:
+            $ref: '#/components/schemas/SqlInjectionDetectionResult'
+      description: Result of performing a batch XSS protection operation
+    XssProtectionResult:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        ContainedXss:
+          type: boolean
+          description: True if the input contained XSS scripting, false otherwise
+        OriginalInput:
+          type: string
+          description: Original input string
+        NormalizedResult:
+          type: string
+          description: Normalized string result, with XSS removed
+      description: Result of performing an XSS protection operation
+    XssProtectionBatchRequest:
+      type: object
+      properties:
+        RequestItems:
+          type: array
+          description: Multiple items to protect for XSS
+          items:
+            $ref: '#/components/schemas/XssProtectionRequestItem'
+      description: Input to a batch XSS protection operation
+    XssProtectionRequestItem:
+      type: object
+      properties:
+        InputText:
+          type: string
+          description: Individual input text item to protect from XSS
+      description: Individual item to protect for XSS
+    XssProtectionBatchResponse:
+      type: object
+      properties:
+        ResultItems:
+          type: array
+          description: Results from performing a batch XSS protection operation
+          items:
+            $ref: '#/components/schemas/XssProtectionResult'
+      description: Result of performing a batch XSS protection operation
+    HtmlSsrfDetectionResult:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        ContainedThreats:
+          type: boolean
+          description: True if the input contained SSRF threats, false otherwise
+      description: Result of performing an XXE threat detection operation
+    XxeDetectionResult:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        ContainedXxe:
+          type: boolean
+          description: True if the input contained XXE threats, false otherwise
+      description: Result of performing an XXE threat detection operation
+    XxeDetectionBatchRequest:
+      type: object
+      properties:
+        RequestItems:
+          type: array
+          description: Multiple items to protect for XXE
+          items:
+            $ref: '#/components/schemas/XxeDetectionRequestItem'
+      description: Input to a batch XXE detection operation
+    XxeDetectionRequestItem:
+      type: object
+      properties:
+        InputText:
+          type: string
+          description: Individual input text item to protect from XXE
+        AllowInternetUrls:
+          type: boolean
+          description: 'Optional: Set to true to allow Internet-based dependency URLs
+            for DTDs and other XML External Entitites, set to false to block.  Default
+            is false.'
+        KnownSafeUrls:
+          type: array
+          description: 'Optional: Comma separated list of fully-qualified URLs that
+            will automatically be considered safe.'
+          items:
+            type: string
+        KnownUnsafeUrls:
+          type: array
+          description: 'Optional: Comma separated list of fully-qualified URLs that
+            will automatically be considered unsafe.'
+          items:
+            type: string
+      description: Individual item to detect for XXE
+    XxeDetectionBatchResponse:
+      type: object
+      properties:
+        ResultItems:
+          type: array
+          description: Results from performing a batch XSS protection operation
+          items:
+            $ref: '#/components/schemas/XxeDetectionResult'
+      description: Result of performing a batch XXE detection operation
+    UserAgentValidateRequest:
+      type: object
+      properties:
+        UserAgentString:
+          type: string
+          description: The user agent string you wish to parse and validate
+      description: User-Agent parse and validation request
+    UserAgentValidateResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        IsBot:
+          type: boolean
+          description: True if the request is a known robot, false otherwise
+        BotName:
+          type: string
+          description: Optional; name of the robot if the request was from a known
+            robot, otherwise null
+          nullable: true
+        BotURL:
+          type: string
+          description: Optional; if available, the URL to the robot
+        OperatingSystem:
+          type: string
+          description: Operating System of the User-Agent (e.g. Windows)
+        OperatingSystemCPUPlatform:
+          type: string
+          description: The CPU platform of the User-Agent (e.g. x64)
+        OperatingSystemVersion:
+          type: string
+          description: The version of the operating system of the User-Agent (e.g.
+            "10" for Windows 10)
+        DeviceType:
+          type: string
+          description: Device type of the User-Agent; possible values are "DESKTOP",
+            "SMARTPHONE", "TABLET"
+        DeviceBrandName:
+          type: string
+          description: Brand name of the User-Agent
+        DeviceModel:
+          type: string
+          description: Model name or number of the User-Agent
+        BrowserName:
+          type: string
+          description: Name of the Browser
+        BrowserVersion:
+          type: string
+          description: Version of the Browser
+        BrowserEngineName:
+          type: string
+          description: Name of the Browser Engine
+        BrowserEngineVersion:
+          type: string
+          description: Version of the Browser Engine
+      description: The result of a User-Agent validation request
+    VatLookupRequest:
+      type: object
+      properties:
+        VatCode:
+          type: string
+          description: VAT code to lookup; example "CZ25123891"
+      description: Input to a VAT lookup request
+    VatLookupResponse:
+      type: object
+      properties:
+        CountryCode:
+          type: string
+          description: Two-letter country code
+        VatNumber:
+          type: string
+          description: VAT number
+        IsValid:
+          type: boolean
+          description: True if the VAT code is valid, false otherwise
+        BusinessName:
+          type: string
+          description: Name of the business
+        BusinessAddress:
+          type: string
+          description: Business address as a single string
+        BusinessBuilding:
+          type: string
+          description: For the business address, the name of the building, house or
+            structure if applicable, such as "Cloudmersive Building 2".  This will
+            often by null.
+          nullable: true
+        BusinessStreetNumber:
+          type: string
+          description: For the business address, the street number or house number
+            of the address.  For example, in the address "1600 Pennsylvania Avenue
+            NW" the street number would be "1600".  This value will typically be populated
+            for most addresses.
+        BusinessStreet:
+          type: string
+          description: For the business address, the name of the street or road of
+            the address.  For example, in the address "1600 Pennsylvania Avenue NW"
+            the street number would be "Pennsylvania Avenue NW".
+        BusinessCity:
+          type: string
+          description: For the business address, the city of the address.
+        BusinessStateOrProvince:
+          type: string
+          description: For the business address, the state or province of the address.
+        BusinessPostalCode:
+          type: string
+          description: For the business address, the postal code or zip code of the
+            address.
+        BusinessCountry:
+          type: string
+          description: For the business address, country of the address, if present
+            in the address.  If not included in the address it will be null.
+          nullable: true
+  securitySchemes:
+    Apikey:
+      type: apiKey
+      description: API Key Authentication
+      name: Apikey
+      in: header

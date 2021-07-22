@@ -93,7 +93,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list
+          description: Best seller list
           content:
             application/json:
               examples:
@@ -288,7 +288,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller history list
+          description: Best seller history list
           content:
             application/json:
               examples:
@@ -421,7 +421,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list names
+          description: Best seller list names
           content:
             application/json:
               examples:
@@ -498,7 +498,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list overview
+          description: Best seller list overview
           content:
             application/json:
               examples:
@@ -671,7 +671,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns best seller list by date
+          description: Best seller list by date
           content:
             application/json:
               examples:
@@ -844,7 +844,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Returns reviews
+          description: Reviews
           content:
             application/json:
               examples:

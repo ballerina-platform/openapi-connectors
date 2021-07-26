@@ -47,3 +47,59 @@ This module supports HubSpot REST API `v3` version.
     [authConfig]
     token = "<ACCESS_TOKEN>"
     ```
+
+## Quickstart
+### Create a contact instance and list existing instances
+#### Step 1: Import HubSpot CRM Contact module
+First, import the ballerinax/hubspot.crm.contact module into the Ballerina project.
+```ballerina
+import ballerinax/hubspot.crm.contact;
+```
+
+#### Step 2: Configure the connection credentials
+You can now make the connection configuration using the access token.
+```ballerina
+contact:ClientConfig clientConfig = {
+    authConfig : {
+        token: <ACCESS_TOKEN>
+    }
+};
+
+contact:Client baseClient = check new Client(clientConfig);
+
+```
+
+#### Step 3: Create a contact instance
+
+```ballerina
+contact:SimplePublicObjectInput contact = {
+    properties : {
+        "city": "Cambridge",
+        "domain": "biglytics.net",
+        "industry": "Technology",
+        "name": "Biglytics",
+        "phone": "(877) 929-0687",
+        "state": "Massachusetts"
+    }      
+};
+
+contact:SimplePublicObject|error bEvent = baseClient->create(contact);
+
+if (bEvent is contact:SimplePublicObject) {
+    log:printInfo("Created the contact" + bEvent.toString());
+} else {
+    log:printError(msg = bEvent.message());
+}
+```
+
+#### Step 4: List contacts
+
+```ballerina
+contact:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+
+if (bEvent is contact:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+    log:printInfo("Contact list" + bEvent.toString());
+} else {
+    log:printError(msg = bEvent.message());
+}
+```

@@ -47,3 +47,57 @@ This module supports HubSpot REST API `v3` version.
     [authConfig]
     token = "<ACCESS_TOKEN>"
     ```
+
+## Quickstart
+### Create a ticket instance and list existing instances
+#### Step 1: Import HubSpot CRM Ticket module
+First, import the ballerinax/hubspot.crm.ticket module into the Ballerina project.
+```ballerina
+import ballerinax/hubspot.crm.ticket;
+```
+
+#### Step 2: Configure the connection credentials
+You can now make the connection configuration using the access token.
+```ballerina
+ticket:ClientConfig clientConfig = {
+    authConfig : {
+        token: <ACCESS_TOKEN>
+    }
+};
+
+ticket:Client baseClient = check new Client(clientConfig);
+
+```
+
+#### Step 3: Create a ticket instance
+
+```ballerina
+ticket:SimplePublicObjectInput ticket = {
+    properties : {
+        "hs_pipeline": "support_pipeline",
+        "hs_ticket_priority": "HIGH",
+        "hubspot_owner_id": "20436354",
+        "subject": "troubleshoot report"
+    }      
+};
+
+ticket:SimplePublicObject|error bEvent = baseClient->create(ticket);
+
+if (bEvent is ticket:SimplePublicObject) {
+    log:printInfo("Created the ticket" + bEvent.toString());
+} else {
+    log:printError(msg = bEvent.message());
+}
+```
+
+#### Step 4: List tickets
+
+```ballerina
+ticket:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+
+if (bEvent is ticket:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+    log:printInfo("Ticket list" + bEvent.toString());
+} else {
+    log:printError(msg = bEvent.message());
+}
+```

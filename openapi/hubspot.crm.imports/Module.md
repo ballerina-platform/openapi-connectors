@@ -47,3 +47,36 @@ This module supports HubSpot REST API `v3` version.
     [authConfig]
     token = "<ACCESS_TOKEN>"
     ```
+
+## Quickstart
+### List Imports
+#### Step 1: Import HubSpot CRM Import module
+First, import the ballerinax/hubspot.crm.import module into the Ballerina project.
+```ballerina
+import ballerinax/hubspot.crm.import;
+```
+
+#### Step 2: Configure the connection credentials
+You can now make the connection configuration using the access token.
+```ballerina
+import:ClientConfig clientConfig = {
+    authConfig : {
+        token: <ACCESS_TOKEN>
+    }
+};
+
+import:Client baseClient = check new Client(clientConfig);
+
+```
+
+#### Step 3: List imports
+
+```ballerina
+import:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+
+if (bEvent is import:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+    log:printInfo("Imports list" + bEvent.toString());
+} else {
+    log:printError(msg = bEvent.message());
+}
+```

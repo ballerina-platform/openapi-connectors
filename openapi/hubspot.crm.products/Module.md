@@ -47,3 +47,59 @@ This module supports HubSpot REST API `v3` version.
     [authConfig]
     token = "<ACCESS_TOKEN>"
     ```
+
+## Quickstart
+### Create a product instance and list existing instances
+#### Step 1: Import HubSpot CRM Product module
+First, import the ballerinax/hubspot.crm.product module into the Ballerina project.
+```ballerina
+import ballerinax/hubspot.crm.product;
+```
+
+#### Step 2: Configure the connection credentials
+You can now make the connection configuration using the access token.
+```ballerina
+product:ClientConfig clientConfig = {
+    authConfig : {
+        token: <ACCESS_TOKEN>
+    }
+};
+
+product:Client baseClient = check new Client(clientConfig);
+
+```
+
+#### Step 3: Create a product instance
+
+```ballerina
+product:SimplePublicObjectInput product = {
+    properties : {
+        "description": "Onboarding service for data product",
+        "hs_cost_of_goods_sold": "600.00",
+        "hs_recurring_billing_period": "P12M",
+        "hs_sku": "191902",
+        "name": "Implementation Service ",
+        "price": "6000.00"
+    }      
+};
+
+product:SimplePublicObject|error bEvent = baseClient->create(product);
+
+if (bEvent is product:SimplePublicObject) {
+    log:printInfo("Created the product" + bEvent.toString());
+} else {
+    log:printError(msg = bEvent.message());
+}
+```
+
+#### Step 4: List companies
+
+```ballerina
+product:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+
+if (bEvent is product:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+    log:printInfo("Product list" + bEvent.toString());
+} else {
+    log:printError(msg = bEvent.message());
+}
+```

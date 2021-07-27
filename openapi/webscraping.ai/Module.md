@@ -3,25 +3,26 @@ Ballerina connector for WebScraping.AI is connecting the [WebScraping.AI API](ht
 
 This module supports [WebScraping.AI API v2.0.4](https://webscraping.ai/docs).
 
-## Configuring Connector
+## Prerequisites
 
-### Prerequisites
-- A [WebScraping.AI](https://webscraping.ai) Account
+Before using this connector in your Ballerina application, complete the following:
 
-### Obtaining tokens
-1. Log into WebScraping.AI API Dashboard and visiting https://webscraping.ai/dashboard
-2. Obtain the `API Key` from the dashboard
+* Create [WebScraping.AI](https://webscraping.ai) Account
+* Obtaining tokens
+    1. Log into WebScraping.AI API Dashboard and visiting https://webscraping.ai/dashboard
+    2. Obtain the `API Key` from the dashboard
+* Configure the connector with obtained tokens
  
 ## Quickstart
 
-### Page HTML by URL
+To use the WebScraping.AI connector in your Ballerina application, update the .bal file as follows:
 
-#### Step 1: Import WebScraping.AI module
+### Step 1: Import WebScraping.AI module
 First, import the ballerinax/webscraping.ai module into the Ballerina project.
 ```ballerina
 import ballerinax/webscraping.ai as wa;
 ```
-#### Step 2: Initialize the client.
+### Step 2: Initialize the client.
 You can initialize the client as follows. You can now provide the API Key obtained above in the configuration.
 ```ballerina
 wa:ApiKeysConfig config = {
@@ -29,7 +30,7 @@ wa:ApiKeysConfig config = {
 }
 wa:Client baseClient = check new Client(config);
 ```
-#### Step 3: Page HTML by URL
+### Step 3: Page HTML by URL
 You can now get full HTML content of a page with proxies and Chrome JS rendering.
 ```ballerina
 public function main() {
@@ -41,23 +42,7 @@ public function main() {
     }
 }
 ``` 
-
-### HTML of a selected page area by URL and CSS selector
-
-#### Step 1: Import WebScraping.AI module
-First, import the ballerinax/webscraping.ai module into the Ballerina project.
-```ballerina
-import ballerinax/webscraping.ai as wa;
-```
-#### Step 2: Initialize the client.
-You can initialize the client as follows. You can now provide the API Key obtained above in the configuration.
-```ballerina
-wa:ApiKeysConfig config = {
-    api_key: "<API_KEY>"
-}
-wa:Client baseClient = check new Client(config);
-```
-#### Step 3: HTML of a selected page area by URL and CSS selector
+### Step 4: Get HTML of a selected page area by URL and CSS selector
 You can now get HTML content of selected page areas (like price, search results, page title, etc.).
 ```ballerina
 public function main() {

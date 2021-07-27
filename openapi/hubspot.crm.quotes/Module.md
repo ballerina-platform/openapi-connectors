@@ -6,24 +6,21 @@ Ballerina connector for HubSpot CRM allows easy integration with HubSpot REST AP
 
 This module supports HubSpot REST API `v3` version.
  
-## Configuring connector
-### Prerequisites
-- A HubSpot account
-
-### Obtaining tokens
-- Use [this](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) guide to obtain the API keys related to your account.
-
-- Then provide the obtained API Key in client configuration.
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create a HubSpot developer account
+* Obtain tokens
+    -  Use [this](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) guide to obtain the API keys related to your account.
 
 ## Quickstart
-### List Quotes
-#### Step 1: Import HubSpot CRM Quote module
+To use the HubSpot CRM Quotes connector in your Ballerina application, update the .bal file as follows:
+### Step 1: Import HubSpot CRM Quote module
 First, import the ballerinax/hubspot.crm.quote module into the Ballerina project.
 ```ballerina
 import ballerinax/hubspot.crm.quote;
 ```
 
-#### Step 2: Configure the connection credentials
+### Step 2: Configure the connection credentials
 You can now make the connection configuration using the access token.
 ```ballerina
 quote:ApiKeysConfig config = {
@@ -36,7 +33,7 @@ quote:Client baseClient = check new Client(clientConfig);
 
 ```
 
-#### Step 3: List quotes
+### Step 3: List quotes
 
 ```
 quote:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();

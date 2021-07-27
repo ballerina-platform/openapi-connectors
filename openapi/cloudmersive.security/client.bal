@@ -46,7 +46,7 @@ public client class Client {
     # + return - OK
     remote isolated function contentThreatDetectionAutomaticThreatDetectionString(string payload) returns StringAutomaticThreatDetection|error {
         string  path = string `/security/threat-detection/content/automatic/detect/string`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -59,7 +59,7 @@ public client class Client {
     # + return - OK
     remote isolated function contentThreatDetectionDetectInsecureDeserializationJsonString(string payload) returns StringInsecureDeserializationJsonDetection|error {
         string  path = string `/security/threat-detection/content/insecure-deserialization/json/detect/string`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -72,7 +72,7 @@ public client class Client {
     # + return - OK
     remote isolated function contentThreatDetectionCheckSqlInjectionString(string payload) returns StringSqlInjectionDetectionResult|error {
         string  path = string `/security/threat-detection/content/sql-injection/detect/string`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -85,7 +85,7 @@ public client class Client {
     # + return - OK
     remote isolated function contentThreatDetectionProtectXss(string payload) returns StringXssProtectionResult|error {
         string  path = string `/security/threat-detection/content/xss/detect/string`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -98,7 +98,7 @@ public client class Client {
     # + return - OK
     remote isolated function contentThreatDetectionCheckXxe(string payload) returns StringXxeDetectionResult|error {
         string  path = string `/security/threat-detection/content/xxe/detect/xml/string`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -111,7 +111,7 @@ public client class Client {
     # + return - OK
     remote isolated function networkThreatDetectionDetectSsrfUrl(UrlSsrfThreatDetectionRequestFull payload) returns UrlSsrfThreatDetectionResponseFull|error {
         string  path = string `/security/threat-detection/network/url/ssrf/detect`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -124,7 +124,7 @@ public client class Client {
     # + return - OK
     remote isolated function networkThreatDetectionIsThreat(string payload) returns IPThreatDetectionResponse|error {
         string  path = string `/security/threat-detection/network/ip/is-threat`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -137,7 +137,7 @@ public client class Client {
     # + return - OK
     remote isolated function networkThreatDetectionIsBot(string payload) returns ThreatDetectionBotCheckResponse|error {
         string  path = string `/security/threat-detection/network/ip/is-bot`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);
@@ -150,7 +150,7 @@ public client class Client {
     # + return - OK
     remote isolated function networkThreatDetectionIsTorNode(string payload) returns ThreatDetectionTorNodeResponse|error {
         string  path = string `/security/threat-detection/network/ip/is-tor-node`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setJsonPayload(jsonBody);

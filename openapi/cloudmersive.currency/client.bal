@@ -45,7 +45,7 @@ public client class Client {
     # + return - OK
     remote isolated function currencyExchangeGetAvailableCurrencies() returns AvailableCurrencyResponse|error {
         string  path = string `/currency/exchange-rates/list-available`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys.get("Apikey")};
+        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
         http:Request request = new;
         //TODO: Update the request as needed;
         AvailableCurrencyResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = AvailableCurrencyResponse);
@@ -59,7 +59,7 @@ public client class Client {
     # + return - OK
     remote isolated function currencyExchangeConvertCurrency(string 'source, string destination, decimal payload) returns ConvertedCurrencyResult|error {
         string  path = string `/currency/exchange-rates/convert/${'source}/to/${destination}`;
-        map<any> headerValues = {Apikey: self.apiKeys.get("Apikey")};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"] ?: ""};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -74,7 +74,7 @@ public client class Client {
     # + return - OK
     remote isolated function currencyExchangeGetExchangeRate(string 'source, string destination) returns ExchangeRateResult|error {
         string  path = string `/currency/exchange-rates/get/${'source}/to/${destination}`;
-        map<any> headerValues = {Apikey: self.apiKeys.get("Apikey")};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"] ?: ""};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;

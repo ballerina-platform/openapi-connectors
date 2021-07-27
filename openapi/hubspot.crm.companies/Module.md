@@ -5,58 +5,21 @@ Ballerina connector for HubSpot CRM allows easy integration with HubSpot REST AP
 
 This module supports HubSpot REST API `v3` version.
  
-## Configuring connector
-### Prerequisites
-- A HubSpot developer account
-
-### Obtaining tokens
-1. Use [this](https://developers.hubspot.com/docs/api/working-with-oauth4) guide to obtain the credentials which are needed to create the <CLIENT_ID> and <CLIENT_SECRET>
-2. Next, you need to obtain an access token and a refresh token to invoke the HubSpot API. First, in a new browser, enter the below URL by replacing the `<CLIENT_ID>`, Provide scopes necessary to call the API for the `<SCOPES>`.
-    ```
-    https://app.hubspot.com/oauth/authorize?client_id=<CLIENT_ID>&scope=<SCOPES>&redirect_uri=https://www.example.com/
-    ```
-
-3. This will prompt you to enter the username and password for signing into the HubSPot App
-
-4. Once the username and password pair is successfully entered, this will give a URL as follows on the browser address bar.
-
-    ```
-    https://www.example.com?code=xxxxxxxxxxxxxxxxxxxxxxxxxxx&session_state=bfc0a6755-757
-    ```
-
-12. Copy the code parameter (`xxxxxxxxxxxxxxxxxxxxxxxxxxx` in the above example) and in a new terminal, enter the following cURL command by replacing the `<CODE>` with the code received from the above step. The `<CLIENT_ID>`, `<CLIENT_SECRET>` and `<SCOPES>` parameters are the same as above.
-
-    ```
-    curl -X POST --header "Content-Type: application/x-www-form-urlencoded" --header -d "client_id=<CLIENT_ID>&client_secret=<CLIENT_SECRET>&grant_type=authorization_code&redirect_uri=https://www.example.com/&code=<CODE>&scope=<SCOPES>" https://api.hubapi.com/oauth/v1/token
-    ```
-
-    The above cURL command should result in a response as follows.
-    ```
-    {
-      "token_type": "Bearer",
-      "scope": "<SCOPES>",
-      "expires_in": 3600,
-      "ext_expires_in": 3600,
-      "access_token": "<ACCESS_TOKEN>"
-    }
-    ```
-
-13. Provide the following configuration information in the `Config.toml` file to use the Azure Data Lake connector.
-
-    ```ballerina
-    [authConfig]
-    token = "<ACCESS_TOKEN>"
-    ```
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create a HubSpot developer account
+* Obtain tokens
+    - Use [this](https://developers.hubspot.com/docs/api/working-with-oauth4) guide to obtain the credentials which are needed to create the <CLIENT_ID> and <CLIENT_SECRET>
 
 ## Quickstart
-### Create a company instance and list existing instances
-#### Step 1: Import HubSpot CRM Company module
+To use the HubSpot CRM Companies connector in your Ballerina application, update the .bal file as follows:
+### Step 1: Import HubSpot CRM Company module
 First, import the ballerinax/hubspot.crm.company module into the Ballerina project.
 ```ballerina
 import ballerinax/hubspot.crm.company;
 ```
 
-#### Step 2: Configure the connection credentials
+### Step 2: Configure the connection credentials
 You can now make the connection configuration using the access token.
 ```ballerina
 company:ClientConfig clientConfig = {
@@ -69,7 +32,7 @@ company:Client baseClient = check new Client(clientConfig);
 
 ```
 
-#### Step 3: Create a company instance
+### Step 3: Create a company instance
 
 ```ballerina
 company:SimplePublicObjectInput company = {
@@ -92,7 +55,7 @@ if (bEvent is company:SimplePublicObject) {
 }
 ```
 
-#### Step 4: List companies
+### Step 4: List companies
 
 ```ballerina
 company:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();

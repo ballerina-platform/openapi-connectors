@@ -1,10 +1,10 @@
 Connects to Asana API from Ballerina
 
 #### Compatibility
-|                               | Version                |
-|-------------------------------|------------------------|
-|  Ballerina Language Version   |  **Swan Lake Alpha 5** |
-|       Asana API Version       |          **V1**        |
+|                               | Version            |
+|-------------------------------|--------------------|
+|  Ballerina Language Version   |  Swan Lake Alpha5  |
+|       Asana API Version       |          V1        |
 
 ### Package Overview
 The `ballerinax/asana` is a [Ballerina](https://ballerina.io/) connector for Asana API.

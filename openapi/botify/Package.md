@@ -1,14 +1,14 @@
 Connects to Botify from Ballerina
 
 #### Compatibility
-|                               | Version               |
-|-------------------------------|-----------------------|
-|   Ballerina Language Version  | **Swan Lake Alpha 5** |
-|       Botify API Version      |         **V1**        |
+|                               | Version           |
+|-------------------------------|-------------------|
+|   Ballerina Language Version  | Swan Lake Alpha 5 |
+|       Botify API Version      |         V1        |
 
 ### Package Overview
 The `ballerinax/botify` is a [Ballerina](https://ballerina.io/) connector for Botify.
-This package provides the capability to easily access Botify.
+This package provides the capability to access Botify.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 ### Useful Links

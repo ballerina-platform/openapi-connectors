@@ -6,25 +6,21 @@ It allows scanning photos of barcodes to text, generate 1D barcodes and generate
 
 This module supports Cloudmersive Barcode REST API `v1` version.
  
-## Configuring the connector
 ### Prerequisites
-- A Cloudmersive Account
-
-### Obtaining tokens
-Follow these steps to obtain the required token
-
-1. Login to the Cloudmersive account
-2. Visit `API Keys` tab on sidebar
-3. Click `Create Key` button
+* Create a Cloudmersive Account
+* Obtaining tokens
+    1. [Login to the Cloudmersive account](https://account.cloudmersive.com/login)
+    2. [Obtain API keys](https://account.cloudmersive.com/keys)
 
 ## Quickstart
-### Lookup EAN barcode value and obtain the product data
-#### Step 1: Import cloudmersive.barcode module
+
+To use the Cloudmersive Barcode connector in your Ballerina application, update the .bal file as follows:
+### Step 1: Import cloudmersive.barcode module
 First, import the ballerinax/cloudmersive.barcode module into the Ballerina project.
 ```ballerina
 import ballerinax/cloudmersive.barcode;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Configure the connection credentials.
 You can now make the connection configuration using the access token.
 ```ballerina
 barcode:ApiKeysConfig config = {
@@ -36,7 +32,7 @@ barcode:ApiKeysConfig config = {
 barcode:Client baseClient = check new Client(clientConfig);
 
 ```
-#### Step 3: Lookup EAN barcode
+### Step 3: Lookup EAN barcode
 
 ```ballerina
 barcode:BarcodeLookupResponse|error bEvent = baseClient->barcodeEanLookup("4 605664 00005");

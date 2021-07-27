@@ -6,25 +6,21 @@ It supports functionalities to for email address, phone number, street address V
 
 This module supports Cloudmersive Validate REST API `v1` version.
  
-## Configuring the connector
-### Prerequisites
-- A Cloudmersive Account
-
-### Obtaining tokens
-Follow these steps to obtain the required token
-
-1. Login to the Cloudmersive account
-2. Visit `API Keys` tab on sidebar
-3. Click `Create Key` button
+## Prerequisites
+* Create a Cloudmersive Account
+* Obtaining tokens
+    1. [Login to the Cloudmersive account](https://account.cloudmersive.com/login)
+    2. [Obtain API keys](https://account.cloudmersive.com/keys)
 
 ## Quickstart
-### Parsing unstructured input text string into an international, formatted address
-#### Step 1: Import cloudmersive.validate module
+To use the Cloudmersive Validate connector in your Ballerina application, update the .bal file as follows:
+
+### Step 1: Import cloudmersive.validate module
 First, import the ballerinax/cloudmersive.validate module into the Ballerina project.
 ```ballerina
 import ballerinax/cloudmersive.validate;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Configure the connection credentials.
 You can now make the connection configuration using the access token.
 ```ballerina
 validate:ApiKeysConfig config = {
@@ -36,7 +32,7 @@ validate:ApiKeysConfig config = {
 validate:Client baseClient = check new Client(clientConfig);
 
 ```
-#### Step 3: Obtain the parsed address
+### Step 3: Obtain the parsed address
 
 ```ballerina
 validate:ParseAddressRequest address = {

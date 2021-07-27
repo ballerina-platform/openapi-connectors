@@ -8,25 +8,21 @@ AWS and Google Cloud.
 
 This module supports Cloudmersive Virus Scan REST API `v1` version.
  
-## Configuring the connector
-### Prerequisites
-- A Cloudmersive Account
-
-### Obtaining tokens
-Follow these steps to obtain the required token
-
-1. Login to the Cloudmersive account
-2. Visit `API Keys` tab on sidebar
-3. Click `Create Key` button
+## Prerequisites
+* Create a Cloudmersive Account
+* Obtaining tokens
+    1. [Login to the Cloudmersive account] (https://account.cloudmersive.com/login)
+    2. [Obtain API keys] (https://account.cloudmersive.com/keys)
 
 ## Quickstart
-### Scan a website for viruses
-#### Step 1: Import cloudmersive.validate module
+To use the Cloudmersive Virus Scan connector in your Ballerina application, update the .bal file as follows:
+
+### Step 1: Import cloudmersive.validate module
 First, import the ballerinax/cloudmersive.virusscan module into the Ballerina project.
 ```ballerina
 import ballerinax/cloudmersive.virusscan;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Configure the connection credentials.
 You can now make the connection configuration using the access token.
 ```ballerina
 virusscan:ApiKeysConfig config = {
@@ -38,7 +34,7 @@ virusscan:ApiKeysConfig config = {
 virusscan:Client baseClient = check new Client(clientConfig);
 
 ```
-#### Step 3: Get the scan result
+### Step 3: Get the scan result
 ```ballerina
 virusscan:WebsiteScanRequest address = {
     Url: "https://www.yahoo.com/"

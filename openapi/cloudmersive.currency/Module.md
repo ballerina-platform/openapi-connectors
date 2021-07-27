@@ -7,25 +7,23 @@ It allows obtaining real-time exchange Rate Data and allows converting prices be
 
 This module supports Cloudmersive Currency REST API `v1` version.
  
-## Configuring the connector
-### Prerequisites
-- A Cloudmersive Account
+## Prerequisites
+* Create a Cloudmersive Account
+* Obtaining tokens
+    1. [Login to the Cloudmersive account](https://account.cloudmersive.com/login)
+    2. [Obtain API keys](https://account.cloudmersive.com/keys)
 
-### Obtaining tokens
-Follow these steps to obtain the required token
-
-1. Login to the Cloudmersive account
-2. Visit `API Keys` tab on sidebar
-3. Click `Create Key` button
 
 ## Quickstart
-### Get all the available currency types
-#### Step 1: Import cloudmersive.currency module
+
+To use the Cloudmersive Currency connector in your Ballerina application, update the .bal file as follows:
+
+### Step 1: Import cloudmersive.currency module
 First, import the ballerinax/cloudmersive.currency module into the Ballerina project.
 ```ballerina
 import ballerinax/cloudmersive.currency;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Configure the connection credentials.
 You can now make the connection configuration using the access token.
 ```ballerina
 currency:ApiKeysConfig config = {
@@ -37,7 +35,7 @@ currency:ApiKeysConfig config = {
 currency:Client baseClient = check new Client(clientConfig);
 
 ```
-#### Step 3: Get all currency types
+### Step 3: Get all currency types
 ```ballerina
 currency:AvailableCurrencyResponse|error bEvent = baseClient->currencyExchangeGetAvailableCurrencies();
 

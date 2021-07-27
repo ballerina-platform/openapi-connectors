@@ -7,10 +7,10 @@ The `ballerinax/interzoid.currencyexchange` is a [Ballerina](https://ballerina.i
 The Interzoid Currency Rate connector allows you to retrieves the latest currency exchange rate, provided in US Dollars, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
 
 #### Compatibility
-|                               | Version                       |
-|-------------------------------|-------------------------------|
-| Ballerina Language Version    |**Ballerina Swan Lake Alpha5** |
-| API Version                   | **V1**                        |
+|                               | Version                   |
+|-------------------------------|---------------------------|
+| Ballerina Language Version    |Ballerina Swan Lake Alpha5 |
+| API Version                   | V1                    |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

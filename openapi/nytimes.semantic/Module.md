@@ -1,39 +1,25 @@
 ## Overview
 Ballerina connector for New York Times Semantic is connecting the [New York Times Semantic API](https://developer.nytimes.com/docs/semantic-api-product/1/overview) via Ballerina language easily. With the New York Times Semantic API you can get sementic terms (people, places, organizations, and locations). The Semantic API complements the Articles API. With the Semantic API, you get access to the long list of people, places, organizations and other locations, entities and descriptors that make up the controlled vocabulary used as metadata by The New York Times (sometimes referred to as Times Tags) and used for Times Topics pages.
 
-This module supports [New York Times Semantic API](https://developer.nytimes.com/docs/semantic-api-product/1/overview).
+This module supports [New York Times Semantic API v2.0.0](https://developer.nytimes.com/docs/semantic-api-product/1/overview).
 
-## Configuring Connector
+## Prerequisites
+* Create [NYTimes](https://developer.nytimes.com/accounts/login) Developer Account
+* Obtain tokens
+    1. Log into NYTimes Developer Portal by visiting https://developer.nytimes.com/accounts/login
+    2. Register an app and obtain the API Key following the process summarized [here](https://developer.nytimes.com/get-started).
+* Configure the connector with obtained tokens 
 
-### Prerequisites
-- An [NYTimes](https://developer.nytimes.com/accounts/login) Developer Account
-
-### Obtaining tokens
-1. Log into NYTimes Developer Portal by visiting https://developer.nytimes.com/accounts/login
-2. Register an app in order to obtain the API Key.
-    - Select `My Apps` from the user drop-down.
-    - Click `+ New App` to create a new app.
-    - Enter a name and description for the app in the New App dialog.
-    - Click `Create`.
-    - Click the `APIs` tab.
-    - Click the access toggle to enable or disable access to an API product from the app.
-3. Access the API Key.
-    - Select `My Apps` from th user drop-down.
-    - Click the app in the list.
-    - View the API key on the `App Details` tab.
-    - Confirm that the status of the API key is Approved.
-4. The whole process is summarized [here](https://developer.nytimes.com/get-started).
- 
 ## Quickstart
+ 
+To use the New York Times Semantic connector in your Ballerina application, update the .bal file as follows: 
 
-### Semantic API Request by Concept Type and Specific Concept
-
-#### Step 1: Import New York Times Semantic module
+### Step 1: Import New York Times Semantic module
 First, import the ballerinax/nytimes.semantic module into the Ballerina project.
 ```ballerina
 import ballerinax/nytimes.semantic as ns;
 ```
-#### Step 2: Initialize the client.
+### Step 2: Initialize the client.
 You can initialize the client as follows. You can now provide the API key obtained from the [NYTimes Developer Portal](https://developer.nytimes.com/accounts/login) in the configuration.
 ```ballerina
 ns:ApiKeysConfig config = {
@@ -43,7 +29,7 @@ ns:ApiKeysConfig config = {
 }
 ns:Client baseClient = check new Client(config);
 ```
-#### Step 3: Semantic API Request by Concept Type and Specific Concept
+### Step 3: Semantic API request by concept type and specific concept
 You can now make a Semantic API request by concept type and specific concept. 
 concept_type is one of seven types:
 
@@ -72,25 +58,7 @@ public function main() {
     }
 }
 ``` 
-
-### Semantic API Search Query
-
-#### Step 1: Import New York Times Semantic module
-First, import the ballerinax/nytimes.semantic module into the Ballerina project.
-```ballerina
-import ballerinax/nytimes.semantic as ns;
-```
-#### Step 2: Initialize the client.
-You can initialize the client as follows. You can now provide the API key obtained from the [NYTimes Developer Portal](https://developer.nytimes.com/accounts/login) in the configuration.
-```ballerina
-ns:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
-}
-ns:Client baseClient = check new Client(config);
-```
-#### Step 3: Semantic API Search Query
+### Step 4: Semantic API search query
 Here we have an example, it asks for all of the concepts that contain the substring "Evan" and return the result.
 ```ballerina
 public function main() {

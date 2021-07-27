@@ -7,10 +7,10 @@ The `ballerinax/interzoid.convertcurrency` is a [Ballerina](https://ballerina.io
 The Interzoid Convert Currency connector allows you to convert an amount of one currency into another currency using current foreign exchange rates.
 
 #### Compatibility
-|                               | Version                       |
-|-------------------------------|-------------------------------|
-| Ballerina Language Version    |**Ballerina Swan Lake Alpha5** |
-| API Version                   | **V1**                        |
+|                               | Version                   |
+|-------------------------------|---------------------------|
+| Ballerina Language Version    |Ballerina Swan Lake Alpha5 |
+| API Version                   | V1                        |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

@@ -3,12 +3,12 @@ Connects to Xero Accounts from Ballerina
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-|  Ballerina Language Version   | **Swan Lake Alpha 5** |
+|  Ballerina Language Version   | **Swan Lake Alpha5**  |
 |  Xero Accounting API Version  |       **2.13.4**      |
 
 ### Package Overview
 The `ballerinax/xero.accounts` is a [Ballerina](https://ballerina.io/) connector for Xero Accounts.
-This package provides the capability to easily access Xero Accounts.
+This package provides the capability to access Xero Accounts.
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 ### Useful Links

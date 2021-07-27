@@ -2,7 +2,7 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Configuration record for Jira
+# Configuration record for Xero
 #
 # + authConfig - Basic authentication or CredentialsConfig Configuration Tokens
 # + secureSocketConfig - Secure Socket Configuration 

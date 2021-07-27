@@ -4,17 +4,15 @@ Ballerina connector for HubSpot Analytics allows easy integration with HubSpot R
 
 This module supports HubSpot REST API `v3` version.
  
-## Configuring connector
-### Prerequisites
-- A HubSpot account
-
-### Obtaining tokens
-- Use [this](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) guide to obtain the API keys related to your account.
-
-Then provide the obtained API Key in client configuration.
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create a HubSpot developer account
+* Obtain tokens
+    -  Use [this](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) guide to obtain the API keys related to your account.
 
 ## Quickstart
-### Create Marketing event
+To use the HubSpot Marketing connector in your Ballerina application, update the .bal file as follows:
+
 #### Step 1: Import HubSpot Marketing module
 First, import the ballerinax/hubspot.marketing module into the Ballerina project.
 ```ballerina
@@ -33,7 +31,7 @@ marketing:ApiKeysConfig config = {
 marketing:Client baseClient = check new Client(clientConfig);
 
 ```
-### Create a marketing event
+### Step 3: Create a marketing event
 ```ballerina
 marketing:MarketingEventCreateRequestParams event = {
     eventName: "<EVENT_NAME>",

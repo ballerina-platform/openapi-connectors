@@ -4,7 +4,14 @@ servers:
 info:
   version: "1.0.0"
   title: Interzoid Convert Currency Rate API
-  description: This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
+  description: |-
+    This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
+    The Interzoid Convert Currency connector module allows you to convert an amount of one currency into another currency using current foreign exchange rates.
+    For additional help getting started with the API, visit [Interzoid Convert Currency API](https://interzoid.com/services/convertcurrency).
+  x-init-description: |-
+    The connector initialization requires setting the API credentials.
+    Create an [Interzoid Account](https://www.interzoid.com/register) 
+    and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
   contact:
     name: API Support
     email: support@interzoid.com
@@ -66,9 +73,11 @@ paths:
 components:
   securitySchemes:
     ApiKeyAuth:
+      description: All requests on the Convert Currency API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
       type: apiKey
       in: query
       name: license
+      x-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
   schemas:
     CurrencyConversionInfo:
       description: Contains details about converted currency information

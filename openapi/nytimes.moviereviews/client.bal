@@ -41,10 +41,10 @@ public client class Client {
     }
     # Get movie reviews that are critics' picks. You can either specify the reviewer name or use "all", "full-time", or "part-time".
     #
-    # + 'resource\-type - all | full-time | part-time | [reviewer-name]
+    # + resourceType - all | full-time | part-time | [reviewer-name]
     # + return - An array of Movie Critics
-    remote isolated function criticsPicks(string 'resource\-type) returns InlineResponse200|error {
-        string  path = string `/critics/${'resource\-type}.json`;
+    remote isolated function criticsPicks(string resourceType) returns InlineResponse200|error {
+        string  path = string `/critics/${resourceType}.json`;
         map<anydata> queryParam = {'api\-key: self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
@@ -69,12 +69,12 @@ public client class Client {
     }
     # Get movie reviews. Can filter to only return Critics' Picks. Supports ordering results by-publication-date or by-opening-date. Use offset to paginate thru results, 20 at a time.
     #
-    # + 'resource\-type - Specify all to retrieve all reviews, including NYT Critics' Picks.
+    # + resourceType - Specify all to retrieve all reviews, including NYT Critics' Picks.
     # + offset - Positive integer, multiple of 20
     # + 'order - Sets the sort order of the results.
     # + return - An array of Movies
-    remote isolated function getMovieReviews(string 'resource\-type, int offset = 20, string 'order = "by-publication-date") returns InlineResponse2001|error {
-        string  path = string `/reviews/${'resource\-type}.json`;
+    remote isolated function getMovieReviews(string resourceType, int offset = 20, string 'order = "by-publication-date") returns InlineResponse2001|error {
+        string  path = string `/reviews/${resourceType}.json`;
         map<anydata> queryParam = {"offset": offset, "order": 'order, 'api\-key: self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);

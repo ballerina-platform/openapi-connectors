@@ -112,8 +112,7 @@ public type Annotations record {
     boolean underline?;
     # Whether the text is "code style"
     boolean code?;
-    # Color of the text. Possible values are- "default", "gray", "brown", "orange", "yellow", "green", "blue", "purple", 
-    # "pink", "red", "gray_background", "brown_background", "orange_background", "yellow_background", "green_background", "blue_background", "purple_background", "pink_background", "red_background"
+    # Color of the text. Possible values are- "default", "gray", "brown", "orange", "yellow", "green", "blue", "purple", "pink", "red", "gray_background", "brown_background", "orange_background", "yellow_background", "green_background", "blue_background", "purple_background", "pink_background", "red_background"
     string color?;
 };
 
@@ -169,8 +168,7 @@ public type DatabasecontentFilter record {
 
 # Property schema of database. The keys are the names of properties as they appear in Notion and the values are property schema objects
 public type DatabaseProperties record {
-    # Each database must have exactly one database property schema object of type "title". This database property controls 
-    # the title that appears at the top of the page when the page is opened.
+    # Each database must have exactly one database property schema object of type "title". This database property controls the title that appears at the top of the page when the page is opened.
     string title?;
     # Text database property schema objects
     string rich_text?;
@@ -214,8 +212,7 @@ public type Filtering record {
 
 # DatabaseDetails
 public type DatabaseBodyParams record {
-    # Property schema of database. The keys are the names of properties as they appear in Notion and the values are 
-    # property schema objects
+    # Property schema of database. The keys are the names of properties as they appear in Notion and the values are property schema objects
     DatabaseProperties properties?;
     # Parent Page Detail
     DatabaseParent parent?;

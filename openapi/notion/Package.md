@@ -8,7 +8,7 @@ This package provides the capability to easily access Notion API.
 #### Compatibility
 |                                   |             Version             |
 |:---------------------------------:|:-------------------------------:|
-|       Ballerina Language Versions |            **Swan Lake Beta2**  |
+|       Ballerina Language Versions |            **Swan Lake Alpha5** |
 |       Notion API                  |            **2021-05-13(v1)**   |
 
 ### Report Issues

@@ -23,7 +23,7 @@ info:
 externalDocs:
   url: http://developer.nytimes.com/
 paths:
-  "/mostemailed/{section}/{time-period}.json":
+  "/mostemailed/{section}/{timePeriod}.json":
     get:
       description: ""
       operationId: GET_mostemailed
@@ -118,7 +118,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/Section"
       - $ref: "#/components/parameters/TimePeriod"
-  "/mostshared/{section}/{time-period}.json":
+  "/mostshared/{section}/{timePeriod}.json":
     get:
       description: ""
       operationId: GET_mostshared
@@ -206,7 +206,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/Section"
       - $ref: "#/components/parameters/TimePeriod"
-  "/mostviewed/{section}/{time-period}.json":
+  "/mostviewed/{section}/{timePeriod}.json":
     get:
       description: ""
       operationId: GET_mostviewed
@@ -335,7 +335,7 @@ components:
     TimePeriod:
       description: Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content.
       in: path
-      name: time-period
+      name: timePeriod
       required: true
       schema:
         enum:

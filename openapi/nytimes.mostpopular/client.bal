@@ -42,10 +42,10 @@ public client class Client {
     # Most Emailed by Section & Time Period
     #
     # + section - Limits the results by one or more sections. You can use
-    # + 'time\-period - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content.
+    # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content.
     # + return - An array of Articles
-    remote isolated function getMostemailed(string section, string 'time\-period) returns InlineResponse200|error {
-        string  path = string `/mostemailed/${section}/${'time\-period}.json`;
+    remote isolated function getMostemailed(string section, string timePeriod) returns InlineResponse200|error {
+        string  path = string `/mostemailed/${section}/${timePeriod}.json`;
         map<anydata> queryParam = {'api\-key: self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
@@ -54,10 +54,10 @@ public client class Client {
     # Most Shared by Section & Time Period
     #
     # + section - Limits the results by one or more sections. You can use
-    # + 'time\-period - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content.
+    # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content.
     # + return - An array of Articles
-    remote isolated function getMostshared(string section, string 'time\-period) returns InlineResponse2001|error {
-        string  path = string `/mostshared/${section}/${'time\-period}.json`;
+    remote isolated function getMostshared(string section, string timePeriod) returns InlineResponse2001|error {
+        string  path = string `/mostshared/${section}/${timePeriod}.json`;
         map<anydata> queryParam = {'api\-key: self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
@@ -66,10 +66,10 @@ public client class Client {
     # Most Viewed by Section & Time Period
     #
     # + section - Limits the results by one or more sections. You can use
-    # + 'time\-period - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content.
+    # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content.
     # + return - An array of Articles
-    remote isolated function getMostviewed(string section, string 'time\-period) returns InlineResponse2001|error {
-        string  path = string `/mostviewed/${section}/${'time\-period}.json`;
+    remote isolated function getMostviewed(string section, string timePeriod) returns InlineResponse2001|error {
+        string  path = string `/mostviewed/${section}/${timePeriod}.json`;
         map<anydata> queryParam = {'api\-key: self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);

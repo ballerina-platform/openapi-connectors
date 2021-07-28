@@ -6,6 +6,7 @@ Seller Hub in My eBay. With eBay's managed payments program, eBay manages the en
 available payment methods, and shortly after a buyer's payment clears, eBay distributes payouts directly to the 
 seller's preferred bank account.
 This module provides operations to retrieve details on seller payout, transactions and transfers
+
 This module supports 1.9.0 version.
  
 ## Prerequisites
@@ -20,18 +21,18 @@ Before using this connector in your Ballerina application, complete the followin
 ## Quickstart
  
 To use the `ballerinax/ebay.finances` connector in your Ballerina application, update the .bal file as follows:
-1. Import the module
+### Step 1: Import the module
 ```ballerina
    import ballerinax/ebay.finances;
 ```
-2. Initialize a client with the configuration tokens
+### Step 2: Initialize a client with the configuration tokens
 ```ballerina
    configurable http:BearerTokenConfig & readonly authConfig = ?;
    finances:ClientConfig clientConfig = {authConfig: authConfig};
    finances:Client baseClient = check new Client(clientConfig);
 ```
 
-3. Get payout summary details using `getPayoutSummary` remote operation
+### Step 3: Get payout summary details using `getPayoutSummary` remote operation
 ```ballerina
 public function main() {
     finances:PayoutSummaryResponse response = check baseClient->getPayoutSummary();

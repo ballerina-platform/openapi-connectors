@@ -1,10 +1,10 @@
 Connects to Xero Assets from Ballerina
 
 #### Compatibility
-|                               | Version          |
-|-------------------------------|------------------|
-|  Ballerina Language Version   |  Swan Lake Beta2 |
-|    Xero Assets API Version    |       2.9.4      |
+|                        | Version                   |
+|------------------------|---------------------------|
+|  Ballerina Language    | Ballerina Swan Lake Beta2 |
+|    Xero Assets API     |       2.9.4               |
 
 ### Package Overview
 The `ballerinax/xero.assets` is a [Ballerina](https://ballerina.io/) connector for Xero Assets.

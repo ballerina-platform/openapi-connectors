@@ -10,6 +10,7 @@ Before using this connector in your Ballerina application, complete the followin
 * Create a HubSpot developer account
 * Obtain tokens
     - Use [this](https://developers.hubspot.com/docs/api/working-with-oauth4) guide to obtain the credentials which are needed to create the <CLIENT_ID> and <CLIENT_SECRET>
+* Configure the connector with obtained tokens
 
 ## Quickstart
 To use the HubSpot CRM Lineitems connector in your Ballerina application, update the .bal file as follows:

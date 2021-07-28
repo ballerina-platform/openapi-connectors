@@ -40,19 +40,21 @@ public client class Client {
         self.clientEp = httpEp;
         self.apiKeys = apiKeyConfig.apiKeys;
     }
+    # Get Concepts.
     #
-    # + 'concept\-type - The type of the concept, used for Constructing a Semantic API Request by Concept Type and Specific Concept Name. The parameter is defined as a name-value pair, as in "concept_type=[nytd_geo|nytd_per|nytd_org|nytd_des]".
-    # + 'specific\-concept - The name of the concept, used for Constructing a Semantic API Request by Concept Type and Specific Concept Name. The parameter is defined in the URI path, as the element immediately preceding ".json" like with "Baseball.json".
+    # + conceptType - The type of the concept, used for Constructing a Semantic API Request by Concept Type and Specific Concept Name. The parameter is defined as a name-value pair, as in "concept_type=[nytd_geo|nytd_per|nytd_org|nytd_des]".
+    # + specificConcept - The name of the concept, used for Constructing a Semantic API Request by Concept Type and Specific Concept Name. The parameter is defined in the URI path, as the element immediately preceding ".json" like with "Baseball.json".
     # + query - Precedes the search term string. Used in a Search Query. Except for &lt;specific_concept_name&gt;, Search Query will take the required parameters listed above (&lt;concept_type&gt;, &lt;concept_uri&gt;, &lt;article_uri&gt;) as an optional_parameter in addition to the query=&lt;query_term&gt;.
     # + fields - "all" or comma-separated list of specific optional fields: pages, ticker_symbol, links, taxonomy, combinations, geocodes, article_list, scope_notes, search_api_query
     # + return - An array of Concepts
-    remote isolated function getConcepts(string 'concept\-type, string 'specific\-concept, string query, string? fields = ()) returns InlineResponse200|error {
-        string  path = string `/name/${'concept\-type}/${'specific\-concept}.json`;
+    remote isolated function getConcepts(string conceptType, string specificConcept, string query, string? fields = ()) returns InlineResponse200|error {
+        string  path = string `/name/${conceptType}/${specificConcept}.json`;
         map<anydata> queryParam = {"fields": fields, "query": query, 'api\-key: self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
         return response;
     }
+    # Search Concepts.
     #
     # + query - Precedes the search term string. Used in a Search Query. Except for &lt;specific_concept_name&gt;, Search Query will take the required parameters listed above (&lt;concept_type&gt;, &lt;concept_uri&gt;, &lt;article_uri&gt;) as an optional_parameter in addition to the query=&lt;query_term&gt;.
     # + offset - Integer value for the index count from the first concept to the last concept, sorted alphabetically. Used in a Search Query. A Search Query will return up to 10 concepts in its results.

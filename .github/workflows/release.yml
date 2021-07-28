@@ -10,7 +10,7 @@ jobs:
   container:
     runs-on: ubuntu-latest
     container:
-      image: ballerina/ballerina:swan-lake-beta1
+      image: ballerina/ballerina:swan-lake-beta2
       options: --user root
     steps:
       - name: Install Git

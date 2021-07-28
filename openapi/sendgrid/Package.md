@@ -1,22 +1,23 @@
 Connects to Sendgrid API from Ballerina.
 
-## Module Overview
+### Package Overview
 
-The Sendgrid connector consume the data exposed in https://api.sendgrid.com/v3. It is currently supporting the following operations.
+The `ballerinax/sendgrid` is a [Ballerina](https://ballerina.io/) connector for [Sendgrid](https://docs.sendgrid.com/).  
 
-- Send Mail
-- Retrieve all Alerts
-- Create a new Alert
-- Update Alert by Id
-- Delete Alert by Id
-- List all Subusers
-- Create Subuser
-- Delete Subuser by Name
-- Retrieve all Blocks
-- Get Suppression Spam Reports
+This package provides the capability to easily access for the selected Sendgrid API endpoints related to mail-send, spam reports, blocks, sub-users and alerts.
 
-## Compatibility
+#### Compatibility
+|                               | Version                       |
+|-------------------------------|-------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta2** |
+| Sendgrid API Version          | **3.0**                       |
 
-| Ballerina Language Versions  | Sendgrid API             |
-|:----------------------------:|:------------------------:|
-|  Swan Lake Alpha 5           |   v3                     |
+### Report Issues
+
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
+
+### Useful Links
+
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

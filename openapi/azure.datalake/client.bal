@@ -18,7 +18,7 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Configuration for Azure Data Lake Storage connector
+# Configuration for  Azure Data Lake Storage connector
 #
 # + authConfig - Basic authentication or CredentialsConfig Configuration Tokens
 # + secureSocketConfig - Secure Socket Configuration 
@@ -32,7 +32,7 @@ public type ClientConfig record {
 # + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
-    # Client initialization for Azure Azure Data Lake Storage(Gen2) API.
+    # Client initialization for  Azure Data Lake Storage(Gen2) API.
     #
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL

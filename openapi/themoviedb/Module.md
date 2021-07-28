@@ -39,9 +39,9 @@ import ballerinax/themoviedb;
 #### Step 2: Configure the connection credentials.
 ```ballerina
 themoviedb:ApiKeysConfig config = {
-apiKeys : {
-api_key : "<your appid>"
-}
+    apiKeys : {
+        api_key : "<your appid>"
+    }
 }
 
 themoviedb:Client myclient = check new themoviedb:Client(config);
@@ -56,14 +56,14 @@ themoviedb:GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies(
 Snippets of some operations.
 
 - Get Upcoming Movies
-``` ballerina
-themoviedb:GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies();
-```
+    ``` ballerina
+    themoviedb:GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies();
+    ```
 - Get Popular Movies
-``` ballerina
-themoviedb:GetPopularMoviesResponse result = check myclient->getPopularMovies();
-```
+    ``` ballerina
+    themoviedb:GetPopularMoviesResponse result = check myclient->getPopularMovies();
+    ```
 - Search Movies
-``` ballerina
-themoviedb:SearchMovieResponse result = check myclient->searchMovie("Thor");
-```
+    ``` ballerina
+    themoviedb:SearchMovieResponse result = check myclient->searchMovie("Thor");
+    ```

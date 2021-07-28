@@ -4,11 +4,11 @@ Connects to LeanIX Integration API from Ballerina.
 
 LeanIX Integration API connector consume the data exposed in https://eu.leanix.net/services/integration-api/v1/docs/.
 
-#### Compatibility
+## Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha5**  |
-| LeanIX Integration API        | **V2**                |
+| Ballerina Language Version    | **Swan Lake Beta2**   |
+| LeanIX Integration API        | **V1**                |
 
 ### Package Overview
 The `ballerinax/leanix.integrationapi` is a [Ballerina](https://ballerina.io/) connector for LeanIX Integration API.

@@ -3,7 +3,7 @@ Connects to Mailchimp Marketing API from Ballerina
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha 5** |
+| Ballerina Language Version    | **Swan Lake Beta 2** |
 | API Version                   | **3.0.52**               |
 
 ### Package Overview

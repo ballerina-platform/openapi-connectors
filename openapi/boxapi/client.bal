@@ -21,7 +21,7 @@ import  ballerina/lang.'string;
 # Configuration record for Box platform
 #
 # + authConfig - Basic authentication or CredentialsConfig Configuration Tokens
-# + secureSocketConfig - Secure Socket Configuration   
+# + secureSocketConfig - Secure Socket Configuration
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;

@@ -9,7 +9,7 @@ jobs:
   dailyBuild:
     runs-on: ubuntu-latest
     container:
-      image: ballerina/ballerina:swan-lake-beta1
+      image: ballerina/ballerina:nightly
       options: --user root
     steps:
       - uses: actions/checkout@v1 

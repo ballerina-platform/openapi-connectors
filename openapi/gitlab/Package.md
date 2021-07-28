@@ -6,7 +6,7 @@ This package provides the capability to easily access GitLab.
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha5**  |
+| Ballerina Language Version    | **Swan Lake Beta2**   |
 | GitLab REST API Version       | **V4**                |
 
 ### Report Issues

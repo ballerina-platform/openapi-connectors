@@ -8,7 +8,7 @@ This package provides the capability to easily access  Azure Data Lake Storage.
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha5**  |
+| Ballerina Language Version    | **Swan Lake Beta2**   |
 | ADLS(Gen2) REST API Version   | **2019-10-31**        |
 
 ### Report Issues

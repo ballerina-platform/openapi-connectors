@@ -3,7 +3,7 @@ Ballerina connector for Ably is connecting the Ably [REST API](https://ably.com/
 
 This module supports REST API version 1.1.0 for Ably.
  
-## Configuring COnnector
+## Configuring Connector
 
 ### Prerequisites
 - An Ably Account

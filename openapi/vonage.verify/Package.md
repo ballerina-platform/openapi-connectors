@@ -5,10 +5,10 @@ The `ballerinax/vonage.verify` is a [Ballerina](https://ballerina.io/) connector
 This package provides the capability to easily access Vonage Verify API.
 
 #### Compatibility
-|                               | Version                         |
-|-------------------------------|---------------------------------|
-| Ballerina Language Version    | **Ballerina Swan Lake Alpha 5** |
-| Vonage Verify API Version     | **1.1.7**                       |
+|                               | Version                        |
+|-------------------------------|--------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta 2** |
+| Vonage Verify API Version     | **1.1.7**                      |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

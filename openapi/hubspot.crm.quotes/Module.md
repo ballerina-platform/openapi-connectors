@@ -11,6 +11,7 @@ Before using this connector in your Ballerina application, complete the followin
 * Create a HubSpot developer account
 * Obtain tokens
     -  Use [this](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) guide to obtain the API keys related to your account.
+* Configure the connector with obtained tokens
 
 ## Quickstart
 To use the HubSpot CRM Quotes connector in your Ballerina application, update the .bal file as follows:

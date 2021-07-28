@@ -17,17 +17,27 @@ This module supports 0.6.1 version.
   
 ## Quickstart
 * Listing all time zone as json
-1. Import the module 
+### Step 1: Import the module 
 ```ballerina
 ballerinax/worldtimeapi
 ```
 
-2. Create a client
+### Step 2:  Create a client
 ```ballerina
 worldtimeapi:Client baseClient = check new Client();
-
 ```
-3. Use the client to call its remote functions as the following code
+### Step 3:  Use the client to call its remote functions as the following code
 ```ballerina
     worldtimeapi:ListJsonResponse output = check baseClient->listTimezones();
+```
+## Quick reference 
+Code snippets of some frequently used functions: 
+* Get time zones by area
+Find more details on areas from [here](http://worldtimeapi.org/)
+ ```ballerina
+   worldtimeapi:ListJsonResponse response = check baseClient->getTimezoneByArea("<Area>");
+```
+* Get current time based on IP address
+```ballerina
+   worldtimeapi:DateTimeJsonResponse response = check baseClient->getCurrentTimeBasedOnIp();
 ```

@@ -1,4 +1,4 @@
-Connects to Elmah.io API from Ballerina
+Connects to [Elmah.io REST API](https://docs.elmah.io/using-the-rest-api/) from Ballerina
 
 ## Package overview
 
@@ -6,7 +6,7 @@ The `ballerinax/elmah` is a [Ballerina](https://ballerina.io/) connector for con
 
 ### Compatibility
 |                      | Version                    |
-|:--------------------:|:--------------------------:|
+|----------------------|----------------------------|
 | Ballerina Language   | Ballerina Swan Lake Beta2  |
 | Elmah.io REST API    | v3                         |
 

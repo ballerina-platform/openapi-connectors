@@ -27,17 +27,17 @@ public type ClientConfig record {
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# The public PocketSmith API
+# This is a generated connector for [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
+# The public PocketSmith API. It's a powerful interface for online money management with cash flow forecasts as well as superb historical tracking.
 public isolated client class Client {
     final http:Client clientEp;
-
-    # The HTTP client initialization requires setting the API credentials.
-    # Please create a [PocketSmith account](https://www.pocketsmith.com/) and obtain OAuth tokens following [this guide](https://developers.pocketsmith.com/docs/oauth).
-    # During initialization you can pass either http:BearerTokenConfig if you have a bearer token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [PocketSmith account](https://www.pocketsmith.com/) and obtain OAuth tokens following [this guide](https://developers.pocketsmith.com/docs/oauth).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.pocketsmith.com/v2") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -271,7 +271,7 @@ public isolated client class Client {
     # + search - Return transactions matching a keyword search string. The provided string is matched against the transaction amount, account name, payee, category title, note, labels, and the date in yyyy-mm-dd format.
     # + page - Choose a particular page of the results.
     # + return - Success
-    remote isolated function listTransactionsUser(int id, string? startDate = (), string? endDate = (), int? onlyUncategorised = (), ListTransactionsUserType? 'type = (), string? search = (), int? page = ()) returns Transaction[]|error {
+    remote isolated function listTransactionsUser(int id, string? startDate = (), string? endDate = (), int? onlyUncategorised = (), string? 'type = (), string? search = (), int? page = ()) returns Transaction[]|error {
         string  path = string `/users/${id}/transactions`;
         map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "only_uncategorised": onlyUncategorised, "type": 'type, "search": search, "page": page};
         path = path + check getPathForQueryParam(queryParam);
@@ -288,7 +288,7 @@ public isolated client class Client {
     # + search - Return transactions matching a keyword search string. The provided string is matched against the transaction amount, account name, payee, category title, note, labels, and the date in yyyy-mm-dd format.
     # + page - Choose a particular page of the results.
     # + return - Success
-    remote isolated function listTransactionsAccount(int id, string? startDate = (), string? endDate = (), int? onlyUncategorised = (), ListTransactionsAccountType? 'type = (), string? search = (), int? page = ()) returns Transaction[]|error {
+    remote isolated function listTransactionsAccount(int id, string? startDate = (), string? endDate = (), int? onlyUncategorised = (), string? 'type = (), string? search = (), int? page = ()) returns Transaction[]|error {
         string  path = string `/accounts/${id}/transactions`;
         map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "only_uncategorised": onlyUncategorised, "type": 'type, "search": search, "page": page};
         path = path + check getPathForQueryParam(queryParam);
@@ -305,7 +305,7 @@ public isolated client class Client {
     # + search - Return transactions matching a keyword search string. The provided string is matched against the transaction amount, account name, payee, category title, note, labels, and the date in yyyy-mm-dd format.
     # + page - Choose a particular page of the results.
     # + return - Success
-    remote isolated function gettransactions(int id, string? startDate = (), string? endDate = (), int? onlyUncategorised = (), GettransactionsType? 'type = (), string? search = (), int? page = ()) returns Transaction[]|error {
+    remote isolated function gettransactions(int id, string? startDate = (), string? endDate = (), int? onlyUncategorised = (), string? 'type = (), string? search = (), int? page = ()) returns Transaction[]|error {
         string  path = string `/transaction_accounts/${id}/transactions`;
         map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "only_uncategorised": onlyUncategorised, "type": 'type, "search": search, "page": page};
         path = path + check getPathForQueryParam(queryParam);
@@ -422,7 +422,7 @@ public isolated client class Client {
     # + startDate - The date to start analysing the budget from. This will be bumped out to make full periods as necessary.
     # + endDate - The date to stop analysing the budget from. This will be bumped out to make full periods as necessary.
     # + return - Success
-    remote isolated function  budget_summary(int id, BudgetSummaryPeriod period, int interval, string startDate, string endDate) returns BudgetAnalysisPackage[]|error {
+    remote isolated function  budget_summary(int id, string period, int interval, string startDate, string endDate) returns BudgetAnalysisPackage[]|error {
         string  path = string `/users/${id}/budget_summary`;
         map<anydata> queryParam = {"period": period, "interval": interval, "start_date": startDate, "end_date": endDate};
         path = path + check getPathForQueryParam(queryParam);
@@ -439,7 +439,7 @@ public isolated client class Client {
     # + categories - A comma-separated list of category IDs to analyse.
     # + scenarios - A comma-separated list of scenario IDs to analyse. You're likely going to want to include all a user's scenarios here, unless you have reason to only analyse for a subset of scenarios. Regardless of what scenarios are analysed, all actuals (transactions) across all accounts will be included.
     # + return - Success
-    remote isolated function  trend_analysis(int id, TrendAnalysisPeriod period, int interval, string startDate, string endDate, string categories, string scenarios) returns BudgetAnalysisPackage[]|error {
+    remote isolated function  trend_analysis(int id, string period, int interval, string startDate, string endDate, string categories, string scenarios) returns BudgetAnalysisPackage[]|error {
         string  path = string `/users/${id}/trend_analysis`;
         map<anydata> queryParam = {"period": period, "interval": interval, "start_date": startDate, "end_date": endDate, "categories": categories, "scenarios": scenarios};
         path = path + check getPathForQueryParam(queryParam);

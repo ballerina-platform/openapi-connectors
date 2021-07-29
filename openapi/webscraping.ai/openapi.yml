@@ -6,7 +6,16 @@ info:
     url: https://webscraping.ai
     email: support@webscraping.ai
   version: 2.0.4
-  description: A client for https://webscraping.ai API. It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
+  description: >
+    This is a generated connector for [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification.
+    
+    It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
+
+    More information about the WebScraping.AI API can be found at https://webscraping.ai.
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [WebScraping.AI account](https://webscraping.ai) and obtain tokens from the [dashboard](https://webscraping.ai/dashboard).
 tags:
   - name: HTML
     description: Get full HTML content of pages with proxies and Chrome JS rendering
@@ -285,6 +294,7 @@ components:
       type: apiKey
       name: api_key
       in: query
+      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
   responses:
     400:
       description: Parameters validation error

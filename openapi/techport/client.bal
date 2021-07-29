@@ -1,55 +1,73 @@
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
-# TechPort RESTful API
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
+
+# This is the public REST API for TechPort. All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
+public isolated client class Client {
+    final http:Client clientEp;
+    # The HTTP client initialization. Please refer to [API documentation](https://data.nasa.gov/developer/external/techport/techport-api.pdf) for more detail.
     #
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://techport.nasa.gov") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
     }
+    # Returns the swagger specification for the API.
     #
     # + return - Successful response
-    remote isolated function  api() returns http:Response|error {
-        string  path = string `/api`;
+    remote isolated function getApiSpecification() returns http:Response|error {
+        string  path = string `/api/specification`;
         http:Response response = check self.clientEp-> get(path, targetType = http:Response);
         return response;
     }
+    # Returns a list of available technology project IDs.
     #
     # + updatedSince - ISO 8601 full-date in the format YYYY-MM-DD. Filters the list of available ID values by their lastUpdated parameter.
-    # + return - Successful response
-    remote isolated function  projects(string updatedSince) returns InlineResponse200|error {
+    # + return - List of Project Ids since the given date.
+    remote isolated function getProjectsSince(string updatedSince) returns ProjectIdResponse|error {
         string  path = string `/api/projects`;
         map<anydata> queryParam = {"updatedSince": updatedSince};
         path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        ProjectIdResponse response = check self.clientEp-> get(path, targetType = ProjectIdResponse);
         return response;
     }
+    # Returns a list of projects matching the search term.
     #
     # + projectId - The specific ID of the project requested.
     # + searchQuery - The term on which to search. Will check all project fields for the this term.
     # + missionDirectorate - The mission directorate acronym of the projects. Used to filter.
     # + titleSearch - The term on which to search. Will check only project titles for the this term.
-    # + return - Successful response
-    remote isolated function  search(int? projectId = (), string? searchQuery = (), string? missionDirectorate = (), string? titleSearch = ()) returns InlineResponse2001[]|error {
+    # + return - List of ProjectSearchResult records.
+    remote isolated function searchProjects(int? projectId = (), string? searchQuery = (), string? missionDirectorate = (), string? titleSearch = ()) returns ProjectSearchResponse|error {
         string  path = string `/api/projects/search`;
         map<anydata> queryParam = {"projectId": projectId, "searchQuery": searchQuery, "missionDirectorate": missionDirectorate, "titleSearch": titleSearch};
         path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001[] response = check self.clientEp-> get(path, targetType = InlineResponse2001Arr);
+        ProjectSearchResponse response = check self.clientEp-> get(path, targetType = ProjectSearchResponse);
         return response;
     }
+    # Returns information about a specific technology project.
     #
     # + projectId - ID of project to fetch
-    # + return - Successful response
-    remote isolated function  projectsByprojectId(int projectId) returns Project|error {
+    # + return - Project with the given project ID.
+    remote isolated function getProject(int projectId) returns Project|error {
         string  path = string `/api/projects/${projectId}`;
         Project response = check self.clientEp-> get(path, targetType = Project);
         return response;

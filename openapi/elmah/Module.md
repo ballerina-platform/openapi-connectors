@@ -20,13 +20,13 @@ This module supports Elmah.io REST API `v3` version.
 
 To use the Elmah.io connector in your Ballerina application, update the .bal file as follows:
 
-### Step 1: Import Elmah.io module
+### Step 1 - Import connector
 First, import the ballerinax/hubspot.crm.pipeline module into the Ballerina project.
 ```ballerina
 import ballerinax/elmah;
 ```
 
-### Step 2: Configure the connection credentials
+### Step 2 - Create a new connector instance
 You can now make the connection configuration using the access token.
 ```ballerina
 elmah:ApiKeysConfig config = {
@@ -38,8 +38,9 @@ elmah:ApiKeysConfig config = {
 elmah:Client baseClient = check new Client(config);
 
 ```
+### Step 3 - Invoke connector operation
 
-### Step 3: Create a deployment
+1. Create a deployment
 
 ```ballerina
 elmah:CreateDeployment dep = {
@@ -56,7 +57,7 @@ if (bEvent is elmah:CreateDeploymentResult) {
 }
 ```
 
-### Step 4: List deployments
+2. List deployments
 
 ```ballerina
 elmah:Deployment[]|error bEvent = baseClient->deploymentsGetAll();
@@ -67,3 +68,5 @@ if (bEvent is elmah:Deployment[]) {
      log:printError((msg = bEvent.message());
 }
 ```
+
+3. Use `bal run` command to compile and run the Ballerina program

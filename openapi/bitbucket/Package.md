@@ -1,14 +1,14 @@
 Connects to Bitbucket from Ballerina.
 
-### Package Overview
+## Package Overview
 
 The BitBucket connector consume the data exposed in https://developer.atlassian.com/bitbucket/api/2/reference/resource/. It supports different operations on issues, comments, repositories, projects etc.
 
-#### Compatibility
+## Compatibility
 
 |                              | Version                         |
 |:----------------------------:|:-------------------------------:|
-|   Ballerina Language Versions|  **Ballerina Swan Lake Alpha5** |
+|   Ballerina Language Versions|  **Ballerina Swan Lake Beta 2** |
 |   Bitbucket API              |   **2.0**                       |
 
 ### Report Issues

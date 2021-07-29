@@ -30,7 +30,6 @@ This module supports v1 version.
 
 ## Quickstart
 
-
 * Get user profile
 
 1.  Add Config.toml file including the username and password as follows,
@@ -55,7 +54,7 @@ import ballerina/log;
 ```
 4. Use the client to call its remote functions as the following code
 ```
-    //Calling getProfile remote function  of the client
+    //Calling getProfile remote function  of the created client
     var profile = baseClient->getProfile();
     if profile is bulksms:Profile {
         log:printInfo(profile.toString());

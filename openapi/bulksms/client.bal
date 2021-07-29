@@ -20,7 +20,7 @@ import  ballerina/lang.'string;
 
 # Client Configuration
 #
-# + authConfig - Client Credential Config  
+# + authConfig - Client credential config  
 # + secureSocketConfig - SSL config 
 public type ClientConfig record {
     http:CredentialsConfig authConfig;

@@ -6,7 +6,7 @@ This package provides the capability to easily access Trello.
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha5**  |
+| Ballerina Language Version    | **Swan Lake Beta2**   |
 | API Version                   | **v1**                |
 
 ### Report Issues

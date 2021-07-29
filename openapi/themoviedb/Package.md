@@ -1,10 +1,10 @@
 Connects to The Movie Database(TMDB) from Ballerina
 
-## Compatibility
-|                               | Version                         |
-|-------------------------------|---------------------------------|
-|  Ballerina Language Version   | **Ballerina Swan Lake Alpha 5** |
-|       TMDB API Version        | **V2**                          |
+#### Compatibility
+|                               | Version               |
+|-------------------------------|-----------------------|
+| Ballerina Language Version    |  **Swan Lake Beta 2** |
+|       TMDB API Version        |         **V2**        |
 
 ### Package Overview
 The `ballerinax/themoviedb` is a [Ballerina](https://ballerina.io/) connector for The Movie Database(TMDB) API.

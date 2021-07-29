@@ -3,7 +3,7 @@ Connects to Livestorm from Ballerina
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha 5** |
+| Ballerina Language Version    |  **Swan Lake Beta 2** |
 |       Livestorm Version       |         **V1**        |
 
 ### Package Overview

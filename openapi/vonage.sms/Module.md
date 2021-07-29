@@ -9,7 +9,6 @@ This module supports [Vonage SMS API](https://nexmo-api-specification.herokuapp.
 - An [Vonage](https://www.vonage.com/) Account
 
 ### Obtaining tokens
-https://dashboard.nexmo.com/sign-in
 1. Obtain your API key and API secret by logging into Vonage API Dashboard and visiting https://dashboard.nexmo.com/
  
 ## Quickstart

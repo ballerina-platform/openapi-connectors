@@ -36,7 +36,7 @@ public client class Client {
     # + apiKeyConfig - API key configuration details
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return -  Error at failure of client initialization
+    # + return -  Error at failure of client initialization    
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://trello.com/1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

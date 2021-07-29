@@ -5,10 +5,10 @@ The `ballerinax/vonage.numberinsight` is a [Ballerina](https://ballerina.io/) co
 This package provides the capability to easily access Vonage Number Insight API.
 
 #### Compatibility
-|                               | Version                         |
-|-------------------------------|---------------------------------|
-| Ballerina Language Version    | **Ballerina Swan Lake Alpha 5** |
-| Vonage Number Insight API     | **1.0.10**                      |
+|                               | Version                        |
+|-------------------------------|--------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta 2** |
+| Vonage Number Insight API     | **1.0.10**                     |
 
 ### Report Issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

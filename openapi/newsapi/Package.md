@@ -3,7 +3,7 @@ Connects to News API from Ballerina
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha 5** |
+| Ballerina Language Version    |  **Swan Lake Beta 2** |
 |       News API Version        |         **V2**        |
 
 ### Package Overview

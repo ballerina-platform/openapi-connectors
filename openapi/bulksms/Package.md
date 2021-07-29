@@ -7,7 +7,7 @@ This package provides the capability to easily access BulkSMS service related op
 ## Compatibility
 |                              | Version                         |
 |:----------------------------:|:-------------------------------:|
-|  Ballerina Language Versions |  **Ballerina Swan Lake Alpha5** |
+|  Ballerina Language Versions |  **Ballerina Swan Lake Beta 2** |
 |   BulkSMS API                |   **v1**                        |
 
 ### Report Issues

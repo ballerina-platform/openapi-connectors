@@ -1,41 +1,24 @@
 Connects to Zoom API from Ballerina.
 
-## Module Overview
+### Package Overview
 
-The Zoom connector consume the data exposed in https://api.zoom.us/v2. It is currently supporting the following operations.
+The `ballerinax/zoom` is a [Ballerina](https://ballerina.io/) connector for Zoom API.  
 
-- listMeetings	
-- createMeeting	
-- listMeetingRegistrants	
-- addMeetingRegistrant	
-- getMeetingRegistrantsQuestions	
-- updateMeetingRegistrantQuestions	
-- updateMeetingRegistrantStatus	
-- deleteMeetingregistrant	
-- getMeetingById	
-- deleteMeeting	
-- updateMeeting	
-- updateMeetingStatus	
-- listPastMeetings	
-- listPastMeetingPolls	
-- getPastMeetingDetails	
-- listPastMeetingParticipants	
-- getMeetingPolls	
-- createMeetingPoll	
-- getMeetingPoll	
-- updateMeetingPoll	
-- deleteMeetingPoll	
-- createBatchPolls	
-- getMeetingInvitation	
-- getLiveStreamDetails	
-- updateMeetingLiveStream	
-- listWebinarRegistrants	
-- listWebinarParticipants	
-- listWebinarAbsentees	
-- listMeetingTemplates	
+This package provides the capability to easily access Zoom API's meeting and webinar related endpoints.
 
-## Compatibility
+#### Compatibility
+|                               | Version                       |
+|-------------------------------|-------------------------------|
+| Ballerina Language Version    | **Ballerina Swan Lake Beta2** |
+| API Version                   | **2.0.0**                     |
 
-| Ballerina Language Versions  | Zoom API          |
-|:----------------------------:|:-----------------:|
-|  Swan Lake Alpha 5           |   V2              |
+### Report Issues
+
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
+
+### Useful Links
+
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag
+

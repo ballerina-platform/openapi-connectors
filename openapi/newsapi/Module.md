@@ -53,7 +53,7 @@ Snippets of some operations.
 
 ### Get top articles
 ```ballerina
-newsapi:WSNewsTopHeadlineResponse articleResult = check myclient->listArticles(1, 5, domains="bbc.co.uk"); 
+newsapi:WSNewsTopHeadlineResponse articleResult = check myclient->listArticles(1, 5, domains="bbc.co.uk");
 ```
 ### Get top headlines
 ```ballerina

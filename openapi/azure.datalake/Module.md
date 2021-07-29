@@ -7,7 +7,7 @@ This module supports Azure Data Lake Storage(Gen2) REST API `2019-10-31` version
  
 ## Configuring connector
 ### Prerequisites
-- Azure Data Lake(Gen2) Storage Account
+- Azure Data Lake Storage(Gen2) Account
 - Access to register an application in Azure portal
 
 ### Obtaining tokens

@@ -32,12 +32,12 @@ public type ApiKeysConfig record {
 public client class Client {
     http:Client clientEp;
     map<string|string[]> apiKeys;
-    # News API Client initialization.
+    # Initializes the News API client endpoint.
     #
-    # + apiKeyConfig - API key configuration detail
+    # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + return -  Error at failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://newsapi.org/v2") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

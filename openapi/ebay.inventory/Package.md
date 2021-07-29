@@ -3,7 +3,7 @@ Connects to Ebay Inventory API from Ballerina
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha5** |
+| Ballerina Language Version    | **Swan Lake Beta 2** |
 | API Version                   | **1.13.0**               |
 
 ### Package Overview

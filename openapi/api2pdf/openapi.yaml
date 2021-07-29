@@ -7,30 +7,13 @@ info:
     email: support@api2pdf.com
     name: Support
     x-twitter: api2pdf_status
-  description: |
+  description: | 
+    Api2Pdf is a powerful PDF generation API with no rate limits or file size constraints. 
     
-    # Introduction
-    [Api2Pdf](https://www.api2pdf.com) is a powerful PDF generation API with no rate limits or file size constraints. Api2Pdf runs on AWS Lambda, a serverless architecture powered by Amazon to scale to millions of requests while being up to 90% cheaper than alternatives. **Supports wkhtmltopdf, Headless Chrome, LibreOffice, and PDF Merge.** You can also generate barcodes with ZXING (Zebra Crossing).
-    # SDKs & Client Libraries
-    We've made a number of open source libraries available for the API
-    - Python: [https://github.com/api2pdf/api2pdf.python](https://github.com/api2pdf/api2pdf.python)
-    - .NET: [https://github.com/api2pdf/api2pdf.dotnet](https://github.com/api2pdf/api2pdf.dotnet)
-    - Nodejs: [https://github.com/api2pdf/api2pdf.node](https://github.com/api2pdf/api2pdf.node)
-    - PHP: [https://github.com/Api2Pdf/api2pdf.php](https://github.com/Api2Pdf/api2pdf.php)
-    - Ruby: (Coming soon)
-    # Authorization
-    Create an account at [portal.api2pdf.com](https://portal.api2pdf.com/register) to get an API key.
-
-    **Authorize your API calls**
-    - GET requests, include apikey=YOUR-API-KEY as a query string parameter
-    - POST requests, add **Authorization** to your header.
-    ``` Authorization: YOUR-API-KEY ```
-
-    # Quickstart
-    If you are looking for just a quick call to grab PDFs of a URL, you can do a GET request like:
-    ``` https://v2018.api2pdf.com/chrome/url?url={UrlToConvert}&apikey={YourApiKey} ```
-
-    For more advanced usage and settings, see the API specification below.
+    Api2Pdf runs on AWS Lambda, a serverless architecture powered by Amazon to scale to millions of requests while being up to 90% cheaper than alternatives. 
+    
+    **Supports wkhtmltopdf, Headless Chrome, LibreOffice, and PDF Merge.** You can also generate barcodes with ZXING (Zebra Crossing).
+  x-init-description: The HTTP client initialization requires setting the API credentials. Please create an [Api2Pdf account](https://portal.api2pdf.com/register) and obtain an API key.  
   license:
     name: Creative Commons
     url: https://creativecommons.org/licenses/by/4.0/legalcode
@@ -60,7 +43,7 @@ paths:
         Convert HTML to a PDF using Headless Chrome on AWS Lambda.
         ### Authorize via Header of Request
         **Authorization: YOUR-API-KEY**
-      operationId: chromeFromHtmlPost
+      operationId: convertHtmlToPdf
       requestBody:
         content:
           application/json:
@@ -96,7 +79,7 @@ paths:
         **apikey=YOUR-API-KEY**
         ### Example
         ``` https://v2018.api2pdf.com/chrome/url?url={UrlToConvert}&apikey={YourApiKey} ``` 
-      operationId: chromeFromUrlGET
+      operationId: convertWebUrlToPdfGet
       parameters:
         - description: Url of the page to convert to PDF. Must start with http:// or https://.
           in: query
@@ -137,7 +120,7 @@ paths:
         Convert a URL or Web Page to PDF using Headless Chrome on AWS Lambda..
         ### Authorize via Header of Request
         **Authorization: YOUR-API-KEY**
-      operationId: chromeFromUrlPost
+      operationId: convertWebUrlToPdfPost
       requestBody:
         content:
           application/json:
@@ -171,7 +154,7 @@ paths:
         Convert an office document (Word, Excel, Powerpoint) or an image (jpg, gif, png) to a PDF using LibreOffice on AWS Lambda.
         ### Authorize via Header of Request
         **Authorization: YOUR-API-KEY**
-      operationId: libreConvertPost
+      operationId: convertOfficeDocToPdf
       requestBody:
         content:
           application/json:
@@ -204,7 +187,7 @@ paths:
         Merge two or more PDFs together on AWS Lambda.
         ### Authorize via Header of Request
         **Authorization: YOUR-API-KEY**
-      operationId: mergePost
+      operationId: mergePdfs
       requestBody:
         content:
           application/json:
@@ -237,7 +220,7 @@ paths:
         Convert HTML to a PDF using WkHtmlToPdf on AWS Lambda.
         ### Authorize via Header of Request
         **Authorization: YOUR-API-KEY**
-      operationId: wkhtmltopdfFromHtmlPost
+      operationId: convertHtmlToPdfWithWkhtml
       requestBody:
         content:
           application/json:
@@ -273,7 +256,7 @@ paths:
         **apikey=YOUR-API-KEY**
         ### Example
         ``` https://v2018.api2pdf.com/wkhtmltopdf/url?url={UrlToConvert}&apikey={YourApiKey} ``` 
-      operationId: wkhtmltopdfFromUrlGET
+      operationId: convertWebUrlToPdfWithWkhtmlGet
       parameters:
         - description: Url of the page to convert to PDF. Must start with http:// or https://.
           in: query
@@ -314,7 +297,7 @@ paths:
         Convert a URL or Web Page to PDF using WkHtmlToPdf on AWS Lambda..
         ### Authorize via Header of Request
         **Authorization: YOUR-API-KEY**
-      operationId: wkhtmltopdfFromUrlPost
+      operationId: convertWebUrlToPdfWithWkhtmlPost
       requestBody:
         content:
           application/json:
@@ -350,7 +333,7 @@ paths:
         **apikey=YOUR-API-KEY**
         ### Example
         ``` https://v2018.api2pdf.com/zebra?format={format}&apikey={YourApiKey}&value={YourText} ``` 
-      operationId: zebraGET
+      operationId: zebra
       parameters:
         - description: Most common is CODE_39 or QR_CODE
           in: query

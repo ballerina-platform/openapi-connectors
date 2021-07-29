@@ -14,30 +14,32 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# A client for https://webscraping.ai API. It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification.
+# It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
+# More information about the WebScraping.AI API can be found at https://webscraping.ai.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [WebScraping.AI account](https://webscraping.ai) and obtain tokens from the [dashboard](https://webscraping.ai/dashboard).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization 
+    # + apiKeyConfig - Provide your API key as `api_key`. Eg: `{"api_key" : "<API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.webscraping.ai") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Page HTML by URL
     #
@@ -49,7 +51,7 @@ public client class Client {
     # + return - Parameters validation error
     remote isolated function getHTML(string url, record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
         string  path = string `/html`;
-        map<anydata> queryParam = {"url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
@@ -65,7 +67,7 @@ public client class Client {
     # + return - Parameters validation error
     remote isolated function getSelected(string url, string? selector = (), record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
         string  path = string `/selected`;
-        map<anydata> queryParam = {"selector": selector, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"selector": selector, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
@@ -81,7 +83,7 @@ public client class Client {
     # + return - Parameters validation error
     remote isolated function getSelectedMultiple(string url, string[]? selectors = (), record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
         string  path = string `/selected-multiple`;
-        map<anydata> queryParam = {"selectors": selectors, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"selectors": selectors, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
@@ -91,7 +93,7 @@ public client class Client {
     # + return - Wrong API key
     remote isolated function account() returns Account|error {
         string  path = string `/account`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
         Account response = check self.clientEp-> get(path, targetType = Account);
         return response;
@@ -102,7 +104,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

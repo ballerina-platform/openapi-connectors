@@ -1,12 +1,12 @@
-Connects to WebScraping.AI API from Ballerina
+Connects to [WebScraping.AI API](https://webscraping.ai/docs) from Ballerina
 
 ## Package overview
 The `ballerinax/webscraping.ai` is a [Ballerina](https://ballerina.io/) connector for WebScraping.AI API.
-This package provides the capability to easily access WebScraping.AI API.
+This package provides the capability to access WebScraping.AI API.
 
 ### Compatibility
 |                               | Version                        |
-|:-----------------------------:|:------------------------------:|
+|-------------------------------|--------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2      |
 | WebScraping.AI API            | 2.0.4                          |
 

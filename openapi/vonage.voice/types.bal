@@ -167,7 +167,7 @@ public type EndpointWebsocket record {
     # Websocket URI
     AddressWebsocket uri?;
     # Content Type
-    string 'content\-type;
+    string contentType?;
     # Details of the Websocket you want to connect to
     EndpointwebsocketHeaders headers?;
 };
@@ -186,6 +186,13 @@ public type CreateCallResponse record {
 # The time the call started in the following format: `YYYY-MM-DD HH:MM:SS`. For xample, `2020-01-01 12:00:00`. This is only sent if `status` is `completed`.
 #
 public type EndTime string;
+
+public type NCCO record {
+    # Action
+    string action?;
+    # Text
+    string text?;
+};
 
 public type GetCallsResponse record {
     int count?;
@@ -372,11 +379,4 @@ public type StartStreamResponse record {
     string message?;
     # The unique identifier for this call leg. The UUID is created when your call request is accepted by Vonage. You use the UUID in all requests for individual live calls
     Uuid uuid?;
-};
-
-public type NCCO record {
-    # Action
-    string action?;
-    # Text
-    string text?;
 };

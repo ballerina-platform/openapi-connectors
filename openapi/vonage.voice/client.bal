@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 public type ClientConfig record {
     http:BearerTokenConfig authConfig;
@@ -24,15 +24,14 @@ public type ClientConfig record {
 };
 
 # The Voice API lets you create outbound calls, control in-progress calls and get information about historical calls. More information about the Voice API can be found at <https://developer.nexmo.com/voice/voice-api/overview>.
-#
-# + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
-    # Client initialization.
+    # The HTTP client initialization requires setting the API credentials. 
+    # Please create a [Vonage account](https://dashboard.nexmo.com/) and obtain tokens following [this guide](https://dashboard.nexmo.com/getting-started/voice).
     #
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.nexmo.com/v1/calls") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -48,7 +47,7 @@ public client class Client {
     # + 'order - Either ascending or  descending order.
     # + conversationUuid - Return all the records associated with a specific conversation.
     # + return - OK
-    remote isolated function getCalls(string? status = (), string? dateStart = (), string? dateEnd = (), int pageSize = 10, int recordIndex = 0, string 'order = "asc", string? conversationUuid = ()) returns GetCallsResponse|error {
+    remote isolated function getCalls(GetCallsStatus? status = (), string? dateStart = (), string? dateEnd = (), int pageSize = 10, int recordIndex = 0, GetCallsOrder 'order = "asc", string? conversationUuid = ()) returns GetCallsResponse|error {
         string  path = string `/`;
         map<anydata> queryParam = {"status": status, "date_start": dateStart, "date_end": dateEnd, "page_size": pageSize, "record_index": recordIndex, "order": 'order, "conversation_uuid": conversationUuid};
         path = path + check getPathForQueryParam(queryParam);

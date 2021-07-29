@@ -24,7 +24,7 @@ public type EndpointPhoneFrom record {
 
 public type UpdateCallRequestUnearmuff record {
     # Allow the specified UUID to hear audio
-    string action?;
+    UpdateCallRequestUnearmuffAction action?;
 };
 
 public type StopTalkResponse record {
@@ -151,9 +151,9 @@ public type CreateCallRequestBase record {
     # **Required** unless `event_url` is configured at the application
     string[] event_url?;
     # The HTTP method used to send event information to `event_url`.
-    string event_method?;
+    CreateCallRequestBaseEventMethod event_method?;
     # Configure the behavior when Vonage detects that the call is answered by voicemail. If `continue`, Vonage sends an HTTP request to `event_url` with the Call event machine. If `hangup`, Vonage ends the call.
-    string machine_detection?;
+    CreateCallRequestBaseMachineDetection machine_detection?;
     # Set the number of seconds that elapse before Vonage hangs up after the call state changes to answered.
     int length_timer?;
     # Set the number of seconds that elapse before Vonage hangs up after the call state changes to ‘ringing’.
@@ -167,7 +167,7 @@ public type EndpointWebsocket record {
     # Websocket URI
     AddressWebsocket uri?;
     # Content Type
-    string 'content\-type;
+    EndpointWebsocketContentType 'content\-type;
     # Details of the Websocket you want to connect to
     EndpointwebsocketHeaders headers?;
 };
@@ -187,6 +187,13 @@ public type CreateCallResponse record {
 #
 public type EndTime string;
 
+public type NCCO record {
+    # Action
+    string action?;
+    # Text
+    string text?;
+};
+
 public type GetCallsResponse record {
     int count?;
     int page_size?;
@@ -198,7 +205,7 @@ public type GetCallsResponse record {
 
 public type UpdateCallRequestHangup record {
     # End the call for the specified UUID
-    string action?;
+    UpdateCallRequestHangupAction action?;
 };
 
 # Connect to a VBC extension
@@ -317,7 +324,7 @@ public type EndpointPhoneTo record {
 
 public type UpdateCallRequestEarmuff record {
     # Prevent the specified UUID from hearing audio
-    string action?;
+    UpdateCallRequestEarmuffAction action?;
 };
 
 public type StartTalkResponse record {
@@ -341,7 +348,7 @@ public type RequestTransferActionParam string;
 
 public type UpdateCallRequestMute record {
     # Mute the specified UUID
-    string action?;
+    UpdateCallRequestMuteAction action?;
 };
 
 # The unique identifier for this call leg. The UUID is created when your call request is accepted by Vonage. You use the UUID in all requests for individual live calls
@@ -350,7 +357,7 @@ public type Uuid string;
 
 public type UpdateCallRequestUnmute record {
     # Unmute the specified UUID
-    string action?;
+    UpdateCallRequestUnmuteAction action?;
 };
 
 public type  Body1 UpdateCallRequestTransferNcco|UpdateCallRequestTransferAnswerUrl|UpdateCallRequestHangup|UpdateCallRequestMute|UpdateCallRequestUnmute|UpdateCallRequestEarmuff|UpdateCallRequestUnearmuff;
@@ -374,9 +381,56 @@ public type StartStreamResponse record {
     Uuid uuid?;
 };
 
-public type NCCO record {
-    # Action
-    string action?;
-    # Text
-    string text?;
-};
+public enum GetCallsStatus {
+    GETCALLSSTATUS_STARTED = "started",
+    GETCALLSSTATUS_RINGING = "ringing",
+    GETCALLSSTATUS_ANSWERED = "answered",
+    GETCALLSSTATUS_MACHINE = "machine",
+    GETCALLSSTATUS_COMPLETED = "completed",
+    GETCALLSSTATUS_BUSY = "busy",
+    GETCALLSSTATUS_CANCELLED = "cancelled",
+    GETCALLSSTATUS_FAILED = "failed",
+    GETCALLSSTATUS_REJECTED = "rejected",
+    GETCALLSSTATUS_TIMEOUT = "timeout",
+    GETCALLSSTATUS_UNANSWERED = "unanswered"
+}
+
+public enum GetCallsOrder {
+    GETCALLSORDER_ASC = "asc",
+    GETCALLSORDER_DESC = "desc"
+}
+
+public enum UpdateCallRequestUnearmuffAction {
+    UPDATECALLREQUESTUNEARMUFFACTION_UNEARMUFF = "unearmuff"
+}
+
+public enum CreateCallRequestBaseEventMethod {
+    CREATECALLREQUESTBASEEVENTMETHOD_POST = "POST",
+    CREATECALLREQUESTBASEEVENTMETHOD_GET = "GET"
+}
+
+public enum CreateCallRequestBaseMachineDetection {
+    CREATECALLREQUESTBASEMACHINEDETECTION_CONTINUE = "continue",
+    CREATECALLREQUESTBASEMACHINEDETECTION_HANGUP = "hangup"
+}
+
+public enum EndpointWebsocketContentType {
+    ENDPOINTWEBSOCKETCONTENTTYPE_AUDIOL16RATE8000 = "audio/l16;rate=8000",
+    ENDPOINTWEBSOCKETCONTENTTYPE_AUDIOL16RATE16000 = "audio/l16;rate=16000"
+}
+
+public enum UpdateCallRequestHangupAction {
+    UPDATECALLREQUESTHANGUPACTION_HANGUP = "hangup"
+}
+
+public enum UpdateCallRequestEarmuffAction {
+    UPDATECALLREQUESTEARMUFFACTION_EARMUFF = "earmuff"
+}
+
+public enum UpdateCallRequestMuteAction {
+    UPDATECALLREQUESTMUTEACTION_MUTE = "mute"
+}
+
+public enum UpdateCallRequestUnmuteAction {
+    UPDATECALLREQUESTUNMUTEACTION_MUTE = "mute"
+}

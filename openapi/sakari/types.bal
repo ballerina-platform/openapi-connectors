@@ -76,7 +76,7 @@ public type SendMessagesRequest record {
     ContactRequest[] contacts?;
     SendmessagesrequestFilters filters?;
     string template?;
-    string 'type?;
+    SendMessagesRequestType 'type?;
     # List of media objects to attach to message
     SendmessagesrequestMedia[] media?;
     string conversationStrategy?;
@@ -132,7 +132,7 @@ public type Updated record {
 
 public type TemplateRequest record {
     string name?;
-    string 'type?;
+    TemplateRequestType 'type?;
     string template?;
 };
 
@@ -304,7 +304,7 @@ public type TemplateResponse record {
 
 public type CampaignrequestTrigger record {
     # Campaign type specifies how it sources contacts and what event triggers its execution Sort order
-    string code?;
+    CampaignrequestTriggerCode code?;
 };
 
 public type AccountEventPayload record {
@@ -420,3 +420,25 @@ public type Tag record {
     # Whether visible
     boolean visible?;
 };
+
+public enum CreateContactMergeStrategy {
+    CREATECONTACTMERGESTRATEGY_APPEND = "append",
+    CREATECONTACTMERGESTRATEGY_CORE = "core",
+    CREATECONTACTMERGESTRATEGY_REMOVE = "remove"
+}
+
+public enum SendMessagesRequestType {
+    SENDMESSAGESREQUESTTYPE_SMS = "SMS",
+    SENDMESSAGESREQUESTTYPE_MMS = "MMS"
+}
+
+public enum TemplateRequestType {
+    TEMPLATEREQUESTTYPE_SMS = "SMS",
+    TEMPLATEREQUESTTYPE_WEB = "Web"
+}
+
+public enum CampaignrequestTriggerCode {
+    CAMPAIGNREQUESTTRIGGERCODE_M = "M",
+    CAMPAIGNREQUESTTRIGGERCODE_S = "S",
+    CAMPAIGNREQUESTTRIGGERCODE_FU = "FU"
+}

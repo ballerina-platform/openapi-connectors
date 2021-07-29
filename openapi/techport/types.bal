@@ -1,22 +1,22 @@
-public type InlineResponse2001Arr InlineResponse2001[];
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
 # Represents a destination towards which the technology on this project helps advance the Agency goals.
 #
 public type Destination string;
-
-# The name of a Program Director responsible for management of an project.
-#
-public type ProgramDirector string;
-
-# Lookup code type further showing how the lookup codes within this type will be used.
-public type LkuCodeType record {
-    # Unique ID for this LKU Code Type
-    int lkuCodeTypeId?;
-    # Unique text code type that represents this LKU Code
-    string codeType?;
-    # Description of the LKU Code Type
-    string description?;
-};
 
 # Lookup code representing more data about an object usually stored in our database.
 public type LkuCode record {
@@ -32,28 +32,6 @@ public type LkuCode record {
     LkuCodeType lkuCodeType?;
     # Display order
     int displayOrder?;
-};
-
-# Represents a NASA program.
-public type Program record {
-    # Unique ID for this program
-    int programId?;
-    # Acronym for this program
-    string acronym?;
-    # True if the program is still active
-    boolean active?;
-    # Description for the program
-    string description?;
-    # Represents a NASA program.
-    Program parentProgram?;
-    # Unique ID for the parent program
-    int parentProgramId?;
-    # A NASA center/facility associated with an project
-    Organization responsibleMd?;
-    # Unique ID for the parent responsible mission directorate
-    int responsibleMdId?;
-    # Title for the program
-    string title?;
 };
 
 # A NASA center/facility associated with an project
@@ -135,9 +113,80 @@ public type Taxonomy record {
 #
 public type WorkLocation string;
 
-public type InlineResponse200 record {
+public type ProjectIdResponse record {
+    ProjectId[] projects?;
+    int totalCount?;
+};
+
+# Represents a taxonomy node in a tree.
+public type TreeNode record {
+    # Represents data associated with a single taxonomy node entity.
+    TaxonomyNode content?;
+    TreeNode[] children?;
+};
+
+public type ProjectSearchResult record {
+    # Project Id.
     int id?;
-    string lastUpdated?;
+    # Project title.
+    string title?;
+    # Details about the project.
+    string description?;
+};
+
+# The name of the Principal Investigator who is a lead scientist or engineer for an project.
+#
+public type PrincipalInvestigator string;
+
+# The name of a Program Manager responsible for management of an project.
+#
+public type ProgramManager string;
+
+# The name of a Program Director responsible for management of an project.
+#
+public type ProgramDirector string;
+
+# Lookup code type further showing how the lookup codes within this type will be used.
+public type LkuCodeType record {
+    # Unique ID for this LKU Code Type
+    int lkuCodeTypeId?;
+    # Unique text code type that represents this LKU Code
+    string codeType?;
+    # Description of the LKU Code Type
+    string description?;
+};
+
+# Represents a NASA program.
+public type Program record {
+    # Unique ID for this program
+    int programId?;
+    # Acronym for this program
+    string acronym?;
+    # True if the program is still active
+    boolean active?;
+    # Description for the program
+    string description?;
+    # Represents a NASA program.
+    Program parentProgram?;
+    # Unique ID for the parent program
+    int parentProgramId?;
+    # A NASA center/facility associated with an project
+    Organization responsibleMd?;
+    # Unique ID for the parent responsible mission directorate
+    int responsibleMdId?;
+    # Title for the program
+    string title?;
+};
+
+public type ProjectSearchResponse record {
+    ProjectSearchResult[] projects?;
+};
+
+public type ProjectId record {
+    # Project IDs.
+    int? projectId?;
+    # Date where the project was last updated.
+    string? lastUpdated?;
 };
 
 # The name of a Project Manager responsible for management of an project.
@@ -268,22 +317,9 @@ public type TechnologyArea record {
     string title?;
 };
 
-# Represents a taxonomy node in a tree.
-public type TreeNode record {
-    # Represents data associated with a single taxonomy node entity.
-    TaxonomyNode content?;
-    TreeNode[] children?;
-};
-
 # The name of an investigator who is a scientist or engineer for an project.
 #
 public type CoInvestigator string;
-
-public type InlineResponse2001 record {
-    int id?;
-    string title?;
-    string description?;
-};
 
 # Represents data associated with a single taxonomy node entity.
 public type TaxonomyNode record {
@@ -321,17 +357,9 @@ public type File record {
     string fileName?;
 };
 
-# The name of the Principal Investigator who is a lead scientist or engineer for an project.
-#
-public type PrincipalInvestigator string;
-
 # Represents a file hyperlink or external hyperlink to a project closeout final report artifact.
 #
 public type CloseoutDocument string;
-
-# The name of a Program Manager responsible for management of an project.
-#
-public type ProgramManager string;
 
 # Represents a physical location.
 public type Location record {

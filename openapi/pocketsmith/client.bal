@@ -28,11 +28,12 @@ public type ClientConfig record {
 };
 
 # The public PocketSmith API
-#
-# + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
-    # Client initialization.
+
+    # The HTTP client initialization requires setting the API credentials.
+    # Please create a [PocketSmith account](https://www.pocketsmith.com/) and obtain OAuth tokens following [this guide](https://developers.pocketsmith.com/docs/oauth).
+    # During initialization you can pass either http:BearerTokenConfig if you have a bearer token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
     #
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL

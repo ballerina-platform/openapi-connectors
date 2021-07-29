@@ -1,4 +1,4 @@
-Connects to PocketSmith API from Ballerina
+Connects to [PocketSmith REST API](https://developers.pocketsmith.com/reference) from Ballerina
 
 ## Package overview
 
@@ -6,7 +6,7 @@ The `ballerinax/pocketsmith` is a [Ballerina](https://ballerina.io/) connector f
 
 ### Compatibility
 |                      | Version                    |
-|:--------------------:|:--------------------------:|
+|----------------------|----------------------------|
 | Ballerina Language   | Ballerina Swan Lake Beta2  |
 | PocketSmith REST API | v2.0                       |
 

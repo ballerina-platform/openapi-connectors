@@ -29,6 +29,7 @@ public type CategoryRuleArr CategoryRule[];
 public type BudgetAnalysisPackageArr BudgetAnalysisPackage[];
 
 public type AttachmentArr Attachment[];
+
 public type Account record {
     # The unique identifier of the account.
     int id?;
@@ -37,7 +38,7 @@ public type Account record {
     # The currency code for the account.
     string currency_code?;
     # The type of the account.
-    AccountType 'type?;
+    string 'type?;
     # Whether the account is a net worth asset.
     boolean is_net_worth?;
     TransactionAccount primary_transaction_account?;
@@ -207,7 +208,7 @@ public type TransactionAccount record {
     # The currency that the account is in. This is determined by the account that the transaction account belongs to.
     string currency_code?;
     # The type of the transaction account.
-    TransactionAccountType 'type?;
+    string 'type?;
 };
 
 public type Body14 record {
@@ -339,7 +340,7 @@ public type Body5 record {
     # A currency code for the account.
     string currency_code;
     # The type of the account.
-    Body5Type 'type;
+    string 'type;
 };
 
 public type Body2 record {
@@ -398,7 +399,7 @@ public type Scenario record {
     # A number representing how often the interest should be applied. 0 is used for no interest, 2 is weekly, 3 is fortnightly, 4 is monthly, 5 is yearly and 7 for quarterly.
     int interest_rate_repeat_id?;
     # The type of the scenario.
-    ScenarioType 'type?;
+    string 'type?;
     decimal 'minimum\-value?;
     decimal 'maximum\-value?;
     # For goals, the date that they should be achieved by.
@@ -440,7 +441,7 @@ public type BudgetAnalysisPackage record {
 public type Transaction record {
     string cheque_number?;
     # Whether the transaction is a debit or a credit
-    TransactionType 'type?;
+    string 'type?;
     string memo?;
     # The payee/merchant of the transaction.
     string payee?;
@@ -462,7 +463,7 @@ public type Transaction record {
     decimal closing_balance?;
     TransactionAccount transaction_account?;
     # The status of the transaction. Pending transactions are temporary and may be superseded later by their posted counterparts, which are permanent.
-    TransactionStatus status?;
+    string status?;
 };
 
 public type Body1 record {
@@ -479,85 +480,3 @@ public type AttachmentVariants record {
     string thumb_url?;
 };
 
-public enum ListTransactionsUserType {
-    LISTTRANSACTIONSUSERTYPE_DEBIT = "debit",
-    LISTTRANSACTIONSUSERTYPE_CREDIT = "credit"
-}
-
-public enum ListTransactionsAccountType {
-    LISTTRANSACTIONSACCOUNTTYPE_DEBIT = "debit",
-    LISTTRANSACTIONSACCOUNTTYPE_CREDIT = "credit"
-}
-
-public enum GettransactionsType {
-    GETTRANSACTIONSTYPE_DEBIT = "debit",
-    GETTRANSACTIONSTYPE_CREDIT = "credit"
-}
-
-public enum BudgetSummaryPeriod {
-    BUDGETSUMMARYPERIOD_WEEKS = "weeks",
-    BUDGETSUMMARYPERIOD_MONTHS = "months",
-    BUDGETSUMMARYPERIOD_YEARS = "years",
-    BUDGETSUMMARYPERIOD_EVENT = "event"
-}
-
-public enum TrendAnalysisPeriod {
-    TRENDANALYSISPERIOD_WEEKS = "weeks",
-    TRENDANALYSISPERIOD_MONTHS = "months",
-    TRENDANALYSISPERIOD_YEARS = "years",
-    TRENDANALYSISPERIOD_EVENT = "event"
-}
-
-public enum AccountType {
-    ACCOUNTTYPE_BANK = "bank",
-    ACCOUNTTYPE_CREDITS = "credits",
-    ACCOUNTTYPE_CASH = "cash",
-    ACCOUNTTYPE_STOCKS = "stocks",
-    ACCOUNTTYPE_MORTGAGE = "mortgage",
-    ACCOUNTTYPE_LOANS = "loans",
-    ACCOUNTTYPE_VEHICLE = "vehicle",
-    ACCOUNTTYPE_PROPERTY = "property",
-    ACCOUNTTYPE_INSURANCE = "insurance",
-    ACCOUNTTYPE_OTHERLIABILITY = "other_liability"
-}
-
-public enum TransactionAccountType {
-    TRANSACTIONACCOUNTTYPE_BANK = "bank",
-    TRANSACTIONACCOUNTTYPE_CREDITS = "credits",
-    TRANSACTIONACCOUNTTYPE_CASH = "cash",
-    TRANSACTIONACCOUNTTYPE_STOCKS = "stocks",
-    TRANSACTIONACCOUNTTYPE_MORTGAGE = "mortgage",
-    TRANSACTIONACCOUNTTYPE_LOANS = "loans",
-    TRANSACTIONACCOUNTTYPE_VEHICLE = "vehicle",
-    TRANSACTIONACCOUNTTYPE_PROPERTY = "property",
-    TRANSACTIONACCOUNTTYPE_INSURANCE = "insurance",
-    TRANSACTIONACCOUNTTYPE_OTHERLIABILITY = "other_liability"
-}
-
-public enum Body5Type {
-    BODY5TYPE_BANK = "bank",
-    BODY5TYPE_CREDITS = "credits",
-    BODY5TYPE_LOANS = "loans",
-    BODY5TYPE_MORTGAGE = "mortgage",
-    BODY5TYPE_STOCKS = "stocks",
-    BODY5TYPE_VEHICLE = "vehicle",
-    BODY5TYPE_PROPERTY = "property",
-    BODY5TYPE_OTHERASSET = "other_asset",
-    BODY5TYPE_OTHERLIABILITY = "other_liability"
-}
-
-public enum ScenarioType {
-    SCENARIOTYPE_NOINTEREST = "no-interest",
-    SCENARIOTYPE_SAVINGS = "savings",
-    SCENARIOTYPE_DEBT = "debt"
-}
-
-public enum TransactionType {
-    TRANSACTIONTYPE_DEBIT = "debit",
-    TRANSACTIONTYPE_CREDIT = "credit"
-}
-
-public enum TransactionStatus {
-    TRANSACTIONSTATUS_PENDING = "pending",
-    TRANSACTIONSTATUS_POSTED = "posted"
-}

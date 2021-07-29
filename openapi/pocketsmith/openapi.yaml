@@ -1,7 +1,13 @@
 openapi: 3.0.1
 info:
   title: PocketSmith
-  description: The public PocketSmith API
+  description: This is a generated connector for [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
+
+    The public PocketSmith API. It's a powerful interface for online money management with cash flow forecasts as well as superb historical tracking.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a [PocketSmith account](https://www.pocketsmith.com/) and obtain OAuth tokens following [this guide](https://developers.pocketsmith.com/docs/oauth).
   contact:
     name: API Support
     email: api@pocketsmith.com
@@ -24,7 +30,8 @@ components:
     #   description: 'If you want to build a tool just for yourself, be it a desktop widget to display your balances or a tool to import transactions from a bank without a bank feed, you can use our developer keys feature. You can issue yourself a key which will give you persistent API access to just your account. You should rotate your keys regularly.'
     oauth2:
       type: oauth2
-      description: 'If you want to a create an app for PocketSmith that other PocketSmith users can use, you''ll be using OAuth 2. To register an app with PocketSmith, please email us on api@pocketsmith.com. Let us know a bit about yourself and what you plan on building. When approved, you will be provided with your client_id and client_secret to start using OAuth. Then, check out our guide for integrating OAuth to get started.'
+      x-apikey-description: "Provide your http:BearerTokenConfig record as {authConfig : bearerAuthConfig}"
+      description: 'If you want to a create an app for PocketSmith that other PocketSmith users can use, you''ll be using OAuth 2. To register an app with PocketSmith, email us on api@pocketsmith.com. Let us know a bit about yourself and what you plan on building. When approved, you will be provided with your client_id and client_secret to start using OAuth. Then, check out our guide for integrating OAuth to get started.'
       flows:
         authorizationCode:
           authorizationUrl: 'https://my.pocketsmith.com/oauth/authorize'
@@ -170,17 +177,17 @@ components:
         type:
           type: string
           description: The type of the account.
-          enum:
-            - bank
-            - credits
-            - cash
-            - stocks
-            - mortgage
-            - loans
-            - vehicle
-            - property
-            - insurance
-            - other_liability
+          # enum:
+          #   - bank
+          #   - credits
+          #   - cash
+          #   - stocks
+          #   - mortgage
+          #   - loans
+          #   - vehicle
+          #   - property
+          #   - insurance
+          #   - other_liability
           example: bank
         is_net_worth:
           type: boolean
@@ -287,17 +294,17 @@ components:
         type:
           type: string
           description: The type of the transaction account.
-          enum:
-            - bank
-            - credits
-            - cash
-            - stocks
-            - mortgage
-            - loans
-            - vehicle
-            - property
-            - insurance
-            - other_liability
+          # enum:
+          #   - bank
+          #   - credits
+          #   - cash
+          #   - stocks
+          #   - mortgage
+          #   - loans
+          #   - vehicle
+          #   - property
+          #   - insurance
+          #   - other_liability
           example: bank
     Scenario:
       type: object
@@ -324,10 +331,10 @@ components:
         type:
           type: string
           description: The type of the scenario.
-          enum:
-            - no-interest
-            - savings
-            - debt
+          # enum:
+          #   - no-interest
+          #   - savings
+          #   - debt
           example: no-interest
         minimum-value:
           type: number
@@ -395,9 +402,9 @@ components:
         type:
           type: string
           description: Whether the transaction is a debit or a credit
-          enum:
-            - debit
-            - credit
+          # enum:
+          #   - debit
+          #   - credit
           example: credit
         memo:
           type: string
@@ -451,9 +458,9 @@ components:
         status:
           type: string
           description: 'The status of the transaction. Pending transactions are temporary and may be superseded later by their posted counterparts, which are permanent.'
-          enum:
-            - pending
-            - posted
+          # enum:
+          #   - pending
+          #   - posted
     Category:
       type: object
       properties:
@@ -1135,16 +1142,16 @@ paths:
                 type:
                   type: string
                   description: The type of the account.
-                  enum:
-                    - bank
-                    - credits
-                    - loans
-                    - mortgage
-                    - stocks
-                    - vehicle
-                    - property
-                    - other_asset
-                    - other_liability
+                  # enum:
+                  #   - bank
+                  #   - credits
+                  #   - loans
+                  #   - mortgage
+                  #   - stocks
+                  #   - vehicle
+                  #   - property
+                  #   - other_asset
+                  #   - other_liability
                   example: bank
       responses:
         '201':
@@ -1408,9 +1415,9 @@ paths:
           required: false
           schema:
             type: string
-            enum:
-              - debit
-              - credit
+            # enum:
+            #   - debit
+            #   - credit
           example: debit
         - name: search
           in: query
@@ -1483,9 +1490,9 @@ paths:
           required: false
           schema:
             type: string
-            enum:
-              - debit
-              - credit
+            # enum:
+            #   - debit
+            #   - credit
           example: debit
         - name: search
           in: query
@@ -1557,9 +1564,9 @@ paths:
           required: false
           schema:
             type: string
-            enum:
-              - debit
-              - credit
+            # enum:
+            #   - debit
+            #   - credit
           example: debit
         - name: search
           in: query
@@ -1949,11 +1956,11 @@ paths:
           required: true
           schema:
             type: string
-            enum:
-              - weeks
-              - months
-              - years
-              - event
+            # enum:
+            #   - weeks
+            #   - months
+            #   - years
+            #   - event
           example: weeks
         - name: interval
           in: query
@@ -2005,11 +2012,11 @@ paths:
           required: true
           schema:
             type: string
-            enum:
-              - weeks
-              - months
-              - years
-              - event
+            # enum:
+            #   - weeks
+            #   - months
+            #   - years
+            #   - event
           example: weeks
         - name: interval
           in: query

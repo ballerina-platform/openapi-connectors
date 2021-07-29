@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Pocketsmith", "financial", "management"]
+keywords = ["pocketsmith", "financial", "management"]
 org = "ballerinax"
 name = "pocketsmith"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

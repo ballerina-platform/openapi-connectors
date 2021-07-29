@@ -3,10 +3,16 @@ openapi: 3.0.0
 info:
   version: 1.3.6
   title: Voice API
-  description:
-    The Voice API lets you create outbound calls, control in-progress calls
-    and get information about historical calls. More information about the Voice API
-    can be found at <https://developer.nexmo.com/voice/voice-api/overview>.
+  description: >
+    This is a generated connector for [Vonage Voice API v1.3.6](https://nexmo-api-specification.herokuapp.com/api/voice) OpenAPI specification.
+
+    The Voice API lets you create outbound calls, control in-progress calls and get information about historical calls. 
+    
+    More information about the Voice API can be found at https://developer.nexmo.com/voice/voice-api/overview.
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Vonage account](https://dashboard.nexmo.com/) and obtain tokens following [this guide](https://dashboard.nexmo.com/getting-started/voice).
   contact:
     name: Vonage DevRel
     email: devrel@vonage.com
@@ -633,6 +639,16 @@ components:
         uuid:
           $ref: "#/components/schemas/uuid"
 
+    NCCO:
+      type: object
+      properties:
+        action:
+          description: Action
+          type: string
+        text:
+          description: Text
+          type: string
+
     GetCallResponse:
       type: object
       properties:
@@ -870,7 +886,7 @@ components:
           example: websocket
         uri:
           "$ref": "#/components/schemas/AddressWebsocket"
-        content-type:
+        contentType:
           description: Content Type
           type: string
           example: audio/l16;rate=16000

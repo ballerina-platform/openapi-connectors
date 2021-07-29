@@ -14,26 +14,25 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
 # A client for https://webscraping.ai API. It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
-#
-# + clientEp - Connector http endpoint
 public client class Client {
     http:Client clientEp;
     map<string> apiKeys;
-    # Client initialization.
+    # The HTTP client initialization requires setting the API credentials. 
+    # Please create a [WebScraping.AI account](https://webscraping.ai) and obtain API Key from the [dashboard](https://webscraping.ai/dashboard).
     #
-    # + apiKeyConfig - API key configuration detail
+    # + apiKeyConfig - Provide your API key as `api_key`. Eg: `{"api_key" : "<API key>"}`
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization 
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.webscraping.ai") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
@@ -47,7 +46,7 @@ public client class Client {
     # + js - Execute on-page JavaScript using a headless browser (true by default)
     # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details.
     # + return - Parameters validation error
-    remote isolated function getHTML(string url, record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
+    remote isolated function getHTML(string url, record {}? headers = (), int timeout = 5000, boolean js = true, GetHTMLProxy proxy = "datacenter") returns string|error {
         string  path = string `/html`;
         map<anydata> queryParam = {"url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, api_key: self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
@@ -63,7 +62,7 @@ public client class Client {
     # + js - Execute on-page JavaScript using a headless browser (true by default)
     # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details.
     # + return - Parameters validation error
-    remote isolated function getSelected(string url, string? selector = (), record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
+    remote isolated function getSelected(string url, string? selector = (), record {}? headers = (), int timeout = 5000, boolean js = true, GetSelectedProxy proxy = "datacenter") returns string|error {
         string  path = string `/selected`;
         map<anydata> queryParam = {"selector": selector, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, api_key: self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
@@ -79,7 +78,7 @@ public client class Client {
     # + js - Execute on-page JavaScript using a headless browser (true by default)
     # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details.
     # + return - Parameters validation error
-    remote isolated function getSelectedMultiple(string url, string[]? selectors = (), record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
+    remote isolated function getSelectedMultiple(string url, string[]? selectors = (), record {}? headers = (), int timeout = 5000, boolean js = true, GetSelectedMultipleProxy proxy = "datacenter") returns string|error {
         string  path = string `/selected-multiple`;
         map<anydata> queryParam = {"selectors": selectors, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, api_key: self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);

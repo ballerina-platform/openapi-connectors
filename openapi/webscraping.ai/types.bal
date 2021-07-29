@@ -39,3 +39,18 @@ public type Error record {
     # Error description
     string message?;
 };
+
+public enum GetHTMLProxy {
+    GETHTMLPROXY_DATACENTER = "datacenter",
+    GETHTMLPROXY_RESIDENTIAL = "residential"
+}
+
+public enum GetSelectedProxy {
+    GETSELECTEDPROXY_DATACENTER = "datacenter",
+    GETSELECTEDPROXY_RESIDENTIAL = "residential"
+}
+
+public enum GetSelectedMultipleProxy {
+    GETSELECTEDMULTIPLEPROXY_DATACENTER = "datacenter",
+    GETSELECTEDMULTIPLEPROXY_RESIDENTIAL = "residential"
+}

@@ -1,6 +1,10 @@
 openapi: 3.0.2
 info:
   title: WebScraping.AI
+  x-init-description: >
+    The HTTP client initialization requires setting the API credentials. 
+  
+    Please create a [WebScraping.AI account](https://webscraping.ai) and obtain API Key from the [dashboard](https://webscraping.ai/dashboard).
   contact:
     name: WebScraping.AI Support
     url: https://webscraping.ai
@@ -285,6 +289,7 @@ components:
       type: apiKey
       name: api_key
       in: query
+      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
   responses:
     400:
       description: Parameters validation error

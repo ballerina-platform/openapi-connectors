@@ -3,7 +3,7 @@ info:
   version: 3.7.1
   title: TechPort
   description: This is the public REST API for TechPort. All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
-  x-init-description: The HTTP client initialization. Please refer to [API documentation](https://data.nasa.gov/developer/external/techport/techport-api.pdf) for more detail.
+  x-init-description: This is a generated connector from [Techport](https://techport.nasa.gov/home) OpenAPI Specification. The connector initialization. Please refer to [API documentation](https://data.nasa.gov/developer/external/techport/techport-api.pdf) for more detail.
   contact:
     name: TechPort Team
     email: hq-techport@mail.nasa.gov

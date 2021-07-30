@@ -21,7 +21,7 @@ import ballerina/lang.'string;
 # This is the public REST API for TechPort. All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
 public isolated client class Client {
     final http:Client clientEp;
-    # The HTTP client initialization. Please refer to [API documentation](https://data.nasa.gov/developer/external/techport/techport-api.pdf) for more detail.
+    # This is a generated connector from [Techport](https://techport.nasa.gov/home) OpenAPI Specification. The connector initialization. Please refer to [API documentation](https://data.nasa.gov/developer/external/techport/techport-api.pdf) for more detail.
     #
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL

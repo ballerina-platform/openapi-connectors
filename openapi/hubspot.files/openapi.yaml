@@ -1,7 +1,15 @@
 openapi: 3.0.1
 info:
   title: Files
-  description: Upload and manage files.
+  description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
+
+    These APIs allow to upload and manage files.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
+  
+    During initialization you can pass either http:BearerTokenConfig if you have a bearer token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
   version: v3
 servers:
   - url: 'https://api.hubapi.com'
@@ -540,11 +548,11 @@ paths:
           explode: true
           schema:
             type: string
-            enum:
-              - thumb
-              - icon
-              - medium
-              - preview
+            # enum:
+            #   - thumb
+            #   - icon
+            #   - medium
+            #   - preview
         - name: expirationSeconds
           in: query
           description: How long in seconds the link will provide access to the file.
@@ -1035,68 +1043,68 @@ components:
           type: string
         httpStatus:
           type: string
-          enum:
-            - CONTINUE
-            - SWITCHING_PROTOCOLS
-            - PROCESSING
-            - OK
-            - CREATED
-            - ACCEPTED
-            - NON_AUTHORITATIVE_INFORMATION
-            - NO_CONTENT
-            - RESET_CONTENT
-            - PARTIAL_CONTENT
-            - MULTI_STATUS
-            - ALREADY_REPORTED
-            - IM_USED
-            - MULTIPLE_CHOICES
-            - MOVED_PERMANENTLY
-            - FOUND
-            - SEE_OTHER
-            - NOT_MODIFIED
-            - USE_PROXY
-            - TEMPORARY_REDIRECT
-            - PERMANENT_REDIRECT
-            - BAD_REQUEST
-            - UNAUTHORIZED
-            - PAYMENT_REQUIRED
-            - FORBIDDEN
-            - NOT_FOUND
-            - METHOD_NOT_ALLOWED
-            - NOT_ACCEPTABLE
-            - PROXY_AUTHENTICATION_REQUIRED
-            - REQUEST_TIMEOUT
-            - CONFLICT
-            - GONE
-            - LENGTH_REQUIRED
-            - PRECONDITION_FAILED
-            - REQUEST_ENTITY_TOO_LARGE
-            - REQUEST_URI_TOO_LONG
-            - UNSUPPORTED_MEDIA_TYPE
-            - REQUESTED_RANGE_NOT_SATISFIABLE
-            - EXPECTATION_FAILED
-            - IM_A_TEAPOT
-            - MISDIRECTED_REQUEST
-            - UNPROCESSABLE_ENTITY
-            - LOCKED
-            - FAILED_DEPENDENCY
-            - UPGRADE_REQUIRED
-            - PRECONDITION_REQUIRED
-            - TOO_MANY_REQUESTS
-            - REQUEST_HEADERS_FIELDS_TOO_LARGE
-            - INTERNAL_STALE_SERVICE_DISCOVERY
-            - UNAVAILABLE_FOR_LEGAL_REASONS
-            - INTERNAL_SERVER_ERROR
-            - NOT_IMPLEMENTED
-            - BAD_GATEWAY
-            - SERVICE_UNAVAILABLE
-            - GATEWAY_TIMEOUT
-            - HTTP_VERSION_NOT_SUPPORTED
-            - VARIANT_ALSO_NEGOTIATES
-            - INSUFFICIENT_STORAGE
-            - LOOP_DETECTED
-            - NOT_EXTENDED
-            - NETWORK_AUTHENTICATION_REQUIRED
+          # enum:
+          #   - CONTINUE
+          #   - SWITCHING_PROTOCOLS
+          #   - PROCESSING
+          #   - OK
+          #   - CREATED
+          #   - ACCEPTED
+          #   - NON_AUTHORITATIVE_INFORMATION
+          #   - NO_CONTENT
+          #   - RESET_CONTENT
+          #   - PARTIAL_CONTENT
+          #   - MULTI_STATUS
+          #   - ALREADY_REPORTED
+          #   - IM_USED
+          #   - MULTIPLE_CHOICES
+          #   - MOVED_PERMANENTLY
+          #   - FOUND
+          #   - SEE_OTHER
+          #   - NOT_MODIFIED
+          #   - USE_PROXY
+          #   - TEMPORARY_REDIRECT
+          #   - PERMANENT_REDIRECT
+          #   - BAD_REQUEST
+          #   - UNAUTHORIZED
+          #   - PAYMENT_REQUIRED
+          #   - FORBIDDEN
+          #   - NOT_FOUND
+          #   - METHOD_NOT_ALLOWED
+          #   - NOT_ACCEPTABLE
+          #   - PROXY_AUTHENTICATION_REQUIRED
+          #   - REQUEST_TIMEOUT
+          #   - CONFLICT
+          #   - GONE
+          #   - LENGTH_REQUIRED
+          #   - PRECONDITION_FAILED
+          #   - REQUEST_ENTITY_TOO_LARGE
+          #   - REQUEST_URI_TOO_LONG
+          #   - UNSUPPORTED_MEDIA_TYPE
+          #   - REQUESTED_RANGE_NOT_SATISFIABLE
+          #   - EXPECTATION_FAILED
+          #   - IM_A_TEAPOT
+          #   - MISDIRECTED_REQUEST
+          #   - UNPROCESSABLE_ENTITY
+          #   - LOCKED
+          #   - FAILED_DEPENDENCY
+          #   - UPGRADE_REQUIRED
+          #   - PRECONDITION_REQUIRED
+          #   - TOO_MANY_REQUESTS
+          #   - REQUEST_HEADERS_FIELDS_TOO_LARGE
+          #   - INTERNAL_STALE_SERVICE_DISCOVERY
+          #   - UNAVAILABLE_FOR_LEGAL_REASONS
+          #   - INTERNAL_SERVER_ERROR
+          #   - NOT_IMPLEMENTED
+          #   - BAD_GATEWAY
+          #   - SERVICE_UNAVAILABLE
+          #   - GATEWAY_TIMEOUT
+          #   - HTTP_VERSION_NOT_SUPPORTED
+          #   - VARIANT_ALSO_NEGOTIATES
+          #   - INSUFFICIENT_STORAGE
+          #   - LOOP_DETECTED
+          #   - NOT_EXTENDED
+          #   - NETWORK_AUTHENTICATION_REQUIRED
     ErrorDetail:
       required:
         - message
@@ -1194,13 +1202,13 @@ components:
         access:
           type: string
           description: 'File access. Can be PUBLIC_INDEXABLE, PUBLIC_NOT_INDEXABLE, PRIVATE.'
-          enum:
-            - PUBLIC_INDEXABLE
-            - PUBLIC_NOT_INDEXABLE
-            - HIDDEN_INDEXABLE
-            - HIDDEN_NOT_INDEXABLE
-            - HIDDEN_PRIVATE
-            - PRIVATE
+          # enum:
+          #   - PUBLIC_INDEXABLE
+          #   - PUBLIC_NOT_INDEXABLE
+          #   - HIDDEN_INDEXABLE
+          #   - HIDDEN_NOT_INDEXABLE
+          #   - HIDDEN_PRIVATE
+          #   - PRIVATE
       description: File
     FileActionResponse:
       required:
@@ -1214,11 +1222,11 @@ components:
         status:
           type: string
           description: Current status of the task.
-          enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          # enum:
+          #   - PENDING
+          #   - PROCESSING
+          #   - CANCELED
+          #   - COMPLETE
         result:
           $ref: '#/components/schemas/File'
         numErrors:
@@ -1269,13 +1277,13 @@ components:
           type: string
           description: |
             NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.
-          enum:
-            - PUBLIC_INDEXABLE
-            - PUBLIC_NOT_INDEXABLE
-            - HIDDEN_INDEXABLE
-            - HIDDEN_NOT_INDEXABLE
-            - HIDDEN_PRIVATE
-            - PRIVATE
+          # enum:
+          #   - PUBLIC_INDEXABLE
+          #   - PUBLIC_NOT_INDEXABLE
+          #   - HIDDEN_INDEXABLE
+          #   - HIDDEN_NOT_INDEXABLE
+          #   - HIDDEN_PRIVATE
+          #   - PRIVATE
       description: Object for updating files.
     Folder:
       required:
@@ -1325,11 +1333,11 @@ components:
         status:
           type: string
           description: Current status of the task.
-          enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          # enum:
+          #   - PENDING
+          #   - PROCESSING
+          #   - CANCELED
+          #   - COMPLETE
         result:
           $ref: '#/components/schemas/Folder'
         numErrors:
@@ -1424,13 +1432,13 @@ components:
           type: string
           description: |
             PUBLIC_INDEXABLE: File is publicly accessible by anyone who has the URL. Search engines can index the file. PUBLIC_NOT_INDEXABLE: File is publicly accessible by anyone who has the URL. Search engines *can't* index the file. PRIVATE: File is NOT publicly accessible. Requires a signed URL to see content. Search engines *can't* index the file.
-          enum:
-            - PUBLIC_INDEXABLE
-            - PUBLIC_NOT_INDEXABLE
-            - HIDDEN_INDEXABLE
-            - HIDDEN_NOT_INDEXABLE
-            - HIDDEN_PRIVATE
-            - PRIVATE
+          # enum:
+          #   - PUBLIC_INDEXABLE
+          #   - PUBLIC_NOT_INDEXABLE
+          #   - HIDDEN_INDEXABLE
+          #   - HIDDEN_NOT_INDEXABLE
+          #   - HIDDEN_PRIVATE
+          #   - PRIVATE
         ttl:
           type: string
           description: Time to live. If specified the file will be deleted after the given time frame.
@@ -1450,17 +1458,17 @@ components:
           type: string
           description: |
             NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.
-          enum:
-            - NONE
-            - REJECT
-            - RETURN_EXISTING
+          # enum:
+          #   - NONE
+          #   - REJECT
+          #   - RETURN_EXISTING
         duplicateValidationScope:
           type: string
           description: |
             ENTIRE_PORTAL: Look for a duplicate file in the entire account. EXACT_FOLDER: Look for a duplicate file in the provided folder.
-          enum:
-            - ENTIRE_PORTAL
-            - EXACT_FOLDER
+          # enum:
+          #   - ENTIRE_PORTAL
+          #   - EXACT_FOLDER
         overwrite:
           type: boolean
           description: 'If true, it will overwrite existing files if a file with the same name exists in the given folder.'

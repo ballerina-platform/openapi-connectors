@@ -1,4 +1,4 @@
-Connects to HubSpot Marketing API from Ballerina
+Connects to [HubSpot Marketing API](https://developers.hubspot.com/docs/api/overview) from Ballerina
 
 ## Package overview
 
@@ -7,7 +7,7 @@ This package provides the capability to easily access  HubSpot Marketing.
 
 ### Compatibility
 |                      | Version                    |
-|:--------------------:|:--------------------------:|
+|----------------------|----------------------------|
 | Ballerina Language   | Ballerina Swan Lake Beta2  |
 | HubSpot REST API     | V3                         | 
 

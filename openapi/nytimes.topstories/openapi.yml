@@ -3,10 +3,19 @@ servers:
   - url: http://api.nytimes.com/svc/topstories/v2
   - url: https://api.nytimes.com/svc/topstories/v2
 info:
-  description: The Top Stories API provides lists of articles and associated images by section.
+  description: >
+    This is a generated connector from [New York Times Top Stories API v2.0.0](https://developer.nytimes.com/docs/top-stories-product/1/overview) OpenAPI specification.
+
+    With the New York Times Top Stories API you can get articles currently on a section front or home page. The Top Stories API returns an array of articles currently on the specified section (arts, business, ...). 
+
+    The possible section value are: arts, automobiles, books, business, fashion, food, health, home, insider, magazine, movies, nyregion, obituaries, opinion, politics, realestate, science, sports, sundayreview, technology, theater, t-magazine, travel, upshot, us, and world.
   termsOfService: http://developer.nytimes.com/tou
   title: Top Stories
   version: 2.0.0
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   x-apiClientRegistration:
     url: http://developer.nytimes.com/signup
   x-apisguru-categories:
@@ -181,3 +190,4 @@ components:
       in: query
       name: api-key
       type: apiKey
+      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"

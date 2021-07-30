@@ -1,12 +1,12 @@
-Connects to New York Times Top Stories API from Ballerina
+Connects to [New York Times Top Stories API](https://developer.nytimes.com/docs/top-stories-product/1/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/nytimes.topstories` is a [Ballerina](https://ballerina.io/) connector for New York Times Top Stories API.
-This package provides the capability to easily access New York Times Top Stories API.
+This package provides the capability to access New York Times Top Stories API.
 
 ### Compatibility
 |                               | Version                         |
-|:-----------------------------:|:-------------------------------:|
+|-------------------------------|---------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2       | 
 | Top Stories API               | 2.0.0                           |
 

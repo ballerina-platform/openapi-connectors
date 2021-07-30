@@ -17,7 +17,7 @@
 public type ArticlewithcounttypeMedia record {
     string caption?;
     string copyright?;
-    ArticlewithcounttypeMediametadata[] 'media\-metadata?;
+    ArticlewithcounttypeMediametadata[] mediaMetadata?;
     string subtype?;
     string 'type?;
 };
@@ -45,7 +45,7 @@ public type InlineResponse2001 record {
     string status?;
 };
 
-public type PerFacet anydata[];
+public type PerFacet anydata[]?;
 
 public type InlineResponse200 record {
     string copyright?;
@@ -78,9 +78,9 @@ public type InlineResponse400 record {
     string status?;
 };
 
-public type GeoFacet anydata[];
+public type GeoFacet anydata[]?;
 
-public type OrgFacet anydata[];
+public type OrgFacet anydata[]?;
 
 public type ArticlewithcounttypeMediametadata record {
     string format?;

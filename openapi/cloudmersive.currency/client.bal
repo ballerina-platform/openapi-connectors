@@ -16,36 +16,37 @@
 
 import  ballerina/http;
 
-# Please visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
+# Visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
 #
 # + apiKeys - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
-
-# The currency APIs help you retrieve exchange rates and convert prices between currencies easily.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. 
+# The Cloudmersive Currency APIs help you retrieve exchange rates and convert prices between currencies.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys; 
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.  
+    # Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://testapi.cloudmersive.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
-    # Get a list of available currencies and corresponding countries
+   # Get a list of available currencies and corresponding countries
     #
     # + return - OK
     remote isolated function currencyExchangeGetAvailableCurrencies() returns AvailableCurrencyResponse|error {
         string  path = string `/currency/exchange-rates/list-available`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
         AvailableCurrencyResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = AvailableCurrencyResponse);
@@ -59,11 +60,11 @@ public client class Client {
     # + return - OK
     remote isolated function currencyExchangeConvertCurrency(string 'source, string destination, decimal payload) returns ConvertedCurrencyResult|error {
         string  path = string `/currency/exchange-rates/convert/${'source}/to/${destination}`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ConvertedCurrencyResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ConvertedCurrencyResult);
         return response;
     }
@@ -74,7 +75,7 @@ public client class Client {
     # + return - OK
     remote isolated function currencyExchangeGetExchangeRate(string 'source, string destination) returns ExchangeRateResult|error {
         string  path = string `/currency/exchange-rates/get/${'source}/to/${destination}`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;

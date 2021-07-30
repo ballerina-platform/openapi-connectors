@@ -1,4 +1,4 @@
-Connects to Cloudmersive Currency API from Ballerina
+Connects to [Cloudmersive Currency API](https://api.cloudmersive.com/docs/currency.asp) from Ballerina
 
 ## Package overview
 
@@ -6,7 +6,7 @@ The `ballerinax/cloudmersive.currency` is a [Ballerina](https://ballerina.io/) c
 
 ### Compatibility
 |                          | Version                    |
-|:------------------------:|:--------------------------:|
+|--------------------------|----------------------------|
 | Ballerina Language       | Ballerina Swan Lake Beta2  |
 | Cloudmersive API         | v1                         |
 

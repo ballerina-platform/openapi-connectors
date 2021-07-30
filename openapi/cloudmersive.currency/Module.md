@@ -1,27 +1,22 @@
 ## Overview
-Cloudmersive Currency API provide capabilities to convert prices between currencies, and it leverages real-time 
-conversion rates for over 30 currencies.
+This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
 
-Ballerina connector for Cloudmersive Currency allows easy integration with Cloudmersive Currency REST API via Ballerina language. 
-It allows obtaining real-time exchange Rate Data and allows converting prices between over 30 currencies.
-
-This module supports Cloudmersive Currency REST API `v1` version.
+The Cloudmersive Currency APIs help you retrieve exchange rates and convert prices between currencies.
  
 ## Prerequisites
-* Create a Cloudmersive Account
-* Obtaining tokens
-    1. [Login to the Cloudmersive account](https://account.cloudmersive.com/login)
-    2. [Obtain API keys](https://account.cloudmersive.com/keys)
+* Create a [Cloudmersive](https://account.cloudmersive.com) account
+* Obtain tokens
+    - Use [this](https://account.cloudmersive.com/keys) guide to obtain the API key related to your account.
 
 
 ## Quickstart
 To use the Cloudmersive Currency connector in your Ballerina application, update the .bal file as follows:
-### Step 1: Import cloudmersive.currency module
+### Step 1 - Import connector
 First, import the ballerinax/cloudmersive.currency module into the Ballerina project.
 ```ballerina
 import ballerinax/cloudmersive.currency;
 ```
-### Step 2: Configure the connection credentials.
+### Step 2 - Create a new connector instance
 You can now make the connection configuration using the access token.
 ```ballerina
 currency:ApiKeysConfig config = {
@@ -31,9 +26,9 @@ currency:ApiKeysConfig config = {
 };
 
 currency:Client baseClient = check new Client(clientConfig);
-
 ```
-### Step 3: Get all currency types
+### Step 3 - Invoke connector operation
+1. Get all currency types
 ```ballerina
 currency:AvailableCurrencyResponse|error bEvent = baseClient->currencyExchangeGetAvailableCurrencies();
 
@@ -42,5 +37,5 @@ if (bEvent is currency:AvailableCurrencyResponse) {
 } else {
     log:printError(msg = bEvent.toString());
 }
-
 ``` 
+2. Use `bal run` command to compile and run the Ballerina program

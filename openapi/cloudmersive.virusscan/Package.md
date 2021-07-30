@@ -1,4 +1,4 @@
-Connects to Cloudmersive Virus Scan API from Ballerina
+Connects to [Cloudmersive Virus Scan API](https://api.cloudmersive.com/docs/virus.asp) from Ballerina
 
 ## Package overview
 
@@ -6,9 +6,10 @@ The `ballerinax/cloudmersive.virusscan` is a [Ballerina](https://ballerina.io/) 
 
 ### Compatibility
 |                          | Version                    |
-|:------------------------:|:--------------------------:|
+|--------------------------|----------------------------|
 | Ballerina Language       | Ballerina Swan Lake Beta2  |
 | Cloudmersive API         | v1                         |
+
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)

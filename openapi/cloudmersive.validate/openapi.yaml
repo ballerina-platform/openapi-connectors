@@ -1,9 +1,15 @@
 openapi: 3.0.1
 info:
   title: validateapi
-  description: The validation APIs help you validate data. Check if an E-mail address
-    is real. Check if a domain is real. Check up on an IP address, and even where
-    it is located. All this and much more is available in the validation API.
+  description: 'This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. 
+  
+  The Cloudmersive Validation APIs help you validate data. Check if an E-mail address is real.
+  Check if a domain is real. Check up on an IP address, and even where it is located. 
+  All this and much more is available in the validation API.'
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
   version: v1
 servers:
 - url: https://testapi.cloudmersive.com/
@@ -3788,6 +3794,7 @@ components:
   securitySchemes:
     Apikey:
       type: apiKey
+      x-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
       description: API Key Authentication
       name: Apikey
       in: header

@@ -3,13 +3,19 @@ servers:
   - url: http://api.nytimes.com/svc/search/v2
   - url: https://api.nytimes.com/svc/search/v2
 info:
-  description: |-
+  description: >
+    This is a generated connector for [New York Times Article Search API v1.0.0](https://developer.nytimes.com/docs/articlesearch-product/1/overview) OpenAPI specification.
+
     With the Article Search API, you can search New York Times articles from Sept. 18, 1851 to today, retrieving headlines, abstracts, lead paragraphs, links to associated multimedia and other article metadata.  
 
-     Note: In URI examples and field names, italics indicate placeholders for variables or values. Brackets [ ] indicate optional items. Parentheses ( ) are not a convention — when URIs include parentheses, interpret them literally.
+    Use the Article Search API to look up articles by keyword. You can refine your search using filters and facets.
   termsOfService: http://developer.nytimes.com/tou
   title: Article Search API
   version: 1.0.0
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   x-apiClientRegistration:
     url: http://developer.nytimes.com/signup
   x-apisguru-categories:
@@ -184,16 +190,22 @@ paths:
                         items:
                           $ref: "#/components/schemas/Doc"
                         type: array
+                        nullable: true
                       meta:
                         properties:
                           hits:
                             type: integer
+                            nullable: true
                           offset:
                             type: integer
+                            nullable: true
                           time:
                             type: integer
+                            nullable: true
                         type: object
+                        nullable: true
                     type: object
+                    nullable: true
                 type: object
           description: The docs requested by the article search.
       summary: Article Search
@@ -205,87 +217,109 @@ components:
       properties:
         _id:
           type: string
+          nullable: true
         abstract:
           type: string
+          nullable: true
         blog:
           items: {}
           type: array
+          nullable: true
         byline:
           properties:
             organization:
               type: string
+              nullable: true
             original:
               type: string
+              nullable: true
             person:
               items: {}
               type: array
+              nullable: true
           type: object
+          nullable: true
         document_type:
           type: string
+          nullable: true
         headline:
           properties:
             kicker:
               type: string
+              nullable: true
             main:
               type: string
+              nullable: true
           type: object
-        keywords:
-          properties:
-            name:
-              type: string
-            rank:
-              type: string
-            value:
-              type: string
-          type: object
+          nullable: true
         lead_paragraph:
           type: string
+          nullable: true
         multimedia:
           items:
             properties:
               caption:
                 type: string
+                nullable: true
               copyright:
                 type: string
+                nullable: true
               format:
                 type: string
+                nullable: true
               height:
                 type: integer
+                nullable: true
               subtype:
                 type: string
+                nullable: true
               type:
                 type: string
+                nullable: true
               url:
                 type: string
+                nullable: true
               width:
                 type: integer
+                nullable: true
             type: object
           type: array
+          nullable: true
         news_desk:
           type: string
+          nullable: true
         print_page:
           type: string
+          nullable: true
         pub_date:
           type: string
+          nullable: true
         section_name:
           type: string
+          nullable: true
         slideshow_credits:
           type: string
+          nullable: true
         snippet:
           type: string
+          nullable: true
         source:
           type: string
+          nullable: true
         subsection_name:
           type: string
+          nullable: true
         type_of_material:
           type: string
+          nullable: true
         web_url:
           type: string
-        word_count:
-          type: string
+          nullable: true
       type: object
+      nullable: true
   securitySchemes:
     apikey:
       in: query
       name: api-key
       type: apiKey
+      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"

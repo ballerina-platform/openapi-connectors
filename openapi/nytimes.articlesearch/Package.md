@@ -1,12 +1,12 @@
-Connects to New York Times Article Search API from Ballerina
+Connects to [New York Times Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/nytimes.articlesearch` is a [Ballerina](https://ballerina.io/) connector for New York Times Article Search API.
-This package provides the capability to easily access New York Times Article Search API.
+This package provides the capability to access New York Times Article Search API.
 
 ### Compatibility
 |                               | Version                         |
-|:-----------------------------:|:-------------------------------:|
+|-------------------------------|---------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2       | 
 | Article Search API            | 1.0.0                           |
 

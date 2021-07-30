@@ -14,31 +14,34 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
+import ballerina/http;
 
-# Please visit [here](https://chaingateway.io/account) and obtain an `API Key`. 
+# Visit [here](https://chaingateway.io/account) and obtain an `API key`. 
 #
-# + apiKeys - Provide your API Key as `Authorization`. Eg: `{"Authorization" : "<Your API Key>"}`  
+# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`   
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# REST API to build the bridge between Ethereum and the real world
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.
+# This is the REST API to build the bridge between Ethereum and the real world. 
+# All of the integrations communicates with chaingateway.io through this API.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create an [Chaingateway.io Account](https://chaingateway.io/register) 
+    # and obtain tokens following [this guide](https://chaingateway.io/docs-ethereum#apikey).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://eu.eth.chaingateway.io/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Returns information about a specific ERC20 token like name, symbol, decimal places and total supply.
     #
@@ -46,7 +49,7 @@ public client class Client {
     # + return - Information about a specific ERC20 token like name, symbol, decimal places and total supply
     remote isolated function getToken(GetTokenRequest payload) returns GetToken|error {
         string  path = string `/getToken`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -60,7 +63,7 @@ public client class Client {
     # + return - Block number of the last mined Ethereum block
     remote isolated function getLastBlockNumber(string contentType) returns GetLastBlockNumber|error {
         string  path = string `/getLastBlockNumber`;
-        map<any> headerValues = {"Content-Type": contentType, Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Content-Type": contentType, "Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -73,7 +76,7 @@ public client class Client {
     # + return - Current gas price in GWEI.
     remote isolated function getGasPrice(string contentType) returns GetGasPrice|error {
         string  path = string `/getGasPrice`;
-        map<any> headerValues = {"Content-Type": contentType, Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Content-Type": contentType, "Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -86,7 +89,7 @@ public client class Client {
     # + return - Current Ethereum price in Euro or US Dollar
     remote isolated function getExchangeRate(GetExchangeRateRequest payload) returns GetExchangeRate|error {
         string  path = string `/getExchangeRate`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -100,7 +103,7 @@ public client class Client {
     # + return - Ethereum balance of a given address
     remote isolated function getEthereumBalance(GetEthereumBalanceRequest payload) returns GetEthereumBalance|error {
         string  path = string `/getEthereumBalance`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -114,7 +117,7 @@ public client class Client {
     # + return - Token balance of a given address
     remote isolated function getTokenBalance(GetTokenBalanceRequest payload) returns GetTokenBalance|error {
         string  path = string `/getTokenBalance`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -128,7 +131,7 @@ public client class Client {
     # + return - Information like confirmations, token contract address, amount, gas price and more of a given transaction
     remote isolated function getTransactions(GetTransactionsRequest payload) returns GetTransactions|error {
         string  path = string `/getTransactions`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -142,7 +145,7 @@ public client class Client {
     # + return - Information of an Ethereum block with or without transactions
     remote isolated function getBlock(GetBlockRequest payload) returns GetBlock|error {
         string  path = string `/getBlock`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -156,7 +159,7 @@ public client class Client {
     # + return - Generated new Ethereum addresses you can use to send or receive funds
     remote isolated function newAddress(NewAddressRequest payload) returns NewAddress|error {
         string  path = string `/newAddress`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -170,7 +173,7 @@ public client class Client {
     # + return - Detail of Ethereum addresses deleted
     remote isolated function deleteAddress(DeleteAddressRequest payload) returns DeleteAddress|error {
         string  path = string `/deleteAddress`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -184,7 +187,7 @@ public client class Client {
     # + return - Ethereum addresses created with an account
     remote isolated function listAddresses(string contentType) returns ListAddresses|error {
         string  path = string `/listAddresses`;
-        map<any> headerValues = {"Content-Type": contentType, Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Content-Type": contentType, "Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -197,7 +200,7 @@ public client class Client {
     # + return - List of Ethereum addresses created with an account
     remote isolated function importAddress(ImportAddressRequest payload) returns ImportAddress|error {
         string  path = string `/importAddress`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -211,7 +214,7 @@ public client class Client {
     # + return - List of Ethereum addresses created with an account
     remote isolated function exportAddress(ExportAddressRequest payload) returns ExportAddress|error {
         string  path = string `/exportAddress`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -225,7 +228,7 @@ public client class Client {
     # + return - Detail about Ethereum address
     remote isolated function subscribeAddress(SubscribeAddressRequest payload) returns SubscribeAddress|error {
         string  path = string `/subscribeAddress`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -239,7 +242,7 @@ public client class Client {
     # + return - Detail about Ethereum address
     remote isolated function unsubscribeAddress(UnsubscribeAddressRequest payload) returns UnsubscribeAddress|error {
         string  path = string `/unsubscribeAddress`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -253,7 +256,7 @@ public client class Client {
     # + return - Details about all Ethereum addresses
     remote isolated function listSubscribedAddresses(string contentType) returns ListSubscribedAddresses|error {
         string  path = string `/listSubscribedAddresses`;
-        map<any> headerValues = {"Content-Type": contentType, Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Content-Type": contentType, "Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -266,7 +269,7 @@ public client class Client {
     # + return - List of IPNs that couldn't be sent
     remote isolated function listFailedIPNs(string contentType) returns ListFailedIPNs|error {
         string  path = string `/listFailedIPNs`;
-        map<any> headerValues = {"Content-Type": contentType, Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Content-Type": contentType, "Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -279,7 +282,7 @@ public client class Client {
     # + return - Status of subscriptions/IPNs
     remote isolated function resendFailedIPN(ResendFailedIPNRequest payload) returns ResendFailedIPN|error {
         string  path = string `/resendFailedIPN`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -293,7 +296,7 @@ public client class Client {
     # + return - Detail about Ethereum transaction from an address
     remote isolated function sendEthereum(SendEthereumRequest payload) returns SendEthereum|error {
         string  path = string `/sendEthereum`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -307,7 +310,7 @@ public client class Client {
     # + return - Detail about all available Ethereum funds from an address
     remote isolated function clearAddress(ClearAddressRequest payload) returns ClearAddress|error {
         string  path = string `/clearAddress`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -321,7 +324,7 @@ public client class Client {
     # + return - Detail about ERC20 tokens transaction
     remote isolated function sendToken(SendTokenRequest payload) returns SendToken|error {
         string  path = string `/sendToken`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -335,7 +338,7 @@ public client class Client {
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

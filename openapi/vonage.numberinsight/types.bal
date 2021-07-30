@@ -46,28 +46,28 @@ public type NiresponsexmladvancedLookupOutcome record {
     string lookup_outcome_message?;
 };
 
-# Code | Text
-# -- | --
-# 0 | Success - request accepted for delivery by .
-# 1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
-# 3 | Invalid - your request is incomplete and missing some mandatory parameters.
-# 4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
-# 5 | Internal Error - the format of the recipient address is not valid.
-# 9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
+# Code | Text        
+#   -- | --
+#    0 | Success - request accepted for delivery by .
+#    1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+#    3 | Invalid - your request is incomplete and missing some mandatory parameters.
+#    4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+#    5 | Internal Error - the format of the recipient address is not valid.
+#    9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
 #
 public type NiBasicStatus int;
 
 # Code | Text
-# -- | --
-# 0 | Success - request accepted for delivery by .
-# 1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
-# 3 | Invalid - your request is incomplete and missing some mandatory parameters.
-# 4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
-# 5 | Internal Error - the format of the recipient address is not valid.
-# 9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
-# 19 | Facility Not Allowed - your request makes use of a facility that is not enabled on your account.
+#         -- | --
+#          0 | Success - request accepted for delivery by .
+#          1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+#          3 | Invalid - your request is incomplete and missing some mandatory parameters.
+#          4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+#          5 | Internal Error - the format of the recipient address is not valid.
+#          9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
+#         19 | Facility Not Allowed - your request makes use of a facility that is not enabled on your account.
 # 43, 44, 45 | Live mobile lookup not returned. Not all return parameters are available.
-# 999 | Request unparseable.
+#        999 | Request unparseable.
 #
 public type NiStandardAdvancedStatus int;
 
@@ -92,19 +92,19 @@ public type NiresponsexmlstandardRoaming record {
 # Contains details of the number owner, if `cnam` was set to `true` in the request.
 public type NiresponsexmlstandardCallerIdentity record {
     # The value will be `business` if the owner of a phone number is a business. If the owner is an individual the value will be `consumer`. The value will be `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'caller\-type?;
+    string callerType?;
     # Full name of the person or business who owns the phone number. `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'caller\-name?;
+    string callerName?;
     # First name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'first\-name?;
+    string firstName?;
     # Last name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'last\-name?;
+    string lastName?;
     # Full name of the person or business who owns the phone number. `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.
     string caller_name?;
     # Last name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request.
     string last_name?;
     # First name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request.
-    string firs_name?;
+    string first_name?;
     # The value will be `business` if the owner of a phone number is a business. If the owner is an individual the value will be `consumer`. The value will be `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.
     string caller_type?;
 };
@@ -172,13 +172,13 @@ public type NiResponseJsonStandard record {
 # Contains details of the number owner, if `cnam` was set to `true` in the request.
 public type NiresponsexmladvancedCallerIdentity record {
     # The value will be `business` if the owner of a phone number is a business. If the owner is an individual the value will be `consumer`. The value will be `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'caller\-type?;
+    string callerType?;
     # Full name of the person or business who owns the phone number. `unknown` if this information is not available. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'caller\-name?;
+    string callerName?;
     # First name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'first\-name?;
+    string firstName?;
     # Last name of the person who owns the phone number if the owner is an individual. This parameter is only present if `cnam` had a value of `true` within the request.
-    string 'last\-name?;
+    string lastName?;
 };
 
 # Standard
@@ -274,7 +274,7 @@ public type NiresponsexmlbasicError record {
 };
 
 public type NiResponseJsonBasic record {
-    # Code | Text
+    # Code | Text        
     NiBasicStatus status?;
     # The status description of your request.
     string status_message?;

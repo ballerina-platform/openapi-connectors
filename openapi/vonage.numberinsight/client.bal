@@ -14,30 +14,33 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# The Number Insight API delivers real-time intelligence about the validity, reachability and roaming status of a phone number and tells you how to format the number correctly in your application. There are three levels of Number Insight API available: [Basic, Standard and Advanced](https://developer.nexmo.com/number-insight/overview#basic-standard-and-advanced-apis). The advanced API is available asynchronously as well as synchronously.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [Vonage Number Insight API v1.0.10](https://nexmo-api-specification.herokuapp.com/number-insight) OpenAPI specification. 
+# The Number Insight API delivers real-time intelligence about the validity, reachability and roaming status of a phone number and tells you how to format the number correctly in your application. 
+# There are three levels of Number Insight API available: [Basic, Standard and Advanced](https://developer.nexmo.com/number-insight/overview#basic-standard-and-advanced-apis). The advanced API is available asynchronously as well as synchronously.
+# More Number Insight API documentation is at https://developer.nexmo.com/number-insight/overview#number-insight-api-overview.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API keys as `api_key` and `api_secret`. Eg: `{"api_key" : "<API key>", "api_secret" : "<API secret>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.nexmo.com/ni") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Basic Number Insight
     #
@@ -47,7 +50,7 @@ public client class Client {
     # + return - OK
     remote isolated function getNumberInsightBasic(string format, string number, string? country = ()) returns NiResponseJsonBasic|error {
         string  path = string `/basic/${format}`;
-        map<anydata> queryParam = {"number": number, "country": country, api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"number": number, "country": country, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseJsonBasic response = check self.clientEp-> get(path, targetType = NiResponseJsonBasic);
         return response;
@@ -61,10 +64,9 @@ public client class Client {
     # + return - OK
     remote isolated function getNumberInsightStandard(string format, string number, string? country = (), boolean cnam = false) returns NiResponseJsonStandard|error {
         string  path = string `/standard/${format}`;
-        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseJsonStandard response = check self.clientEp-> get(path, targetType = NiResponseJsonStandard);
-        // NiResponseJsonStandard standardResponse = check response.cloneWithType(NiResponseJsonStandard);
         return response;
     }
     # Advanced Number Insight (async)
@@ -78,7 +80,7 @@ public client class Client {
     # + return - OK
     remote isolated function getNumberInsightAsync(string format, string callback, string number, string? country = (), boolean cnam = false, string? ip = ()) returns NiResponseAsync|error {
         string  path = string `/advanced/async/${format}`;
-        map<anydata> queryParam = {"callback": callback, "number": number, "country": country, "cnam": cnam, "ip": ip, api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"callback": callback, "number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseAsync response = check self.clientEp-> get(path, targetType = NiResponseAsync);
         return response;
@@ -93,7 +95,7 @@ public client class Client {
     # + return - OK
     remote isolated function getNumberInsightAdvanced(string format, string number, string? country = (), boolean cnam = false, string? ip = ()) returns NiResponseJsonAdvanced|error {
         string  path = string `/advanced/${format}`;
-        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "ip": ip, api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseJsonAdvanced response = check self.clientEp-> get(path, targetType = NiResponseJsonAdvanced);
         return response;
@@ -104,7 +106,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

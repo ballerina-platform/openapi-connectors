@@ -14,36 +14,41 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
+import ballerina/http;
 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# Apptigent PowerTools Developer Edition is a powerful suite of API endpoints for custom applications running on any stack. Manipulate text, modify collections, format dates and times, convert currency, perform advanced mathematical calculations, shorten URL's, encode strings, convert text to speech, translate content into multiple languages, process images, and more. PowerTools is the ultimate developer toolkit.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [Apptigent PowerTools Developer API v2021.1.01](https://portal.apptigent.com/node/612) OpenAPI specification.
+# 'Apptigent PowerTools Developer Edition is a powerful suite of API endpoints for custom applications running on any stack. 
+# Manipulate text, modify collections, format dates and times, convert currency, perform advanced mathematical calculations, shorten URL's, encode strings, convert text to speech, translate content into multiple languages, process images, and more. 
+# PowerTools is the ultimate developer toolkit.'
+# This connector provides the capability for file operations.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create an [Apptigent account](https://portal.apptigent.com/user/register) and obtain tokens following [this guide](https://portal.apptigent.com/start).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API key as `X-IBM-Client-Id`. Eg: `{"X-IBM-Client-Id" : "<API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://connect.apptigent.com/api/utilities") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Files - Convert Image
     #
     # + payload - Input image conversion parameters
     # + return - OK
-    remote isolated function convertImage(Body payload) returns string|error {
+    remote isolated function convertImage(Body5 payload) returns string|error {
         string  path = string `/ConvertImage`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
@@ -52,9 +57,10 @@ public client class Client {
     #
     # + payload - Input image resize parameters
     # + return - OK
-    remote isolated function resizeImage(Body1 payload) returns string|error {
+    remote isolated function resizeImage(Body6 payload) returns string|error {
         string  path = string `/ResizeImage`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
@@ -63,9 +69,10 @@ public client class Client {
     #
     # + payload - Input rotate image parameters
     # + return - OK
-    remote isolated function rotateImage(Body2 payload) returns string|error {
+    remote isolated function rotateImage(Body7 payload) returns string|error {
         string  path = string `/RotateImage`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
@@ -74,9 +81,10 @@ public client class Client {
     #
     # + payload - Input flip image parameters
     # + return - OK
-    remote isolated function flipImage(Body3 payload) returns string|error {
+    remote isolated function flipImage(Body8 payload) returns string|error {
         string  path = string `/FlipImage`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
@@ -85,9 +93,10 @@ public client class Client {
     #
     # + payload - Input watermark image parameters
     # + return - OK
-    remote isolated function watermarkImage(Body4 payload) returns string|error {
+    remote isolated function watermarkImage(Body9 payload) returns string|error {
         string  path = string `/WatermarkImage`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
@@ -96,9 +105,10 @@ public client class Client {
     #
     # + payload - Input crop image parameters
     # + return - OK
-    remote isolated function cropImage(Body5 payload) returns string|error {
+    remote isolated function cropImage(Body10 payload) returns string|error {
         string  path = string `/CropImage`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
@@ -109,7 +119,8 @@ public client class Client {
     # + return - OK
     remote isolated function generateQRCode(InputQRCode payload) returns string|error {
         string  path = string `/GenerateQRCode`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -120,24 +131,12 @@ public client class Client {
     #
     # + payload - Input file to string parameters
     # + return - OK
-    remote isolated function fileToString(Body6 payload) returns OutputString|error {
+    remote isolated function fileToString(Body11 payload) returns OutputString|error {
         string  path = string `/FileToString`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
-        return response;
-    }
-    # Text - String to File
-    #
-    # + payload - Input string to file parameters
-    # + return - OK
-    remote isolated function stringToFile(InputStringToFile payload) returns string|error {
-        string  path = string `/StringToFile`;
-        map<string|string[]> accHeaders = {'X\-IBM\-Client\-Id: self.apiKeys.get("X-IBM-Client-Id")};
-        http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
 }
@@ -146,7 +145,7 @@ public client class Client {
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

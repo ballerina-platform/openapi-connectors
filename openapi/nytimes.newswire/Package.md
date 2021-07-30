@@ -1,12 +1,12 @@
-Connects to New York Times Newswire API from Ballerina
+Connects to [New York Times Newswire API](https://developer.nytimes.com/docs/timeswire-product/1/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/nytimes.newswire` is a [Ballerina](https://ballerina.io/) connector for New York Times Newswire API.
-This package provides the capability to easily access New York Times Newswire API.
+This package provides the capability to access New York Times Newswire API.
 
 ### Compatibility
 |                               | Version                         |
-|:-----------------------------:|:-------------------------------:|
+|-------------------------------|---------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2       | 
 | Times Newswire API            | 3.0.0                           |
 

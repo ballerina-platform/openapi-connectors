@@ -1,7 +1,13 @@
 openapi: 3.0.1
 info:
   title: ISBNdb API v2
-  description: "ISBNdb.com API v2."
+  description: |-
+    This is a generated connector for [ISBNdb API v2.0.0](https://isbndb.com/apidocs/v2) OpenAPI specification.
+    The ISBNdb.com API exposes data such as title, author, publisher and publish date about books.
+  x-init-description: |-
+    The connector initialization requires setting the API credentials.
+    Create a [ISBNdb Account](https://isbndb.com/isbn-database) by selecting a pricing plan 
+    and obtain tokens following [this guide](https://isbndb.com/apidocs/v2).
   version: 2.0.0
 servers:
 - url: https://api2.isbndb.com/
@@ -214,7 +220,6 @@ paths:
         schema:
           type: string
           enum:
-          - ""
           - title
           - author
           - date_published
@@ -623,7 +628,9 @@ components:
         Pro plan
   securitySchemes:
     lambda_token:
+      description: All requests on the ISBNdb.com API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `Authorization`.
       type: apiKey
       name: Authorization
       in: header
       x-amazon-apigateway-authtype: custom
+      x-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 

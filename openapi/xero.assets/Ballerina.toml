@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Xero", "Asset", "Financial", "Accounting"]
+keywords = ["xero", "assets", "finance", "freemium"]
 org = "ballerinax"
 name = "xero.assets"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

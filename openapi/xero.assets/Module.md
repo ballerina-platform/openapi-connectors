@@ -1,3 +1,5 @@
 ## Overview
 
-Xero Assets connector consume the data exposed in https://api.xero.com/assets.xro/1.0. It is supporting all operations provided by Xero Assets API.
+This is a generated connector for [Xero Assets API v2.9.4](https://developer.xero.com/documentation/api/assets/overview/) OpenAPI specification. 
+
+The Assets API exposes fixed asset related functions of the Xero Accounting application and can be used for a variety of purposes such as creating assets, retrieving asset valuations etc.

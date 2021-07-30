@@ -8,9 +8,16 @@ info:
     name: Xero Platform Team
     url: https://developer.xero.com
     x-twitter: XeroAPI
-  description: The Assets API exposes fixed asset related functions of the Xero
-    Accounting application and can be used for a variety of purposes such as
-    creating assets, retrieving asset valuations etc.
+  description: |-
+    This is a generated connector for [Xero Assets API v2.9.4](https://developer.xero.com/documentation/api/assets/overview/) OpenAPI specification.
+    The Assets API exposes fixed asset related functions of the Xero Accounting application
+    and can be used for a variety of purposes such as creating assets, retrieving asset valuations etc.
+  x-init-description: |-
+    The connector initialization requires setting the API credentials.
+    Create a [Xero account](https://www.xero.com/signup/api/) 
+    and obtain tokens following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
+    During initialization you can pass http:BearerTokenConfig if you have a bearer token 
+    and if you have Oauth tokens you can pass http:OAuth2RefreshTokenGrantConfig.
   license:
     name: MIT
     url: https://github.com/XeroAPI/Xero-OpenAPI/blob/master/LICENSE

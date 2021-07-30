@@ -3,10 +3,19 @@ servers:
   - url: http://api.nytimes.com/svc/mostpopular/v2
   - url: https://api.nytimes.com/svc/mostpopular/v2
 info:
-  description: Get lists of NYT Articles based on shares, emails, and views.
+  description: >
+    This is a generated connector from [New York Times Most Popular API v2.0.0](https://developer.nytimes.com/docs/most-popular-product/1/overview) OpenAPI specification.
+
+    With the New York Times Most Popular API you can get popular articles on NYTimes.com. 
+    
+    The Most Popular API provides services for getting the most popular articles on NYTimes.com based on emails, shares, or views.
   termsOfService: http://developer.nytimes.com/tou
   title: Most Popular API
   version: 2.0.0
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+  
+    Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   x-apiClientRegistration:
     url: http://developer.nytimes.com/signup
   x-apisguru-categories:
@@ -352,6 +361,7 @@ components:
           type: string
         column:
           type: string
+          nullable: true
         des_facet:
           $ref: "#/components/schemas/DesFacet"
         geo_facet:
@@ -385,6 +395,7 @@ components:
           type: string
         column:
           type: string
+          nullable: true
         count_type:
           type: string
         des_facet:
@@ -398,7 +409,7 @@ components:
                 type: string
               copyright:
                 type: string
-              media-metadata:
+              mediaMetadata:
                 properties:
                   format:
                     type: string
@@ -460,3 +471,4 @@ components:
       in: query
       name: api-key
       type: apiKey
+      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"

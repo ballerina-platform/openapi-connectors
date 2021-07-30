@@ -1,5 +1,5 @@
 ## Overview
-With over 15 exchange rate data sources, the Exchangerates API is delivering exchanging rates data for more than 170 world currencies. The endpoints include functionalities like receiving the latest exchange rates information for a specific currency; conversion from one to another currency; receiving data Time-series for multiple or for one currency, and preserving the API daily for the fluctuation data.. More about the ExchangeRate-API can be find at [ExchangeRates-API](https://exchangeratesapi.io/documentation/)
+This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification. With over 15 exchange rate data sources, the Exchangerates API is delivering exchanging rates data for more than 170 world currencies. The endpoints include functionalities like receiving the latest exchange rates information for a specific currency; conversion from one to another currency; receiving data Time-series for multiple or for one currency, and preserving the API daily for the fluctuation data.. More about the ExchangeRate-API can be find at [ExchangeRates-API](https://exchangeratesapi.io/documentation/)
  
 This module supports ExchangeRates API version v6.
 

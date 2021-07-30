@@ -14,58 +14,44 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Weather forecast data
-public type WeatherForecast record {
-    # Latitude
-    decimal lat?;
-    # Longtitude
-    decimal lon?;
-    # Timezone name for the requested location
-    string timezone?;
-    # Shift in seconds from UTC
-    decimal timezone_offset?;
-    # Current weather data
-    ForecastCurrent current?;
-    # Minutely weather forecast
-    Minutely[] minutely?;
-    # Hourly weather forecast
-    Hourly[] hourly?;
-    # Daily weather forecast
-    Daily[] daily?;
-    # Government weather alerts
-    Alerts[] alerts?;
+# Hourly forecast weather data API response
+public type Hourly record {
+    # Time of the forecasted data, Unix, UTC
+    decimal dt?;
+    # Temperature. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
+    decimal temp?;
+    # Temperature. This accounts for the human perception of weather.
+    decimal feels_like?;
+    # Atmospheric pressure on the sea level, hPa
+    decimal pressure?;
+    # Humidity, %
+    decimal humidity?;
+    # Atmospheric temperature below which water droplets begin to condense and dew can form.
+    decimal dew_point?;
+    # UV index
+    decimal uvi?;
+    # Cloudiness, %
+    decimal clouds?;
+    # Average visibility, metres
+    decimal visibility?;
+    # Wind direction, degrees (meteorological)
+    decimal wind_deg?;
+    # (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
+    decimal wind_gust?;
+    # Probability of precipitatio
+    decimal pop?;
+    # More info Weather condition codes
+    Weather[] weather?;
+    # Nature of the rain
+    Rain rain?;
 };
 
-# Government weather alerts
-public type Alerts record {
-    # Name of the alert source.
-    string sender_name?;
-    # Alert event name
-    string event?;
-    # Description of the alert
-    string description?;
-    # Date and time of the start of the alert, Unix, UTC
-    decimal 'start?;
-    # Date and time of the end of the alert, Unix, UTC
-    decimal end?;
-    # Tags related to alerts
-    string[] tags?;
-};
-
-# Temperature data
-public type Temp record {
-    # Day temperature.
-    decimal day?;
-    # Min daily temperature.
-    decimal min?;
-    # Max daily temperature.
-    decimal max?;
-    # Night temperature.
-    decimal night?;
-    # Evening temperature.
-    decimal eve?;
-    # Morning temperature
-    decimal morn?;
+# Nature of the wind
+public type Wind record {
+    # Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
+    decimal speed?;
+    # Wind direction, degrees (meteorological)
+    int deg?;
 };
 
 # Human perception of temperature each time of the day
@@ -78,6 +64,84 @@ public type FeelsLike record {
     decimal eve?;
     # Morning temperature.
     decimal morn?;
+};
+
+# Nature of the clouds
+public type Clouds record {
+    # Cloudiness, %
+    int 'all?;
+};
+
+# Snow volume information
+public type Snow record {
+    # Snow volume for the last 3 hours
+    decimal '3h?;
+};
+
+# Minute forecast weather data API response
+public type Minutely record {
+    # Time of the forecasted data, unix, UTC
+    decimal dt?;
+    # Precipitation volume, mm
+    decimal precipitation?;
+};
+
+# System data
+public type Sys record {
+    # Internal parameter
+    int 'type?;
+    # Internal parameter
+    int id?;
+    # Internal parameter
+    decimal message?;
+    # Country code (GB, JP etc.)
+    string country?;
+    # Sunrise time, unix, UTC
+    int sunrise?;
+    # Sunset time, unix, UTC
+    int sunset?;
+};
+
+# Weather metadata
+public type Weather record {
+    # Weather condition id
+    int id?;
+    # Group of weather parameters (Rain, Snow, Extreme etc.)
+    string main?;
+    # Weather condition within the group
+    string description?;
+    # Weather icon id
+    string icon?;
+};
+
+# City geo location
+public type Coord record {
+    # Longitude
+    decimal lon?;
+    # Latitude
+    decimal lat?;
+};
+
+# Weather forecast data
+public type WeatherForecast record {
+    # Latitude
+    decimal lat?;
+    # Longtitude
+    decimal lon?;
+    # Timezone name for the requested location
+    string timezone?;
+    # Shift in seconds from UTC
+    decimal timezone_offset?;
+    # Current weather data API response
+    ForecastCurrent current?;
+    # Minutely weather forecast
+    Minutely[] minutely?;
+    # Hourly weather forecast
+    Hourly[] hourly?;
+    # Daily weather forecast
+    Daily[] daily?;
+    # Government weather alerts
+    Alerts[] alerts?;
 };
 
 # Daily forecast weather data API response
@@ -114,48 +178,30 @@ public type Daily record {
     decimal pop?;
     # More info Weather condition codes
     Weather[] weather?;
-    # (where available) Precipitation volume, mm
+    # where available) Precipitation volume, mm
     decimal rain?;
 };
 
-# Hourly forecast weather data API response
-public type Hourly record {
-    # Time of the forecasted data, Unix, UTC
-    decimal dt?;
-    # Temperature. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
-    decimal temp?;
-    # Temperature. This accounts for the human perception of weather.
-    decimal feels_like?;
-    # Atmospheric pressure on the sea level, hPa
-    decimal pressure?;
-    # Humidity, %
-    decimal humidity?;
-    # Atmospheric temperature below which water droplets begin to condense and dew can form.
-    decimal dew_point?;
-    # UV index
-    decimal uvi?;
-    # Cloudiness, %
-    decimal clouds?;
-    # Average visibility, metres
-    decimal visibility?;
-    # Wind direction, degrees (meteorological)
-    decimal wind_deg?;
-    # (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
-    decimal wind_gust?;
-    # Probability of precipitatio
-    decimal pop?;
-    # More info Weather condition codes)
-    Weather[] weather?;
-    # (Where available) Precipitation volume, mm
-    Rain rain?;
+# Nature of the rain
+public type Rain record {
+    # Rain volume for the last 3 hours
+    int '3h?;
 };
 
-# Minute forecast weather data API response
-public type Minutely record {
-    # Time of the forecasted data, unix, UTC
-    decimal dt?;
-    # Precipitation volume, mm
-    decimal precipitation?;
+# Temperature data
+public type Temp record {
+    # Day temperature.
+    decimal day?;
+    # Min daily temperature.
+    decimal min?;
+    # Max daily temperature.
+    decimal max?;
+    # Night temperature.
+    decimal night?;
+    # Evening temperature.
+    decimal eve?;
+    # Morning temperature
+    decimal morn?;
 };
 
 # Current weather data API response
@@ -186,12 +232,28 @@ public type ForecastCurrent record {
     decimal wind_speed?;
     # Wind direction, degrees (meteorological)
     decimal wind_deg?;
-    # (more info Weather condition codes)
+    # More info Weather condition codes
     Weather[] weather?;
-    # (where available) Precipitation volume, mm
+    # Nature of the rain
     Rain rain?;
-    # Nature of the Snow
+    # Snow
     Snow snow?;
+};
+
+# Government weather alerts
+public type Alerts record {
+    # Name of the alert source.
+    string sender_name?;
+    # Alert event name
+    string event?;
+    # Description of the alert
+    string description?;
+    # Date and time of the start of the alert, Unix, UTC
+    decimal 'start?;
+    # Date and time of the end of the alert, Unix, UTC
+    decimal end?;
+    # Tags related to alerts
+    string[] tags?;
 };
 
 # Current weather data
@@ -212,11 +274,11 @@ public type CurrentWeatherData record {
     Clouds clouds?;
     # Nature of the rain
     Rain rain?;
-    # Nature of the snow
+    # Snow
     Snow snow?;
     # Time of data calculation, unix, UTC
     int dt?;
-    # Internal data
+    # System data
     Sys sys?;
     # City ID
     int id?;
@@ -224,26 +286,6 @@ public type CurrentWeatherData record {
     string name?;
     # Internal parameter
     int cod?;
-};
-
-# City geo location
-public type Coord record {
-    # Longitude
-    decimal lon?;
-    # Latitude
-    decimal lat?;
-};
-
-# Weather metadata
-public type Weather record {
-    # Weather condition id
-    int id?;
-    # Group of weather parameters (Rain, Snow, Extreme etc.)
-    string main?;
-    # Weather condition within the group
-    string description?;
-    # Weather icon id
-    string icon?;
 };
 
 # Basic weather data
@@ -264,44 +306,58 @@ public type Main record {
     decimal grnd_level?;
 };
 
-# Nature of the wind
-public type Wind record {
-    # Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
-    decimal speed?;
-    # Wind direction, degrees (meteorological)
-    int deg?;
-};
+public enum GetCurretWeatherDataUnits {
+    GETCURRETWEATHERDATAUNITS_STANDARD = "standard",
+    GETCURRETWEATHERDATAUNITS_METRIC = "metric",
+    GETCURRETWEATHERDATAUNITS_IMPERIAL = "imperial"
+}
 
-# Nature of the clouds
-public type Clouds record {
-    # Cloudiness, %
-    int 'all?;
-};
+public enum GetCurretWeatherDataLang {
+    GETCURRETWEATHERDATALANG_AR = "ar",
+    GETCURRETWEATHERDATALANG_BG = "bg",
+    GETCURRETWEATHERDATALANG_CA = "ca",
+    GETCURRETWEATHERDATALANG_CZ = "cz",
+    GETCURRETWEATHERDATALANG_DE = "de",
+    GETCURRETWEATHERDATALANG_EL = "el",
+    GETCURRETWEATHERDATALANG_EN = "en",
+    GETCURRETWEATHERDATALANG_FA = "fa",
+    GETCURRETWEATHERDATALANG_FI = "fi",
+    GETCURRETWEATHERDATALANG_FR = "fr",
+    GETCURRETWEATHERDATALANG_GL = "gl",
+    GETCURRETWEATHERDATALANG_HR = "hr",
+    GETCURRETWEATHERDATALANG_HU = "hu",
+    GETCURRETWEATHERDATALANG_IT = "it",
+    GETCURRETWEATHERDATALANG_JA = "ja",
+    GETCURRETWEATHERDATALANG_KR = "kr",
+    GETCURRETWEATHERDATALANG_LA = "la",
+    GETCURRETWEATHERDATALANG_LT = "lt",
+    GETCURRETWEATHERDATALANG_MK = "mk",
+    GETCURRETWEATHERDATALANG_NL = "nl",
+    GETCURRETWEATHERDATALANG_PL = "pl",
+    GETCURRETWEATHERDATALANG_PT = "pt",
+    GETCURRETWEATHERDATALANG_RO = "ro",
+    GETCURRETWEATHERDATALANG_RU = "ru",
+    GETCURRETWEATHERDATALANG_SE = "se",
+    GETCURRETWEATHERDATALANG_SK = "sk",
+    GETCURRETWEATHERDATALANG_SL = "sl",
+    GETCURRETWEATHERDATALANG_ES = "es",
+    GETCURRETWEATHERDATALANG_TR = "tr",
+    GETCURRETWEATHERDATALANG_UA = "ua",
+    GETCURRETWEATHERDATALANG_VI = "vi",
+    GETCURRETWEATHERDATALANG_ZHCN = "zh_cn",
+    GETCURRETWEATHERDATALANG_ZHTW = "zh_tw"
+}
 
-# Nature of the rain
-public type Rain record {
-    # Rain volume for the last 3 hours
-    int '\3h?;
-};
+public enum GetCurretWeatherDataMode {
+    GETCURRETWEATHERDATAMODE_JSON = "json",
+    GETCURRETWEATHERDATAMODE_XML = "xml",
+    GETCURRETWEATHERDATAMODE_HTML = "html"
+}
 
-# Snow volume information
-public type Snow record {
-    # Snow volume for the last 3 hours
-    decimal '\3h?;
-};
-
-# System data
-public type Sys record {
-    # Internal parameter
-    int 'type?;
-    # Internal parameter
-    int id?;
-    # Internal parameter
-    decimal message?;
-    # Country code (GB, JP etc.)
-    string country?;
-    # Sunrise time, unix, UTC
-    int sunrise?;
-    # Sunset time, unix, UTC
-    int sunset?;
-};
+public enum GetWeatherForecastExclude {
+    GETWEATHERFORECASTEXCLUDE_CURRENT = "current",
+    GETWEATHERFORECASTEXCLUDE_MINUTELY = "minutely",
+    GETWEATHERFORECASTEXCLUDE_HOURLY = "hourly",
+    GETWEATHERFORECASTEXCLUDE_DAILY = "daily",
+    GETWEATHERFORECASTEXCLUDE_ALERTS = "alerts"
+}

@@ -1,23 +1,23 @@
-Connects to Openweathermap API from Ballerina.
+Connects to [Openweathermap API](https://openweathermap.org/) from Ballerina.
 
-### Package Overview
+## Package Overview
 
 The `ballerinax/openweathermap` is a [Ballerina](https://ballerina.io/) connector for [openweathermap.org](https://openweathermap.org/).
 
 This package provides the capability to easily access current weather data and weather forecasts across the world.
 
-#### Compatibility
+### Compatibility
 
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language Version    | **Ballerina Swan Lake Beta2** |
-| Openweathermap API Version    | **2.5**                       |
+| Ballerina Language Version    | Ballerina Swan Lake Beta2     |
+| Openweathermap API Version    | 2.5                           |
 
-### Report Issues
+## Report Issues
 
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
 
-### Useful Links
+## Useful Links
 
 - Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
 - Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).

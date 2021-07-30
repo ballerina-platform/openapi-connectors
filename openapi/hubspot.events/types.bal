@@ -51,7 +51,6 @@ public type ExternalUnifiedEvent record {
     record {} properties;
 };
 
-# Page info
 public type Paging record {
     # NextPage info
     NextPage next?;
@@ -74,7 +73,6 @@ public type Error record {
     record {} links?;
 };
 
-# NextPage info
 public type NextPage record {
     string after;
     string link?;

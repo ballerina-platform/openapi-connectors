@@ -1,4 +1,4 @@
-Connects to HubSpot Analytics API from Ballerina
+Connects to [HubSpot Analytics API](https://developers.hubspot.com/docs/api/overview) from Ballerina
 
 ## Package overview
 
@@ -7,7 +7,7 @@ This package provides the capability to easily access  HubSpot Analytics.
 
 ### Compatibility
 |                      | Version                    |
-|:--------------------:|:--------------------------:|
+|----------------------|----------------------------|
 | Ballerina Language   | Ballerina Swan Lake Beta2  |
 | HubSpot REST API     | V3                         |   
 

@@ -1,12 +1,12 @@
-Connects to New York Times Movie Reviews API from Ballerina
+Connects to [New York Times Movie Reviews API](https://developer.nytimes.com/docs/movie-reviews-api/1/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/nytimes.moviereviews` is a [Ballerina](https://ballerina.io/) connector for New York Times Movie Reviews API.
-This package provides the capability to easily access New York Times Movie Reviews API.
+This package provides the capability to access New York Times Movie Reviews API.
 
 ### Compatibility
 |                               | Version                         |
-|:-----------------------------:|:-------------------------------:|
+|-------------------------------|---------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2       | 
 | Movie Reviews API             | 2.0.0                           |
 

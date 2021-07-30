@@ -3,10 +3,19 @@ servers:
   - url: http://api.nytimes.com/svc/movies/v2
   - url: https://api.nytimes.com/svc/movies/v2
 info:
-  description: With the Movie Reviews API, you can search New York Times movie reviews by keyword and get lists of NYT Critics' Picks.
+  description: >
+    This is a generated connector from [New York Times Movie Review API v2.0.0](https://developer.nytimes.com/docs/movie-reviews-api/1/overview) OpenAPI specification.
+
+    With the New York Times Movie Reviews API you can search for movie reviews. 
+
+    The Movie Reviews API provides services for searching New York Times movie reviews by keyword and opening date and filter by Critics' Picks.
   termsOfService: http://developer.nytimes.com/tou
   title: Movie Reviews API
   version: 2.0.0
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   x-apiClientRegistration:
     url: http://developer.nytimes.com/signup
   x-apisguru-categories:
@@ -211,8 +220,10 @@ components:
       properties:
         bio:
           type: string
+          nullable: true
         display_name:
           type: string
+          nullable: true
         multimedia:
           properties:
             resource:
@@ -229,25 +240,34 @@ components:
                   type: integer
               type: object
           type: object
+          nullable: true
         seo_name:
           type: string
+          nullable: true
         sort_name:
           type: string
+          nullable: true
         status:
           type: string
+          nullable: true
       type: object
     Movie:
       properties:
         byline:
           type: string
+          nullable: true
         critics_pick:
           type: integer
+          nullable: true
         date_updated:
           type: string
+          nullable: true
         display_title:
           type: string
+          nullable: true
         headline:
           type: string
+          nullable: true
         link:
           properties:
             suggested_link_text:
@@ -257,8 +277,10 @@ components:
             url:
               type: string
           type: object
+          nullable: true
         mpaa_rating:
           type: string
+          nullable: true
         multimedia:
           properties:
             resource:
@@ -273,15 +295,20 @@ components:
                   type: integer
               type: object
           type: object
+          nullable: true
         opening_date:
           type: string
+          nullable: true
         publication_date:
           type: string
+          nullable: true
         summary_short:
           type: string
+          nullable: true
       type: object
   securitySchemes:
     apikey:
       in: query
       name: api-key
       type: apiKey
+      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"

@@ -27,17 +27,17 @@ public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
-
+# This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
 # The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object's type, properties, and associations. The schema can be uniquely identified by its **object type ID**.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });

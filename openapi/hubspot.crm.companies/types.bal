@@ -135,9 +135,8 @@ public type BatchResponseSimplePublicObjectWithErrors record {
     record {} links?;
 };
 
-# Company properties
 public type SimplePublicObjectInput record {
-    # Properties
+    # Company properties
     record {} properties;
 };
 

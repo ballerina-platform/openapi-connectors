@@ -2,6 +2,13 @@ openapi: 3.0.1
 info:
   title: CRM Imports
   version: v3
+  description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
+
+    This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+  
+    Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
 servers:
   - url: 'https://api.hubapi.com/'
 tags:
@@ -207,11 +214,11 @@ components:
       properties:
         status:
           type: string
-          enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          # enum:
+          #   - PENDING
+          #   - PROCESSING
+          #   - CANCELED
+          #   - COMPLETE
         requestedAt:
           type: string
           format: date-time
@@ -381,132 +388,132 @@ components:
       properties:
         errorType:
           type: string
-          enum:
-            - INCORRECT_NUMBER_OF_COLUMNS
-            - INVALID_OBJECT_ID
-            - INVALID_ASSOCIATION_IDENTIFIER
-            - NO_OBJECT_ID_FROM_ASSOCIATION_IDENTIFIER
-            - MULTIPLE_COMPANIES_WITH_THIS_DOMAIN
-            - PROPERTY_DEFINITION_NOT_FOUND
-            - PROPERTY_VALUE_NOT_FOUND
-            - COULD_NOT_FIND_OWNER
-            - MULTIPLE_OWNERS_FOUND
-            - COULD_NOT_PARSE_NUMBER
-            - COULD_NOT_PARSE_DATE
-            - COULD_NOT_PARSE_TERM
-            - OUTSIDE_VALID_TIME_RANGE
-            - OUTSIDE_VALID_TERM_RANGE
-            - COULD_NOT_PARSE_ROW
-            - INVALID_ENUMERATION_OPTION
-            - AMBIGUOUS_ENUMERATION_OPTION
-            - FAILED_VALIDATION
-            - FAILED_TO_CREATE_ASSOCIATION
-            - FILE_NOT_FOUND
-            - INVALID_COLUMN_CONFIGURATION
-            - INVALID_FILE_TYPE
-            - INVALID_SPREADSHEET
-            - INVALID_SHEET_COUNT
-            - FAILED_TO_PROCESS_OBJECT_WITH_EMPTY_PROPERTY_VALUES
-            - UNKNOWN_BAD_REQUEST
-            - GDPR_BLACKLISTED_EMAIL
-            - DUPLICATE_ASSOCIATION_ID
-            - LIMIT_EXCEEDED
-            - INVALID_ALTERNATE_ID
-            - INVALID_EMAIL
-            - INVALID_DOMAIN
-            - DUPLICATE_ROW_CONTENT
-            - INVALID_NUMBER_SIZE
-            - UNKNOWN_ERROR
-            - FAILED_TO_OPT_OUT_CONTACT
-            - INVALID_REQUIRED_PROPERTY
-            - DUPLICATE_ALTERNATE_ID
-            - DUPLICATE_OBJECT_ID
-            - DUPLICATE_UNIQUE_PROPERTY_VALUE
+          # enum:
+          #   - INCORRECT_NUMBER_OF_COLUMNS
+          #   - INVALID_OBJECT_ID
+          #   - INVALID_ASSOCIATION_IDENTIFIER
+          #   - NO_OBJECT_ID_FROM_ASSOCIATION_IDENTIFIER
+          #   - MULTIPLE_COMPANIES_WITH_THIS_DOMAIN
+          #   - PROPERTY_DEFINITION_NOT_FOUND
+          #   - PROPERTY_VALUE_NOT_FOUND
+          #   - COULD_NOT_FIND_OWNER
+          #   - MULTIPLE_OWNERS_FOUND
+          #   - COULD_NOT_PARSE_NUMBER
+          #   - COULD_NOT_PARSE_DATE
+          #   - COULD_NOT_PARSE_TERM
+          #   - OUTSIDE_VALID_TIME_RANGE
+          #   - OUTSIDE_VALID_TERM_RANGE
+          #   - COULD_NOT_PARSE_ROW
+          #   - INVALID_ENUMERATION_OPTION
+          #   - AMBIGUOUS_ENUMERATION_OPTION
+          #   - FAILED_VALIDATION
+          #   - FAILED_TO_CREATE_ASSOCIATION
+          #   - FILE_NOT_FOUND
+          #   - INVALID_COLUMN_CONFIGURATION
+          #   - INVALID_FILE_TYPE
+          #   - INVALID_SPREADSHEET
+          #   - INVALID_SHEET_COUNT
+          #   - FAILED_TO_PROCESS_OBJECT_WITH_EMPTY_PROPERTY_VALUES
+          #   - UNKNOWN_BAD_REQUEST
+          #   - GDPR_BLACKLISTED_EMAIL
+          #   - DUPLICATE_ASSOCIATION_ID
+          #   - LIMIT_EXCEEDED
+          #   - INVALID_ALTERNATE_ID
+          #   - INVALID_EMAIL
+          #   - INVALID_DOMAIN
+          #   - DUPLICATE_ROW_CONTENT
+          #   - INVALID_NUMBER_SIZE
+          #   - UNKNOWN_ERROR
+          #   - FAILED_TO_OPT_OUT_CONTACT
+          #   - INVALID_REQUIRED_PROPERTY
+          #   - DUPLICATE_ALTERNATE_ID
+          #   - DUPLICATE_OBJECT_ID
+          #   - DUPLICATE_UNIQUE_PROPERTY_VALUE
         objectType:
           type: string
-          enum:
-            - CONTACT
-            - COMPANY
-            - DEAL
-            - ENGAGEMENT
-            - TICKET
-            - OWNER
-            - PRODUCT
-            - LINE_ITEM
-            - BET_DELIVERABLE_SERVICE
-            - CONTENT
-            - CONVERSATION
-            - BET_ALERT
-            - PORTAL
-            - QUOTE
-            - FORM_SUBMISSION_INBOUNDDB
-            - QUOTA
-            - UNSUBSCRIBE
-            - COMMUNICATION
-            - FEEDBACK_SUBMISSION
-            - ATTRIBUTION
-            - SALESFORCE_SYNC_ERROR
-            - RESTORABLE_CRM_OBJECT
-            - HUB
-            - LANDING_PAGE
-            - PRODUCT_OR_FOLDER
-            - TASK
-            - FORM
-            - MARKETING_EMAIL
-            - AD_ACCOUNT
-            - AD_CAMPAIGN
-            - AD_GROUP
-            - AD
-            - KEYWORD
-            - CAMPAIGN
-            - SOCIAL_CHANNEL
-            - SOCIAL_POST
-            - SITE_PAGE
-            - BLOG_POST
-            - IMPORT
-            - EXPORT
-            - CTA
-            - TASK_TEMPLATE
-            - AUTOMATION_PLATFORM_FLOW
-            - OBJECT_LIST
-            - NOTE
-            - MEETING_EVENT
-            - CALL
-            - EMAIL
-            - PUBLISHING_TASK
-            - CONVERSATION_SESSION
-            - CONTACT_CREATE_ATTRIBUTION
-            - INVOICE
-            - MARKETING_EVENT
-            - CONVERSATION_INBOX
-            - CHATFLOW
-            - MEDIA_BRIDGE
-            - SEQUENCE
-            - SEQUENCE_STEP
-            - FORECAST
-            - SNIPPET
-            - TEMPLATE
-            - DEAL_CREATE_ATTRIBUTION
-            - QUOTE_TEMPLATE
-            - QUOTE_MODULE
-            - QUOTE_MODULE_FIELD
-            - QUOTE_FIELD
-            - SEQUENCE_ENROLLMENT
-            - SUBSCRIPTION
-            - ACCEPTANCE_TEST
-            - SOCIAL_BROADCAST
-            - DEAL_SPLIT
-            - DEAL_REGISTRATION
-            - GOAL_TARGET
-            - GOAL_TARGET_GROUP
-            - PORTAL_OBJECT_SYNC_MESSAGE
-            - FILE_MANAGER_FILE
-            - FILE_MANAGER_FOLDER
-            - SEQUENCE_STEP_ENROLLMENT
-            - APPROVAL
-            - APPROVAL_STEP
-            - CTA_VARIANT
-            - UNKNOWN
+          # enum:
+          #   - CONTACT
+          #   - COMPANY
+          #   - DEAL
+          #   - ENGAGEMENT
+          #   - TICKET
+          #   - OWNER
+          #   - PRODUCT
+          #   - LINE_ITEM
+          #   - BET_DELIVERABLE_SERVICE
+          #   - CONTENT
+          #   - CONVERSATION
+          #   - BET_ALERT
+          #   - PORTAL
+          #   - QUOTE
+          #   - FORM_SUBMISSION_INBOUNDDB
+          #   - QUOTA
+          #   - UNSUBSCRIBE
+          #   - COMMUNICATION
+          #   - FEEDBACK_SUBMISSION
+          #   - ATTRIBUTION
+          #   - SALESFORCE_SYNC_ERROR
+          #   - RESTORABLE_CRM_OBJECT
+          #   - HUB
+          #   - LANDING_PAGE
+          #   - PRODUCT_OR_FOLDER
+          #   - TASK
+          #   - FORM
+          #   - MARKETING_EMAIL
+          #   - AD_ACCOUNT
+          #   - AD_CAMPAIGN
+          #   - AD_GROUP
+          #   - AD
+          #   - KEYWORD
+          #   - CAMPAIGN
+          #   - SOCIAL_CHANNEL
+          #   - SOCIAL_POST
+          #   - SITE_PAGE
+          #   - BLOG_POST
+          #   - IMPORT
+          #   - EXPORT
+          #   - CTA
+          #   - TASK_TEMPLATE
+          #   - AUTOMATION_PLATFORM_FLOW
+          #   - OBJECT_LIST
+          #   - NOTE
+          #   - MEETING_EVENT
+          #   - CALL
+          #   - EMAIL
+          #   - PUBLISHING_TASK
+          #   - CONVERSATION_SESSION
+          #   - CONTACT_CREATE_ATTRIBUTION
+          #   - INVOICE
+          #   - MARKETING_EVENT
+          #   - CONVERSATION_INBOX
+          #   - CHATFLOW
+          #   - MEDIA_BRIDGE
+          #   - SEQUENCE
+          #   - SEQUENCE_STEP
+          #   - FORECAST
+          #   - SNIPPET
+          #   - TEMPLATE
+          #   - DEAL_CREATE_ATTRIBUTION
+          #   - QUOTE_TEMPLATE
+          #   - QUOTE_MODULE
+          #   - QUOTE_MODULE_FIELD
+          #   - QUOTE_FIELD
+          #   - SEQUENCE_ENROLLMENT
+          #   - SUBSCRIPTION
+          #   - ACCEPTANCE_TEST
+          #   - SOCIAL_BROADCAST
+          #   - DEAL_SPLIT
+          #   - DEAL_REGISTRATION
+          #   - GOAL_TARGET
+          #   - GOAL_TARGET_GROUP
+          #   - PORTAL_OBJECT_SYNC_MESSAGE
+          #   - FILE_MANAGER_FILE
+          #   - FILE_MANAGER_FOLDER
+          #   - SEQUENCE_STEP_ENROLLMENT
+          #   - APPROVAL
+          #   - APPROVAL_STEP
+          #   - CTA_VARIANT
+          #   - UNKNOWN
         invalidValue:
           type: string
         extraContext:
@@ -572,13 +579,13 @@ components:
         state:
           type: string
           description: The status of the import.
-          enum:
-            - STARTED
-            - PROCESSING
-            - DONE
-            - FAILED
-            - CANCELED
-            - DEFERRED
+          # enum:
+          #   - STARTED
+          #   - PROCESSING
+          #   - DONE
+          #   - FAILED
+          #   - CANCELED
+          #   - DEFERRED
         importRequestJson:
           type: object
           description: Import request in JSON

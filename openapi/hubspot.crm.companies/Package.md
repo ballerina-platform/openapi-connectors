@@ -1,11 +1,11 @@
-Connects to HubSpot CRM API from Ballerina
+Connects to [HubSpot CRM API](https://developers.hubspot.com/docs/api/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/hubspot.crm` is a [Ballerina](https://ballerina.io/) connector for connecting to HubSpot CRM.
 
 ### Compatibility
 |                      | Version                    |
-|:--------------------:|:--------------------------:|
+|----------------------|----------------------------|
 | Ballerina Language   | Ballerina Swan Lake Beta2  |
 | HubSpot REST API     | V3                         |   
 

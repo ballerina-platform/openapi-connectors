@@ -1,26 +1,23 @@
 ## Overview
-HubSpot is a powerful easy to use Contact Mangement(CRM), email marketing, live chat, forms and analytics platform. Its 
+This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
 
-Ballerina connector for HubSpot CRM allows easy integration with HubSpot REST API via Ballerina language. 
-
-This module supports HubSpot REST API `v3` version.
+This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).
  
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
-* Create a HubSpot developer account
+* Create a [HubSpot developer](https://developers.hubspot.com/) account
 * Obtain tokens
     - Use [this](https://developers.hubspot.com/docs/api/working-with-oauth4) guide to obtain the credentials which are needed to create the <CLIENT_ID> and <CLIENT_SECRET>
-* Configure the connector with obtained tokens
 
 ## Quickstart
 To use the HubSpot CRM Lineitems connector in your Ballerina application, update the .bal file as follows:
-### Step 1: Import HubSpot CRM Lineitem module
+### Step 1 - Import connector
 First, import the ballerinax/hubspot.crm.lineitem module into the Ballerina project.
 ```ballerina
 import ballerinax/hubspot.crm.lineitem;
 ```
 
-### Step 2: Configure the connection credentials
+### Step 2 - Create a new connector instance
 You can now make the connection configuration using the access token.
 ```ballerina
 lineitem:ClientConfig clientConfig = {
@@ -32,7 +29,9 @@ lineitem:ClientConfig clientConfig = {
 lineitem:Client baseClient = check new Client(clientConfig);
 
 ```
-### Step 3: Create a lineitem instance
+### Step 3 - Invoke connector operation
+
+1. Create a line-item instance
 
 ```ballerina
 lineitem:SimplePublicObjectInput lineitem = {
@@ -53,7 +52,9 @@ if (bEvent is lineitem:SimplePublicObject) {
     log:printError(msg = bEvent.message());
 }
 ```
-### Step 4: List companies
+### Step 3 - Invoke connector operation
+
+2. List line-items
 
 ```ballerina
 lineitem:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
@@ -64,3 +65,5 @@ if (bEvent is lineitem:CollectionResponseSimplePublicObjectWithAssociationsForwa
     log:printError(msg = bEvent.message());
 }
 ```
+
+3. Use `bal run` command to compile and run the Ballerina program

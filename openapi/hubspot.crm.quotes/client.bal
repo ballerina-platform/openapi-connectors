@@ -18,27 +18,29 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Please visit [here](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) to get information on obtaining API key
+# Visit [here](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) to get information on obtaining API key
 #
-# + apiKeys - Provide your PAT token as `hapikey`. Eg: `{"hapikey" : "<API key>"}` 
+# + apiKeys - Provide your API key as `hapikey`. Eg: `{"hapikey" : "<API key>"}`
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
-
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
+# This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [HubSpot account](https://www.hubspot.com/) and obtain obtain the API Key following [this guide](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.162640933).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API key as `hapikey`. Eg: `{"hapikey" : "<API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.hubapi.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # List
     #

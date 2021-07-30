@@ -1,8 +1,14 @@
 openapi: 3.0.1
 info:
   title: Schemas
-  description: 'The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object''s type, properties, and associations. The schema can be uniquely identified by its **object type ID**.'
+  description: 'This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
+  
+  The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object''s type, properties, and associations. The schema can be uniquely identified by its **object type ID**.'
   version: v3
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+  
+    Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
 servers:
   - url: 'https://api.hubapi.com'
 tags:
@@ -720,13 +726,13 @@ components:
         type:
           type: string
           description: The data type of the property.
-          enum:
-            - string
-            - number
-            - date
-            - datetime
-            - enumeration
-            - bool
+          # enum:
+          #   - string
+          #   - number
+          #   - date
+          #   - datetime
+          #   - enumeration
+          #   - bool
         fieldType:
           type: string
           description: Controls how the property appears in HubSpot.

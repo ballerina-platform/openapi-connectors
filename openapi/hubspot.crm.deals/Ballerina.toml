@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["HubSpot", "CRM", "deal"]
+keywords = ["hubspot", "crm", "deal"]
 org = "ballerinax"
 name = "hubspot.crm.deal"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

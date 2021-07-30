@@ -157,6 +157,7 @@ public type PropertyUpdate record {
 
 public type BatchReadInputPropertyName record {
     PropertyName[] inputs;
+    # Whether the results that have been archived
     boolean archived;
 };
 

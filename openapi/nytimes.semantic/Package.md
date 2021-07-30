@@ -1,12 +1,12 @@
-Connects to New York Times Semantic API from Ballerina
+Connects to [New York Times Semantic API](https://developer.nytimes.com/docs/semantic-api-product/1/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/nytimes.semantic` is a [Ballerina](https://ballerina.io/) connector for New York Times Semantic API.
-This package provides the capability to easily access New York Times Semantic API.
+This package provides the capability to access New York Times Semantic API.
 
 ### Compatibility
 |                               | Version                         |
-|:-----------------------------:|:-------------------------------:|
+|-------------------------------|---------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2       | 
 | Semantic API                  | 2.0.0                           |
 

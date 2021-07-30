@@ -3,9 +3,17 @@ servers:
   - url: https://api.spotify.com/v1
 info:
   title: Spotify Web API
+  description: >
+    This is a generated connector from [Spotify API v1](https://developer.spotify.com/documentation/web-api/) OpenAPI Specification. 
+
+    Through the Spotify Web API, external applications retrieve Spotify content such as album data and playlists.
   version: 0.1.0
   x-display:
     label: "Spotify Client"
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+    
+    Please create a [Spotify account](www.spotify.com) and obtain tokens following [this guide](https://developer.spotify.com/documentation/general/guides/authorization-guide/). Configure required scopes when obtaining the tokens. 
 externalDocs:
   description: Find more info on the official Spotify Web API Reference
   url: https://developer.spotify.com/documentation/web-api/reference
@@ -586,12 +594,13 @@ components:
       description: Unexpected error
   schemas:
     FeaturedPlaylistObject:
+      description: Featured playlist object
       properties:
         message:
-          description: ""
+          description: "Message"
           type: string
         playlists:
-          description: ""
+          description: "Playlist details"
           externalDocs:
             description: Find more info on the official Spotify Web API Reference
             url: https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
@@ -628,9 +637,10 @@ components:
           type: object
       type: object
     NewReleasesObject:
+      description: New release object
       properties:
         albums:
-          description: ""
+          description: "Album details"
           externalDocs:
             description: Find more info on the official Spotify Web API Reference
             url: https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
@@ -666,6 +676,8 @@ components:
               type: integer
           type: object
       type: object
+      required:
+        - albums
     PlayListDetails:
       description: Playlist details 
       properties:
@@ -686,6 +698,7 @@ components:
         - name
       type: object
     UserPlayListDetails:
+      description: User playlist Details
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
@@ -755,6 +768,7 @@ components:
           type: array
       type: object
     PlaylistTrackDetails:
+      description: Playlist track details
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
@@ -806,6 +820,7 @@ components:
           nullable: true
       type: object
     CurrentPlaylistDetails:
+      description: Current playlist details
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject
@@ -839,6 +854,7 @@ components:
           format: int32
           type: integer
     PlaylistObject:
+      description: Playlist object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-playlistobject
@@ -918,7 +934,10 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
           type: string
       type: object
+      required:
+        - id
     ImageObject:
+      description: Image object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-imageobject
@@ -944,11 +963,13 @@ components:
           type: string
       type: object
     ErrorResponseObject:
+      description: Error response object
       properties:
         error:
           $ref: "#/components/schemas/ErrorObject"
       type: object
     SimplifiedPlaylistObject:
+      description: Simplified playlist object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedplaylistobject
@@ -994,7 +1015,11 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
           type: string
       type: object
+      required:
+        - id
+        - name
     PlaylistTrackObject:
+      description: Playlist track object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-playlisttrackobject
@@ -1015,6 +1040,7 @@ components:
             - $ref: "#/components/schemas/EpisodeObject"
       type: object
     ExternalUrlObject:
+      description: External URL object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-externalurlobject
@@ -1024,6 +1050,7 @@ components:
           type: string
       type: object
     FollowersObject:
+      description: Followers object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-followersobject
@@ -1037,6 +1064,7 @@ components:
           format: int32
           type: integer
     PublicUserObject:
+      description: Public user object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-publicuserobject
@@ -1067,7 +1095,10 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for this user.
           type: string
       type: object
+      required:
+        - id
     ErrorObject:
+      description: Error object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-errorobject
@@ -1081,6 +1112,7 @@ components:
           type: integer
       type: object
     PlaylistTracksRefObject:
+      description: Playlist track reference object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-playlisttracksrefobject
@@ -1095,6 +1127,7 @@ components:
           type: integer
       type: object
     EpisodeObject:
+      description: Episode object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-episodeobject
@@ -1165,7 +1198,10 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the episode.
           type: string
       type: object
+      required:
+        - id
     EpisodeRestrictionObject:
+      description: Episode restriction object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-episoderestrictionobject
@@ -1181,6 +1217,7 @@ components:
           type: string
       type: object
     ResumePointObject:
+      description: Resume point object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-resumepointobject
@@ -1194,6 +1231,7 @@ components:
           type: integer
       type: object
     SimplifiedShowObject:
+      description: Simplified show object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedshowobject
@@ -1255,7 +1293,10 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the show.
           type: string
       type: object
+      required:
+        - id
     CopyrightObject:
+      description: Copyright object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-copyrightobject
@@ -1268,6 +1309,7 @@ components:
           type: string
       type: object
     SimplifiedArtistObject:
+      description: Simplified artist object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedartistobject
@@ -1291,7 +1333,11 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
           type: string
       type: object
+      required:
+        - id
+        - name
     SimplifiedAlbumObject:
+      description: Simplified album object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedalbumobject
@@ -1348,7 +1394,11 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
           type: string
       type: object
+      required:
+        - artists
+        - id
     AlbumRestrictionObject:
+      description: Album restriction object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-albumrestrictionobject
@@ -1364,6 +1414,7 @@ components:
           type: string
       type: object
     ArtistObject:
+      description: Artist object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-artistobject
@@ -1403,7 +1454,11 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
           type: string
       type: object
+      required:
+        - id
+        - name
     ExternalIdObject:
+      description: External Id object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-externalidobject
@@ -1419,6 +1474,7 @@ components:
           type: string
       type: object
     LinkedTrackObject:
+      description: Linked track object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-linkedtrackobject
@@ -1438,7 +1494,10 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
           type: string
       type: object
+      required:
+        - id
     TrackObject:
+      description: Track object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-trackobject
@@ -1511,7 +1570,10 @@ components:
           description: The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
           type: string
       type: object
+      required:
+        - id
     TrackRestrictionObject:
+      description: Track restriction object
       externalDocs:
         description: Find more info on the official Spotify Web API Reference
         url: https://developer.spotify.com/documentation/web-api/reference/#object-trackrestrictionobject

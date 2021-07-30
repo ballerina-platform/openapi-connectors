@@ -2,9 +2,10 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: World Bank Data API
-  description: World Bank Data
+  description: Client endpoint for World Bank Data API
   x-display:
     label: World Bank Data Client
+  x-init-description: The HTTP client initialization. Please refer to [API documentation](https://worldbank.org) for more detail.
 servers:
   - description: Indicators represent data like total population, gross domestic product, energy use, and many more
     url: http://api.worldbank.org/v2/

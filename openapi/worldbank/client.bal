@@ -30,12 +30,15 @@ type ErrorMessage record {
     string value;
 };
 
-# World Bank Data
-#
-# + clientEp - Connector http endpoint
+# Client endpoint for World Bank Data API
 @display {label: "World Bank Data Client"}
-public client class Client {
-    http:Client clientEp;
+public isolated client class Client {
+    final http:Client clientEp;
+    # The HTTP client initialization. Please refer to [API documentation](https://worldbank.org) for more detail.
+    #
+    # + clientConfig - Client configuration details
+    # + serviceUrl - Connector server URL
+    # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "http://api.worldbank.org/v2/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

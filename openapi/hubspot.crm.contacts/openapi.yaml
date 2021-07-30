@@ -2,6 +2,14 @@ openapi: 3.0.1
 info:
   title: Contacts
   version: v3
+  description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
+  
+    This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).
+  x-init-description: >
+  
+    The connector initialization requires setting the API credentials.
+
+    Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
 servers:
   - url: 'https://api.hubapi.com/'
 tags:
@@ -628,11 +636,11 @@ components:
       properties:
         status:
           type: string
-          enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          # enum:
+          #   - PENDING
+          #   - PROCESSING
+          #   - CANCELED
+          #   - COMPLETE
         results:
           type: array
           items:
@@ -660,11 +668,11 @@ components:
       properties:
         status:
           type: string
-          enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          # enum:
+          #   - PENDING
+          #   - PROCESSING
+          #   - CANCELED
+          #   - COMPLETE
         results:
           type: array
           items:
@@ -796,68 +804,68 @@ components:
       properties:
         httpStatus:
           type: string
-          enum:
-            - CONTINUE
-            - SWITCHING_PROTOCOLS
-            - PROCESSING
-            - OK
-            - CREATED
-            - ACCEPTED
-            - NON_AUTHORITATIVE_INFORMATION
-            - NO_CONTENT
-            - RESET_CONTENT
-            - PARTIAL_CONTENT
-            - MULTI_STATUS
-            - ALREADY_REPORTED
-            - IM_USED
-            - MULTIPLE_CHOICES
-            - MOVED_PERMANENTLY
-            - FOUND
-            - SEE_OTHER
-            - NOT_MODIFIED
-            - USE_PROXY
-            - TEMPORARY_REDIRECT
-            - PERMANENT_REDIRECT
-            - BAD_REQUEST
-            - UNAUTHORIZED
-            - PAYMENT_REQUIRED
-            - FORBIDDEN
-            - NOT_FOUND
-            - METHOD_NOT_ALLOWED
-            - NOT_ACCEPTABLE
-            - PROXY_AUTHENTICATION_REQUIRED
-            - REQUEST_TIMEOUT
-            - CONFLICT
-            - GONE
-            - LENGTH_REQUIRED
-            - PRECONDITION_FAILED
-            - REQUEST_ENTITY_TOO_LARGE
-            - REQUEST_URI_TOO_LONG
-            - UNSUPPORTED_MEDIA_TYPE
-            - REQUESTED_RANGE_NOT_SATISFIABLE
-            - EXPECTATION_FAILED
-            - IM_A_TEAPOT
-            - MISDIRECTED_REQUEST
-            - UNPROCESSABLE_ENTITY
-            - LOCKED
-            - FAILED_DEPENDENCY
-            - UPGRADE_REQUIRED
-            - PRECONDITION_REQUIRED
-            - TOO_MANY_REQUESTS
-            - REQUEST_HEADERS_FIELDS_TOO_LARGE
-            - INTERNAL_STALE_SERVICE_DISCOVERY
-            - UNAVAILABLE_FOR_LEGAL_REASONS
-            - INTERNAL_SERVER_ERROR
-            - NOT_IMPLEMENTED
-            - BAD_GATEWAY
-            - SERVICE_UNAVAILABLE
-            - GATEWAY_TIMEOUT
-            - HTTP_VERSION_NOT_SUPPORTED
-            - VARIANT_ALSO_NEGOTIATES
-            - INSUFFICIENT_STORAGE
-            - LOOP_DETECTED
-            - NOT_EXTENDED
-            - NETWORK_AUTHENTICATION_REQUIRED
+          # enum:
+          #   - CONTINUE
+          #   - SWITCHING_PROTOCOLS
+          #   - PROCESSING
+          #   - OK
+          #   - CREATED
+          #   - ACCEPTED
+          #   - NON_AUTHORITATIVE_INFORMATION
+          #   - NO_CONTENT
+          #   - RESET_CONTENT
+          #   - PARTIAL_CONTENT
+          #   - MULTI_STATUS
+          #   - ALREADY_REPORTED
+          #   - IM_USED
+          #   - MULTIPLE_CHOICES
+          #   - MOVED_PERMANENTLY
+          #   - FOUND
+          #   - SEE_OTHER
+          #   - NOT_MODIFIED
+          #   - USE_PROXY
+          #   - TEMPORARY_REDIRECT
+          #   - PERMANENT_REDIRECT
+          #   - BAD_REQUEST
+          #   - UNAUTHORIZED
+          #   - PAYMENT_REQUIRED
+          #   - FORBIDDEN
+          #   - NOT_FOUND
+          #   - METHOD_NOT_ALLOWED
+          #   - NOT_ACCEPTABLE
+          #   - PROXY_AUTHENTICATION_REQUIRED
+          #   - REQUEST_TIMEOUT
+          #   - CONFLICT
+          #   - GONE
+          #   - LENGTH_REQUIRED
+          #   - PRECONDITION_FAILED
+          #   - REQUEST_ENTITY_TOO_LARGE
+          #   - REQUEST_URI_TOO_LONG
+          #   - UNSUPPORTED_MEDIA_TYPE
+          #   - REQUESTED_RANGE_NOT_SATISFIABLE
+          #   - EXPECTATION_FAILED
+          #   - IM_A_TEAPOT
+          #   - MISDIRECTED_REQUEST
+          #   - UNPROCESSABLE_ENTITY
+          #   - LOCKED
+          #   - FAILED_DEPENDENCY
+          #   - UPGRADE_REQUIRED
+          #   - PRECONDITION_REQUIRED
+          #   - TOO_MANY_REQUESTS
+          #   - REQUEST_HEADERS_FIELDS_TOO_LARGE
+          #   - INTERNAL_STALE_SERVICE_DISCOVERY
+          #   - UNAVAILABLE_FOR_LEGAL_REASONS
+          #   - INTERNAL_SERVER_ERROR
+          #   - NOT_IMPLEMENTED
+          #   - BAD_GATEWAY
+          #   - SERVICE_UNAVAILABLE
+          #   - GATEWAY_TIMEOUT
+          #   - HTTP_VERSION_NOT_SUPPORTED
+          #   - VARIANT_ALSO_NEGOTIATES
+          #   - INSUFFICIENT_STORAGE
+          #   - LOOP_DETECTED
+          #   - NOT_EXTENDED
+          #   - NETWORK_AUTHENTICATION_REQUIRED
         name:
           type: string
     ErrorDetail:
@@ -900,17 +908,17 @@ components:
           type: string
         operator:
           type: string
-          enum:
-            - EQ
-            - NEQ
-            - LT
-            - LTE
-            - GT
-            - GTE
-            - HAS_PROPERTY
-            - NOT_HAS_PROPERTY
-            - CONTAINS_TOKEN
-            - NOT_CONTAINS_TOKEN
+          # enum:
+          #   - EQ
+          #   - NEQ
+          #   - LT
+          #   - LTE
+          #   - GT
+          #   - GTE
+          #   - HAS_PROPERTY
+          #   - NOT_HAS_PROPERTY
+          #   - CONTAINS_TOKEN
+          #   - NOT_CONTAINS_TOKEN
     FilterGroup:
       required:
         - filters

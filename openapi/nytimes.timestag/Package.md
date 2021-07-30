@@ -1,12 +1,12 @@
-Connects to New York Times TimesTags API from Ballerina
+Connects to [New York Times TimesTags API](https://developer.nytimes.com/docs/timestags-product/1/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/nytimes.timestags` is a [Ballerina](https://ballerina.io/) connector for New York Times TimesTags API.
-This package provides the capability to easily access New York Times TimesTags API.
+This package provides the capability to access New York Times TimesTags API.
 
 ### Compatibility
 |                               | Version                         |
-|:-----------------------------:|:-------------------------------:|
+|-------------------------------|---------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2       | 
 | Times TimesTags API           | 1.0.0                           |
 

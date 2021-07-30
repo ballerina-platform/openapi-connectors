@@ -1,25 +1,22 @@
 ## Overview
-Cloudmersive Validate API provide capabilities for validation of data.
+This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
 
-Ballerina connector for Cloudmersive Validate allows easy integration with Cloudmersive Validate REST API via Ballerina language. 
-It supports functionalities to for email address, phone number, street address VAT number, Domain name and name validation
-
-This module supports Cloudmersive Validate REST API `v1` version.
+The Cloudmersive Validation APIs help you validate data. Check if an E-mail address is real. Check if a domain is real. 
+Check up on an IP address, and even where it is located. All this and much more is available in the validation API.
  
 ## Prerequisites
-* Create a Cloudmersive Account
-* Obtaining tokens
-    1. [Login to the Cloudmersive account](https://account.cloudmersive.com/login)
-    2. [Obtain API keys](https://account.cloudmersive.com/keys)
+* Create a [Cloudmersive](https://account.cloudmersive.com) account
+* Obtain tokens
+    - Use [this](https://account.cloudmersive.com/keys) guide to obtain the API key related to your account.
 
 ## Quickstart
 To use the Cloudmersive Validate connector in your Ballerina application, update the .bal file as follows:
-### Step 1: Import cloudmersive.validate module
+### Step 1 - Import connector
 First, import the ballerinax/cloudmersive.validate module into the Ballerina project.
 ```ballerina
 import ballerinax/cloudmersive.validate;
 ```
-### Step 2: Configure the connection credentials.
+### Step 2 - Create a new connector instance
 You can now make the connection configuration using the access token.
 ```ballerina
 validate:ApiKeysConfig config = {
@@ -31,7 +28,9 @@ validate:ApiKeysConfig config = {
 validate:Client baseClient = check new Client(clientConfig);
 
 ```
-### Step 3: Obtain the parsed address
+### Step 3 - Invoke connector operation
+
+1. Obtain the parsed address
 
 ```ballerina
 validate:ParseAddressRequest address = {
@@ -46,5 +45,5 @@ if (bEvent is validate:ParseAddressResponse) {
 } else {
     log:printError(msg = bEvent.toString());
 }
-
 ``` 
+2. Use `bal run` command to compile and run the Ballerina program

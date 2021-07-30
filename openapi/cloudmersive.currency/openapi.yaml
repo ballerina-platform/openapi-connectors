@@ -1,8 +1,13 @@
 openapi: 3.0.1
 info:
   title: currencyapi
-  description: The currency APIs help you retrieve exchange rates and convert prices
-    between currencies easily.
+  description: This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
+  
+    The Cloudmersive Currency APIs help you retrieve exchange rates and convert prices between currencies.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
   version: v1
 servers:
 - url: https://testapi.cloudmersive.com/
@@ -193,6 +198,7 @@ components:
   securitySchemes:
     Apikey:
       type: apiKey
+      x-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
       description: API Key Authentication
       name: Apikey
       in: header

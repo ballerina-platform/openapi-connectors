@@ -16,37 +16,38 @@
 
 import  ballerina/http;
 
-# Please visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
+# Visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
 #
 # + apiKeys - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
-
+# This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
 # The Cloudmersive Virus Scan API lets you scan files and content for viruses and identify security issues with content.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.  
+    # Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://testapi.cloudmersive.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Scan a file for viruses
-    #
+    # 
     # + payload - File content as multipart/form-data
     # + return - OK
     remote isolated function scanFile(Body payload) returns VirusScanResult|error {
         string  path = string `/virus/scan/file`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         VirusScanResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=VirusScanResult);
         return response;
@@ -64,7 +65,7 @@ public client class Client {
     # + return - OK
     remote isolated function scanFileAdvanced(Body1 payload, boolean? allowExecutables = (), boolean? allowInvalidFiles = (), boolean? allowScripts = (), boolean? allowPasswordProtectedFiles = (), boolean? allowMacros = (), boolean? allowXmlExternalEntities = (), string? restrictFileTypes = ()) returns VirusScanAdvancedResult|error {
         string  path = string `/virus/scan/file/advanced`;
-        map<any> headerValues = {"allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "allowXmlExternalEntities": allowXmlExternalEntities, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "allowXmlExternalEntities": allowXmlExternalEntities, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         VirusScanAdvancedResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=VirusScanAdvancedResult);
@@ -76,10 +77,11 @@ public client class Client {
     # + return - OK
     remote isolated function scanWebsite(WebsiteScanRequest payload) returns WebsiteScanResult|error {
         string  path = string `/virus/scan/website`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         WebsiteScanResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=WebsiteScanResult);
         return response;
     }
@@ -91,7 +93,7 @@ public client class Client {
     # + return - OK
     remote isolated function scanCloudStorageScanAzureBlob(string connectionString, string containerName, string blobPath) returns CloudStorageVirusScanResult|error {
         string  path = string `/virus/scan/cloud-storage/azure-blob/single`;
-        map<any> headerValues = {"connectionString": connectionString, "containerName": containerName, "blobPath": blobPath, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"connectionString": connectionString, "containerName": containerName, "blobPath": blobPath, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -112,7 +114,7 @@ public client class Client {
     # + return - OK
     remote isolated function scanCloudStorageScanAzureBlobAdvanced(string connectionString, string containerName, string blobPath, boolean? allowExecutables = (), boolean? allowInvalidFiles = (), boolean? allowScripts = (), boolean? allowPasswordProtectedFiles = (), boolean? allowMacros = (), string? restrictFileTypes = ()) returns CloudStorageAdvancedVirusScanResult|error {
         string  path = string `/virus/scan/cloud-storage/azure-blob/single/advanced`;
-        map<any> headerValues = {"connectionString": connectionString, "containerName": containerName, "blobPath": blobPath, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"connectionString": connectionString, "containerName": containerName, "blobPath": blobPath, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -129,7 +131,7 @@ public client class Client {
     # + return - OK
     remote isolated function scanCloudStorageScanAwsS3file(string accessKey, string secretKey, string bucketRegion, string bucketName, string keyName) returns CloudStorageVirusScanResult|error {
         string  path = string `/virus/scan/cloud-storage/aws-s3/single`;
-        map<any> headerValues = {"accessKey": accessKey, "secretKey": secretKey, "bucketRegion": bucketRegion, "bucketName": bucketName, "keyName": keyName, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"accessKey": accessKey, "secretKey": secretKey, "bucketRegion": bucketRegion, "bucketName": bucketName, "keyName": keyName, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -152,7 +154,7 @@ public client class Client {
     # + return - OK
     remote isolated function scanCloudStorageScanAwsS3fileAdvanced(string accessKey, string secretKey, string bucketRegion, string bucketName, string keyName, boolean? allowExecutables = (), boolean? allowInvalidFiles = (), boolean? allowScripts = (), boolean? allowPasswordProtectedFiles = (), boolean? allowMacros = (), string? restrictFileTypes = ()) returns CloudStorageAdvancedVirusScanResult|error {
         string  path = string `/virus/scan/cloud-storage/aws-s3/single/advanced`;
-        map<any> headerValues = {"accessKey": accessKey, "secretKey": secretKey, "bucketRegion": bucketRegion, "bucketName": bucketName, "keyName": keyName, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"accessKey": accessKey, "secretKey": secretKey, "bucketRegion": bucketRegion, "bucketName": bucketName, "keyName": keyName, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -167,7 +169,7 @@ public client class Client {
     # + return - OK
     remote isolated function scanCloudStorageScanGcpStorageFile(string bucketName, string objectName, Body2 payload) returns CloudStorageVirusScanResult|error {
         string  path = string `/virus/scan/cloud-storage/gcp-storage/single`;
-        map<any> headerValues = {"bucketName": bucketName, "objectName": objectName, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"bucketName": bucketName, "objectName": objectName, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         CloudStorageVirusScanResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CloudStorageVirusScanResult);
@@ -187,7 +189,7 @@ public client class Client {
     # + return - OK
     remote isolated function scanCloudStorageScanGcpStorageFileAdvanced(string bucketName, string objectName, Body3 payload, boolean? allowExecutables = (), boolean? allowInvalidFiles = (), boolean? allowScripts = (), boolean? allowPasswordProtectedFiles = (), boolean? allowMacros = (), string? restrictFileTypes = ()) returns CloudStorageAdvancedVirusScanResult|error {
         string  path = string `/virus/scan/cloud-storage/gcp-storage/single/advanced`;
-        map<any> headerValues = {"bucketName": bucketName, "objectName": objectName, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"bucketName": bucketName, "objectName": objectName, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         CloudStorageAdvancedVirusScanResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CloudStorageAdvancedVirusScanResult);

@@ -16,29 +16,29 @@
 
 import  ballerina/http;
 
-# Please visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
+# Visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
 #
 # + apiKeys - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
-
-# Barcode APIs let you generate barcode images, and recognize values from images of barcodes.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. 
+# The  Cloudmersive Barcode APIs let you generate barcode images, and recognize values from images of barcodes.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.  
+    # Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://testapi.cloudmersive.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Lookup EAN barcode value, return product data
     #
@@ -46,10 +46,11 @@ public client class Client {
     # + return - OK
     remote isolated function barcodeEanLookup(string payload) returns BarcodeLookupResponse|error {
         string  path = string `/barcode/lookup/ean`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         BarcodeLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BarcodeLookupResponse);
         return response;
     }
@@ -59,7 +60,8 @@ public client class Client {
     # + return - OK
     remote isolated function barcodeScanImage(Body payload) returns BarcodeScanResult|error {
         string  path = string `/barcode/scan/image`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         BarcodeScanResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BarcodeScanResult);
         return response;
@@ -70,10 +72,11 @@ public client class Client {
     # + return - OK
     remote isolated function generateBarcodeQrcode(string payload) returns string|error {
         string  path = string `/barcode/generate/qrcode`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -83,10 +86,11 @@ public client class Client {
     # + return - OK
     remote isolated function generateBarcodeUpca(string payload) returns string|error {
         string  path = string `/barcode/generate/upc-a`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -96,10 +100,11 @@ public client class Client {
     # + return - OK
     remote isolated function generateBarcodeUpce(string payload) returns string|error {
         string  path = string `/barcode/generate/upc-e`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -109,10 +114,11 @@ public client class Client {
     # + return - OK
     remote isolated function generateBarcodeEan13(string payload) returns string|error {
         string  path = string `/barcode/generate/ean-13`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }
@@ -122,10 +128,11 @@ public client class Client {
     # + return - OK
     remote isolated function generateBarcodeEan8(string payload) returns string|error {
         string  path = string `/barcode/generate/ean-8`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
         return response;
     }

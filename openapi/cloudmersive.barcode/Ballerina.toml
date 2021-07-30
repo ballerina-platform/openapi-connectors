@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Cloudmersive", "barcode"]
+keywords = ["cloudmersive", "barcode"]
 org = "ballerinax"
 name = "cloudmersive.barcode"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

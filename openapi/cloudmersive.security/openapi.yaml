@@ -1,7 +1,13 @@
 openapi: 3.0.1
 info:
   title: securityapi
-  description: The security APIs help you detect and block security threats.
+  description: This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
+  
+    The Cloudmersive Security APIs help you detect and block security threats.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
   version: v1
 servers:
 - url: https://testapi.cloudmersive.com/
@@ -492,6 +498,7 @@ components:
   securitySchemes:
     Apikey:
       type: apiKey
+      x-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
       description: API Key Authentication
       name: Apikey
       in: header

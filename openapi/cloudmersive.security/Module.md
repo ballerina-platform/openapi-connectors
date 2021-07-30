@@ -1,25 +1,21 @@
 ## Overview
-Cloudmersive Security API provide capabilities to detect and block security threats. 
+This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
 
-Ballerina connector for Cloudmersive Security allows easy integration with Cloudmersive Security REST API via Ballerina language. 
-It allows advanced high-performance scanning capabilities on files for SQL Injection attacks and threats, insecure deserialization attacks and threats,
-XML External Entity attacks and threats, XSS attacks and threats,  Server-Side Request Forgery (SSRF) threats and attacks, bots and other threats.
+The Cloudmersive Security APIs help you detect and block security threats.
 
-This module supports Cloudmersive Security REST API `v1` version.
 ## Prerequisites
-* Create a Cloudmersive Account
-* Obtaining tokens
-    1. [Login to the Cloudmersive account](https://account.cloudmersive.com/login)
-    2. [Obtain API keys](https://account.cloudmersive.com/keys)
+* Create a [Cloudmersive](https://account.cloudmersive.com) account
+* Obtain tokens
+    - Use [this](https://account.cloudmersive.com/keys) guide to obtain the API key related to your account.
 
 ## Quickstart
 To use the Cloudmersive Security connector in your Ballerina application, update the .bal file as follows:
-### Step 1: Import cloudmersive.security module
+### Step 1 - Import connector
 First, import the ballerinax/cloudmersive.security module into the Ballerina project.
 ```ballerina
 import ballerinax/cloudmersive.security;
 ```
-### Step 2: Configure the connection credentials.
+### Step 2 - Create a new connector instance
 You can now make the connection configuration using the access token.
 ```ballerina
 security:ApiKeysConfig config = {
@@ -31,7 +27,9 @@ security:ApiKeysConfig config = {
 security:Client baseClient = check new Client(clientConfig);
 
 ```
-### Step 3: Scan the query for SQL Injection
+### Step 3 - Invoke connector operation
+
+1. Scan the query for SQL Injection
 ```ballerina
 string query = "SELECT * FROM Users WHERE UserId = 105 OR 1=1;";
 security:StringSqlInjectionDetectionResult|error bEvent = baseClient->contentThreatDetectionCheckSqlInjectionString(query);
@@ -43,3 +41,4 @@ if (bEvent is security:StringSqlInjectionDetectionResult) {
 }
 
 ``` 
+2. Use `bal run` command to compile and run the Ballerina program

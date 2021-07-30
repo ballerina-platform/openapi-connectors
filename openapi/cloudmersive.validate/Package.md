@@ -1,4 +1,4 @@
-Connects to Cloudmersive Validate API from Ballerina
+Connects to [Cloudmersive Validate API](https://api.cloudmersive.com/docs/validate.asp) from Ballerina
 
 ## Package overview
 
@@ -6,7 +6,7 @@ The `ballerinax/cloudmersive.validate` is a [Ballerina](https://ballerina.io/) c
 
 ### Compatibility
 |                          | Version                    |
-|:------------------------:|:--------------------------:|
+|--------------------------|----------------------------|
 | Ballerina Language       | Ballerina Swan Lake Beta2  |
 | Cloudmersive API         | v1                         |
 

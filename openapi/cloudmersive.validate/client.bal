@@ -16,29 +16,29 @@
 
 import  ballerina/http;
 
-# Please visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
+# Visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
 #
 # + apiKeys - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
-
-# The validation APIs help you validate data. Check if an E-mail address is real. Check if a domain is real. Check up on an IP address, and even where it is located. All this and much more is available in the validation API.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
+# The Cloudmersive Validation APIs help you validate data. Check if an E-mail address is real. Check if a domain is real. Check up on an IP address, and even where it is located. All this and much more is available in the validation API.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.  
+    # Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://testapi.cloudmersive.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Parse an unstructured input text string into an international, formatted address
     #
@@ -46,10 +46,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressParseString(ParseAddressRequest payload) returns ParseAddressResponse|error {
         string  path = string `/validate/address/parse`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ParseAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ParseAddressResponse);
         return response;
     }
@@ -59,10 +60,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressValidateAddress(ValidateAddressRequest payload) returns ValidateAddressResponse|error {
         string  path = string `/validate/address/street-address`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateAddressResponse);
         return response;
     }
@@ -72,10 +74,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressNormalizeAddress(ValidateAddressRequest payload) returns NormalizeAddressResponse|error {
         string  path = string `/validate/address/street-address/normalize`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         NormalizeAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=NormalizeAddressResponse);
         return response;
     }
@@ -85,10 +88,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressValidateCity(ValidateCityRequest payload) returns ValidateCityResponse|error {
         string  path = string `/validate/address/city`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateCityResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCityResponse);
         return response;
     }
@@ -98,10 +102,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressValidateState(ValidateStateRequest payload) returns ValidateStateResponse|error {
         string  path = string `/validate/address/state`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateStateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateStateResponse);
         return response;
     }
@@ -111,10 +116,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressValidatePostalCode(ValidatePostalCodeRequest payload) returns ValidatePostalCodeResponse|error {
         string  path = string `/validate/address/postal-code`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidatePostalCodeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidatePostalCodeResponse);
         return response;
     }
@@ -124,10 +130,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressCountry(ValidateCountryRequest payload) returns ValidateCountryResponse|error {
         string  path = string `/validate/address/country`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -136,7 +143,8 @@ public client class Client {
     # + return - OK
     remote isolated function addressCountryList() returns CountryListResult|error {
         string  path = string `/validate/address/country/list`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
         CountryListResult response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = CountryListResult);
@@ -148,10 +156,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressCheckEumembership(ValidateCountryRequest payload) returns ValidateCountryResponse|error {
         string  path = string `/validate/address/country/check-eu-membership`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -161,10 +170,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressGetCountryCurrency(ValidateCountryRequest payload) returns ValidateCountryResponse|error {
         string  path = string `/validate/address/country/get-currency`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -174,10 +184,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressGetCountryRegion(ValidateCountryRequest payload) returns ValidateCountryResponse|error {
         string  path = string `/validate/address/country/get-region`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateCountryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateCountryResponse);
         return response;
     }
@@ -187,10 +198,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressGetTimezone(GetTimezonesRequest payload) returns GetTimezonesResponse|error {
         string  path = string `/validate/address/country/get-timezones`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         GetTimezonesResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GetTimezonesResponse);
         return response;
     }
@@ -200,10 +212,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressGeocode(ValidateAddressRequest payload) returns ValidateAddressResponse|error {
         string  path = string `/validate/address/geocode`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateAddressResponse);
         return response;
     }
@@ -213,10 +226,11 @@ public client class Client {
     # + return - OK
     remote isolated function addressReverseGeocodeAddress(ReverseGeocodeAddressRequest payload) returns ReverseGeocodeAddressResponse|error {
         string  path = string `/validate/address/geocode/reverse`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ReverseGeocodeAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ReverseGeocodeAddressResponse);
         return response;
     }
@@ -225,7 +239,8 @@ public client class Client {
     # + return - OK
     remote isolated function dateTimeGetNowSimple() returns DateTimeNowResult|error {
         string  path = string `/validate/date-time/get/now`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         DateTimeNowResult response = check self.clientEp-> get(path, accHeaders, targetType = DateTimeNowResult);
         return response;
     }
@@ -235,10 +250,11 @@ public client class Client {
     # + return - OK
     remote isolated function dateTimeGetPublicHolidays(GetPublicHolidaysRequest payload) returns PublicHolidaysResponse|error {
         string  path = string `/validate/date-time/get/holidays`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         PublicHolidaysResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PublicHolidaysResponse);
         return response;
     }
@@ -248,10 +264,11 @@ public client class Client {
     # + return - OK
     remote isolated function dateTimeParseStandardDateTime(DateTimeStandardizedParseRequest payload) returns DateTimeStandardizedParseResponse|error {
         string  path = string `/validate/date-time/parse/date-time/structured`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         DateTimeStandardizedParseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DateTimeStandardizedParseResponse);
         return response;
     }
@@ -261,10 +278,11 @@ public client class Client {
     # + return - OK
     remote isolated function dateTimeParseNaturalLanguageDateTime(DateTimeNaturalLanguageParseRequest payload) returns DateTimeStandardizedParseResponse|error {
         string  path = string `/validate/date-time/parse/date-time/natural-language`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         DateTimeStandardizedParseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DateTimeStandardizedParseResponse);
         return response;
     }
@@ -274,10 +292,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainCheck(string payload) returns CheckResponse|error {
         string  path = string `/validate/domain/check`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         CheckResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CheckResponse);
         return response;
     }
@@ -287,10 +306,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainQualityScore(string payload) returns DomainQualityResponse|error {
         string  path = string `/validate/domain/quality-score`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         DomainQualityResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DomainQualityResponse);
         return response;
     }
@@ -300,10 +320,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainPost(string payload) returns WhoisResponse|error {
         string  path = string `/validate/domain/whois`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         WhoisResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=WhoisResponse);
         return response;
     }
@@ -313,10 +334,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainUrlSyntaxOnly(ValidateUrlRequestSyntaxOnly payload) returns ValidateUrlResponseSyntaxOnly|error {
         string  path = string `/validate/domain/url/syntax-only`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateUrlResponseSyntaxOnly);
         return response;
     }
@@ -326,10 +348,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainUrlFull(ValidateUrlRequestFull payload) returns ValidateUrlResponseFull|error {
         string  path = string `/validate/domain/url/full`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateUrlResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateUrlResponseFull);
         return response;
     }
@@ -339,10 +362,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainGetTopLevelDomainFromUrl(ValidateUrlRequestSyntaxOnly payload) returns ValidateUrlResponseSyntaxOnly|error {
         string  path = string `/validate/domain/url/get-top-level-domain`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateUrlResponseSyntaxOnly);
         return response;
     }
@@ -352,10 +376,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainPhishingCheck(PhishingCheckRequest payload) returns PhishingCheckResponse|error {
         string  path = string `/validate/domain/url/phishing-threat-check`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         PhishingCheckResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PhishingCheckResponse);
         return response;
     }
@@ -365,10 +390,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainIsAdminPath(string payload) returns IsAdminPathResponse|error {
         string  path = string `/validate/domain/url/is-admin-path`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         IsAdminPathResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IsAdminPathResponse);
         return response;
     }
@@ -378,10 +404,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainSafetyCheck(UrlSafetyCheckRequestFull payload) returns UrlSafetyCheckResponseFull|error {
         string  path = string `/validate/domain/url/safety-threat-check`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         UrlSafetyCheckResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlSafetyCheckResponseFull);
         return response;
     }
@@ -391,10 +418,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainSsrfCheck(UrlSsrfRequestFull payload) returns UrlSsrfResponseFull|error {
         string  path = string `/validate/domain/url/ssrf-threat-check`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         UrlSsrfResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlSsrfResponseFull);
         return response;
     }
@@ -404,10 +432,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainSsrfCheckBatch(UrlSsrfRequestBatch payload) returns UrlSsrfResponseBatch|error {
         string  path = string `/validate/domain/url/ssrf-threat-check/batch`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         UrlSsrfResponseBatch response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlSsrfResponseBatch);
         return response;
     }
@@ -417,10 +446,11 @@ public client class Client {
     # + return - OK
     remote isolated function domainUrlHtmlSsrfCheck(UrlHtmlSsrfRequestFull payload) returns UrlHtmlSsrfResponseFull|error {
         string  path = string `/validate/domain/url/ssrf-threat-check/html-embedded`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         UrlHtmlSsrfResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlHtmlSsrfResponseFull);
         return response;
     }
@@ -430,10 +460,11 @@ public client class Client {
     # + return - OK
     remote isolated function emailPost(string payload) returns AddressVerifySyntaxOnlyResponse|error {
         string  path = string `/validate/email/address/syntaxOnly`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         AddressVerifySyntaxOnlyResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=AddressVerifySyntaxOnlyResponse);
         return response;
     }
@@ -443,10 +474,11 @@ public client class Client {
     # + return - OK
     remote isolated function emailAddressGetServers(string payload) returns AddressGetServersResponse|error {
         string  path = string `/validate/email/address/servers`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         AddressGetServersResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=AddressGetServersResponse);
         return response;
     }
@@ -456,10 +488,11 @@ public client class Client {
     # + return - OK
     remote isolated function emailFullValidation(string payload) returns FullEmailValidationResponse|error {
         string  path = string `/validate/email/address/full`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         FullEmailValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FullEmailValidationResponse);
         return response;
     }
@@ -469,10 +502,11 @@ public client class Client {
     # + return - OK
     remote isolated function ipaddressIpIntelligence(string payload) returns IPIntelligenceResponse|error {
         string  path = string `/validate/ip/intelligence`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         IPIntelligenceResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPIntelligenceResponse);
         return response;
     }
@@ -482,10 +516,11 @@ public client class Client {
     # + return - OK
     remote isolated function ipaddressPost(string payload) returns GeolocateResponse|error {
         string  path = string `/validate/ip/geolocate`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         GeolocateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GeolocateResponse);
         return response;
     }
@@ -495,10 +530,11 @@ public client class Client {
     # + return - OK
     remote isolated function ipaddressGeolocateStreetAddress(string payload) returns GeolocateStreetAddressResponse|error {
         string  path = string `/validate/ip/geolocate/street-address`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         GeolocateStreetAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GeolocateStreetAddressResponse);
         return response;
     }
@@ -508,10 +544,11 @@ public client class Client {
     # + return - OK
     remote isolated function ipaddressIsThreat(string payload) returns IPThreatResponse|error {
         string  path = string `/validate/ip/is-threat`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         IPThreatResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPThreatResponse);
         return response;
     }
@@ -521,10 +558,11 @@ public client class Client {
     # + return - OK
     remote isolated function ipaddressIsTorNode(string payload) returns TorNodeResponse|error {
         string  path = string `/validate/ip/is-tor-node`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         TorNodeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TorNodeResponse);
         return response;
     }
@@ -534,10 +572,11 @@ public client class Client {
     # + return - OK
     remote isolated function ipaddressIsBot(string payload) returns BotCheckResponse|error {
         string  path = string `/validate/ip/is-bot`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         BotCheckResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BotCheckResponse);
         return response;
     }
@@ -547,10 +586,11 @@ public client class Client {
     # + return - OK
     remote isolated function ipaddressReverseDomainLookup(string payload) returns IPReverseDNSLookupResponse|error {
         string  path = string `/validate/ip/reverse-domain-lookup`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         IPReverseDNSLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPReverseDNSLookupResponse);
         return response;
     }
@@ -560,10 +600,11 @@ public client class Client {
     # + return - OK
     remote isolated function leadEnrichmentEnrichLead(LeadEnrichmentRequest payload) returns LeadEnrichmentResponse|error {
         string  path = string `/validate/lead-enrichment/lead/enrich`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         LeadEnrichmentResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LeadEnrichmentResponse);
         return response;
     }
@@ -573,10 +614,11 @@ public client class Client {
     # + return - OK
     remote isolated function nameValidateFullName(FullNameValidationRequest payload) returns FullNameValidationResponse|error {
         string  path = string `/validate/name/full-name`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         FullNameValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FullNameValidationResponse);
         return response;
     }
@@ -586,10 +628,11 @@ public client class Client {
     # + return - OK
     remote isolated function nameValidateFirstName(FirstNameValidationRequest payload) returns FirstNameValidationResponse|error {
         string  path = string `/validate/name/first`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         FirstNameValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FirstNameValidationResponse);
         return response;
     }
@@ -599,10 +642,11 @@ public client class Client {
     # + return - OK
     remote isolated function nameValidateLastName(LastNameValidationRequest payload) returns LastNameValidationResponse|error {
         string  path = string `/validate/name/last`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         LastNameValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LastNameValidationResponse);
         return response;
     }
@@ -612,10 +656,11 @@ public client class Client {
     # + return - OK
     remote isolated function nameGetGender(GetGenderRequest payload) returns GetGenderResponse|error {
         string  path = string `/validate/name/get-gender`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         GetGenderResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GetGenderResponse);
         return response;
     }
@@ -625,10 +670,11 @@ public client class Client {
     # + return - OK
     remote isolated function nameIdentifier(ValidateIdentifierRequest payload) returns ValidateIdentifierResponse|error {
         string  path = string `/validate/name/identifier`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         ValidateIdentifierResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ValidateIdentifierResponse);
         return response;
     }
@@ -638,10 +684,11 @@ public client class Client {
     # + return - OK
     remote isolated function phoneNumberSyntaxOnly(PhoneNumberValidateRequest payload) returns PhoneNumberValidationResponse|error {
         string  path = string `/validate/phonenumber/basic`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         PhoneNumberValidationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PhoneNumberValidationResponse);
         return response;
     }
@@ -652,11 +699,11 @@ public client class Client {
     # + return - OK
     remote isolated function textInputCheckSqlInjection(string payload, string? detectionLevel = ()) returns SqlInjectionDetectionResult|error {
         string  path = string `/validate/text-input/check/sql-injection`;
-        map<any> headerValues = {"detectionLevel": detectionLevel, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"detectionLevel": detectionLevel, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         SqlInjectionDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SqlInjectionDetectionResult);
         return response;
     }
@@ -666,10 +713,11 @@ public client class Client {
     # + return - OK
     remote isolated function textInputCheckSqlInjectionBatch(SqlInjectionCheckBatchRequest payload) returns SqlInjectionCheckBatchResponse|error {
         string  path = string `/validate/text-input/check/sql-injection/batch`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         SqlInjectionCheckBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SqlInjectionCheckBatchResponse);
         return response;
     }
@@ -679,10 +727,11 @@ public client class Client {
     # + return - OK
     remote isolated function textInputCheckXss(string payload) returns XssProtectionResult|error {
         string  path = string `/validate/text-input/check/xss`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         XssProtectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XssProtectionResult);
         return response;
     }
@@ -692,10 +741,11 @@ public client class Client {
     # + return - OK
     remote isolated function textInputProtectXss(string payload) returns XssProtectionResult|error {
         string  path = string `/validate/text-input/protect/xss`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         XssProtectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XssProtectionResult);
         return response;
     }
@@ -705,10 +755,11 @@ public client class Client {
     # + return - OK
     remote isolated function textInputCheckXssBatch(XssProtectionBatchRequest payload) returns XssProtectionBatchResponse|error {
         string  path = string `/validate/text-input/check-and-protect/xss/batch`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         XssProtectionBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XssProtectionBatchResponse);
         return response;
     }
@@ -718,10 +769,11 @@ public client class Client {
     # + return - OK
     remote isolated function textInputCheckHtmlSsrf(string payload) returns HtmlSsrfDetectionResult|error {
         string  path = string `/validate/text-input/html/check/ssrf`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         HtmlSsrfDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=HtmlSsrfDetectionResult);
         return response;
     }
@@ -734,24 +786,24 @@ public client class Client {
     # + return - OK
     remote isolated function textInputCheckXxe(string payload, boolean? allowInternetUrls = (), string? knownSafeUrls = (), string? knownUnsafeUrls = ()) returns XxeDetectionResult|error {
         string  path = string `/validate/text-input/check/xxe`;
-        map<any> headerValues = {"allowInternetUrls": allowInternetUrls, "knownSafeUrls": knownSafeUrls, "knownUnsafeUrls": knownUnsafeUrls, Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {"allowInternetUrls": allowInternetUrls, "knownSafeUrls": knownSafeUrls, "knownUnsafeUrls": knownUnsafeUrls, Apikey: self.apiKeys["Apikey"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         XxeDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XxeDetectionResult);
         return response;
     }
     # Protect text input from XML External Entity (XXE) attacks
-    #
     # + payload - Input to a batch XXE detection operation
     # + return - OK
     remote isolated function textInputCheckXxeBatch(XxeDetectionBatchRequest payload) returns XxeDetectionBatchResponse|error {
         string  path = string `/validate/text-input/check/xxe/batch`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         XxeDetectionBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=XxeDetectionBatchResponse);
         return response;
     }
@@ -761,10 +813,11 @@ public client class Client {
     # + return - OK
     remote isolated function userAgentParse(UserAgentValidateRequest payload) returns UserAgentValidateResponse|error {
         string  path = string `/validate/useragent/parse`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         UserAgentValidateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserAgentValidateResponse);
         return response;
     }
@@ -774,10 +827,11 @@ public client class Client {
     # + return - OK
     remote isolated function vatVatLookup(VatLookupRequest payload) returns VatLookupResponse|error {
         string  path = string `/validate/vat/lookup`;
-        map<string|string[]> accHeaders = {Apikey: self.apiKeys["Apikey"] ?: ""};
+        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
+        request.setPayload(jsonBody);
         VatLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=VatLookupResponse);
         return response;
     }

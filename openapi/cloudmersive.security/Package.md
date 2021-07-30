@@ -1,4 +1,4 @@
-Connects to Cloudmersive Security API from Ballerina
+Connects to [Cloudmersive Security API](https://api.cloudmersive.com/docs/security.asp) from Ballerina
 
 ## Package overview
 
@@ -6,7 +6,7 @@ The `ballerinax/cloudmersive.security` is a [Ballerina](https://ballerina.io/) c
 
 ### Compatibility
 |                          | Version                    |
-|:------------------------:|:--------------------------:|
+|--------------------------|----------------------------|
 | Ballerina Language       | Ballerina Swan Lake Beta2  |
 | Cloudmersive API         | v1                         |
 

@@ -44,9 +44,7 @@ public type Doc record {
     DocByline? byline?;
     string? document_type?;
     DocHeadline? headline?;
-    // DocKeywords? keywords?;
     string? lead_paragraph?;
-    // DocMultimedia[]? multimedia?;
     string? news_desk?;
     string? print_page?;
     string? pub_date?;
@@ -57,7 +55,6 @@ public type Doc record {
     string? subsection_name?;
     string? type_of_material?;
     string? web_url?;
-    // string? word_count?;
 };
 
 public type InlineResponse200 record {

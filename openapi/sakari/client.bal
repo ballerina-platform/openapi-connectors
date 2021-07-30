@@ -34,7 +34,7 @@ public type ClientConfig record {
 # To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
 public isolated client class Client {
     final http:Client clientEp;
-    # The HTTP client initialization requires setting the API credentials. Please create an [ExchangeRate-API account](https://api.sakari.io)
+    # This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create a [Sakari account](https://api.sakari.io)
     # 
     # To authenticate against the API's you will need three key pieces of data
     #  - client id

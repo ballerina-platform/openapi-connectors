@@ -1,5 +1,5 @@
 ## Overview
-Ballerina connector for Sakari is connecting the Sakari SMS REST API via Ballerina language easily. It provides interfaces to easily perform the operations on resources in Sakari account.
+This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification. Ballerina connector for Sakari is connecting the Sakari SMS REST API via Ballerina language easily. It provides interfaces to easily perform the operations on resources in Sakari account.
 
 This module supports Sakari REST API v1.0.1.
  

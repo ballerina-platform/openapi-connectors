@@ -25,12 +25,6 @@ public type DocMultimedia record {
     int? width?;
 };
 
-public type DocKeywords record {
-    string? name?;
-    string? rank?;
-    string? value?;
-};
-
 public type DocByline record {
     string? organization?;
     string? original?;
@@ -44,7 +38,6 @@ public type Doc record {
     DocByline? byline?;
     string? document_type?;
     DocHeadline? headline?;
-    // DocKeywords? keywords?;
     string? lead_paragraph?;
     DocMultimedia[]? multimedia?;
     string? news_desk?;
@@ -57,7 +50,6 @@ public type Doc record {
     string? subsection_name?;
     string? type_of_material?;
     string? web_url?;
-    // string? word_count?;
 };
 
 public type InlineResponse200 record {

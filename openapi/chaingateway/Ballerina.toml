@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Chaingateway", "Ethereum", "Blockchain"]
+keywords = ["chaingateway", "blockchain", "ethereum", "freemium"]
 org = "ballerinax"
 name = "chaingateway"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

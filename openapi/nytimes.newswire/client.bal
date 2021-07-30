@@ -14,30 +14,32 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# With the Times Newswire API, you can get links and metadata for Times articles and blog posts as soon as they are published on NYTimes.com. The Times Newswire API provides an up-to-the-minute stream of published items.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [New York Times Newswire API v3.0.0](https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification.
+# With the Times Newswire API, you can get links and metadata for Times' articles as soon as they are published on NYTimes.com. 
+# The Times Newswire API provides an up-to-the-minute stream of published articles. You can filter results by source (all, nyt, inyt) and section (arts, business, ...).
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "http://api.nytimes.com/svc/news/v3") returns error? {
+    # + apiKeyConfig - Provide your API key as `api-key`. Eg: `{"api-key" : "<API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.nytimes.com/svc/news/v3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Get articles.
     #
@@ -45,7 +47,7 @@ public client class Client {
     # + return - An array of Articles
     remote isolated function getContents(string url) returns InlineResponse200|error {
         string  path = string `/content.json`;
-        map<anydata> queryParam = {"url": url, 'api\-key: self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"url": url, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
         return response;
@@ -59,7 +61,7 @@ public client class Client {
     # + return - An array of Articles
     remote isolated function filterContents(string 'source, string section, int 'limit = 20, int offset = 0) returns InlineResponse200|error {
         string  path = string `/content/${'source}/${section}.json`;
-        map<anydata> queryParam = {"limit": 'limit, "offset": offset, 'api\-key: self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"limit": 'limit, "offset": offset, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
         return response;
@@ -68,13 +70,13 @@ public client class Client {
     #
     # + 'source - Limits the set of items by originating source
     # + section - Limits the set of items by one or more sections
-    # + 'time\-period - Limits the set of items by time published, integer in number of hours
+    # + timePeriod - Limits the set of items by time published, integer in number of hours
     # + 'limit - Limits the number of results, between 1 and 20
     # + offset - Sets the starting point of the result set
     # + return - An array of Articles
-    remote isolated function filterContentsByTime(string 'source, string section, int 'time\-period, int 'limit = 20, int offset = 0) returns InlineResponse200|error {
-        string  path = string `/content/${'source}/${section}/${'time\-period}.json`;
-        map<anydata> queryParam = {"limit": 'limit, "offset": offset, 'api\-key: self.apiKeys["api-key"]};
+    remote isolated function filterContentsByTime(string 'source, string section, int timePeriod, int 'limit = 20, int offset = 0) returns InlineResponse200|error {
+        string  path = string `/content/${'source}/${section}/${timePeriod}.json`;
+        map<anydata> queryParam = {"limit": 'limit, "offset": offset, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
         return response;
@@ -85,7 +87,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

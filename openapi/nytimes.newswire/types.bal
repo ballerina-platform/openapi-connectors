@@ -31,7 +31,6 @@ public type Article record {
     string? kicker?;
     string? material_type_facet?;
     ArticleMultimedia[]? multimedia?;
-    // string? org_facet?;
     string[]? per_facet?;
     string? published_date?;
     ArticleRelatedUrls[]? related_urls?;

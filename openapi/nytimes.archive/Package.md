@@ -1,12 +1,12 @@
-Connects to New York Times Archive API from Ballerina
+Connects to [New York Times Archive API](https://developer.nytimes.com/docs/archive-product/1/overview) from Ballerina
 
 ## Package overview
 The `ballerinax/nytimes.archive` is a [Ballerina](https://ballerina.io/) connector for New York Times Archive API.
-This package provides the capability to easily access New York Times Archive API.
+This package provides the capability to access New York Times Archive API.
 
 ### Compatibility
 |                               | Version                         |
-|:-----------------------------:|:-------------------------------:|
+|-------------------------------|---------------------------------|
 | Ballerina Language            | Ballerina Swan Lake Beta2       | 
 | Archive API                   | 1.0.0                           |
 

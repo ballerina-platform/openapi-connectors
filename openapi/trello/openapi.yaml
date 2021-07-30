@@ -7,7 +7,13 @@ info:
     name: Trello
     url: https://trello.com/home
   description: >-
-    Client endpoint for Trello API
+    This is a generated connector for [Trello API v1](https://trello.com) OpenAPI specification.
+
+    Client endpoint of Trello API provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resources in a Trello account.
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+    
+    Create a [Trello account](https://trello.com) and obtain tokens following [this guide](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#authentication-and-authorization).
   license:
     name: "Trello : Terms of Service"
     url: https://trello.com/legal
@@ -13050,9 +13056,11 @@ components:
   securitySchemes:
     api_key:
       in: query
+      x-api-key-description: "Provide your API Key and token as `'key` and `token`. Eg: `{'key: trelloKey, token: trelloToken}"
       name: key
       type: apiKey
     api_token:
+      x-api-key-description: "Provide your API Key and token as `'key` and `token`. Eg: `{'key: trelloKey, token: trelloToken}"
       in: query
       name: token
       type: apiKey

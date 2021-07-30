@@ -35,11 +35,6 @@ public type MyprefsShowlistguide record {
     string value?;
 };
 
-public type OrganizationsDisplayname record {
-    # A string with a length of at least 1.  Cannot begin or end with a space.
-    string value?;
-};
-
 public type BoardsDesc record {
     # A string with a length from 0 to 16384
     string value?;
@@ -82,11 +77,6 @@ public type BoardsClosed record {
     string value?;
 };
 
-public type WebhooksCallbackurl record {
-    # A valid URL that is reachable with a HEAD request
-    string value?;
-};
-
 public type LabelnamesGreen record {
     # A string with a length from 0 to 16384
     string value?;
@@ -110,32 +100,6 @@ public type CardsChecklistCheckitemState record {
 public type ListsName record {
     # A string with a length from 1 to 16384
     string value?;
-};
-
-public type OrganizationsMembers record {
-    # An email address
-    string email?;
-    # A string with a length of at least 1.  Cannot begin or end with a space.
-    string fullName?;
-    # One of: admin, normal or observer
-    string 'type?;
-};
-
-public type Actions record {
-    # A string with a length from 1 to 16384
-    string text?;
-};
-
-public type OrganizationsName record {
-    # A string with a length of at least 3.  Only lowercase letters, underscores, and numbers are allowed.  Must be unique.
-    string value?;
-};
-
-public type Sessions record {
-    # The ID of the board you&#39;re viewing.  Boards with no viewers will not get updates about members&#39; statuses.
-    string idBoard?;
-    # One of: active, disconnected or idle
-    string status?;
 };
 
 public type MyprefsShowsidebarboardactions record {
@@ -180,16 +144,6 @@ public type Checklists record {
     string name?;
     # A position. top , bottom , or a positive number.
     string pos?;
-};
-
-public type OrganizationsWebsite record {
-    # A URL starting with http:// or https:// or null
-    string value?;
-};
-
-public type OrganizationsDesc record {
-    # A string with a length from 0 to 16384
-    string value?;
 };
 
 public type BoardsMembers record {
@@ -237,23 +191,6 @@ public type CardsStickers record {
     string zIndex?;
 };
 
-public type OrganizationsLogo record {
-    # A file
-    string file?;
-};
-
-public type SessionsStatus record {
-    # One of: active, disconnected or idle
-    string value?;
-};
-
-public type OrganizationsMemberships record {
-    # All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username
-    string member_fields?;
-    # One of: admin, normal or observer
-    string 'type?;
-};
-
 public type PrefsLocale record {
     # A string with a length from 0 to 255
     string value?;
@@ -295,15 +232,6 @@ public type CardsIdattachmentcover record {
     string value?;
 };
 
-public type TokensWebhooks record {
-    # A valid URL that is reachable with a HEAD request
-    string callbackURL?;
-    # A string with a length from 0 to 16384
-    string description?;
-    # ID of the model to be monitored
-    string idModel?;
-};
-
 public type BoardsIdorganization record {
     # A string with a length from 0 to 16384
     string value?;
@@ -314,21 +242,6 @@ public type BoardsMemberships record {
     string member_fields?;
     # One of: admin, normal or observer
     string 'type?;
-};
-
-public type PrefsAssociateddomain record {
-    # The google apps domain to link this org to.
-    string value?;
-};
-
-public type WebhooksDescription record {
-    # A string with a length from 0 to 16384
-    string value?;
-};
-
-public type PrefsBoardvisibilityrestrict record {
-    # One of: admin, none or org
-    string value?;
 };
 
 public type CardsChecklistCheckitemName record {
@@ -343,11 +256,6 @@ public type PrefsMinutesbetweensummaries record {
 
 public type MyprefsShowsidebar record {
     # True or false
-    string value?;
-};
-
-public type ActionsText record {
-    # A string with a length from 1 to 16384
     string value?;
 };
 
@@ -366,31 +274,9 @@ public type PrefsCardcovers record {
     string value?;
 };
 
-public type Organizations record {
-    # A string with a length from 0 to 16384
-    string desc?;
-    # A string with a length of at least 1.  Cannot begin or end with a space.
-    string displayName?;
-    # A string with a length from 0 to 16384
-    string name?;
-    # A URL starting with http:// or https:// or null
-    string website?;
-};
-
 public type CardsMembersvoted record {
     # The ID of the member to vote &#39;yes&#39; on the card
     string value?;
-};
-
-public type Webhooks record {
-    # True or false
-    string active?;
-    # A valid URL that is reachable with a HEAD request
-    string callbackURL?;
-    # A string with a length from 0 to 16384
-    string description?;
-    # ID of the model that should be hooked
-    string idModel?;
 };
 
 public type CardsPos record {
@@ -467,11 +353,6 @@ public type Boards record {
     string prefs_voting?;
     # True or false
     string subscribed?;
-};
-
-public type PrefsGoogleappsversion record {
-    # A number from 1 to 2
-    string value?;
 };
 
 public type CardsClosed record {
@@ -658,22 +539,12 @@ public type PrefsPermissionlevel record {
     string value?;
 };
 
-public type Notifications record {
-    # True or false
-    string unread?;
-};
-
 public type CardsChecklists record {
     # The ID of the source checklist to copy into a new checklist.
     string idChecklistSource?;
     # A string with a length from 0 to 16384
     string name?;
     # The ID of the checklist to add to the card, or null to create a new one.
-    string value?;
-};
-
-public type WebhooksActive record {
-    # True or false
     string value?;
 };
 
@@ -699,16 +570,6 @@ public type MembersCustomemoji record {
     string name?;
 };
 
-public type NotificationsUnread record {
-    # True or false
-    string value?;
-};
-
-public type OrganizationsMembersDeactivated record {
-    # True or false
-    string value?;
-};
-
 public type CardsDue record {
     # A date, or null
     string value?;
@@ -728,11 +589,6 @@ public type PrefsColorblind record {
 
 public type CardsIdlabels record {
     # The ID of the label to add
-    string value?;
-};
-
-public type PrefsExternalmembersdisabled record {
-    # True or false
     string value?;
 };
 
@@ -776,18 +632,8 @@ public type PrefsCardaging record {
     string value?;
 };
 
-public type WebhooksIdmodel record {
-    # ID of the model to be monitored
-    string value?;
-};
-
 public type BoardsSubscribed record {
     # True or false
-    string value?;
-};
-
-public type PrefsOrginviterestrict record {
-    # An email address with optional expansion tokens
     string value?;
 };
 

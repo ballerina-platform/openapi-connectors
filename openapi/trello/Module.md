@@ -1,26 +1,22 @@
 ## Overview
-Ballerina connector for Trello is connecting the Trello REST API via Ballerina language easily. It provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resouces in a Trello account.
-
-This module supports REST API v1 for Trello.
+This is a generated connector for [Trello API v1](https://trello.com) OpenAPI specification.
  
-## Configuring connector
-### Prerequisites
-- A Trello Account
+Client endpoint of Trello API provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resources in a Trello account.
 
-### Obtaining tokens
-1. Obtain your API key by logging into Trello and visiting https://trello.com/app-key
-2. Generate a token for yourself. On the same page where you found your API key (https://trello.com/app-key), click the hyperlinked `Token` word under the API key.
-3. Click `Allow` to grant your own app (identified via your API key) access to your account.
-**Note:** Tokens should be kept secret
- 
+## Prerequisites
+- Create a [Trello](https://trello.com) account
+- Obtain tokens
+    - Use [this](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#authentication-and-authorization) guide to obtain the API key and generate a token related to your account.
+
 ## Quickstart
-### Create a new Borad
-#### Step 1: Import Trello module
+
+To use the Trello connector in your Ballerina application, update the .bal file as follows:
+### Step 1 - Import connector
 First, import the ballerinax/trello module into the Ballerina project.
 ```ballerina
 import ballerinax/trello;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2 - Create a new connector instance
 You can now make the connection configuration using the API key and token.
 ```ballerina
 trello:ApiKeysConfig configuration = {
@@ -31,9 +27,9 @@ trello:ApiKeysConfig configuration = {
 };
 
 trello:Client trelloClient = check new Client(configuration);
-
 ```
-#### Step 3: Add a new Board
+### Step 3 - Invoke connector operation
+1. Add a new Board
 
 ```ballerina
 public function main() {
@@ -44,25 +40,7 @@ public function main() {
 }
 ``` 
 
-### Get a Borad
-First, import the ballerinax/trello module into the Ballerina project.
-```ballerina
-import ballerinax/trello;
-```
-#### Step 2: Configure the connection credentials.
-You can now make the connection configuration using the API key and token.
-```ballerina
-trello:ApiKeysConfig configuration = {
-    apiKeys: {
-        'key: <TRELLO_API_KEY>,
-        token: <TRELLO_API_TOKEN>
-    }
-};
-
-trello:Client trelloClient = check new Client(configuration);
-
-```
-#### Step 3: Add a new Board
+2. Get a Borad
 
 ```ballerina
 public function main() {
@@ -77,3 +55,6 @@ public function main() {
         }
     }
 }
+```
+
+3. Use `bal run` command to compile and run the Ballerina program

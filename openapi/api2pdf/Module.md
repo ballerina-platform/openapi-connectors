@@ -1,5 +1,5 @@
 ## Overview
-Ballerina connector for Api2Pdf is connecting Api2Pdf API via Ballerina language easily. With this module you can convert HTML and URLs to PDF format, Convert images and Microsoft office documents to PDF format, Combine multiple PDF files into a single PDF. More about the Api2Pdf API can be find at [Api2Pdf](https://www.api2pdf.com/)
+This is a generated connector from [Api2Pdf](https://www.api2pdf.com/) OpenAPI Specification. Ballerina connector for Api2Pdf is connecting Api2Pdf API via Ballerina language. With this module you can convert HTML and URLs to PDF format, Convert images and Microsoft office documents to PDF format, Combine multiple PDF files into a single PDF. More about the Api2Pdf API can be find at [Api2Pdf](https://www.api2pdf.com/)
  
 This module supports Api2Pdf API version 1.0.0.
 

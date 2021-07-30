@@ -30,7 +30,7 @@ public type ApiKeysConfig record {
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
-    # The HTTP client initialization requires setting the API credentials. Please create an [Api2Pdf account](https://portal.api2pdf.com/register) and obtain an API key.
+    # This is a generated connector from [Api2Pdf](https://www.api2pdf.com/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create an [Api2Pdf account](https://portal.api2pdf.com/register) and obtain an API key.
     #
     # + apiKeyConfig - API key configuration detail
     # + clientConfig - Client configuration details

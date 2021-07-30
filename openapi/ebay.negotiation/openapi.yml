@@ -8,6 +8,9 @@ info:
     name: eBay API License Agreement
     url: 'https://go.developer.ebay.com/api-license-agreement'
   version: v1.1.0
+  x-init-description: >- 
+    The HTTP client initialization requires setting the API credentials. Create a [developer account](https://developer.ebay.com/api-docs/static/creating-edp-account.html) 
+    and obtain tokens following [this guide](https://developer.ebay.com/api-docs/static/oauth-tokens.html).
 servers:
   - url: 'https://api.ebay.com{basePath}'
     description: Production
@@ -439,3 +442,4 @@ components:
           scopes:
             'https://api.ebay.com/oauth/api_scope/sell.inventory': View and manage your inventory and offers
             'https://api.ebay.com/oauth/api_scope/sell.inventory.readonly': View your inventory and offers
+            

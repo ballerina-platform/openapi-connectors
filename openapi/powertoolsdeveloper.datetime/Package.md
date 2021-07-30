@@ -1,12 +1,12 @@
-Connects to Apptigent Powertools Developer DataTime API from Ballerina
+Connects to [Apptigent Powertools Developer DataTime API](https://portal.apptigent.com/node/612) from Ballerina
 
 ## Package overview
 The `ballerinax/powertoolsdeveloper.datetime` is a [Ballerina](https://ballerina.io/) connector for Apptigent Powertools Developer DataTime API.
-This package provides the capability to easily access Apptigent Powertools Developer DataTime API.
+This package provides the capability to access Apptigent Powertools Developer DataTime API.
 
 ### Compatibility
 |                                     | Version                         |
-|:-----------------------------------:|:-------------------------------:|
+|-------------------------------------|---------------------------------|
 | Ballerina Language                  | Ballerina Swan Lake Beta2       | 
 | Apptigent Powertools Developer API  | 2021.1.01                       |
 

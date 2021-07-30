@@ -1,17 +1,17 @@
-Connects to Xero Assets from Ballerina
+Connects to [Xero Assets API](https://developer.xero.com/documentation/api/assets/assets/) from Ballerina
 
-#### Compatibility
-|                        | Version                   |
-|------------------------|---------------------------|
-|  Ballerina Language    | Ballerina Swan Lake Beta2 |
-|    Xero Assets API     |       2.9.4               |
+## Package overview
+The `ballerinax/xero.assets` is a [Ballerina](https://ballerina.io/) connector for Xero Assets. This connector can be used for a variety of purposes such as creating assets, retrieving asset valuations etc.
 
-### Package Overview
-The `ballerinax/xero.assets` is a [Ballerina](https://ballerina.io/) connector for Xero Assets.
-This package provides the capability to access Xero Assets.
-### Report Issues
+### Compatibility
+|                    | Version                   |
+|--------------------|---------------------------|
+| Ballerina Language | Ballerina Swan Lake Beta2 |
+| Xero Assets API    | 2.9.4                     |
+
+## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)
-### Useful Links
-- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+## Useful links
+- Discuss code changes of the Ballerina project via [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
 - Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
 - Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

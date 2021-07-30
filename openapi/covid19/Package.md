@@ -1,4 +1,4 @@
-Connects to Novel Covid19 API from Ballerina.
+Connects to [Novel Covid19 API](https://disease.sh/docs/) from Ballerina.
 
 ### Package Overview
 The `covid19` is a [Ballerina](https://ballerina.io/) connector for [Novel Covid19 API](https://disease.sh).  

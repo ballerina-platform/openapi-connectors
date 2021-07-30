@@ -4,12 +4,17 @@ servers:
 info:
   version: 3.0.0
   title: Novel Covid19 API - Disease.sh - An open API for disease-related statistics
-  description: Client endpoint for Novel Covid19 API - disease.sh
+  description: >
+    This is a generated connector from [Novel Covid19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
+
+    Ballerina connector for Covid19 provides easy access to latest Covid19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
   license:
     name: GNU V3
     url: 'https://github.com/disease-sh/API/blob/master/LICENSE'
   x-display:
     label: Covid19 Client
+  x-init-description: |
+    The connector initialization doesn't require setting the API credentials.
 tags:
   - name: 'COVID-19: Worldometers'
     description: '(COVID-19 data sourced from Worldometers, updated every 10 minutes)'
@@ -26,42 +31,27 @@ paths:
         label: "Global Status"
       parameters:
         - name: yesterday
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Yesterday"
         - name: twoDaysAgo
-          description: Queries data reported two days ago
+          description: Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Two Days Ago"
         - name: allowNull
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           x-display: 
             label: "Allow Null"
-      description: 'Get global COVID-19 totals for today, yesterday and two days ago'
+      summary: 'Get global COVID-19 totals for today, yesterday and two days ago.'
       responses:
         '200':
           description: Global Covid-19 status
@@ -86,30 +76,20 @@ paths:
           x-display: 
             label: "State Name"
         - name: yesterday
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Yesterday"
         - name: allowNull
           in: query
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Allow Null"
-      description: Get COVID-19 totals for specific US State(s)
+      summary: Get COVID-19 totals for specific US State(s).
       responses:
         '200':
           description: Covid-19 status of the given US state
@@ -135,52 +115,34 @@ paths:
             label: "Continent"
         - name: yesterday
           in: query
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Yesterday"
         - name: twoDaysAgo
           in: query
-          description: Queries data reported two days ago
+          description: Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Two Days Ago"
         - name: strict
           in: query
-          description: Setting to false gives you the ability to fuzzy search continents (i.e. Oman vs. rOMANia)
+          description: Setting to `false` gives you the ability to fuzzy search continents (i.e. Oman vs. rOMANia). Default is `true`. 
           schema:
-            enum:
-              - 'true'
-              - 'false'
             default: 'true'
             type: string
           x-display: 
             label: "Strict"
         - name: allowNull
           in: query
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Allow Null"
-      description: Get COVID-19 totals for a specific continent
+      summary: Get COVID-19 totals for a specific continent.
       responses:
         '200':
           description: Covid-19 status of the given continent
@@ -206,52 +168,34 @@ paths:
             label: "Country"
         - name: yesterday
           in: query
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'            
             type: string
           x-display: 
             label: "Yesterday"
         - name: twoDaysAgo
           in: query
-          description: Queries data reported two days ago
-          schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'           
+          description: Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
+          schema:           
             type: string
           x-display: 
             label: "Two Days Ago"
         - name: strict
           in: query
-          description: Setting to false gives you the ability to fuzzy search countries (i.e. Oman vs. rOMANia)
+          description: Setting to false gives you the ability to fuzzy search countries (i.e. Oman vs. rOMANia). Default is `true`. 
           schema:
-            enum:
-              - 'true'
-              - 'false'
             default: 'true'
             type: string
           x-display: 
             label: "Strict"
         - name: allowNull
           in: query
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Allow Null"
-      description: Get COVID-19 totals for a specific country
+      summary: Get COVID-19 totals for a specific country.
       responses:
         '200':
           description: Covid-19 status of the given country
@@ -274,7 +218,7 @@ paths:
             type: string
           x-display: 
             label: "Number Of Days"
-      description: Get global accumulated COVID-19 time series data
+      summary: Get global accumulated COVID-19 time series data.
       responses:
         '200':
           description: Global accumulated COVID-19 time series data
@@ -306,7 +250,7 @@ paths:
             default: 30
           x-display: 
             label: "Number Of Days"
-      description: Get COVID-19 time series data for a specific country
+      summary: Get COVID-19 time series data for a specific country.
       responses:
         '200':
           description: COVID-19 related time series for the given country
@@ -346,7 +290,7 @@ paths:
             default: 30
           x-display: 
             label: "Number of Days"
-      description: Get COVID-19 time series data for a specific province in a country
+      summary: Get COVID-19 time series data for a specific province in a country.
       responses:
         '200':
           description: COVID-19 related time series for the given province
@@ -361,7 +305,7 @@ paths:
       operationId: getVaccineTrialData
       x-display: 
           label: "Vaccine Trial Data"
-      description: 'Get vaccine trial data from RAPS (Regulatory Affairs Professional Society).'
+      summary: 'Get vaccine trial data from RAPS (Regulatory Affairs Professional Society).'
       responses:
         '200':
           description: Vaccine trial data
@@ -385,7 +329,7 @@ paths:
             default: 30
           x-display: 
             label: "Number of Days"
-      description: 'Get total global COVID-19 Vaccine doses administered.'
+      summary: 'Get total global COVID-19 Vaccine doses administered.'
       responses:
         '200':
           description: Vaccine coverage data
@@ -421,7 +365,7 @@ paths:
             default: 30
           x-display: 
             label: "Last Days"
-      description: 'Get COVID-19 vaccine doses administered for a country that has reported vaccination rollout.'
+      summary: 'Get COVID-19 vaccine doses administered for a country that has reported vaccination rollout.'
       responses:
         '200':
           description: Vaccine coverage data of the given country

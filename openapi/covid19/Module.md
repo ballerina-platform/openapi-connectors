@@ -1,9 +1,9 @@
 ## Overview
 
-Ballerina connector for Covid-19 consumes the data exposed in https://disease.sh. It provides easy access to latest Covid-19 related data across the world
- 
-This module supports Novel Covid-19 API version 3.0.0. 
- 
+This is a generated connector from [Novel Covid19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
+
+Ballerina connector for Covid19 provides easy access to latest Covid19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
+  
 ## Quickstart
 
 ### Step 1: Import covid19 module

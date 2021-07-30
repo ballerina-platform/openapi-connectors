@@ -19,7 +19,7 @@ import ballerina/http;
 # This is the public REST API for ExchangeRate-API. Fetch the latest currency exchange rates via API.
 public isolated client class Client {
     final http:Client clientEp;
-    # The HTTP client initialization requires setting the API credentials. Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key.
+    # This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key.
     #
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL

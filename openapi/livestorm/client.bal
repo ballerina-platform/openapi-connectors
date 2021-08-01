@@ -14,100 +14,35 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
-# Please visit [here](https://app.livestorm.co) and obtain an `API Key` in the settings.
+# Please visit [here](https://app.livestorm.co) and obtain an `API key` in the settings.
 #
-# + apiKeys - Provide your API Key as `Authorization`. Eg: `{"Authorization" : "<Your API Key>"}`  
+# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}` 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# Fetch List
-public type ListEventsResponse record {
-    # Event Data
-    Event[] data;
-    # Metadata
-    Meta meta?;
-};
-
-# Request payload to create event
-public type CreateEventRequest record {
-    # Event post data
-    EventData data?;
-};
-
-# Create event response
-public type CreateEventResponse record {
-    # Event response
-    Event data?;
-};
-
-# Get detail
-public type GetEventByIDResponse record {
-    # Event response
-    Event data?;
-};
-
-# Fetch List
-public type ListSessionByEventResponse record {
-    # Data
-    anydata[] data;
-    # Metadata
-    Meta meta?;
-};
-
-# Request payload to add event session
-public type CreateEventSessionRequest record {
-    # Add Session data
-    SessionData data?;
-};
-
-# Create event session response
-public type CreateEventSessionResponse record {
-    # Event session
-    Session data?;
-};
-
-# Fetch List
-public type ListSessionPeopleResponse record {
-    # Data
-    anydata[] data;
-    # Metadata
-    Meta meta?;
-};
-
-# Request payload to add participant to session
-public type RegisterPeopleForSessionRequest record {
-    # Add People data
-    PeopleData data?;
-};
-
-# Register participant response
-public type RegisterPeopleForSessionResponse record {
-    # Event session
-    People data?;
-};
-
 # Client endpoint for Livestorm Public API
-#
-# + clientEp - Connector http endpoint
+# The Livestorm API is organized around REST principles.
+# In addition, all request and response bodies, including errors, are encoded in JSON format.
 @display {label: "Livestorm Public API Client"}
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Initializes the Livestorm client endpoint.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # The connector initialization requires setting the API credentials. 
+    # Create an [Livestorm Account](https://app.livestorm.co/#/signup) and obtain tokens by navigating to `Account settings`->`Integration`->`Public API`->`Generate a token`.
     #
-    # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
+    # + apiKeyConfig - API key configuration detail
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return -  Error at failure of client initialization
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.livestorm.co/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # List Events
     #
@@ -117,13 +52,13 @@ public client class Client {
     # + filterEveryoneCanSpeak - Filter events by everyone can speak
     # + return - Fetch List
     @display {label: "Get List Of Events"}
-    remote isolated function listEvents(@display {label: "Page Number"} string? pageNumber = (), @display {label: "Page Size"} string? pageSize = (), @display {label: "Title Filter"} string? filterTitle = (), @display {label: "Filter By Everyone Can Speak Or Not"} string? filterEveryoneCanSpeak = ()) returns ListEventsResponse|error {
+    remote isolated function listEvents(@display {label: "Page Number"} string? pageNumber = (), @display {label: "Page Size"} string? pageSize = (), @display {label: "Title Filter"} string? filterTitle = (), @display {label: "Filter By Everyone Can Speak Or Not"} string? filterEveryoneCanSpeak = ()) returns InlineResponse200|error {
         string  path = string `/events`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterTitle": filterTitle, "filterEveryoneCanSpeak": filterEveryoneCanSpeak};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ListEventsResponse response = check self.clientEp-> get(path, accHeaders, targetType = ListEventsResponse);
+        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
         return response;
     }
     # Create a new event
@@ -131,14 +66,14 @@ public client class Client {
     # + payload - Request payload to create event
     # + return - Create event response
     @display {label: "Create Event"}
-    remote isolated function createEvent(CreateEventRequest payload) returns CreateEventResponse|error {
+    remote isolated function createEvent(Body payload) returns InlineResponse201|error {
         string  path = string `/events`;
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        CreateEventResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CreateEventResponse);
+        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
         return response;
     }
     # Retrieve an Event
@@ -146,11 +81,11 @@ public client class Client {
     # + id - Event ID
     # + return - Get detail
     @display {label: "Get Event By Event ID"}
-    remote isolated function getEventByID(@display {label: "Event ID"} string id) returns GetEventByIDResponse|error {
+    remote isolated function getEventByID(@display {label: "Event ID"} string id) returns InlineResponse2001|error {
         string  path = string `/events/${id}`;
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetEventByIDResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetEventByIDResponse);
+        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
         return response;
     }
     # List Sessions for an Event
@@ -163,13 +98,13 @@ public client class Client {
     # + filterDateTo - Filter Sessions which â€˜estimated_started_atâ€™ attribute ends with the given date (expressed as a Unix timestamp or an ISO 8601 date).
     # + include - Include Related Data
     # + return - Fetch List
-    remote isolated function listSessionByEvent(string id, string? pageNumber = (), string? pageSize = (), string? filterStatus = (), string? filterDateFrom = (), string? filterDateTo = (), string[]? include = ()) returns ListSessionByEventResponse|error {
+    remote isolated function listSessionByEvent(string id, string? pageNumber = (), string? pageSize = (), string? filterStatus = (), string? filterDateFrom = (), string? filterDateTo = (), string[]? include = ()) returns InlineResponse2002|error {
         string  path = string `/events/${id}/sessions`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterStatus": filterStatus, "filterDateFrom": filterDateFrom, "filterDateTo": filterDateTo, "include": include};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ListSessionByEventResponse response = check self.clientEp-> get(path, accHeaders, targetType = ListSessionByEventResponse);
+        InlineResponse2002 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2002);
         return response;
     }
     # Create a new event session
@@ -177,14 +112,14 @@ public client class Client {
     # + id - Event ID
     # + payload - Request payload to add event session
     # + return - Create event session response
-    remote isolated function createEventSession(string id, CreateEventSessionRequest payload) returns CreateEventSessionResponse|error {
+    remote isolated function createEventSession(string id, Body1 payload) returns InlineResponse2011|error {
         string  path = string `/events/${id}/sessions`;
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        CreateEventSessionResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CreateEventSessionResponse);
+        InlineResponse2011 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse2011);
         return response;
     }
     # List People for a Session
@@ -197,13 +132,13 @@ public client class Client {
     # + filterEmail - Filter People by their email (exact match)
     # + include - Include Related Data
     # + return - Fetch List
-    remote isolated function listSessionPeople(string id, string? pageNumber = (), string? pageSize = (), string? filterRole = (), boolean? filterAttended = (), string? filterEmail = (), string[]? include = ()) returns ListSessionPeopleResponse|error {
+    remote isolated function listSessionPeople(string id, string? pageNumber = (), string? pageSize = (), string? filterRole = (), boolean? filterAttended = (), string? filterEmail = (), string[]? include = ()) returns InlineResponse2003|error {
         string  path = string `/sessions/${id}/people`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterRole": filterRole, "filterAttended": filterAttended, "filterEmail": filterEmail, "include": include};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ListSessionPeopleResponse response = check self.clientEp-> get(path, accHeaders, targetType = ListSessionPeopleResponse);
+        InlineResponse2003 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2003);
         return response;
     }
     # Register a participant to a Session
@@ -211,14 +146,14 @@ public client class Client {
     # + id - Session ID
     # + payload - Request payload to add participant to session
     # + return - Register participant response
-    remote isolated function registerPeopleForSession(string id, RegisterPeopleForSessionRequest payload) returns RegisterPeopleForSessionResponse|error {
+    remote isolated function registerPeopleForSession(string id, Body2 payload) returns InlineResponse2012|error {
         string  path = string `/sessions/${id}/people`;
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        RegisterPeopleForSessionResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=RegisterPeopleForSessionResponse);
+        InlineResponse2012 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse2012);
         return response;
     }
 }

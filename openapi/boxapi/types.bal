@@ -19,7 +19,7 @@ public type FileVersionLegalHold record {
     # The unique identifier for this file version legal hold
     string id?;
     # `file_version_legal_hold`
-    string 'type?;
+    FileVersionLegalHoldType 'type?;
     # A mini representation of a file version, used when nested within another resource.
     FileversionMini file_version?;
     # A mini representation of a file, used when nested under another resource.
@@ -33,7 +33,7 @@ public type FileVersionLegalHold record {
 # A request to refresh an Access Token. Use this API to refresh an expired Access Token using a valid Refresh Token.
 public type Postoauth2tokenRefreshaccesstoken record {
     # The type of request being made, in this case a refresh request.
-    string grant_type;
+    Postoauth2tokenRefreshaccesstokenGrantType grant_type;
     # The client ID of the application requesting to refresh the token.
     string client_id;
     # The client secret of the application requesting to refresh the token.
@@ -51,7 +51,7 @@ public type FilesfileIdcopyParent record {
 # The optional file version to assign the cards to.
 public type SkillInvocationsskillIdFileVersion record {
     # `file_version`
-    string 'type?;
+    SkillInvocationsskillIdFileVersionType 'type?;
     # The ID of the file version
     string id?;
 };
@@ -59,7 +59,7 @@ public type SkillInvocationsskillIdFileVersion record {
 # Sets the status of the skill. This can be used to show a message to the user while the Skill is processing the data, or if it was not able to process the file.
 public type StatusskillcardStatus record {
     # A code for the status of this Skill invocation. By default each of these will have their own accompanied messages. These can be adjusted by setting the `message` value on this object.
-    string code;
+    StatusskillcardStatusCode code;
     # A custom message that can be provided with this status. This will be shown in the web app to the end user.
     string message?;
 };
@@ -67,7 +67,7 @@ public type StatusskillcardStatus record {
 # Custom tracking code for a user.
 public type UserfullTrackingCodes record {
     # `tracking_code`
-    string 'type?;
+    UserfullTrackingCodesType 'type?;
     # The name of the tracking code, which must be preconfigured in the Admin Console
     string name?;
     # The value of the tracking code
@@ -77,7 +77,7 @@ public type UserfullTrackingCodes record {
 # The item to attach the comment to.
 public type CollaborationsItem record {
     # The type of the item that this collaboration will be granted access to
-    string 'type;
+    CollaborationsItemType 'type;
     # The ID of the item that will be granted access to
     string id;
 };
@@ -95,7 +95,7 @@ public type CollaborationAllowlistUser record {
     # The unique identifier for this enterprise.
     string id?;
     # `enterprise`
-    string 'type?;
+    CollaborationAllowlistUserType 'type?;
     # The name of the enterprise
     string name?;
 };
@@ -111,7 +111,7 @@ public type StoragepolicyMini record {
     # The unique identifier for this storage policy
     string id?;
     # `storage_policy`
-    string 'type?;
+    StoragepolicyMiniType 'type?;
 };
 
 # The error that occurs when a file can not be created due to a conflict.
@@ -125,9 +125,9 @@ public type TranscriptSkillCard record {
     # The optional date and time this card was created at.
     string created_at?;
     # `skill_card`
-    string 'type;
+    TranscriptSkillCardType 'type;
     # `transcript`
-    string skill_card_type;
+    TranscriptSkillCardSkillCardType skill_card_type;
     # The title of the card.
     SkillcardSkillCardTitle skill_card_title?;
     # The service that applied this metadata.
@@ -163,7 +163,7 @@ public type TermsOfServices record {
 # The user to set the status for.
 public type TermsOfServiceUserStatusesUser record {
     # The type of object.
-    string 'type;
+    TermsOfServiceUserStatusesUserType 'type;
     # The ID of user
     string id;
 };
@@ -177,7 +177,7 @@ public type FileConflict record {
 # A request for a new OAuth 2.0 token
 public type PostOAuth2Token record {
     # The type of request being made, either using a client-side obtained authorization code, a refresh token, a JWT assertion, client credentials grant or another access token for the purpose of downscoping a token.
-    string grant_type;
+    PostOAuth2TokenGrantType grant_type;
     # The Client ID of the application requesting an access token.  Used in combination with `authorization_code`, `client_credentials`, or `urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.
     string client_id?;
     # The client secret of the application requesting an access token.  Used in combination with `authorization_code`, `client_credentials`, or `urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.
@@ -191,17 +191,17 @@ public type PostOAuth2Token record {
     # The token to exchange for a downscoped token. This can be a regular access token, a JWT assertion, or an app token.  Used in combination with `urn:ietf:params:oauth:grant-type:token-exchange` as the `grant_type`.
     string subject_token?;
     # The type of `subject_token` passed in.  Used in combination with `urn:ietf:params:oauth:grant-type:token-exchange` as the `grant_type`.
-    string subject_token_type?;
+    PostOAuth2TokenSubjectTokenType subject_token_type?;
     # The token used to create an annotator token. This is a JWT assertion.  Used in combination with `urn:ietf:params:oauth:grant-type:token-exchange` as the `grant_type`.
     string actor_token?;
     # The type of `actor_token` passed in.  Used in combination with `urn:ietf:params:oauth:grant-type:token-exchange` as the `grant_type`.
-    string actor_token_type?;
+    PostOAuth2TokenActorTokenType actor_token_type?;
     # The space-delimited list of scopes that you want apply to the new access token.  The `subject_token` will need to have all of these scopes or the call will error with **401 Unauthorized**.
     string scope?;
     # Full URL for the file that the token should be generated for.
     string 'resource?;
     # Used in combination with `client_credentials` as the `grant_type`.
-    string box_subject_type?;
+    PostOAuth2TokenBoxSubjectType box_subject_type?;
     # Used in combination with `client_credentials` as the `grant_type`. Value is determined by `box_subject_type`. If `user` use user ID and if `enterprise` use enterprise ID.
     string box_subject_id?;
     # Full URL of the shared link on the file or folder that the token should be generated for.
@@ -211,7 +211,7 @@ public type PostOAuth2Token record {
 # The watermark to imprint on the file
 public type FilesfileIdwatermarkWatermark record {
     # The type of watermark to apply.  Currently only supports one option.
-    string imprint;
+    FilesfileIdwatermarkWatermarkImprint imprint;
 };
 
 # A list of email aliases
@@ -233,7 +233,7 @@ public type WebhooksTarget record {
     # The ID of the item to trigger a webhook
     string id?;
     # The type of item to trigger a webhook
-    string 'type?;
+    WebhooksTargetType 'type?;
 };
 
 # A file or folder for which a conflict was encountered, This object provides the type and identifier of the original item, as well as a mapping between its original name and it's new name as it will appear in the archive.
@@ -241,7 +241,7 @@ public type NameconflictInner record {
     # The identifier of the item
     string id?;
     # The type of this item
-    string 'type?;
+    NameconflictInnerType 'type?;
     # The original name of this item
     string original_name?;
     # The new name of this item as it will appear in the downloaded `zip` archive.
@@ -275,7 +275,7 @@ public type InvitesActionableBy record {
 # A relation between a file and the scopes for which the file can be accessed
 public type FileScope record {
     # The file scopes for the file access
-    string scope?;
+    FileScopeScope scope?;
     # A mini representation of a file, used when nested under another resource.
     FileMini 'object?;
 };
@@ -299,9 +299,9 @@ public type TimelineSkillCard record {
     # The optional date and time this card was created at.
     string created_at?;
     # `skill_card`
-    string 'type;
+    TimelineSkillCardType 'type;
     # `timeline`
-    string skill_card_type;
+    TimelineSkillCardSkillCardType skill_card_type;
     # The title of the card.
     TimelineskillcardSkillCardTitle skill_card_title?;
     # The service that applied this metadata.
@@ -317,7 +317,7 @@ public type TimelineSkillCard record {
 # The item to assign the policy to
 public type LegalHoldPolicyAssignmentsAssignTo record {
     # The type of item to assign the policy to
-    string 'type;
+    LegalHoldPolicyAssignmentsAssignToType 'type;
     # The ID of item to assign the policy to
     string id;
 };
@@ -341,7 +341,7 @@ public type CollaborationsOrder record {
     # The field to order by
     string 'by?;
     # The direction to order by, either ascending or descending
-    string direction?;
+    CollaborationsOrderDirection direction?;
 };
 
 # A metadata template that holds the security classifications defined by an enterprise.
@@ -349,13 +349,13 @@ public type ClassificationTemplate record {
     # The ID of the classification template.
     string id?;
     # `metadata_template`
-    string 'type?;
+    ClassificationTemplateType 'type?;
     # The scope of the classification template. This is in the format `enterprise_{id}` where the `id` is the enterprise ID.
     string scope?;
     # `securityClassification-6VMVochwUWo`
-    string templateKey?;
+    ClassificationTemplateTemplateKey templateKey?;
     # The name of this template as shown in web and mobile interfaces.
-    string displayName?;
+    ClassificationTemplateDisplayName displayName?;
     # This template is always available in web and mobile interfaces.
     boolean hidden?;
     # Classifications are always copied along when the file or folder is copied.
@@ -391,7 +391,7 @@ public type ClassificationtemplateOptions record {
 # Defines who can download a file.
 public type FilesfileIdPermissions record {
     # Defines who is allowed to download this file. The possible values are either `open` for everyone or `company` for the other members of the user's enterprise.  This setting overrides the download permissions that are normally part of the `role` of a collaboration. When set to `company`, this essentially removes the download option for external users with `viewer` or `editor` a roles.
-    string can_download?;
+    FilesfileIdPermissionsCanDownload can_download?;
 };
 
 # A list of allowed domains for collaboration.
@@ -415,7 +415,7 @@ public type Event record {
     # A mini representation of a user, as can be returned when nested within other resources.
     UserMini created_by?;
     # An event type that can trigger an event
-    string event_type?;
+    EventEventType event_type?;
     # The session of the user that performed the action. Not all events will populate this attribute.
     string session_id?;
     User|EventSource 'source?;
@@ -435,7 +435,7 @@ public type Webhook record {
     # The unique identifier for this webhook.
     string id?;
     # `webhook`
-    string 'type?;
+    WebhookType 'type?;
     # The item that will trigger the webhook
     WebhooksTarget target?;
     # A mini representation of a user, as can be returned when nested within other resources.
@@ -465,7 +465,7 @@ public type Collaborations record {
 # The settings for the shared link to create on the file.  Use an empty object (`{}`) to use the default settings for shared links.
 public type FilesfileIdaddSharedLinkSharedLink record {
     # The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the file (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
-    string access?;
+    FilesfileIdaddSharedLinkSharedLinkAccess access?;
     # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
     string password?;
     # Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`.  Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.
@@ -479,7 +479,7 @@ public type FilesfileIdaddSharedLinkSharedLink record {
 # The invocation of this service, used to track which instance of a service applied the metadata.
 public type SkillcardInvocation record {
     # `skill_invocation`
-    string 'type;
+    SkillcardInvocationType 'type;
     # A custom identifier that represent the instance of the service that applied this metadata. For example, if your `image-recognition-service` runs on multiple nodes, this field can be used to identify the ID of the node that was used to apply the metadata.
     string id;
 };
@@ -589,7 +589,7 @@ public type FoldersfolderIdParent record {
 # The terms of service to set the status for.
 public type TermsOfServiceUserStatusesTos record {
     # The type of object.
-    string 'type;
+    TermsOfServiceUserStatusesTosType 'type;
     # The ID of terms of service
     string id;
 };
@@ -599,7 +599,7 @@ public type TaskAssignment record {
     # The unique identifier for this task assignment
     string id?;
     # `task_assignment`
-    string 'type?;
+    TaskAssignmentType 'type?;
     # A mini representation of a file, used when nested under another resource.
     FileMini item?;
     # A mini representation of a user, as can be returned when nested within other resources.
@@ -613,7 +613,7 @@ public type TaskAssignment record {
     # The date at which the assigned user was reminded of this task assignment.
     string reminded_at?;
     # The current state of the assignment. The available states depend on the `action` value of the task object.
-    string resolution_state?;
+    TaskAssignmentResolutionState resolution_state?;
     # A mini representation of a user, as can be returned when nested within other resources.
     UserMini assigned_by?;
 };
@@ -661,7 +661,7 @@ public type TaskAssignments record {
 # The source file or folder that triggered an event in the event stream.
 public type EventSource record {
     # The type of the item that the event represents. Can be `file` or `folder`. 
-    string item_type?;
+    EventSourceItemType item_type?;
     # The unique identifier that represents the item. 
     string item_id?;
     # The name of the item. 
@@ -677,7 +677,7 @@ public type UserBase record {
     # The unique identifier for this user
     string id?;
     # `user`
-    string 'type?;
+    UserBaseType 'type?;
 };
 
 # A standard representation of a file request, as returned from any file request API endpoints by default.
@@ -685,13 +685,13 @@ public type FileRequest record {
     # The unique identifier for this file request.
     string id?;
     # `file-request`
-    string 'type?;
+    FileRequestType 'type?;
     # The title of file request. This is shown in the Box UI to users uploading files.  This defaults to title of the file request that was copied to create this file request.
     string title?;
     # The optional description of this file request. This is shown in the Box UI to users uploading files.  This defaults to description of the file request that was copied to create this file request.
     string? description?;
     # The status of the file request. This defaults to `active`.  When the status is set to `inactive`, the file request will no longer accept new submissions, and any visitor to the file request URL will receive a `HTTP 404` status code.  This defaults to status of file request that was copied to create this file request.
-    string status?;
+    FileRequestStatus status?;
     # Whether a file request submitter is required to provide their email address.  When this setting is set to true, the Box UI will show an email field on the file request form.  This defaults to setting of file request that was copied to create this file request.
     boolean is_email_required?;
     # Whether a file request submitter is required to provide a description of the files they are submitting.  When this setting is set to true, the Box UI will show a description field on the file request form.  This defaults to setting of file request that was copied to create this file request.
@@ -717,7 +717,7 @@ public type FileRequest record {
 # The settings for the shared link to update.
 public type FilesfileIdupdateSharedLinkSharedLink record {
     # The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
-    string access?;
+    FilesfileIdupdateSharedLinkSharedLinkAccess access?;
     # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
     string password?;
     # Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`.  Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.
@@ -731,7 +731,7 @@ public type FilesfileIdupdateSharedLinkSharedLink record {
 # The storage policy to assign to the user or enterprise
 public type StoragePolicyAssignmentsStoragePolicy record {
     # The type to assign.
-    string 'type;
+    StoragePolicyAssignmentsStoragePolicyType 'type;
     # The ID of the storage policy to assign.
     string id;
 };
@@ -755,7 +755,7 @@ public type ZipDownloadStatus record {
     # The number of folders that have been skipped as they could not be downloaded. In many cases this is due to permission issues that have surfaced between the creation of the request for the archive and the archive being downloaded.
     int skipped_folder_count?;
     # The state of the archive being downloaded.
-    string state?;
+    ZipDownloadStatusState state?;
 };
 
 # Session endpoints.
@@ -785,7 +785,7 @@ public type ClassificationtemplateStaticconfigClassification record {
 # The payload of a Box skill as sent to a skill's `invocation_url`.
 public type SkillInvocation record {
     # `skill_invocation`
-    string 'type?;
+    SkillInvocationType 'type?;
     # Unique identifier for the invocation request.
     string id?;
     # An object representing a skill
@@ -810,7 +810,7 @@ public type GroupBase record {
     # The unique identifier for this object
     string id?;
     # `group`
-    string 'type?;
+    GroupBaseType 'type?;
 };
 
 public type ConflicterrorContextInfo record {
@@ -823,7 +823,7 @@ public type TasksItem record {
     # The ID of the file
     string id;
     # `file`
-    string 'type;
+    TasksItemType 'type;
 };
 
 # The metadata to set for this skill. This is a list of Box Skills cards. These cards will overwrite any existing Box skill cards on the file.
@@ -867,7 +867,7 @@ public type TaskAssignmentsTask record {
     # The ID of the task
     string id;
     # The type of the item to assign.
-    string 'type;
+    TaskAssignmentsTaskType 'type;
 };
 
 # The retention policy assignment endpoint provides a way for admins to apply a retention policy on a per-folder basis, or place a blanket policy over the entire enterprise.
@@ -875,7 +875,7 @@ public type RetentionPolicyAssignment record {
     # The unique identifier for this retention policy assignment
     string id?;
     # `retention_policy_assignment`
-    string 'type?;
+    RetentionPolicyAssignmentType 'type?;
     # A mini representation of a retention policy, used when nested within another resource.
     RetentionpolicyMini retention_policy?;
     # The bare basic reference for an object
@@ -895,7 +895,7 @@ public type RetentionPolicy record {
 # The user or group to give access to the item.
 public type CollaborationsAccessibleBy record {
     # The type of collaborator to invite.
-    string 'type;
+    CollaborationsAccessibleByType 'type;
     # The ID of the user or group.  Alternatively, use `login` to specify a user by email address.
     string id?;
     # The email address of the user to grant access to the item.  Alternatively, use `id` to specify a user by user ID.
@@ -915,7 +915,7 @@ public type Skill record {
     # The unique identifier for this skill
     string id?;
     # `skill`
-    string 'type?;
+    SkillType 'type?;
     # The name of the skill
     string name?;
     # The client ID of the application
@@ -927,9 +927,9 @@ public type SkillCard record {
     # The optional date and time this card was created at.
     string created_at?;
     # `skill_card`
-    string 'type;
+    SkillCardType 'type;
     # The type of card to add to the file.
-    string skill_card_type;
+    SkillCardSkillCardType skill_card_type;
     # The title of the card.
     SkillcardSkillCardTitle skill_card_title?;
     # Used with a card of type `status` to set the status of the skill. This can be used to show a message to the user while the Skill is processing the data.
@@ -949,7 +949,7 @@ public type LegalholdpolicyMini record {
     # The unique identifier for this legal hold policy
     string id?;
     # `legal_hold_policy`
-    string 'type?;
+    LegalholdpolicyMiniType 'type?;
 };
 
 # The folder to apply the lock to.
@@ -983,7 +983,7 @@ public type WebhookInvocation record {
     # The unique identifier for this webhook invocation
     string id?;
     # `webhook_event`
-    string 'type?;
+    WebhookInvocationType 'type?;
     # Represents a configured webhook.
     Webhook webhook?;
     # A mini representation of a user, as can be returned when nested within other resources.
@@ -991,7 +991,7 @@ public type WebhookInvocation record {
     # A timestamp identifying the time that the webhook event was triggered.
     string created_at?;
     # The event name that triggered this webhook
-    string trigger?;
+    WebhookInvocationTrigger trigger?;
     File|Folder 'source?;
 };
 
@@ -1005,13 +1005,13 @@ public type GroupMembership record {
     # The unique identifier for this group membership
     string id?;
     # `group_membership`
-    string 'type?;
+    GroupMembershipType 'type?;
     # A mini representation of a user, as can be returned when nested within other resources.
     UserMini user?;
     # Mini representation of a group, including id and name of group.
     GroupMini 'group?;
     # The role of the user in the group.
-    string role?;
+    GroupMembershipRole role?;
     # The time this membership was created.
     string created_at?;
     # The time this membership was last modified.
@@ -1027,7 +1027,7 @@ public type InvitesEnterprise record {
 # A user that is notified of an event.
 public type RetentionPoliciesCustomNotificationRecipients record {
     # The type of item to notify
-    string 'type?;
+    RetentionPoliciesCustomNotificationRecipientsType 'type?;
     # The id of the user to notify
     string id?;
     # The name of the user to notify
@@ -1040,7 +1040,7 @@ public type Body55 record {
     # The domain to add to the list of allowed domains.
     string domain;
     # The direction in which to allow collaborations.
-    string direction;
+    Body55Direction direction;
 };
 
 public type Body54 record {
@@ -1078,7 +1078,7 @@ public type FileRequestUpdateRequest record {
     # An optional new description for the file request. This can be used to change the description of the file request.  This will default to the value on the existing file request.
     string description?;
     # An optional new status of the file request.  When the status is set to `inactive`, the file request will no longer accept new submissions, and any visitor to the file request URL will receive a `HTTP 404` status code.  This will default to the value on the existing file request.
-    string status?;
+    FileRequestUpdateRequestStatus status?;
     # Whether a file request submitter is required to provide their email address.  When this setting is set to true, the Box UI will show an email field on the file request form.  This will default to the value on the existing file request.
     boolean is_email_required?;
     # Whether a file request submitter is required to provide a description of the files they are submitting.  When this setting is set to true, the Box UI will show a description field on the file request form.  This will default to the value on the existing file request.
@@ -1090,7 +1090,7 @@ public type FileRequestUpdateRequest record {
 # An item to add to the `zip` archive. This can be a file or a folder.
 public type ZipdownloadrequestItems record {
     # The type of the item to add to the archive.
-    string 'type;
+    ZipdownloadrequestItemsType 'type;
     # The identifier of the item to add to the archive. When this item is a folder then this can not be the root folder with ID `0`.
     string id;
 };
@@ -1114,13 +1114,13 @@ public type FolderBase record {
     # The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.
     string? etag?;
     # `folder`
-    string 'type?;
+    FolderBaseType 'type?;
 };
 
 # The item to assign the policy to
 public type RetentionPolicyAssignmentsAssignTo record {
     # The type of item to assign the policy to.
-    string 'type;
+    RetentionPolicyAssignmentsAssignToType 'type;
     # The ID of item to assign the policy to.  Set to `null` or omit when `type` is set to `enterprise`.
     string id;
 };
@@ -1130,7 +1130,7 @@ public type WeblinkBase record {
     # The unique identifier for this web link
     string id?;
     # `web_link`
-    string 'type?;
+    WeblinkBaseType 'type?;
     # The entity tag of this web link. Used with `If-Match` headers.
     string etag?;
 };
@@ -1142,7 +1142,7 @@ public type SkillinvocationTokenRead record {
     # The time in seconds in seconds by which this token will expire.
     int expires_in?;
     # The type of access token returned.
-    string token_type?;
+    SkillinvocationTokenReadTokenType token_type?;
     # The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.
     FileScope[] restricted_to?;
 };
@@ -1156,7 +1156,7 @@ public type UserMini record {
 # The watermark to imprint on the folder
 public type FoldersfolderIdwatermarkWatermark record {
     # The type of watermark to apply.  Currently only supports one option.
-    string imprint;
+    FoldersfolderIdwatermarkWatermarkImprint imprint;
 };
 
 # The association between a Terms of Service and a user
@@ -1164,7 +1164,7 @@ public type TermsOfServiceUserStatus record {
     # The unique identifier for this terms of service user status
     string id?;
     # `terms_of_service_user_status`
-    string 'type?;
+    TermsOfServiceUserStatusType 'type?;
     # The root-level record that is supposed to represent a single Terms of Service.
     TermsofserviceMini tos?;
     # A mini representation of a user, as can be returned when nested within other resources.
@@ -1189,9 +1189,9 @@ public type Body45 record {
     # The name for the retention policy
     string policy_name;
     # The type of the retention policy. A retention policy type can either be `finite`, where a specific amount of time to retain the content is known upfront, or `indefinite`, where the amount of time to retain the content is still unknown.
-    string policy_type;
+    Body45PolicyType policy_type;
     # The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
-    string disposition_action;
+    Body45DispositionAction disposition_action;
     # The length of the retention policy. This length specifies the duration in days that the retention policy will be active for after being assigned to content.  If the policy has A `policy_type` of `indefinite`, the `retention_length` will also be `indefinite`.
     string retention_length?;
     # Whether the owner of a file will be allowed to extend the retention.
@@ -1211,7 +1211,7 @@ public type OAuth2Error record {
 
 public type Body44 record {
     # Defines the status of this invocation. Set this to `success` when setting Skill cards.
-    string status;
+    Body44Status status;
     # The metadata to set for this skill. This is a list of Box Skills cards. These cards will overwrite any existing Box skill cards on the file.
     SkillInvocationsskillIdMetadata metadata;
     # The file to assign the cards to.
@@ -1279,23 +1279,23 @@ public type Body46 record {
     # The name for the retention policy
     string policy_name?;
     # The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
-    string disposition_action?;
+    Body46DispositionAction disposition_action?;
     # Used to retire a retention policy.  If not retiring a policy, do not include this parameter or set it to `null`.
-    string status?;
+    Body46Status status?;
 };
 
 public type Body52 record {
     # Whether this terms of service is active.
-    string status;
+    Body52Status status;
     # The terms of service text to display to users.  The text can be set to empty if the `status` is set to `disabled`.
     string text;
 };
 
 public type Body51 record {
     # Whether this terms of service is active.
-    string status;
+    Body51Status status;
     # The type of user to set the terms of service for.
-    string tos_type?;
+    Body51TosType tos_type?;
     # The terms of service text to display to users.  The text can be set to empty if the `status` is set to `disabled`.
     string text;
 };
@@ -1364,7 +1364,7 @@ public type StoragePolicyAssignment record {
 # The details status of this event.
 public type SkillinvocationStatus record {
     # The state of this event.  * `invoked` - Triggered the skill with event details to start   applying skill on the file. * `processing` - Currently processing. * `success` - Completed processing with a success. * `transient_failure` - Encountered an issue which can be   retried. * `permanent_failure` -  Encountered a permanent issue and   retry would not help.
-    string state?;
+    SkillinvocationStatusState state?;
     # Status information
     string message?;
     # Error code information, if error occurred.
@@ -1389,7 +1389,7 @@ public type RetentionPolicies record {
 
 public type FolderFolderUploadEmail record {
     # When this parameter has been set, users can email files to the email address that has been automatically created for this folder.  To create an email address, set this property either when creating or updating the folder.  When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered.  When set to `open` it will accept emails from any email address.
-    string access?;
+    FolderFolderUploadEmailAccess access?;
     # The optional upload email address for this folder.
     string email?;
 };
@@ -1399,7 +1399,7 @@ public type DevicePinner record {
     # The unique identifier for this device pin.
     string id?;
     # `device_pinner`
-    string 'type?;
+    DevicePinnerType 'type?;
     # A mini representation of a user, as can be returned when nested within other resources.
     UserMini owned_by?;
     # The type of device being pinned
@@ -1420,9 +1420,9 @@ public type Body39 record {
     # A human readable description of the group.
     string description?;
     # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
-    string invitability_level?;
+    Body39InvitabilityLevel invitability_level?;
     # Specifies who can see the members of the group.  * `admins_only` - the enterprise admin, co-admins, group's   group admin * `admins_and_members` - all admins and group members * `all_managed_users` - all managed users in the   enterprise
-    string member_viewability_level?;
+    Body39MemberViewabilityLevel member_viewability_level?;
 };
 
 # A mini representation of a retention policy, used when nested within another resource.
@@ -1441,7 +1441,7 @@ public type Body34 record {
     # The email address the user uses to log in
     string login?;
     # The user’s enterprise role
-    string role?;
+    Body34Role role?;
     # The language of the user, formatted in modified version of the [ISO 639-1](/guides/api-calls/language-codes) format.
     string language?;
     # Whether the user can use Box Sync
@@ -1467,7 +1467,7 @@ public type Body34 record {
     # Whether the user is required to reset their password
     boolean is_password_reset_required?;
     # The user's account status
-    string status?;
+    Body34Status status?;
     # The user’s total available space in bytes. Set this to `-1` to indicate unlimited storage.
     int space_amount?;
     # An alternate notification email address to which email notifications are sent. When it's confirmed, this will be the email address to which notifications are sent instead of to the primary email address.  Set this value to `null` to remove the notification email.
@@ -1482,7 +1482,7 @@ public type Body33 record {
     # Specifies that the user is an app user.
     boolean is_platform_access_only?;
     # The user’s enterprise role
-    string role?;
+    Body33Role role?;
     # The language of the user, formatted in modified version of the [ISO 639-1](/guides/api-calls/language-codes) format.
     string language?;
     # Whether the user can use Box Sync
@@ -1508,7 +1508,7 @@ public type Body33 record {
     # Whether the user must use two-factor authentication
     boolean is_exempt_from_login_verification?;
     # The user's account status
-    string status?;
+    Body33Status status?;
     # An external identifier for an app user, which can be used to look up the user. This can be used to tie user IDs from external identity providers to Box users.
     string external_app_user_id?;
 };
@@ -1555,9 +1555,9 @@ public type Body38 record {
     # A human readable description of the group.
     string description?;
     # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
-    string invitability_level?;
+    Body38InvitabilityLevel invitability_level?;
     # Specifies who can see the members of the group.  * `admins_only` - the enterprise admin, co-admins, group's   group admin * `admins_and_members` - all admins and group members * `all_managed_users` - all managed users in the   enterprise
-    string member_viewability_level?;
+    Body38MemberViewabilityLevel member_viewability_level?;
 };
 
 # A full representation of a folder, as can be returned from any folder API endpoints by default
@@ -1592,7 +1592,7 @@ public type FileversionMini record {
 # The settings for the shared link to update.
 public type FoldersfolderIdupdateSharedLinkSharedLink record {
     # The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
-    string access?;
+    FoldersfolderIdupdateSharedLinkSharedLinkAccess access?;
     # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
     string password?;
     # The timestamp at which this shared link will expire. This field can only be set by users with paid accounts. The value must be greater than the current date and time.
@@ -1625,7 +1625,7 @@ public type TermsOfServiceUserStatuses record {
 
 public type Body41 record {
     # The role of the user in the group.
-    string role?;
+    Body41Role role?;
     # Custom configuration for the permissions an admin if a group will receive. This option has no effect on members with a role of `member`.  Setting these permissions overwrites the default access levels of an admin.  Specifying a value of "null" for this object will disable all configurable permissions. Specifying permissions will set them accordingly, omitted permissions will be enabled by default.
     record {} configurable_permissions?;
 };
@@ -1646,7 +1646,7 @@ public type Body40 record {
     # The group to add the user to.
     GroupMembershipsGroup 'group;
     # The role of the user in the group.
-    string role?;
+    Body40Role role?;
     # Custom configuration for the permissions an admin if a group will receive. This option has no effect on members with a role of `member`.  Setting these permissions overwrites the default access levels of an admin.  Specifying a value of "null" for this object will disable all configurable permissions. Specifying permissions will set them accordingly, omitted permissions will be enabled by default.
     record {} configurable_permissions?;
 };
@@ -1656,7 +1656,7 @@ public type Body8 record {
     # The file version ID
     string id?;
     # The type to revert to
-    string 'type?;
+    Body8Type 'type?;
 };
 
 public type Body9 record {
@@ -1691,7 +1691,7 @@ public type Body28 record {
 # The user or enterprise to assign the storage policy to.
 public type StoragePolicyAssignmentsAssignedTo record {
     # The type to assign the policy to.
-    string 'type;
+    StoragePolicyAssignmentsAssignedToType 'type;
     # The ID of the user or enterprise
     string id;
 };
@@ -1765,13 +1765,13 @@ public type Body23 record {
     # An optional message by the assignee that can be added to the task.
     string message?;
     # The state of the task assigned to the user.  * For a task with an `action` value of `complete` this can be `incomplete` or `completed`. * For a task with an `action` of `review` this can be `incomplete`, `approved`, or `rejected`.
-    string resolution_state?;
+    Body23ResolutionState resolution_state?;
 };
 
 # Defines a lock on an item. This prevents the item from being moved, renamed, or otherwise changed by anyone other than the user who created the lock.  Set this to `null` to remove the lock.
 public type FilesfileIdLock record {
     # The type of this object.
-    string access?;
+    FilesfileIdLockAccess access?;
     # Defines the time at which the lock expires.
     string expires_at?;
     # Defines if the file can be downloaded while it is locked.
@@ -1794,13 +1794,13 @@ public type CollaborationAcceptanceRequirementsStatus record {
 
 public type Body21 record {
     # The action the task assignee will be prompted to do. Must be  * `review` defines an approval task that can be approved or rejected * `complete` defines a general task which can be completed
-    string action?;
+    Body21Action action?;
     # The message included with the task.
     string message?;
     # When the task is due at.
     string due_at?;
     # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` (default) requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
-    string completion_rule?;
+    Body21CompletionRule completion_rule?;
 };
 
 # The Storage Policy object describes the storage zone.
@@ -1814,9 +1814,9 @@ public type StatusSkillCard record {
     # The optional date and time this card was created at.
     string created_at?;
     # `skill_card`
-    string 'type;
+    StatusSkillCardType 'type;
     # `status`
-    string skill_card_type;
+    StatusSkillCardSkillCardType skill_card_type;
     # The title of the card.
     StatusskillcardSkillCardTitle skill_card_title?;
     # Sets the status of the skill. This can be used to show a message to the user while the Skill is processing the data, or if it was not able to process the file.
@@ -1831,13 +1831,13 @@ public type Body20 record {
     # The file to attach the task to.
     TasksItem item;
     # The action the task assignee will be prompted to do. Must be  * `review` defines an approval task that can be approved or rejected * `complete` defines a general task which can be completed
-    string action?;
+    Body20Action action?;
     # An optional message to include with the task.
     string message?;
     # Defines when the task is due. Defaults to `null` if not provided.
     string due_at?;
     # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` (default) requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
-    string completion_rule?;
+    Body20CompletionRule completion_rule?;
 };
 
 public type Body27 record {
@@ -1853,9 +1853,9 @@ public type Body26 record {
 # The order in which a pagination is ordered
 public type DevicepinnersOrder record {
     # The field that is ordered by
-    string 'by?;
+    DevicepinnersOrderBy 'by?;
     # The direction to order by, either ascending or descending
-    string direction?;
+    DevicepinnersOrderDirection direction?;
 };
 
 # Web links are objects that point to URLs. These objects are also known as bookmarks within the Box web application.  Web link objects are treated similarly to file objects, they will also support most actions that apply to regular files.
@@ -1885,7 +1885,7 @@ public type CommentBase record {
     # The unique identifier for this comment.
     string id?;
     # `comment`
-    string 'type?;
+    CommentBaseType 'type?;
 };
 
 # The root-level record that is supposed to represent a single Terms of Service.
@@ -1918,7 +1918,7 @@ public type FileBase record {
     # The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.
     string? etag?;
     # `file`
-    string 'type?;
+    FileBaseType 'type?;
 };
 
 # A list of webhooks.
@@ -1938,7 +1938,7 @@ public type Enterprise record {
     # The unique identifier for this enterprise.
     string id?;
     # `enterprise`
-    string 'type?;
+    EnterpriseType 'type?;
     # The name of the enterprise
     string name?;
 };
@@ -1955,13 +1955,13 @@ public type CommentsItem record {
     # The ID of the item
     string id;
     # The type of the item that this comment will be placed on.
-    string 'type;
+    CommentsItemType 'type;
 };
 
 # The file to assign the cards to.
 public type SkillInvocationsskillIdFile record {
     # `file`
-    string 'type?;
+    SkillInvocationsskillIdFileType 'type?;
     # The ID of the file
     string id?;
 };
@@ -1979,11 +1979,11 @@ public type UploadpartMini record {
 # A generic error
 public type ClientError record {
     # `error`
-    string 'type?;
+    ClientErrorType 'type?;
     # The HTTP status of the response.
     int status?;
     # A Box-specific error code
-    string code?;
+    ClientErrorCode code?;
     # A short message describing the error.
     string message?;
     # A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis.
@@ -2014,7 +2014,7 @@ public type Body19 record {
     # The user or group to give access to the item.
     CollaborationsAccessibleBy accessible_by;
     # The level of access granted.
-    string role;
+    Body19Role role;
     # Determines if the invited users can see the entire parent path to the associated folder. The user will not gain privileges in any parent folder and therefore can not see content the user is not collaborated on.  Be aware that this meaningfully increases the time required to load the invitee's **All Files** page. We recommend you limit the number of collaborations with `can_view_path` enabled to 1,000 per user.
     boolean can_view_path?;
     # Set the expiration date for the collaboration. At this date, the collaboration will be automatically removed from the item.  This feature will only work if the **Automatically remove invited collaborators: Allow folder owners to extend the expiry date** setting has been enabled in the **Enterprise Settings** of the **Admin Console**. When the setting is not enabled, collaborations can not have an expiry date and a value for this field will be result in an error.
@@ -2026,13 +2026,13 @@ public type Task record {
     # The unique identifier for this task
     string id?;
     # `task`
-    string 'type?;
+    TaskType 'type?;
     # A mini representation of a file, used when nested under another resource.
     FileMini item?;
     # When the task is due
     string due_at?;
     # The type of task the task assignee will be prompted to perform.
-    string action?;
+    TaskAction action?;
     # A message that will be included with the task
     string message?;
     # A list of task assignments
@@ -2044,14 +2044,14 @@ public type Task record {
     # When the task object was created
     string created_at?;
     # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
-    string completion_rule?;
+    TaskCompletionRule completion_rule?;
 };
 
 public type Body18 record {
     # The level of access granted.
-    string role;
+    Body18Role role;
     # <!--alex ignore reject--> Set the status of a `pending` collaboration invitation, effectively accepting, or rejecting the invite.
-    string status?;
+    Body18Status status?;
     # Update the expiration date for the collaboration. At this date, the collaboration will be automatically removed from the item.  This feature will only work if the **Automatically remove invited collaborators: Allow folder owners to extend the expiry date** setting has been enabled in the **Enterprise Settings** of the **Admin Console**. When the setting is not enabled, collaborations can not have an expiry date and a value for this field will be result in an error.  Additionally, a collaboration can only be given an expiration if it was created after the **Automatically remove invited collaborator** setting was enabled.
     string expires_at?;
     # Determines if the invited users can see the entire parent path to the associated folder. The user will not gain privileges in any parent folder and therefore can not see content the user is not collaborated on.  Be aware that this meaningfully increases the time required to load the invitee's **All Files** page. We recommend you limit the number of collaborations with `can_view_path` enabled to 1,000 per user.
@@ -2073,7 +2073,7 @@ public type RecentItem record {
     string 'type?;
     File|Folder|WebLink item?;
     # The most recent type of access the user performed on the item.
-    string interaction_type?;
+    RecentItemInteractionType interaction_type?;
     # The time of the most recent interaction.
     string interacted_at?;
     # If the item was accessed through a shared link it will appear here, otherwise this will be null.
@@ -2086,9 +2086,9 @@ public type Body12 record {
     # The parent folder to create the new folder within.
     FoldersParent parent;
     record {# When this parameter has been set, users can email files to the email address that has been automatically created for this folder.  To create an email address, set this property either when creating or updating the folder.  When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered.  When set to `open` it will accept emails from any email address.
-        string access?;} folder_upload_email?;
+        Body12Access access?;} folder_upload_email?;
     # Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.
-    string sync_state?;
+    Body12SyncState sync_state?;
 };
 
 # The title of the card.
@@ -2104,9 +2104,9 @@ public type KeywordSkillCard record {
     # The optional date and time this card was created at.
     string created_at?;
     # `skill_card`
-    string 'type;
+    KeywordSkillCardType 'type;
     # `keyword`
-    string skill_card_type;
+    KeywordSkillCardSkillCardType skill_card_type;
     # The title of the card.
     KeywordskillcardSkillCardTitle skill_card_title?;
     # The service that applied this metadata.
@@ -2142,20 +2142,20 @@ public type Body10 record {
     # The optional description of this folder
     string description?;
     # Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.
-    string sync_state?;
+    Body10SyncState sync_state?;
     # Specifies if users who are not the owner of the folder can invite new collaborators to the folder.
     boolean can_non_owners_invite?;
     # The parent folder for this folder. Use this to move the folder or to restore it out of the trash.
     FoldersfolderIdParent parent?;
     record {# The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
-        string access?; # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
+        Body10Access access?; # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
         string password?; # Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`.  Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.
         string vanity_name?; # The timestamp at which this shared link will expire. This field can only be set by users with paid accounts.
         string unshared_at?; # The permissions on shared link.
         record  { # If the shared link allows for downloading of files. This can only be set when `access` is set to `open` or `company`.
             boolean can_download?;}  permissions?;} shared_link?;
     record {# When this parameter has been set, users can email files to the email address that has been automatically created for this folder.  To create an email address, set this property either when creating or updating the folder.  When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered.  When set to `open` it will accept emails from any email address.
-        string access?;} folder_upload_email?;
+        Body10Access access?;} folder_upload_email?;
     # The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.  To add or remove a tag, retrieve the item's current tags, modify them, and then update this field.  There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.
     string[] tags?;
     # Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.
@@ -2171,7 +2171,7 @@ public type CollaborationAllowlistEnterprise record {
     # The unique identifier for this enterprise.
     string id?;
     # `enterprise`
-    string 'type?;
+    CollaborationAllowlistEnterpriseType 'type?;
     # The name of the enterprise
     string name?;
 };
@@ -2245,13 +2245,13 @@ public type AccessToken record {
     # The time in seconds in seconds by which this token will expire.
     int expires_in?;
     # The type of access token returned.
-    string token_type?;
+    AccessTokenTokenType token_type?;
     # The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.
     FileScope[] restricted_to?;
     # The refresh token for this access token, which can be used to request a new access token when the current one expires.
     string refresh_token?;
     # The type of downscoped access token returned. This is only returned if an access token has been downscoped.
-    string issued_token_type?;
+    AccessTokenIssuedTokenType issued_token_type?;
 };
 
 # A list of files, folders, and web links in their mini representation.
@@ -2273,7 +2273,7 @@ public type CollaborationAllowlistExemptTarget record {
     # The unique identifier for this exemption
     string id?;
     # `collaboration_whitelist`
-    string 'type?;
+    CollaborationAllowlistExemptTargetType 'type?;
     # A representation of a Box enterprise
     CollaborationAllowlistEnterprise enterprise?;
     # A representation of a Box enterprise
@@ -2305,7 +2305,7 @@ public type FilesfileIdaddSharedLinkSharedLinkPermissions record {
 # The settings for the shared link to create on the folder.  Use an empty object (`{}`) to use the default settings for shared links.
 public type FoldersfolderIdaddSharedLinkSharedLink record {
     # The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
-    string access?;
+    FoldersfolderIdaddSharedLinkSharedLinkAccess access?;
     # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
     string password?;
     # The timestamp at which this shared link will expire. This field can only be set by users with paid accounts. The value must be greater than the current date and time.
@@ -2317,7 +2317,7 @@ public type FoldersfolderIdaddSharedLinkSharedLink record {
 # The service that applied this metadata.
 public type TranscriptskillcardSkill record {
     # `service`
-    string 'type;
+    TranscriptskillcardSkillType 'type;
     # A custom identifier that represent the service that applied this metadata.
     string id;
 };
@@ -2345,7 +2345,7 @@ public type RecentItems record {
 # The service that applied this metadata.
 public type SkillcardSkill record {
     # `service`
-    string 'type;
+    SkillcardSkillType 'type;
     # A custom identifier that represent the service that applied this metadata.
     string id;
 };
@@ -2399,7 +2399,7 @@ public type CollaborationWhitelistExemptTargetsUser record {
 # Used with a card of type `status` to set the status of the skill. This can be used to show a message to the user while the Skill is processing the data.
 public type SkillcardStatus record {
     # A code for the status of this Skill invocation. By default each of these will have their own accompanied messages. These can be adjusted by setting the `message` value on this object.
-    string code;
+    SkillcardStatusCode code;
     # A custom message that can be provided with this status. This will be shown in the web app to the end user.
     string message?;
 };
@@ -2419,7 +2419,7 @@ public type FileVersionLegalHolds record {
 # Defines a shared link for an item. Set this to `null` to remove the shared link.
 public type FilesfileIdSharedLink record {
     # The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
-    string access?;
+    FilesfileIdSharedLinkAccess access?;
     # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
     string password?;
     # Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`.  Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.
@@ -2433,7 +2433,7 @@ public type FilesfileIdSharedLink record {
 # The folder to associate the new file request to.
 public type FilerequestcopyrequestFolder record {
     # `folder`
-    string 'type?;
+    FilerequestcopyrequestFolderType 'type?;
     # The ID of the folder to associate the new file request to.
     string id;
 };
@@ -2475,11 +2475,11 @@ public type Collection record {
     # The unique identifier for this collection.
     string id?;
     # `collection`
-    string 'type?;
+    CollectionType 'type?;
     # The name of the collection.
-    string name?;
+    CollectionName name?;
     # The type of the collection. This is used to determine the proper visual treatment for collections.
-    string collection_type?;
+    CollectionCollectionType collection_type?;
 };
 
 # A standard representation of a file, as returned from any file API endpoints by default
@@ -2515,7 +2515,7 @@ public type UsersuserIdNotificationEmail record {
 # The invocation of this service, used to track which instance of a service applied the metadata.
 public type TranscriptskillcardInvocation record {
     # `skill_invocation`
-    string 'type;
+    TranscriptskillcardInvocationType 'type;
     # A custom identifier that represent the instance of the service that applied this metadata. For example, if your `image-recognition-service` runs on multiple nodes, this field can be used to identify the ID of the node that was used to apply the metadata.
     string id;
 };
@@ -2533,7 +2533,7 @@ public type FileVersionRetention record {
     # The unique identifier for this file version retention.
     string id?;
     # `file_version_retention`
-    string 'type?;
+    FileVersionRetentionType 'type?;
     # A mini representation of a file version, used when nested within another resource.
     FileversionMini file_version?;
     # A mini representation of a file, used when nested under another resource.
@@ -2556,7 +2556,7 @@ public type RetentionpolicyBase record {
     # The unique identifier that represent a file version.
     string id?;
     # `retention_policy`
-    string 'type?;
+    RetentionpolicyBaseType 'type?;
 };
 
 # An upload session for chunk uploading a file.
@@ -2564,7 +2564,7 @@ public type UploadSession record {
     # The unique identifier for this session
     string id?;
     # `upload_session`
-    string 'type?;
+    UploadSessionType 'type?;
     # The date and time when this session expires.
     string session_expires_at?;
     # The  size in bytes that must be used for all parts of of the upload.  Only the last part is allowed to be of a smaller size.
@@ -2588,11 +2588,11 @@ public type ClassificationtemplateFields record {
     # The unique ID of the field.
     string id?;
     # `enum`
-    string 'type?;
+    ClassificationtemplateFieldsType 'type?;
     # `Box__Security__Classification__Key`
-    string 'key?;
+    ClassificationtemplateFieldsKey 'key?;
     # `Classification`
-    string displayName?;
+    ClassificationtemplateFieldsDisplayName displayName?;
     # Classifications are always visible to web and mobile users.
     boolean hidden?;
     # A list of classifications available in this enterprise.
@@ -2653,7 +2653,7 @@ public type TermsofserviceMini record {
     # The unique identifier for this terms of service.
     string id?;
     # `terms_of_service`
-    string 'type?;
+    TermsofserviceMiniType 'type?;
 };
 
 # The permissions for the shared link.
@@ -2673,7 +2673,7 @@ public type LegalholdpolicyassignmentBase record {
     # The unique identifier for this legal hold assignment
     string id?;
     # `legal_hold_policy_assignment`
-    string 'type?;
+    LegalholdpolicyassignmentBaseType 'type?;
 };
 
 # The bare basic representation of a file version, the minimal amount of fields returned when using the `fields` query parameter.
@@ -2681,7 +2681,7 @@ public type FileversionBase record {
     # The unique identifier that represent a file version.
     string id?;
     # `file_version`
-    string 'type?;
+    FileversionBaseType 'type?;
 };
 
 # A request to revoke an OAuth 2.0 token
@@ -2699,7 +2699,7 @@ public type EmailAlias record {
     # The unique identifier for this object
     string id?;
     # Email alias type
-    string 'type?;
+    EmailAliasType 'type?;
     # The email address
     string email?;
     # Whether the email address has been confirmed
@@ -2711,18 +2711,18 @@ public type Collaboration record {
     # The unique identifier for this collaboration.
     string id?;
     # `collaboration`
-    string 'type?;
+    CollaborationType 'type?;
     File|Folder|WebLink item?;
     # A mini representation of a user, as can be returned when nested within other resources.
     UserMini accessible_by?;
     # The email address used to invite an unregistered collaborator, if they are not a registered user.
     string? invite_email?;
     # The level of access granted.
-    string role?;
+    CollaborationRole role?;
     # When the collaboration will expire, or `null` if no expiration date is set.
     string? expires_at?;
     # The status of the collaboration invitation.
-    string status?;
+    CollaborationStatus status?;
     # When the `status` of the collaboration object changed to `accepted` or `rejected`
     string acknowledged_at?;
     # A mini representation of a user, as can be returned when nested within other resources.
@@ -2740,11 +2740,11 @@ public type CollaborationAllowlistEntry record {
     # The unique identifier for this entry
     string id?;
     # `collaboration_whitelist_entry`
-    string 'type?;
+    CollaborationAllowlistEntryType 'type?;
     # The whitelisted domain
     string domain?;
     # The direction of the collaborations to allow.
-    string direction?;
+    CollaborationAllowlistEntryDirection direction?;
     # A representation of a Box enterprise
     CollaborationAllowlistEnterprise enterprise?;
     # The time the entry was created at
@@ -2780,7 +2780,7 @@ public type Invite record {
     # The unique identifier for this invite
     string id?;
     # `invite`
-    string 'type?;
+    InviteType 'type?;
     # A representation of a Box enterprise
     Enterprise invited_to?;
     # A mini representation of a user, as can be returned when nested within other resources.
@@ -2803,3 +2803,991 @@ public type SearchResultWithSharedLink record {
     # The result type. The value is always `search_result`.
     string 'type?;
 };
+
+public enum GetAuthorizeResponseType {
+    GETAUTHORIZERESPONSETYPE_CODE = "code"
+}
+
+public enum GetFoldersIdItemsSort {
+    GETFOLDERSIDITEMSSORT_ID = "id",
+    GETFOLDERSIDITEMSSORT_NAME = "name",
+    GETFOLDERSIDITEMSSORT_DATE = "date",
+    GETFOLDERSIDITEMSSORT_SIZE = "size"
+}
+
+public enum GetFoldersIdItemsDirection {
+    GETFOLDERSIDITEMSDIRECTION_ASC = "ASC",
+    GETFOLDERSIDITEMSDIRECTION_DESC = "DESC"
+}
+
+public enum GetFoldersTrashItemsDirection {
+    GETFOLDERSTRASHITEMSDIRECTION_ASC = "ASC",
+    GETFOLDERSTRASHITEMSDIRECTION_DESC = "DESC"
+}
+
+public enum GetFoldersTrashItemsSort {
+    GETFOLDERSTRASHITEMSSORT_ID = "id",
+    GETFOLDERSTRASHITEMSSORT_NAME = "name",
+    GETFOLDERSTRASHITEMSSORT_DATE = "date",
+    GETFOLDERSTRASHITEMSSORT_SIZE = "size"
+}
+
+public enum GetCollaborationsStatus {
+    GETCOLLABORATIONSSTATUS_PENDING = "pending"
+}
+
+public enum GetUsersUserType {
+    GETUSERSUSERTYPE_ALL = "all",
+    GETUSERSUSERTYPE_MANAGED = "managed",
+    GETUSERSUSERTYPE_EXTERNAL = "external"
+}
+
+public enum GetEventsStreamType {
+    GETEVENTSSTREAMTYPE_ALL = "all",
+    GETEVENTSSTREAMTYPE_CHANGES = "changes",
+    GETEVENTSSTREAMTYPE_SYNC = "sync",
+    GETEVENTSSTREAMTYPE_ADMINLOGS = "admin_logs"
+}
+
+public enum GetRetentionPoliciesPolicyType {
+    GETRETENTIONPOLICIESPOLICYTYPE_FINITE = "finite",
+    GETRETENTIONPOLICIESPOLICYTYPE_INDEFINITE = "indefinite"
+}
+
+public enum GetRetentionPoliciesIdAssignmentsType {
+    GETRETENTIONPOLICIESIDASSIGNMENTSTYPE_FOLDER = "folder",
+    GETRETENTIONPOLICIESIDASSIGNMENTSTYPE_ENTERPRISE = "enterprise"
+}
+
+public enum GetLegalHoldPolicyAssignmentsAssignToType {
+    GETLEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_FILE = "file",
+    GETLEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_FILEVERSION = "file_version",
+    GETLEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_FOLDER = "folder",
+    GETLEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_USER = "user"
+}
+
+public enum GetFileVersionRetentionsDispositionAction {
+    GETFILEVERSIONRETENTIONSDISPOSITIONACTION_PERMANENTLYDELETE = "permanently_delete",
+    GETFILEVERSIONRETENTIONSDISPOSITIONACTION_REMOVERETENTION = "remove_retention"
+}
+
+public enum GetEnterprisesIdDevicePinnersDirection {
+    GETENTERPRISESIDDEVICEPINNERSDIRECTION_ASC = "ASC",
+    GETENTERPRISESIDDEVICEPINNERSDIRECTION_DESC = "DESC"
+}
+
+public enum GetTermsOfServicesTosType {
+    GETTERMSOFSERVICESTOSTYPE_EXTERNAL = "external",
+    GETTERMSOFSERVICESTOSTYPE_MANAGED = "managed"
+}
+
+public enum GetStoragePolicyAssignmentsResolvedForType {
+    GETSTORAGEPOLICYASSIGNMENTSRESOLVEDFORTYPE_USER = "user",
+    GETSTORAGEPOLICYASSIGNMENTSRESOLVEDFORTYPE_ENTERPRISE = "enterprise"
+}
+
+public enum FileVersionLegalHoldType {
+    FILEVERSIONLEGALHOLDTYPE_FILEVERSIONLEGALHOLD = "file_version_legal_hold"
+}
+
+public enum Postoauth2tokenRefreshaccesstokenGrantType {
+    POSTOAUTH2TOKENREFRESHACCESSTOKENGRANTTYPE_REFRESHTOKEN = "refresh_token"
+}
+
+public enum SkillInvocationsskillIdFileVersionType {
+    SKILLINVOCATIONSSKILLIDFILEVERSIONTYPE_FILEVERSION = "file_version"
+}
+
+public enum StatusskillcardStatusCode {
+    STATUSSKILLCARDSTATUSCODE_INVOKED = "invoked",
+    STATUSSKILLCARDSTATUSCODE_PROCESSING = "processing",
+    STATUSSKILLCARDSTATUSCODE_SUCCESS = "success",
+    STATUSSKILLCARDSTATUSCODE_TRANSIENTFAILURE = "transient_failure",
+    STATUSSKILLCARDSTATUSCODE_PERMANENTFAILURE = "permanent_failure"
+}
+
+public enum UserfullTrackingCodesType {
+    USERFULLTRACKINGCODESTYPE_TRACKINGCODE = "tracking_code"
+}
+
+public enum CollaborationsItemType {
+    COLLABORATIONSITEMTYPE_FILE = "file",
+    COLLABORATIONSITEMTYPE_FOLDER = "folder"
+}
+
+public enum CollaborationAllowlistUserType {
+    COLLABORATIONALLOWLISTUSERTYPE_ENTERPRISE = "enterprise"
+}
+
+public enum StoragepolicyMiniType {
+    STORAGEPOLICYMINITYPE_STORAGEPOLICY = "storage_policy"
+}
+
+public enum TranscriptSkillCardType {
+    TRANSCRIPTSKILLCARDTYPE_SKILLCARD = "skill_card"
+}
+
+public enum TranscriptSkillCardSkillCardType {
+    TRANSCRIPTSKILLCARDSKILLCARDTYPE_TRANSCRIPT = "transcript"
+}
+
+public enum TermsOfServiceUserStatusesUserType {
+    TERMSOFSERVICEUSERSTATUSESUSERTYPE_USER = "user"
+}
+
+public enum PostOAuth2TokenGrantType {
+    POSTOAUTH2TOKENGRANTTYPE_AUTHORIZATIONCODE = "authorization_code",
+    POSTOAUTH2TOKENGRANTTYPE_REFRESHTOKEN = "refresh_token",
+    POSTOAUTH2TOKENGRANTTYPE_CLIENTCREDENTIALS = "client_credentials",
+    POSTOAUTH2TOKENGRANTTYPE_URNIETFPARAMSOAUTHGRANTTYPEJWTBEARER = "urn:ietf:params:oauth:grant-type:jwt-bearer",
+    POSTOAUTH2TOKENGRANTTYPE_URNIETFPARAMSOAUTHGRANTTYPETOKENEXCHANGE = "urn:ietf:params:oauth:grant-type:token-exchange"
+}
+
+public enum PostOAuth2TokenSubjectTokenType {
+    POSTOAUTH2TOKENSUBJECTTOKENTYPE_URNIETFPARAMSOAUTHTOKENTYPEACCESSTOKEN = "urn:ietf:params:oauth:token-type:access_token"
+}
+
+public enum PostOAuth2TokenActorTokenType {
+    POSTOAUTH2TOKENACTORTOKENTYPE_URNIETFPARAMSOAUTHTOKENTYPEIDTOKEN = "urn:ietf:params:oauth:token-type:id_token"
+}
+
+public enum PostOAuth2TokenBoxSubjectType {
+    POSTOAUTH2TOKENBOXSUBJECTTYPE_ENTERPRISE = "enterprise",
+    POSTOAUTH2TOKENBOXSUBJECTTYPE_USER = "user"
+}
+
+public enum FilesfileIdwatermarkWatermarkImprint {
+    FILESFILEIDWATERMARKWATERMARKIMPRINT_DEFAULT = "default"
+}
+
+public enum WebhooksTargetType {
+    WEBHOOKSTARGETTYPE_FILE = "file",
+    WEBHOOKSTARGETTYPE_FOLDER = "folder"
+}
+
+public enum NameconflictInnerType {
+    NAMECONFLICTINNERTYPE_FILE = "file",
+    NAMECONFLICTINNERTYPE_FOLDER = "folder"
+}
+
+public enum FileScopeScope {
+    FILESCOPESCOPE_ANNOTATIONEDIT = "annotation_edit",
+    FILESCOPESCOPE_ANNOTATIONVIEWALL = "annotation_view_all",
+    FILESCOPESCOPE_ANNOTATIONVIEWSELF = "annotation_view_self",
+    FILESCOPESCOPE_BASEEXPLORER = "base_explorer",
+    FILESCOPESCOPE_BASEPICKER = "base_picker",
+    FILESCOPESCOPE_BASEPREVIEW = "base_preview",
+    FILESCOPESCOPE_BASEUPLOAD = "base_upload",
+    FILESCOPESCOPE_ITEMDELETE = "item_delete",
+    FILESCOPESCOPE_ITEMDOWNLOAD = "item_download",
+    FILESCOPESCOPE_ITEMPREVIEW = "item_preview",
+    FILESCOPESCOPE_ITEMRENAME = "item_rename",
+    FILESCOPESCOPE_ITEMSHARE = "item_share"
+}
+
+public enum TimelineSkillCardType {
+    TIMELINESKILLCARDTYPE_SKILLCARD = "skill_card"
+}
+
+public enum TimelineSkillCardSkillCardType {
+    TIMELINESKILLCARDSKILLCARDTYPE_TIMELINE = "timeline"
+}
+
+public enum LegalHoldPolicyAssignmentsAssignToType {
+    LEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_FILE = "file",
+    LEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_FILEVERSION = "file_version",
+    LEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_FOLDER = "folder",
+    LEGALHOLDPOLICYASSIGNMENTSASSIGNTOTYPE_USER = "user"
+}
+
+public enum CollaborationsOrderDirection {
+    COLLABORATIONSORDERDIRECTION_ASC = "ASC",
+    COLLABORATIONSORDERDIRECTION_DESC = "DESC"
+}
+
+public enum ClassificationTemplateType {
+    CLASSIFICATIONTEMPLATETYPE_METADATATEMPLATE = "metadata_template"
+}
+
+public enum ClassificationTemplateTemplateKey {
+    CLASSIFICATIONTEMPLATETEMPLATEKEY_SECURITYCLASSIFICATION6VMVOCHWUWO = "securityClassification-6VMVochwUWo"
+}
+
+public enum ClassificationTemplateDisplayName {
+    CLASSIFICATIONTEMPLATEDISPLAYNAME_CLASSIFICATION = "Classification"
+}
+
+public enum FilesfileIdPermissionsCanDownload {
+    FILESFILEIDPERMISSIONSCANDOWNLOAD_OPEN = "open",
+    FILESFILEIDPERMISSIONSCANDOWNLOAD_COMPANY = "company"
+}
+
+public enum EventEventType {
+    EVENTEVENTTYPE_ACCESSGRANTED = "ACCESS_GRANTED",
+    EVENTEVENTTYPE_ACCESSREVOKED = "ACCESS_REVOKED",
+    EVENTEVENTTYPE_ADDDEVICEASSOCIATION = "ADD_DEVICE_ASSOCIATION",
+    EVENTEVENTTYPE_ADDLOGINACTIVITYDEVICE = "ADD_LOGIN_ACTIVITY_DEVICE",
+    EVENTEVENTTYPE_ADMINLOGIN = "ADMIN_LOGIN",
+    EVENTEVENTTYPE_APPLICATIONCREATED = "APPLICATION_CREATED",
+    EVENTEVENTTYPE_APPLICATIONPUBLICKEYADDED = "APPLICATION_PUBLIC_KEY_ADDED",
+    EVENTEVENTTYPE_APPLICATIONPUBLICKEYDELETED = "APPLICATION_PUBLIC_KEY_DELETED",
+    EVENTEVENTTYPE_CHANGEADMINROLE = "CHANGE_ADMIN_ROLE",
+    EVENTEVENTTYPE_CHANGEFOLDERPERMISSION = "CHANGE_FOLDER_PERMISSION",
+    EVENTEVENTTYPE_COLLABORATIONACCEPT = "COLLABORATION_ACCEPT",
+    EVENTEVENTTYPE_COLLABORATIONEXPIRATION = "COLLABORATION_EXPIRATION",
+    EVENTEVENTTYPE_COLLABORATIONINVITE = "COLLABORATION_INVITE",
+    EVENTEVENTTYPE_COLLABORATIONREMOVE = "COLLABORATION_REMOVE",
+    EVENTEVENTTYPE_COLLABORATIONROLECHANGE = "COLLABORATION_ROLE_CHANGE",
+    EVENTEVENTTYPE_COLLABADDCOLLABORATOR = "COLLAB_ADD_COLLABORATOR",
+    EVENTEVENTTYPE_COLLABINVITECOLLABORATOR = "COLLAB_INVITE_COLLABORATOR",
+    EVENTEVENTTYPE_COLLABREMOVECOLLABORATOR = "COLLAB_REMOVE_COLLABORATOR",
+    EVENTEVENTTYPE_COLLABROLECHANGE = "COLLAB_ROLE_CHANGE",
+    EVENTEVENTTYPE_COMMENTCREATE = "COMMENT_CREATE",
+    EVENTEVENTTYPE_COMMENTDELETE = "COMMENT_DELETE",
+    EVENTEVENTTYPE_CONTENTACCESS = "CONTENT_ACCESS",
+    EVENTEVENTTYPE_CONTENTWORKFLOWABNORMALDOWNLOADACTIVITY = "CONTENT_WORKFLOW_ABNORMAL_DOWNLOAD_ACTIVITY",
+    EVENTEVENTTYPE_CONTENTWORKFLOWAUTOMATIONADD = "CONTENT_WORKFLOW_AUTOMATION_ADD",
+    EVENTEVENTTYPE_CONTENTWORKFLOWAUTOMATIONDELETE = "CONTENT_WORKFLOW_AUTOMATION_DELETE",
+    EVENTEVENTTYPE_CONTENTWORKFLOWPOLICYADD = "CONTENT_WORKFLOW_POLICY_ADD",
+    EVENTEVENTTYPE_CONTENTWORKFLOWSHARINGPOLICYVIOLATION = "CONTENT_WORKFLOW_SHARING_POLICY_VIOLATION",
+    EVENTEVENTTYPE_CONTENTWORKFLOWUPLOADPOLICYVIOLATION = "CONTENT_WORKFLOW_UPLOAD_POLICY_VIOLATION",
+    EVENTEVENTTYPE_COPY = "COPY",
+    EVENTEVENTTYPE_DATARETENTIONCREATERETENTION = "DATA_RETENTION_CREATE_RETENTION",
+    EVENTEVENTTYPE_DATARETENTIONREMOVERETENTION = "DATA_RETENTION_REMOVE_RETENTION",
+    EVENTEVENTTYPE_DELETE = "DELETE",
+    EVENTEVENTTYPE_DELETEUSER = "DELETE_USER",
+    EVENTEVENTTYPE_DEVICETRUSTCHECKFAILED = "DEVICE_TRUST_CHECK_FAILED",
+    EVENTEVENTTYPE_DOWNLOAD = "DOWNLOAD",
+    EVENTEVENTTYPE_EDIT = "EDIT",
+    EVENTEVENTTYPE_EDITUSER = "EDIT_USER",
+    EVENTEVENTTYPE_EMAILALIASCONFIRM = "EMAIL_ALIAS_CONFIRM",
+    EVENTEVENTTYPE_EMAILALIASREMOVE = "EMAIL_ALIAS_REMOVE",
+    EVENTEVENTTYPE_ENABLETWOFACTORAUTH = "ENABLE_TWO_FACTOR_AUTH",
+    EVENTEVENTTYPE_ENTERPRISEAPPAUTHORIZATIONUPDATE = "ENTERPRISE_APP_AUTHORIZATION_UPDATE",
+    EVENTEVENTTYPE_FAILEDLOGIN = "FAILED_LOGIN",
+    EVENTEVENTTYPE_FILEMARKEDMALICIOUS = "FILE_MARKED_MALICIOUS",
+    EVENTEVENTTYPE_FILEWATERMARKEDDOWNLOAD = "FILE_WATERMARKED_DOWNLOAD",
+    EVENTEVENTTYPE_GROUPADDITEM = "GROUP_ADD_ITEM",
+    EVENTEVENTTYPE_GROUPADDUSER = "GROUP_ADD_USER",
+    EVENTEVENTTYPE_GROUPCREATION = "GROUP_CREATION",
+    EVENTEVENTTYPE_GROUPDELETION = "GROUP_DELETION",
+    EVENTEVENTTYPE_GROUPEDITED = "GROUP_EDITED",
+    EVENTEVENTTYPE_GROUPREMOVEITEM = "GROUP_REMOVE_ITEM",
+    EVENTEVENTTYPE_GROUPREMOVEUSER = "GROUP_REMOVE_USER",
+    EVENTEVENTTYPE_ITEMCOPY = "ITEM_COPY",
+    EVENTEVENTTYPE_ITEMCREATE = "ITEM_CREATE",
+    EVENTEVENTTYPE_ITEMDOWNLOAD = "ITEM_DOWNLOAD",
+    EVENTEVENTTYPE_ITEMMAKECURRENTVERSION = "ITEM_MAKE_CURRENT_VERSION",
+    EVENTEVENTTYPE_ITEMMODIFY = "ITEM_MODIFY",
+    EVENTEVENTTYPE_ITEMMOVE = "ITEM_MOVE",
+    EVENTEVENTTYPE_ITEMOPEN = "ITEM_OPEN",
+    EVENTEVENTTYPE_ITEMPREVIEW = "ITEM_PREVIEW",
+    EVENTEVENTTYPE_ITEMRENAME = "ITEM_RENAME",
+    EVENTEVENTTYPE_ITEMSHARED = "ITEM_SHARED",
+    EVENTEVENTTYPE_ITEMSHAREDCREATE = "ITEM_SHARED_CREATE",
+    EVENTEVENTTYPE_ITEMSHAREDUNSHARE = "ITEM_SHARED_UNSHARE",
+    EVENTEVENTTYPE_ITEMSHAREDUPDATE = "ITEM_SHARED_UPDATE",
+    EVENTEVENTTYPE_ITEMSYNC = "ITEM_SYNC",
+    EVENTEVENTTYPE_ITEMTRASH = "ITEM_TRASH",
+    EVENTEVENTTYPE_ITEMUNDELETEVIATRASH = "ITEM_UNDELETE_VIA_TRASH",
+    EVENTEVENTTYPE_ITEMUNSYNC = "ITEM_UNSYNC",
+    EVENTEVENTTYPE_ITEMUPLOAD = "ITEM_UPLOAD",
+    EVENTEVENTTYPE_LEGALHOLDASSIGNMENTCREATE = "LEGAL_HOLD_ASSIGNMENT_CREATE",
+    EVENTEVENTTYPE_LEGALHOLDASSIGNMENTDELETE = "LEGAL_HOLD_ASSIGNMENT_DELETE",
+    EVENTEVENTTYPE_LEGALHOLDPOLICYCREATE = "LEGAL_HOLD_POLICY_CREATE",
+    EVENTEVENTTYPE_LEGALHOLDPOLICYDELETE = "LEGAL_HOLD_POLICY_DELETE",
+    EVENTEVENTTYPE_LEGALHOLDPOLICYUPDATE = "LEGAL_HOLD_POLICY_UPDATE",
+    EVENTEVENTTYPE_LOCK = "LOCK",
+    EVENTEVENTTYPE_LOCKCREATE = "LOCK_CREATE",
+    EVENTEVENTTYPE_LOCKDESTROY = "LOCK_DESTROY",
+    EVENTEVENTTYPE_LOGIN = "LOGIN",
+    EVENTEVENTTYPE_MASTERINVITEACCEPT = "MASTER_INVITE_ACCEPT",
+    EVENTEVENTTYPE_MASTERINVITEREJECT = "MASTER_INVITE_REJECT",
+    EVENTEVENTTYPE_METADATAINSTANCECREATE = "METADATA_INSTANCE_CREATE",
+    EVENTEVENTTYPE_METADATAINSTANCEDELETE = "METADATA_INSTANCE_DELETE",
+    EVENTEVENTTYPE_METADATAINSTANCEUPDATE = "METADATA_INSTANCE_UPDATE",
+    EVENTEVENTTYPE_METADATATEMPLATECREATE = "METADATA_TEMPLATE_CREATE",
+    EVENTEVENTTYPE_METADATATEMPLATEDELETE = "METADATA_TEMPLATE_DELETE",
+    EVENTEVENTTYPE_METADATATEMPLATEUPDATE = "METADATA_TEMPLATE_UPDATE",
+    EVENTEVENTTYPE_MOVE = "MOVE",
+    EVENTEVENTTYPE_NEWUSER = "NEW_USER",
+    EVENTEVENTTYPE_PREVIEW = "PREVIEW",
+    EVENTEVENTTYPE_REMOVEDEVICEASSOCIATION = "REMOVE_DEVICE_ASSOCIATION",
+    EVENTEVENTTYPE_REMOVELOGINACTIVITYDEVICE = "REMOVE_LOGIN_ACTIVITY_DEVICE",
+    EVENTEVENTTYPE_RENAME = "RENAME",
+    EVENTEVENTTYPE_RETENTIONPOLICYASSIGNMENTADD = "RETENTION_POLICY_ASSIGNMENT_ADD",
+    EVENTEVENTTYPE_SHARE = "SHARE",
+    EVENTEVENTTYPE_SHAREEXPIRATION = "SHARE_EXPIRATION",
+    EVENTEVENTTYPE_SHIELDALERT = "SHIELD_ALERT",
+    EVENTEVENTTYPE_SHIELDEXTERNALCOLLABACCESSBLOCKED = "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED",
+    EVENTEVENTTYPE_SHIELDEXTERNALCOLLABACCESSBLOCKEDMISSINGJUSTIFICATION = "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED_MISSING_JUSTIFICATION",
+    EVENTEVENTTYPE_SHIELDEXTERNALCOLLABINVITEBLOCKED = "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED",
+    EVENTEVENTTYPE_SHIELDEXTERNALCOLLABINVITEBLOCKEDMISSINGJUSTIFICATION = "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED_MISSING_JUSTIFICATION",
+    EVENTEVENTTYPE_SHIELDJUSTIFICATIONAPPROVAL = "SHIELD_JUSTIFICATION_APPROVAL",
+    EVENTEVENTTYPE_STORAGEEXPIRATION = "STORAGE_EXPIRATION",
+    EVENTEVENTTYPE_TAGITEMCREATE = "TAG_ITEM_CREATE",
+    EVENTEVENTTYPE_TASKASSIGNMENTCREATE = "TASK_ASSIGNMENT_CREATE",
+    EVENTEVENTTYPE_TASKASSIGNMENTDELETE = "TASK_ASSIGNMENT_DELETE",
+    EVENTEVENTTYPE_TASKASSIGNMENTUPDATE = "TASK_ASSIGNMENT_UPDATE",
+    EVENTEVENTTYPE_TASKCREATE = "TASK_CREATE",
+    EVENTEVENTTYPE_TASKUPDATE = "TASK_UPDATE",
+    EVENTEVENTTYPE_TERMSOFSERVICEACCEPT = "TERMS_OF_SERVICE_ACCEPT",
+    EVENTEVENTTYPE_TERMSOFSERVICEREJECT = "TERMS_OF_SERVICE_REJECT",
+    EVENTEVENTTYPE_UNDELETE = "UNDELETE",
+    EVENTEVENTTYPE_UNLOCK = "UNLOCK",
+    EVENTEVENTTYPE_UNSHARE = "UNSHARE",
+    EVENTEVENTTYPE_UPDATECOLLABORATIONEXPIRATION = "UPDATE_COLLABORATION_EXPIRATION",
+    EVENTEVENTTYPE_UPDATESHAREEXPIRATION = "UPDATE_SHARE_EXPIRATION",
+    EVENTEVENTTYPE_UPLOAD = "UPLOAD",
+    EVENTEVENTTYPE_USERAUTHENTICATEOAUTH2ACCESSTOKENCREATE = "USER_AUTHENTICATE_OAUTH2_ACCESS_TOKEN_CREATE",
+    EVENTEVENTTYPE_WATERMARKLABELCREATE = "WATERMARK_LABEL_CREATE",
+    EVENTEVENTTYPE_WATERMARKLABELDELETE = "WATERMARK_LABEL_DELETE"
+}
+
+public enum WebhookType {
+    WEBHOOKTYPE_WEBHOOK = "webhook"
+}
+
+public enum FilesfileIdaddSharedLinkSharedLinkAccess {
+    FILESFILEIDADDSHAREDLINKSHAREDLINKACCESS_OPEN = "open",
+    FILESFILEIDADDSHAREDLINKSHAREDLINKACCESS_COMPANY = "company",
+    FILESFILEIDADDSHAREDLINKSHAREDLINKACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum SkillcardInvocationType {
+    SKILLCARDINVOCATIONTYPE_SKILLINVOCATION = "skill_invocation"
+}
+
+public enum TermsOfServiceUserStatusesTosType {
+    TERMSOFSERVICEUSERSTATUSESTOSTYPE_TERMSOFSERVICE = "terms_of_service"
+}
+
+public enum TaskAssignmentType {
+    TASKASSIGNMENTTYPE_TASKASSIGNMENT = "task_assignment"
+}
+
+public enum TaskAssignmentResolutionState {
+    TASKASSIGNMENTRESOLUTIONSTATE_COMPLETED = "completed",
+    TASKASSIGNMENTRESOLUTIONSTATE_INCOMPLETE = "incomplete",
+    TASKASSIGNMENTRESOLUTIONSTATE_APPROVED = "approved",
+    TASKASSIGNMENTRESOLUTIONSTATE_REJECTED = "rejected"
+}
+
+public enum EventSourceItemType {
+    EVENTSOURCEITEMTYPE_FILE = "file",
+    EVENTSOURCEITEMTYPE_FOLDER = "folder"
+}
+
+public enum UserBaseType {
+    USERBASETYPE_USER = "user"
+}
+
+public enum FileRequestType {
+    FILEREQUESTTYPE_FILEREQUEST = "file-request"
+}
+
+public enum FileRequestStatus {
+    FILEREQUESTSTATUS_ACTIVE = "active",
+    FILEREQUESTSTATUS_INACTIVE = "inactive"
+}
+
+public enum FilesfileIdupdateSharedLinkSharedLinkAccess {
+    FILESFILEIDUPDATESHAREDLINKSHAREDLINKACCESS_OPEN = "open",
+    FILESFILEIDUPDATESHAREDLINKSHAREDLINKACCESS_COMPANY = "company",
+    FILESFILEIDUPDATESHAREDLINKSHAREDLINKACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum StoragePolicyAssignmentsStoragePolicyType {
+    STORAGEPOLICYASSIGNMENTSSTORAGEPOLICYTYPE_STORAGEPOLICY = "storage_policy"
+}
+
+public enum ZipDownloadStatusState {
+    ZIPDOWNLOADSTATUSSTATE_INPROGRESS = "in_progress",
+    ZIPDOWNLOADSTATUSSTATE_FAILED = "failed",
+    ZIPDOWNLOADSTATUSSTATE_SUCCESS = "success"
+}
+
+public enum SkillInvocationType {
+    SKILLINVOCATIONTYPE_SKILLINVOCATION = "skill_invocation"
+}
+
+public enum GroupBaseType {
+    GROUPBASETYPE_GROUP = "group"
+}
+
+public enum TasksItemType {
+    TASKSITEMTYPE_FILE = "file"
+}
+
+public enum TaskAssignmentsTaskType {
+    TASKASSIGNMENTSTASKTYPE_TASK = "task"
+}
+
+public enum RetentionPolicyAssignmentType {
+    RETENTIONPOLICYASSIGNMENTTYPE_RETENTIONPOLICYASSIGNMENT = "retention_policy_assignment"
+}
+
+public enum CollaborationsAccessibleByType {
+    COLLABORATIONSACCESSIBLEBYTYPE_USER = "user",
+    COLLABORATIONSACCESSIBLEBYTYPE_GROUP = "group"
+}
+
+public enum SkillType {
+    SKILLTYPE_SKILL = "skill"
+}
+
+public enum SkillCardType {
+    SKILLCARDTYPE_SKILLCARD = "skill_card"
+}
+
+public enum SkillCardSkillCardType {
+    SKILLCARDSKILLCARDTYPE_TRANSCRIPT = "transcript",
+    SKILLCARDSKILLCARDTYPE_KEYWORD = "keyword",
+    SKILLCARDSKILLCARDTYPE_TIMELINE = "timeline",
+    SKILLCARDSKILLCARDTYPE_STATUS = "status"
+}
+
+public enum LegalholdpolicyMiniType {
+    LEGALHOLDPOLICYMINITYPE_LEGALHOLDPOLICY = "legal_hold_policy"
+}
+
+public enum WebhookInvocationType {
+    WEBHOOKINVOCATIONTYPE_WEBHOOKEVENT = "webhook_event"
+}
+
+public enum WebhookInvocationTrigger {
+    WEBHOOKINVOCATIONTRIGGER_FILEUPLOADED = "FILE.UPLOADED",
+    WEBHOOKINVOCATIONTRIGGER_FILEPREVIEWED = "FILE.PREVIEWED",
+    WEBHOOKINVOCATIONTRIGGER_FILEDOWNLOADED = "FILE.DOWNLOADED",
+    WEBHOOKINVOCATIONTRIGGER_FILETRASHED = "FILE.TRASHED",
+    WEBHOOKINVOCATIONTRIGGER_FILEDELETED = "FILE.DELETED",
+    WEBHOOKINVOCATIONTRIGGER_FILERESTORED = "FILE.RESTORED",
+    WEBHOOKINVOCATIONTRIGGER_FILECOPIED = "FILE.COPIED",
+    WEBHOOKINVOCATIONTRIGGER_FILEMOVED = "FILE.MOVED",
+    WEBHOOKINVOCATIONTRIGGER_FILELOCKED = "FILE.LOCKED",
+    WEBHOOKINVOCATIONTRIGGER_FILEUNLOCKED = "FILE.UNLOCKED",
+    WEBHOOKINVOCATIONTRIGGER_FILERENAMED = "FILE.RENAMED",
+    WEBHOOKINVOCATIONTRIGGER_COMMENTCREATED = "COMMENT.CREATED",
+    WEBHOOKINVOCATIONTRIGGER_COMMENTUPDATED = "COMMENT.UPDATED",
+    WEBHOOKINVOCATIONTRIGGER_COMMENTDELETED = "COMMENT.DELETED",
+    WEBHOOKINVOCATIONTRIGGER_TASKASSIGNMENTCREATED = "TASK_ASSIGNMENT.CREATED",
+    WEBHOOKINVOCATIONTRIGGER_TASKASSIGNMENTUPDATED = "TASK_ASSIGNMENT.UPDATED",
+    WEBHOOKINVOCATIONTRIGGER_METADATAINSTANCECREATED = "METADATA_INSTANCE.CREATED",
+    WEBHOOKINVOCATIONTRIGGER_METADATAINSTANCEUPDATED = "METADATA_INSTANCE.UPDATED",
+    WEBHOOKINVOCATIONTRIGGER_METADATAINSTANCEDELETED = "METADATA_INSTANCE.DELETED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERCREATED = "FOLDER.CREATED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERRENAMED = "FOLDER.RENAMED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERDOWNLOADED = "FOLDER.DOWNLOADED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERRESTORED = "FOLDER.RESTORED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERDELETED = "FOLDER.DELETED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERCOPIED = "FOLDER.COPIED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERMOVED = "FOLDER.MOVED",
+    WEBHOOKINVOCATIONTRIGGER_FOLDERTRASHED = "FOLDER.TRASHED",
+    WEBHOOKINVOCATIONTRIGGER_WEBHOOKDELETED = "WEBHOOK.DELETED",
+    WEBHOOKINVOCATIONTRIGGER_COLLABORATIONCREATED = "COLLABORATION.CREATED",
+    WEBHOOKINVOCATIONTRIGGER_COLLABORATIONACCEPTED = "COLLABORATION.ACCEPTED",
+    WEBHOOKINVOCATIONTRIGGER_COLLABORATIONREJECTED = "COLLABORATION.REJECTED",
+    WEBHOOKINVOCATIONTRIGGER_COLLABORATIONREMOVED = "COLLABORATION.REMOVED",
+    WEBHOOKINVOCATIONTRIGGER_COLLABORATIONUPDATED = "COLLABORATION.UPDATED",
+    WEBHOOKINVOCATIONTRIGGER_SHAREDLINKDELETED = "SHARED_LINK.DELETED",
+    WEBHOOKINVOCATIONTRIGGER_SHAREDLINKCREATED = "SHARED_LINK.CREATED",
+    WEBHOOKINVOCATIONTRIGGER_SHAREDLINKUPDATED = "SHARED_LINK.UPDATED"
+}
+
+public enum GroupMembershipType {
+    GROUPMEMBERSHIPTYPE_GROUPMEMBERSHIP = "group_membership"
+}
+
+public enum GroupMembershipRole {
+    GROUPMEMBERSHIPROLE_MEMBER = "member",
+    GROUPMEMBERSHIPROLE_ADMIN = "admin"
+}
+
+public enum RetentionPoliciesCustomNotificationRecipientsType {
+    RETENTIONPOLICIESCUSTOMNOTIFICATIONRECIPIENTSTYPE_USER = "user"
+}
+
+public enum Body55Direction {
+    BODY55DIRECTION_INBOUND = "inbound",
+    BODY55DIRECTION_OUTBOUND = "outbound",
+    BODY55DIRECTION_BOTH = "both"
+}
+
+public enum FileRequestUpdateRequestStatus {
+    FILEREQUESTUPDATEREQUESTSTATUS_ACTIVE = "active",
+    FILEREQUESTUPDATEREQUESTSTATUS_INACTIVE = "inactive"
+}
+
+public enum ZipdownloadrequestItemsType {
+    ZIPDOWNLOADREQUESTITEMSTYPE_FILE = "file",
+    ZIPDOWNLOADREQUESTITEMSTYPE_FOLDER = "folder."
+}
+
+public enum FolderBaseType {
+    FOLDERBASETYPE_FOLDER = "folder"
+}
+
+public enum RetentionPolicyAssignmentsAssignToType {
+    RETENTIONPOLICYASSIGNMENTSASSIGNTOTYPE_ENTERPRISE = "enterprise",
+    RETENTIONPOLICYASSIGNMENTSASSIGNTOTYPE_FOLDER = "folder",
+    RETENTIONPOLICYASSIGNMENTSASSIGNTOTYPE_METADATATEMPLATE = "metadata_template"
+}
+
+public enum WeblinkBaseType {
+    WEBLINKBASETYPE_WEBLINK = "web_link"
+}
+
+public enum SkillinvocationTokenReadTokenType {
+    SKILLINVOCATIONTOKENREADTOKENTYPE_BEARER = "bearer"
+}
+
+public enum FoldersfolderIdwatermarkWatermarkImprint {
+    FOLDERSFOLDERIDWATERMARKWATERMARKIMPRINT_DEFAULT = "default"
+}
+
+public enum TermsOfServiceUserStatusType {
+    TERMSOFSERVICEUSERSTATUSTYPE_TERMSOFSERVICEUSERSTATUS = "terms_of_service_user_status"
+}
+
+public enum Body45PolicyType {
+    BODY45POLICYTYPE_FINITE = "finite",
+    BODY45POLICYTYPE_INDEFINITE = "indefinite"
+}
+
+public enum Body45DispositionAction {
+    BODY45DISPOSITIONACTION_PERMANENTLYDELETE = "permanently_delete",
+    BODY45DISPOSITIONACTION_REMOVERETENTION = "remove_retention"
+}
+
+public enum Body44Status {
+    BODY44STATUS_INVOKED = "invoked",
+    BODY44STATUS_PROCESSING = "processing",
+    BODY44STATUS_SUCCESS = "success",
+    BODY44STATUS_TRANSIENTFAILURE = "transient_failure",
+    BODY44STATUS_PERMANENTFAILURE = "permanent_failure"
+}
+
+public enum Body46DispositionAction {
+    BODY46DISPOSITIONACTION_PERMANENTLYDELETE = "permanently_delete",
+    BODY46DISPOSITIONACTION_REMOVERETENTION = "remove_retention"
+}
+
+public enum Body46Status {
+    BODY46STATUS_RETIRED = "retired"
+}
+
+public enum Body52Status {
+    BODY52STATUS_ENABLED = "enabled",
+    BODY52STATUS_DISABLED = "disabled"
+}
+
+public enum Body51Status {
+    BODY51STATUS_ENABLED = "enabled",
+    BODY51STATUS_DISABLED = "disabled"
+}
+
+public enum Body51TosType {
+    BODY51TOSTYPE_EXTERNAL = "external",
+    BODY51TOSTYPE_MANAGED = "managed"
+}
+
+public enum SkillinvocationStatusState {
+    SKILLINVOCATIONSTATUSSTATE_INVOKED = "invoked",
+    SKILLINVOCATIONSTATUSSTATE_PROCESSING = "processing",
+    SKILLINVOCATIONSTATUSSTATE_SUCCESS = "success",
+    SKILLINVOCATIONSTATUSSTATE_TRANSIENTFAILURE = "transient_failure",
+    SKILLINVOCATIONSTATUSSTATE_PERMANENTFAILURE = "permanent_failure"
+}
+
+public enum FolderFolderUploadEmailAccess {
+    FOLDERFOLDERUPLOADEMAILACCESS_OPEN = "open",
+    FOLDERFOLDERUPLOADEMAILACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum DevicePinnerType {
+    DEVICEPINNERTYPE_DEVICEPINNER = "device_pinner"
+}
+
+public enum Body39InvitabilityLevel {
+    BODY39INVITABILITYLEVEL_ADMINSONLY = "admins_only",
+    BODY39INVITABILITYLEVEL_ADMINSANDMEMBERS = "admins_and_members",
+    BODY39INVITABILITYLEVEL_ALLMANAGEDUSERS = "all_managed_users"
+}
+
+public enum Body39MemberViewabilityLevel {
+    BODY39MEMBERVIEWABILITYLEVEL_ADMINSONLY = "admins_only",
+    BODY39MEMBERVIEWABILITYLEVEL_ADMINSANDMEMBERS = "admins_and_members",
+    BODY39MEMBERVIEWABILITYLEVEL_ALLMANAGEDUSERS = "all_managed_users"
+}
+
+public enum Body34Role {
+    BODY34ROLE_COADMIN = "coadmin",
+    BODY34ROLE_USER = "user"
+}
+
+public enum Body34Status {
+    BODY34STATUS_ACTIVE = "active",
+    BODY34STATUS_INACTIVE = "inactive",
+    BODY34STATUS_CANNOTDELETEEDIT = "cannot_delete_edit",
+    BODY34STATUS_CANNOTDELETEEDITUPLOAD = "cannot_delete_edit_upload"
+}
+
+public enum Body33Role {
+    BODY33ROLE_COADMIN = "coadmin",
+    BODY33ROLE_USER = "user"
+}
+
+public enum Body33Status {
+    BODY33STATUS_ACTIVE = "active",
+    BODY33STATUS_INACTIVE = "inactive",
+    BODY33STATUS_CANNOTDELETEEDIT = "cannot_delete_edit",
+    BODY33STATUS_CANNOTDELETEEDITUPLOAD = "cannot_delete_edit_upload"
+}
+
+public enum Body38InvitabilityLevel {
+    BODY38INVITABILITYLEVEL_ADMINSONLY = "admins_only",
+    BODY38INVITABILITYLEVEL_ADMINSANDMEMBERS = "admins_and_members",
+    BODY38INVITABILITYLEVEL_ALLMANAGEDUSERS = "all_managed_users"
+}
+
+public enum Body38MemberViewabilityLevel {
+    BODY38MEMBERVIEWABILITYLEVEL_ADMINSONLY = "admins_only",
+    BODY38MEMBERVIEWABILITYLEVEL_ADMINSANDMEMBERS = "admins_and_members",
+    BODY38MEMBERVIEWABILITYLEVEL_ALLMANAGEDUSERS = "all_managed_users"
+}
+
+public enum FoldersfolderIdupdateSharedLinkSharedLinkAccess {
+    FOLDERSFOLDERIDUPDATESHAREDLINKSHAREDLINKACCESS_OPEN = "open",
+    FOLDERSFOLDERIDUPDATESHAREDLINKSHAREDLINKACCESS_COMPANY = "company",
+    FOLDERSFOLDERIDUPDATESHAREDLINKSHAREDLINKACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum Body41Role {
+    BODY41ROLE_MEMBER = "member",
+    BODY41ROLE_ADMIN = "admin"
+}
+
+public enum Body40Role {
+    BODY40ROLE_MEMBER = "member",
+    BODY40ROLE_ADMIN = "admin"
+}
+
+public enum Body8Type {
+    BODY8TYPE_FILEVERSION = "file_version"
+}
+
+public enum StoragePolicyAssignmentsAssignedToType {
+    STORAGEPOLICYASSIGNMENTSASSIGNEDTOTYPE_USER = "user",
+    STORAGEPOLICYASSIGNMENTSASSIGNEDTOTYPE_ENTERPRISE = "enterprise"
+}
+
+public enum Body23ResolutionState {
+    BODY23RESOLUTIONSTATE_COMPLETED = "completed",
+    BODY23RESOLUTIONSTATE_INCOMPLETE = "incomplete",
+    BODY23RESOLUTIONSTATE_APPROVED = "approved",
+    BODY23RESOLUTIONSTATE_REJECTED = "rejected"
+}
+
+public enum FilesfileIdLockAccess {
+    FILESFILEIDLOCKACCESS_LOCK = "lock"
+}
+
+public enum Body21Action {
+    BODY21ACTION_REVIEW = "review",
+    BODY21ACTION_COMPLETE = "complete"
+}
+
+public enum Body21CompletionRule {
+    BODY21COMPLETIONRULE_ALLASSIGNEES = "all_assignees",
+    BODY21COMPLETIONRULE_ANYASSIGNEE = "any_assignee"
+}
+
+public enum StatusSkillCardType {
+    STATUSSKILLCARDTYPE_SKILLCARD = "skill_card"
+}
+
+public enum StatusSkillCardSkillCardType {
+    STATUSSKILLCARDSKILLCARDTYPE_STATUS = "status"
+}
+
+public enum Body20Action {
+    BODY20ACTION_REVIEW = "review",
+    BODY20ACTION_COMPLETE = "complete"
+}
+
+public enum Body20CompletionRule {
+    BODY20COMPLETIONRULE_ALLASSIGNEES = "all_assignees",
+    BODY20COMPLETIONRULE_ANYASSIGNEE = "any_assignee"
+}
+
+public enum DevicepinnersOrderBy {
+    DEVICEPINNERSORDERBY_ID = "id"
+}
+
+public enum DevicepinnersOrderDirection {
+    DEVICEPINNERSORDERDIRECTION_ASC = "asc",
+    DEVICEPINNERSORDERDIRECTION_DESC = "desc"
+}
+
+public enum CommentBaseType {
+    COMMENTBASETYPE_COMMENT = "comment"
+}
+
+public enum FileBaseType {
+    FILEBASETYPE_FILE = "file"
+}
+
+public enum EnterpriseType {
+    ENTERPRISETYPE_ENTERPRISE = "enterprise"
+}
+
+public enum CommentsItemType {
+    COMMENTSITEMTYPE_FILE = "file",
+    COMMENTSITEMTYPE_COMMENT = "comment"
+}
+
+public enum SkillInvocationsskillIdFileType {
+    SKILLINVOCATIONSSKILLIDFILETYPE_FILE = "file"
+}
+
+public enum ClientErrorType {
+    CLIENTERRORTYPE_ERROR = "error"
+}
+
+public enum ClientErrorCode {
+    CLIENTERRORCODE_CREATED = "created",
+    CLIENTERRORCODE_ACCEPTED = "accepted",
+    CLIENTERRORCODE_NOCONTENT = "no_content",
+    CLIENTERRORCODE_REDIRECT = "redirect",
+    CLIENTERRORCODE_NOTMODIFIED = "not_modified",
+    CLIENTERRORCODE_BADREQUEST = "bad_request",
+    CLIENTERRORCODE_UNAUTHORIZED = "unauthorized",
+    CLIENTERRORCODE_FORBIDDEN = "forbidden",
+    CLIENTERRORCODE_NOTFOUND = "not_found",
+    CLIENTERRORCODE_METHODNOTALLOWED = "method_not_allowed",
+    CLIENTERRORCODE_CONFLICT = "conflict",
+    CLIENTERRORCODE_PRECONDITIONFAILED = "precondition_failed",
+    CLIENTERRORCODE_TOOMANYREQUESTS = "too_many_requests",
+    CLIENTERRORCODE_INTERNALSERVERERROR = "internal_server_error",
+    CLIENTERRORCODE_UNAVAILABLE = "unavailable",
+    CLIENTERRORCODE_ITEMNAMEINVALID = "item_name_invalid"
+}
+
+public enum Body19Role {
+    BODY19ROLE_EDITOR = "editor",
+    BODY19ROLE_VIEWER = "viewer",
+    BODY19ROLE_PREVIEWER = "previewer",
+    BODY19ROLE_UPLOADER = "uploader",
+    BODY19ROLE_PREVIEWERUPLOADER = "previewer uploader",
+    BODY19ROLE_VIEWERUPLOADER = "viewer uploader",
+    BODY19ROLE_COOWNER = "co-owner"
+}
+
+public enum TaskType {
+    TASKTYPE_TASK = "task"
+}
+
+public enum TaskAction {
+    TASKACTION_REVIEW = "review",
+    TASKACTION_COMPLETE = "complete"
+}
+
+public enum TaskCompletionRule {
+    TASKCOMPLETIONRULE_ALLASSIGNEES = "all_assignees",
+    TASKCOMPLETIONRULE_ANYASSIGNEE = "any_assignee"
+}
+
+public enum Body18Role {
+    BODY18ROLE_EDITOR = "editor",
+    BODY18ROLE_VIEWER = "viewer",
+    BODY18ROLE_PREVIEWER = "previewer",
+    BODY18ROLE_UPLOADER = "uploader",
+    BODY18ROLE_PREVIEWERUPLOADER = "previewer uploader",
+    BODY18ROLE_VIEWERUPLOADER = "viewer uploader",
+    BODY18ROLE_COOWNER = "co-owner",
+    BODY18ROLE_OWNER = "owner"
+}
+
+public enum Body18Status {
+    BODY18STATUS_PENDING = "pending",
+    BODY18STATUS_ACCEPTED = "accepted",
+    BODY18STATUS_REJECTED = "rejected"
+}
+
+public enum RecentItemInteractionType {
+    RECENTITEMINTERACTIONTYPE_ITEMPREVIEW = "item_preview",
+    RECENTITEMINTERACTIONTYPE_ITEMUPLOAD = "item_upload",
+    RECENTITEMINTERACTIONTYPE_ITEMCOMMENT = "item_comment",
+    RECENTITEMINTERACTIONTYPE_ITEMOPEN = "item_open",
+    RECENTITEMINTERACTIONTYPE_ITEMMODIFY = "item_modify"
+}
+
+public enum Body12Access {
+    BODY12ACCESS_OPEN = "open",
+    BODY12ACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum Body12SyncState {
+    BODY12SYNCSTATE_SYNCED = "synced",
+    BODY12SYNCSTATE_NOTSYNCED = "not_synced",
+    BODY12SYNCSTATE_PARTIALLYSYNCED = "partially_synced"
+}
+
+public enum KeywordSkillCardType {
+    KEYWORDSKILLCARDTYPE_SKILLCARD = "skill_card"
+}
+
+public enum KeywordSkillCardSkillCardType {
+    KEYWORDSKILLCARDSKILLCARDTYPE_KEYWORD = "keyword"
+}
+
+public enum Body10SyncState {
+    BODY10SYNCSTATE_SYNCED = "synced",
+    BODY10SYNCSTATE_NOTSYNCED = "not_synced",
+    BODY10SYNCSTATE_PARTIALLYSYNCED = "partially_synced"
+}
+
+public enum Body10Access {
+    BODY10ACCESS_OPEN = "open",
+    BODY10ACCESS_COMPANY = "company",
+    BODY10ACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum CollaborationAllowlistEnterpriseType {
+    COLLABORATIONALLOWLISTENTERPRISETYPE_ENTERPRISE = "enterprise"
+}
+
+public enum AccessTokenTokenType {
+    ACCESSTOKENTOKENTYPE_BEARER = "bearer"
+}
+
+public enum AccessTokenIssuedTokenType {
+    ACCESSTOKENISSUEDTOKENTYPE_URNIETFPARAMSOAUTHTOKENTYPEACCESSTOKEN = "urn:ietf:params:oauth:token-type:access_token"
+}
+
+public enum CollaborationAllowlistExemptTargetType {
+    COLLABORATIONALLOWLISTEXEMPTTARGETTYPE_COLLABORATIONWHITELIST = "collaboration_whitelist"
+}
+
+public enum FoldersfolderIdaddSharedLinkSharedLinkAccess {
+    FOLDERSFOLDERIDADDSHAREDLINKSHAREDLINKACCESS_OPEN = "open",
+    FOLDERSFOLDERIDADDSHAREDLINKSHAREDLINKACCESS_COMPANY = "company",
+    FOLDERSFOLDERIDADDSHAREDLINKSHAREDLINKACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum TranscriptskillcardSkillType {
+    TRANSCRIPTSKILLCARDSKILLTYPE_SERVICE = "service"
+}
+
+public enum SkillcardSkillType {
+    SKILLCARDSKILLTYPE_SERVICE = "service"
+}
+
+public enum SkillcardStatusCode {
+    SKILLCARDSTATUSCODE_INVOKED = "invoked",
+    SKILLCARDSTATUSCODE_PROCESSING = "processing",
+    SKILLCARDSTATUSCODE_SUCCESS = "success",
+    SKILLCARDSTATUSCODE_TRANSIENTFAILURE = "transient_failure",
+    SKILLCARDSTATUSCODE_PERMANENTFAILURE = "permanent_failure"
+}
+
+public enum FilesfileIdSharedLinkAccess {
+    FILESFILEIDSHAREDLINKACCESS_OPEN = "open",
+    FILESFILEIDSHAREDLINKACCESS_COMPANY = "company",
+    FILESFILEIDSHAREDLINKACCESS_COLLABORATORS = "collaborators"
+}
+
+public enum FilerequestcopyrequestFolderType {
+    FILEREQUESTCOPYREQUESTFOLDERTYPE_FOLDER = "folder"
+}
+
+public enum CollectionType {
+    COLLECTIONTYPE_COLLECTION = "collection"
+}
+
+public enum CollectionName {
+    COLLECTIONNAME_FAVORITES = "Favorites"
+}
+
+public enum CollectionCollectionType {
+    COLLECTIONCOLLECTIONTYPE_FAVORITES = "favorites"
+}
+
+public enum TranscriptskillcardInvocationType {
+    TRANSCRIPTSKILLCARDINVOCATIONTYPE_SKILLINVOCATION = "skill_invocation"
+}
+
+public enum FileVersionRetentionType {
+    FILEVERSIONRETENTIONTYPE_FILEVERSIONRETENTION = "file_version_retention"
+}
+
+public enum RetentionpolicyBaseType {
+    RETENTIONPOLICYBASETYPE_RETENTIONPOLICY = "retention_policy"
+}
+
+public enum UploadSessionType {
+    UPLOADSESSIONTYPE_UPLOADSESSION = "upload_session"
+}
+
+public enum ClassificationtemplateFieldsType {
+    CLASSIFICATIONTEMPLATEFIELDSTYPE_ENUM = "enum"
+}
+
+public enum ClassificationtemplateFieldsKey {
+    CLASSIFICATIONTEMPLATEFIELDSKEY_BOXSECURITYCLASSIFICATIONKEY = "Box__Security__Classification__Key"
+}
+
+public enum ClassificationtemplateFieldsDisplayName {
+    CLASSIFICATIONTEMPLATEFIELDSDISPLAYNAME_CLASSIFICATION = "Classification"
+}
+
+public enum TermsofserviceMiniType {
+    TERMSOFSERVICEMINITYPE_TERMSOFSERVICE = "terms_of_service"
+}
+
+public enum LegalholdpolicyassignmentBaseType {
+    LEGALHOLDPOLICYASSIGNMENTBASETYPE_LEGALHOLDPOLICYASSIGNMENT = "legal_hold_policy_assignment"
+}
+
+public enum FileversionBaseType {
+    FILEVERSIONBASETYPE_FILEVERSION = "file_version"
+}
+
+public enum EmailAliasType {
+    EMAILALIASTYPE_EMAILALIAS = "email_alias"
+}
+
+public enum CollaborationType {
+    COLLABORATIONTYPE_COLLABORATION = "collaboration"
+}
+
+public enum CollaborationRole {
+    COLLABORATIONROLE_EDITOR = "editor",
+    COLLABORATIONROLE_VIEWER = "viewer",
+    COLLABORATIONROLE_PREVIEWER = "previewer",
+    COLLABORATIONROLE_UPLOADER = "uploader",
+    COLLABORATIONROLE_PREVIEWERUPLOADER = "previewer uploader",
+    COLLABORATIONROLE_VIEWERUPLOADER = "viewer uploader",
+    COLLABORATIONROLE_COOWNER = "co-owner",
+    COLLABORATIONROLE_OWNER = "owner"
+}
+
+public enum CollaborationStatus {
+    COLLABORATIONSTATUS_ACCEPTED = "accepted",
+    COLLABORATIONSTATUS_PENDING = "pending",
+    COLLABORATIONSTATUS_REJECTED = "rejected"
+}
+
+public enum CollaborationAllowlistEntryType {
+    COLLABORATIONALLOWLISTENTRYTYPE_COLLABORATIONWHITELISTENTRY = "collaboration_whitelist_entry"
+}
+
+public enum CollaborationAllowlistEntryDirection {
+    COLLABORATIONALLOWLISTENTRYDIRECTION_INBOUND = "inbound",
+    COLLABORATIONALLOWLISTENTRYDIRECTION_OUTBOUND = "outbound",
+    COLLABORATIONALLOWLISTENTRYDIRECTION_BOTH = "both"
+}
+
+public enum InviteType {
+    INVITETYPE_INVITE = "invite"
+}

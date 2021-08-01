@@ -1,13 +1,17 @@
 ## Overview
 
-Livestorm connector consume the data exposed in https://api.livestorm.co/v1. It is supporting the operations such as listEvents, createEvent, getEventByID, listSessionByEvent, createEventSession, listSessionPeople and registerPeopleForSession.
+This is a generated connector for [Livestorm API v1](https://developers.livestorm.co/docs) OpenAPI specification. 
+
+Livestorm is a browser based online web conferencing software used to share real-time live streams. It can be used to power remote live meetings, product demos, sales webinars, online lessons, onboarding sessions, more.
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 * Create [Livestorm Account](https://app.livestorm.co/#/signup)
 * Obtaining tokens
-        
-    Follow [this link](https://app.livestorm.co/#/login) and obtain tokens by navigating to `Account settings`->`Integration`->`Public API`->`Generate a token`.
+    1. Log into [Livestorm Account](https://app.livestorm.co/#/login)
+    2. Click the `Account settings`
+    3. Navigate to `Integration` and choose `Public API`
+    4. Click `Generate a token` to create a token      
 
 ## Quickstart
 

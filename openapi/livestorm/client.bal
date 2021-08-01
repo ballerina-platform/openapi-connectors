@@ -18,26 +18,30 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Please visit [here](https://app.livestorm.co) and obtain an `API key` in the settings.
+# Visit [here](https://app.livestorm.co) and obtain an `API key` in the settings.
 #
-# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}` 
+# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`   
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# Client endpoint for Livestorm Public API
-# The Livestorm API is organized around REST principles.
+# This is a generated connector for [Livestorm API v1](https://developers.livestorm.co/docs) OpenAPI specification.
+# Client endpoint for Livestorm Public API.
+# Livestorm is a browser based online web conferencing software used to share real-time live streams. 
+# It can be used to power remote live meetings, product demos, sales webinars, online lessons, onboarding sessions, more.
 # In addition, all request and response bodies, including errors, are encoded in JSON format.
 @display {label: "Livestorm Public API Client"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
-    # Create an [Livestorm Account](https://app.livestorm.co/#/signup) and obtain tokens by navigating to `Account settings`->`Integration`->`Public API`->`Generate a token`.
+    # Create an [Livestorm Account](https://app.livestorm.co/#/signup) 
+    # and obtain tokens following [this guide](https://support.livestorm.co/category/4-getting-started).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.livestorm.co/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
@@ -56,7 +60,7 @@ public isolated client class Client {
         string  path = string `/events`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterTitle": filterTitle, "filterEveryoneCanSpeak": filterEveryoneCanSpeak};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
         return response;
@@ -68,7 +72,7 @@ public isolated client class Client {
     @display {label: "Create Event"}
     remote isolated function createEvent(Body payload) returns InlineResponse201|error {
         string  path = string `/events`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -83,7 +87,7 @@ public isolated client class Client {
     @display {label: "Get Event By Event ID"}
     remote isolated function getEventByID(@display {label: "Event ID"} string id) returns InlineResponse2001|error {
         string  path = string `/events/${id}`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
         return response;
@@ -102,7 +106,7 @@ public isolated client class Client {
         string  path = string `/events/${id}/sessions`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterStatus": filterStatus, "filterDateFrom": filterDateFrom, "filterDateTo": filterDateTo, "include": include};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2002 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2002);
         return response;
@@ -114,7 +118,7 @@ public isolated client class Client {
     # + return - Create event session response
     remote isolated function createEventSession(string id, Body1 payload) returns InlineResponse2011|error {
         string  path = string `/events/${id}/sessions`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -136,7 +140,7 @@ public isolated client class Client {
         string  path = string `/sessions/${id}/people`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterRole": filterRole, "filterAttended": filterAttended, "filterEmail": filterEmail, "include": include};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2003 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2003);
         return response;
@@ -148,7 +152,7 @@ public isolated client class Client {
     # + return - Register participant response
     remote isolated function registerPeopleForSession(string id, Body2 payload) returns InlineResponse2012|error {
         string  path = string `/sessions/${id}/people`;
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -162,7 +166,7 @@ public isolated client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -196,7 +200,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

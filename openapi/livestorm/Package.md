@@ -1,14 +1,14 @@
-Connects to Livestorm from Ballerina
+Connects to [Livestorm API](https://developers.livestorm.co/docs) from Ballerina
 
 ## Package overview
 The `ballerinax/livestorm` is a [Ballerina](https://ballerina.io/) connector for Livestorm.
-This package provides the capability to access Livestorm API operations.
+This package provides the capability to access Livestorm API operations such as creating events and meetings.
 
 ### Compatibility
-|                    |      Version     |
-|--------------------|------------------|
-| Ballerina Language | Swan Lake Beta 2 |
-|   Livestorm API    |        V1        |
+|                    | Version                    |
+|--------------------|----------------------------|
+| Ballerina Language | Ballerina Swan Lake Beta 2 |
+| Livestorm API      | V1                         |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)

@@ -1,14 +1,14 @@
-Connects to Box Platform API from Ballerina.
+Connects to [Box Platform API](https://developer.box.com/reference/) from Ballerina.
 
 ## Package overview
 The `ballerinax/boxapi` is a [Ballerina](https://ballerina.io/) connector for Box Platform.
-This package provides the capability to access Box Platform.
+This package provides the capability to manipulate files and folders, management of users within an enterprise by using Box Platform.
 
 ### Compatibility
-|                    |     Version      |
-|--------------------|------------------|
-| Ballerina Language | Swan Lake Beta 2 |
-|  Box Platform API  |        V2        |
+|                    | Version                    |
+|--------------------|----------------------------|
+| Ballerina Language | Ballerina Swan Lake Beta 2 |
+| Box Platform API   | V2.0.0                     |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](link)

@@ -1,13 +1,16 @@
 ## Overview
 
-Box Platform API connector consume the data exposed in https://api.box.com/2.0. It is currently supporting operations except metadata operations.
+This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification. 
+
+Box Platform provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
-* Create [Box platform account](https://account.box.com/login)
+* Create [Box Platform Account](https://www.box.com/pricing/) by selecting the pricing plan
 * Obtaining tokens
-        
-    Follow [this link](https://account.box.com/login) and obtain the needed tokens according to the authentication used.
+    1. Go to [Box Platform Account](https://account.box.com/login) and log into the account
+    2. Navigate to developer console, create new app and get needed credentials
+    3. Create and obtain bearer token credentials and store somewhere securely        
 
 ## Quickstart
 

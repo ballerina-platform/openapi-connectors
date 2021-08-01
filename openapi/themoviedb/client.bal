@@ -18,219 +18,90 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Please visit [here](https://wwww.themoviedb.org/) and obtain an `API Key` in the settings.
+# Visit [here](https://wwww.themoviedb.org/) and obtain an `API key` in the settings.
 #
-# + apiKeys - Provide your API Key as `api_key`. Eg: `{"api_key" : "<Your API Key>"}` 
+# + apiKeys - Provide your API key as `api_key`. Eg: `{"api_key" : "<your API key>"}`
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# Get popular movies response
-public type GetPopularMoviesResponse record {
-    # Specify which page to query
-    int page;
-    # Movie List Object
-    MovieListObject[] results;
-    # Total number of results
-    int total_results;
-    # Total number of pages
-    int total_pages;
-};
-
-# Get upcoming movies response
-public type GetUpcomingMoviesResponse record {
-    # Specify which page to query
-    int page;
-    # Movie List Object
-    MovieListObject[] results;
-    # Release date range
-    ReleaseDateRange dates;
-    # Total number of pages
-    int total_pages;
-    # Total number of results
-    anydata total_results;
-};
-
-# Get movie by movie ID response
-public type GetMovieByMovieIdResponse record {
-    # Adult content or not
-    boolean adult?;
-    # Backdrop image path
-    string? backdrop_path?;
-    # Budget of movie
-    int budget?;
-    # Genres of movie
-    Genre[] genres?;
-    # Movie ID
-    int id;
-    # Original language of movie
-    string original_language?;
-    # Original title of movie
-    string original_title?;
-    # Popularity of movie
-    decimal popularity?;
-    # Poster image path
-    string? poster_path?;
-    # Movie production companies
-    ProductionCompany[] production_companies?;
-    # Countries where movie produced
-    ProductionCountry[] production_countries?;
-    # Release date of movie
-    string release_date?;
-    # Revenue genereted by movie
-    int revenue?;
-    # Languages spoken in movie
-    SpokenLanguage[] spoken_languages?;
-    # Status of movie
-    string status?;
-    # Title of movie
-    string title;
-    # Contain videos or not
-    boolean video?;
-    # Vote average
-    decimal vote_average?;
-    # Vote count
-    int vote_count?;
-};
-
-# Get top rated TV show response
-public type GetTopRatedTvShowResponse record {
-    # Specify which page to query
-    int page;
-    # TV List Object
-    TvListObject[] results;
-    # Total number of results
-    int total_results;
-    # Total number of pages
-    int total_pages;
-};
-
-# Get TV show by details response
-public type GetTvShowEpisodeResponse record {
-    # Air date of TV show
-    string air_date?;
-    # Crew details of TV show
-    Crew[] crew;
-    # Episode number
-    int episode_number;
-    # Guest stars in TV show
-    GuestStar[] guest_stars?;
-    # Crew details of TV show
-    string name;
-    # Overview of TV show
-    string overview;
-    # TV show ID
-    int id;
-    # Season number
-    int season_number;
-    # Still path
-    string? still_path?;
-    # Vote average
-    decimal vote_average?;
-    # Vote count
-    int vote_count?;
-};
-
-# Search movie response
-public type SearchMovieResponse record {
-    # Specify which page to query
-    int page;
-    # Movie List Object
-    MovieListObject[] results;
-    # Total number of results
-    int total_results;
-    # Total number of pages
-    int total_pages;
-};
-
-# Search TV show response
-public type SearchTvShowResponse record {
-    # Specify which page to query
-    int page;
-    # TV List Object
-    TvListObject[] results;
-    # Total number of results
-    int total_results;
-    # Total number of pages
-    int total_pages;
-};
-
-# The Movie Database (TMDB) Client object
-#
-# + clientEp - Connector http endpoint
+# This is a generated connector for [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
+# The Movie Database (TMDB) API provide data about movies and tv shows around the world.
 @display {label: "The Movie Database (TMDB) Client"}
-public client class Client {
-    http:Client clientEp;
-    map<string|string[]> apiKeys;
-    # Initializes the TMDB client endpoint.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Request a [TMDB Account](https://www.themoviedb.org/signup) 
+    # and obtain tokens following [this guide](https://developers.themoviedb.org/3/getting-started/introduction).
     #
-    # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return -  Error at failure of client initialization
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, 
-                                  string serviceUrl = "https://api.themoviedb.org/3") returns error? {
+    # + apiKeyConfig - Provide your API key as `api_key`. Eg: `{"api_key" : "<your API key >"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.themoviedb.org/3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Get Popular Movies
     #
     # + return - Get popular movies response
     @display {label: "Get Popular Movies"}
-    remote isolated function getPopularMovies() returns GetPopularMoviesResponse|error {
+    remote isolated function getPopularMovies() returns InlineResponse200|error {
         string  path = string `/movie/popular`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        GetPopularMoviesResponse response = check self.clientEp-> get(path, targetType = GetPopularMoviesResponse);
+        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
         return response;
     }
     # Get Upcoming Movies
     #
     # + return - Get upcoming movies response
     @display {label: "Get Upcoming Movies"}
-    remote isolated function getUpcomingMovies() returns GetUpcomingMoviesResponse|error {
+    remote isolated function getUpcomingMovies() returns InlineResponse2001|error {
         string  path = string `/movie/upcoming`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        GetUpcomingMoviesResponse response = check self.clientEp-> get(path, targetType = GetUpcomingMoviesResponse);
+        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
         return response;
     }
     # Get Movie Details
     #
-    # + movie_id - Movie ID
+    # + movieId - Movie ID
     # + return - Get movie by movie ID response
     @display {label: "Get Movie Details"}
-    remote isolated function getMovieByMovieId(@display {label: "Movie ID"} int movie_id) returns GetMovieByMovieIdResponse|error {
-        string  path = string `/movie/${movie_id}`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
+    remote isolated function getMovieByMovieId(@display {label: "Movie ID"} int movieId) returns InlineResponse2002|error {
+        string  path = string `/movie/${movieId}`;
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        GetMovieByMovieIdResponse response = check self.clientEp-> get(path, targetType = GetMovieByMovieIdResponse);
+        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
         return response;
     }
     # Get Top Rated
     #
     # + return - Get top rated TV show response
     @display {label: "Get Top Rated TV Shows"}
-    remote isolated function getTopRatedTvShow() returns GetTopRatedTvShowResponse|error {
+    remote isolated function getTopRatedTvShow() returns InlineResponse2003|error {
         string  path = string `/tv/top_rated`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        GetTopRatedTvShowResponse response = check self.clientEp-> get(path, targetType = GetTopRatedTvShowResponse);
+        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
         return response;
     }
     # Get Details
     #
-    # + tv_id - TV show ID
-    # + season_number - TV show season number
-    # + episode_number - TV show episode number
+    # + tvId - TV show ID
+    # + seasonNumber - TV show season number
+    # + episodeNumber - TV show episode number
     # + return - Get TV show by details response
     @display {label: "Get TV Show Episode"}
-    remote isolated function getTvShowEpisode(@display {label: "TV Show ID"} int tv_id, @display {label: "Season Number"} int season_number, @display {label: "Episode Number"} int episode_number) returns GetTvShowEpisodeResponse|error {
-        string  path = string `/tv/${tv_id}/season/${season_number}/episode/${episode_number}`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"]};
+    remote isolated function getTvShowEpisode(@display {label: "TV Show ID"} int tvId, @display {label: "Season Number"} int seasonNumber, @display {label: "Episode Number"} int episodeNumber) returns InlineResponse2004|error {
+        string  path = string `/tv/${tvId}/season/${seasonNumber}/episode/${episodeNumber}`;
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        GetTvShowEpisodeResponse response = check self.clientEp-> get(path, targetType = GetTvShowEpisodeResponse);
+        InlineResponse2004 response = check self.clientEp-> get(path, targetType = InlineResponse2004);
         return response;
     }
     # Search Movies
@@ -239,11 +110,11 @@ public client class Client {
     # + year - Release year of movie
     # + return - Search movie response
     @display {label: "Search Movies"}
-    remote isolated function searchMovie(@display {label: "Search Text Query"} string query, @display {label: "Movie Release Year"} int? year = ()) returns SearchMovieResponse|error {
+    remote isolated function searchMovie(@display {label: "Search Text Query"} string query, @display {label: "Movie Release Year"} int? year = ()) returns InlineResponse200|error {
         string  path = string `/search/movie`;
-        map<anydata> queryParam = {"query": query, "year": year, api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"query": query, "year": year, "api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        SearchMovieResponse response = check self.clientEp-> get(path, targetType = SearchMovieResponse);
+        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
         return response;
     }
     # Search TV Shows
@@ -252,11 +123,11 @@ public client class Client {
     # + firstAirDateYear - First air date
     # + return - Search TV show response
     @display {label: "Search TV Shows"}
-    remote isolated function searchTvShow(@display {label: "Search Text Query"} string query, @display {label: "First Air Date"} int? firstAirDateYear = ()) returns SearchTvShowResponse|error {
+    remote isolated function searchTvShow(@display {label: "Search Text Query"} string query, @display {label: "First Air Date"} int? firstAirDateYear = ()) returns InlineResponse2003|error {
         string  path = string `/search/tv`;
-        map<anydata> queryParam = {"query": query, "firstAirDateYear": firstAirDateYear, api_key: self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"query": query, "firstAirDateYear": firstAirDateYear, "api_key": self.apiKeys["api_key"]};
         path = path + check getPathForQueryParam(queryParam);
-        SearchTvShowResponse response = check self.clientEp-> get(path, targetType = SearchTvShowResponse);
+        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
         return response;
     }
 }
@@ -265,10 +136,10 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam) returns string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
-    foreach  var [key, value] in queryParam.entries() {
+    foreach  var [key, value] in  queryParam.entries() {
         if  value  is  () {
             _ = queryParam.remove(key);
         } else {

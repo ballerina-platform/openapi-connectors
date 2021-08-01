@@ -18,7 +18,7 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Configuration for Asana connector
+# Configuration for Box API connector
 #
 # + authConfig - Bearer token configuration or OAuth2 refresh token grant configuration
 # + secureSocketConfig - Secure socket configuration 
@@ -27,13 +27,18 @@ public type ClientConfig record {
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# [Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+# This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification.
+# Box Platform provides functionality to provide access to content stored within [Box](https://box.com). 
+# It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
 public isolated client class Client {
     final http:Client clientEp;
-    # The connector initialization requires setting the API credentials. Create a [ISBNdb account](https://isbndb.com/) and obtain tokens following [this guide](https://isbndb.com/).
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [Box Developer Account](https://developer.box.com/) 
+    # and obtain tokens following [this guide](https://developer.box.com/guides/).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.box.com/2.0") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
@@ -48,7 +53,7 @@ public isolated client class Client {
     # + state - A custom string of your choice. Box will pass the same string to the redirect URL when authentication is complete. This parameter can be used to identify a user on redirect, as well as protect against hijacked sessions and other exploits.
     # + scope - A comma-separated list of application scopes you'd like to authenticate the user for. This defaults to all the scopes configured for the application in its configuration page.
     # + return - Does not return any data, but rather should be used in the browser.
-    remote isolated function getAuthorize(GetAuthorizeResponseType responseType, string clientId, string? redirectUri = (), string? state = (), string? scope = ()) returns string|error {
+    remote isolated function getAuthorize(string responseType, string clientId, string? redirectUri = (), string? state = (), string? scope = ()) returns string|error {
         string  path = string `/authorize`;
         map<anydata> queryParam = {"response_type": responseType, "client_id": clientId, "redirect_uri": redirectUri, "state": state, "scope": scope};
         path = path + check getPathForQueryParam(queryParam);
@@ -587,7 +592,7 @@ public isolated client class Client {
     # + sort - Defines the **second** attribute by which items are sorted.  Items are always sorted by their `type` first, with folders listed before files, and files listed before web links.  This parameter is not supported for marker-based pagination on the root folder (the folder with an ID of `0`).
     # + direction - The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.
     # + return - Returns a collection of files, folders, and web links contained in a folder.
-    remote isolated function getFoldersIdItems(string folderId, string[]? fields = (), boolean? usemarker = (), string? marker = (), int offset = 0, int? 'limit = (), string? boxapi = (), GetFoldersIdItemsSort? sort = (), GetFoldersIdItemsDirection? direction = ()) returns Items|error {
+    remote isolated function getFoldersIdItems(string folderId, string[]? fields = (), boolean? usemarker = (), string? marker = (), int offset = 0, int? 'limit = (), string? boxapi = (), string? sort = (), string? direction = ()) returns Items|error {
         string  path = string `/folders/${folderId}/items`;
         map<anydata> queryParam = {"fields": fields, "usemarker": usemarker, "marker": marker, "offset": offset, "limit": 'limit, "sort": sort, "direction": direction};
         path = path + check getPathForQueryParam(queryParam);
@@ -670,7 +675,7 @@ public isolated client class Client {
     # + direction - The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.
     # + sort - Defines the **second** attribute by which items are sorted.  Items are always sorted by their `type` first, with folders listed before files, and files listed before web links.  This parameter is not supported when using marker-based pagination.
     # + return - Returns a list of items that have been deleted
-    remote isolated function getFoldersTrashItems(string[]? fields = (), int? 'limit = (), int offset = 0, boolean? usemarker = (), string? marker = (), GetFoldersTrashItemsDirection? direction = (), GetFoldersTrashItemsSort? sort = ()) returns Items|error {
+    remote isolated function getFoldersTrashItems(string[]? fields = (), int? 'limit = (), int offset = 0, boolean? usemarker = (), string? marker = (), string? direction = (), string? sort = ()) returns Items|error {
         string  path = string `/folders/trash/items`;
         map<anydata> queryParam = {"fields": fields, "limit": 'limit, "offset": offset, "usemarker": usemarker, "marker": marker, "direction": direction, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
@@ -836,7 +841,7 @@ public isolated client class Client {
     # + offset - The offset of the item at which to begin the response.
     # + 'limit - The maximum number of items to return per page.
     # + return - Returns a collection of pending collaboration objects.  If the user has no pending collaborations, the collection will be empty.
-    remote isolated function getCollaborations(GetCollaborationsStatus status, string[]? fields = (), int offset = 0, int? 'limit = ()) returns Collaborations|error {
+    remote isolated function getCollaborations(string status, string[]? fields = (), int offset = 0, int? 'limit = ()) returns Collaborations|error {
         string  path = string `/collaborations`;
         map<anydata> queryParam = {"status": status, "fields": fields, "offset": offset, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
@@ -1192,7 +1197,7 @@ public isolated client class Client {
     # + usemarker - Specifies whether to use marker-based pagination instead of offset-based pagination. Only one pagination method can be used at a time.  By setting this value to true, the API will return a `marker` field that can be passed as a parameter to this endpoint to get the next page of the response.
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + return - Returns all of the users in the enterprise.
-    remote isolated function getUsers(string? filterTerm = (), GetUsersUserType? userType = (), string? externalAppUserId = (), string[]? fields = (), int offset = 0, int? 'limit = (), boolean? usemarker = (), string? marker = ()) returns Users|error {
+    remote isolated function getUsers(string? filterTerm = (), string? userType = (), string? externalAppUserId = (), string[]? fields = (), int offset = 0, int? 'limit = (), boolean? usemarker = (), string? marker = ()) returns Users|error {
         string  path = string `/users`;
         map<anydata> queryParam = {"filter_term": filterTerm, "user_type": userType, "external_app_user_id": externalAppUserId, "fields": fields, "offset": offset, "limit": 'limit, "usemarker": usemarker, "marker": marker};
         path = path + check getPathForQueryParam(queryParam);
@@ -1583,7 +1588,7 @@ public isolated client class Client {
     # + createdAfter - The lower bound date and time to return events for. This can only be used when requesting the events with a `stream_type` of `admin_logs`. For any other `stream_type` this value will be ignored.
     # + createdBefore - The upper bound date and time to return events for. This can only be used when requesting the events with a `stream_type` of `admin_logs`. For any other `stream_type` this value will be ignored.
     # + return - Returns a list of event objects.  Events objects are returned in pages, with each page (chunk) including a list of event objects. The response includes a `chunk_size` parameter indicating how many events were returned in this chunk, as well as the next `stream_position` that can be queried.
-    remote isolated function getEvents(GetEventsStreamType streamType = "all", string? streamPosition = (), int 'limit = 100, string[]? eventType = (), string? createdAfter = (), string? createdBefore = ()) returns Events|error {
+    remote isolated function getEvents(string streamType = "all", string? streamPosition = (), int 'limit = 100, string[]? eventType = (), string? createdAfter = (), string? createdBefore = ()) returns Events|error {
         string  path = string `/events`;
         map<anydata> queryParam = {"stream_type": streamType, "stream_position": streamPosition, "limit": 'limit, "event_type": eventType, "created_after": createdAfter, "created_before": createdBefore};
         path = path + check getPathForQueryParam(queryParam);
@@ -1644,7 +1649,7 @@ public isolated client class Client {
     # + policyType - Filters results by the type of retention policy.
     # + createdByUserId - Filters results by the ID of the user who created policy.
     # + return - Returns a list retention policies in the enterprise.
-    remote isolated function getRetentionPolicies(string? policyName = (), GetRetentionPoliciesPolicyType? policyType = (), string? createdByUserId = ()) returns RetentionPolicies|error {
+    remote isolated function getRetentionPolicies(string? policyName = (), string? policyType = (), string? createdByUserId = ()) returns RetentionPolicies|error {
         string  path = string `/retention_policies`;
         map<anydata> queryParam = {"policy_name": policyName, "policy_type": policyType, "created_by_user_id": createdByUserId};
         path = path + check getPathForQueryParam(queryParam);
@@ -1690,7 +1695,7 @@ public isolated client class Client {
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + 'limit - The maximum number of items to return per page.
     # + return - Returns a list of the retention policy assignments associated with the specified retention policy.
-    remote isolated function getRetentionPoliciesIdAssignments(string retentionPolicyId, GetRetentionPoliciesIdAssignmentsType? 'type = (), string? marker = (), int? 'limit = ()) returns RetentionPolicyAssignments|error {
+    remote isolated function getRetentionPoliciesIdAssignments(string retentionPolicyId, string? 'type = (), string? marker = (), int? 'limit = ()) returns RetentionPolicyAssignments|error {
         string  path = string `/retention_policies/${retentionPolicyId}/assignments`;
         map<anydata> queryParam = {"type": 'type, "marker": marker, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
@@ -1783,7 +1788,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a list of legal hold policy assignments.
-    remote isolated function getLegalHoldPolicyAssignments(string policyId, GetLegalHoldPolicyAssignmentsAssignToType? assignToType = (), string? assignToId = (), string? marker = (), int? 'limit = (), string[]? fields = ()) returns LegalHoldPolicyAssignments|error {
+    remote isolated function getLegalHoldPolicyAssignments(string policyId, string? assignToType = (), string? assignToId = (), string? marker = (), int? 'limit = (), string[]? fields = ()) returns LegalHoldPolicyAssignments|error {
         string  path = string `/legal_hold_policy_assignments`;
         map<anydata> queryParam = {"policy_id": policyId, "assign_to_type": assignToType, "assign_to_id": assignToId, "marker": marker, "limit": 'limit, "fields": fields};
         path = path + check getPathForQueryParam(queryParam);
@@ -1869,7 +1874,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page.
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + return - Returns a list of all file version retentions for the enterprise.
-    remote isolated function getFileVersionRetentions(string? fileId = (), string? fileVersionId = (), string? policyId = (), GetFileVersionRetentionsDispositionAction? dispositionAction = (), string? dispositionBefore = (), string? dispositionAfter = (), int? 'limit = (), string? marker = ()) returns FileVersionRetentions|error {
+    remote isolated function getFileVersionRetentions(string? fileId = (), string? fileVersionId = (), string? policyId = (), string? dispositionAction = (), string? dispositionBefore = (), string? dispositionAfter = (), int? 'limit = (), string? marker = ()) returns FileVersionRetentions|error {
         string  path = string `/file_version_retentions`;
         map<anydata> queryParam = {"file_id": fileId, "file_version_id": fileVersionId, "policy_id": policyId, "disposition_action": dispositionAction, "disposition_before": dispositionBefore, "disposition_after": dispositionAfter, "limit": 'limit, "marker": marker};
         path = path + check getPathForQueryParam(queryParam);
@@ -1925,7 +1930,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page.
     # + direction - The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.
     # + return - Returns a list of device pins for a given enterprise.
-    remote isolated function getEnterprisesIdDevicePinners(string enterpriseId, string? marker = (), int? 'limit = (), GetEnterprisesIdDevicePinnersDirection? direction = ()) returns DevicePinners|error {
+    remote isolated function getEnterprisesIdDevicePinners(string enterpriseId, string? marker = (), int? 'limit = (), string? direction = ()) returns DevicePinners|error {
         string  path = string `/enterprises/${enterpriseId}/device_pinners`;
         map<anydata> queryParam = {"marker": marker, "limit": 'limit, "direction": direction};
         path = path + check getPathForQueryParam(queryParam);
@@ -1936,7 +1941,7 @@ public isolated client class Client {
     #
     # + tosType - Limits the results to the terms of service of the given type.
     # + return - Returns a collection of terms of service text and settings for the enterprise.
-    remote isolated function getTermsOfServices(GetTermsOfServicesTosType? tosType = ()) returns TermsOfServices|error {
+    remote isolated function getTermsOfServices(string? tosType = ()) returns TermsOfServices|error {
         string  path = string `/terms_of_services`;
         map<anydata> queryParam = {"tos_type": tosType};
         path = path + check getPathForQueryParam(queryParam);
@@ -2124,7 +2129,7 @@ public isolated client class Client {
     # + resolvedForId - The ID of the user or enterprise to return assignments for
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + return - Returns a collection of storage policies for the enterprise or user.
-    remote isolated function getStoragePolicyAssignments(GetStoragePolicyAssignmentsResolvedForType resolvedForType, string resolvedForId, string? marker = ()) returns StoragePolicyAssignments|error {
+    remote isolated function getStoragePolicyAssignments(string resolvedForType, string resolvedForId, string? marker = ()) returns StoragePolicyAssignments|error {
         string  path = string `/storage_policy_assignments`;
         map<anydata> queryParam = {"marker": marker, "resolved_for_type": resolvedForType, "resolved_for_id": resolvedForId};
         path = path + check getPathForQueryParam(queryParam);
@@ -2209,7 +2214,7 @@ public isolated client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -2243,7 +2248,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

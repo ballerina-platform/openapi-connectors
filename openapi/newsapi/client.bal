@@ -14,34 +14,36 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
-# Please visit [here](https://newsapi.org/register) and obtain an `API Key`.
+# Visit [here](https://newsapi.org/register) and obtain an `API key`.
 #
-# + apiKeys - Provide your API Key as `apiKey`. Eg: `{"apiKey" : "<Your API Key>"}` 
+# + apiKeys - Provide your API key as `apiKey`. Eg: `{"apiKey" : "<your API key>"}` 
 public type ApiKeysConfig record {
-    map<string|string[]> apiKeys;
+    map<string> apiKeys;
 };
 
-# Client endpoint for News API
-#
-# + clientEp - Connector http endpoint
+# This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification.
+# News API used to fetch news(articles, headlines and sources) from news sources and blogs across the web.
 @display {label: "News API Client"}
-public client class Client {
-    http:Client clientEp;
-    map<string|string[]> apiKeys;
-    # Initializes the News API client endpoint.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create an [News API Account](https://newsapi.org/register) 
+    # and obtain tokens following [this guide](https://newsapi.org/docs/get-started).
     #
-    # + apiKeyConfig - API key configurations required to initialize the `Client` endpoint
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return -  Error at failure of client initialization
+    # + apiKeyConfig - Provide your API key as `apiKey`. Eg: `{"apiKey" : "<your API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://newsapi.org/v2") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Returns a list of news sources or blogs
     #
@@ -52,7 +54,7 @@ public client class Client {
     @display {label: "List News Sources"}
     remote isolated function listSources(@display {label: "Language"} string? language = (), @display {label: "Country"} string? country = (), @display {label: "Category"} string? category = ()) returns WSNewsSourcesResponse|error {
         string  path = string `/sources`;
-        map<anydata> queryParam = {"language": language, "country": country, "category": category, apiKey: self.apiKeys["apiKey"]};
+        map<anydata> queryParam = {"language": language, "country": country, "category": category, "apiKey": self.apiKeys["apiKey"]};
         path = path + check getPathForQueryParam(queryParam);
         WSNewsSourcesResponse response = check self.clientEp-> get(path, targetType = WSNewsSourcesResponse);
         return response;
@@ -67,9 +69,9 @@ public client class Client {
     # + pageSize - Number of results to return per page (request). 20 is default, 100 is maximum
     # + return - Record containing list of top headlines
     @display {label: "List Top Headlines"}
-    remote isolated function listTopHeadlines(@display {label: "Keyword"} string? q = (), @display {label: "Sources"} string? sources = (), @display {label: "Country"} string? country = (), @display {label: "Category"} string? category = (), @display {label: "Page Number"} int? page = (), @display {label: "Page Size"} int? pageSize = 20) returns WSNewsTopHeadlineResponse|error {
+    remote isolated function listTopHeadlines(@display {label: "Keyword"} string? q = (), @display {label: "Sources"} string? sources = (), @display {label: "Country"} string? country = (), @display {label: "Category"} string? category = (), @display {label: "Page Number"} int? page = (), @display {label: "Page Size"} int pageSize = 20) returns WSNewsTopHeadlineResponse|error {
         string  path = string `/top-headlines`;
-        map<anydata> queryParam = {"q": q, "sources": sources, "country": country, "category": category, "page": page, "pageSize": pageSize, apiKey: self.apiKeys["apiKey"]};
+        map<anydata> queryParam = {"q": q, "sources": sources, "country": country, "category": category, "page": page, "pageSize": pageSize, "apiKey": self.apiKeys["apiKey"]};
         path = path + check getPathForQueryParam(queryParam);
         WSNewsTopHeadlineResponse response = check self.clientEp-> get(path, targetType = WSNewsTopHeadlineResponse);
         return response;
@@ -91,7 +93,7 @@ public client class Client {
     @display {label: "List Articles"}
     remote isolated function listArticles(@display {label: "Page Number"} int page, @display {label: "Page Size"} int pageSize, @display {label: "Keyword"} string? q = (), @display {label: "Title Keyword"} string? qInTitle = (), @display {label: "Sources"} string? sources = (), @display {label: "Domains To Include"} string? domains = (), @display {label: "Domains To Exclude"} string? excludeDomains = (), @display {label: "From"} string? 'from = (), @display {label: "To"} string? to = (), @display {label: "Language"} string? language = (), @display {label: "Sort By"} string? sortBy = ()) returns WSNewsTopHeadlineResponse|error {
         string  path = string `/everything`;
-        map<anydata> queryParam = {"q": q, "qInTitle": qInTitle, "sources": sources, "domains": domains, "excludeDomains": excludeDomains, "from": 'from, "to": to, "language": language, "sortBy": sortBy, "page": page, "pageSize": pageSize, apiKey: self.apiKeys["apiKey"]};
+        map<anydata> queryParam = {"q": q, "qInTitle": qInTitle, "sources": sources, "domains": domains, "excludeDomains": excludeDomains, "from": 'from, "to": to, "language": language, "sortBy": sortBy, "page": page, "pageSize": pageSize, "apiKey": self.apiKeys["apiKey"]};
         path = path + check getPathForQueryParam(queryParam);
         WSNewsTopHeadlineResponse response = check self.clientEp-> get(path, targetType = WSNewsTopHeadlineResponse);
         return response;
@@ -102,21 +104,21 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function getPathForQueryParam(map<anydata> queryParam) returns string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
-    foreach var [key, value] in queryParam.entries() {
-        if value is () {
+    foreach  var [key, value] in  queryParam.entries() {
+        if  value  is  () {
             _ = queryParam.remove(key);
         } else {
-            if string:startsWith( key, "'") {
-                param[param.length()] = string:substring(key, 1, key.length());
+            if  string:startsWith( key, "'") {
+                 param[param.length()] = string:substring(key, 1, key.length());
             } else {
                 param[param.length()] = key;
             }
             param[param.length()] = "=";
-            if value is string {
-                string updateV = check url:encode(value, "UTF-8");
+            if  value  is  string {
+                string updateV =  check url:encode(value, "UTF-8");
                 param[param.length()] = updateV;
             } else {
                 param[param.length()] = value.toString();
@@ -125,7 +127,7 @@ isolated function getPathForQueryParam(map<anydata> queryParam) returns string|e
         }
     }
     _ = param.remove(param.length()-1);
-    if param.length() ==  1 {
+    if  param.length() ==  1 {
         _ = param.remove(0);
     }
     string restOfPath = string:'join("", ...param);

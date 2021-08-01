@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["News API", "Headlines", "Articles", "News"]
+keywords = ["newsapi", "headlines", "articles", "news", "freemium"]
 org = "ballerinax"
 name = "newsapi"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

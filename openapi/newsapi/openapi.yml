@@ -1,7 +1,13 @@
 openapi: 3.0.0
 info:
-  title: News API - "News(articles, headlines and sources) across world from https://newsapi.org/v2"
-  description: Client endpoint for News API
+  title: News API - News(articles, headlines and sources) across world.
+  description: |-
+    This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification.
+    News API used to fetch news(articles, headlines and sources) from news sources and blogs across the web.
+  x-init-description: |-
+    The connector initialization requires setting the API credentials. 
+    Create an [News API Account](https://newsapi.org/register) 
+    and obtain tokens following [this guide](https://newsapi.org/docs/get-started).
   version: 2.0.0
   x-display:
     label: News API Client
@@ -312,10 +318,11 @@ paths:
 components:
   securitySchemes:
     api_key:
+      description: All requests on the News API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `apiKey`
       name: apiKey
       type: apiKey
       in: query
-
+      x-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key>\"}`"
   schemas:
     WSNewsErrorResponse:
       description: 'News API error response'

@@ -30,16 +30,6 @@ public type Crew record {
     string? profile_path?;
 };
 
-# Production company
-public type ProductionCompany record {
-    # Production company name
-    string name;
-    # Production company ID
-    int id;
-    # Country of production company
-    string? origin_country?;
-};
-
 # Release date range
 public type ReleaseDateRange record {
     # Maximum date of release
@@ -80,12 +70,20 @@ public type MovieListObject record {
     decimal vote_average?;
 };
 
-# Genere of movie
-public type Genre record {
-    # Genre ID
-    int id;
-    # Genre name
-    string name;
+public type InlineResponse200 record {
+    # Specify which page to query
+    int page;
+    # Movie List Object
+    MovieListObject[] results;
+    # Total number of results
+    int total_results;
+    # Total number of pages
+    int total_pages;
+};
+
+public type InlineResponse401 record {
+    string status_message?;
+    int status_code?;
 };
 
 # Guest star details of TV show
@@ -134,12 +132,120 @@ public type TvListObject record {
     string original_name?;
 };
 
+# Production company
+public type ProductionCompany record {
+    # Production company name
+    string name;
+    # Production company ID
+    int id;
+    # Country of production company
+    string? origin_country?;
+};
+
+public type InlineResponse2001 record {
+    # Specify which page to query
+    int page;
+    # Movie List Object
+    MovieListObject[] results;
+    # Release date range
+    ReleaseDateRange dates;
+    # Total number of pages
+    int total_pages;
+    # Total number of results
+    anydata total_results;
+};
+
+public type InlineResponse2003 record {
+    # Specify which page to query
+    int page;
+    # TV List Object
+    TvListObject[] results;
+    # Total number of results
+    int total_results;
+    # Total number of pages
+    int total_pages;
+};
+
+# Genere of movie
+public type Genre record {
+    # Genre ID
+    int id;
+    # Genre name
+    string name;
+};
+
+public type InlineResponse2002 record {
+    # Adult content or not
+    boolean adult?;
+    # Backdrop image path
+    string? backdrop_path?;
+    # Budget of movie
+    int budget?;
+    # Genres of movie
+    Genre[] genres?;
+    # Movie ID
+    int id;
+    # Original language of movie
+    string original_language?;
+    # Original title of movie
+    string original_title?;
+    # Popularity of movie
+    decimal popularity?;
+    # Poster image path
+    string? poster_path?;
+    # Movie production companies
+    ProductionCompany[] production_companies?;
+    # Countries where movie produced
+    ProductionCountry[] production_countries?;
+    # Release date of movie
+    string release_date?;
+    # Revenue genereted by movie
+    int revenue?;
+    # Languages spoken in movie
+    SpokenLanguage[] spoken_languages?;
+    # Status of movie
+    string status?;
+    # Title of movie
+    string title;
+    # Contain videos or not
+    boolean video?;
+    # Vote average
+    decimal vote_average?;
+    # Vote count
+    int vote_count?;
+};
+
 # Spoken language
 public type SpokenLanguage record {
     # Standard for representation of languages
     string iso_639_1;
     # Spoken language name
     string name;
+};
+
+public type InlineResponse2004 record {
+    # Air date of TV show
+    string air_date?;
+    # Crew details of TV show
+    Crew[] crew;
+    # Episode number
+    int episode_number;
+    # Guest stars in TV show
+    GuestStar[] guest_stars?;
+    # Crew details of TV show
+    string name;
+    # Overview of TV show
+    string overview;
+    # TV show ID
+    int id;
+    # Season number
+    int season_number;
+    # Still path
+    string? still_path?;
+    # Vote average
+    decimal vote_average?;
+    # Vote count
+    int vote_count?;
 };
 
 # Production country

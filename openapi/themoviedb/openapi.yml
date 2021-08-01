@@ -2,7 +2,12 @@ openapi: 3.0.1
 info:
   title: The Movie Database (TMDB)
   description: |-
-    The Movie Database (TMDB) Client object
+    This is a generated connector for [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
+    The Movie Database (TMDB) API provide data about movies and tv shows around the world.
+  x-init-description: |-
+    The connector initialization requires setting the API credentials.
+    Request a [TMDB Account](https://www.themoviedb.org/signup) 
+    and obtain tokens following [this guide](https://developers.themoviedb.org/3/getting-started/introduction).
   version: "3"
   x-display:
     label: The Movie Database (TMDB) Client
@@ -872,6 +877,7 @@ components:
   securitySchemes:
     api_key:
       type: apiKey
-      description: API key to authorize requests
+      description: All requests on the TMDB API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `api_key`
       name: api_key
       in: query
+      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<your API key >\"}`"

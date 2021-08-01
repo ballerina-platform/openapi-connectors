@@ -1,26 +1,44 @@
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 # Configuration for Orbit connector
 #
-# + authConfig - BearerTokenConfig Grant Configuration
-# + secureSocketConfig - SSL connection configuration   
+# + authConfig - Bearer token grant configuration
+# + secureSocketConfig - Secure socket configuration 
 public type ClientConfig record {
     http:BearerTokenConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# Please see the complete Orbit API documentation at [https://docs.orbit.love/reference](https://docs.orbit.love/reference).
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# This is a generated connector for [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
+# Orbit API used to track activities of users and manage users.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create an [Orbit Account](https://app.orbit.love/signup) 
+    # and obtain tokens by following [this guide](https://docs.orbit.love/reference/authorization).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://app.orbit.love/api/v1") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -52,16 +70,16 @@ public client class Client {
     }
     # Get a workspace
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + return - success
-    remote isolated function getWorkspaceById(string workspace_id) returns json|error {
-        string  path = string `/workspaces/${workspace_id}`;
+    remote isolated function getWorkspaceById(string workspaceId) returns json|error {
+        string  path = string `/workspaces/${workspaceId}`;
         json response = check self.clientEp-> get(path, targetType = json);
         return response;
     }
     # List activities for a workspace
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + activityTags - Activity tags allow to group activities
     # + affiliation - Association with either 'member' or 'teammate'
     # + memberTags - Member tags allow to group members
@@ -79,8 +97,8 @@ public client class Client {
     # + sort - Sort activities by properties of activity
     # + 'type - Type related to activities
     # + return - success
-    remote isolated function getActivitiesInWorkspace(string workspace_id, string? activityTags = (), string? affiliation = (), string? memberTags = (), string? orbitLevel = (), string? activityType = (), string? weight = (), string? identity = (), string? location = (), string? company = (), string? startDate = (), string? endDate = (), string? page = (), string? direction = (), string? items = (), string? sort = (), string? 'type = ()) returns json|error {
-        string  path = string `/${workspace_id}/activities`;
+    remote isolated function getActivitiesInWorkspace(string workspaceId, string? activityTags = (), string? affiliation = (), string? memberTags = (), string? orbitLevel = (), string? activityType = (), string? weight = (), string? identity = (), string? location = (), string? company = (), string? startDate = (), string? endDate = (), string? page = (), string? direction = (), string? items = (), string? sort = (), string? 'type = ()) returns json|error {
+        string  path = string `/${workspaceId}/activities`;
         map<anydata> queryParam = {"activity_tags": activityTags, "affiliation": affiliation, "member_tags": memberTags, "orbit_level": orbitLevel, "activity_type": activityType, "weight": weight, "identity": identity, "location": location, "company": company, "start_date": startDate, "end_date": endDate, "page": page, "direction": direction, "items": items, "sort": sort, "type": 'type};
         path = path + check getPathForQueryParam(queryParam);
         json response = check self.clientEp-> get(path, targetType = json);
@@ -88,11 +106,11 @@ public client class Client {
     }
     # Create a Custom or a Content activity for a new or existing member
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + payload - Create Activity
     # + return - success
-    remote isolated function postActivitiesById(string workspace_id, ActivityAndIdentity payload) returns json|error {
-        string  path = string `/${workspace_id}/activities`;
+    remote isolated function postActivitiesById(string workspaceId, ActivityAndIdentity payload) returns json|error {
+        string  path = string `/${workspaceId}/activities`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -101,17 +119,17 @@ public client class Client {
     }
     # Get an activity in the workspace
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + id - Activity ID
     # + return - success
-    remote isolated function getActivitiesById(string workspace_id, string id) returns json|error {
-        string  path = string `/${workspace_id}/activities/${id}`;
+    remote isolated function getActivitiesById(string workspaceId, string id) returns json|error {
+        string  path = string `/${workspaceId}/activities/${id}`;
         json response = check self.clientEp-> get(path, targetType = json);
         return response;
     }
     # List members in a workspace
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + activityTags - Activity tags allow to group activities
     # + affiliation - Association with either 'member' or 'teammate'
     # + memberTags - Member tags allow to group members
@@ -132,8 +150,8 @@ public client class Client {
     # + sort - Sort activities by properties of activity
     # + 'type - Type related to activities
     # + return - success
-    remote isolated function getMembers(string workspace_id, string? activityTags = (), string? affiliation = (), string? memberTags = (), string? orbitLevel = (), string? activityType = (), string? weight = (), string? identity = (), string? location = (), string? company = (), string? startDate = (), string? endDate = (), string? query = (), string? page = (), string? direction = (), string? items = (), string? activitiesCountMin = (), string? activitiesCountMax = (), string? sort = (), string? 'type = ()) returns json|error {
-        string  path = string `/${workspace_id}/members`;
+    remote isolated function getMembers(string workspaceId, string? activityTags = (), string? affiliation = (), string? memberTags = (), string? orbitLevel = (), string? activityType = (), string? weight = (), string? identity = (), string? location = (), string? company = (), string? startDate = (), string? endDate = (), string? query = (), string? page = (), string? direction = (), string? items = (), string? activitiesCountMin = (), string? activitiesCountMax = (), string? sort = (), string? 'type = ()) returns json|error {
+        string  path = string `/${workspaceId}/members`;
         map<anydata> queryParam = {"activity_tags": activityTags, "affiliation": affiliation, "member_tags": memberTags, "orbit_level": orbitLevel, "activity_type": activityType, "weight": weight, "identity": identity, "location": location, "company": company, "start_date": startDate, "end_date": endDate, "query": query, "page": page, "direction": direction, "items": items, "activities_count_min": activitiesCountMin, "activities_count_max": activitiesCountMax, "sort": sort, "type": 'type};
         path = path + check getPathForQueryParam(queryParam);
         json response = check self.clientEp-> get(path, targetType = json);
@@ -141,11 +159,11 @@ public client class Client {
     }
     # Create or update a member
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + payload - Create member
     # + return - success
-    remote isolated function postMembers(string workspace_id, MemberAndIdentity payload) returns json|error {
-        string  path = string `/${workspace_id}/members`;
+    remote isolated function postMembers(string workspaceId, MemberAndIdentity payload) returns json|error {
+        string  path = string `/${workspaceId}/members`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -154,7 +172,7 @@ public client class Client {
     }
     # Find a member by an identity
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + 'source - Source of member in a workspace
     # + sourceHost - Source host of member in a workspace
     # + uid - Unique identifier of member in a workspace
@@ -162,8 +180,8 @@ public client class Client {
     # + email - Email of member in a workspace
     # + github - Deprecated, please use source=github and username=<username> instead
     # + return - success
-    remote isolated function findMembers(string workspace_id, string? 'source = (), string? sourceHost = (), string? uid = (), string? username = (), string? email = (), string? github = ()) returns json|error {
-        string  path = string `/${workspace_id}/members/find`;
+    remote isolated function findMembers(string workspaceId, string? 'source = (), string? sourceHost = (), string? uid = (), string? username = (), string? email = (), string? github = ()) returns json|error {
+        string  path = string `/${workspaceId}/members/find`;
         map<anydata> queryParam = {"source": 'source, "source_host": sourceHost, "uid": uid, "username": username, "email": email, "github": github};
         path = path + check getPathForQueryParam(queryParam);
         json response = check self.clientEp-> get(path, targetType = json);
@@ -171,22 +189,22 @@ public client class Client {
     }
     # Get a member
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + id - Member ID
     # + return - success
-    remote isolated function getMembersById(string workspace_id, string id) returns json|error {
-        string  path = string `/${workspace_id}/members/${id}`;
+    remote isolated function getMembersById(string workspaceId, string id) returns json|error {
+        string  path = string `/${workspaceId}/members/${id}`;
         json response = check self.clientEp-> get(path, targetType = json);
         return response;
     }
     # Update a member
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + id - Member ID
     # + payload - Update member
     # + return - member updated
-    remote isolated function updateMembersById(string workspace_id, string id, Member payload) returns http:Response|error {
-        string  path = string `/${workspace_id}/members/${id}`;
+    remote isolated function updateMembersById(string workspaceId, string id, Member payload) returns http:Response|error {
+        string  path = string `/${workspaceId}/members/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -195,11 +213,11 @@ public client class Client {
     }
     # Delete a member
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + id - Member ID
     # + return - member deleted
-    remote isolated function deleteMembersById(string workspace_id, string id) returns http:Response|error {
-        string  path = string `/${workspace_id}/members/${id}`;
+    remote isolated function deleteMembersById(string workspaceId, string id) returns http:Response|error {
+        string  path = string `/${workspaceId}/members/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
@@ -207,8 +225,8 @@ public client class Client {
     }
     # List activities for a member
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + page - Page of the activities
     # + direction - Sort activities 'ASC' if Ascending and 'DESC' if Descending
     # + items - Number of activities
@@ -216,8 +234,8 @@ public client class Client {
     # + activityType - Activity type related to activities
     # + 'type - Type related to activities
     # + return - success
-    remote isolated function getActivities(string workspace_id, string member_id, string? page = (), string? direction = (), string? items = (), string? sort = (), string? activityType = (), string? 'type = ()) returns json|error {
-        string  path = string `/${workspace_id}/members/${member_id}/activities`;
+    remote isolated function getActivities(string workspaceId, string memberId, string? page = (), string? direction = (), string? items = (), string? sort = (), string? activityType = (), string? 'type = ()) returns json|error {
+        string  path = string `/${workspaceId}/members/${memberId}/activities`;
         map<anydata> queryParam = {"page": page, "direction": direction, "items": items, "sort": sort, "activity_type": activityType, "type": 'type};
         path = path + check getPathForQueryParam(queryParam);
         json response = check self.clientEp-> get(path, targetType = json);
@@ -225,12 +243,12 @@ public client class Client {
     }
     # Create a Custom or a Content activity for a member
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + payload - Create member activity
     # + return - success
-    remote isolated function postActivities(string workspace_id, string member_id, Activity payload) returns json|error {
-        string  path = string `/${workspace_id}/members/${member_id}/activities`;
+    remote isolated function postActivities(string workspaceId, string memberId, Activity payload) returns json|error {
+        string  path = string `/${workspaceId}/members/${memberId}/activities`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -239,13 +257,13 @@ public client class Client {
     }
     # Update a custom activity for a member
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + id - Activity ID
     # + payload - Update member activity
     # + return - activity updated
-    remote isolated function updateActivityById(string workspace_id, string member_id, string id, Activity payload) returns http:Response|error {
-        string  path = string `/${workspace_id}/members/${member_id}/activities/${id}`;
+    remote isolated function updateActivityById(string workspaceId, string memberId, string id, Activity payload) returns http:Response|error {
+        string  path = string `/${workspaceId}/members/${memberId}/activities/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -254,12 +272,12 @@ public client class Client {
     }
     # Delete a post activity
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + id - Activity ID
     # + return - activity deleted
-    remote isolated function deleteActivityById(string workspace_id, string member_id, string id) returns http:Response|error {
-        string  path = string `/${workspace_id}/members/${member_id}/activities/${id}`;
+    remote isolated function deleteActivityById(string workspaceId, string memberId, string id) returns http:Response|error {
+        string  path = string `/${workspaceId}/members/${memberId}/activities/${id}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
@@ -267,12 +285,12 @@ public client class Client {
     }
     # Add identity to a member
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + payload - Add member identity
     # + return - success
-    remote isolated function postIdentities(string workspace_id, string member_id, Identity payload) returns json|error {
-        string  path = string `/${workspace_id}/members/${member_id}/identities`;
+    remote isolated function postIdentities(string workspaceId, string memberId, Identity payload) returns json|error {
+        string  path = string `/${workspaceId}/members/${memberId}/identities`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -281,11 +299,11 @@ public client class Client {
     }
     # Remove identity from a member
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + return - success; no content
-    remote isolated function deleteIdentities(string workspace_id, string member_id) returns http:Response|error {
-        string  path = string `/${workspace_id}/members/${member_id}/identities`;
+    remote isolated function deleteIdentities(string workspaceId, string memberId) returns http:Response|error {
+        string  path = string `/${workspaceId}/members/${memberId}/identities`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
@@ -293,12 +311,12 @@ public client class Client {
     }
     # Get the member's notes
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + page - Page of the notes
     # + return - success
-    remote isolated function getNotes(string workspace_id, string member_id, string? page = ()) returns json|error {
-        string  path = string `/${workspace_id}/members/${member_id}/notes`;
+    remote isolated function getNotes(string workspaceId, string memberId, string? page = ()) returns json|error {
+        string  path = string `/${workspaceId}/members/${memberId}/notes`;
         map<anydata> queryParam = {"page": page};
         path = path + check getPathForQueryParam(queryParam);
         json response = check self.clientEp-> get(path, targetType = json);
@@ -306,12 +324,12 @@ public client class Client {
     }
     # Create a note
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + payload - Create note
     # + return - note created
-    remote isolated function postNotes(string workspace_id, string member_id, Note payload) returns json|error {
-        string  path = string `/${workspace_id}/members/${member_id}/notes`;
+    remote isolated function postNotes(string workspaceId, string memberId, Note payload) returns json|error {
+        string  path = string `/${workspaceId}/members/${memberId}/notes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -320,13 +338,13 @@ public client class Client {
     }
     # Update a note
     #
-    # + workspace_id - Workspace ID
-    # + member_id - Member ID
+    # + workspaceId - Workspace ID
+    # + memberId - Member ID
     # + id - Note ID
     # + payload - Update note
     # + return - note updated
-    remote isolated function updateNoteById(string workspace_id, string member_id, string id, Note payload) returns http:Response|error {
-        string  path = string `/${workspace_id}/members/${member_id}/notes/${id}`;
+    remote isolated function updateNoteById(string workspaceId, string memberId, string id, Note payload) returns http:Response|error {
+        string  path = string `/${workspaceId}/members/${memberId}/notes/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -335,15 +353,15 @@ public client class Client {
     }
     # Get a workspace stats
     #
-    # + workspace_id - Workspace ID
+    # + workspaceId - Workspace ID
     # + startDate - Report start date
     # + endDate - Report end date
     # + 'group - Group in report generation
     # + activityType - Activity type related to activities
     # + 'type - Report type to generate
     # + return - success
-    remote isolated function getReports(string workspace_id, string? startDate = (), string? endDate = (), string? 'group = (), string? activityType = (), string? 'type = ()) returns json|error {
-        string  path = string `/${workspace_id}/reports`;
+    remote isolated function getReports(string workspaceId, string? startDate = (), string? endDate = (), string? 'group = (), string? activityType = (), string? 'type = ()) returns json|error {
+        string  path = string `/${workspaceId}/reports`;
         map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "group": 'group, "activity_type": activityType, "type": 'type};
         path = path + check getPathForQueryParam(queryParam);
         json response = check self.clientEp-> get(path, targetType = json);
@@ -355,7 +373,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

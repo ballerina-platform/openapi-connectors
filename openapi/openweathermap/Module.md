@@ -1,19 +1,19 @@
 ## Overview
 
-This is a generated connector from [Open Weather Map](https://openweathermap.org/) OpenAPI Specification. The Open Weather Map connector provide access to current weather data and weather forecast of any location worldwide including 200,000 cities by consuming the [`Current Weather Data`](https://openweathermap.org/current) and [`One Call`](https://openweathermap.org/api/one-call-api) API endpoints.  
+This is a generated connector from [Open Weather Map API v2.5](https://openweathermap.org/) OpenAPI Specification. 
 
-This module supports [Open Weather Map API]() version 2.5. 
+The Open Weather Map API provides access to current weather data and weather forecast of any location worldwide including 200,000 cities by consuming the [`Current Weather Data`](https://openweathermap.org/current) and [`One Call`](https://openweathermap.org/api/one-call-api) API endpoints.  
 
 ## Prerequisites
 
 * Create [OpenWeatherMap](https://openweathermap.org/) account.
-    - You can choose a subscription matching with your requirements
+    - Choose a subscription that matches with your requirements
 * Obtain Api Key
     - Visit [My API Keys](https://home.openweathermap.org/api_keys) and generate a new API Key
 
 ## Quickstart
 
-To use the open Weather Map connector in your Ballerina application, update the .bal file as follows:
+To use the Open Weather Map connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
 

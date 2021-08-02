@@ -6,7 +6,7 @@ News API connector consume the data exposed in https://newsapi.org/v2. It is sup
 - listTopHeadlines
 - listSources
 
-## Obtaining tokens
+## Configuring Connector
 
 ### Prerequisites
 
@@ -24,19 +24,6 @@ To obtain an API Key please follow these steps
 Then provide the obtained API Key in client configuration.
 
 ## Quickstart
-
-### Authorization
-
-To utilize News API users have to obtain API key given by [News API](https://newsapi.org/register)
-
-To obtain an API Key please follow these steps
-* Go to [News API](https://newsapi.org/) and register a new account
-* Submit information in register form
-* After submitting needed information API Key can be obtained
-
-Then provide the obtained API Key in client configuration.
-
-## Snippets
 
 ### Client configuration
 

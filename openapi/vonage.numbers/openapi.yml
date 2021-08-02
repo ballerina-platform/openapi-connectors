@@ -2,9 +2,16 @@ openapi: 3.0.0
 info:
   title: Numbers API
   version: 1.0.20
-  description: >-
-    The Numbers API enables you to manage your existing numbers and buy new virtual numbers for
-    use with the Vonage APIs. Further information is here: <https://developer.nexmo.com/numbers/overview>
+  description: >
+    This is a generated connector for [Vonage Numbers API v1.0.20](https://nexmo-api-specification.herokuapp.com/numbers) OpenAPI specification.
+
+    The Numbers API enables you to manage your existing numbers and buy new virtual numbers for use with the Vonage APIs. 
+    
+    Further information is here: <https://developer.nexmo.com/numbers/overview>
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
   contact:
     name: Vonage DevRel
     email: devrel@vonage.com
@@ -84,14 +91,6 @@ paths:
             comma-separated value: `SMS,MMS,VOICE`.
           schema:
             type: string
-            enum:
-              - SMS
-              - VOICE
-              - "SMS,VOICE"
-              - MMS
-              - "SMS,MMS"
-              - "VOICE,MMS"
-              - "SMS,MMS,VOICE"
           example: SMS
         - $ref: "#/components/parameters/size"
         - $ref: "#/components/parameters/index"
@@ -225,11 +224,13 @@ components:
       name: api_key
       in: query
       description: "You can find your API key in the [developer dashboard](https://dashboard.nexmo.com)"
+      x-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
     apiSecret:
       type: apiKey
       name: api_secret
       in: query
       description: "You can find your API secret in the [developer dashboard](https://dashboard.nexmo.com)"
+      x-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
   parameters:
     index:
       name: index

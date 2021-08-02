@@ -1,8 +1,8 @@
 ## Overview
 
-The WorldBank connector consumes the data exposed in http://api.worldbank.org/v2/. This package provides the capability to easily access World Bank knowledge base. 
+This is a generated connector from [World Bank API v2](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-indicator-api-queries) OpenAPI Specification. 
 
-This module supports World Bank API version 1.0.0. 
+The World Bank Indicators API provides access to nearly 16,000 time series indicators. Most of these indicators are available online through tools such as `Databank` and the `Open Data` website. The API provides programmatic access to this same data. Many data series date back over 50 years, and can be used to create interesting applications.
 
 ## Quickstart
 

@@ -22,6 +22,8 @@ public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
+# This is a generated connector from [Api2Pdf](https://www.api2pdf.com/) OpenAPI Specification.
+# 
 # Api2Pdf is a powerful PDF generation API with no rate limits or file size constraints. 
 # 
 # Api2Pdf runs on AWS Lambda, a serverless architecture powered by Amazon to scale to millions of requests while being up to 90% cheaper than alternatives. 
@@ -30,11 +32,13 @@ public type ApiKeysConfig record {
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
-    # This is a generated connector from [Api2Pdf](https://www.api2pdf.com/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create an [Api2Pdf account](https://portal.api2pdf.com/register) and obtain an API key.
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Please create an [Api2Pdf account](https://portal.api2pdf.com/register) and obtain an API key.  
     #
     # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://v2018.api2pdf.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
@@ -47,9 +51,9 @@ public isolated client class Client {
     # + return - A JSON object containing the url to the PDF and other meta data
     remote isolated function convertHtmlToPdf(ChromeHtmlToPdfRequest payload) returns ApiResponseSuccess|error {
         string  path = string `/chrome/html`;
-        map<anydata> queryParam = {apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -64,9 +68,9 @@ public isolated client class Client {
     # + return - A PDF file or a JSON object depending on the `output` query parameter
     remote isolated function convertWebUrlToPdfGet(string url, string output = "json") returns ApiResponseSuccess|error {
         string  path = string `/chrome/url`;
-        map<anydata> queryParam = {"url": url, "output": output, apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"url": url, "output": output, "apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ApiResponseSuccess response = check self.clientEp-> get(path, targetType = ApiResponseSuccess);
         return response;
@@ -77,9 +81,9 @@ public isolated client class Client {
     # + return - A JSON object containing the url to the PDF and other meta data
     remote isolated function convertWebUrlToPdfPost(ChromeUrlToPdfRequest payload) returns ApiResponseSuccess|error {
         string  path = string `/chrome/url`;
-        map<anydata> queryParam = {apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -93,9 +97,9 @@ public isolated client class Client {
     # + return - A JSON object containing the url to the PDF and other meta data
     remote isolated function convertOfficeDocToPdf(LibreOfficeConvertRequest payload) returns ApiResponseSuccess|error {
         string  path = string `/libreoffice/convert`;
-        map<anydata> queryParam = {apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -109,9 +113,9 @@ public isolated client class Client {
     # + return - A JSON object containing the url to the PDF and other meta data
     remote isolated function mergePdfs(MergeRequest payload) returns ApiResponseSuccess|error {
         string  path = string `/merge`;
-        map<anydata> queryParam = {apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -125,9 +129,9 @@ public isolated client class Client {
     # + return - A JSON object containing the url to the PDF and other meta data
     remote isolated function convertHtmlToPdfWithWkhtml(WkHtmlToPdfHtmlToPdfRequest payload) returns ApiResponseSuccess|error {
         string  path = string `/wkhtmltopdf/html`;
-        map<anydata> queryParam = {apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -142,9 +146,9 @@ public isolated client class Client {
     # + return - A PDF file or a JSON object depending on the `output` query parameter
     remote isolated function convertWebUrlToPdfWithWkhtmlGet(string url, string output = "json") returns ApiResponseSuccess|error {
         string  path = string `/wkhtmltopdf/url`;
-        map<anydata> queryParam = {"url": url, "output": output, apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"url": url, "output": output, "apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ApiResponseSuccess response = check self.clientEp-> get(path, targetType = ApiResponseSuccess);
         return response;
@@ -155,9 +159,9 @@ public isolated client class Client {
     # + return - A JSON object containing the url to the PDF and other meta data
     remote isolated function convertWebUrlToPdfWithWkhtmlPost(WkHtmlToPdfUrlToPdfRequest payload) returns ApiResponseSuccess|error {
         string  path = string `/wkhtmltopdf/url`;
-        map<anydata> queryParam = {apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -175,9 +179,9 @@ public isolated client class Client {
     # + return - An image of the generated barcode or QR code
     remote isolated function zebra(string format, string value, boolean? showlabel = (), int? height = (), int? width = ()) returns string|error {
         string  path = string `/zebra`;
-        map<anydata> queryParam = {"format": format, "value": value, "showlabel": showlabel, "height": height, "width": width, apikey: self.apiKeys["apikey"]};
+        map<anydata> queryParam = {"format": format, "value": value, "showlabel": showlabel, "height": height, "width": width, "apikey": self.apiKeys["apikey"]};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
@@ -188,7 +192,7 @@ public isolated client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -222,7 +226,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

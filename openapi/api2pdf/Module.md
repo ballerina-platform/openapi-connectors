@@ -1,5 +1,7 @@
 ## Overview
-This is a generated connector from [Api2Pdf](https://www.api2pdf.com/) OpenAPI Specification. Ballerina connector for Api2Pdf is connecting Api2Pdf API via Ballerina language. With this module you can convert HTML and URLs to PDF format, Convert images and Microsoft office documents to PDF format, Combine multiple PDF files into a single PDF. More about the Api2Pdf API can be find at [Api2Pdf](https://www.api2pdf.com/)
+This is a generated connector from [Api2Pdf API v1.0.0](https://www.api2pdf.com/) OpenAPI Specification. 
+
+Api2Pdf is a powerful PDF generation API with no rate limits or file size constraints. Api2Pdf runs on AWS Lambda, a serverless architecture powered by Amazon to scale to millions of requests while being up to 90% cheaper than alternatives. **Supports wkhtmltopdf, Headless Chrome, LibreOffice, and PDF Merge.** You can also generate barcodes with ZXING (Zebra Crossing). More about the Api2Pdf API can be find at [Api2Pdf](https://www.api2pdf.com/)
  
 This module supports Api2Pdf API version 1.0.0.
 
@@ -29,7 +31,8 @@ api2pdf:Client api2pdfClient = check new (apiKeyConfig);
 ```
 
 ### Step 3: Invoke an operation
-Following code demonstrate how to generate a pdf from a webpage URL.
+1. Now you can use the operations available within the connector. Following code demonstrate how to generate a pdf from a webpage URL.
 ```ballerina
 api2pdf:ApiResponseSuccess response = check api2pdfClient->convertWebUrlToPdfGet("https://en.wikipedia.org/wiki/Animal");
 ```
+2. Use `bal run` command to compile and run the Ballerina program.

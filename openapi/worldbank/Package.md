@@ -1,4 +1,4 @@
-Connects to World Bank API from Ballerina.
+Connects to [World Bank API](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation) from Ballerina.
 
 ## Package Overview
 
@@ -10,7 +10,7 @@ This package provides the capability to easily access World Bank knowledge base.
 |                               | Version               |
 |-------------------------------|-----------------------|
 | Ballerina Language Version    | Swan Lake Beta2       |
-| API Version                   | 1.0.0                 |
+| API Version                   | v2                    |
 
 ## Report Issues
 

@@ -30,14 +30,16 @@ type ErrorMessage record {
     string value;
 };
 
-# Client endpoint for World Bank Data API
+# This is a generated connector from [World Bank API v2](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation) OpenAPI Specification. 
+# The World Bank Indicators API provides access to nearly 16,000 time series indicators. Most of these indicators are available online through tools such as `Databank` and the `Open Data` website. The API provides programmatic access to this same data. Many data series date back over 50 years, and can be used to create interesting applications.
 @display {label: "World Bank Data Client"}
 public isolated client class Client {
     final http:Client clientEp;
-    # The HTTP client initialization. Please refer to [API documentation](https://worldbank.org) for more detail.
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization doesn't require setting the API credentials.
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "http://api.worldbank.org/v2/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);

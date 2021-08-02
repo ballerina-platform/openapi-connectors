@@ -1,0 +1,11 @@
+[package]
+org = "ballerinax"
+name = "ebay.negotiation"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "0.1.0-SNAPSHOT"
+authors = ["Ballerina"]
+license = ["Apache-2.0"]
+keywords = ["ebay", "negotiation", "discount", "offers", "ecommerce"]
+
+[build-options]
+observabilityIncluded = true

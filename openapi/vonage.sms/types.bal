@@ -18,19 +18,19 @@ public type Message record {
     # The number the message was sent to. Numbers are specified in E.164 format.
     string to?;
     # The ID of the message
-    string 'message\-id?;
+    string messageId?;
     # The status of the message. See [Troubleshooting Failed SMS](/messaging/sms/guides/troubleshooting-sms).
     string status?;
     # Your remaining balance
-    string 'remaining\-balance?;
+    string remainingBalance?;
     # The cost of the message
-    string 'message\-price?;
+    string messagePrice?;
     # The ID of the network of the recipient
     string network?;
     # If a `client-ref` was included when sending the SMS, this field will be included and hold the value that was sent.
-    string 'client\-ref?;
+    string clientRef?;
     # **Advanced**: An optional string used to identify separate accounts using the SMS endpoint for billing purposes. To use this feature, please email [support@nexmo.com](mailto:support@nexmo.com)
-    string 'account\-ref?;
+    string accountRef?;
 };
 
 public type DeliveryReceipt record {
@@ -39,7 +39,7 @@ public type DeliveryReceipt record {
     # The SenderID you set in `from` in your request.
     string to?;
     # The Mobile Country Code Mobile Network Code (MCCMNC) of the carrier this phone number is registered with.
-    string 'network\-code?;
+    string networkCode?;
     # The Vonage ID for this message.
     string messageId?;
     # The cost of the message
@@ -49,13 +49,13 @@ public type DeliveryReceipt record {
     # When the DLR was received from the carrier in the following format `YYMMDDHHMM`. For example, `2001011400` is at `2020-01-01 14:00`
     string scts?;
     # The status of the request. Will be a non `0` value if there has been an error, or if the status is unknown. See the [Delivery Receipt documentation](/messaging/sms/guides/delivery-receipts#dlr-error-codes) for more details
-    string 'err\-code?;
+    string errCode?;
     # The API key that sent the SMS. This is useful when multiple accounts are sending webhooks to the same endpoint.
-    string 'api\-key?;
+    string apiKey?;
     # If the `client-ref` is set when the SMS is sent, it will be included in the delivery receipt
-    string 'client\-ref?;
+    string clientRef?;
     # The time when Vonage started to push this Delivery Receipt to your webhook endpoint.
-    string 'message\-timestamp?;
+    string messageTimestamp?;
     # A timestamp in Unix (seconds since the epoch) format. _Only included if you have signatures enabled_
     string timestamp?;
     # A random string to be used when calculating the signature. _Only included if you have signatures enabled_
@@ -80,11 +80,11 @@ public type NewMessage record {
     # **Advanced**: The duration in milliseconds the delivery of an SMS will be attempted.§§ By default Vonage attempts delivery for 72 hours, however the maximum effective value depends on the operator and is typically 24 - 48 hours. We recommend this value should be kept at its default or at least 30 minutes.
     int ttl?;
     # **Advanced**: Boolean indicating if you like to receive a [Delivery Receipt](/messaging/sms/building-blocks/receive-a-delivery-receipt).
-    boolean 'status\-report\-req?;
+    boolean statusReportReq?;
     # **Advanced**: The webhook endpoint the delivery receipt for this sms is sent to. This parameter overrides the webhook endpoint you set in Dashboard.
     string callback?;
     # **Advanced**: The Data Coding Scheme value of the message
-    int 'message\-class?;
+    int messageClass?;
     # **Advanced**: The format of the message body
     string 'type?;
     # **Advanced**: A business card in [vCard format](https://en.wikipedia.org/wiki/VCard). Depends on `type` parameter having the value `vcard`.
@@ -96,7 +96,7 @@ public type NewMessage record {
     # **Advanced**: Your custom Hex encoded [User Data Header](https://en.wikipedia.org/wiki/User_Data_Header). Depends on `type` parameter having the value `binary`.
     string udh?;
     # **Advanced**: The value of the [protocol identifier](https://en.wikipedia.org/wiki/GSM_03.40#Protocol_Identifier) to use. Ensure that the value is aligned with `udh`.
-    int 'protocol\-id?;
+    int protocolId?;
     # **Advanced**: The title for a wappush SMS. Depends on `type` parameter having the value `wappush`.
     string title?;
     # **Advanced**: The URL of your website. Depends on `type` parameter having the value `wappush`.
@@ -104,19 +104,19 @@ public type NewMessage record {
     # **Advanced**: The availability for an SMS in milliseconds. Depends on `type` parameter having the value `wappush`.
     string validity?;
     # **Advanced**: You can optionally include your own reference of up to 40 characters.
-    string 'client\-ref?;
+    string clientRef?;
     # **Advanced**: An optional string used to identify separate accounts using the SMS endpoint for billing purposes. To use this feature, please email [support@nexmo.com](mailto:support@nexmo.com)
-    string 'account\-ref?;
+    string accountRef?;
     # **Advanced**: A string parameter that satisfies regulatory requirements when sending an SMS to specific countries. For more information please refer to the [Country-Specific Outbound SMS Features](https://help.nexmo.com/hc/en-us/articles/115011781468)
-    string 'entity\-id?;
+    string entityId?;
     # **Advanced**: A string parameter that satisfies regulatory requirements when sending an SMS to specific countries. For more information please refer to the [Country-Specific Outbound SMS Features](https://help.nexmo.com/hc/en-us/articles/115011781468)
-    string 'content\-id?;
+    string contentId?;
 };
 
 # Message sent
 public type SMS record {
     # The amount of messages in the request
-    string 'message\-count?;
+    string messageCount?;
     # Array of Messages
     Message[] messages?;
 };
@@ -130,14 +130,14 @@ public type SMSXml record {
 # Error
 public type Error record {
     # The amount of messages in the request
-    string 'message\-count?;
+    string messageCount?;
     # Array of Error Messages
     ErrorMessage[] messages?;
 };
 
 public type InboundMessage record {
     # The Vonage API Key of the receiving account.
-    string 'api\-key;
+    string apiKey?;
     # The phone number that this inbound message was sent from. Numbers are specified in E.164 format.
     string msisdn;
     # The phone number the message was sent to. **This is your virtual number**. Numbers are specified in E.164 format.
@@ -151,7 +151,7 @@ public type InboundMessage record {
     # The first word in the message body. Converted to upper case.
     string keyword;
     # The time when Vonage started to push this Delivery Receipt to your webhook endpoint.
-    string 'message\-timestamp;
+    string messageTimestamp?;
     # A unix timestamp representation of message-timestamp.
     string timestamp?;
     # A random string that forms part of the signed set of parameters, it adds an extra element of unpredictability into the signature for the request. You use the nonce and timestamp parameters with your shared secret to calculate and validate the signature for inbound messages.
@@ -159,11 +159,11 @@ public type InboundMessage record {
     # True - if this is a concatenated message. This field does not exist if it is a single message
     string concat?;
     # The transaction reference. All parts of this message share this value.
-    string 'concat\-ref?;
+    string concatRef?;
     # The number of parts in this concatenated message.
-    string 'concat\-total?;
+    string concatTotal?;
     # The number of this part in the message. Counting starts at 1.
-    string 'concat\-part?;
+    string concatPart?;
     # The content of this message, if type is binary.
     string data?;
     # The hex encoded User Data Header, if type is binary
@@ -176,7 +176,7 @@ public type ErrorMessage record {
     # The error status of the message
     string status?;
     # The description of the error
-    string 'error\-text?;
+    string errorText?;
 };
 
 # Error

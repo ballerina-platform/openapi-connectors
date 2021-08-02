@@ -1,4 +1,4 @@
-Connects to Zoom API from Ballerina.
+Connects to [Zoom API](https://marketplace.zoom.us/docs/api-reference/zoom-api) from Ballerina.
 
 ### Package Overview
 

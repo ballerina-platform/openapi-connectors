@@ -236,7 +236,7 @@ public type ForecastCurrent record {
     Weather[] weather?;
     # Nature of the rain
     Rain rain?;
-    # Snow
+    # Snow volume information
     Snow snow?;
 };
 
@@ -274,7 +274,7 @@ public type CurrentWeatherData record {
     Clouds clouds?;
     # Nature of the rain
     Rain rain?;
-    # Snow
+    # Snow volume information
     Snow snow?;
     # Time of data calculation, unix, UTC
     int dt?;
@@ -305,59 +305,3 @@ public type Main record {
     # Atmospheric pressure on the ground level, hPa
     decimal grnd_level?;
 };
-
-public enum GetCurretWeatherDataUnits {
-    GETCURRETWEATHERDATAUNITS_STANDARD = "standard",
-    GETCURRETWEATHERDATAUNITS_METRIC = "metric",
-    GETCURRETWEATHERDATAUNITS_IMPERIAL = "imperial"
-}
-
-public enum GetCurretWeatherDataLang {
-    GETCURRETWEATHERDATALANG_AR = "ar",
-    GETCURRETWEATHERDATALANG_BG = "bg",
-    GETCURRETWEATHERDATALANG_CA = "ca",
-    GETCURRETWEATHERDATALANG_CZ = "cz",
-    GETCURRETWEATHERDATALANG_DE = "de",
-    GETCURRETWEATHERDATALANG_EL = "el",
-    GETCURRETWEATHERDATALANG_EN = "en",
-    GETCURRETWEATHERDATALANG_FA = "fa",
-    GETCURRETWEATHERDATALANG_FI = "fi",
-    GETCURRETWEATHERDATALANG_FR = "fr",
-    GETCURRETWEATHERDATALANG_GL = "gl",
-    GETCURRETWEATHERDATALANG_HR = "hr",
-    GETCURRETWEATHERDATALANG_HU = "hu",
-    GETCURRETWEATHERDATALANG_IT = "it",
-    GETCURRETWEATHERDATALANG_JA = "ja",
-    GETCURRETWEATHERDATALANG_KR = "kr",
-    GETCURRETWEATHERDATALANG_LA = "la",
-    GETCURRETWEATHERDATALANG_LT = "lt",
-    GETCURRETWEATHERDATALANG_MK = "mk",
-    GETCURRETWEATHERDATALANG_NL = "nl",
-    GETCURRETWEATHERDATALANG_PL = "pl",
-    GETCURRETWEATHERDATALANG_PT = "pt",
-    GETCURRETWEATHERDATALANG_RO = "ro",
-    GETCURRETWEATHERDATALANG_RU = "ru",
-    GETCURRETWEATHERDATALANG_SE = "se",
-    GETCURRETWEATHERDATALANG_SK = "sk",
-    GETCURRETWEATHERDATALANG_SL = "sl",
-    GETCURRETWEATHERDATALANG_ES = "es",
-    GETCURRETWEATHERDATALANG_TR = "tr",
-    GETCURRETWEATHERDATALANG_UA = "ua",
-    GETCURRETWEATHERDATALANG_VI = "vi",
-    GETCURRETWEATHERDATALANG_ZHCN = "zh_cn",
-    GETCURRETWEATHERDATALANG_ZHTW = "zh_tw"
-}
-
-public enum GetCurretWeatherDataMode {
-    GETCURRETWEATHERDATAMODE_JSON = "json",
-    GETCURRETWEATHERDATAMODE_XML = "xml",
-    GETCURRETWEATHERDATAMODE_HTML = "html"
-}
-
-public enum GetWeatherForecastExclude {
-    GETWEATHERFORECASTEXCLUDE_CURRENT = "current",
-    GETWEATHERFORECASTEXCLUDE_MINUTELY = "minutely",
-    GETWEATHERFORECASTEXCLUDE_HOURLY = "hourly",
-    GETWEATHERFORECASTEXCLUDE_DAILY = "daily",
-    GETWEATHERFORECASTEXCLUDE_ALERTS = "alerts"
-}

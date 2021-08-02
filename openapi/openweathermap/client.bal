@@ -22,16 +22,19 @@ public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# Client endpoint for OpenWeatherMap [Current Weather Data API](https://openweathermap.org/current) and [One Call API](https://openweathermap.org/api/one-call-api)
+# This is a generated connector from [Open Weather Map API version 2.5](https://openweathermap.org/) OpenAPI Specification. 
+# The Open Weather Map API provides access to current weather data and weather forecast of any location worldwide including 200,000 cities by consuming the [`Current Weather Data`](https://openweathermap.org/current) and [`One Call`](https://openweathermap.org/api/one-call-api) API endpoints.  
 @display {label: "Open Weather Client"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
-    # This is a generated connector from [Open Weather Map](https://openweathermap.org/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create an account at https://openweathermap.org and an API key following [this guide](https://openweathermap.org/appid). 
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Please create an account at https://openweathermap.org and an API key following [this guide](https://openweathermap.org/appid).  Choose a subscription that matches with your requirements.
     #
-    # + apiKeyConfig - Provide your API Key as `appid`. Eg: `{"appid" : "<Your API Key>"}
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + apiKeyConfig - Provide your API Key as `appid`. Eg: `{"appid" : "<Your API Key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "http://api.openweathermap.org/data/2.5/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);

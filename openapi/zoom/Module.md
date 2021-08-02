@@ -1,43 +1,31 @@
 ## Overview
 
-The Zoom connector consumes the data exposed in https://api.zoom.us/v2. 
+This is a generated connector for [Zoom API v2.0.0](https://marketplace.zoom.us/docs/api-reference/zoom-api) OpenAPI Specification. 
 
-This module supports Zoom API version 2.0.0. 
+The Zoom API allows developers to access information from Zoom. You can use this API to build private services or public applications on the [Zoom App Marketplace](http://marketplace.zoom.us). To learn how to get your credentials and create private/public applications, read our [Authorization Guide](https://marketplace.zoom.us/docs/guides/authorization/credentials). All endpoints are available via `https` and are located at `api.zoom.us/v2/`. For instance you can list all users on an account via `https://api.zoom.us/v2/users/`.
 
 ## Configuring connector
 
-### Obtaining tokens
+### Prerequisites
 
-Follow the steps below to obtain the configurations.
+* Create a Zoom account by clicking the `Sign Up` link here: https://marketplace.zoom.us/. Once you activate your account, you’ll be ready to join as a developer.
+* Obtain tokens
+    - Create an OAuth2.0 app by visiting [Zoom App Marketplace](https://marketplace.zoom.us/develop/create). Then provide app related information and get client credentials. Please follow the steps in [here](https://marketplace.zoom.us/docs/guides/build/oauth-app) to create and publish a zoom app successfully. 
+    - Generate tokens for your Zoom app following the authorization code flow. Follow the detailed steps given [here](https://marketplace.zoom.us/docs/guides/auth/oauth)
+* Please note that to set live stream details meeting host need to have a Pro license. 
 
-1. If you don’t have a Zoom account yet, create your new account by clicking the ‘Sign Up’ link here: https://marketplace.zoom.us/. Once you activate your account, you’ll be ready to join as a Developer account.
-2. Create an OAuth2.0 app by visiting [Zoom App Marketplace](https://marketplace.zoom.us/develop/create). Then provide app related information and get client credentials. Please follow the steps in [here](https://marketplace.zoom.us/docs/guides/build/oauth-app) to create and publish a zoom app successfully. 
-3. Generate access token and refresh token for your Zoom app following the authorization code flow. Follow the detailed steps given [here](https://marketplace.zoom.us/docs/guides/auth/oauth)
-    - Please note that to set live stream details meeting host need to have a Pro license. 
-4. The above step should result in a response as follows
-    ```
-    {
-        "access_token": "<ACCESS_TOKEN>",
-        "token_type": "bearer",
-        "refresh_token": "<REFRESH_TOKEN>",
-        "expires_in": 3599,
-        "scope": "<LIST_OF_SCOPES>"
-    }
-    ```
-    - Please note that once you stop the deployment of the template you need to provide new refresh token for the next run.
-5. Use the `Client Id`, `Client Secret`, `Refresh Token` obtained from above steps to configure `ballerinax/zoom` connector. 
- 
 ## Quickstart
 
-### Step 1: Import Zoom module
-First, import the ballerinax/zoom module into the Ballerina project.
+To use the Zoom connector in your Ballerina application, update the .bal file as follows:
+
+### Step 1: Import connector
 
 ```ballerina
 import ballerinax/zoom;
 ```
 
-### Step 2: Configure the connection credentials.
-You can now make the connection configuration using the OAuth2 refresh token grant config.
+### Step 2: Create a new connector instance
+Configure the connection using http:OAuth2RefreshTokenGrantConfig or http:BearerTokenConfig.
 
 ```ballerina
 zoom:Configuration configuration = {
@@ -52,8 +40,8 @@ zoom:Configuration configuration = {
 zoom:Client zoomClient = check new (configuration);
 ```
 
-### Step 3: Create Zoom meeting
-Following is code demonstrates how to create a zoom meeting using `ballerinax/zoom` connector. 
+### Step 3: Invoke  connector operation
+1. Create Zoom meeting 
 
 ```ballerina
 public function main() returns error? {
@@ -66,17 +54,4 @@ public function main() returns error? {
     zoom:CompoundCreateMeetingResponse meeting = check zoomClient->createMeeting("me", meetingDetails);
 }
 ```
-
-## Snippets
-
-* Get Zoom meeting invitation by meeting Id
-    ```ballerina
-    int meetingId = 1234;
-    zoom:GetMeetingInvitationResponse meetingInvitation = check zoomClient->getMeetingInvitation(meetingId);
-    ```
-* Get list of Zoom webinar participants. 
-    ```ballerina
-    string webinarId = "1234";
-    zoom:ListWebinarParticipantsResponse listWebinarParticipantsResponse = check zoomClient->listWebinarParticipants(webinarId);
-    ```
- 
+2. Use `bal run` command to compile and run the Ballerina program. 

@@ -2,7 +2,18 @@ openapi: "3.0.0"
 info:
   version: 1.0.10
   title: SMS API
-  description: With the SMS API you can send SMS from your account and lookup messages both messages that you've sent as well as messages sent to your virtual numbers. Numbers are specified in E.164 format. More SMS API documentation is at <https://developer.nexmo.com/messaging/sms/overview>
+  description: >
+    This is a generated connector for [Vonage SMS API v1.0.10](https://nexmo-api-specification.herokuapp.com/sms) OpenAPI specification.
+
+    With the SMS API you can send SMS from your account and lookup messages both messages that you've sent as well as messages sent to your virtual numbers. 
+    
+    Numbers are specified in E.164 format. More SMS API documentation is at https://developer.nexmo.com/messaging/sms/overview
+  x-init-description: >
+    The connector initialization doesn't require setting the API credentials.
+  
+    Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
+
+    Some operations may require passing the token as a parameter.
   contact:
     name: Vonage DevRel
     email: devrel@vonage.com
@@ -127,7 +138,7 @@ components:
           default: 259200000
           minimum: 20000
           maximum: 604800000
-        status-report-req:
+        statusReportReq:
           description: "**Advanced**: Boolean indicating if you like to receive a [Delivery Receipt](/messaging/sms/building-blocks/receive-a-delivery-receipt)."
           type: boolean
           example: false
@@ -136,7 +147,7 @@ components:
           description: "**Advanced**: The webhook endpoint the delivery receipt for this sms is sent to. This parameter overrides the webhook endpoint you set in Dashboard."
           type: string
           example: "https://example.com/sms-dlr"
-        message-class:
+        messageClass:
           description: "**Advanced**: The Data Coding Scheme value of the message"
           type: integer
           enum:
@@ -172,7 +183,7 @@ components:
           description: "**Advanced**: Your custom Hex encoded [User Data Header](https://en.wikipedia.org/wiki/User_Data_Header). Depends on `type` parameter having the value `binary`."
           type: string
           example: "06050415811581"
-        protocol-id:
+        protocolId:
           description: "**Advanced**: The value of the [protocol identifier](https://en.wikipedia.org/wiki/GSM_03.40#Protocol_Identifier) to use. Ensure that the value is aligned with `udh`."
           type: integer
           example: 127
@@ -188,19 +199,19 @@ components:
           description: "**Advanced**: The availability for an SMS in milliseconds. Depends on `type` parameter having the value `wappush`."
           type: string
           example: "300000"
-        client-ref:
+        clientRef:
           description: "**Advanced**: You can optionally include your own reference of up to 40 characters."
           type: string
           example: my-personal-reference
-        account-ref:
+        accountRef:
           description: "**Advanced**: An optional string used to identify separate accounts using the SMS endpoint for billing purposes. To use this feature, please email [support@nexmo.com](mailto:support@nexmo.com)"
           type: string
           example: customer1234
-        entity-id:
+        entityId:
           description: "**Advanced**: A string parameter that satisfies regulatory requirements when sending an SMS to specific countries. For more information please refer to the [Country-Specific Outbound SMS Features](https://help.nexmo.com/hc/en-us/articles/115011781468)"
           type: string
           example: "1101456324675322134"
-        content-id:
+        contentId:
           description: "**Advanced**: A string parameter that satisfies regulatory requirements when sending an SMS to specific countries. For more information please refer to the [Country-Specific Outbound SMS Features](https://help.nexmo.com/hc/en-us/articles/115011781468)"
           type: string
           example: "1107457532145798767"
@@ -208,7 +219,7 @@ components:
       description: Error
       type: object
       properties:
-        message-count:
+        messageCount:
           type: string
           description: The amount of messages in the request
           example: "1"
@@ -237,7 +248,7 @@ components:
           type: string
           description: The error status of the message
           example: "2"
-        error-text:
+        errorText:
           type: string
           description: The description of the error
           example: "Missing to param"
@@ -245,7 +256,7 @@ components:
       description: Message sent
       type: object
       properties:
-        message-count:
+        messageCount:
           type: string
           description: The amount of messages in the request
           example: "1"
@@ -285,7 +296,7 @@ components:
         - message-timestamp
         - api-key
       properties:
-        api-key:
+        apiKey:
           type: string
           description: The Vonage API Key of the receiving account.
           example: "abcd1234"
@@ -318,7 +329,7 @@ components:
           type: string
           description: The first word in the message body. Converted to upper case.
           example: HELLO
-        message-timestamp:
+        messageTimestamp:
           description: The time when Vonage started to push this Delivery Receipt to your webhook endpoint.
           type: string
           example: 2020-01-01 12:00:00
@@ -334,15 +345,15 @@ components:
           type: string
           description: True - if this is a concatenated message. This field does not exist if it is a single message
           example: "true"
-        concat-ref:
+        concatRef:
           type: string
           description: The transaction reference. All parts of this message share this value.
           example: "1"
-        concat-total:
+        concatTotal:
           type: string
           description: The number of parts in this concatenated message.
           example: "3"
-        concat-part:
+        concatPart:
           type: string
           description: The number of this part in the message. Counting starts at 1.
           example: "2"
@@ -360,7 +371,7 @@ components:
           type: string
           description: The number the message was sent to. Numbers are specified in E.164 format.
           example: "447700900000"
-        message-id:
+        messageId:
           type: string
           description: The ID of the message
           example: 0A0000000123ABCD1
@@ -370,13 +381,13 @@ components:
           type: string
           description: The status of the message. See [Troubleshooting Failed SMS](/messaging/sms/guides/troubleshooting-sms).
           example: "0"
-        remaining-balance:
+        remainingBalance:
           type: string
           description: Your remaining balance
           example: "3.14159265"
           xml:
             name: remainingBalance
-        message-price:
+        messagePrice:
           type: string
           description: The cost of the message
           example: "0.03330000"
@@ -386,11 +397,11 @@ components:
           type: string
           description: The ID of the network of the recipient
           example: "12345"
-        client-ref:
+        clientRef:
           description: If a `client-ref` was included when sending the SMS, this field will be included and hold the value that was sent.
           type: string
           example: my-personal-reference
-        account-ref:
+        accountRef:
           type: string
           description: "**Advanced**: An optional string used to identify separate accounts using the SMS endpoint for billing purposes. To use this feature, please email [support@nexmo.com](mailto:support@nexmo.com)"
           example: customer1234
@@ -405,7 +416,7 @@ components:
           type: string
           description: The SenderID you set in `from` in your request.
           example: AcmeInc
-        network-code:
+        networkCode:
           type: string
           description: The Mobile Country Code Mobile Network Code (MCCMNC) of the carrier this phone number is registered with.
           example: "12345"
@@ -433,19 +444,19 @@ components:
           type: string
           description: When the DLR was received from the carrier in the following format `YYMMDDHHMM`. For example, `2001011400` is at `2020-01-01 14:00`
           example: "2001011400"
-        err-code:
+        errCode:
           type: string
           description: The status of the request. Will be a non `0` value if there has been an error, or if the status is unknown. See the [Delivery Receipt documentation](/messaging/sms/guides/delivery-receipts#dlr-error-codes) for more details
           example: "0"
-        api-key:
+        apiKey:
           type: string
           description: The API key that sent the SMS. This is useful when multiple accounts are sending webhooks to the same endpoint.
           example: "abcd1234"
-        client-ref:
+        clientRef:
           type: string
           description: If the `client-ref` is set when the SMS is sent, it will be included in the delivery receipt
           example: my-personal-reference
-        message-timestamp:
+        messageTimestamp:
           description: The time when Vonage started to push this Delivery Receipt to your webhook endpoint.
           type: string
           example: 2020-01-01 12:00:00

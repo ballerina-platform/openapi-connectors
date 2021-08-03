@@ -1,5 +1,7 @@
 ## Overview
-This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification. With over 15 exchange rate data sources, the Exchangerates API is delivering exchanging rates data for more than 170 world currencies. The endpoints include functionalities like receiving the latest exchange rates information for a specific currency; conversion from one to another currency; receiving data Time-series for multiple or for one currency, and preserving the API daily for the fluctuation data.. More about the ExchangeRate-API can be find at [ExchangeRates-API](https://exchangeratesapi.io/documentation/)
+This is a generated connector from [ExchangeRates-API v6](https://exchangeratesapi.io/documentation/) OpenAPI Specification. 
+
+With over 15 exchange rate data sources, the Exchangerates API is delivering exchanging rates data for more than 170 world currencies. The endpoints include functionalities like receiving the latest exchange rates information for a specific currency; conversion from one to another currency; receiving data Time-series for multiple or for one currency, and preserving the API daily for the fluctuation data.. More about the ExchangeRate-API can be find at [ExchangeRates-API](https://exchangeratesapi.io/documentation/)
  
 This module supports ExchangeRates API version v6.
 
@@ -25,8 +27,9 @@ exchangerates:Client baseClient = check new(serviceUrl = "https://v6.exchangerat
 ```
 
 ### Step 3: Invoke an operation
-Following code demonstrate how to obtain exchange rates for USD
+1. Now you can use the operations available within the connector. Following code demonstrate how to obtain exchange rates for USD
 
 ```ballerina
 exchangerates:CurrencyExchangeInfomation response = check baseClient->getExchangeRateFor("<API-Key>", "usd");
 ```
+2. Use `bal run` command to compile and run the Ballerina program.

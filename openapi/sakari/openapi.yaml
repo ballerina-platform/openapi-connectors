@@ -5,18 +5,17 @@ servers:
   url: https://api.sakari.io/v1
 info:
   description: |
-    # Introduction
-
-    Welcome to the documentation for the Sakari Messaging REST API. 
+    This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification.
 
     Sakari provides an advanced platform to drive large scale customized SMS communication
-
-    REST is a web-service protocol that lends itself to rapid development by using everyday HTTP and JSON technology.
 
     To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
 
   x-init-description: | 
-    This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create a [Sakari account](https://api.sakari.io)
+    
+    The connector initialization requires setting the API credentials. 
+    
+    Please create a [Sakari account](https://api.sakari.io)
 
     To authenticate against the API's you will need three key pieces of data
      - client id

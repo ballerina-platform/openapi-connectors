@@ -23,18 +23,18 @@ public type ClientConfig record {
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# # Introduction
-# 
-# Welcome to the documentation for the Sakari Messaging REST API. 
+# This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification.
 # 
 # Sakari provides an advanced platform to drive large scale customized SMS communication
-# 
-# REST is a web-service protocol that lends itself to rapid development by using everyday HTTP and JSON technology.
 # 
 # To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
 public isolated client class Client {
     final http:Client clientEp;
-    # This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create a [Sakari account](https://api.sakari.io)
+    # Gets invoked to initialize the `connector`.
+    # 
+    # The connector initialization requires setting the API credentials. 
+    # 
+    # Please create a [Sakari account](https://api.sakari.io)
     # 
     # To authenticate against the API's you will need three key pieces of data
     #  - client id
@@ -43,8 +43,8 @@ public isolated client class Client {
     # 
     # To retrieve these, simply login into [https://hub.sakari.io](https://hub.sakari.io) and click on the "cog" in the top right corner. In the popup dialog at the bottom you should see your API credentials and account id. If these are not visible you will need to click on "Request Credentials"
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.sakari.io/v1") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
@@ -87,7 +87,7 @@ public isolated client class Client {
     # + payload - Create contact request payload
     # + mergeStrategy - Determines how existing contacts with matching mobile numbers are treated
     # + return - successful operation
-    remote isolated function createContact(string accountId, ContactRequest payload, CreateContactMergeStrategy? mergeStrategy = ()) returns InlineResponse201|error {
+    remote isolated function createContact(string accountId, ContactRequest payload, string? mergeStrategy = ()) returns InlineResponse201|error {
         string  path = string `/accounts/${accountId}/contacts`;
         map<anydata> queryParam = {"mergeStrategy": mergeStrategy};
         path = path + check getPathForQueryParam(queryParam);
@@ -376,7 +376,7 @@ public isolated client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

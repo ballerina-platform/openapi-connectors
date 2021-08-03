@@ -18,22 +18,27 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
+# Visit [here](https://developer.nytimes.com/) and obtain an `API key`. 
+#
+# + apiKeys - Provide your API key as `api-key`. Eg: `{"api-key" : "<your API key>"}`  
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
+# This is a generated connector for [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
 # The Books API provides information about book reviews and The New York Times bestsellers lists.
-# For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview)
+# For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
-    # This is a generated connector from [NYTimes](https://developer.nytimes.com) OpenAPI specification.
+    # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [New York Times Account](https://developer.nytimes.com/accounts/create) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
+    # Create an [New York Times Account](https://developer.nytimes.com/accounts/create) 
+    # and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
     #
     # + apiKeyConfig - Provide your API key as `api-key`. Eg: `{"api-key" : "<your API key>"}`
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.nytimes.com/svc/books/v3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
@@ -85,7 +90,7 @@ public isolated client class Client {
     # + return - Best seller list names
     remote isolated function getListsNamesFormat(string format, string? apiKey = ()) returns InlineResponse2002|error {
         string  path = string `/lists/names.${format}`;
-        map<anydata> queryParam = {"api-key": apiKey, "api/-key": self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"api-key": apiKey, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
         return response;
@@ -98,7 +103,7 @@ public isolated client class Client {
     # + return - Best seller list overview
     remote isolated function getListsOverviewFormat(string format, string? publishedDate = (), string? apiKey = ()) returns InlineResponse2003|error {
         string  path = string `/lists/overview.${format}`;
-        map<anydata> queryParam = {"published_date": publishedDate, "api-key": apiKey, "api/-key": self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"published_date": publishedDate, "api-key": apiKey, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
         return response;
@@ -134,7 +139,7 @@ public isolated client class Client {
     # + return - Reviews
     remote isolated function getReviewsFormat(string format, int? isbn = (), string? title = (), string? author = (), string? apiKey = ()) returns InlineResponse2005|error {
         string  path = string `/reviews.${format}`;
-        map<anydata> queryParam = {"isbn": isbn, "title": title, "author": author, "api-key": apiKey, "api/-key": self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"isbn": isbn, "title": title, "author": author, "api-key": apiKey, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
         return response;

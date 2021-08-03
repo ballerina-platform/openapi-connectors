@@ -16,13 +16,16 @@
 
 import ballerina/http;
 
+# This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification.
 # This is the public REST API for ExchangeRate-API. Fetch the latest currency exchange rates via API.
 public isolated client class Client {
     final http:Client clientEp;
-    # This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key.
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key.
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://v6.exchangerate-api.com/v6/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);

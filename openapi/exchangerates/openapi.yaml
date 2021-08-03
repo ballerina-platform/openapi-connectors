@@ -3,11 +3,17 @@ servers:
   - description: Returns latest exchange rates and some metadata.
     url: https://v6.exchangerate-api.com/v6/
 info:
-  description: This is the public REST API for ExchangeRate-API. Fetch the latest currency exchange rates via API.
-  x-init-description: This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification. The connector initialization requires setting the API credentials. Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key.
+  description: >
+    This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification.
+
+    This is the public REST API for ExchangeRate-API. Fetch the latest currency exchange rates via API.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key.
   termsOfService: https://www.exchangerate-api.com/terms
   title: ExchangeRate-API
-  version: "4"
+  version: "6"
   x-apisguru-categories:
     - financial
   x-logo:

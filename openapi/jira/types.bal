@@ -14,6 +14,50 @@
 // specific language governing permissions and limitations
 // under the License.
 
+public type AttachmentArr Attachment[];
+
+public type ColumnItemArr ColumnItem[];
+
+public type ResolutionArr Resolution[];
+
+public type IssueTypeDetailsArr IssueTypeDetails[];
+
+public type ProjectArr Project[];
+
+public type IssueTypeWithStatusArr IssueTypeWithStatus[];
+
+public type ProjectTypeArr ProjectType[];
+
+public type VersionArr Version[];
+
+public type DeprecatedWorkflowArr DeprecatedWorkflow[];
+
+public type PriorityArr Priority[];
+
+public type FieldDetailsArr FieldDetails[];
+
+public type TimeTrackingProviderArr TimeTrackingProvider[];
+
+public type WorklogArr Worklog[];
+
+public type StatusDetailsArr StatusDetails[];
+
+public type StatusCategoryArr StatusCategory[];
+
+public type ProjectCategoryArr ProjectCategory[];
+
+public type ProjectComponentArr ProjectComponent[];
+
+public type ProjectRoleDetailsArr ProjectRoleDetails[];
+
+public type ProjectRoleArr ProjectRole[];
+
+public type UserMigrationBeanArr UserMigrationBean[];
+
+public type GroupNameArr GroupName[];
+
+public type UserArr User[];
+
 # Properties of a workflow status.
 public type WorkflowStatusProperties record {
     # Whether issues are editable in this status.

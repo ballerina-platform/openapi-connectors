@@ -3,8 +3,6 @@ Connects to [Xero Accounts API](https://developer.xero.com/documentation/api/acc
 ## Package overview
 The `ballerinax/xero.accounts` is a [Ballerina](https://ballerina.io/) connector for Xero Accounts. This connector can be used for a variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data.
 
-This module supports [Xero Accounts API V2.14.4](https://developer.xero.com/documentation/api/accounting/overview).
-
 ### Compatibility
 |                     | Version                   |
 |---------------------|---------------------------|

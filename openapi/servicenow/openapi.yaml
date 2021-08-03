@@ -1,0 +1,1308 @@
+openapi: 3.0.0
+info:
+  title: ServiceNow REST API
+  description: ServiceNow provides extensive access to instances through a set of RESTful APIs. 
+  version: 1.0.0
+servers:
+- url: https://dev59796.service-now.com
+security:
+- Bearer: []
+paths:
+  /api/now/table/{tableName}:
+    get:
+      tags:
+        - Table API
+      summary: Retrieves multiple records for the specified table.
+      operationId: getRecordList
+      parameters:
+      - name: tableName
+        in: path
+        description: |-
+          Name of the table from which to retrieve the record.
+           <i>Example&#58; Incident
+        required: true
+        schema:
+          type: string
+      - name: name-value pairs
+        in: query
+        description: Name-value pairs to use to filter the result set. This parameter is mutually exclusive with 
+                     sysparm_query.
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields.
+        schema:
+          type: string
+      - name: sysparm_exclude_reference_link
+        in: query
+        description: Flag that indicates whether to exclude Table API links for reference fields
+        schema:
+          type: boolean
+      - name: sysparm_fields
+        in: query
+        description: Comma-separated list of fields to return in the response.
+        schema:
+          type: string
+      - name: sysparm_limit
+        in: query
+        description: Maximum number of records to return. For requests that exceed this number of records, use the 
+                     sysparm_offset parameter to paginate record retrieval. 
+                     Note - Unusually large sysparm_limit values can impact system performance.
+        schema:
+          type: number
+      - name: sysparm_no_count
+        in: query
+        description: Flag that indicates whether to execute a select count(*) query on the table to return the number 
+                     of rows in the associated table.
+        schema:
+          type: boolean
+      - name: sysparm_offset
+        in: query
+        description: Starting record index for which to begin retrieving records. Use this value to paginate record 
+                     retrieval. This functionality enables the retrieval of all records, regardless of the number of 
+                     records, in small manageable chunks.
+        schema:
+          type: number
+      - name: sysparm_query
+        in: query
+        description: Encoded query used to filter the result set. Syntax - sysparm_query=<col_name><operator><value>.
+        schema:
+          type: string
+      - name: sysparm_query_category
+        in: query
+        description: Name of the category to use for queries.
+        schema:
+          type: string   
+      - name: sysparm_query_no_domain
+        in: query
+        description: Flag that indicates whether to restrict the record search to
+          only the domains for which the logged in user is configured.
+        schema:
+          type: boolean
+      - name: sysparm_suppress_pagination_header
+        in: query
+        description: Flag that indicates whether to remove the Link header from the response. The Link header provides 
+                various URLs to relative pages in the record set which you can use to paginate the returned record set.
+        schema:
+          type: boolean
+      - name: sysparm_view
+        in: query
+        description: UI view for which to render the data. Determines the fields returned
+          in the response.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object that includes all records of the table. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+        - Table API
+      summary: Inserts one record in the specified table. Multiple record insertion is not supported by this method.
+      operationId: createRecord
+      parameters:
+      - name: tableName
+        in: path
+        description: Name of the table in which to save the record.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields.
+        schema:
+          type: string
+      - name: sysparm_exclude_reference_link
+        in: query
+        description: Flag that indicates whether to exclude Table API links for reference fields
+        schema:
+          type: boolean
+      - name: sysparm_fields
+        in: query
+        description: Comma-separated list of fields to return in the response.
+        schema:
+          type: string
+      - name: sysparm_input_display_value
+        in: query
+        description: Flag that indicates whether to set field values using the display value or the actual value.
+        schema:
+          type: boolean
+      - name: sysparm_view
+        in: query
+        description: UI view for which to render the data. Determines the fields returned
+          in the response.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: "Data format of the request body.\nSupported types \n - application/json\
+          \ \n - application/xml."
+        schema:
+          type: string
+      - name: X-no-response-body
+        in: header
+        description: By default, responses include body content detailing the new record. Set this header to true in 
+                     the request to suppress the response body.
+        schema:
+          type: string
+      requestBody:
+        description: Field name and the associated value for each parameter to define in the specified record in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        201:
+          description: If successful, returns a JSON object that includes created record of the table. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/now/table/{tableName}/{sys_id}:
+    get:
+      tags:
+      - Table API
+      summary: Retrieves the record identified by the specified sys_id from the specified table.
+      operationId: getRecordById
+      parameters:
+      - name: tableName
+        in: path
+        description: |-
+          Name of the table from which to retrieve the record.
+           <i>Example&#58; Incident
+        required: true
+        schema:
+          type: string
+      - name: sys_id
+        in: path
+        description: |-
+          Sys_id of the record to retrieve
+           <i>Example&#58; b7a00a202f1030105b5b2b5df699b618
+        required: true
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields.
+        schema:
+          type: string
+      - name: sysparm_exclude_reference_link
+        in: query
+        description: Flag that indicates whether to exclude Table API links for reference
+          fields
+        schema:
+          type: boolean
+      - name: sysparm_fields
+        in: query
+        description: "Comma-separated list of fields to return in the response.\n\
+          In the use case of __query incidents__ those fields are __number,sys_id,sys_created_on,cmdb_ci,correlation_id,state,assignment_group,short_description,description,close_code,close_notes__\
+          \ \n <i>Example&#58; number,sys_id,sys_created_on,cmdb_ci,correlation_id,state,assignment_group,short_description,description,close_code,close_notes"
+        schema:
+          type: string
+      - name: sysparm_query_no_domain
+        in: query
+        description: Flag that indicates whether to restrict the record search to
+          only the domains for which the logged in user is configured.
+        schema:
+          type: boolean
+      - name: sysparm_view
+        in: query
+        description: UI view for which to render the data. Determines the fields returned
+          in the response.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object that includes specified record of the table. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Not found. The requested item was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+    patch:
+      tags:
+      - Table API
+      summary: Updates the specified record with the name-value pairs included in the request body.
+      operationId: patchRecordById
+      parameters:
+      - name: tableName
+        in: path
+        description: Name of the table in which to the specified record is located.
+        required: true
+        schema:
+          type: string
+      - name: sys_id
+        in: path
+        description: Sys_id of the record to update.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields.
+        schema:
+          type: string
+      - name: sysparm_fields
+        in: query
+        description: Comma-separated list of fields to return in the response.
+        schema:
+          type: string
+      - name: sysparm_input_display_value
+        in: query
+        description: Flag that indicates whether to set field values using the display value or the actual value.
+        schema:
+          type: boolean
+      - name: sysparm_query_no_domain
+        in: query
+        description: Flag that indicates whether to restrict the record search to only the domains for which the logged 
+                     in user is configured.
+        schema:
+          type: boolean
+      - name: sysparm_view
+        in: query
+        description: UI view for which to render the data. Determines the fields returned
+          in the response.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: "Data format of the request body.\nSupported types \n - application/json\
+          \ \n - application/xml."
+        schema:
+          type: string
+      - name: X-no-response-body
+        in: header
+        description: By default, responses include body content detailing the new record. Set this header to true in 
+                     the request to suppress the response body.
+        schema:
+          type: string          
+      requestBody:
+        description: Field name and the associated value for each parameter to define in the specified record in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        200:
+          description: If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - Table API
+      summary: Updates the specified record with the request body.
+      operationId: updateRecord
+      parameters:
+      - name: tableName
+        in: path
+        description: Name of the table in which the record is located.
+        required: true
+        schema:
+          type: string
+      - name: sys_id
+        in: path
+        description: Unique identifier of the record to update.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields.
+        schema:
+          type: string
+      - name: sysparm_exclude_reference_link
+        in: query
+        description: Flag that indicates whether to exclude Table API links for reference
+          fields
+        schema:
+          type: boolean
+      - name: sysparm_fields
+        in: query
+        description: Comma-separated list of fields to return in the response.
+        schema:
+          type: string
+      - name: sysparm_input_display_value
+        in: query
+        description: Flag that indicates whether to set field values using the display value or the actual value.
+        schema:
+          type: boolean
+      - name: sysparm_query_no_domain
+        in: query
+        description: Flag that indicates whether to restrict the record search to only the domains for which the logged 
+                     in user is configured.
+        schema:
+          type: boolean
+      - name: sysparm_view
+        in: query
+        description: UI view for which to render the data. Determines the fields returned
+          in the response.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: "Data format of the request body.\nSupported types \n - application/json\
+          \ \n - application/xml."
+        schema:
+          type: string
+      - name: X-no-response-body
+        in: header
+        description: By default, responses include body content detailing the new record. Set this header to true in 
+                     the request to suppress the response body.
+        schema:
+          type: string          
+      requestBody:
+        description: Name-value pairs for the field(s) to update in the associated table in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        200:
+          description: If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - Table API
+      summary: Deletes the specified record from the specified table.
+      operationId: deleteRecord
+      parameters:
+      - name: tableName
+        in: path
+        description: Name of the table from which to delete the specified record, such as "incident" or "asset".
+        required: true
+        schema:
+          type: string
+      - name: sys_id
+        in: path
+        description: Sys_id of the record to delete.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_query_no_domain
+        in: query
+        description: Flag that indicates whether to restrict the record search to only the domains for which the logged 
+                     in user is configured.
+        schema:
+          type: boolean
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        204:
+          description: |-
+            **HTTP Status Code:** `204`. Meeting updated.
+  /api/now/stats/{tableName}:
+    get:
+      tags:
+        - Aggregate API
+      summary: Retrieves records for the specified table and performs aggregate functions on the returned values.
+      operationId: aggregate
+      parameters:
+      - name: tableName
+        in: path
+        description: Name of the table for which to retrieve records.
+        required: true
+        schema:
+          type: string
+      - name: name-value pairs
+        in: query
+        description: An alternative to using the sysparm_query parameter. You can filter a query using key-value pairs 
+                     where the key is the name of a field.
+        schema:
+          type: string
+      - name: sysparm_avg_fields
+        in: query
+        description: List of fields on which to perform avg aggregate operation. You can specify multiple fields by 
+                     separating each with a comma.
+        schema:
+          type: string
+      - name: sysparm_min_fields
+        in: query
+        description: List of fields on which to perform min aggregate operation. You can specify multiple fields by 
+                     separating each with a comma.
+        schema:
+          type: string
+      - name: sysparm_max_fields
+        in: query
+        description: List of fields on which to perform max aggregate operation. You can specify multiple fields by 
+                     separating each with a comma.
+        schema:
+          type: string
+      - name: sysparm_sum_fields
+        in: query
+        description: List of fields on which to perform sum aggregate operation. You can specify multiple fields by 
+                     separating each with a comma.
+        schema:
+          type: string
+      - name: sysparm_count
+        in: query
+        description: Flag that determines whether to return the number of records returned by the query.
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation when grouping by reference or choice fields. Based on this value, the 
+                     query returns either the display value, the actual value in the database, or both.
+        schema:
+          type: string
+      - name: sysparm_group_by
+        in: query
+        description: Fields by which to group the returned data. You can specify multiple fields by separating each 
+                     field with a comma, such as sysparm_group_by=priority,state.
+        schema:
+          type: string
+      - name: sysparm_having
+        in: query
+        description: Additional query that enables you to filter the data based on an aggregate operation. The value 
+          for this parameter must follow the syntax aggregate^field^operator^value, such as count^priority^>^3 to obtain
+         the number of records within the query results with a priority greater than 3. You can specify multiple queries
+         by separating each with a comma, such ascount^state^=^1,avg^priority^>^3.
+        schema:
+          type: string
+      - name: sysparm_orderby
+        in: query
+        description: Data retrieval operation when grouping by reference or choice fields. Based on this value, the 
+                     query returns either the display value, the actual value in the database, or both.
+        schema:
+          type: string
+      - name: sysparm_query
+        in: query
+        description: An encoded query. For example- 
+                    (sysparm_query=active=true)(sysparm_query=caller_id=javascript:gs.getUserID()^active=true)
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object depends on specified table and specified request parameters. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal server error. An unexpected error occurred while processing the request. The response 
+                       contains additional information about the error.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/now/import/{stagingTableName}/{sys_id}:
+    get:
+      tags:
+        - Import Set API
+      summary: Retrieves the specified import staging record and resulting transformation result.
+      operationId: getImportSet
+      parameters:
+      - name: stagingTableName
+        in: path
+        description: Name of the table from which to obtain the import data.
+        required: true
+        schema:
+          type: string
+      - name: sys_id
+        in: path
+        description: Sys_id of the record that contains the data.
+        required: true
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Indicates the specified resource was not available.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal server error. An unexpected error occurred while processing the request. The response 
+                       contains additional information about the error.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/now/import/{stagingTableName}:
+    post:
+      tags:
+        - Import Set API
+      summary: Inserts incoming data into a specified staging table and triggers transformation based on predefined
+                   transform maps in the import set table.
+      operationId: createImportSet
+      parameters:
+      - name: stagingTableName
+        in: path
+        description: Name of the table from which to import the data.
+        required: true
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Data format of the request body.
+        schema:
+          type: string
+      requestBody:
+        description: Name-value pairs to insert in the import fields in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal server error. An unexpected error occurred while processing the request. The response 
+                       contains additional information about the error.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/now/import/{stagingTableName}/insertMultiple:
+    post:
+      tags:
+        - Import Set API
+      summary: Inserts multiple records into a specified staging table and triggers transformation based on 
+                   predefined transform maps or Robust Transform Engine (RTE) configurations in a single request.
+      operationId: createMultipleImportSet
+      parameters:
+      - name: stagingTableName
+        in: path
+        description: Name of the table from which to import the data.
+        required: true
+        schema:
+          type: string
+      - name: multi_import_set_id
+        in: query
+        description: Sys_id of an entry in the Multi Import Sets [sys_multi_import_set] table. If specified, adds the 
+                     current import to this multiple import set instead of adding to a new multiple import set.
+        schema:
+          type: string
+      - name: run_after
+        in: query
+        description: Sys_id of an entry in the Import Sets [sys_import_set] table. Enables running the current import 
+                     set after the specified import set is complete. You can use this parameter to enforce the 
+                     sequential order of imports. This parameter is only valid in asynchronous transformations.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Data format of the request body.
+        schema:
+          type: string
+      requestBody:
+        description: Name-value pairs to insert in the import fields in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal server error. An unexpected error occurred while processing the request. The response 
+                       contains additional information about the error.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/sn_customerservice/case/{id}/activities:
+    get:
+      tags:
+      - Case API
+      summary: Retrieves the activity stream for a specified Customer Service Management (CSM) case.
+      operationId: getCaseById
+      parameters:
+      - name: id
+        in: path
+        description: Sys_id or case number of the case to retrieve. Located in the Case [sn_customerservice_case] table.
+                     Results will be unpredictable if a specified case number is shared by two or more cases.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_activity_type
+        in: query
+        description: Filters the type of activities to return from the activity stream. The entries.element parameter 
+                     contains the activity type for each activity.
+        schema:
+          type: string
+      - name: sysparm_limit
+        in: query
+        description: Maximum number of records to return. Unusually large sysparm_limit values can impact system 
+                     performance. For requests that exceed this number of records, use the sysparm_offset parameter to 
+                     paginate record retrieval.
+        schema:
+          type: number
+      - name: sysparm_offset
+        in: query
+        description: Starting record index for which to begin retrieving records. Use this value to paginate record 
+                     retrieval. This functionality enables the retrieval of all records, regardless of the number of 
+                     records, in small manageable chunks.
+        schema:
+          type: number
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Not found. The requested item was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/sn_customerservice/case/field_values/{field_name}:
+    get:
+      tags:
+      - Case API
+      summary: Retrieves the list of possible field values for a choice or reference field in the Case 
+                   [sn_customerservice_case] table.
+      operationId: getValuesByFieldNameInCase
+      parameters:
+      - name: field_name
+        in: path
+        description: Name of a choice or reference field in the Case [sn_customerservice_case] table.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_dependent_value
+        in: query
+        description: Value to select in the Case [sn_customerservice_case] table choice field that the requested field 
+                     is dependent on. Use only when requesting a choice field that is dependent on another field.
+        schema:
+          type: string
+      - name: sysparm_limit
+        in: query
+        description: Maximum number of records to return. Unusually large sysparm_limit values can impact system 
+                     performance. For requests that exceed this number of records, use the sysparm_offset parameter to 
+                     paginate record retrieval.
+        schema:
+          type: number
+      - name: sysparm_offset
+        in: query
+        description: Starting record index for which to begin retrieving records. Use this value to paginate record 
+                     retrieval. This functionality enables the retrieval of all records, regardless of the number of 
+                     records, in small manageable chunks.
+        schema:
+          type: number
+      - name: sysparm_reference_field_columns
+        in: query
+        description: Comma-separated list of column names, from the table of the specified reference field, to return 
+                     in the response.
+        schema:
+          type: string
+      - name: sysparm_query
+        in: query
+        description: Encoded query used to filter the result set. Queries defined using this parameter are appended to
+                     any encoded queries produced by reference qualifiers.
+        schema:
+          type: string
+      - name: sysparm_ref_qual_input
+        in: query
+        description: Encoded set of field values representing a current object to pass to reference qualifiers that use
+                     JavaScript functions. Use only when requesting a reference field.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad Request. A bad request type or malformed request was detected.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/sn_customerservice/case/{id}/field_values/{field_name}:
+    get:
+      tags:
+      - Case API
+      summary: Retrieves the list of possible field values for a choice or reference field for a specified record 
+                   in the Case [sn_customerservice_case] table.
+      operationId: getValuesByCaseIdAndFieldName
+      parameters:
+      - name: field_name
+        in: path
+        description: Name of a choice or reference field in the Case [sn_customerservice_case] table.
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: Sys_id of a record. Located in the Case [sn_customerservice_case] table to use when evaluating 
+                     reference qualifiers.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_dependent_value
+        in: query
+        description: Value to select in the Case [sn_customerservice_case] table choice field that the requested field 
+                     is dependent on. Use only when requesting a choice field that is dependent on another field.
+        schema:
+          type: string
+      - name: sysparm_limit
+        in: query
+        description: Maximum number of records to return. Unusually large sysparm_limit values can impact system 
+                     performance. For requests that exceed this number of records, use the sysparm_offset parameter to 
+                     paginate record retrieval.
+        schema:
+          type: number
+      - name: sysparm_offset
+        in: query
+        description: Starting record index for which to begin retrieving records. Use this value to paginate record 
+                     retrieval. This functionality enables the retrieval of all records, regardless of the number of 
+                     records, in small manageable chunks.
+        schema:
+          type: number
+      - name: sysparm_reference_field_columns
+        in: query
+        description: Comma-separated list of column names, from the table of the specified reference field, to return 
+                     in the response.
+        schema:
+          type: string
+      - name: sysparm_query
+        in: query
+        description: Encoded query used to filter the result set. Queries defined using this parameter are appended to
+                     any encoded queries produced by reference qualifiers.
+        schema:
+          type: string
+      - name: sysparm_ref_qual_input
+        in: query
+        description: Encoded set of field values representing a current object to pass to reference qualifiers that use
+                     JavaScript functions. Use only when requesting a reference field.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad Request. A bad request type or malformed request was detected.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/sn_customerservice/case/{id}:
+    get:
+      tags:
+      - Case API
+      summary: Retrieves the specified Customer Service Management (CSM) case.
+      operationId: getCSMCaseById
+      parameters:
+      - name: id
+        in: path
+        description: Sys_id or case number for the case to retrieve. Located in the Case [sn_customerservice_case] 
+                     table. Results will be unpredictable if a specified case number is shared by two or more cases.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields. Based on this value, retrieves the
+                     display value and/or the actual value from the database.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Indicates that the request is invalid. Could be due to one of the following reasons -
+                          Requested case does not exist. User does not have access to the case.
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - Case API
+      summary: Updates the specified existing Customer Service Management (CSM) case with the passed-in parameters.
+      operationId: updateCSMCase
+      parameters:
+      - name: id
+        in: path
+        description: Sys_id of the case to update. Located in the Case [sn_customerservice_case] table.
+        required: true
+        schema:
+          type: string
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields. Based on this value, retrieves the
+                     display value and/or the actual value from the database.
+        schema:
+          type: string
+      - name: sysparm_fields
+        in: query
+        description: Comma-separated list of fields to return in the response.
+        schema:
+          type: string
+      - name: sysparm_get_case_details
+        in: query
+        description: Flag that indicates whether to return the updated case record.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Data format of the request body.
+        schema:
+          type: string
+      requestBody:
+        description: Field name and the associated value for each parameter to define in the specified record in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        201:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad Request. A bad request type or malformed request was detected.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/sn_customerservice/case:
+    get:
+      tags:
+      - Case API
+      summary: Retrieves a specified set of Customer Service Management (CSM) cases.
+      operationId: getCSMCaseList
+      parameters:
+      - name: sysparm_display_value
+        in: query
+        description: Data retrieval operation for reference and choice fields. Based on this value, retrieves the
+                     display value and/or the actual value from the database.
+        schema:
+          type: string
+      - name: sysparm_fields
+        in: query
+        description: Comma-separated list of fields to return in the response.
+        schema:
+          type: string
+      - name: sysparm_limit
+        in: query
+        description: Maximum number of records to return. Unusually large sysparm_limit values can impact system 
+                     performance. For requests that exceed this number of records, use the sysparm_offset parameter to 
+                     paginate record retrieval.
+        schema:
+          type: number
+      - name: sysparm_offset
+        in: query
+        description: Starting record index for which to begin retrieving records. Use this value to paginate record 
+                     retrieval. This functionality enables the retrieval of all records, regardless of the number of 
+                     records, in small manageable chunks.
+        schema:
+          type: number
+      - name: sysparm_query
+        in: query
+        description: Encoded query used to filter the result set.
+        schema:
+          type: string
+      - name: sysparm_reference_fields
+        in: query
+        description: Whether or not to retrieve fields from reference tables such as account, contact, consumer, and
+                     sn_app_cs_social_social_profile. By default, these fields are returned if the user has read access
+                     to them, but this adds performance overhead. When retrieving a large number of case records, this
+                     overhead can be eliminated by setting sysparm_reference_fields=false.
+        schema:
+          type: boolean
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - Case API
+      summary: Creates a new Customer Service Management (CSM) case.
+      operationId: createCSMCase
+      parameters:
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Data format of the request body.
+        schema:
+          type: string
+      requestBody:
+        description: Field name and the associated value for each parameter to define in the specified record in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        201:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/now/contact:
+    get:
+      tags:
+      - Contact API
+      summary: Retrieves a specified set of Customer Service Management (CSM) contacts.
+      operationId: getCSMContactList
+      parameters:
+      - name: sysparm_limit
+        in: query
+        description: Maximum number of records to return. Unusually large sysparm_limit values can impact system 
+                     performance. For requests that exceed this number of records, use the sysparm_offset parameter to 
+                     paginate record retrieval.
+        schema:
+          type: number
+      - name: sysparm_offset
+        in: query
+        description: Starting record index for which to begin retrieving records. Use this value to paginate record 
+                     retrieval. This functionality enables the retrieval of all records, regardless of the number of 
+                     records, in small manageable chunks.
+        schema:
+          type: number
+      - name: sysparm_query
+        in: query
+        description: Encoded query used to filter the result set.
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - Contact API
+      summary: Creates a new Customer Service Management (CSM) contact.
+      operationId: createCSMContact
+      parameters:
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: Data format of the request body.
+        schema:
+          type: string
+      requestBody:
+        description: Field name and the associated value for each parameter to define in the specified record in JSON format.
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        201:
+          description: If successful, returns a JSON object that includes result. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad Request. A bad request type or malformed request was detected.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/now/contact/{id}:
+    get:
+      tags:
+      - Contact API
+      summary: Retrieves the specified Customer Service Management (CSM) contact.
+      operationId: getCSMContactById
+      parameters:
+      - name: id
+        in: path
+        description: Sys_id of the contact to retrieve. Located in the Contact [customer_contact] table.
+        schema:
+          type: string
+        required: true
+      - name: Accept
+        in: header
+        description: Data format of the response body.
+        schema:
+          type: string
+      responses:
+        200:
+          description: If successful, returns a JSON object. Otherwise returns the relevant error.
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: Unauthorized. The user credentials are incorrect or have not been passed.
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Indicates that the request is invalid. Could be due to one of the following reasons- 
+                       Requested case does not exist. User does not have access to the case.
+          content:
+            application/json:
+              schema:
+                type: object
+        500:
+          description: Internal Server Error. A logic error on the server-side code occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    Bearer:
+      type: http
+      scheme: bearer
+    bearerAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants read and write access to administrative information

@@ -1,5 +1,7 @@
 ## Overview
-This is a generated connector from [Techport](https://techport.nasa.gov/home) OpenAPI Specification. The NASA Techport API allows developers to access data on technologies funded and developed by NASA in a machine-readable format. NASA develops technologies in a variety of areas such as propulsion, nanotechnology, robotics, and human health. Developers can export Techport data into either XML or JSON format.. More about the Techport API can be find at [Techport API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)
+This is a generated connector from [Techport REST API v3.4.0](https://techport.nasa.gov/home) OpenAPI Specification. 
+
+This is the public REST API for TechPort. All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
  
 This module supports Techport API version v3.4.0.
 
@@ -15,8 +17,11 @@ You can now initialize the client.
 ```ballerina
 techport:Client baseClient = check new;
 ```
-### Step 3: Obtain project information since 2000-01-01 date
+### Step 3: Invoke connector operation
+
+1. Now you can use the operations available within the connector. Following is an example on how to obtain project information since 2000-01-01
 
 ```ballerina
 techport:ProjectIdResponse response = check baseClient->getProjectsSince("2000-01-01");
 ```
+2. Use `bal run` command to compile and run the Ballerina program.

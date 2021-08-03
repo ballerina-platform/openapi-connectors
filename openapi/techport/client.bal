@@ -18,13 +18,16 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# This is the public REST API for TechPort. All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
+# This is a generated connector for [TechPort RESTful API v3.4.0](https://stats.bis.org/api-doc/v1/) OpenAPI specification.
+# All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
 public isolated client class Client {
     final http:Client clientEp;
-    # This is a generated connector from [Techport](https://techport.nasa.gov/home) OpenAPI Specification. The connector initialization. Please refer to [API documentation](https://data.nasa.gov/developer/external/techport/techport-api.pdf) for more detail.
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization doesn't require setting the API credentials.
+    # Please refer to [API documentation](https://data.nasa.gov/developer/external/techport/techport-api.pdf) for more detail.
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://techport.nasa.gov") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
@@ -78,7 +81,7 @@ public isolated client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

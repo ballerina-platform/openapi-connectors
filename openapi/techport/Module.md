@@ -4,7 +4,11 @@ This is a generated connector from [Techport](https://techport.nasa.gov/home) Op
 This module supports Techport API version v3.4.0.
 
 ## Quickstart
+<<<<<<< HEAD
 To use the Techport connector in your Ballerina application, update the .bal file as follows:
+=======
+To use the ExchangeRates connector in your Ballerina application, update the .bal file as follows:
+>>>>>>> a6004987615e51daec6dbff6b7c64d91a23a5f87
 ### Step 1: Import connector
 First, import the ballerinax/techport module into the Ballerina project.
 ```ballerina

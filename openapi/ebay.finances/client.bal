@@ -23,89 +23,96 @@ public type ClientConfig record {
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# This API is used to retrieve seller payouts and monetary transaction details related to those payouts.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# This is a generated connector for [eBay finances](https://developer.ebay.com/api-docs/sell/finances/overview.html) OpenAPI Specification. 
+# The eBay Developers Program is hosted on the eBay Developer Site. The program provides information and services for  
+# the eBay developer community. This API is used to retrieve seller payouts and monetary transaction details related to 
+# those payouts. The finances API is used by sellers in eBay's managed payments program to retrieve seller payout information.  
+# The data provided through this public API is similar to the data that the seller will see under the Payments tab of Seller 
+# Hub in My eBay. With eBay's managed payments program, eBay manages the entire payments process, including the  available 
+# payment methods, and shortly after a buyer's payment clears, eBay distributes payouts directly to the  seller's preferred bank account. 
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [developer account](https://developer.ebay.com/api-docs/static/creating-edp-account.html)  and obtain tokens 
+    # following [this guide](https://developer.ebay.com/api-docs/static/oauth-tokens.html).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://apiz.ebay.com/sell/finances/v1") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
-        http:Client httpEp = check new (serviceUrl, {auth: clientConfig.authConfig, secureSocket: secureSocketConfig});
+        http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
         self.clientEp = httpEp;
     }
-    # This method retrieves details on a specific seller payout. The unique identfier of the payout is passed in as a 
-    # path parameter at the end of the call URI. The getPayouts method can be used to retrieve the unique identifier of 
-    # a payout, or the user can check Seller Hub.
+    # This method retrieves details on a specific seller payout. The unique identfier of the payout is passed in as a path 
+    # parameter at the end of the call URI. The getPayouts method can be used to retrieve the unique identifier of a payout, 
+    # or the user can check Seller Hub.
     #
-    # + payout_Id - The unique identfier of the payout is passed in as a path parameter at the end of the call URI. The 
-    # getPayouts method can be used to retrieve the unique identifier of a payout, or the user can check Seller Hub to get the payout ID.
+    # + payoutId - The unique identfier of the payout is passed in as a path parameter at the end of the call URI. The 
+    # getPayouts method can be used to retrieve the unique identifier of a payout, or the user can check Seller Hub to 
+    # get the payout ID.
     # + return - Success
-    remote isolated function getPayout(string payout_Id) returns Payout|error {
-        string path = string `/payout/${payout_Id}`;
-        Payout response = check self.clientEp->get(path, targetType = Payout);
+    remote isolated function getPayout(string payoutId) returns Payout|error {
+        string  path = string `/payout/${payoutId}`;
+        Payout response = check self.clientEp-> get(path, targetType = Payout);
         return response;
     }
-    # This method is used to retrieve the details of one or more seller payouts. By using the filter query parameter, 
-    # users can retrieve payouts processed within a specific date range, and/or they can retrieve payouts in a specific 
-    # state. There are also pagination and sort query parameters that allow users to control the payouts that are returned 
-    # in the response. If no payouts match the input criteria, an empty payload is returned.
+    # This method is used to retrieve the details of one or more seller payouts. By using the filter query parameter, users can 
+    # retrieve payouts processed within a specific date range, and/or they can retrieve payouts in a specific state. There are 
+    # also pagination and sort query parameters that allow users to control the payouts that are returned in the response. If 
+    # no payouts match the input criteria, an empty payload is returned.
     #
-    # + filter - The three filter types that can be used here are discussed below. If none of these filters are used, 
-    # all recent payouts in all states are returned: payoutDate: search for payouts within a specific range of dates. 
-    # The date format to use is YYYY-MM-DDTHH:MM:SS.SSSZ. Below is the proper syntax to use if filtering by a date 
-    # range: https://apiz.ebay.com/sell/finances/v1/payout?filter=payoutDate:[2018-12-17T00:00:01.000Z..2018-12-24T00:00:01.000Z] 
-    # Alternatively, the user could omit the ending date, and the date range would include the starting date and up to 
-    # 90 days past that date, or the current date if the starting date is less than 90 days in the past. 
-    # lastAttemptedPayoutDate: search for attempted payouts that failed within a specific range of dates. 
-    # In order to use this filter, the payoutStatus filter must also be used and its value must be set to 
-    # RETRYABLE_FAILED. The date format to use is YYYY-MM-DDTHH:MM:SS.SSSZ. The same syntax used for the payoutDate 
-    # filter is also used for the lastAttemptedPayoutDate filter. This filter is only applicable (and will return results) 
-    # if one or more seller payouts have failed, but are retryable. payoutStatus: search for payouts in a particular 
-    # state. Only one payout state can be specified with this filter. The supported payoutStatus values are as follows: 
-    # INITIATED: search for payouts that have been initiated but not processed. SUCCEEDED: search for successful payouts. 
-    # RETRYABLE_FAILED: search for payouts that failed, but ones which will be tried again. This value must be used if 
-    # filtering by lastAttemptedPayoutDate. TERMINAL_FAILED: search for payouts that failed, and ones that will not be 
-    # tried again. REVERSED: search for payouts that were reversed. Below is the proper syntax to use if filtering by 
-    # payout status: https://apiz.ebay.com/sell/finances/v1/payout?filter=payoutStatus:{SUCCEEDED} If both the 
-    # payoutDate and payoutStatus filters are used, payouts must satisfy both criteria to be returned. For 
-    # implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField
-    # + sort - By default, payouts or failed payouts that match the input criteria are sorted in ascending order 
-    # according to the payout date/last attempted payout date (oldest payouts returned first). To view payouts in 
-    # descending order instead (most recent payouts/attempted payouts first), you would include the sort query parameter, 
-    # and then set the value of its field parameter to payoutDate or lastAttemptedPayoutDate (if searching for failed, 
-    # retrybable payouts). Below is the proper syntax to use if filtering by a payout date range in descending order: 
-    # https://apiz.ebay.com/sell/finances/v1/payout?filter=payoutDate:[2018-12-17T00:00:01.000Z..2018-12-24T00:00:01.000Z]&amp;sort=payoutDate Payouts can only be sorted according to payout date, and can not be sorted by payout status. For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:SortField
-    # + 'limit - The number of payouts to return per page of the result set. Use this parameter in conjunction with 
-    # the offset parameter to control the pagination of the output. For example, if offset is set to 10 and limit is set
-    # to 10, the method retrieves payouts 11 thru 20 from the result set. Note: This feature employs a zero-based list, 
+    # + filter - The three filter types that can be used here are discussed below. If none of these filters are used, all 
+    # recent payouts in all states are returned: payoutDate: search for payouts within a specific range of dates. The date 
+    # format to use is YYYY-MM-DDTHH:MM:SS.SSSZ. Below is the proper syntax to use if filtering by a date range: https://apiz.ebay.com/sell/finances/v1/payout?filter=payoutDate:[2018-12-17T00:00:01.000Z..2018-12-24T00:00:01.000Z] Alternatively, 
+    # the user could omit the ending date, and the date range would include the starting date and up to 90 days past that date, 
+    # or the current date if the starting date is less than 90 days in the past. lastAttemptedPayoutDate: search for attempted 
+    # payouts that failed within a specific range of dates. In order to use this filter, the payoutStatus filter must also be 
+    # used and its value must be set to RETRYABLE_FAILED. The date format to use is YYYY-MM-DDTHH:MM:SS.SSSZ. The same syntax 
+    # used for the payoutDate filter is also used for the lastAttemptedPayoutDate filter. This filter is only applicable (and will return results) 
+    # if one or more seller payouts have failed, but are retryable. payoutStatus: search for payouts in a particular state. 
+    # Only one payout state can be specified with this filter. The supported payoutStatus values are as follows: INITIATED: 
+    # search for payouts that have been initiated but not processed. SUCCEEDED: search for successful payouts. RETRYABLE_FAILED: 
+    # search for payouts that failed, but ones which will be tried again. This value must be used if filtering by 
+    # lastAttemptedPayoutDate. TERMINAL_FAILED: search for payouts that failed, and ones that will not be tried again. 
+    # REVERSED: search for payouts that were reversed. Below is the proper syntax to use if filtering by payout 
+    # status: https://apiz.ebay.com/sell/finances/v1/payout?filter=payoutStatus:{SUCCEEDED} If both the payoutDate and 
+    # payoutStatus filters are used, payouts must satisfy both criteria to be returned. For implementation help, refer to 
+    # eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField
+    # + sort - By default, payouts or failed payouts that match the input criteria are sorted in ascending order according 
+    # to the payout date/last attempted payout date (oldest payouts returned first). To view payouts in descending order 
+    # instead (most recent payouts/attempted payouts first), you would include the sort query parameter, and then set the 
+    # value of its field parameter to payoutDate or lastAttemptedPayoutDate (if searching for failed, retrybable payouts). 
+    # Below is the proper syntax to use if filtering by a payout date range in descending
+    # order: https://apiz.ebay.com/sell/finances/v1/payout?filter=payoutDate:[2018-12-17T00:00:01.000Z..2018-12-24T00:00:01.000Z]&amp;sort=payoutDate 
+    # Payouts can only be sorted according to payout date, and can not be sorted by payout status. For implementation help, 
+    # refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:SortField
+    # + 'limit - The number of payouts to return per page of the result set. Use this parameter in conjunction with the 
+    # offset parameter to control the pagination of the output. For example, if offset is set to 10 and limit is set to 
+    # 10, the method retrieves payouts 11 thru 20 from the result set. Note: This feature employs a zero-based list, 
     # where the first payout in the results set has an offset value of 0. Maximum: 200 Default: 20
     # + offset - This integer value indicates the actual position that the first payout returned on the current page has 
     # in the results set. So, if you wanted to view the 11th payout of the result set, you would set the offset value in 
     # the request to 10. In the request, you can use the offset parameter in conjunction with the limit parameter to 
     # control the pagination of the output. For example, if offset is set to 30 and limit is set to 10, the method 
-    # retrieves payouts 31 thru 40 from the resulting collection of payouts. Note: This feature employs a zero-based list, 
-    # where the first payout in the results set has an offset value of 0. Default: 0 (zero)
+    # retrieves payouts 31 thru 40 from the resulting collection of payouts. Note: This feature employs a zero-based 
+    # list, where the first payout in the results set has an offset value of 0. Default: 0 (zero)
     # + return - Success
-    remote isolated function getPayouts(string? filter = (), string? sort = (), string? 'limit = (), string? offset = ()) 
-                                        returns Payouts|error {
-        string path = string `/payout`;
+    remote isolated function getPayouts(string? filter = (), string? sort = (), string? 'limit = (), string? offset = ()) returns Payouts|error {
+        string  path = string `/payout`;
         map<anydata> queryParam = {"filter": filter, "sort": sort, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
-        Payouts response = check self.clientEp->get(path, targetType = Payouts);
+        Payouts response = check self.clientEp-> get(path, targetType = Payouts);
         return response;
     }
     # This method is used to retrieve cumulative values for payouts in a particular state, or all states. The metadata 
     # in the response includes total payouts, the total number of monetary transactions (sales, refunds, credits) 
     # associated with those payouts, and the total dollar value of all payouts. If the filter query parameter is used 
     # to filter by payout status, only one payout status value may be used. If the filter query parameter is not used 
-    # to filter by a specific payout status, cumulative values for payouts in all states are returned. The user can also 
-    # use the filter query parameter to specify a date range, and then only payouts that were processed within that date 
-    # range are considered.
+    # to filter by a specific payout status, cumulative values for payouts in all states are returned. The user can 
+    # also use the filter query parameter to specify a date range, and then only payouts that were processed within 
+    # that date range are considered.
     #
     # + filter - The two filter types that can be used here are discussed below. One or both of these filter types can 
     # be used. If none of these filters are used, the data returned in the response will reflect payouts, in all states, 
@@ -122,22 +129,15 @@ public client class Client {
     # by payout status: https://apiz.ebay.com/sell/finances/v1/payout_summary?filter=payoutStatus:{SUCCEEDED} If both 
     # the payoutDate and payoutStatus filters are used, only the payouts that satisfy both criteria are considered in 
     # the results. For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField
-    # + return - Success
+    # + return - PayoutSummaryResponse record or else an error
     remote isolated function getPayoutSummary(string? filter = ()) returns PayoutSummaryResponse|error {
-        string path = string `/payout_summary`;
+        string  path = string `/payout_summary`;
         map<anydata> queryParam = {"filter": filter};
         path = path + check getPathForQueryParam(queryParam);
-        PayoutSummaryResponse response = check self.clientEp->get(path, targetType = PayoutSummaryResponse);
+        PayoutSummaryResponse response = check self.clientEp-> get(path, targetType = PayoutSummaryResponse);
         return response;
     }
-    # This method allows a seller to retrieve one or monetary transactions. In this case, 'monetary transactions' 
-    # include sales orders, buyer refunds, seller credits, buyer-initiated payment disputes, eBay shipping label 
-    # purchases, and transfers. There are numerous input filters available for use, including filters to retrieve 
-    # specific types of monetary transactions, to retrieve monetary transactions processed within a specific date range, 
-    # or to retrieve monetary transactions in a specific state. See the filter field for more information on each filter, 
-    # and how each one is used. There are also pagination and sort query parameters that allow users to further control 
-    # the monetary transactions that are returned in the response. If no monetary transactions match the input criteria, 
-    # an http status code of 204 No Content is returned with no response payload.
+    # This method allows a seller to retrieve one or monetary transactions. In this case, 'monetary transactions' include sales orders, buyer refunds, seller credits, buyer-initiated payment disputes, eBay shipping label purchases, and transfers. There are numerous input filters available for use, including filters to retrieve specific types of monetary transactions, to retrieve monetary transactions processed within a specific date range, or to retrieve monetary transactions in a specific state. See the filter field for more information on each filter, and how each one is used. There are also pagination and sort query parameters that allow users to further control the monetary transactions that are returned in the response. If no monetary transactions match the input criteria, an http status code of 204 No Content is returned with no response payload.
     #
     # + filter - Numerous filters are available for the getTransactions method, and these filters are discussed below. 
     # One or more of these filter types can be used. If none of these filters are used, all monetary transactions from 
@@ -202,10 +202,10 @@ public client class Client {
     # Default: 0 (zero)
     # + return - Success
     remote isolated function getTransactions(string? filter = (), string? sort = (), string? 'limit = (), string? offset = ()) returns Transactions|error {
-        string path = string `/transaction`;
+        string  path = string `/transaction`;
         map<anydata> queryParam = {"filter": filter, "sort": sort, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
-        Transactions response = check self.clientEp->get(path, targetType = Transactions);
+        Transactions response = check self.clientEp-> get(path, targetType = Transactions);
         return response;
     }
     # This method is used to retrieve cumulative values for five types of monetary transactions (order sales, seller 
@@ -269,10 +269,10 @@ public client class Client {
     # refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/finances/types/cos:FilterField
     # + return - Success
     remote isolated function getTransactionSummary(string? filter = ()) returns TransactionSummaryResponse|error {
-        string path = string `/transaction_summary`;
+        string  path = string `/transaction_summary`;
         map<anydata> queryParam = {"filter": filter};
         path = path + check getPathForQueryParam(queryParam);
-        TransactionSummaryResponse response = check self.clientEp->get(path, targetType = TransactionSummaryResponse);
+        TransactionSummaryResponse response = check self.clientEp-> get(path, targetType = TransactionSummaryResponse);
         return response;
     }
     # This method retrieves detailed information regarding a TRANSFER transaction type. A TRANSFER is a monetary 
@@ -280,11 +280,11 @@ public client class Client {
     # For example, when a seller reimburses eBay for a buyer refund. If an ID is passed into the URI that is an 
     # identifier for another transaction type, this call will return an http status code of 404 Not found.
     #
-    # + transfer_Id - The unique identifier of the TRANSFER transaction type you wish to retrieve.
+    # + transferId - The unique identifier of the TRANSFER transaction type you wish to retrieve.
     # + return - Success.
-    remote isolated function getTransfer(string transfer_Id) returns Transfer|error {
-        string path = string `/transfer/${transfer_Id}`;
-        Transfer response = check self.clientEp->get(path, targetType = Transfer);
+    remote isolated function getTransfer(string transferId) returns Transfer|error {
+        string  path = string `/transfer/${transferId}`;
+        Transfer response = check self.clientEp-> get(path, targetType = Transfer);
         return response;
     }
     # This method retrieves all pending funds that have not yet been distibuted through a seller payout. 
@@ -295,8 +295,8 @@ public client class Client {
     #
     # + return - Success
     remote isolated function getSellerFundsSummary() returns SellerFundsSummaryResponse|error {
-        string path = string `/seller_funds_summary`;
-        SellerFundsSummaryResponse response = check self.clientEp->get(path, targetType = SellerFundsSummaryResponse);
+        string  path = string `/seller_funds_summary`;
+        SellerFundsSummaryResponse response = check self.clientEp-> get(path, targetType = SellerFundsSummaryResponse);
         return response;
     }
 }
@@ -305,21 +305,21 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function getPathForQueryParam(map<anydata> queryParam) returns string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
-    foreach var [key, value] in queryParam.entries() {
-        if value is () {
+    foreach  var [key, value] in  queryParam.entries() {
+        if  value  is  () {
             _ = queryParam.remove(key);
         } else {
-            if string:startsWith(key, "'") {
-                param[param.length()] = string:substring(key, 1, key.length());
+            if  string:startsWith( key, "'") {
+                 param[param.length()] = string:substring(key, 1, key.length());
             } else {
                 param[param.length()] = key;
             }
             param[param.length()] = "=";
-            if value is string {
-                string updateV = check url:encode(value, "UTF-8");
+            if  value  is  string {
+                string updateV =  check url:encode(value, "UTF-8");
                 param[param.length()] = updateV;
             } else {
                 param[param.length()] = value.toString();
@@ -327,8 +327,8 @@ isolated function getPathForQueryParam(map<anydata> queryParam) returns string|e
             param[param.length()] = "&";
         }
     }
-    _ = param.remove(param.length() - 1);
-    if param.length() == 1 {
+    _ = param.remove(param.length()-1);
+    if  param.length() ==  1 {
         _ = param.remove(0);
     }
     string restOfPath = string:'join("", ...param);

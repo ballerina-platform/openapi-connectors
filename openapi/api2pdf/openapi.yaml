@@ -7,7 +7,7 @@ info:
     email: support@api2pdf.com
     name: Support
     x-twitter: api2pdf_status
-  description: | 
+  description: > 
     This is a generated connector from [Api2Pdf](https://www.api2pdf.com/) OpenAPI Specification.
     
     Api2Pdf is a powerful PDF generation API with no rate limits or file size constraints. 

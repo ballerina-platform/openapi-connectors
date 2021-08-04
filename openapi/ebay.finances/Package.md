@@ -1,8 +1,8 @@
-Connects to eBay Finances API from Ballerina
+Connects to [eBay Finances API](https://developer.ebay.com/api-docs/sell/finances/static/overview.html) from Ballerina
 ## Package overview
 The ebayfinances is a [Ballerina](https://ballerina.io/) connector for  eBay Finances Details.
 This package provides access to  seller payout information. It has operations to retrieve seller payouts and monetary 
-transaction details related to those payouts
+transaction details rehttps://developer.ebay.com/api-docs/sell/finances/static/overview.htmllated to those payouts
 
 ### Compatibility
 |                               | Version                       |

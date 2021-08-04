@@ -420,12 +420,6 @@ paths:
     get:
       description: ""
       operationId: GET_lists-names-format
-      parameters:
-        - in: query
-          name: api-key
-          description: API Key
-          schema:
-            type: string
       responses:
         "200":
           description: Best seller list names
@@ -496,11 +490,6 @@ paths:
             If you do not include a published_date, the current week's best-sellers lists will be returned.
           in: query
           name: published_date
-          schema:
-            type: string
-        - in: query
-          name: api-key
-          description: API Key
           schema:
             type: string
       responses:
@@ -842,11 +831,6 @@ paths:
         - description: You’ll need to enter the author’s first and last name, separated by a space. This space will be converted into the characters %20.
           in: query
           name: author
-          schema:
-            type: string
-        - in: query
-          name: api-key
-          description: API Key
           schema:
             type: string
       responses:

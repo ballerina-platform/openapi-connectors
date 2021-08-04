@@ -4,7 +4,7 @@ keywords = ["Vonage", "NumberInsight"]
 org = "ballerinax"
 name = "vonage.numberinsight"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.1-SNAPSHOT"
+version = "0.1.2-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

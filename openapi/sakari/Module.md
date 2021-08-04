@@ -8,7 +8,7 @@ This module supports Sakari REST API v1.0.1.
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 - Create [Sakari developer account](https://hub.sakari.io/)
-- Obtain tokens - Login into [https://hub.sakari.io](https://hub.sakari.io) and click on the "cog" in the top right corner. In the popup dialog at the bottom you should see your API credentials and account id. If these are not visible you will need to click on "Request Credentials"
+- Obtain tokens - Login into [https://hub.sakari.io](https://hub.sakari.io) and obtain tokens following [this guide](https://developer.sakari.io/docs#section/Finding-your-client-id-client-secret-and-account-id)
  
 ## Quickstart
 To use the Sakari connector in your Ballerina application, update the .bal file as follows:

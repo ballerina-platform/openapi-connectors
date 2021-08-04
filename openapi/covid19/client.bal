@@ -18,9 +18,9 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# This is a generated connector from [Novel Covid19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
-# Ballerina connector for Covid19 provides easy access to latest Covid19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
-@display {label: "Covid19 Client"}
+# This is a generated connector from [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
+# Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
+@display {label: "COVID-19 Client"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
@@ -38,7 +38,7 @@ public isolated client class Client {
     # + yesterday - Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
     # + twoDaysAgo - Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
-    # + return - Global Covid-19 status
+    # + return - Global COVID-19 status
     @display {label: "Global Status"}
     remote isolated function getGlobalStatus(@display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Allow Null"} string? allowNull = ()) returns CovidAll|error {
         string  path = string `/v3/covid-19/all`;
@@ -52,7 +52,7 @@ public isolated client class Client {
     # + states - State name or comma separated names spelled correctly
     # + yesterday - Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
-    # + return - Covid-19 status of the given US state
+    # + return - COVID-19 status of the given US state
     @display {label: "USA State Status"}
     remote isolated function getUSAStatusByState(@display {label: "State Name"} string states, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Allow Null"} string? allowNull = ()) returns CovidState|error {
         string  path = string `/v3/covid-19/states/${states}`;
@@ -68,7 +68,7 @@ public isolated client class Client {
     # + twoDaysAgo - Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
     # + strict - Setting to `false` gives you the ability to fuzzy search continents (i.e. Oman vs. rOMANia). Default is `true`.
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
-    # + return - Covid-19 status of the given continent
+    # + return - COVID-19 status of the given continent
     @display {label: "Continent Status"}
     remote isolated function getStatusByContinent(@display {label: "Continent"} string continent, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Strict"} string strict = "true", @display {label: "Allow Null"} string? allowNull = ()) returns CovidContinent|error {
         string  path = string `/v3/covid-19/continents/${continent}`;
@@ -84,7 +84,7 @@ public isolated client class Client {
     # + twoDaysAgo - Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
     # + strict - Setting to false gives you the ability to fuzzy search countries (i.e. Oman vs. rOMANia). Default is `true`.
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
-    # + return - Covid-19 status of the given country
+    # + return - COVID-19 status of the given country
     @display {label: "Country Status"}
     remote isolated function getStatusByCountry(@display {label: "Country"} string country, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Strict"} string strict = "true", @display {label: "Allow Null"} string? allowNull = ()) returns CovidCountry|error {
         string  path = string `/v3/covid-19/countries/${country}`;

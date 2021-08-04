@@ -3,16 +3,16 @@ servers:
   - url: https://disease.sh
 info:
   version: 3.0.0
-  title: Novel Covid19 API - Disease.sh - An open API for disease-related statistics
+  title: Novel COVID-19 API - Disease.sh - An open API for disease-related statistics
   description: >
-    This is a generated connector from [Novel Covid19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
+    This is a generated connector from [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
 
-    Ballerina connector for Covid19 provides easy access to latest Covid19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
+    Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
   license:
     name: GNU V3
     url: 'https://github.com/disease-sh/API/blob/master/LICENSE'
   x-display:
-    label: Covid19 Client
+    label: COVID-19 Client
   x-init-description: |
     The connector initialization doesn't require setting the API credentials.
 tags:
@@ -54,7 +54,7 @@ paths:
       summary: 'Get global COVID-19 totals for today, yesterday and two days ago.'
       responses:
         '200':
-          description: Global Covid-19 status
+          description: Global COVID-19 status
           content:
             application/json:
               schema:
@@ -92,7 +92,7 @@ paths:
       summary: Get COVID-19 totals for specific US State(s).
       responses:
         '200':
-          description: Covid-19 status of the given US state
+          description: COVID-19 status of the given US state
           content:
             application/json:
               schema:
@@ -145,7 +145,7 @@ paths:
       summary: Get COVID-19 totals for a specific continent.
       responses:
         '200':
-          description: Covid-19 status of the given continent
+          description: COVID-19 status of the given continent
           content:
             application/json:
               schema:
@@ -198,7 +198,7 @@ paths:
       summary: Get COVID-19 totals for a specific country.
       responses:
         '200':
-          description: Covid-19 status of the given country
+          description: COVID-19 status of the given country
           content:
             application/json:
               schema:
@@ -336,7 +336,7 @@ paths:
           content:
             application/json:
               schema:
-                description: Covid-19 vaccine timeline briefly 
+                description: COVID-19 vaccine timeline briefly 
                 $ref: '#/components/schemas/SimpleVaccineTimeline'
               examples:
                 simpleTimeline:
@@ -415,10 +415,10 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
-          description: Covid-19 tests for one million
+          description: COVID-19 tests for one million
         population:
           type: number
           description: World population
@@ -443,7 +443,7 @@ components:
         affectedCountries:
           type: number
           description: Affected countries 
-      description: Covid-19 global status
+      description: COVID-19 global status
     CovidState:
       properties:
         state:
@@ -475,14 +475,14 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
-          description: Covid-19 tests for one million
+          description: COVID-19 tests for one million
         population:
           type: number
           description: Population of the state
-      description: Covid-19 status in the given USA state
+      description: COVID-19 status in the given USA state
     CovidContinent:
       properties:
         updated:
@@ -520,7 +520,7 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
           description: Tests per one milliom
@@ -554,7 +554,7 @@ components:
           type: array
           items:
             type: string
-      description: Covid-19 status of the given continent
+      description: COVID-19 status of the given continent
     CovidCountry:
       properties:
         updated:
@@ -620,10 +620,10 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
-          description: Covid-19 tests for one million
+          description: COVID-19 tests for one million
         population:
           type: number
           description: Total population
@@ -648,7 +648,7 @@ components:
         criticalPerOneMillion:
           type: number
           description: Critical cases per one million
-      description: Covid-19 status of the given country
+      description: COVID-19 status of the given country
     CovidHistoricalAll:
       description: 'The amount of key-value pairs in ''cases'', ''deaths'' and ''recovered'' is dependent on the ''lastdays'' query'
       properties:
@@ -708,7 +708,7 @@ components:
                 date:
                   type: number
                   description: Date
-      description: Covid-19 historical data of the given country
+      description: COVID-19 historical data of the given country
     CovidHistoricalProvince:
       properties:
         country:
@@ -742,7 +742,7 @@ components:
                 date:
                   type: number
                   description: Date
-      description: Covid-19 historical data of the given province
+      description: COVID-19 historical data of the given province
     Vaccines:
       properties:
         source:
@@ -761,7 +761,7 @@ components:
           description: Vaccine data of each candidate
           items:
             $ref: '#/components/schemas/Vaccine'
-      description: Covid19-19 vaccine trial data
+      description: COVID-19 vaccine trial data
     Vaccine:
       properties:
         candidate:
@@ -786,7 +786,7 @@ components:
           description: Institutions
           items:
             type: string
-      description: Covid-19 vaccine related data
+      description: COVID-19 vaccine related data
     Phases:
       properties:
         phase:
@@ -795,7 +795,7 @@ components:
         candidates:
           type: string
           description: Number of candidates
-      description: Covid-19 vaccine coverage related data
+      description: COVID-19 vaccine coverage related data
     VaccineCountryCoverage:
       type: object
       description: Vaccine coverage of each country. 
@@ -804,7 +804,7 @@ components:
           type: string
           description: Country
         timeline:
-          description: Covid-19 vaccine timeline briefly 
+          description: COVID-19 vaccine timeline briefly 
           $ref: '#/components/schemas/SimpleVaccineTimeline'
     SimpleVaccineTimeline:
       type: object
@@ -812,7 +812,7 @@ components:
         date:
           type: number
           description: Date
-      description: Covid-19 Vaccine timeline briefly 
+      description: COVID-19 Vaccine timeline briefly 
   examples:
     countriesSimpleVaccineTimeline:
       value:

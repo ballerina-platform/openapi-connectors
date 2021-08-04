@@ -4,25 +4,17 @@ servers:
 - description: Sakari Production
   url: https://api.sakari.io/v1
 info:
-  description: |
+  description: >
     This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification.
 
     Sakari provides an advanced platform to drive large scale customized SMS communication
 
     To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
 
-  x-init-description: | 
-    
+  x-init-description: >
     The connector initialization requires setting the API credentials. 
     
-    Please create a [Sakari account](https://api.sakari.io)
-
-    To authenticate against the API's you will need three key pieces of data
-     - client id
-     - client secret
-     - account id
-
-    To retrieve these, simply login into [https://hub.sakari.io](https://hub.sakari.io) and click on the "cog" in the top right corner. In the popup dialog at the bottom you should see your API credentials and account id. If these are not visible you will need to click on "Request Credentials"
+    Please create a [Sakari account](https://api.sakari.io) and obtain tokens following [this guide](https://developer.sakari.io/docs#section/Finding-your-client-id-client-secret-and-account-id)
 
   version: "1.0.1"
   title: Sakari

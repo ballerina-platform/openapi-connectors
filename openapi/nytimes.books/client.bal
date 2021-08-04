@@ -18,9 +18,6 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://developer.nytimes.com/) and obtain an `API key`. 
-#
-# + apiKeys - Provide your API key as `api-key`. Eg: `{"api-key" : "<your API key>"}`  
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
@@ -86,11 +83,10 @@ public isolated client class Client {
     # Best Seller List Names
     #
     # + format - Type format
-    # + apiKey - API Key
     # + return - Best seller list names
-    remote isolated function getListsNamesFormat(string format, string? apiKey = ()) returns InlineResponse2002|error {
+    remote isolated function getListsNamesFormat(string format) returns InlineResponse2002|error {
         string  path = string `/lists/names.${format}`;
-        map<anydata> queryParam = {"api-key": apiKey, "api-key": self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
         return response;
@@ -99,11 +95,10 @@ public isolated client class Client {
     #
     # + format - Type format
     # + publishedDate - The best-seller list publication date. YYYY-MM-DD
-    # + apiKey - API Key
     # + return - Best seller list overview
-    remote isolated function getListsOverviewFormat(string format, string? publishedDate = (), string? apiKey = ()) returns InlineResponse2003|error {
+    remote isolated function getListsOverviewFormat(string format, string? publishedDate = ()) returns InlineResponse2003|error {
         string  path = string `/lists/overview.${format}`;
-        map<anydata> queryParam = {"published_date": publishedDate, "api-key": apiKey, "api-key": self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"published_date": publishedDate, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
         return response;
@@ -135,11 +130,10 @@ public isolated client class Client {
     # + isbn - Searching by ISBN is the recommended method. You can enter 10- or 13-digit ISBNs.
     # + title - You’ll need to enter the full title of the book. Spaces in the title will be converted into the characters %20.
     # + author - You’ll need to enter the author’s first and last name, separated by a space. This space will be converted into the characters %20.
-    # + apiKey - API Key
     # + return - Reviews
-    remote isolated function getReviewsFormat(string format, int? isbn = (), string? title = (), string? author = (), string? apiKey = ()) returns InlineResponse2005|error {
+    remote isolated function getReviewsFormat(string format, int? isbn = (), string? title = (), string? author = ()) returns InlineResponse2005|error {
         string  path = string `/reviews.${format}`;
-        map<anydata> queryParam = {"isbn": isbn, "title": title, "author": author, "api-key": apiKey, "api-key": self.apiKeys["api-key"]};
+        map<anydata> queryParam = {"isbn": isbn, "title": title, "author": author, "api-key": self.apiKeys["api-key"]};
         path = path + check getPathForQueryParam(queryParam);
         InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
         return response;

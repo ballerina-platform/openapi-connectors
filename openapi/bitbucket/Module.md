@@ -1,15 +1,15 @@
 ## Overview
-Ballerina connector for BitBucket is connecting the BitBucket [REST API](https://developer.atlassian.com/bitbucket/api/2/reference/) via Ballerina language easily. BitBucket Connector provides an easy to way manage the git code. It provides operations that 
-makes easy to manage issues, project, repositories, comments etc.
+This is a generated connector for [Bitbucket API v2.0](https://developer.atlassian.com/bitbucket/api/2/reference/) OpenAPI Specification.
 
-This module supports REST API version 2.0 for BitBucket.
+Code against the Bitbucket API to automate simple tasks, embed Bitbucket data into your own site, build mobile or desktop apps, 
+or even add custom UI add-ons into Bitbucket itself using the Connect framework.
  
-## Configuring Connector
-
-### Prerequisites
-- A bitbucket account
-
-### Obtaining tokens
+## Prerequisites
+ 
+Before using this connector in your Ballerina application, complete the following:
+ 
+* Create  a BitBucket account
+* Obtain tokens
 1. Go to the Bitbucket account and navigate to your workspace.
 2. Then, Go to settings in the workspace.
 3. Select OAuth consumers from Apps and Features list.
@@ -28,16 +28,15 @@ This module supports REST API version 2.0 for BitBucket.
 7. For more information, Refer this [link](https://developer.atlassian.com/bitbucket/api/2/reference/?utm_source=%2Fbitbucket%2Fapi%2F2%2Freference&utm_medium=302)
  
 ## Quickstart
-
-* Get Issue by ID
-
-Step 1: Import BitBucket module
-First, import the `ballerinax/bitbucket` module into the Ballerina project.
+ 
+To use the BitBucket connector in your Ballerina application, update the .bal file as follows:
+Add steps to create a simple sample
+### Step 1 - Import connector
+ Import the `ballerinax/bitbucket` module into the Ballerina project.
 ```ballerina
 import ballerinax/bitbucket;
 ```
-Step 2: Configure the connection credentials.
-Please follow the above mentioned configuration steps to obtain the tokens.
+### Step 2 - Create a new connector instance
 ```ballerina
 bitbucket:ClientConfig configuration = {
     authConfig: {
@@ -49,29 +48,12 @@ bitbucket:ClientConfig configuration = {
 };
 
 bitbucket:Client bitBucketClient = check new (clientConfig);
-
 ```
-Step 3: Get Issue By Id
-
+### Step 3 - Invoke connector operation 
+1. Invoke connector operations using the client
 ```ballerina
 public function main() {
     bitbucket;Issue|error response = bitBucketClient->getIssueByID(issueId, repoWithIssueTracker, workspace);
 }
 ``` 
-
-## Snippets
-
-* Create an issue
-```ballerina
-bitbucket:Issue newIssue = {
-    title: "Test issue 2",
-    state: "open"
-};
-bitbucket:Issue|error response = bitBucketClient->createIssue("<repoWithIssueTrackerId>", "<workspaceId>", newIssue);
-```
-
-* Get comment by ID
-
-```ballerina
-bitbucket:Comment|error response = bitBucketClient->getCommentByID("<commentId>", "<issueId">, "<repoWithIssueTrackerId>", "<workspaceId>");
-```
+2. Use `bal run` command to compile and run the Ballerina program. 

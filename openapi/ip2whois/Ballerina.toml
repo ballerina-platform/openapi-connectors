@@ -1,0 +1,11 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["ip2whois", "domain information", "server", "whois record"]
+org = "ballerinax"
+name = "ip2whois"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "0.1.0-SNAPSHOT"
+authors = ["Ballerina"]
+ 
+[build-options]
+observabilityIncluded = true

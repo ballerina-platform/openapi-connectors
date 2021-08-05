@@ -18,10 +18,13 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
+# This is a generated connector from [IP2WHOIS API v2](https://www.ip2whois.com/developers-api) OpenAPI Specification. 
 # IP2WHOIS is a free tool to allow you to check WHOIS information for a particular domain, such as domain assigned owner contact information, registrar information, registrant information, location and much more.
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [IP2WHOIS Account](https://www.ip2whois.com/register) and obtain the API token by navigating to the [IP2WHOIS Profile](https://www.ip2whois.com/login)
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service

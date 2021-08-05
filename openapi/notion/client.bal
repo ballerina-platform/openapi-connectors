@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 # Client configuration for Notion Connector
 #
@@ -27,16 +27,22 @@ public type ClientConfig record {
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# Ballerina Client for Notion API
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# This is a generated connector for [Notion API v1)](https://developers.notion.com/reference/intro) OpenAPI Specification. 
+# Notion API provides capability to access all-in-one workspace where you can write, plan, collaborate and get organized. 
+# it has components such as notes, databases, kanban boards, wikis, calendars, and reminders. You can connect these  
+# components to take notes, add tasks, manage projects & more. Notion provides the building blocks and you can  create 
+# your own layouts and toolkit to get work done. This ballerina connector allows you to connect Notion through its 
+# [REST API](https://developers.notion.com/docs).
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [Notion account](https://www.notion.so/)  and obtain tokens following 
+    # [this guide](https://developers.notion.com/docs/authorization).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.notion.com") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -48,8 +54,7 @@ public client class Client {
     # + pageSize - Page size
     # + notionVersion - API Version
     # + return - 200 Success - Retrieve block children
-    remote isolated function retrieveBlockChildren(string id, string? pageSize = (), string notionVersion = "2021-05-13") 
-                                                   returns BlockChildrenResponse|error {
+    remote isolated function retrieveBlockChildren(string id, string? pageSize = (), string notionVersion = "2021-05-13") returns BlockChildrenResponse|error {
         string  path = string `/v1/blocks/${id}/children`;
         map<anydata> queryParam = {"page_size": pageSize};
         path = path + check getPathForQueryParam(queryParam);
@@ -64,27 +69,23 @@ public client class Client {
     # + payload - Request Body Parameters  
     # + notionVersion - API Version
     # + return - 200 Success - Append block children
-    remote isolated function appendBlockChildren(string id, PageUpdateRequestBody payload, 
-                                                 string notionVersion = "2021-05-13") returns ChildBlockContent|error {
+    remote isolated function appendBlockChildren(string id, PageUpdateRequestBody payload, string notionVersion = "2021-05-13") returns ChildBlockContent|error {
         string  path = string `/v1/blocks/${id}/children`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        ChildBlockContent response = check self.clientEp->patch(path, request, headers = accHeaders, 
-            targetType=ChildBlockContent);
+        ChildBlockContent response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=ChildBlockContent);
         return response;
     }
     # List all databases
     #
-    # + startCursor - If supplied, this endpoint will return a page of results starting after the cursor provided. 
-    # If not supplied, this endpoint will return the first page of results.
+    # + startCursor - If supplied, this endpoint will return a page of results starting after the cursor provided. If not supplied, this endpoint will return the first page of results.
     # + pageSize - The number of items from the full list desired in the response. Maximum- 100
     # + notionVersion - API Version
     # + return - 200 Success - List all databases
-    remote isolated function listAllDatabases(string? startCursor = (), int? pageSize = (), string notionVersion 
-                                            = "2021-05-13") returns DatabaseResponse|error {
+    remote isolated function listAllDatabases(string? startCursor = (), int? pageSize = (), string notionVersion = "2021-05-13") returns DatabaseResponse|error {
         string  path = string `/v1/databases`;
         map<anydata> queryParam = {"start_cursor": startCursor, "page_size": pageSize};
         path = path + check getPathForQueryParam(queryParam);
@@ -98,16 +99,14 @@ public client class Client {
     # + payload - Page information
     # + notionVersion - API Version
     # + return - 200 Success - Create a database
-    remote isolated function createDatabase(DatabaseBodyParams payload, string notionVersion = "2021-05-13") 
-                                            returns DatabaseBodyParams|error {
+    remote isolated function createDatabase(DatabaseBodyParams payload, string notionVersion = "2021-05-13") returns DatabaseBodyParams|error {
         string  path = string `/v1/databases`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        DatabaseBodyParams response = check self.clientEp->post(path, request, headers = accHeaders, 
-            targetType=DatabaseBodyParams);
+        DatabaseBodyParams response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DatabaseBodyParams);
         return response;
     }
     # Retrieve a database
@@ -128,8 +127,7 @@ public client class Client {
     # + payload - Request Body Parameters 
     # + notionVersion - API Version
     # + return - 200 Success - Query a Database (Single Filter)
-    remote isolated function queryDatabase(string id, DatabaseContent payload, string notionVersion = "2021-05-13") 
-                                            returns DatabaseResponse|error {
+    remote isolated function queryDatabase(string id, DatabaseContent payload, string notionVersion = "2021-05-13") returns DatabaseResponse|error {
         string  path = string `/v1/databases/${id}/query`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -144,8 +142,7 @@ public client class Client {
     # + payload - Page information
     # + notionVersion - API Version
     # + return - 200 Success - Create Page
-    remote isolated function createPage(PageBodyParams payload, string notionVersion = "2021-05-13") returns 
-                                        PageResponse|error {
+    remote isolated function createPage(PageBodyParams payload, string notionVersion = "2021-05-13") returns PageResponse|error {
         string  path = string `/v1/pages`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -169,31 +166,27 @@ public client class Client {
     }
     # Update Page properties 
     #
-    # + id - Page ID  
+    # + id - Page ID
     # + payload - Request Body Parameters 
     # + notionVersion - API Version
     # + return - 200 Success - Update Page properties
-    remote isolated function updatePageProperties(string id, PageContent payload, string notionVersion = "2021-05-13") 
-                                                  returns PageUpdatedProperties|error {
+    remote isolated function updatePageProperties(string id, PageContent payload, string notionVersion = "2021-05-13") returns PageUpdatedProperties|error {
         string  path = string `/v1/pages/${id}`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        PageUpdatedProperties response = check self.clientEp->patch(path, request, headers = accHeaders, 
-                                                                    targetType = PageUpdatedProperties);
+        PageUpdatedProperties response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=PageUpdatedProperties);
         return response;
     }
     # List all users
     #
-    # + startCursor - If supplied, this endpoint will return a page of results starting after the cursor provided. 
-    # If not supplied, this endpoint will return the first page of results.
+    # + startCursor - If supplied, this endpoint will return a page of results starting after the cursor provided. If not supplied, this endpoint will return the first page of results.
     # + pageSize - The number of items from the full list desired in the response. Maximum- 100
     # + notionVersion - API Version
     # + return - 200 Success - List all users
-    remote isolated function listAllUsers(string? startCursor = (), int? pageSize = (), string notionVersion 
-                                          = "2021-05-13") returns PaginatedUsers|error {
+    remote isolated function listAllUsers(string? startCursor = (), int? pageSize = (), string notionVersion = "2021-05-13") returns PaginatedUsers|error {
         string  path = string `/v1/users`;
         map<anydata> queryParam = {"start_cursor": startCursor, "page_size": pageSize};
         path = path + check getPathForQueryParam(queryParam);
@@ -233,7 +226,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -267,7 +260,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

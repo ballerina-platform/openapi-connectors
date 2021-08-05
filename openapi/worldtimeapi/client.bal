@@ -1,4 +1,3 @@
-
 // Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,18 +14,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
+import ballerina/http;
 
-# A simple API to get the current time based on a request with a timezone.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# This is a generated connector for [WorldTimeAPI v0.6.1](http://worldtimeapi.org/) OpenAPI Specification. 
+# [WorldTime API](http://worldtimeapi.org/pages/faqs#what-is-it) is a simple "microservice" which returns the local-time 
+# for a given timezone in both unixtime and ISO8601 format. The worldTimeAPI connector supports to get the current time 
+# based on a request with a timezone and additional information including whether that timezone is currently in Daylight 
+# Savings Time, when DST starts and ends, the UTC offset, etc.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization doesn't require setting the API credentials.
+    # World Time API data is simple and free to access. Follow [this link](http://worldtimeapi.org/) for more details.
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "http://worldtimeapi.org/api/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

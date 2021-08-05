@@ -1,44 +1,23 @@
 ## Overview
-WorldTimeAPI is a simple web service which returns the local-time for a given timezone as either JSON or plain-text. Some additional information is provided, such as whether that timezone is currently in Daylight Savings Time, when DST starts and ends, the UTC offset, etc. It supports the following operations.
-* Get Current Time
-* Get Current Time As Text
-* Get Current Time Based On Ip
-* Get Current Time Based On Ip As Text
-* Get Current Time Based On Ipv4
-* Get Current Time Based On Ipv4 As Text
-* Get Current Time By Region
-* Get Current Time By Region As Text
-* Get Timezone By Area
-* Get TimezoneBy Area As Text
-* List Timezones
-* List Timezones As Text
- 
-This module supports 0.6.1 version.
-  
+This is a generated connector for [WorldTimeAPI v0.6.1](http://worldtimeapi.org/) OpenAPI Specification.
+
+[WorldTime API](http://worldtimeapi.org/pages/faqs#what-is-it) is a simple "microservice" which returns the local-time for a given timezone in both unixtime and ISO8601 format. The worldTimeAPI connector supports to get the current time based on a request with a timezone and additional information including whether that timezone is currently in Daylight Savings Time, when DST starts and ends, the UTC offset, etc.
+
 ## Quickstart
 * Listing all time zone as json
-### Step 1: Import the module 
+### Step 1 - Import connector
 ```ballerina
 ballerinax/worldtimeapi
 ```
 
-### Step 2:  Create a client
+### Step 2 - Create a new connector instance
 ```ballerina
 worldtimeapi:Client baseClient = check new Client();
 ```
-### Step 3:  Use the client to call its remote functions as the following code
+### Step 3 - Invoke  connector operation
+1. Invoke connector operations using the client
 ```ballerina
     worldtimeapi:ListJsonResponse output = check baseClient->listTimezones();
 ```
+2. Use `bal run` command to compile and run the Ballerina program. 
 
-## Quick reference 
-Code snippets of some frequently used functions: 
-* Get time zones by area
-Find more details on areas from [here](http://worldtimeapi.org/)
- ```ballerina
-   worldtimeapi:ListJsonResponse response = check baseClient->getTimezoneByArea("<Area>");
-```
-* Get current time based on IP address
-```ballerina
-   worldtimeapi:DateTimeJsonResponse response = check baseClient->getCurrentTimeBasedOnIp();
-```

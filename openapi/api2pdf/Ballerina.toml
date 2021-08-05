@@ -4,8 +4,7 @@ keywords = ["api2pdf", "pdf", "convert", "web pages", "merge"]
 org = "ballerinax"
 name = "api2pdf"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.1-SNAPSHOT"
 authors = ["Ballerina"]
- 
 [build-options]
 observabilityIncluded = true

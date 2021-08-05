@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["nytimes", "article search", "media", "open data"]
 org = "ballerinax"
 name = "nytimes.articlesearch"
-version = "0.1.0-SNAPSHOT"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["nytimes","article search","media","open data"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "0.1.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

@@ -52,30 +52,24 @@ public type PostDetails record {
     string[] tags?;
     # The URL of the post on Medium
     string url?;
-    # The canonical URL of the post. If canonicalUrl was not specified in the creation of the post, this field will not 
-    #be present.
+    # The canonical URL of the post. If canonicalUrl was not specified in the creation of the post, this field will not be present.
     string canonicalUrl?;
     # The publish status of the post.
     string publishStatus?;
     # The post’s published date. If created as a draft, this field will not be present.
     int publishedAt?;
     # The license of the post.
-    string? license?;
+    string license?;
     # The URL to the license of the post.
-    string? licenseUrl?;
+    string licenseUrl?;
 };
 
 public type Post record {
-    # The title of the post. Note that this title is used for SEO and when rendering the post as a listing, but will not 
-    # appear in the actual post—for that, the title must be specified in the content field as well. Titles longer than 
-    # 100 characters will be ignored. In that case, a title will be synthesized from the first content in the post when 
-    # it is published.
+    # The title of the post. Note that this title is used for SEO and when rendering the post as a listing, but will not appear in the actual post—for that, the title must be specified in the content field as well. Titles longer than 100 characters will be ignored. In that case, a title will be synthesized from the first content in the post when it is published.
     string title;
     # The format of the "content" field. There are two valid values, "html", and "markdown"
     string contentFormat;
-    # The body of the post, in a valid, semantic, HTML fragment, or Markdown. Further markups may be supported in the 
-    # future. For a full list of accepted HTML tags, see here. If you want your title to appear on the post page, you 
-    # must also include it as part of the post content.
+    # The body of the post, in a valid, semantic, HTML fragment, or Markdown. Further markups may be supported in the future. For a full list of accepted HTML tags, see here. If you want your title to appear on the post page, you must also include it as part of the post content.
     string content;
     # Tags to classify the post. Only the first three will be used. Tags longer than 25 characters will be ignored.
     string[] tags?;
@@ -83,14 +77,11 @@ public type Post record {
     string canonicalUrl?;
     # The status of the post. Valid values are `public`, `draft`, or `unlisted`. The default is `public`.
     string publishStatus?;
-    # The license of the post. Valid values are `all-rights-reserved`, `cc-40-by`, `cc-40-by-sa`, `cc-40-by-nd`, 
-    # `cc-40-by-nc`, `cc-40-by-nc-nd`, `cc-40-by-nc-sa`, `cc-40-zero`, `public-domain`. The default is 
-    # `all-rights-reserved`.
+    # The license of the post. Valid values are `all-rights-reserved`, `cc-40-by`, `cc-40-by-sa`, `cc-40-by-nd`, `cc-40-by-nc`, `cc-40-by-nc-nd`, `cc-40-by-nc-sa`, `cc-40-zero`, `public-domain`. The default is `all-rights-reserved`.
     string license?;
 };
 
-# Publications provide a way for authors to work collaboratively within a common narrative framework, brand or point of 
-# view.
+# Publications provide a way for authors to work collaboratively within a common narrative framework, brand or point of view.
 public type Publication record {
     # A unique identifier for the publication.
     string id?;

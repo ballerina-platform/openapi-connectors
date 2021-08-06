@@ -21,21 +21,19 @@ import ballerina/lang.'string;
 # Provides a set of configurations for communicating with a remote HTTP endpoint.
 #
 # + authConfig - Configurations related to client authentication
-# + secureSocketConfig - SSL/TLS-related configurations 
+# + secureSocketConfig - SSL/TLS-related configurations  
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
 # This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification.
-# Google Slides API allow read and write Google Slides presentations.
-# For additional help getting started with the API, visit [Google Slides API](https://developers.google.com/slides/api/reference/rest).
+# Reads and writes Google Slides presentations.
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [Google Account](https://developer.nytimes.com/accounts/create) 
-    # and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
+    # Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service

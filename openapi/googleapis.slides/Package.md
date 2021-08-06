@@ -1,4 +1,4 @@
-Connects to Google Slides API from Ballerina
+Connects to [Google Slides API](https://developers.google.com/slides/api) from Ballerina
 
 ## Package overview
 The `googleapis.slides` is a [Ballerina](https://ballerina.io/) connector for [Google Slides API](https://developers.google.com/slides/api).

@@ -6,14 +6,14 @@ info:
     name: Google
     url: https://google.com
     x-twitter: youtube
-  description: |-
+  description: >
     This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification.
-    Google Slides API allow read and write Google Slides presentations.
-    For additional help getting started with the API, visit [Google Slides API](https://developers.google.com/slides/api/reference/rest).
-  x-init-description: |-
+    
+    Reads and writes Google Slides presentations.
+  x-init-description: >
     The connector initialization requires setting the API credentials.
-    Create an [Google Account](https://developer.nytimes.com/accounts/create) 
-    and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
+
+    Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:
     name: Creative Commons Attribution 3.0
     url: http://creativecommons.org/licenses/by/3.0/

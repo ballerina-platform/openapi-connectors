@@ -1,21 +1,19 @@
 ## Overview
-This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification.
-Google Slides API allow read and write Google Slides presentations.
-For additional help getting started with the API, visit [Google Slides API](https://developers.google.com/slides/api/reference/rest).
+This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification. Reads and writes Google Slides presentations.
 
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:
 
-- Create a [Google account](https://accounts.google.com/signup/v2/webcreateaccount?utm_source=ga-ob-search&utm_medium=google-account&flowName=GlifWebSignIn&flowEntry=SignUp)
-- Obtain tokens - Follow [this link](https://developers.google.com/identity/protocols/oauth2)
+* Create a [Google account](https://accounts.google.com/signup)
+* Obtain tokens - Follow [this link](https://developers.google.com/identity/protocols/oauth2)
  
 ## Quickstart
 
 To use the Google Slides API connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-First, import the ballerinax/googleapis.slides module into the Ballerina project.
+Import the ballerinax/googleapis.slides module into the Ballerina project.
 ```ballerina
 import ballerinax/googleapis.slides as slides;
 ```

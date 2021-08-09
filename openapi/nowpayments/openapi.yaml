@@ -3,7 +3,11 @@ servers:
   - url: https://api.nowpayments.io
 info:
   contact: {}
+<<<<<<< HEAD
   description: >
+=======
+  description: |-
+>>>>>>> 8dc29fb6d7b948bdb6f8595a2b3718c8eb30c9c4
     This is a generated connector from [NOWPayments API v1](https://nowpayments.io/) OpenAPI Specification. 
 
     NOWPayments is a non-custodial cryptocurrency payment processing platform. 

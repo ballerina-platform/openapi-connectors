@@ -28,14 +28,12 @@ public type ClientConfig record {
 };
 
 # This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification.
-# Box Platform provides functionality to provide access to content stored within [Box](https://box.com). 
-# It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+# [Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create a [Box Developer Account](https://developer.box.com/) 
-    # and obtain tokens following [this guide](https://developer.box.com/guides/).
+    # Create a [Box Developer Account](https://developer.box.com/) and obtain tokens following [this guide](https://developer.box.com/guides/).
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service

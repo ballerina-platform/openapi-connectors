@@ -2,7 +2,7 @@
 
 This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification. 
 
-Box Platform provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
@@ -15,7 +15,7 @@ Before using this connector in your Ballerina application, complete the followin
 ## Quickstart
 
 ### Step 1: Import connector
-First, import the ballerinax/boxapi module into the Ballerina project.
+Import the ballerinax/boxapi module into the Ballerina project.
 
 ```ballerina
 import ballerinax/boxapi;
@@ -36,14 +36,3 @@ boxapi:Client baseClient = check new Client(clientConfig, serviceUrl = "https://
     boxapi:File file = check baseClient->getFilesId("833080141230", "bal");
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 
-
-## Quick reference
-
-* Get file using ID
-    ```ballerina
-    boxapi:File file = check baseClient->getFilesId("833080141230", "bal");
-    ```
-* Get current user
-    ```ballerina
-    boxapi:User useer = check baseClient->getUsersMe();
-    ```

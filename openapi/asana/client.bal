@@ -21,7 +21,7 @@ import ballerina/lang.'string;
 # Configuration for Asana connector
 #
 # + authConfig - Bearer token configuration or OAuth2 refresh token grant configuration
-# + secureSocketConfig - Secure socket configuration  
+# + secureSocketConfig - Secure socket configuration   
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
@@ -34,8 +34,7 @@ public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [Asana API Account](https://asana.com/create-account) 
-    # and obtain tokens following [this guide](https://developers.asana.com/docs/authentication).
+    # Create an [Asana API Account](https://asana.com/create-account) and obtain tokens following [this guide](https://developers.asana.com/docs/authentication).
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service

@@ -1,0 +1,437 @@
+openapi: 3.0.0
+info:
+  version: 1.4.0
+  title: OpenFIGI API
+  description: >- 
+    This is a generated connector for [OpenFIGI API v3](https://www.openfigi.com/api) OpenAPI Specification.
+    
+    OpenFIGI API provides capability to access multiple tools for identifying, mapping and requesting a free and open symbology dataset. 
+    This user friendly platform provides the ultimate understanding for how a unique identifier combined with accurate, 
+    associated metadata can eliminate redundant mapping processes, streamline the trade workflow and reduce operational risk.
+  termsOfService: 'https://openfigi.com/docs/terms-of-service'
+  x-init-description: >-
+    The connector initialization requires setting the API credentials. 
+    
+    Create an [OpenFIGI account](https://www.openfigi.com/) 
+    and obtain tokens following [this guide](https://www.openfigi.com/api#api-key).
+  contact:
+    name: OpenFIGI API Support
+    url: 'https://openfigi.com/api'
+    email: support@openfigi.com
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://api.openfigi.com/{basePath}'
+    description: Production Tier
+    variables:
+      basePath:
+        default: v3
+        enum:
+          - v1
+          - v2
+          - v3
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-OPENFIGI-APIKEY
+      description: >-
+       All request are sent with API key using the HTTP header X-OPENFIGI-APIKEY. With a valid API key, you will be subject 
+       to a higher rate-limit and request size. Sign-up for an [OpenFIGI account](https://www.openfigi.com/) to obtain an API key and Follow this link (https://www.openfigi.com/api) 
+       for more details.
+  schemas:
+    Values:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+    NullableNumberInterval:
+      type: array
+      items:
+        type: number
+        nullable: true
+      maxItems: 2
+      minItems: 2
+      nullable: true
+      description: At least one entry should be non-null.
+    NullableDateInterval:
+      type: array
+      items:
+        type: string
+        format: date
+        nullable: true
+      maxItems: 2
+      minItems: 2
+      nullable: true
+      description: At least one entry should be non-null.
+    MappingJob:
+      type: object
+      required:
+        - idType
+        - idValue
+      description: >-
+        For V3: securityType2 is required when idType is BASE_TICKER or
+        ID_EXCH_SYMBOL.  expiration is required when securityType2 is Option or
+        Warrant.  maturity is required when securityType2 is Pool.
+      properties:
+        idType:
+          type: string
+          description: Type of third party identifier
+          enum:
+            - ID_ISIN
+            - ID_BB_UNIQUE
+            - ID_SEDOL
+            - ID_COMMON
+            - ID_WERTPAPIER
+            - ID_CUSIP
+            - ID_BB
+            - ID_ITALY
+            - ID_EXCH_SYMBOL
+            - ID_FULL_EXCHANGE_SYMBOL
+            - COMPOSITE_ID_BB_GLOBAL
+            - ID_BB_GLOBAL_SHARE_CLASS_LEVEL
+            - ID_BB_SEC_NUM_DES
+            - ID_BB_GLOBAL
+            - TICKER
+            - ID_CUSIP_8_CHR
+            - OCC_SYMBOL
+            - UNIQUE_ID_FUT_OPT
+            - OPRA_SYMBOL
+            - TRADING_SYSTEM_IDENTIFIER
+            - ID_CINS
+            - ID_SHORT_CODE
+            - BASE_TICKER
+            - VENDOR_INDEX_CODE
+        idValue:
+          description: The value for the represented third party identifier
+          oneOf:
+            - type: string
+            - type: integer
+          default: string
+        exchCode:
+          description: Exchange code of the desired instrument(s) (cannot use in conjunction with micCode)
+          type: string
+          nullable: true
+        micCode:
+          description: ISO market identification code(MIC) of the desired instrument(s) (cannot use in conjunction with exchCode)
+          type: string
+          nullable: true
+        currency:
+          description: Currency associated to the desired instrument(s)
+          type: string
+          nullable: true
+        marketSecDes:
+          description: Market sector description of the desired instrument(s)
+          type: string
+          nullable: true
+        securityType:
+          description: Security type of the desired instrument(s)
+          type: string
+          nullable: true
+        securityType2:
+          description: An alternative security type of the desired instrument(s)
+          type: string
+          nullable: true
+        includeUnlistedEquities:
+          description: Set to true to include equity instruments that are not listed on an exchange
+          type: boolean
+          nullable: true
+        optionType:
+          description: Will filter instruments based on option type
+          type: string
+          enum:
+            - Put
+            - Call
+          nullable: true
+        strike:
+          $ref: '#/components/schemas/NullableNumberInterval'
+        contractSize:
+          $ref: '#/components/schemas/NullableNumberInterval'
+        coupon:
+          $ref: '#/components/schemas/NullableNumberInterval'
+        expiration:
+          $ref: '#/components/schemas/NullableDateInterval'
+        maturity:
+          $ref: '#/components/schemas/NullableDateInterval'
+        stateCode:
+          description: State code of the desired instrument(s)
+          type: string
+          enum:
+            - AB
+            - AC
+            - AH
+            - AK
+            - AL
+            - AM
+            - AR
+            - AS
+            - AT
+            - AZ
+            - BC
+            - BJ
+            - CA
+            - CB
+            - CO
+            - CQ
+            - CT
+            - CZ
+            - DC
+            - DE
+            - EH
+            - FH
+            - FI
+            - FJ
+            - FL
+            - FO
+            - FS
+            - GA
+            - GD
+            - GF
+            - GM
+            - GS
+            - GU
+            - GX
+            - GZ
+            - HA
+            - HB
+            - HE
+            - HG
+            - HI
+            - HL
+            - HN
+            - HO
+            - HS
+            - IA
+            - ID
+            - IG
+            - IK
+            - IL
+            - IN
+            - IT
+            - JL
+            - JS
+            - JX
+            - KA
+            - KC
+            - KN
+            - KO
+            - KS
+            - KT
+            - KU
+            - KY
+            - LA
+            - LN
+            - MA
+            - MB
+            - MD
+            - ME
+            - MG
+            - MI
+            - MN
+            - MO
+            - MS
+            - MT
+            - MZ
+            - NB
+            - NC
+            - ND
+            - NE
+            - NG
+            - NH
+            - NJ
+            - NL
+            - NM
+            - NN
+            - NR
+            - NS
+            - NT
+            - NU
+            - NV
+            - NW
+            - NX
+            - NY
+            - OH
+            - OK
+            - 'ON'
+            - OR
+            - OS
+            - OT
+            - OY
+            - PA
+            - PE
+            - PR
+            - QC
+            - QH
+            - QL
+            - RI
+            - SA
+            - SC
+            - SD
+            - SH
+            - SI
+            - SK
+            - SN
+            - ST
+            - SX
+            - SZ
+            - TA
+            - TG
+            - TJ
+            - TK
+            - TN
+            - TS
+            - TT
+            - TX
+            - TY
+            - UT
+            - VA
+            - VI
+            - VT
+            - WA
+            - WI
+            - WK
+            - WV
+            - WY
+            - XJ
+            - XZ
+            - YA
+            - YN
+            - YT
+            - YU
+            - ZJ
+          nullable: true
+    BulkMappingJob:
+      type: array
+      items:
+        $ref: '#/components/schemas/MappingJob'
+    FigiResult:
+      type: object
+      properties:
+        figi:
+          description: FIGI assigned to the instrument
+          type: string
+        securityType:
+          description: Enum-like attributes of the instrument
+          type: string
+          nullable: true
+        marketSector: 
+          description: Enum-like attributes of the instrument
+          type: string
+          nullable: true
+        ticker:
+          description: Various attributes of the instrument
+          type: string
+          nullable: true
+        name:
+          description: Various attributes of the instrument
+          type: string
+          nullable: true
+        exchCode:
+          description: Enum-like attributes of the instrument
+          type: string
+          nullable: true
+        shareClassFIGI:
+          description: Various attributes of the instrument
+          type: string
+          nullable: true
+        compositeFIGI:
+          description: Various attributes of the instrument
+          type: string
+          nullable: true
+        securityType2:
+          description: Enum-like attributes of the instrument
+          type: string
+          nullable: true
+        securityDescription:
+          description: Various attributes of the instrument
+          type: string
+          nullable: true
+        metadata:
+          description: Exists when API is unable to show non-FIGI fields.
+          type: string
+          nullable: true
+    MappingJobResultFigiNotFound:
+      type: object
+      properties:
+        warning:
+          type: string
+    MappingJobResultFigiList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FigiResult'
+    MappingJobResult:
+        $ref: '#/components/schemas/MappingJobResultFigiList'
+    BulkMappingJobResult:
+      type: array
+      items:
+        $ref: '#/components/schemas/MappingJobResult'
+security:
+  - {}
+  - ApiKeyAuth: []
+paths:
+  /mapping:
+    post:
+      operationId: mapIdentifiers
+      description: Allows mapping from third-party identifiers to FIGIs.
+      requestBody:
+        description: A list of third-party identifiers and extra filters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkMappingJob'
+      responses:
+        '200':
+          description: A list of FIGIs and their metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkMappingJobResult'
+  '/mapping/values/{key}':
+    get:
+      operationId: GetValues
+      description: Get values for enum-like fields.
+      responses:
+        '200':
+          description: The list of values.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Values"
+        '400':
+          description: Invalid request (key).
+          content:
+            '*/*':
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+          content:
+            '*/*':
+              schema:
+                type: string
+      parameters:
+        - name: key
+          in: path
+          description: Key of MappingJob for which to get possible values.
+          x-apikey-description: "Provide your API Key as `X-OPENFIGI-APIKEY`. Eg: {X-OPENFIGI-APIKEY : <Your API Key>}"
+          required: true
+          schema:
+            type: string
+            enum:
+              - idType
+              - exchCode
+              - micCode
+              - currency
+              - marketSecDes
+              - securityType
+              - securityType2
+          style: simple
+
+    

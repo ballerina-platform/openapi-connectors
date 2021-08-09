@@ -32,8 +32,7 @@ public isolated client class Client {
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create a [ISBNdb Account](https://isbndb.com/isbn-database) by selecting a pricing plan 
-    # and obtain tokens following [this guide](https://isbndb.com/apidocs/v2).
+    # Create a [ISBNdb Account](https://isbndb.com/isbn-database) by selecting a pricing plan and obtain tokens following [this guide](https://isbndb.com/apidocs/v2).
     #
     # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

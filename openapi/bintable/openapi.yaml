@@ -4,7 +4,11 @@ servers:
 info:
   contact:
     email: hello@bintable.com
+<<<<<<< HEAD
   description: >
+=======
+  description: |
+>>>>>>> 684030fea4153a8dc5d3cf0749f4776156b27f36
     This is a generated connector from [BINTable API v1](https://bintable.com/get-api) OpenAPI Specification. 
 
     BIN lookup API, the free api service from bintable.com to lookup card information using it's BIN. 

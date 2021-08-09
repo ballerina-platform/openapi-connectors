@@ -1,0 +1,314 @@
+openapi: 3.0.0
+servers:
+  - url: http://api.nytimes.com/svc/movies/v2
+  - url: https://api.nytimes.com/svc/movies/v2
+info:
+  description: >
+    This is a generated connector from [New York Times Movie Review API v2.0.0](https://developer.nytimes.com/docs/movie-reviews-api/1/overview) OpenAPI specification.
+
+    With the New York Times Movie Reviews API you can search for movie reviews. 
+
+    The Movie Reviews API provides services for searching New York Times movie reviews by keyword and opening date and filter by Critics' Picks.
+  termsOfService: http://developer.nytimes.com/tou
+  title: Movie Reviews API
+  version: 2.0.0
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
+  x-apiClientRegistration:
+    url: http://developer.nytimes.com/signup
+  x-apisguru-categories:
+    - media
+    - open_data
+  x-logo:
+    url: https://static01.nyt.com/images/icons/t_logo_291_black.png
+  x-origin:
+    - format: openapi
+      url: https://raw.githubusercontent.com/nytimes/public_api_specs/master/movie_reviews/movie_reviews_v2.json
+      version: "3.0"
+  x-providerName: nytimes.com
+  x-serviceName: movie_reviews
+externalDocs:
+  url: http://developer.nytimes.com/
+security:
+  - apikey: []
+paths:
+  "/critics/{resourceType}.json":
+    get:
+      operationId: criticsPicks
+      summary: Get movie reviews that are critics' picks. You can either specify the reviewer name or use "all", "full-time", or "part-time".
+      parameters:
+        - description: |
+            all | full-time | part-time | [reviewer-name]
+
+            Specify all to get all Times reviewers, or specify full-time or part-time to get that subset. Specify a reviewer's name to get details about a particular reviewer.
+          in: path
+          name: resourceType
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  copyright:
+                    type: string
+                  num_results:
+                    type: integer
+                  results:
+                    items:
+                      $ref: "#/components/schemas/Critic"
+                    type: array
+                  status:
+                    type: string
+                type: object
+          description: An array of Movie Critics
+  /reviews/search.json:
+    get:
+      operationId: searchMovieReviews
+      summary: Search for movie reviews. Supports filtering by Critics' Pick.
+      parameters:
+        - description: |
+            Search keywords; matches movie title and indexed terms
+
+            To limit your search to exact matches only, surround your search string with single quotation marks (e.g., query='28+days+later'). Otherwise, responses will include partial matches ("head words") as well as exact matches (e.g., president will match president, presidents and presidential).
+              
+              If you specify multiple terms without quotation marks, they will be combined in an OR search.
+              
+              If you omit the query parameter, your request will be equivalent to a reviews and NYT Critics' Picks request.
+          in: query
+          name: query
+          required: false
+          schema:
+            type: string
+        - description: |
+            Set this parameter to Y to limit the results to NYT Critics' Picks. To get only those movies that have not been highlighted by Times critics, specify critics-pick=N. (To get all reviews regardless of critics-pick status, simply omit this parameter.)
+          in: query
+          name: critics-pick
+          schema:
+            enum:
+              - Y
+              - N
+            type: string
+        - description: |
+            Include this parameter to limit your results to reviews by a specific critic. Reviewer names should be formatted like this: Manohla Dargis.
+          in: query
+          name: reviewer
+          schema:
+            type: string
+        - description: |
+            Single date: YYYY-MM-DD
+
+            Start and end date: YYYY-MM-DD;YYYY-MM-DD
+
+            The publication-date is the date the review was first published in The Times.
+          in: query
+          name: publication-date
+          schema:
+            type: string
+        - description: |
+            Single date: YYYY-MM-DD
+
+            Start and end date: YYYY-MM-DD;YYYY-MM-DD
+
+            The opening-date is the date the movie's opening date in the New York region.
+          in: query
+          name: opening-date
+          required: false
+          schema:
+            type: string
+        - description: Positive integer, multiple of 20
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 20
+            type: integer
+        - description: |
+            Sets the sort order of the results.
+
+            Results ordered by-title are in ascending alphabetical order. Results ordered by one of the date parameters are in reverse chronological order.
+
+            If you do not specify a sort order, the results will be ordered by publication-date.
+          in: query
+          name: order
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  copyright:
+                    type: string
+                  num_results:
+                    type: integer
+                  results:
+                    items:
+                      $ref: "#/components/schemas/Movie"
+                    type: array
+                  status:
+                    type: string
+                type: object
+          description: An array of Movies
+  "/reviews/{resourceType}.json":
+    get:
+      operationId: getMovieReviews
+      summary: Get movie reviews. Can filter to only return Critics' Picks. Supports ordering results by-publication-date or by-opening-date. Use offset to paginate thru results, 20 at a time.
+      parameters:
+        - description: |+
+            Specify all to retrieve all reviews, including NYT Critics' Picks.
+
+            Specify picks to get NYT Critics' Picks currently in theaters.
+
+          in: path
+          name: resourceType
+          required: true
+          schema:
+            enum:
+              - all
+              - picks
+            type: string
+        - description: Positive integer, multiple of 20
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 20
+            type: integer
+        - description: |
+            Sets the sort order of the results.
+
+            Results ordered by-title are in ascending alphabetical order. Results ordered by one of the date parameters are in reverse chronological order.
+
+            If you do not specify a sort order, the results will be ordered by publication-date.
+          in: query
+          name: order
+          required: false
+          schema:
+            default: by-publication-date
+            enum:
+              - by-title
+              - by-publication-date
+              - by-opening-date
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  copyright:
+                    type: string
+                  num_results:
+                    type: integer
+                  results:
+                    items:
+                      $ref: "#/components/schemas/Movie"
+                    type: array
+                  status:
+                    type: string
+                type: object
+          description: An array of Movies
+components:
+  schemas:
+    Critic:
+      properties:
+        bio:
+          type: string
+          nullable: true
+        display_name:
+          type: string
+          nullable: true
+        multimedia:
+          properties:
+            resource:
+              properties:
+                credit:
+                  type: string
+                height:
+                  type: integer
+                src:
+                  type: string
+                type:
+                  type: string
+                width:
+                  type: integer
+              type: object
+          type: object
+          nullable: true
+        seo_name:
+          type: string
+          nullable: true
+        sort_name:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+      type: object
+    Movie:
+      properties:
+        byline:
+          type: string
+          nullable: true
+        critics_pick:
+          type: integer
+          nullable: true
+        date_updated:
+          type: string
+          nullable: true
+        display_title:
+          type: string
+          nullable: true
+        headline:
+          type: string
+          nullable: true
+        link:
+          properties:
+            suggested_link_text:
+              type: string
+            type:
+              type: string
+            url:
+              type: string
+          type: object
+          nullable: true
+        mpaa_rating:
+          type: string
+          nullable: true
+        multimedia:
+          properties:
+            resource:
+              properties:
+                height:
+                  type: integer
+                src:
+                  type: string
+                type:
+                  type: string
+                width:
+                  type: integer
+              type: object
+          type: object
+          nullable: true
+        opening_date:
+          type: string
+          nullable: true
+        publication_date:
+          type: string
+          nullable: true
+        summary_short:
+          type: string
+          nullable: true
+      type: object
+  securitySchemes:
+    apikey:
+      in: query
+      name: api-key
+      type: apiKey
+      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"

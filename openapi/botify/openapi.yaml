@@ -2,13 +2,13 @@ openapi: 3.0.0
 servers:
   - url: https://api.botify.com/v1
 info:
-  description: |-
+  description: |
     This is a generated connector for [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
-    Botify Saas API comprise data about thousands of relevant SEO metrics, computed through website crawling and server logs ingestion.
-  x-init-description: |-
+    API for Internet Archive's Search-related services.
+  x-init-description: >
     The connector initialization requires setting the API credentials.
-    Request a [Botify Account](https://www.botify.com/request-a-demo) 
-    and obtain tokens following [this guide](https://www.botify.com/blog/seo-guide-botify-api).
+
+    Request a [Botify Account](https://www.botify.com/request-a-demo) and obtain tokens following [this guide](https://www.botify.com/blog/seo-guide-botify-api).
   title: Botify API
   version: 1.0.0
   x-apisguru-categories:

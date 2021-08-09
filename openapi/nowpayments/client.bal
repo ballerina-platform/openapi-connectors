@@ -32,7 +32,7 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials
     # Create an [NOWPayments Account](https://account.nowpayments.io/create-account) and obtain tokens by following [this guide](https://documenter.getpostman.com/view/7907941/S1a32n38?version=latest)
     #
-    # + apiKeyConfig - API key configuration detail
+    # + apiKeyConfig - Provide your API Key as apiKey. Eg: {"apiKey" : "<Your API Key>"}
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization

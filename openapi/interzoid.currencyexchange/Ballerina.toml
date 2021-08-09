@@ -1,0 +1,10 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["currency exchange rate", "money", "freemium"]
+org = "ballerinax"
+name = "interzoid.currencyexchange"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "0.1.0-SNAPSHOT"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

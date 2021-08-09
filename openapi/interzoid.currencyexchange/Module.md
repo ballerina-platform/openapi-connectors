@@ -2,7 +2,7 @@
 
 This is a generated connector for [Interzoid Get Currency Rate API v1.0.0](https://www.interzoid.com/services/getcurrencyrate) OpenAPI specification.
 
-The Interzoid Currency Rate connector module allows you to retrieves the latest currency exchange rate, provided in US dollars, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
+This API retrieves the latest currency exchange rate, against the US Dollar, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
@@ -16,7 +16,7 @@ Before using this connector in your Ballerina application, complete the followin
 
 To use the Interzoid currency exchange connector in your Ballerina application, update the .bal file as follows:
 ### Step 1: Import connector
-First, import the ballerinax/interzoid.currencyexchange module into the Ballerina project.
+Import the ballerinax/interzoid.currencyexchange module into the Ballerina project.
 
 ```ballerina
 import ballerinax/interzoid.currencyexchange as currencyexchange;

@@ -26,15 +26,13 @@ public type ApiKeysConfig record {
 };
 
 # This is a generated connector for [Interzoid Get Currency Rate API v1.0.0](https://www.interzoid.com/services/getcurrencyrate) OpenAPI specification.
-# The Interzoid Currency Rate connector module allows you to retrieves the latest currency exchange rate, provided in US dollars, for the given three-letter international currency code. 
-# These currency rates are compiled from many global sources and are updated several times per day.
+# This API retrieves the latest currency exchange rate, against the US Dollar, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
-    # Create an [Interzoid Account](https://www.interzoid.com/register) 
-    # and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+    # Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
     #
     # + apiKeyConfig - Provide your private license key as `license`. Eg: `{"license" : "<private license key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

@@ -20,7 +20,7 @@ import ballerina/lang.'string;
 
 # Visit [here](https://app.livestorm.co) and obtain an `API key` in the settings.
 #
-# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`   
+# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}` 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
@@ -36,8 +36,7 @@ public isolated client class Client {
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
-    # Create an [Livestorm Account](https://app.livestorm.co/#/signup) 
-    # and obtain tokens following [this guide](https://support.livestorm.co/category/4-getting-started).
+    # Create an [Livestorm Account](https://app.livestorm.co/#/signup) and obtain tokens following [this guide](https://support.livestorm.co/category/4-getting-started).
     #
     # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

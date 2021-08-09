@@ -1,0 +1,181 @@
+openapi: 3.0.1
+info:
+  title: IP geolocation API
+  description: This is a generated connector for [Abstract IP geolocation API version 1](https://www.abstractapi.com/ip-geolocation-api#docs) OpenAPI Specification.
+  
+              Abstract IP geolocation API allows developers to retrieve the region, country and city behind any IP worldwide.
+
+               The API covers the geolocation of IPv4 and IPv6 addresses in 180+ countries worldwide.
+               
+               Extra information can be retrieved like the currency, flag or language associated to an IP.
+  version: 1.0.0
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create an [Abstract API account for IP Geolocation API](https://www.abstractapi.com/ip-geolocation-api)and obtain
+    
+    tokens by following [this guide](https://app.abstractapi.com/api/ip-geolocation/documentation).
+externalDocs:
+  description: API Documentation
+  url: 'https://www.abstractapi.com/ip-geolocation-api#docs'
+servers:
+  - url: 'https://ipgeolocation.abstractapi.com'
+paths:
+  /v1/:
+    get:
+      summary: Retrieve the location of an IP address
+      operationId: getGeolocation
+      parameters:
+        - name: ip_address
+          in: query
+          description: The IP address to geolocate. Both IPv4 and IPv6 addresses are supported. Note that if this 
+                       parameter is left blank, the service will geolocate the IP address from which the request was made.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 195.154.25.40
+        - name: fields
+          in: query
+          description: Comma separated fields to only receive a few fields from the JSON response.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 'country,city,timezone'
+      responses:
+        '200':
+          description: Location of geolocated IP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geolocation'
+              examples:
+                '0':
+                  value: '{"ip_address":"195.154.25.40","city":"Paris","city_geoname_id":2988507,"region":"Île-de-France","region_iso_code":"IDF","region_geoname_id":3012874,"postal_code":"75008","country":"France","country_code":"FR","country_geoname_id":3017382,"country_is_eu":true,"continent":"Europe","continent_code":"EU","continent_geoname_id":6255148,"longitude":2.4075,"latitude":48.8323,"security":{"is_vpn":false},"timezone":{"name":"Europe/Paris","abbreviation":"CEST","gmt_offset":2,"current_time":"15:42:18","is_dst":true},"flag":{"emoji":"<ë<÷","unicode":"U+1F1EB U+1F1F7","png":"https://static.abstractapi.com/country-flags/FR_flag.png","svg":"https://static.abstractapi.com/country-flags/FR_flag.svg"},"currency":{"currency_name":"Euros","currency_code":"EUR"},"connection":{"autonomous_system_number":12876,"autonomous_system_organization":"Online S.a.s.","connection_type":"Corporate","isp_name":"Online S.A.S.","organization_name":"ONLINE"}}'
+      servers:
+        - url: 'https://ipgeolocation.abstractapi.com'
+    servers:
+      - url: 'https://ipgeolocation.abstractapi.com'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: api_key
+      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+  schemas:
+    geolocation:
+      type: object
+      properties:
+        continent:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        flag:
+          type: object
+          properties:
+            emoji:
+              type: string
+              nullable: true
+            svg:
+              type: string
+              nullable: true
+            png:
+              type: string
+              nullable: true
+            unicode:
+              type: string
+              nullable: true
+        country_geoname_id:
+          type: integer
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        city_geoname_id:
+          type: integer
+          nullable: true
+        country_is_eu:
+          type: boolean
+        timezone:
+          type: object
+          properties:
+            name:
+              type: string
+              nullable: true
+            gmt_offset:
+              type: integer
+              nullable: true
+            abbreviation:
+              type: string
+              nullable: true
+            current_time:
+              type: string
+              nullable: true
+            is_dst:
+              type: boolean
+        latitude:
+          type: number
+          nullable: true
+        continent_code:
+          type: string
+          nullable: true
+        ip_address:
+          type: string
+          nullable: true
+        region_geoname_id:
+          type: integer
+          nullable: true
+        region_iso_code:
+          type: string
+          nullable: true
+        country_code:
+          type: string
+          nullable: true
+        security:
+          type: object
+          properties:
+            is_vpn:
+              type: boolean
+        currency:
+          type: object
+          properties:
+            currency_name:
+              type: string
+            currency_code:
+              type: string
+        connection:
+          type: object
+          properties:
+            isp_name:
+              type: string
+              nullable: true
+            connection_type:
+              type: string
+              nullable: true
+            organization_name:
+              type: string
+              nullable: true
+            autonomous_system_organization:
+              type: string
+              nullable: true
+            autonomous_system_number:
+              type: integer
+              nullable: true
+        region:
+          type: string
+          nullable: true
+        postal_code:
+          type: string
+          nullable: true
+        continent_geoname_id:
+          type: integer
+          nullable: true
+        longitude:
+          type: number
+          nullable: true

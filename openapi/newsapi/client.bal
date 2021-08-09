@@ -33,8 +33,7 @@ public isolated client class Client {
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
-    # Create an [News API Account](https://newsapi.org/register) 
-    # and obtain tokens following [this guide](https://newsapi.org/docs/get-started).
+    # Create an [News API Account](https://newsapi.org/register) and obtain tokens following [this guide](https://newsapi.org/docs/get-started).
     #
     # + apiKeyConfig - Provide your API key as `apiKey`. Eg: `{"apiKey" : "<your API key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

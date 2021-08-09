@@ -14,7 +14,7 @@ Before using this connector in your Ballerina application, complete the followin
 ## Quickstart
 
 ### Step 1: Import connector
-First, import the ballerinax/newsapi module into the Ballerina project.
+Import the ballerinax/newsapi module into the Ballerina project.
 
 ```ballerina
 import ballerinax/newsapi;
@@ -35,18 +35,3 @@ newsapi:Client myclient = check new newsapi:Client(config, {}, "https://newsapi.
     newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 
-
-## Quick reference
-
-* Get top articles
-    ```ballerina
-    newsapi:WSNewsTopHeadlineResponse articleResult = check myclient->listArticles(1, 5, domains="bbc.co.uk");
-    ```
-* Get top headlines
-    ```ballerina
-    newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
-    ```
-* Get sources
-    ```ballerina
-    newsapi:WSNewsSourcesResponse result = check myclient->listSources(country="us");
-    ```

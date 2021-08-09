@@ -33,8 +33,7 @@ public isolated client class Client {
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Request a [TMDB Account](https://www.themoviedb.org/signup) 
-    # and obtain tokens following [this guide](https://developers.themoviedb.org/3/getting-started/introduction).
+    # Request a [TMDB Account](https://www.themoviedb.org/signup) and obtain tokens following [this guide](https://developers.themoviedb.org/3/getting-started/introduction).
     #
     # + apiKeyConfig - Provide your API key as `api_key`. Eg: `{"api_key" : "<your API key >"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

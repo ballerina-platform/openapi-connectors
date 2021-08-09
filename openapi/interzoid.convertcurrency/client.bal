@@ -26,15 +26,13 @@ public type ApiKeysConfig record {
 };
 
 # This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
-# The Interzoid Convert Currency connector module allows you to convert an amount of one currency into another currency using current foreign exchange rates.
-# For additional help getting started with the API, visit [Interzoid Convert Currency API](https://interzoid.com/services/convertcurrency).
+# This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [Interzoid Account](https://www.interzoid.com/register) 
-    # and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+    # Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
     #
     # + apiKeyConfig - Provide your private license key as `license`. Eg: `{"license" : "<private license key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

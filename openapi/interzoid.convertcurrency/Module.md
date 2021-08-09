@@ -2,7 +2,7 @@
 
 This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
 
-The Interzoid Convert Currency connector module allows you to convert an amount of one currency into another currency using current foreign exchange rates. For additional help getting started with the API, visit [Interzoid Convert Currency API](https://interzoid.com/services/convertcurrency).
+This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
@@ -17,7 +17,7 @@ Before using this connector in your Ballerina application, complete the followin
 To use the Interzoid convert currency connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-First, import the ballerinax/interzoid.convertcurrency module into the Ballerina project.
+Import the ballerinax/interzoid.convertcurrency module into the Ballerina project.
 
 ```ballerina
 import ballerinax/interzoid.convertcurrency as convertcurrency;

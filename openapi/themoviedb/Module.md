@@ -16,7 +16,7 @@ Before using this connector in your Ballerina application, complete the followin
 ## Quickstart
 
 ### Step 1: Import connector
-First, import the ballerinax/themoviedb module into the Ballerina project.
+Import the ballerinax/themoviedb module into the Ballerina project.
 
 ```ballerina
 import ballerinax/themoviedb;
@@ -37,18 +37,3 @@ themoviedb:Client myclient = check new themoviedb:Client(config);
     themoviedb:GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies();
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 
-
-## Quick reference
-
-* Get Upcoming Movies
-    ``` ballerina
-    themoviedb:GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies();
-    ```
-* Get Popular Movies
-    ``` ballerina
-    themoviedb:GetPopularMoviesResponse result = check myclient->getPopularMovies();
-    ```
-* Search Movies
-    ``` ballerina
-    themoviedb:SearchMovieResponse result = check myclient->searchMovie("Thor");
-    ```

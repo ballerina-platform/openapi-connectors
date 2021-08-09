@@ -1,0 +1,1174 @@
+openapi: 3.0.1
+info:
+  title: Line Items
+  version: v3
+  description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
+  
+    This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+  
+    Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
+servers:
+  - url: 'https://api.hubapi.com/'
+tags:
+  - name: Basic
+  - name: Search
+  - name: Associations
+  - name: Batch
+paths:
+  /crm/v3/objects/line_items:
+    get:
+      tags:
+        - Basic
+      summary: List
+      description: Read a page of line items. Control what is returned via the `properties` query param.
+      operationId: get Page
+      parameters:
+        - name: limit
+          in: query
+          description: The maximum number of results to display per page.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: after
+          in: query
+          description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: 'A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.'
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: associations
+          in: query
+          description: 'A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.'
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseSimplePublicObjectWithAssociationsForwardPaging'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+    post:
+      tags:
+        - Basic
+      summary: Create
+      description: 'Create a line item with the given properties and return a copy of the object, including the ID. Documentation and examples for creating standard line items is provided.'
+      operationId: create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimplePublicObject'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+  /crm/v3/objects/line_items/batch/archive:
+    post:
+      tags:
+        - Batch
+      summary: Archive a batch of line items by ID
+      description: 'Archive a list of line items given a collection of IDs. This method will return a `204 No Content` response on success regardless of the initial state of the object (e.g. active, already archived, non-existent).'
+      operationId: batch/archive_archive
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchInputSimplePublicObjectId'
+        required: true
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+  /crm/v3/objects/line_items/batch/create:
+    post:
+      tags:
+        - Batch
+      summary: Create a batch of line items
+      description: Create a batch of line items. This follows the same rules as creating an individual object.
+      operationId: batch/create_create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchInputSimplePublicObjectInput'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+        '207':
+          description: multiple statuses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+  /crm/v3/objects/line_items/batch/read:
+    post:
+      tags:
+        - Batch
+      summary: 'Read a batch of line items by internal ID, or unique property values'
+      description: Read a list of line items given a collection of IDs. Use the `properties` request body property to control which properties are returned.
+      operationId: batch/read_read
+      parameters:
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInputSimplePublicObjectId'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+        '207':
+          description: multiple statuses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+  /crm/v3/objects/line_items/batch/update:
+    post:
+      tags:
+        - Batch
+      summary: Update a batch of line items
+      description: Perform a partial upate on a batch of line items. This follows the same rules as performing partial updates on an individual object.
+      operationId: batch/update_update
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchInputSimplePublicObjectBatchInput'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+        '207':
+          description: multiple statuses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+  /crm/v3/objects/line_items/search:
+    post:
+      tags:
+        - Search
+      summary: 'Filter, Sort, and Search CRM Objects'
+      description: 'Filter, Sort, and Search CRM Objects'
+      operationId: do Search
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicObjectSearchRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalSimplePublicObjectForwardPaging'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+      x-hubspot-rate-limit-exemptions:
+        - ten-secondly
+  '/crm/v3/objects/line_items/{lineItemId}':
+    get:
+      tags:
+        - Basic
+      summary: Read
+      description: 'Read an Object identified by `{lineItemId}`. `{lineItemId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param.  Control what is returned via the `properties` query param.'
+      operationId: 'get By Id'
+      parameters:
+        - name: lineItemId
+          in: path
+          description: Line item ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: 'A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.'
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: associations
+          in: query
+          description: 'A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.'
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+        - name: idProperty
+          in: query
+          description: The name of a property whose values are unique for this object type
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimplePublicObjectWithAssociations'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+    delete:
+      tags:
+        - Basic
+      summary: Archive
+      description: 'Move an Object identified by `{lineItemId}` to the recycling bin.'
+      operationId: 'archive'
+      parameters:
+        - name: lineItemId
+          in: path
+          description: Line item ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+    patch:
+      tags:
+        - Basic
+      summary: Update
+      description: 'Perform a partial update of an Object identified by `{lineItemId}`. `{lineItemId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param. Provided property values will be overwritten. Read-only and non-existent properties will be ignored. Properties values can be cleared by passing an empty string.'
+      operationId: 'update'
+      parameters:
+        - name: lineItemId
+          in: path
+          description: Line item ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: idProperty
+          in: query
+          description: The name of a property whose values are unique for this object type
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimplePublicObject'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+  '/crm/v3/objects/line_items/{lineItemId}/associations/{toObjectType}':
+    get:
+      tags:
+        - Associations
+      summary: List associations of a line item by type
+      operationId: '/associations/get All'
+      parameters:
+        - name: lineItemId
+          in: path
+          description: Line item ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          description: Object type to associate with
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: after
+          in: query
+          description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: The maximum number of results to display per page.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            default: 500
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociatedIdForwardPaging'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+  '/crm/v3/objects/line_items/{lineItemId}/associations/{toObjectType}/{toObjectId}/{associationType}':
+    put:
+      tags:
+        - Associations
+      summary: Associate a line item with another object
+      operationId: 'associations/create'
+      parameters:
+        - name: lineItemId
+          in: path
+          description: Line item ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          description: Object type to associate with
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          description: Object ID to associate
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          description: Type of the association
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimplePublicObjectWithAssociations'
+              example:
+                associations:
+                  contacts:
+                    results:
+                      - id: '354229'
+                        type: contact_to_company
+                createdAt: '2019-10-30T03:30:17.883Z'
+                archived: false
+                id: '574148'
+                properties: {}
+                updatedAt: '2019-12-07T16:50:06.678Z'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+    delete:
+      tags:
+        - Associations
+      summary: Remove an association between two line items
+      operationId: 'associations/archive'
+      parameters:
+        - name: lineItemId
+          in: path
+          description: Line item ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          description: Object type to associate with
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          description: Object ID to associate
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          description: Type of the association
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - hapikey: []
+        - oauth2:
+            - e-commerce
+components:
+  schemas:
+    AssociatedId:
+      required:
+        - id
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    BatchInputSimplePublicObjectBatchInput:
+      required:
+        - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectBatchInput'
+    BatchInputSimplePublicObjectId:
+      required:
+        - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectId'
+    BatchInputSimplePublicObjectInput:
+      required:
+        - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput'
+    BatchReadInputSimplePublicObjectId:
+      required:
+        - inputs
+        - properties
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+        idProperty:
+          type: string
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectId'
+    BatchResponseSimplePublicObject:
+      required:
+        - completedAt
+        - results
+        - startedAt
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          # enum:
+          #   - PENDING
+          #   - PROCESSING
+          #   - CANCELED
+          #   - COMPLETE
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObject'
+        requestedAt:
+          type: string
+          format: date-time
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        links:
+          type: object
+          additionalProperties:
+            type: string
+    BatchResponseSimplePublicObjectWithErrors:
+      required:
+        - completedAt
+        - results
+        - startedAt
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          # enum:
+          #   - PENDING
+          #   - PROCESSING
+          #   - CANCELED
+          #   - COMPLETE
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObject'
+        numErrors:
+          type: integer
+          format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardError'
+        requestedAt:
+          type: string
+          format: date-time
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        links:
+          type: object
+          additionalProperties:
+            type: string
+    CollectionResponseAssociatedId:
+      required:
+        - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociatedId'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    CollectionResponseAssociatedIdForwardPaging:
+      required:
+        - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociatedId'
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+    CollectionResponseSimplePublicObjectWithAssociationsForwardPaging:
+      required:
+        - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectWithAssociations'
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+    CollectionResponseWithTotalSimplePublicObjectForwardPaging:
+      required:
+        - results
+        - total
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObject'
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+    Error:
+      required:
+        - category
+        - correlationId
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category:
+          type: string
+          description: The error category
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example:
+            invalidPropertyName:
+              - propertyValue
+            missingScopes:
+              - scope1
+              - scope2
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: 'https://www.hubspot.com/products/service/knowledge-base'
+    ErrorCategory:
+      required:
+        - httpStatus
+        - name
+      type: object
+      properties:
+        httpStatus:
+          type: string
+          # enum:
+          #   - CONTINUE
+          #   - SWITCHING_PROTOCOLS
+          #   - PROCESSING
+          #   - OK
+          #   - CREATED
+          #   - ACCEPTED
+          #   - NON_AUTHORITATIVE_INFORMATION
+          #   - NO_CONTENT
+          #   - RESET_CONTENT
+          #   - PARTIAL_CONTENT
+          #   - MULTI_STATUS
+          #   - ALREADY_REPORTED
+          #   - IM_USED
+          #   - MULTIPLE_CHOICES
+          #   - MOVED_PERMANENTLY
+          #   - FOUND
+          #   - SEE_OTHER
+          #   - NOT_MODIFIED
+          #   - USE_PROXY
+          #   - TEMPORARY_REDIRECT
+          #   - PERMANENT_REDIRECT
+          #   - BAD_REQUEST
+          #   - UNAUTHORIZED
+          #   - PAYMENT_REQUIRED
+          #   - FORBIDDEN
+          #   - NOT_FOUND
+          #   - METHOD_NOT_ALLOWED
+          #   - NOT_ACCEPTABLE
+          #   - PROXY_AUTHENTICATION_REQUIRED
+          #   - REQUEST_TIMEOUT
+          #   - CONFLICT
+          #   - GONE
+          #   - LENGTH_REQUIRED
+          #   - PRECONDITION_FAILED
+          #   - REQUEST_ENTITY_TOO_LARGE
+          #   - REQUEST_URI_TOO_LONG
+          #   - UNSUPPORTED_MEDIA_TYPE
+          #   - REQUESTED_RANGE_NOT_SATISFIABLE
+          #   - EXPECTATION_FAILED
+          #   - IM_A_TEAPOT
+          #   - MISDIRECTED_REQUEST
+          #   - UNPROCESSABLE_ENTITY
+          #   - LOCKED
+          #   - FAILED_DEPENDENCY
+          #   - UPGRADE_REQUIRED
+          #   - PRECONDITION_REQUIRED
+          #   - TOO_MANY_REQUESTS
+          #   - REQUEST_HEADERS_FIELDS_TOO_LARGE
+          #   - INTERNAL_STALE_SERVICE_DISCOVERY
+          #   - UNAVAILABLE_FOR_LEGAL_REASONS
+          #   - INTERNAL_SERVER_ERROR
+          #   - NOT_IMPLEMENTED
+          #   - BAD_GATEWAY
+          #   - SERVICE_UNAVAILABLE
+          #   - GATEWAY_TIMEOUT
+          #   - HTTP_VERSION_NOT_SUPPORTED
+          #   - VARIANT_ALSO_NEGOTIATES
+          #   - INSUFFICIENT_STORAGE
+          #   - LOOP_DETECTED
+          #   - NOT_EXTENDED
+          #   - NETWORK_AUTHENTICATION_REQUIRED
+        name:
+          type: string
+    ErrorDetail:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        code:
+          type: string
+          description: The status code associated with the error detail
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example:
+            missingScopes:
+              - scope1
+              - scope2
+    Filter:
+      required:
+        - operator
+        - propertyName
+      type: object
+      properties:
+        value:
+          type: string
+        propertyName:
+          type: string
+        operator:
+          type: string
+          # enum:
+          #   - EQ
+          #   - NEQ
+          #   - LT
+          #   - LTE
+          #   - GT
+          #   - GTE
+          #   - HAS_PROPERTY
+          #   - NOT_HAS_PROPERTY
+          #   - CONTAINS_TOKEN
+          #   - NOT_CONTAINS_TOKEN
+    FilterGroup:
+      required:
+        - filters
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+    NextPage:
+      required:
+        - after
+      type: object
+      properties:
+        after:
+          type: string
+        link:
+          type: string
+      example:
+        link: '?after=NTI1Cg%3D%3D'
+        after: NTI1Cg%3D%3D
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    PreviousPage:
+      required:
+        - before
+      type: object
+      properties:
+        before:
+          type: string
+        link:
+          type: string
+    PublicObjectSearchRequest:
+      required:
+        - after
+        - filterGroups
+        - limit
+        - properties
+        - sorts
+      type: object
+      properties:
+        filterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        sorts:
+          type: array
+          items:
+            type: string
+        query:
+          type: string
+        properties:
+          type: array
+          items:
+            type: string
+        limit:
+          type: integer
+          format: int32
+        after:
+          type: integer
+          format: int32
+    SimplePublicObject:
+      required:
+        - createdAt
+        - id
+        - properties
+        - updatedAt
+      type: object
+      properties:
+        id:
+          type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+      example:
+        createdAt: '2019-10-30T03:30:17.883Z'
+        archived: false
+        id: '512'
+        properties:
+          createdate: '2019-10-30T03:30:17.883Z'
+          hs_lastmodifieddate: '2019-12-07T16:50:06.678Z'
+          hs_product_id: '191902'
+          hs_recurring_billing_period: '24'
+          name: 1 year implementation consultation
+          price: '6000.00'
+          quantity: '2'
+          recurringbillingfrequency: monthly
+        updatedAt: '2019-12-07T16:50:06.678Z'
+    SimplePublicObjectBatchInput:
+      required:
+        - id
+        - properties
+      type: object
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        id:
+          type: string
+      example:
+        id: '1'
+        properties:
+          name: 1 year implementation consultation
+          hs_product_id: '191902'
+          hs_recurring_billing_period: '24'
+          recurringbillingfrequency: monthly
+          quantity: '2'
+          price: '6000.00'
+    SimplePublicObjectId:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+    SimplePublicObjectInput:
+      required:
+        - properties
+      type: object
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+      example:
+        properties:
+          name: 1 year implementation consultation
+          hs_product_id: '191902'
+          hs_recurring_billing_period: '24'
+          recurringbillingfrequency: monthly
+          quantity: '2'
+          price: '6000.00'
+    SimplePublicObjectWithAssociations:
+      required:
+        - createdAt
+        - id
+        - properties
+        - updatedAt
+      type: object
+      properties:
+        id:
+          type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociatedId'
+      example:
+        properties:
+          createdate: '2019-10-30T03:30:17.883Z'
+          hs_lastmodifieddate: '2019-12-07T16:50:06.678Z'
+          hs_product_id: '191902'
+          hs_recurring_billing_period: '24'
+          name: 1 year implementation consultation
+          price: '6000.00'
+          quantity: '2'
+          recurringbillingfrequency: monthly
+    StandardError:
+      required:
+        - category
+        - context
+        - errors
+        - links
+        - message
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+        id:
+          type: string
+        category:
+          $ref: '#/components/schemas/ErrorCategory'
+        subCategory:
+          type: object
+          properties: {}
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        links:
+          type: object
+          additionalProperties:
+            type: string
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    # hapikey:
+    #   type: apiKey
+    #   name: hapikey
+    #   in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://app.hubspot.com/oauth/authorize'
+          tokenUrl: 'https://api.hubapi.com/oauth/v1/token'
+          scopes:
+            e-commerce: e-commerce
+x-hubspot-available-client-libraries:
+  - PHP
+  - Node
+  - Python
+  - Ruby

@@ -28,16 +28,12 @@ public type ClientConfig record {
 };
 
 # This is a generated connector for [Xero Accounts API v2.14.4](https://developer.xero.com/documentation/api/accounting/overview) OpenAPI specification.
-# The Xero Accounts API exposes accounting related functions of the Xero Accounting application 
-# and can be used for a variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data.
+# The Xero Accounting API exposes accounting and related functions of the main Xero application and can be used for a  variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data via our reports endpoint.
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create a [Xero account](https://developer.xero.com/app/manage)
-    # and obtain tokens following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
-    # During initialization you can pass http:BearerTokenConfig if you have a bearer token 
-    # and if you have Oauth tokens you can pass http:OAuth2RefreshTokenGrantConfig.
+    # Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service

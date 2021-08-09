@@ -29,7 +29,7 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials
     # Create an [Extpose Account](https://extpose.com/signup) and obtain tokens by following [this guide](https://docs.extpose.com/api-reference)
     #
-    # + apiKeyConfig - API key configuration detail
+    # + apiKeyConfig - Provide your API Key as X-API-Key. Eg: {"X-API-Key" : "<Your API Key>"}
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
     # + return - An error at the failure of client initialization

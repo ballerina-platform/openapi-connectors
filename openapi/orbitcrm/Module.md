@@ -14,7 +14,7 @@ Before using this connector in your Ballerina application, complete the followin
 ## Quickstart
 
 ### Step 1: Import connector
-First, import the ballerinax/orbitcrm module into the Ballerina project.
+Import the ballerinax/orbitcrm module into the Ballerina project.
 
 ```ballerina
 import ballerinax/orbitcrm;
@@ -40,18 +40,3 @@ orbitcrm:Client myclient = check new orbitcrm:Client(clientConfig, {}, "https://
     orbitcrm:json result = check myclient->getActivitiesById(<Workspace_ID>);
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 
-
-## Quick reference
-
-* Get list of activities
-    ```ballerina
-    orbitcrm:json result = check baseClient->getActivitiesInWorkspace(<Workspace_ID>);
-    ```
-* Get available workspaces
-    ```ballerina
-    orbitcrm:json result = check myclient->getWorkspaces();
-    ```
-* Get activity detail
-    ```ballerina
-    orbitcrm:json result = check myclient->getActivitiesById(<Workspace_ID>,<Activity_ID>);
-    ```

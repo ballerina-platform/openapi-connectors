@@ -26,14 +26,13 @@ public type ApiKeysConfig record {
 };
 
 # This is a generated connector for [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
-# Botify Saas API comprise data about thousands of relevant SEO metrics, computed through website crawling and server logs ingestion.
+# API for Internet Archive's Search-related services.
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Request a [Botify Account](https://www.botify.com/request-a-demo) 
-    # and obtain tokens following [this guide](https://www.botify.com/blog/seo-guide-botify-api).
+    # Request a [Botify Account](https://www.botify.com/request-a-demo) and obtain tokens following [this guide](https://www.botify.com/blog/seo-guide-botify-api).
     #
     # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

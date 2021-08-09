@@ -31,8 +31,7 @@ public isolated client class Client {
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [Chaingateway.io Account](https://chaingateway.io/register) 
-    # and obtain tokens following [this guide](https://chaingateway.io/docs-ethereum#apikey).
+    # Create an [Chaingateway.io Account](https://chaingateway.io/register) and obtain tokens following [this guide](https://chaingateway.io/docs-ethereum#apikey).
     #
     # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

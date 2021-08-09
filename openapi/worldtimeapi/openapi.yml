@@ -1,0 +1,395 @@
+openapi: "3.0.1"
+info:
+  title: "World Time API"
+  version: "20210108"
+  description: >-
+    This is a generated connector for [WorldTimeAPI v0.6.1](http://worldtimeapi.org/) OpenAPI Specification.
+    
+    [WorldTime API](http://worldtimeapi.org/pages/faqs#what-is-it) is a simple "microservice" which returns the local-time for a given timezone in both unixtime and ISO8601 format.
+    The worldTimeAPI connector supports to get the current time based on a request with a timezone and additional information including whether
+    that timezone is currently in Daylight Savings Time, when DST starts and ends, the UTC offset, etc.
+  x-init-description: >-
+    The connector initialization doesn't require setting the API credentials.
+
+    World Time API data is simple and free to access. Follow [this link](http://worldtimeapi.org/) for more details.
+servers:
+  - url: http://worldtimeapi.org/api/
+
+paths:
+  /timezone:
+    get:
+      summary: a listing of all timezones.
+      operationId: listTimezones
+      responses:
+        default:
+          $ref: "#/components/responses/SuccessfulListJsonResponse"
+  /timezone.txt:
+    get:
+      summary: a listing of all timezones.
+      operationId: listTimezonesAsText
+      responses:
+        default:
+          $ref: "#/components/responses/SuccessfulListTextResponse"
+
+  /timezone/{area}:
+    get:
+      summary: a listing of all timezones available for that area.
+      operationId: getTimezoneByArea
+      parameters:
+        - name: area
+          in: path
+          description: Area
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulListJsonResponse"
+        default:
+          $ref: "#/components/responses/ErrorJsonResponse"
+  /timezone/{area}.txt:
+    get:
+      summary: a listing of all timezones available for that area.
+      operationId: getTimezoneByAreaAsText
+      parameters:
+        - name: area
+          in: path
+          description: Area
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulListTextResponse"
+        default:
+          $ref: "#/components/responses/ErrorTextResponse"
+
+  /timezone/{area}/{location}:
+    get:
+      summary: request the current time for a timezone.
+      operationId: getCurrentTime
+      parameters:
+        - name: area
+          in: path
+          description: Area
+          required: true
+          schema:
+            type: string
+        - name: location
+          in: path
+          description: location
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeJsonResponse"
+        default:
+          $ref: "#/components/responses/ErrorJsonResponse"
+  /timezone/{area}/{location}.txt:
+    get:
+      summary: request the current time for a timezone.
+      operationId: getCurrentTimeAsText
+      parameters:
+        - name: area
+          in: path
+          description: Area
+          required: true
+          schema:
+            type: string
+        - name: location
+          in: path
+          description: Location
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeTextResponse"
+        default:
+          $ref: "#/components/responses/ErrorTextResponse"
+
+  /timezone/{area}/{location}/{region}:
+    get:
+      summary: request the current time for a timezone.
+      operationId: getCurrentTimeByRegion
+      parameters:
+        - name: area
+          in: path
+          description: Area
+          required: true
+          schema:
+            type: string
+        - name: location
+          in: path
+          required: true
+          description: Location
+          schema:
+            type: string
+        - name: region
+          in: path
+          description: Region
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeJsonResponse"
+        default:
+          $ref: "#/components/responses/ErrorJsonResponse"
+  /timezone/{area}/{location}/{region}.txt:
+    get:
+      summary: request the current time for a timezone.
+      operationId: getCurrentTimeByRegionAsText
+      parameters:
+        - name: area
+          in: path
+          description: Area
+          required: true
+          schema:
+            type: string
+        - name: location
+          in: path
+          description: Location
+          required: true
+          schema:
+            type: string
+        - name: region
+          in: path
+          description: Region
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeTextResponse"
+        default:
+          $ref: "#/components/responses/ErrorTextResponse"
+
+  /ip:
+    get:
+      summary: >-
+        request the current time based on the ip of the request.
+        note: this is a "best guess" obtained from open-source data.
+      operationId: getCurrentTimeBasedOnIp
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeJsonResponse"
+        default:
+          $ref: "#/components/responses/ErrorJsonResponse"
+  /ip.txt:
+    get:
+      summary: >-
+        request the current time based on the ip of the request.
+        note: this is a "best guess" obtained from open-source data.
+      operationId: getCurrentTimeBasedOnIpAsText
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeTextResponse"
+        default:
+          $ref: "#/components/responses/ErrorTextResponse"
+
+  /ip/{ipv4}:
+    get:
+      summary: >-
+        request the current time based on the ip of the request.
+        note: this is a "best guess" obtained from open-source data.
+      operationId: getCurrentTimeBasedOnIpv4
+      parameters:
+        - name: ipv4
+          in: path
+          description: IPv4 address
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeJsonResponse"
+        default:
+          $ref: "#/components/responses/ErrorJsonResponse"
+  /ip/{ipv4}.txt:
+    get:
+      summary: >-
+        request the current time based on the ip of the request.
+        note: this is a "best guess" obtained from open-source data.
+      operationId: getCurrentTimeBasedOnIpv4AsText
+      parameters:
+        - name: ipv4
+          in: path
+          description: IPv4 address
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: "#/components/responses/SuccessfulDateTimeTextResponse"
+        default:
+          $ref: "#/components/responses/ErrorTextResponse"
+
+components:
+  responses:
+    SuccessfulListJsonResponse:
+      description: >-
+        the list of available timezones in JSON format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ListJsonResponse"
+    SuccessfulListTextResponse:
+      description: >-
+        the list of available timezones in plain text
+      content:
+        text/plain:
+          schema:
+            $ref: "#/components/schemas/ListTextResponse"
+
+    SuccessfulDateTimeJsonResponse:
+      description: >-
+        the current time for the timezone requested in JSON format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DateTimeJsonResponse"
+    SuccessfulDateTimeTextResponse:
+      description: >-
+        the current time for the timezone requested in plain text
+      content:
+        text/plain:
+          schema:
+            $ref: "#/components/schemas/DateTimeTextResponse"
+
+    ErrorJsonResponse:
+      description: >-
+        an error response in JSON format
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorJsonResponse"
+    ErrorTextResponse:
+      description: >-
+        an error response in plain text
+      content:
+        text/plain:
+          schema:
+            $ref: "#/components/schemas/ErrorTextResponse"
+
+  schemas:
+    ListJsonResponse:
+      type: array
+      description: >-
+        a list of available timezones
+      items:
+        type: string
+
+    ListTextResponse:
+      type: string
+      description: >-
+        a list of available timezones, one per line
+
+    DateTimeJsonResponse:
+      required:
+        - abbreviation
+        - client_ip
+        - datetime
+        - day_of_week
+        - day_of_year
+        - dst
+        - dst_offset
+        - timezone
+        - unixtime
+        - utc_datetime
+        - utc_offset
+        - week_number
+      properties:
+        abbreviation:
+          type: string
+          description: >-
+            the abbreviated name of the timezone
+        client_ip:
+          type: string
+          description: >-
+            the IP of the client making the request
+        datetime:
+          type: string
+          description: >-
+            an ISO8601-valid string representing
+            the current, local date/time
+        day_of_week:
+          type: integer
+          description: >-
+            current day number of the week, where sunday is 0
+        day_of_year:
+          type: integer
+          description: >-
+            ordinal date of the current year
+        dst:
+          type: boolean
+          description: >-
+            flag indicating whether the local
+            time is in daylight savings
+        dst_from:
+          type: string
+          description: >-
+            an ISO8601-valid string representing
+            the datetime when daylight savings
+            started for this timezone
+        dst_offset:
+          type: integer
+          description: >-
+            the difference in seconds between the current local
+            time and daylight saving time for the location
+        dst_until:
+          type: string
+          description: >-
+            an ISO8601-valid string representing
+            the datetime when daylight savings
+            will end for this timezone
+        raw_offset:
+          type: integer
+          description: >-
+            the difference in seconds between the current local time
+            and the time in UTC, excluding any daylight saving difference
+            (see dst_offset)
+        timezone:
+          type: string
+          description: >-
+            timezone in `Area/Location` or
+            `Area/Location/Region` format
+        unixtime:
+          type: integer
+          description: >-
+            number of seconds since the Epoch
+        utc_datetime:
+          type: string
+          description: >-
+            an ISO8601-valid string representing
+            the current date/time in UTC
+        utc_offset:
+          type: string
+          description: >-
+            an ISO8601-valid string representing
+            the offset from UTC
+        week_number:
+          type: integer
+          description: >-
+            the current week number
+
+    DateTimeTextResponse:
+      type: string
+      description: >-
+        time zone details, as per the DateTimeJsonResponse
+        response, in the format `key: value`, one item per line
+
+    ErrorJsonResponse:
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: >-
+            details about the error encountered
+
+    ErrorTextResponse:
+      type: string
+      description: >-
+        details about the error encountered in plain text

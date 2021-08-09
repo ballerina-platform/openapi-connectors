@@ -1,0 +1,491 @@
+openapi: 3.0.2
+info:
+  title: WebScraping.AI
+  contact:
+    name: WebScraping.AI Support
+    url: https://webscraping.ai
+    email: support@webscraping.ai
+  version: 2.0.4
+  description: >
+    This is a generated connector for [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification.
+    
+    It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
+
+    More information about the WebScraping.AI API can be found at https://webscraping.ai.
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [WebScraping.AI account](https://webscraping.ai) and obtain tokens from the [dashboard](https://webscraping.ai/dashboard).
+tags:
+  - name: HTML
+    description: Get full HTML content of pages with proxies and Chrome JS rendering
+  - name: Selected HTML
+    description: Get HTML content of selected page areas (like price, search results, page title, etc.)
+  - name: Account
+    description: Information about your account calls quota
+paths:
+  /html:
+    get:
+      summary: Page HTML by URL
+      description: Returns just HTML on success, JSON on error
+      operationId: getHTML
+      tags: ["HTML"]
+      parameters:
+        - $ref: '#/components/parameters/url'
+        - $ref: '#/components/parameters/headers'
+        - $ref: '#/components/parameters/timeout'
+        - $ref: '#/components/parameters/js'
+        - $ref: '#/components/parameters/proxy'
+      responses:
+        400:
+          $ref: '#/components/responses/400'
+        402:
+          $ref: '#/components/responses/402'
+        403:
+          $ref: '#/components/responses/403'
+        429:
+          $ref: '#/components/responses/429'
+        500:
+          $ref: '#/components/responses/500'
+        502:
+          $ref: '#/components/responses/502'
+        504:
+          $ref: '#/components/responses/504'
+        200:
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+              example: "<html><head>\n    <title>Example Domain</title>\n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n</body></html>"
+#    post:
+#      summary: Page HTML by URL with POST request to the target page
+#      description: Returns just HTML on success, JSON on error. Request body will be passed to the target page.
+#      operationId: postHTML
+#      tags: [ "HTML" ]
+#      parameters:
+#        - $ref: '#/components/parameters/postUrl'
+#        - $ref: '#/components/parameters/headers'
+#        - $ref: '#/components/parameters/timeout'
+#        - $ref: '#/components/parameters/js'
+#        - $ref: '#/components/parameters/proxy'
+#      requestBody:
+#        $ref: '#/components/requestBodies/Body'
+#      responses:
+#        400:
+#          $ref: '#/components/responses/400'
+#        402:
+#          $ref: '#/components/responses/402'
+#        403:
+#          $ref: '#/components/responses/403'
+#        429:
+#          $ref: '#/components/responses/429'
+#        500:
+#          $ref: '#/components/responses/500'
+#        502:
+#          $ref: '#/components/responses/502'
+#        504:
+#          $ref: '#/components/responses/504'
+#        200:
+#          description: Success
+#          content:
+#            text/html:
+#              schema:
+#                type: string
+#              example: "<html><head>\n    <title>Example Domain</title>\n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n</body></html>"
+  /selected:
+    get:
+      summary: HTML of a selected page area by URL and CSS selector
+      description: Returns just HTML on success, JSON on error
+      operationId: getSelected
+      tags: ["Selected HTML"]
+      parameters:
+        - in: query
+          name: selector
+          description: CSS selector (null by default, returns whole page HTML)
+          example: "h1"
+          schema:
+            type: string
+        - $ref: '#/components/parameters/url'
+        - $ref: '#/components/parameters/headers'
+        - $ref: '#/components/parameters/timeout'
+        - $ref: '#/components/parameters/js'
+        - $ref: '#/components/parameters/proxy'
+      responses:
+        400:
+          $ref: '#/components/responses/400'
+        402:
+          $ref: '#/components/responses/402'
+        403:
+          $ref: '#/components/responses/403'
+        429:
+          $ref: '#/components/responses/429'
+        500:
+          $ref: '#/components/responses/500'
+        502:
+          $ref: '#/components/responses/502'
+        504:
+          $ref: '#/components/responses/504'
+        200:
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+              example: "<a href=\"https://www.iana.org/domains/example\">More information...</a>"
+#    post:
+#      summary: HTML of a selected page areas by URL and CSS selector, with POST request to the target page
+#      description: Returns just HTML on success, JSON on error. Request body will be passed to the target page.
+#      operationId: postSelected
+#      tags: [ "Selected HTML" ]
+#      parameters:
+#        - in: query
+#          name: selector
+#          description: CSS selector (null by default, returns whole page HTML)
+#          example: "h1"
+#          schema:
+#            type: string
+#        - $ref: '#/components/parameters/postUrl'
+#        - $ref: '#/components/parameters/headers'
+#        - $ref: '#/components/parameters/timeout'
+#        - $ref: '#/components/parameters/js'
+#        - $ref: '#/components/parameters/proxy'
+#      requestBody:
+#        $ref: '#/components/requestBodies/Body'
+#      responses:
+#        400:
+#          $ref: '#/components/responses/400'
+#        402:
+#          $ref: '#/components/responses/402'
+#        403:
+#          $ref: '#/components/responses/403'
+#        429:
+#          $ref: '#/components/responses/429'
+#        500:
+#          $ref: '#/components/responses/500'
+#        502:
+#          $ref: '#/components/responses/502'
+#        504:
+#          $ref: '#/components/responses/504'
+#        200:
+#          description: Success
+#          content:
+#            text/html:
+#              schema:
+#                type: string
+#              example: "<a href=\"https://www.iana.org/domains/example\">More information...</a>"
+  /selected-multiple:
+    get:
+      summary: HTML of multiple page areas by URL and CSS selectors
+      description: Always returns JSON
+      operationId: getSelectedMultiple
+      tags: ["Selected HTML"]
+      parameters:
+        - in: query
+          name: selectors
+          description: Multiple CSS selectors (null by default, returns whole page HTML)
+          example: ["h1"]
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: '#/components/parameters/url'
+        - $ref: '#/components/parameters/headers'
+        - $ref: '#/components/parameters/timeout'
+        - $ref: '#/components/parameters/js'
+        - $ref: '#/components/parameters/proxy'
+      responses:
+        400:
+          $ref: '#/components/responses/400'
+        402:
+          $ref: '#/components/responses/402'
+        403:
+          $ref: '#/components/responses/403'
+        429:
+          $ref: '#/components/responses/429'
+        500:
+          $ref: '#/components/responses/500'
+        502:
+          $ref: '#/components/responses/502'
+        504:
+          $ref: '#/components/responses/504'
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SelectedAreas"
+              example: [
+                "<a href='/test'>some link</a>",
+                "Hello"
+              ]
+#    post:
+#      summary: HTML of multiple page areas by URL and CSS selectors, with POST request to the target page
+#      description: Always returns JSON. Request body will be passed to the target page.
+#      operationId: postSelectedMultiple
+#      tags: [ "Selected HTML" ]
+#      parameters:
+#        - in: query
+#          name: selectors
+#          description: Multiple CSS selectors (null by default, returns whole page HTML)
+#          example: [ "h1" ]
+#          schema:
+#            type: array
+#            items:
+#              type: string
+#        - $ref: '#/components/parameters/postUrl'
+#        - $ref: '#/components/parameters/headers'
+#        - $ref: '#/components/parameters/timeout'
+#        - $ref: '#/components/parameters/js'
+#        - $ref: '#/components/parameters/proxy'
+#      requestBody:
+#        $ref: '#/components/requestBodies/Body'
+#      responses:
+#        400:
+#          $ref: '#/components/responses/400'
+#        402:
+#          $ref: '#/components/responses/402'
+#        403:
+#          $ref: '#/components/responses/403'
+#        429:
+#          $ref: '#/components/responses/429'
+#        500:
+#          $ref: '#/components/responses/500'
+#        502:
+#          $ref: '#/components/responses/502'
+#        504:
+#          $ref: '#/components/responses/504'
+#        200:
+#          description: Success
+#          content:
+#            application/json:
+#              schema:
+#                $ref: "#/components/schemas/SelectedAreas"
+#              example: [
+#                  "<a href='/test'>some link</a>",
+#                  "Hello"
+#              ]
+  /account:
+    get:
+      summary: Information about your account calls quota
+      description: Always returns JSON
+      operationId: account
+      tags: [ "Account" ]
+      responses:
+        403:
+          $ref: '#/components/responses/403'
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+              example:
+                remaining_api_calls: 200000
+                resets_at: 1617073667
+                remaining_concurrency: 100
+security:
+  - api_key: []
+servers:
+  - url: https://api.webscraping.ai
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: query
+      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+  responses:
+    400:
+      description: Parameters validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              "message": "Invalid CSS selector"
+            }
+
+    402:
+      description: Billing issue, probably you've ran out of credits
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              message: "Some error"
+            }
+    403:
+      description: Wrong API key
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              message: "Some error"
+            }
+    429:
+      description: Too many concurrent requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              message: "Some error"
+            }
+    500:
+      description: Unexpected error, try again or contact support@webscraping.ai
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              message: "Some error"
+            }
+    502:
+      description: Non-2xx and non-404 HTTP status code on the target page
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PageError"
+          example:
+            {
+              "status_code": 500,
+              "status_message": "Some website error",
+            }
+    504:
+      description: Timeout error, try increasing timeout parameter value
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              message: "Some error"
+            }
+  parameters:
+    ## Shared everywhere
+    url:
+      in: query
+      name: url
+      description: URL of the target page
+      required: true
+      example: "https://example.com"
+      schema:
+        type: string
+    postUrl:
+      in: query
+      name: url
+      description: URL of the target page
+      required: true
+      example: "https://httpbin.org/post"
+      schema:
+        type: string
+    headers:
+      in: query
+      name: headers
+      description: "HTTP headers to pass to the target page. Can be specified either via a nested query parameter (...&headers[One]=value1&headers=[Another]=value2) or as a JSON encoded object (...&headers={\"One\": \"value1\", \"Another\": \"value2\"})"
+      example:
+        Cookie: session=some_id
+      schema:
+        type: object
+        additionalProperties:
+          type: string
+    timeout:
+      in: query
+      name: timeout
+      description: Maximum processing time in ms. Increase it in case of timeout errors (5000 by default, maximum is 30000)
+      example: 5000
+      schema:
+        type: integer
+        default: 5000
+        minimum: 1
+        maximum: 30000
+    js:
+      in: query
+      name: js
+      description: Execute on-page JavaScript using a headless browser (true by default)
+      example: true
+      schema:
+        type: boolean
+        default: true
+    js_timeout:
+      in: query
+      name: timeout
+      description: Maximum JavaScript rendering time in ms. Increase it in case if you see a loading indicator instead of data on the target page.
+      example: 5000
+      schema:
+        type: integer
+        default: 2000
+        minimum: 1
+        maximum: 20000
+    proxy:
+      in: query
+      name: proxy
+      description: Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details.
+      example: "datacenter"
+      schema:
+        type: string
+        default: "datacenter"
+        enum: [ "datacenter", "residential" ]
+  requestBodies:
+    Body:
+      description: Request body to pass to the target page
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            additionalProperties: true
+        application/xml:
+          schema:
+            type: object
+            additionalProperties: true
+        text/plain:
+          schema:
+            type: string
+  schemas:
+    Error:
+      title: Generic error
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error description
+    PageError:
+      title: Non-2xx and non-404 HTTP status code on the target page
+      type: object
+      properties:
+        status_code:
+          type: integer
+          description: Response HTTP status code (403, 500, etc)
+        status_message:
+          type: string
+          description: Response HTTP status message
+    SelectedAreas:
+      title: HTML for selected page areas
+      type: array
+      description: Array of elements matched by selectors
+      items:
+        type: string
+    Account:
+      title: Account limits info
+      type: object
+      properties:
+        remaining_api_calls:
+          type: integer
+          description: Remaining API calls quota
+        resets_at:
+          type: integer
+          description: Next billing cycle start time (UNIX timestamp)
+        remaining_concurrency:
+          type: integer
+          description: Remaining concurrent requests

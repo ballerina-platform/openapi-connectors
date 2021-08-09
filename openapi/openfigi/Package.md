@@ -1,7 +1,8 @@
-Connects to OpenFIGI from Ballerina
+Connects to [OpenFIGI](https://www.openfigi.com/) from Ballerina
 ## Package Overview
 The openfigi  is a [Ballerina](https://ballerina.io/) connector for OpenFIGI.
 This package provides the capability to access OpenFIGI.
+
 ### Compatibility
 
 |                               | Version                       |

@@ -14,38 +14,38 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
+import ballerina/http;
 
-# Connection configuration
-#
-# + apiKeys - API Keys
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# A free & open API for FIGI discovery.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [OpenFIGI API v3](https://www.openfigi.com/api) OpenAPI Specification.
+# OpenFIGI API provides capability to access multiple tools for identifying, mapping and requesting a free and open symbology dataset.  
+# This user friendly platform provides the ultimate understanding for how a unique identifier combined with accurate,  
+# associated metadata can eliminate redundant mapping processes, streamline the trade workflow and reduce operational risk.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create an [OpenFIGI account](https://www.openfigi.com/)  and obtain tokens following [this guide](https://www.openfigi.com/api#api-key).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + apiKeyConfig - Provide your API Key as `X-OPENFIGI-APIKEY`. Eg: {X-OPENFIGI-APIKEY : <Your API Key>}
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.openfigi.com/v3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
-    }
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+    }appid
     #
     # + payload - A list of third-party identifiers and extra filters.
     # + return - A list of FIGIs and their metadata.
     remote isolated function mapIdentifiers(BulkMappingJob payload) returns BulkMappingJobResult|error {
         string  path = string `/mapping`;
-        map<any> headerValues = {'X\-OPENFIGI\-APIKEY: self.apiKeys["X-OPENFIGI-APIKEY"]};
+        map<any> headerValues = {"X-OPENFIGI-APIKEY": self.apiKeys["X-OPENFIGI-APIKEY"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -58,7 +58,7 @@ public client class Client {
     # + return - The list of values.
     remote isolated function getValues(string 'key) returns Values|error {
         string  path = string `/mapping/values/${'key}`;
-        map<any> headerValues = {'X\-OPENFIGI\-APIKEY: self.apiKeys["X-OPENFIGI-APIKEY"]};
+        map<any> headerValues = {"X-OPENFIGI-APIKEY": self.apiKeys["X-OPENFIGI-APIKEY"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Values response = check self.clientEp-> get(path, accHeaders, targetType = Values);
         return response;
@@ -69,7 +69,7 @@ public client class Client {
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

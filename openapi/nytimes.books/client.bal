@@ -18,6 +18,9 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
+# Visit [here](https://developer.nytimes.com/get-started) and obtain an `API key`. 
+#
+# + apiKeys - Provide your API key as `api-key`. Eg: `{"api-key" : "<your API key>"}`
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
@@ -30,8 +33,7 @@ public isolated client class Client {
     final readonly & map<string> apiKeys;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [New York Times Account](https://developer.nytimes.com/accounts/create) 
-    # and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
+    # Create an [New York Times Account](https://developer.nytimes.com/accounts/create) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
     #
     # + apiKeyConfig - Provide your API key as `api-key`. Eg: `{"api-key" : "<your API key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`

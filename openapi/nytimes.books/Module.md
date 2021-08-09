@@ -17,7 +17,7 @@ Before using this connector in your Ballerina application, complete the followin
 To use the New York Times Books connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-First, import the ballerinax/nytimes.books module into the Ballerina project.
+Import the ballerinax/nytimes.books module into the Ballerina project.
 ```ballerina
 import ballerinax/nytimes.books as books;
 ```

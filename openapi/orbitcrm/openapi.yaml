@@ -2,13 +2,14 @@ openapi: 3.0.1
 servers:
   - url: https://app.orbit.love/api/v1
 info:
-  description: |-
+  description: >-
     This is a generated connector for [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
+
     Orbit API used to track activities of users and manage users.
-  x-init-description: |-
+  x-init-description: >
     The connector initialization requires setting the API credentials.
-    Create an [Orbit Account](https://app.orbit.love/signup) 
-    and obtain tokens by following [this guide](https://docs.orbit.love/reference/authorization).
+
+    Create an [Orbit Account](https://app.orbit.love/signup) and obtain tokens by following [this guide](https://docs.orbit.love/reference/authorization).
   title: Orbit API
   version: v1
   x-apisguru-categories:

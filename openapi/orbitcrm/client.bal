@@ -21,7 +21,7 @@ import ballerina/lang.'string;
 # Configuration for Orbit connector
 #
 # + authConfig - Bearer token grant configuration
-# + secureSocketConfig - Secure socket configuration 
+# + secureSocketConfig - Secure socket configuration   
 public type ClientConfig record {
     http:BearerTokenConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
@@ -33,8 +33,7 @@ public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [Orbit Account](https://app.orbit.love/signup) 
-    # and obtain tokens by following [this guide](https://docs.orbit.love/reference/authorization).
+    # Create an [Orbit Account](https://app.orbit.love/signup) and obtain tokens by following [this guide](https://docs.orbit.love/reference/authorization).
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service

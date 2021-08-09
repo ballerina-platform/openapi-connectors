@@ -15,7 +15,7 @@ Before using this connector in your Ballerina application, complete the followin
 To use the Chaingateway connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-First, import the ballerinax/chaingateway module into the Ballerina project.
+Import the ballerinax/chaingateway module into the Ballerina project.
 ```ballerina
 import ballerinax/chaingateway;
 ```

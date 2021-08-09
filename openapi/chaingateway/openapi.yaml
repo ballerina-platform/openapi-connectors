@@ -7,10 +7,10 @@ info:
     All of the integrations communicates with chaingateway.io through this API.
   contact: {}
   version: '1.0'
-  x-init-description: |-
+  x-init-description: >
     The connector initialization requires setting the API credentials.
-    Create an [Chaingateway.io Account](https://chaingateway.io/register) 
-    and obtain tokens following [this guide](https://chaingateway.io/docs-ethereum#apikey).
+    
+    Create an [Chaingateway.io Account](https://chaingateway.io/register) and obtain tokens following [this guide](https://chaingateway.io/docs-ethereum#apikey).
 servers:
   - url: 'https://eu.eth.chaingateway.io/v1'
     variables: {}

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["The Movie DB", "TMDB", "Movies", "TV Shows"]
+keywords = ["the movie database", "tmdb", "movies", "tv shows", "free"]
 org = "ballerinax"
 name = "themoviedb"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

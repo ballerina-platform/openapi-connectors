@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["ISBN", "Books", "Author"]
+keywords = ["isbn", "books", "author", "paid"]
 org = "ballerinax"
 name = "isbndb"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

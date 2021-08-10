@@ -11,7 +11,7 @@ Before using this connector in your Ballerina application, complete the followin
  
 ## Quickstart
 
-To use the Google Books API connector in your Ballerina application, update the .bal file as follows:
+To use the Google Books connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
 Import the ballerinax/googleapis.books module into the Ballerina project.
@@ -20,7 +20,7 @@ import ballerinax/googleapis.books as books;
 ```
 ### Step 2: Create a new connector instance
 
-You can now enter the credentials in the Google Books API client configuration and create Google Books API client by passing the configuration:
+You can now enter the credentials in the Google Books client configuration and create Google Books client by passing the configuration:
 
 ```ballerina
 books:ClientConfig clientConfig = {

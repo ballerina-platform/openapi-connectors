@@ -1,46 +1,27 @@
 ## Overview
 
-Box Platform API connector consume the data exposed in https://api.box.com/2.0. It is currently supporting operations except metadata operations.
+This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification. 
 
-## Configuring Connector
+[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
 
-### Prerequisites
-
-- Box platform account
-
-### Obtaining tokens
-
-To utilize Box Platform API users have to login to the Box platform account given by [Box platform](https://account.box.com/login), User can register for a new account if he/she doesn't have an account.
-
-Authentication available.
-- OAuth Authentication
-
-#### OAuth Authentication
-If user have to use OAuth authentication, user should obtain bearer token
-
-To obtain client credentials please follow these steps
-* Go to [Box platform](https://account.box.com/login) and login or register for a new account
-* Submit information in register form and complete login process
-* Navigate to developer console, create new app and get needed credentials
-* Create and obtain bearer token credentials and store somewhere securely
-
-Then provide the obtained bearer token in client configuration.
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create [Box Platform Account](https://www.box.com/pricing/) by selecting the pricing plan
+* Obtaining tokens
+    1. Go to [Box Platform Account](https://account.box.com/login) and log into the account
+    2. Navigate to developer console, create new app and get needed credentials
+    3. Create and obtain bearer token credentials and store somewhere securely        
 
 ## Quickstart
 
-#### Step 1: Import Box platform module
-First, import the ballerinax/boxapi module into the Ballerina project.
+### Step 1: Import connector
+Import the ballerinax/boxapi module into the Ballerina project.
 
 ```ballerina
 import ballerinax/boxapi;
 ```
-#### Step 2: Add token you get in `Config.toml`.
-```ballerina
-[authConfig]
-token = "<Enter your token here>"
-```
 
-#### Step 3: Configure the connection credentials.
+### Step 2: Create a new connector instance
 ```ballerina
 configurable http:BearerTokenConfig & readonly authConfig = ?;
 boxapi:ClientConfig clientConfig = {
@@ -49,19 +30,9 @@ boxapi:ClientConfig clientConfig = {
 
 boxapi:Client baseClient = check new Client(clientConfig, serviceUrl = "https://api.box.com/2.0");
 ```
-#### Step 4: Get file using ID
-```ballerina
-boxapi:File file = check baseClient->getFilesId("833080141230", "bal");
-```
-
-## Snippets
-Snippets of some operations.
-
-### Get file using ID
-```ballerina
-boxapi:File file = check baseClient->getFilesId("833080141230", "bal");
-```
-### Get current user
-```ballerina
-boxapi:User useer = check baseClient->getUsersMe();
-```
+### Step 3: Invoke connector operation
+1. You can get a existing file by using `getFilesId` method.
+    ```ballerina
+    boxapi:File file = check baseClient->getFilesId("833080141230", "bal");
+    ```
+2. Use `bal run` command to compile and run the Ballerina program. 

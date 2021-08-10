@@ -1,36 +1,32 @@
 ## Overview
 
-The Sendgrid connector consumes the data exposed in https://api.sendgrid.com/v3. .
+This is a generated connector for [Sendgrid API v3](https://docs.sendgrid.com/api-reference/how-to-use-the-sendgrid-v3-api/) OpenAPI Specification. 
 
-This module supports SendGrid V3 API
+The Beta endpoints for the new Email Activity APIs - functionality is subject to change without notice. You may not have access to this Beta endpoint.
+
+Email Activity offers filtering and search by event type for two days worth of data. There is an optional add-on to store 60 days worth of data. This add-on also gives you access to the ability to download a CSV of the 60 days worth of email event data.
 
 ## Configuring connector
 
 ### Prerequisites
-* Sendgrid account 
-    - Vist [Sendgrid](https://sendgrid.com/) and create an account. Note: SendGrid offers a [free plan](https://sendgrid.com/free/) for low-volume delivery, which may be useful in testing.
-
-### Obtaining tokens
-
-Follow the steps below to obtain the configurations.
-
-1. Log in to your Sendgrid account. 
-2. Configure your domain for email. Setting up a domain will show your emails as coming from your domain rather than via sendgrid.net, and the links your users click as coming from your domain. For more information, follow the [Domain Whitelabel Setup Guide](https://docs.sendgrid.com/ui/account-and-settings/how-to-set-up-domain-authentication).
-3. For quick testing you can create a New Sender as described in [here](https://docs.sendgrid.com/ui/sending-email/senders). 
-4. Create an API Key visiting [Settings -> APIKeys](https://app.sendgrid.com/settings/api_keys) providing `Email Send` permission and other required permissions.
-5. Copy the API Key somewhere safe since it will only be visible one time.
+* Vist [Sendgrid](https://sendgrid.com/) and create an account. 
+* Obtain token
+    - Obtain API Key visiting [Settings -> APIKeys](https://app.sendgrid.com/settings/api_keys) and provide obtained API Key as the token at HTTP client initialization. 
+    - Configure [required permissions](https://docs.sendgrid.com/ui/account-and-settings/api-keys) when generating the API Key.
 
 ## Quickstart
 
-### Step 1: Import Sendgrid module
+To use the Sendgrid connector in your Ballerina application, update the .bal file as follows:
+
+### Step 1: Import connector
 First, import the ballerinax/sendgrid module into the Ballerina project.
 
 ```ballerina
 import ballerinax/sendgrid;
 ```
 
-### Step 2: Configure the connection credentials.
-Configure the Sendgrid connector using the API-Key obtained. 
+### Step 2: Create a new connector instance
+Configure the connection using the API-Key obtained. 
 
 ```ballerina
 sendgrid:ClientConfig configuration = {
@@ -41,8 +37,8 @@ sendgrid:ClientConfig configuration = {
 sendgrid:Client sendgridClient = check new (configuration);
 ```
 
-### Step 3: Send email via Sendgrid
-Following is code demonstrates how to send a marketing email using `ballerinax/sendgrid` connector. 
+### Step 3: Invoke connector operation
+1. send a marketing email to a customer. 
 
 ```ballerina
 public function main() returns error? {
@@ -66,17 +62,4 @@ public function main() returns error? {
     _ = check sendgridClient->sendMail(emailPayload);
 }
 ```
-
-## Snippets
-
-*  Retrieve all email addresses that are currently on your blocks list.
-
-    ```ballerina
-    sendgrid:SuppressionBlocks[] suppressionBlocks = check sendgridClient->getSuppressionBlocks();
-    ```
-*  Retrieve all spam reports.
-
-    ```ballerina
-    sendgrid:SpamReportDetails[] suppressionSpamReports = check sendgridClient->getSuppressionSpamReports();
-    ```
-Visit `ballerinax/sendgrid` connector [API Documentation](https://docs.central.ballerina.io/ballerinax/sendgrid/latest) to identify all the operations available. 
+2. Use `bal run` command to compile and run the Ballerina program.

@@ -14,26 +14,31 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
-# Client endpoint for Novel Covid19 API - disease.sh.
-#
-# + clientEp - Connector http endpoint
-@display {label: "Covid19 Client"}
-public client class Client {
-    http:Client clientEp;
+# This is a generated connector from [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
+# Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
+@display {label: "COVID-19 Client"}
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization doesn't require setting the API credentials.
+    #
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://disease.sh") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
     }
     # Get global COVID-19 totals for today, yesterday and two days ago.
     #
-    # + yesterday - Queries data reported a day ago
-    # + twoDaysAgo - Queries data reported two days ago
-    # + allowNull - By default, value is 0. This allows nulls to be returned
-    # + return - Global Covid-19 status
+    # + yesterday - Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
+    # + twoDaysAgo - Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
+    # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
+    # + return - Global COVID-19 status
     @display {label: "Global Status"}
     remote isolated function getGlobalStatus(@display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Allow Null"} string? allowNull = ()) returns CovidAll|error {
         string  path = string `/v3/covid-19/all`;
@@ -45,9 +50,9 @@ public client class Client {
     # Get COVID-19 totals for specific US State(s).
     #
     # + states - State name or comma separated names spelled correctly
-    # + yesterday - Queries data reported a day ago
-    # + allowNull - By default, value is 0. This allows nulls to be returned
-    # + return - Covid-19 status of the given US state
+    # + yesterday - Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
+    # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
+    # + return - COVID-19 status of the given US state
     @display {label: "USA State Status"}
     remote isolated function getUSAStatusByState(@display {label: "State Name"} string states, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Allow Null"} string? allowNull = ()) returns CovidState|error {
         string  path = string `/v3/covid-19/states/${states}`;
@@ -59,13 +64,13 @@ public client class Client {
     # Get COVID-19 totals for a specific continent.
     #
     # + continent - Continent name
-    # + yesterday - Queries data reported a day ago
-    # + twoDaysAgo - Queries data reported two days ago
-    # + strict - Setting to false gives you the ability to fuzzy search continents (i.e. Oman vs. rOMANia)
-    # + allowNull - By default, value is 0. This allows nulls to be returned
-    # + return - Covid-19 status of the given continent
+    # + yesterday - Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
+    # + twoDaysAgo - Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
+    # + strict - Setting to `false` gives you the ability to fuzzy search continents (i.e. Oman vs. rOMANia). Default is `true`.
+    # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
+    # + return - COVID-19 status of the given continent
     @display {label: "Continent Status"}
-    remote isolated function getStatusByContinent(@display {label: "Continent"} string continent, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Strict"} string? strict = "true", @display {label: "Allow Null"} string? allowNull = ()) returns CovidContinent|error {
+    remote isolated function getStatusByContinent(@display {label: "Continent"} string continent, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Strict"} string strict = "true", @display {label: "Allow Null"} string? allowNull = ()) returns CovidContinent|error {
         string  path = string `/v3/covid-19/continents/${continent}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "strict": strict, "allowNull": allowNull};
         path = path + check getPathForQueryParam(queryParam);
@@ -75,13 +80,13 @@ public client class Client {
     # Get COVID-19 totals for a specific country.
     #
     # + country - Country name, iso2, iso3, or country ID code
-    # + yesterday - Queries data reported a day ago
-    # + twoDaysAgo - Queries data reported two days ago
-    # + strict - Setting to false gives you the ability to fuzzy search countries (i.e. Oman vs. rOMANia)
-    # + allowNull - By default, value is 0. This allows nulls to be returned
-    # + return - Covid-19 status of the given country
+    # + yesterday - Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
+    # + twoDaysAgo - Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
+    # + strict - Setting to false gives you the ability to fuzzy search countries (i.e. Oman vs. rOMANia). Default is `true`.
+    # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned
+    # + return - COVID-19 status of the given country
     @display {label: "Country Status"}
-    remote isolated function getStatusByCountry(@display {label: "Country"} string country, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Strict"} string? strict = "true", @display {label: "Allow Null"} string? allowNull = ()) returns CovidCountry|error {
+    remote isolated function getStatusByCountry(@display {label: "Country"} string country, @display {label: "Yesterday"} string? yesterday = (), @display {label: "Two Days Ago"} string? twoDaysAgo = (), @display {label: "Strict"} string strict = "true", @display {label: "Allow Null"} string? allowNull = ()) returns CovidCountry|error {
         string  path = string `/v3/covid-19/countries/${country}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "strict": strict, "allowNull": allowNull};
         path = path + check getPathForQueryParam(queryParam);
@@ -106,7 +111,7 @@ public client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24)
     # + return - COVID-19 related time series for the given country
     @display {label: "Country Status By Time Series"}
-    remote isolated function getTimeSeriesBycountry(@display {label: "Country"} string country, @display {label: "Number Of Days"} string? lastdays = "30") returns CovidHistoricalCountry|error {
+    remote isolated function getTimeSeriesBycountry(@display {label: "Country"} string country, @display {label: "Number Of Days"} string lastdays = "30") returns CovidHistoricalCountry|error {
         string  path = string `/v3/covid-19/historical/${country}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         path = path + check getPathForQueryParam(queryParam);
@@ -120,7 +125,7 @@ public client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24)
     # + return - COVID-19 related time series for the given province
     @display {label: "Province Status By Time Series"}
-    remote isolated function getTimeSeriesByProvince(@display {label: "Country"} string country, @display {label: "Province"} string province, @display {label: "Number of Days"} string? lastdays = "30") returns CovidHistoricalProvince|error {
+    remote isolated function getTimeSeriesByProvince(@display {label: "Country"} string country, @display {label: "Province"} string province, @display {label: "Number of Days"} string lastdays = "30") returns CovidHistoricalProvince|error {
         string  path = string `/v3/covid-19/historical/${country}/${province}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         path = path + check getPathForQueryParam(queryParam);
@@ -141,7 +146,7 @@ public client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24)
     # + return - Vaccine coverage data
     @display {label: "Global Vaccine Administration"}
-    remote isolated function getTotalGlobalVaccineDosesAdministered(@display {label: "Number of Days"} string? lastdays = "30") returns SimpleVaccineTimeline|error {
+    remote isolated function getTotalGlobalVaccineDosesAdministered(@display {label: "Number of Days"} string lastdays = "30") returns SimpleVaccineTimeline|error {
         string  path = string `/v3/covid-19/vaccine/coverage`;
         map<anydata> queryParam = {"lastdays": lastdays};
         path = path + check getPathForQueryParam(queryParam);
@@ -154,7 +159,7 @@ public client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24)
     # + return - Vaccine coverage data of the given country
     @display {label: "Vaccine Coverage By Country"}
-    remote isolated function getVaccineCoverageByCountry(@display {label: "Country"} string country, @display {label: "Last Days"} string? lastdays = "30") returns VaccineCountryCoverage|error {
+    remote isolated function getVaccineCoverageByCountry(@display {label: "Country"} string country, @display {label: "Last Days"} string lastdays = "30") returns VaccineCountryCoverage|error {
         string  path = string `/v3/covid-19/vaccine/coverage/countries/${country}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         path = path + check getPathForQueryParam(queryParam);
@@ -167,7 +172,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

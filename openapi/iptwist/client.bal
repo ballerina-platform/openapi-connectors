@@ -21,7 +21,6 @@ public type ApiKeysConfig record {
 };
 
 # This is a generated connector from [ipTwist API v1](https://iptwist.com/) OpenAPI Specification. 
-# 
 # The reliable, secure, and simple IP geolocation API.
 public isolated client class Client {
     final http:Client clientEp;

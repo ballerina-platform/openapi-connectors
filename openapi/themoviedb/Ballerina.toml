@@ -4,7 +4,7 @@ keywords = ["The Movie DB", "TMDB", "Movies", "TV Shows"]
 org = "ballerinax"
 name = "themoviedb"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

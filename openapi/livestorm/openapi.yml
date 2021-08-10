@@ -2,9 +2,15 @@ openapi: 3.0.0
 info:
   title: Livestorm - Public API
   description: |
-    Client endpoint for Livestorm Public API
-    The Livestorm API is organized around REST principles.
+    This is a generated connector for [Livestorm API v1](https://developers.livestorm.co/docs) OpenAPI specification.
+    Client endpoint for Livestorm Public API.
+    Livestorm is a browser based online web conferencing software used to share real-time live streams. 
+    It can be used to power remote live meetings, product demos, sales webinars, online lessons, onboarding sessions, more.
     In addition, all request and response bodies, including errors, are encoded in JSON format.
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+
+    Create an [Livestorm Account](https://app.livestorm.co/#/signup) and obtain tokens following [this guide](https://support.livestorm.co/category/4-getting-started).
   termsOfService: https://livestorm.co/terms/
   contact:
     name: Contact
@@ -21,9 +27,11 @@ servers:
 components:
   securitySchemes:
     api_key:
+      description: All requests on the Livestorm API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `Authorization`.
       type: apiKey
       name: Authorization
       in: header
+      x-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 
   schemas:
     Event:
       type: object

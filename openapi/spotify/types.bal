@@ -14,6 +14,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
+# Playlist details
+public type FeaturedplaylistobjectPlaylists record {
+    # A link to the Web API endpoint returning the full result of the request
+    string? href?;
+    # The requested data.
+    SimplifiedPlaylistObject[] items?;
+    # The maximum number of items in the response (as set in the query or by default).
+    int 'limit?;
+    # URL to the next page of items. ( `null` if none)
+    string? next?;
+    # The offset of the items returned (as set in the query or by default)
+    int offset?;
+    # URL to the previous page of items. ( `null` if none)
+    string? previous?;
+    # The total number of items available to return.
+    int total?;
+};
+
 # Information needed to reorder the playlist
 public type PlayListReorderDetails record {
     # The position where the items should be inserted.  
@@ -79,7 +97,7 @@ public type SimplifiedArtistObject record {
     # The object type: `"artist"`
     string 'type?;
     # The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
-    string uri;
+    string uri?;
 };
 
 # Episode object
@@ -140,46 +158,10 @@ public type PlayListDetails record {
     boolean? 'public?;
 };
 
-# Album details
-public type Albums record {
-    # A link to the Web API endpoint returning the full result of the request
-    string? href?;
-    # The requested data.
-    SimplifiedAlbumObject[] items;
-    # The maximum number of items in the response (as set in the query or by default).
-    int 'limit?;
-    # URL to the next page of items. ( `null` if none)
-    string? next?;
-    # The offset of the items returned (as set in the query or by default)
-    int offset?;
-    # URL to the previous page of items. ( `null` if none)
-    string? previous?;
-    # The total number of items available to return.
-    int total?;
-};
-
 # External URL object
 public type ExternalUrlObject record {
     # The [Spotify URL](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the object.
     string spotify?;
-};
-
-# Playlist details
-public type Playlist record {
-    # A link to the Web API endpoint returning the full result of the request
-    string? href?;
-    # The requested data.
-    SimplifiedPlaylistObject[] items?;
-    # The maximum number of items in the response (as set in the query or by default).
-    int 'limit?;
-    # URL to the next page of items. ( `null` if none)
-    string? next?;
-    # The offset of the items returned (as set in the query or by default)
-    int offset?;
-    # URL to the previous page of items. ( `null` if none)
-    string? previous?;
-    # The total number of items available to return.
-    int total?;
 };
 
 # Simplified album object
@@ -311,7 +293,7 @@ public type EpisodeRestrictionObject record {
 };
 
 # Information about the tracks of the playlist. Note, a track object may be `null`. This can happen if a track is no longer available.
-public type Tracks record {
+public type PlaylistobjectTracks record {
     # A link to the Web API endpoint returning the full result of the request
     string href?;
     # The requested data.
@@ -331,7 +313,7 @@ public type Tracks record {
 # New release object
 public type NewReleasesObject record {
     # Album details
-    Albums albums;
+    NewreleasesobjectAlbums albums;
 };
 
 # Image object
@@ -469,10 +451,9 @@ public type FeaturedPlaylistObject record {
     # Message
     string message?;
     # Playlist details
-    Playlist playlists?;
+    FeaturedplaylistobjectPlaylists playlists?;
 };
 
-# Snapshot Id object
 public type SnapshotIdObject record {
     # The snapshot_id can be used to identify your playlist version in future requests.
     string snapshot_id?;
@@ -553,7 +534,7 @@ public type PlaylistObject record {
     # The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version
     string snapshot_id?;
     # Information about the tracks of the playlist. Note, a track object may be `null`. This can happen if a track is no longer available.
-    Tracks tracks?;
+    PlaylistobjectTracks tracks?;
     # The object type: "playlist"
     string 'type?;
     # The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
@@ -576,4 +557,22 @@ public type ExternalIdObject record {
     string isrc?;
     # [Universal Product Code](http://en.wikipedia.org/wiki/Universal_Product_Code)
     string upc?;
+};
+
+# Album details
+public type NewreleasesobjectAlbums record {
+    # A link to the Web API endpoint returning the full result of the request
+    string? href?;
+    # The requested data.
+    SimplifiedAlbumObject[] items?;
+    # The maximum number of items in the response (as set in the query or by default).
+    int 'limit?;
+    # URL to the next page of items. ( `null` if none)
+    string? next?;
+    # The offset of the items returned (as set in the query or by default)
+    int offset?;
+    # URL to the previous page of items. ( `null` if none)
+    string? previous?;
+    # The total number of items available to return.
+    int total?;
 };

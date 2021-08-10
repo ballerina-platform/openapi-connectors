@@ -1,8 +1,13 @@
 openapi: 3.0.1
 info:
   title: Azure Data Lake Storage REST API
-  description: Azure Data Lake Storage provides storage for Hadoop and other big data
-    workloads.
+  description: This is a generated connector for [Azure DataLake Storage (Gen2) API version 2019-10-31](https://azure.microsoft.com/en-us/solutions/data-lake/) OpenAPI specification. 
+
+    Azure Data Lake Storage provides storage for Hadoop and other big data workloads.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a [Azure Data Lake account](https://azure.microsoft.com/en-us/solutions/data-lake/) and obtain OAuth tokens following [this guide](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app).
   version: '2019-10-31'
   x-ms-code-generation-settings:
     internalConstructors: true
@@ -28,8 +33,8 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - account
+          # enum:
+          # - account
           x-ms-enum:
             name: AccountResourceType
             modelAsString: false
@@ -235,8 +240,8 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - filesystem
+          # enum:
+          # - filesystem
           x-ms-enum:
             name: FilesystemResourceType
             modelAsString: false
@@ -470,8 +475,8 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - filesystem
+          # enum:
+          # - filesystem
           x-ms-enum:
             name: FilesystemResourceType
             modelAsString: false
@@ -665,8 +670,8 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - filesystem
+          # enum:
+          # - filesystem
           x-ms-enum:
             name: FilesystemResourceType
             modelAsString: false
@@ -845,8 +850,8 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - filesystem
+          # enum:
+          # - filesystem
           x-ms-enum:
             name: FilesystemResourceType
             modelAsString: false
@@ -1037,8 +1042,8 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - filesystem
+          # enum:
+          # - filesystem
           x-ms-enum:
             name: FilesystemResourceType
             modelAsString: false
@@ -1714,9 +1719,9 @@ paths:
           must be "file" or "directory".
         schema:
           type: string
-          enum:
-          - directory
-          - file
+          # enum:
+          # - directory
+          # - file
           x-ms-enum:
             name: PathResourceType
             modelAsString: false
@@ -1740,9 +1745,9 @@ paths:
           or "posix", and the default value will be "posix". '
         schema:
           type: string
-          enum:
-          - legacy
-          - posix
+          # enum:
+          # - legacy
+          # - posix
           x-ms-enum:
             name: PathRenameMode
             modelAsString: false
@@ -2110,12 +2115,12 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - acquire
-          - break
-          - change
-          - renew
-          - release
+          # enum:
+          # - acquire
+          # - break
+          # - change
+          # - renew
+          # - release
           x-ms-enum:
             name: PathLeaseAction
             modelAsString: false
@@ -2637,10 +2642,10 @@ paths:
           returned.
         schema:
           type: string
-          enum:
-          - getAccessControl
-          - getStatus
-          - checkAccess
+          # enum:
+          # - getAccessControl
+          # - getStatus
+          # - checkAccess
           x-ms-enum:
             name: PathGetPropertiesAction
             modelAsString: false
@@ -2979,11 +2984,11 @@ paths:
         required: true
         schema:
           type: string
-          enum:
-          - append
-          - flush
-          - setProperties
-          - setAccessControl
+          # enum:
+          # - append
+          # - flush
+          # - setProperties
+          # - setAccessControl
           x-ms-enum:
             name: PathUpdateAction
             modelAsString: false

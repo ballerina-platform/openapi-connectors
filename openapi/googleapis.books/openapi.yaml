@@ -128,10 +128,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -287,10 +283,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -334,10 +326,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -834,10 +822,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -1021,10 +1005,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -1064,10 +1044,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -1119,10 +1095,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -1176,10 +1148,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -1381,10 +1349,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -1654,10 +1618,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:
@@ -1721,10 +1681,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
           description: Successful response
       security:
         - Oauth2:

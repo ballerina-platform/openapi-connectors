@@ -85,13 +85,13 @@ public isolated client class Client {
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function deletebookCloudloading(string volumeId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Empty|error {
+    remote isolated function deletebookCloudloading(string volumeId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/books/v1/cloudloading/deleteBook`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "volumeId": volumeId};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Updates a user-upload volume.
@@ -247,13 +247,13 @@ public isolated client class Client {
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + 'source - String to identify the originator of this request.
     # + return - Successful response
-    remote isolated function deleteMylibraryAnnotations(string annotationId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns Empty|error {
+    remote isolated function deleteMylibraryAnnotations(string annotationId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns http:Response|error {
         string  path = string `/books/v1/mylibrary/annotations/${annotationId}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> delete(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Retrieves a list of bookshelves belonging to the authenticated user.
@@ -319,13 +319,13 @@ public isolated client class Client {
     # + reason - The reason for which the book is added to the library.
     # + 'source - String to identify the originator of this request.
     # + return - Successful response
-    remote isolated function addvolumeMylibraryBookshelves(string shelf, string volumeId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? reason = (), string? 'source = ()) returns Empty|error {
+    remote isolated function addvolumeMylibraryBookshelves(string shelf, string volumeId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? reason = (), string? 'source = ()) returns http:Response|error {
         string  path = string `/books/v1/mylibrary/bookshelves/${shelf}/addVolume`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "volumeId": volumeId, "reason": reason, "source": 'source};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Clears all volumes from a bookshelf.
@@ -344,13 +344,13 @@ public isolated client class Client {
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + 'source - String to identify the originator of this request.
     # + return - Successful response
-    remote isolated function clearvolumesMylibraryBookshelves(string shelf, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns Empty|error {
+    remote isolated function clearvolumesMylibraryBookshelves(string shelf, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns http:Response|error {
         string  path = string `/books/v1/mylibrary/bookshelves/${shelf}/clearVolumes`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Moves a volume within a bookshelf.
@@ -371,13 +371,13 @@ public isolated client class Client {
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + 'source - String to identify the originator of this request.
     # + return - Successful response
-    remote isolated function movevolumeMylibraryBookshelves(string shelf, string volumeId, int volumePosition, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns Empty|error {
+    remote isolated function movevolumeMylibraryBookshelves(string shelf, string volumeId, int volumePosition, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns http:Response|error {
         string  path = string `/books/v1/mylibrary/bookshelves/${shelf}/moveVolume`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "volumeId": volumeId, "volumePosition": volumePosition, "source": 'source};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Removes a volume from a bookshelf.
@@ -398,13 +398,13 @@ public isolated client class Client {
     # + reason - The reason for which the book is removed from the library.
     # + 'source - String to identify the originator of this request.
     # + return - Successful response
-    remote isolated function removevolumeMylibraryBookshelves(string shelf, string volumeId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? reason = (), string? 'source = ()) returns Empty|error {
+    remote isolated function removevolumeMylibraryBookshelves(string shelf, string volumeId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? reason = (), string? 'source = ()) returns http:Response|error {
         string  path = string `/books/v1/mylibrary/bookshelves/${shelf}/removeVolume`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "volumeId": volumeId, "reason": reason, "source": 'source};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Gets volume information for volumes on a bookshelf.
@@ -481,13 +481,13 @@ public isolated client class Client {
     # + deviceCookie - Random persistent device cookie optional on set position.
     # + 'source - String to identify the originator of this request.
     # + return - Successful response
-    remote isolated function setpositionMylibraryReadingpositions(string volumeId, string position, string timestamp, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? action = (), string? contentVersion = (), string? deviceCookie = (), string? 'source = ()) returns Empty|error {
+    remote isolated function setpositionMylibraryReadingpositions(string volumeId, string position, string timestamp, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? action = (), string? contentVersion = (), string? deviceCookie = (), string? 'source = ()) returns http:Response|error {
         string  path = string `/books/v1/mylibrary/readingpositions/${volumeId}/setPosition`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "position": position, "timestamp": timestamp, "action": action, "contentVersion": contentVersion, "deviceCookie": deviceCookie, "source": 'source};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Returns notification details for a given notification id.
@@ -584,13 +584,13 @@ public isolated client class Client {
     # + serial - device serial
     # + volumeId - Volume id to exercise the offer
     # + return - Successful response
-    remote isolated function acceptPromooffer(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? androidId = (), string? device = (), string? manufacturer = (), string? model = (), string? offerId = (), string? product = (), string? serial = (), string? volumeId = ()) returns Empty|error {
+    remote isolated function acceptPromooffer(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? androidId = (), string? device = (), string? manufacturer = (), string? model = (), string? offerId = (), string? product = (), string? serial = (), string? volumeId = ()) returns http:Response|error {
         string  path = string `/books/v1/promooffer/accept`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "androidId": androidId, "device": device, "manufacturer": manufacturer, "model": model, "offerId": offerId, "product": product, "serial": serial, "volumeId": volumeId};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Marks the promo offer as dismissed.
@@ -614,13 +614,13 @@ public isolated client class Client {
     # + product - device product
     # + serial - device serial
     # + return - Successful response
-    remote isolated function dismissPromooffer(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? androidId = (), string? device = (), string? manufacturer = (), string? model = (), string? offerId = (), string? product = (), string? serial = ()) returns Empty|error {
+    remote isolated function dismissPromooffer(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? androidId = (), string? device = (), string? manufacturer = (), string? model = (), string? offerId = (), string? product = (), string? serial = ()) returns http:Response|error {
         string  path = string `/books/v1/promooffer/dismiss`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "androidId": androidId, "device": device, "manufacturer": manufacturer, "model": model, "offerId": offerId, "product": product, "serial": serial};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Empty response = check self.clientEp-> post(path, request, targetType = Empty);
+        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
         return response;
     }
     # Returns a list of promo offers available to the user.

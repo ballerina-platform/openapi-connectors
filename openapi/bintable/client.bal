@@ -26,6 +26,7 @@ public isolated client class Client {
     # Gets invoked to initialize the `connector`.
     # The connector initialization doesn't require setting the API credentials.
     # Create a [BINTable Account](https://bintable.com/get-api) and obtain the API key.
+    # Some operations may require passing the token as a parameter.
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service

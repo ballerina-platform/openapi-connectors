@@ -33,6 +33,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
     }
+    # Lookup WHOIS information
     #
     # + domain - Domain name for lookup purpose.
     # + 'key - API key.

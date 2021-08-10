@@ -23,7 +23,7 @@ paths:
   /:
     get:
       operationId: "getDomainInfo"
-      description: Lookup WHOIS information
+      summary: Lookup WHOIS information
       parameters:
         - description: Domain name for lookup purpose.
           in: query

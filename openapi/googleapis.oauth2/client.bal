@@ -48,7 +48,7 @@ public isolated client class Client {
     # + quotaUser - An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
     # + userIp - Deprecated. Please use quotaUser instead.
     # + return - Successful response
-    remote isolated function oauth2Tokeninfo(string? alt = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? userIp = (), string? accessToken = (), string? idToken = ()) returns Tokeninfo|error {
+    remote isolated function getOAuth2TokenInfo(string? alt = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? userIp = (), string? accessToken = (), string? idToken = ()) returns Tokeninfo|error {
         string  path = string `/oauth2/v2/tokeninfo`;
         map<anydata> queryParam = {"alt": alt, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "userIp": userIp, "access_token": accessToken, "id_token": idToken};
         path = path + check getPathForQueryParam(queryParam);
@@ -66,7 +66,7 @@ public isolated client class Client {
     # + quotaUser - An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
     # + userIp - Deprecated. Please use quotaUser instead.
     # + return - Successful response
-    remote isolated function oauth2UserinfoGet(string? alt = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? userIp = ()) returns Userinfo|error {
+    remote isolated function getOAuth2UserInfo(string? alt = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? userIp = ()) returns Userinfo|error {
         string  path = string `/oauth2/v2/userinfo`;
         map<anydata> queryParam = {"alt": alt, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "userIp": userIp};
         path = path + check getPathForQueryParam(queryParam);
@@ -82,7 +82,7 @@ public isolated client class Client {
     # + quotaUser - An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
     # + userIp - Deprecated. Please use quotaUser instead.
     # + return - Successful response
-    remote isolated function oauth2UserinfoV2MeGet(string? alt = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? userIp = ()) returns Userinfo|error {
+    remote isolated function getMyOAuth2UserInfo(string? alt = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? userIp = ()) returns Userinfo|error {
         string  path = string `/userinfo/v2/me`;
         map<anydata> queryParam = {"alt": alt, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "userIp": userIp};
         path = path + check getPathForQueryParam(queryParam);

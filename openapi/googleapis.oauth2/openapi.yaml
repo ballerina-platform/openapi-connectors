@@ -52,7 +52,7 @@ paths:
       - $ref: "#/components/parameters/quotaUser"
       - $ref: "#/components/parameters/userIp"
     post:
-      operationId: oauth2.tokeninfo
+      operationId: getOAuth2TokenInfo
       parameters:
         - in: query
           name: access_token
@@ -71,7 +71,7 @@ paths:
           description: Successful response
   /oauth2/v2/userinfo:
     get:
-      operationId: oauth2.userinfo.get
+      operationId: getOAuth2UserInfo
       responses:
         "200":
           content:
@@ -104,7 +104,7 @@ paths:
       - $ref: "#/components/parameters/userIp"
   /userinfo/v2/me:
     get:
-      operationId: oauth2.userinfo.v2.me.get
+      operationId: getMyOAuth2UserInfo
       responses:
         "200":
           content:

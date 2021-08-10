@@ -1,30 +1,47 @@
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
 
-# Please visit [here](https://isbndb.com/) and obtain an `API Key`.
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
+
+# Visit [here](https://isbndb.com/) and obtain an `API key`.
 #
-# + apiKeys - Provide your API Key as `Authorization`. Eg: `{"Authorization" : "<Your API Key>"}` 
+# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# ISBNdb.com API v2.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [ISBNdb API v2.0.0](https://isbndb.com/apidocs/v2) OpenAPI specification.
+# The ISBNdb.com API exposes data such as title, author, publisher and publish date about books.
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [ISBNdb Account](https://isbndb.com/isbn-database) by selecting a pricing plan and obtain tokens following [this guide](https://isbndb.com/apidocs/v2).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Returns error at failure of client initialization
+    # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api2.isbndb.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # Gets author details
     #
@@ -32,11 +49,11 @@ public client class Client {
     # + page - The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them
     # + pageSize - How many items should be returned per page, maximum of 1,000
     # + return - The author name was found in the database
-    remote isolated function  authorByname(string name, int? page = 1, int? pageSize = 20) returns Author|error {
+    remote isolated function  authorByname(string name, int page = 1, int pageSize = 20) returns Author|error {
         string  path = string `/author/${name}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Author response = check self.clientEp-> get(path, accHeaders, targetType = Author);
         return response;
@@ -51,7 +68,7 @@ public client class Client {
         string  path = string `/authors/${query}`;
         map<anydata> queryParam = {"pageSize": pageSize, "page": page};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         AuthorQueryResults response = check self.clientEp-> get(path, accHeaders, targetType = AuthorQueryResults);
         return response;
@@ -65,7 +82,7 @@ public client class Client {
         string  path = string `/book/${isbn}`;
         map<anydata> queryParam = {"with_prices": withPrices};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Book response = check self.clientEp-> get(path, accHeaders, targetType = Book);
         return response;
@@ -76,7 +93,8 @@ public client class Client {
     # + return - The query string found results in the book's database
     remote isolated function  books(Body payload) returns http:Response|error {
         string  path = string `/books`;
-        map<string|string[]> accHeaders = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -91,11 +109,11 @@ public client class Client {
     # + column - Search limited to this column:
     # + beta - A integer (1 or 0) for enable or disable beta searching.
     # + return - The query string found results in the books's database
-    remote isolated function  booksByquery(string query, int? page = 1, int? pageSize = 20, string? column = (), int? beta = 0) returns http:Response|error {
+    remote isolated function  booksByquery(string query, int page = 1, int pageSize = 20, string? column = (), int beta = 0) returns http:Response|error {
         string  path = string `/books/${query}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize, "column": column, "beta": beta};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -106,11 +124,11 @@ public client class Client {
     # + page - The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them
     # + pageSize - How many items should be returned per page, maximum of 1,000
     # + return - The publisher name was found in the database
-    remote isolated function  publisherByname(string name, int? page = 1, int? pageSize = 20) returns Publisher|error {
+    remote isolated function  publisherByname(string name, int page = 1, int pageSize = 20) returns Publisher|error {
         string  path = string `/publisher/${name}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Publisher response = check self.clientEp-> get(path, accHeaders, targetType = Publisher);
         return response;
@@ -125,7 +143,7 @@ public client class Client {
         string  path = string `/publishers/${query}`;
         map<anydata> queryParam = {"pageSize": pageSize, "page": page};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -146,7 +164,7 @@ public client class Client {
         string  path = string `/search/${index}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize, "isbn": isbn, "isbn13": isbn13, "author": author, "text": text, "subject": subject, "publisher": publisher};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -156,7 +174,8 @@ public client class Client {
     # + return - Stats on the ISBNDB sucessfully retrieved
     remote isolated function  stats() returns http:Response|error {
         string  path = string `/stats`;
-        map<string|string[]> accHeaders = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
     }
@@ -166,7 +185,7 @@ public client class Client {
     # + return - The subject was found in the database
     remote isolated function  subjectByname(string name) returns Subject|error {
         string  path = string `/subject/${name}`;
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Subject response = check self.clientEp-> get(path, accHeaders, targetType = Subject);
         return response;
@@ -181,7 +200,7 @@ public client class Client {
         string  path = string `/subjects/${query}`;
         map<anydata> queryParam = {"pageSize": pageSize, "page": page};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {Authorization: self.apiKeys.get("Authorization")};
+        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -192,7 +211,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -226,7 +245,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

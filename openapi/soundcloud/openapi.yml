@@ -12,12 +12,17 @@ info:
     - media
   x-logo:
     url: "https://a-v2.sndcdn.com/assets/images/sc-icons/ios-a62dfc8fe7.png"
-  x-origin:
-    - format: openapi
-      url: >-
-        https://gist.githubusercontent.com/MikeRalphson/a9eb3040cb611121b568844958564849/raw/d0996b827b9eb2ae4fa946b9aacf02b03dc3d933/openapi.json
-      version: "3.0"
   x-providerName: soundcloud.com
+  x-init-description: >-
+   The connector initialization requires setting the API credentials. 
+   
+   Create an [SoundCloud account](https://soundcloud.com/) 
+   and obtain tokens following [this guide](https://developers.soundcloud.com/docs/api/guide).
+  description: >-
+    This is a generated connector for [SoundCloud API v1.0.0](https://developers.soundcloud.com/) OpenAPI Specification.
+
+    SoundCloud API provides capability to access the online audio distribution platform and music sharing website that enables 
+    you to upload,promote, and share audio, as well as a digital signal processor enabling listeners to stream audio. 
 tags:
   - description: Authentication and Authorization Endpoints.
     name: oauth
@@ -127,6 +132,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
+
       summary: Returns the authenticated user’s information.
       tags:
         - me
@@ -384,7 +390,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Performs a playlist search based on a query
       tags:
         - search
@@ -424,7 +430,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Deletes a playlist.
       tags:
         - playlists
@@ -443,7 +449,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a playlist.
       tags:
         - playlists
@@ -488,7 +494,6 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
       summary: Returns a collection of playlist's reposters.
       tags:
         - playlists
@@ -509,7 +514,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns tracks under a playlist.
       tags:
         - playlists
@@ -593,7 +598,7 @@ paths:
           $ref: "#/components/responses/Found"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Resolves soundcloud.com URLs to Resource URLs to use with the API.
       tags:
         - miscellaneous
@@ -620,7 +625,7 @@ paths:
           description: Internal Server Error
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Performs a track search based on a query
       tags:
         - search
@@ -646,7 +651,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Uploads a new track.
       tags:
         - tracks
@@ -662,6 +667,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
+
       summary: Deletes a track.
       tags:
         - tracks
@@ -679,7 +685,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a track.
       tags:
         - tracks
@@ -729,7 +735,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns the comments posted on the track(track_id).
       tags:
         - tracks
@@ -771,7 +777,7 @@ paths:
           $ref: "#/components/responses/TooManyRequests"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns the newly created comment on success
       tags:
         - tracks
@@ -791,7 +797,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a list of users who have favorited or liked the track.
       tags:
         - tracks
@@ -813,7 +819,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns all related tracks of track on SoundCloud.
       tags:
         - tracks
@@ -851,7 +857,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a track's streamable URLs
       tags:
         - tracks
@@ -873,7 +879,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Performs a user search based on a query
       tags:
         - search
@@ -891,7 +897,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a user.
       tags:
         - users
@@ -911,7 +917,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a list of user's comments.
       tags:
         - users
@@ -929,7 +935,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a list of user’s followers.
       tags:
         - users
@@ -947,7 +953,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a list of user’s followings.
       tags:
         - users
@@ -970,7 +976,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a list of user's liked tracks.
       tags:
         - users
@@ -989,7 +995,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a list of user's playlists.
       tags:
         - users
@@ -1008,7 +1014,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: Returns a list of user's tracks.
       tags:
         - users
@@ -1027,7 +1033,7 @@ paths:
           $ref: "#/components/responses/NotFound"
       security:
         - AuthHeader: []
-          ClientId: []
+
       summary: >-
         Returns list of user's links added to their profile (website, facebook,
         instagram).
@@ -3251,12 +3257,8 @@ components:
       type: array
   securitySchemes:
     AuthHeader:
-      description: 'The string "OAuth" followed by the user’s token: OAuth ACCESS_TOKEN'
       type: apiKey
       in: header
       name: Authorization
-    ClientId:
-      description: 'The string "OAuth" followed by the user’s token: OAuth ACCESS_TOKEN'
-      type: apiKey
-      in: query
-      name: client_id
+      x-apikey-description: >-
+        Provide your API key as Authorization. Eg: {"Authorization" : "OAuth <your API key>"}

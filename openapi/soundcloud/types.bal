@@ -439,13 +439,9 @@ public type CompleteUser record {
     string website_title?;
 };
 
-# User's activities.
 public type Activities record {
-    # Activity collection
     ActivitiesCollection[] collection?;
-    # hyperlink to the activity
     string future_href?;
-    # hyperlink to the next activity
     string next_href?;
 };
 

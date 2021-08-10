@@ -32,7 +32,7 @@ public type CovidcontinentContinentinfo record {
     decimal long?;
 };
 
-# Covid-19 status in the given USA state
+# COVID-19 status in the given USA state
 public type CovidState record {
     # State name
     string state?;
@@ -52,15 +52,15 @@ public type CovidState record {
     decimal casesPerOneMillion?;
     # Deaths per one million
     decimal deathsPerOneMillion?;
-    # Total number of Covid-19 tests administered
+    # Total number of COVID-19 tests administered
     decimal tests?;
-    # Covid-19 tests for one million
+    # COVID-19 tests for one million
     decimal testsPerOneMillion?;
     # Population of the state
     decimal population?;
 };
 
-# Covid-19 global status
+# COVID-19 global status
 public type CovidAll record {
     # Last updated timestamp
     decimal updated?;
@@ -84,9 +84,9 @@ public type CovidAll record {
     decimal casesPerOneMillion?;
     # Deaths per one million
     decimal deathsPerOneMillion?;
-    # Total number of Covid-19 tests administered
+    # Total number of COVID-19 tests administered
     decimal tests?;
-    # Covid-19 tests for one million
+    # COVID-19 tests for one million
     decimal testsPerOneMillion?;
     # World population
     decimal population?;
@@ -106,7 +106,7 @@ public type CovidAll record {
     decimal affectedCountries?;
 };
 
-# Covid-19 status of the given country
+# COVID-19 status of the given country
 public type CovidCountry record {
     # Last updated timestamp
     decimal updated?;
@@ -134,9 +134,9 @@ public type CovidCountry record {
     decimal casesPerOneMillion?;
     # Deaths per one million
     decimal deathsPerOneMillion?;
-    # Total number of Covid-19 tests administered
+    # Total number of COVID-19 tests administered
     decimal tests?;
-    # Covid-19 tests for one million
+    # COVID-19 tests for one million
     decimal testsPerOneMillion?;
     # Total population
     decimal population?;
@@ -156,7 +156,7 @@ public type CovidCountry record {
     decimal criticalPerOneMillion?;
 };
 
-# Covid-19 vaccine related data
+# COVID-19 vaccine related data
 public type Vaccine record {
     # Candiate Id
     string candidate?;
@@ -172,7 +172,7 @@ public type Vaccine record {
     string[] institutions?;
 };
 
-# Covid19-19 vaccine trial data
+# COVID-19 vaccine trial data
 public type Vaccines record {
     # Source for the information
     string 'source?;
@@ -184,7 +184,7 @@ public type Vaccines record {
     Vaccine[] data?;
 };
 
-# Covid-19 status of the given continent
+# COVID-19 status of the given continent
 public type CovidContinent record {
     # Last updated timestamp
     decimal updated?;
@@ -208,7 +208,7 @@ public type CovidContinent record {
     decimal casesPerOneMillion?;
     # Deaths per one million
     decimal deathsPerOneMillion?;
-    # Total number of Covid-19 tests administered
+    # Total number of COVID-19 tests administered
     decimal tests?;
     # Tests per one milliom
     decimal testsPerOneMillion?;
@@ -234,7 +234,7 @@ public type CovidhistoricalallRecovered record {
     decimal date?;
 };
 
-# Covid-19 historical data of the given province
+# COVID-19 historical data of the given province
 public type CovidHistoricalProvince record {
     # Country
     string country?;
@@ -244,7 +244,7 @@ public type CovidHistoricalProvince record {
     CovidhistoricalcountryTimeline timeline?;
 };
 
-# Covid-19 vaccine coverage related data
+# COVID-19 vaccine coverage related data
 public type Phases record {
     # Trial phase
     string phase?;
@@ -256,7 +256,7 @@ public type Phases record {
 public type VaccineCountryCoverage record {
     # Country
     string country?;
-    # Covid-19 Vaccine timeline briefly
+    # COVID-19 Vaccine timeline briefly
     SimpleVaccineTimeline timeline?;
 };
 
@@ -270,7 +270,7 @@ public type CovidHistoricalAll record {
     CovidhistoricalallRecovered recovered?;
 };
 
-# Covid-19 historical data of the given country
+# COVID-19 historical data of the given country
 public type CovidHistoricalCountry record {
     # Country
     string country?;
@@ -308,7 +308,7 @@ public type CovidhistoricalallCases record {
     decimal date?;
 };
 
-# Covid-19 Vaccine timeline briefly
+# COVID-19 Vaccine timeline briefly
 public type SimpleVaccineTimeline record {
     # Date
     decimal date?;

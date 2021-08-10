@@ -3,13 +3,18 @@ servers:
   - url: https://disease.sh
 info:
   version: 3.0.0
-  title: Novel Covid19 API - Disease.sh - An open API for disease-related statistics
-  description: Client endpoint for Novel Covid19 API - disease.sh
+  title: Novel COVID-19 API - Disease.sh - An open API for disease-related statistics
+  description: >
+    This is a generated connector from [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
+
+    Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
   license:
     name: GNU V3
     url: 'https://github.com/disease-sh/API/blob/master/LICENSE'
   x-display:
-    label: Covid19 Client
+    label: COVID-19 Client
+  x-init-description: |
+    The connector initialization doesn't require setting the API credentials.
 tags:
   - name: 'COVID-19: Worldometers'
     description: '(COVID-19 data sourced from Worldometers, updated every 10 minutes)'
@@ -26,45 +31,30 @@ paths:
         label: "Global Status"
       parameters:
         - name: yesterday
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Yesterday"
         - name: twoDaysAgo
-          description: Queries data reported two days ago
+          description: Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Two Days Ago"
         - name: allowNull
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           x-display: 
             label: "Allow Null"
-      description: 'Get global COVID-19 totals for today, yesterday and two days ago'
+      summary: 'Get global COVID-19 totals for today, yesterday and two days ago.'
       responses:
         '200':
-          description: Global Covid-19 status
+          description: Global COVID-19 status
           content:
             application/json:
               schema:
@@ -86,33 +76,23 @@ paths:
           x-display: 
             label: "State Name"
         - name: yesterday
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           in: query
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Yesterday"
         - name: allowNull
           in: query
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Allow Null"
-      description: Get COVID-19 totals for specific US State(s)
+      summary: Get COVID-19 totals for specific US State(s).
       responses:
         '200':
-          description: Covid-19 status of the given US state
+          description: COVID-19 status of the given US state
           content:
             application/json:
               schema:
@@ -135,55 +115,37 @@ paths:
             label: "Continent"
         - name: yesterday
           in: query
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Yesterday"
         - name: twoDaysAgo
           in: query
-          description: Queries data reported two days ago
+          description: Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Two Days Ago"
         - name: strict
           in: query
-          description: Setting to false gives you the ability to fuzzy search continents (i.e. Oman vs. rOMANia)
+          description: Setting to `false` gives you the ability to fuzzy search continents (i.e. Oman vs. rOMANia). Default is `true`. 
           schema:
-            enum:
-              - 'true'
-              - 'false'
             default: 'true'
             type: string
           x-display: 
             label: "Strict"
         - name: allowNull
           in: query
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Allow Null"
-      description: Get COVID-19 totals for a specific continent
+      summary: Get COVID-19 totals for a specific continent.
       responses:
         '200':
-          description: Covid-19 status of the given continent
+          description: COVID-19 status of the given continent
           content:
             application/json:
               schema:
@@ -206,55 +168,37 @@ paths:
             label: "Country"
         - name: yesterday
           in: query
-          description: Queries data reported a day ago
+          description: Enter `true`(1) to receive data reported a day ago. Default is `false`(0)
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'            
             type: string
           x-display: 
             label: "Yesterday"
         - name: twoDaysAgo
           in: query
-          description: Queries data reported two days ago
-          schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'           
+          description: Enter `true`(1) to receive data reported two days ago. Default is `false`(0)
+          schema:           
             type: string
           x-display: 
             label: "Two Days Ago"
         - name: strict
           in: query
-          description: Setting to false gives you the ability to fuzzy search countries (i.e. Oman vs. rOMANia)
+          description: Setting to false gives you the ability to fuzzy search countries (i.e. Oman vs. rOMANia). Default is `true`. 
           schema:
-            enum:
-              - 'true'
-              - 'false'
             default: 'true'
             type: string
           x-display: 
             label: "Strict"
         - name: allowNull
           in: query
-          description: 'By default, value is 0. This allows nulls to be returned'
+          description: 'By default, value is 0. Enter `1` to allow nulls to be returned'
           schema:
-            enum:
-              - 'true'
-              - 'false'
-              - '1'
-              - '0'
             type: string
           x-display: 
             label: "Allow Null"
-      description: Get COVID-19 totals for a specific country
+      summary: Get COVID-19 totals for a specific country.
       responses:
         '200':
-          description: Covid-19 status of the given country
+          description: COVID-19 status of the given country
           content:
             application/json:
               schema:
@@ -274,7 +218,7 @@ paths:
             type: string
           x-display: 
             label: "Number Of Days"
-      description: Get global accumulated COVID-19 time series data
+      summary: Get global accumulated COVID-19 time series data.
       responses:
         '200':
           description: Global accumulated COVID-19 time series data
@@ -306,7 +250,7 @@ paths:
             default: 30
           x-display: 
             label: "Number Of Days"
-      description: Get COVID-19 time series data for a specific country
+      summary: Get COVID-19 time series data for a specific country.
       responses:
         '200':
           description: COVID-19 related time series for the given country
@@ -346,7 +290,7 @@ paths:
             default: 30
           x-display: 
             label: "Number of Days"
-      description: Get COVID-19 time series data for a specific province in a country
+      summary: Get COVID-19 time series data for a specific province in a country.
       responses:
         '200':
           description: COVID-19 related time series for the given province
@@ -361,7 +305,7 @@ paths:
       operationId: getVaccineTrialData
       x-display: 
           label: "Vaccine Trial Data"
-      description: 'Get vaccine trial data from RAPS (Regulatory Affairs Professional Society).'
+      summary: 'Get vaccine trial data from RAPS (Regulatory Affairs Professional Society).'
       responses:
         '200':
           description: Vaccine trial data
@@ -385,14 +329,14 @@ paths:
             default: 30
           x-display: 
             label: "Number of Days"
-      description: 'Get total global COVID-19 Vaccine doses administered.'
+      summary: 'Get total global COVID-19 Vaccine doses administered.'
       responses:
         '200':
           description: Vaccine coverage data
           content:
             application/json:
               schema:
-                description: Covid-19 vaccine timeline briefly 
+                description: COVID-19 vaccine timeline briefly 
                 $ref: '#/components/schemas/SimpleVaccineTimeline'
               examples:
                 simpleTimeline:
@@ -421,7 +365,7 @@ paths:
             default: 30
           x-display: 
             label: "Last Days"
-      description: 'Get COVID-19 vaccine doses administered for a country that has reported vaccination rollout.'
+      summary: 'Get COVID-19 vaccine doses administered for a country that has reported vaccination rollout.'
       responses:
         '200':
           description: Vaccine coverage data of the given country
@@ -471,10 +415,10 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
-          description: Covid-19 tests for one million
+          description: COVID-19 tests for one million
         population:
           type: number
           description: World population
@@ -499,7 +443,7 @@ components:
         affectedCountries:
           type: number
           description: Affected countries 
-      description: Covid-19 global status
+      description: COVID-19 global status
     CovidState:
       properties:
         state:
@@ -531,14 +475,14 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
-          description: Covid-19 tests for one million
+          description: COVID-19 tests for one million
         population:
           type: number
           description: Population of the state
-      description: Covid-19 status in the given USA state
+      description: COVID-19 status in the given USA state
     CovidContinent:
       properties:
         updated:
@@ -576,7 +520,7 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
           description: Tests per one milliom
@@ -610,7 +554,7 @@ components:
           type: array
           items:
             type: string
-      description: Covid-19 status of the given continent
+      description: COVID-19 status of the given continent
     CovidCountry:
       properties:
         updated:
@@ -676,10 +620,10 @@ components:
           description: Deaths per one million
         tests:
           type: number
-          description: Total number of Covid-19 tests administered
+          description: Total number of COVID-19 tests administered
         testsPerOneMillion:
           type: number
-          description: Covid-19 tests for one million
+          description: COVID-19 tests for one million
         population:
           type: number
           description: Total population
@@ -704,7 +648,7 @@ components:
         criticalPerOneMillion:
           type: number
           description: Critical cases per one million
-      description: Covid-19 status of the given country
+      description: COVID-19 status of the given country
     CovidHistoricalAll:
       description: 'The amount of key-value pairs in ''cases'', ''deaths'' and ''recovered'' is dependent on the ''lastdays'' query'
       properties:
@@ -764,7 +708,7 @@ components:
                 date:
                   type: number
                   description: Date
-      description: Covid-19 historical data of the given country
+      description: COVID-19 historical data of the given country
     CovidHistoricalProvince:
       properties:
         country:
@@ -798,7 +742,7 @@ components:
                 date:
                   type: number
                   description: Date
-      description: Covid-19 historical data of the given province
+      description: COVID-19 historical data of the given province
     Vaccines:
       properties:
         source:
@@ -817,7 +761,7 @@ components:
           description: Vaccine data of each candidate
           items:
             $ref: '#/components/schemas/Vaccine'
-      description: Covid19-19 vaccine trial data
+      description: COVID-19 vaccine trial data
     Vaccine:
       properties:
         candidate:
@@ -842,7 +786,7 @@ components:
           description: Institutions
           items:
             type: string
-      description: Covid-19 vaccine related data
+      description: COVID-19 vaccine related data
     Phases:
       properties:
         phase:
@@ -851,7 +795,7 @@ components:
         candidates:
           type: string
           description: Number of candidates
-      description: Covid-19 vaccine coverage related data
+      description: COVID-19 vaccine coverage related data
     VaccineCountryCoverage:
       type: object
       description: Vaccine coverage of each country. 
@@ -860,7 +804,7 @@ components:
           type: string
           description: Country
         timeline:
-          description: Covid-19 vaccine timeline briefly 
+          description: COVID-19 vaccine timeline briefly 
           $ref: '#/components/schemas/SimpleVaccineTimeline'
     SimpleVaccineTimeline:
       type: object
@@ -868,7 +812,7 @@ components:
         date:
           type: number
           description: Date
-      description: Covid-19 Vaccine timeline briefly 
+      description: COVID-19 Vaccine timeline briefly 
   examples:
     countriesSimpleVaccineTimeline:
       value:

@@ -1,32 +1,24 @@
 ## Overview
-Ballerina connector for GitLab allows easy integration with GitLab REST API via Ballerina language. It Currently support 
-operations related to access requests and access tokens in GitLab.
- 
-This module supports GitLab REST API V4.
- 
-## Configuring connector
-### Prerequisites
-- GitLab Account
+This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
 
-### Obtaining tokens
-1. Sign In to the GitLab Account.
-2. In the top-right corner, select your avatar.
-3. Select `Edit profile`.
-4. In the left sidebar, select Access Tokens.
-5. Enter a name and optional expiry date for the token.
-6. Select the desired scopes.
-7. Select Create personal access token. 
+Client endpoint for GitLab API currently supports operations related to access requests and access tokens in GitLab.
+## Prerequisites
+- Create a [GitLab](https://about.gitlab.com/) account
+- Obtain tokens
+    - Use [this](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) guide to obtain the PAT tokens related to your account
 
-**Note:** FInd more information on obtaining PAT tokens [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
 ## Quickstart
-### Obtain GitLab Version Information
-#### Step 1: Import GitLab module
+
+To use the GitLab connector in your Ballerina application, update the .bal file as follows:
+### Step 1 - Import connector
 First, import the ballerinax/gitlab module into the Ballerina project.
+
 ```ballerina
 import ballerinax/gitlab;
 ```
-#### Step 2: Configure the connection credentials.
-You can now make the connection configuration using the API key and token.
+### Step 2 - Create a new connector instance
+You can now make the connection configuration using the PAT token
+
 ```ballerina
 gitlab:ApiKeysConfig apiKeyConfig = {
     apiKeys: {
@@ -35,9 +27,9 @@ gitlab:ApiKeysConfig apiKeyConfig = {
 };
 
 gitlab:Client baseClient = check new Client(apiKeyConfig);
-
 ```
-#### Step 3: Get Version Information
+### Step 3 - Invoke connector operation
+1. Get Version Information
 
 ```ballerina
 public function main() {
@@ -47,3 +39,5 @@ public function main() {
     }
 }
 ``` 
+
+2. Use `bal run` command to compile and run the Ballerina program

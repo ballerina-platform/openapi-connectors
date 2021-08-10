@@ -8,7 +8,13 @@ tags:
     description: Access tokens for projects
 info:
   description: |
-    Client endpoint for GitLab API
+    This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
+
+    Client endpoint for GitLab API currently supports operations related to access requests and access tokens in GitLab.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a [GitLab](https://about.gitlab.com/) account and obtain tokens following [this](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) guide.
   version: v4
   title: GitLab API
   termsOfService: 'https://about.gitlab.com/terms/'
@@ -23,6 +29,7 @@ components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
+      x-apikey-description: "Provide your PAT token as `Private-Token`. Eg: `{\"Private-Token\" : \"<PAT token>\"}`"
       in: header
       name: Private-Token
 paths:
@@ -554,7 +561,7 @@ paths:
           content:
             application/json:
               schema:
-                title: AccessTokenList
+                title: AccessToken
                 description: Access token info
                 type: object
                 properties:

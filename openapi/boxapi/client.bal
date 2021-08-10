@@ -14,29 +14,30 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
-# Configuration record for Box platform
+# Configuration for Box API connector
 #
-# + authConfig - Basic authentication or CredentialsConfig Configuration Tokens
-# + secureSocketConfig - Secure Socket Configuration
+# + authConfig - Bearer token configuration or OAuth2 refresh token grant configuration
+# + secureSocketConfig - Secure socket configuration 
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
+# This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification.
 # [Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization for Box API.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [Box Developer Account](https://developer.box.com/) and obtain tokens following [this guide](https://developer.box.com/guides/).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return -  Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.box.com/2.0") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -78,22 +79,22 @@ public client class Client {
     # Revoke access token
     #
     # + return - Returns an empty response when the token was successfully revoked.
-    remote isolated function postOauth2Revoke(PostOAuth2Revoke payload) returns http:Response | error {
+    remote isolated function postOauth2Revoke(PostOAuth2Revoke payload) returns http:Response|error {
         string  path = string `/oauth2/revoke`;
         http:Request request = new;
-        http:Response  response = check self.clientEp->post(path, request, targetType=http:Response );
+        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
         return response;
     }
     # Get file information
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + xRepHints - A header required to request specific `representations` of a file. Use this in combination with the `fields` query parameter to request a specific file representation.  The general format for these representations is `X-Rep-Hints: [...]` where `[...]` is one or many hints in the format `[fileType?query]`.  For example, to request a `png` representation in `32x32` as well as `94x94` pixel dimensions provide the following hints.  `X-Rep-Hints: [jpg?dimensions=32x32][jpg?dimensions=94x94]`  Additionally, a `text` representation is available for all document file types in Box using the `[extracted_text]` representation.  `X-Rep-Hints: [extracted_text]`
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.  Additionally this field can be used to query any metadata applied to the file by specifying the `metadata` field as well as the scope and key of the template to retrieve, for example `?field=metadata.enterprise_12345.contractTemplate`.
     # + ifNoneMatch - Ensures an item is only returned if it has changed.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `304 Not Modified` if the item has not changed since.
     # + boxapi - The URL, and optional password, for the shared link of this item.  This header can be used to access items that have not been explicitly shared with a user.  Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`.  This header can be used on the file or folder shared, as well as on any files or folders nested within the item.
     # + return - Returns a file object.  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields.
-    remote isolated function getFilesId(string file_id, string xRepHints, string[]? fields = (), string? ifNoneMatch = (), string? boxapi = ()) returns File|error {
-        string  path = string `/files/${file_id}`;
+    remote isolated function getFilesId(string fileId, string xRepHints, string[]? fields = (), string? ifNoneMatch = (), string? boxapi = ()) returns File|error {
+        string  path = string `/files/${fileId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"if-none-match": ifNoneMatch, "boxapi": boxapi, "x-rep-hints": xRepHints};
@@ -103,12 +104,12 @@ public client class Client {
     }
     # Update file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + return - Returns a file object.  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields.
-    remote isolated function putFilesId(string file_id, Body payload, string[]? fields = (), string? ifMatch = ()) returns File|error {
-        string  path = string `/files/${file_id}`;
+    remote isolated function putFilesId(string fileId, Body payload, string[]? fields = (), string? ifMatch = ()) returns File|error {
+        string  path = string `/files/${fileId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"if-match": ifMatch};
@@ -121,11 +122,11 @@ public client class Client {
     }
     # Restore file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a file object when the file has been restored.
-    remote isolated function postFilesId(string file_id, Body1 payload, string[]? fields = ()) returns File|error {
-        string  path = string `/files/${file_id}`;
+    remote isolated function postFilesId(string fileId, Body1 payload, string[]? fields = ()) returns File|error {
+        string  path = string `/files/${fileId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -136,44 +137,44 @@ public client class Client {
     }
     # Delete file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + return - Returns an empty response when the file has been successfully deleted.
-    remote isolated function deleteFilesId(string file_id, string? ifMatch = ()) returns http:Response | error {
-        string  path = string `/files/${file_id}`;
+    remote isolated function deleteFilesId(string fileId, string? ifMatch = ()) returns http:Response|error {
+        string  path = string `/files/${fileId}`;
         map<any> headerValues = {"if-match": ifMatch};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
         return response;
     }
     # Download file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + range - The byte range of the content to download.  The format `{start_byte}-{end_byte}` can be used to specify what section of the file to download.
     # + boxapi - The URL, and optional password, for the shared link of this item.  This header can be used to access items that have not been explicitly shared with a user.  Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`.  This header can be used on the file or folder shared, as well as on any files or folders nested within the item.
     # + 'version - The file version to download
     # + accessToken - An optional access token that can be used to pre-authenticate this request, which means that a download link can be shared with a browser or a third party service without them needing to know how to handle the authentication. When using this parameter, please make sure that the access token is sufficiently scoped down to only allow read access to that file and no other files or folders.
     # + return - If the file is not ready to be downloaded yet `Retry-After` header will be returned indicating the time in seconds after which the file will be available for the client to download.  This response can occur when the file was uploaded immediately before the download request.
-    remote isolated function getFilesIdContent(string file_id, string? range = (), string? boxapi = (), string? 'version = (), string? accessToken = ()) returns http:Response | error {
-        string  path = string `/files/${file_id}/content`;
+    remote isolated function getFilesIdContent(string fileId, string? range = (), string? boxapi = (), string? 'version = (), string? accessToken = ()) returns http:Response|error {
+        string  path = string `/files/${fileId}/content`;
         map<anydata> queryParam = {"version": 'version, "access_token": accessToken};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"range": range, "boxapi": boxapi};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response  response = check self.clientEp-> get(path, accHeaders, targetType = http:Response );
+        http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
     }
     # Upload file version
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + contentMd5 - An optional header containing the SHA1 hash of the file to ensure that the file was not corrupted in transit.
     # + return - Returns the new file object in a list.
-    remote isolated function postFilesIdContent(string file_id, Body2 payload, string? ifMatch = (), string[]? fields = (), string? contentMd5 = ()) returns Files|error {
-        string  path = string `/files/${file_id}/content`;
+    remote isolated function postFilesIdContent(string fileId, Body2 payload, string? ifMatch = (), string[]? fields = (), string? contentMd5 = ()) returns Files|error {
+        string  path = string `/files/${fileId}/content`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"if-match": ifMatch, "content-md5": contentMd5};
@@ -210,10 +211,10 @@ public client class Client {
     }
     # Create upload session for existing file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + return - Returns a new upload session.
-    remote isolated function postFilesIdUploadSessions(string file_id, Body5 payload) returns UploadSession|error {
-        string  path = string `/files/${file_id}/upload_sessions`;
+    remote isolated function postFilesIdUploadSessions(string fileId, Body5 payload) returns UploadSession|error {
+        string  path = string `/files/${fileId}/upload_sessions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -222,21 +223,21 @@ public client class Client {
     }
     # Get upload session
     #
-    # + upload_session_id - The ID of the upload session.
+    # + uploadSessionId - The ID of the upload session.
     # + return - Returns an upload session object.
-    remote isolated function getFilesUploadSessionsId(string upload_session_id) returns UploadSession|error {
-        string  path = string `/files/upload_sessions/${upload_session_id}`;
+    remote isolated function getFilesUploadSessionsId(string uploadSessionId) returns UploadSession|error {
+        string  path = string `/files/upload_sessions/${uploadSessionId}`;
         UploadSession response = check self.clientEp-> get(path, targetType = UploadSession);
         return response;
     }
     # Upload part of file
     #
-    # + upload_session_id - The ID of the upload session.
+    # + uploadSessionId - The ID of the upload session.
     # + digest - The [RFC3230][1] message digest of the chunk uploaded.  Only SHA1 is supported. The SHA1 digest must be Base64 encoded. The format of this header is as `sha=BASE64_ENCODED_DIGEST`.  [1]: https://tools.ietf.org/html/rfc3230
     # + contentRange - The byte range of the chunk.  Must not overlap with the range of a part already uploaded this session.
     # + return - Chunk has been uploaded successfully.
-    remote isolated function putFilesUploadSessionsId(string upload_session_id, string digest, string contentRange, string payload) returns UploadedPart|error {
-        string  path = string `/files/upload_sessions/${upload_session_id}`;
+    remote isolated function putFilesUploadSessionsId(string uploadSessionId, string digest, string contentRange, string payload) returns UploadedPart|error {
+        string  path = string `/files/upload_sessions/${uploadSessionId}`;
         map<any> headerValues = {"digest": digest, "content-range": contentRange};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -245,23 +246,23 @@ public client class Client {
     }
     # Remove upload session
     #
-    # + upload_session_id - The ID of the upload session.
+    # + uploadSessionId - The ID of the upload session.
     # + return - A blank response is returned if the session was successfully aborted.
-    remote isolated function deleteFilesUploadSessionsId(string upload_session_id) returns http:Response | error {
-        string  path = string `/files/upload_sessions/${upload_session_id}`;
+    remote isolated function deleteFilesUploadSessionsId(string uploadSessionId) returns http:Response|error {
+        string  path = string `/files/upload_sessions/${uploadSessionId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List parts
     #
-    # + upload_session_id - The ID of the upload session.
+    # + uploadSessionId - The ID of the upload session.
     # + offset - The offset of the item at which to begin the response.
     # + 'limit - The maximum number of items to return per page.
     # + return - Returns a list of parts that have been uploaded.
-    remote isolated function getFilesUploadSessionsIdParts(string upload_session_id, int? offset = 0, int? 'limit = ()) returns UploadParts|error {
-        string  path = string `/files/upload_sessions/${upload_session_id}/parts`;
+    remote isolated function getFilesUploadSessionsIdParts(string uploadSessionId, int offset = 0, int? 'limit = ()) returns UploadParts|error {
+        string  path = string `/files/upload_sessions/${uploadSessionId}/parts`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
         UploadParts response = check self.clientEp-> get(path, targetType = UploadParts);
@@ -269,13 +270,13 @@ public client class Client {
     }
     # Commit upload session
     #
-    # + upload_session_id - The ID of the upload session.
+    # + uploadSessionId - The ID of the upload session.
     # + digest - The [RFC3230][1] message digest of the whole file.  Only SHA1 is supported. The SHA1 digest must be Base64 encoded. The format of this header is as `sha=BASE64_ENCODED_DIGEST`.  [1]: https://tools.ietf.org/html/rfc3230
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + ifNoneMatch - Ensures an item is only returned if it has changed.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `304 Not Modified` if the item has not changed since.
     # + return - Returns the file object in a list.
-    remote isolated function postFilesUploadSessionsIdCommit(string upload_session_id, string digest, Body6 payload, string? ifMatch = (), string? ifNoneMatch = ()) returns Files|error {
-        string  path = string `/files/upload_sessions/${upload_session_id}/commit`;
+    remote isolated function postFilesUploadSessionsIdCommit(string uploadSessionId, string digest, Body6 payload, string? ifMatch = (), string? ifNoneMatch = ()) returns Files|error {
+        string  path = string `/files/upload_sessions/${uploadSessionId}/commit`;
         map<any> headerValues = {"digest": digest, "if-match": ifMatch, "if-none-match": ifNoneMatch};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -286,11 +287,11 @@ public client class Client {
     }
     # Copy file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a new file object representing the copied file.  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields.
-    remote isolated function postFilesIdCopy(string file_id, Body7 payload, string[]? fields = ()) returns File|error {
-        string  path = string `/files/${file_id}/copy`;
+    remote isolated function postFilesIdCopy(string fileId, Body7 payload, string[]? fields = ()) returns File|error {
+        string  path = string `/files/${fileId}/copy`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -301,15 +302,15 @@ public client class Client {
     }
     # Get file thumbnail
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + extension - The file format for the thumbnail
     # + minHeight - The minimum height of the thumbnail
     # + minWidth - The minimum width of the thumbnail
     # + maxHeight - The maximum height of the thumbnail
     # + maxWidth - The maximum width of the thumbnail
     # + return - When a thumbnail can be created the thumbnail data will be returned in the body of the response.
-    remote isolated function getFilesIdThumbnailId(string file_id, string extension, int? minHeight = (), int? minWidth = (), int? maxHeight = (), int? maxWidth = ()) returns string|error {
-        string  path = string `/files/${file_id}/thumbnail.${extension}`;
+    remote isolated function getFilesIdThumbnailId(string fileId, string extension, int? minHeight = (), int? minWidth = (), int? maxHeight = (), int? maxWidth = ()) returns string|error {
+        string  path = string `/files/${fileId}/thumbnail.${extension}`;
         map<anydata> queryParam = {"min_height": minHeight, "min_width": minWidth, "max_height": maxHeight, "max_width": maxWidth};
         path = path + check getPathForQueryParam(queryParam);
         string response = check self.clientEp-> get(path, targetType = string);
@@ -317,13 +318,13 @@ public client class Client {
     }
     # List file collaborations
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + 'limit - The maximum number of items to return per page.
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + return - Returns a collection of collaboration objects. If there are no collaborations on this file an empty collection will be returned.  This list includes pending collaborations, for which the `status` is set to `pending`, indicating invitations that have been sent but not yet accepted.
-    remote isolated function getFilesIdCollaborations(string file_id, string[]? fields = (), int? 'limit = (), string? marker = ()) returns Collaborations|error {
-        string  path = string `/files/${file_id}/collaborations`;
+    remote isolated function getFilesIdCollaborations(string fileId, string[]? fields = (), int? 'limit = (), string? marker = ()) returns Collaborations|error {
+        string  path = string `/files/${fileId}/collaborations`;
         map<anydata> queryParam = {"fields": fields, "limit": 'limit, "marker": marker};
         path = path + check getPathForQueryParam(queryParam);
         Collaborations response = check self.clientEp-> get(path, targetType = Collaborations);
@@ -331,13 +332,13 @@ public client class Client {
     }
     # List file comments
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + 'limit - The maximum number of items to return per page.
     # + offset - The offset of the item at which to begin the response.
     # + return - Returns a collection of comment objects. If there are no comments on this file an empty collection will be returned.
-    remote isolated function getFilesIdComments(string file_id, string[]? fields = (), int? 'limit = (), int? offset = 0) returns Comments|error {
-        string  path = string `/files/${file_id}/comments`;
+    remote isolated function getFilesIdComments(string fileId, string[]? fields = (), int? 'limit = (), int offset = 0) returns Comments|error {
+        string  path = string `/files/${fileId}/comments`;
         map<anydata> queryParam = {"fields": fields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         Comments response = check self.clientEp-> get(path, targetType = Comments);
@@ -345,20 +346,20 @@ public client class Client {
     }
     # List tasks on file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + return - Returns a list of tasks on a file.  If there are no tasks on this file an empty collection is returned instead.
-    remote isolated function getFilesIdTasks(string file_id) returns Tasks|error {
-        string  path = string `/files/${file_id}/tasks`;
+    remote isolated function getFilesIdTasks(string fileId) returns Tasks|error {
+        string  path = string `/files/${fileId}/tasks`;
         Tasks response = check self.clientEp-> get(path, targetType = Tasks);
         return response;
     }
     # Get trashed file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the file that was trashed, including information about when the it was moved to the trash.
-    remote isolated function getFilesIdTrash(string file_id, string[]? fields = ()) returns File|error {
-        string  path = string `/files/${file_id}/trash`;
+    remote isolated function getFilesIdTrash(string fileId, string[]? fields = ()) returns File|error {
+        string  path = string `/files/${fileId}/trash`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         File response = check self.clientEp-> get(path, targetType = File);
@@ -366,24 +367,24 @@ public client class Client {
     }
     # Permanently remove file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + return - Returns an empty response when the file was permanently deleted.
-    remote isolated function deleteFilesIdTrash(string file_id) returns http:Response | error {
-        string  path = string `/files/${file_id}/trash`;
+    remote isolated function deleteFilesIdTrash(string fileId) returns http:Response|error {
+        string  path = string `/files/${fileId}/trash`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List all file versions
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + 'limit - The maximum number of items to return per page.
     # + offset - The offset of the item at which to begin the response.
     # + return - Returns an array of past versions for this file.
-    remote isolated function getFilesIdVersions(string file_id, string[]? fields = (), int? 'limit = (), int? offset = 0) returns FileVersions|error {
-        string  path = string `/files/${file_id}/versions`;
+    remote isolated function getFilesIdVersions(string fileId, string[]? fields = (), int? 'limit = (), int offset = 0) returns FileVersions|error {
+        string  path = string `/files/${fileId}/versions`;
         map<anydata> queryParam = {"fields": fields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         FileVersions response = check self.clientEp-> get(path, targetType = FileVersions);
@@ -391,12 +392,12 @@ public client class Client {
     }
     # Get file version
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
-    # + file_version_id - The ID of the file version
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileVersionId - The ID of the file version
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a specific version of a file.  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields.
-    remote isolated function getFilesIdVersionsId(string file_id, string file_version_id, string[]? fields = ()) returns FileVersion|error {
-        string  path = string `/files/${file_id}/versions/${file_version_id}`;
+    remote isolated function getFilesIdVersionsId(string fileId, string fileVersionId, string[]? fields = ()) returns FileVersion|error {
+        string  path = string `/files/${fileId}/versions/${fileVersionId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         FileVersion response = check self.clientEp-> get(path, targetType = FileVersion);
@@ -404,26 +405,26 @@ public client class Client {
     }
     # Remove file version
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
-    # + file_version_id - The ID of the file version
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileVersionId - The ID of the file version
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + return - Returns an empty response when the file has been successfully deleted.
-    remote isolated function deleteFilesIdVersionsId(string file_id, string file_version_id, string? ifMatch = ()) returns http:Response | error {
-        string  path = string `/files/${file_id}/versions/${file_version_id}`;
+    remote isolated function deleteFilesIdVersionsId(string fileId, string fileVersionId, string? ifMatch = ()) returns http:Response|error {
+        string  path = string `/files/${fileId}/versions/${fileVersionId}`;
         map<any> headerValues = {"if-match": ifMatch};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
         return response;
     }
     # Revert file version
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a newly created file version object.
-    remote isolated function postFilesIdVersionsCurrent(string file_id, Body8 payload, string[]? fields = ()) returns FileVersion|error {
-        string  path = string `/files/${file_id}/versions/current`;
+    remote isolated function postFilesIdVersionsCurrent(string fileId, Body8 payload, string[]? fields = ()) returns FileVersion|error {
+        string  path = string `/files/${fileId}/versions/current`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -434,19 +435,19 @@ public client class Client {
     }
     # Get watermark on file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + return - Returns an object containing information about the watermark associated for to this file.
-    remote isolated function getFilesIdWatermark(string file_id) returns Watermark|error {
-        string  path = string `/files/${file_id}/watermark`;
+    remote isolated function getFilesIdWatermark(string fileId) returns Watermark|error {
+        string  path = string `/files/${fileId}/watermark`;
         Watermark response = check self.clientEp-> get(path, targetType = Watermark);
         return response;
     }
     # Apply watermark to file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + return - Returns an updated watermark if a watermark already existed on this file.
-    remote isolated function putFilesIdWatermark(string file_id, Body9 payload) returns Watermark|error {
-        string  path = string `/files/${file_id}/watermark`;
+    remote isolated function putFilesIdWatermark(string fileId, Body9 payload) returns Watermark|error {
+        string  path = string `/files/${fileId}/watermark`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -455,31 +456,31 @@ public client class Client {
     }
     # Remove watermark from file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + return - An empty response will be returned when the watermark was successfully deleted.
-    remote isolated function deleteFilesIdWatermark(string file_id) returns http:Response | error {
-        string  path = string `/files/${file_id}/watermark`;
+    remote isolated function deleteFilesIdWatermark(string fileId) returns http:Response|error {
+        string  path = string `/files/${fileId}/watermark`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Get file request
     #
-    # + file_request_id - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
+    # + fileRequestId - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
     # + return - Returns a file request object.
-    remote isolated function getFileRequestsId(string file_request_id) returns FileRequest|error {
-        string  path = string `/file_requests/${file_request_id}`;
+    remote isolated function getFileRequestsId(string fileRequestId) returns FileRequest|error {
+        string  path = string `/file_requests/${fileRequestId}`;
         FileRequest response = check self.clientEp-> get(path, targetType = FileRequest);
         return response;
     }
     # Update file request
     #
-    # + file_request_id - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
+    # + fileRequestId - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + return - Returns the updated file request object.
-    remote isolated function putFileRequestsId(string file_request_id, FileRequestUpdateRequest payload, string? ifMatch = ()) returns FileRequest|error {
-        string  path = string `/file_requests/${file_request_id}`;
+    remote isolated function putFileRequestsId(string fileRequestId, FileRequestUpdateRequest payload, string? ifMatch = ()) returns FileRequest|error {
+        string  path = string `/file_requests/${fileRequestId}`;
         map<any> headerValues = {"if-match": ifMatch};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -490,21 +491,21 @@ public client class Client {
     }
     # Delete file request
     #
-    # + file_request_id - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
+    # + fileRequestId - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
     # + return - Returns an empty response when the file request has been successfully deleted.
-    remote isolated function deleteFileRequestsId(string file_request_id) returns http:Response | error {
-        string  path = string `/file_requests/${file_request_id}`;
+    remote isolated function deleteFileRequestsId(string fileRequestId) returns http:Response|error {
+        string  path = string `/file_requests/${fileRequestId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Copy file request
     #
-    # + file_request_id - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
+    # + fileRequestId - The unique identifier that represent a file request.  The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.
     # + return - Returns updated file request object.
-    remote isolated function postFileRequestsIdCopy(string file_request_id, FileRequestCopyRequest payload) returns FileRequest|error {
-        string  path = string `/file_requests/${file_request_id}/copy`;
+    remote isolated function postFileRequestsIdCopy(string fileRequestId, FileRequestCopyRequest payload) returns FileRequest|error {
+        string  path = string `/file_requests/${fileRequestId}/copy`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -513,13 +514,13 @@ public client class Client {
     }
     # Get folder information
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.  Additionally this field can be used to query any metadata applied to the file by specifying the `metadata` field as well as the scope and key of the template to retrieve, for example `?field=metadata.enterprise_12345.contractTemplate`.
     # + ifNoneMatch - Ensures an item is only returned if it has changed.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `304 Not Modified` if the item has not changed since.
     # + boxapi - The URL, and optional password, for the shared link of this item.  This header can be used to access items that have not been explicitly shared with a user.  Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`.  This header can be used on the file or folder shared, as well as on any files or folders nested within the item.
     # + return - Returns a folder, including the first 100 entries in the folder.  To fetch more items within the folder, please use the [Get items in a folder](#get-folders-id-items) endpoint.  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields.
-    remote isolated function getFoldersId(string folder_id, string[]? fields = (), string? ifNoneMatch = (), string? boxapi = ()) returns Folder|error {
-        string  path = string `/folders/${folder_id}`;
+    remote isolated function getFoldersId(string folderId, string[]? fields = (), string? ifNoneMatch = (), string? boxapi = ()) returns Folder|error {
+        string  path = string `/folders/${folderId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"if-none-match": ifNoneMatch, "boxapi": boxapi};
@@ -529,12 +530,12 @@ public client class Client {
     }
     # Update folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + return - Returns a folder object for the updated folder  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields.  This call will return synchronously. This holds true even when moving folders with a large a large number of items in all of its descendants. For very large folders, this means the call could take minutes or hours to return.
-    remote isolated function putFoldersId(string folder_id, Body10 payload, string[]? fields = (), string? ifMatch = ()) returns Folder|error {
-        string  path = string `/folders/${folder_id}`;
+    remote isolated function putFoldersId(string folderId, Body10 payload, string[]? fields = (), string? ifMatch = ()) returns Folder|error {
+        string  path = string `/folders/${folderId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"if-match": ifMatch};
@@ -547,11 +548,11 @@ public client class Client {
     }
     # Restore folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a folder object when the folder has been restored.
-    remote isolated function postFoldersId(string folder_id, Body11 payload, string[]? fields = ()) returns Folder|error {
-        string  path = string `/folders/${folder_id}`;
+    remote isolated function postFoldersId(string folderId, Body11 payload, string[]? fields = ()) returns Folder|error {
+        string  path = string `/folders/${folderId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -562,24 +563,24 @@ public client class Client {
     }
     # Delete folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + ifMatch - Ensures this item hasn't recently changed before making changes.  Pass in the item's last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.
     # + recursive - Delete a folder that is not empty by recursively deleting the folder and all of its content.
     # + return - Returns an empty response when the folder is successfully deleted or moved to the trash.
-    remote isolated function deleteFoldersId(string folder_id, string? ifMatch = (), boolean? recursive = ()) returns http:Response | error {
-        string  path = string `/folders/${folder_id}`;
+    remote isolated function deleteFoldersId(string folderId, string? ifMatch = (), boolean? recursive = ()) returns http:Response|error {
+        string  path = string `/folders/${folderId}`;
         map<anydata> queryParam = {"recursive": recursive};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"if-match": ifMatch};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
         return response;
     }
     # List items in folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.  Additionally this field can be used to query any metadata applied to the file by specifying the `metadata` field as well as the scope and key of the template to retrieve, for example `?field=metadata.enterprise_12345.contractTemplate`.
     # + usemarker - Specifies whether to use marker-based pagination instead of offset-based pagination. Only one pagination method can be used at a time.  By setting this value to true, the API will return a `marker` field that can be passed as a parameter to this endpoint to get the next page of the response.
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
@@ -589,8 +590,8 @@ public client class Client {
     # + sort - Defines the **second** attribute by which items are sorted.  Items are always sorted by their `type` first, with folders listed before files, and files listed before web links.  This parameter is not supported for marker-based pagination on the root folder (the folder with an ID of `0`).
     # + direction - The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.
     # + return - Returns a collection of files, folders, and web links contained in a folder.
-    remote isolated function getFoldersIdItems(string folder_id, string[]? fields = (), boolean? usemarker = (), string? marker = (), int? offset = 0, int? 'limit = (), string? boxapi = (), string? sort = (), string? direction = ()) returns Items|error {
-        string  path = string `/folders/${folder_id}/items`;
+    remote isolated function getFoldersIdItems(string folderId, string[]? fields = (), boolean? usemarker = (), string? marker = (), int offset = 0, int? 'limit = (), string? boxapi = (), string? sort = (), string? direction = ()) returns Items|error {
+        string  path = string `/folders/${folderId}/items`;
         map<anydata> queryParam = {"fields": fields, "usemarker": usemarker, "marker": marker, "offset": offset, "limit": 'limit, "sort": sort, "direction": direction};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"boxapi": boxapi};
@@ -614,11 +615,11 @@ public client class Client {
     }
     # Copy folder
     #
-    # + folder_id - The unique identifier of the folder to copy.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder with the ID `0` can not be copied.
+    # + folderId - The unique identifier of the folder to copy.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder with the ID `0` can not be copied.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a new folder object representing the copied folder.  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields.
-    remote isolated function postFoldersIdCopy(string folder_id, Body13 payload, string[]? fields = ()) returns Folder|error {
-        string  path = string `/folders/${folder_id}/copy`;
+    remote isolated function postFoldersIdCopy(string folderId, Body13 payload, string[]? fields = ()) returns Folder|error {
+        string  path = string `/folders/${folderId}/copy`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -629,11 +630,11 @@ public client class Client {
     }
     # List folder collaborations
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a collection of collaboration objects. If there are no collaborations on this folder an empty collection will be returned.  This list includes pending collaborations, for which the `status` is set to `pending`, indicating invitations that have been sent but not yet accepted.
-    remote isolated function getFoldersIdCollaborations(string folder_id, string[]? fields = ()) returns Collaborations|error {
-        string  path = string `/folders/${folder_id}/collaborations`;
+    remote isolated function getFoldersIdCollaborations(string folderId, string[]? fields = ()) returns Collaborations|error {
+        string  path = string `/folders/${folderId}/collaborations`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Collaborations response = check self.clientEp-> get(path, targetType = Collaborations);
@@ -641,11 +642,11 @@ public client class Client {
     }
     # Get trashed folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the folder that was trashed, including information about when the it was moved to the trash.
-    remote isolated function getFoldersIdTrash(string folder_id, string[]? fields = ()) returns Folder|error {
-        string  path = string `/folders/${folder_id}/trash`;
+    remote isolated function getFoldersIdTrash(string folderId, string[]? fields = ()) returns Folder|error {
+        string  path = string `/folders/${folderId}/trash`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Folder response = check self.clientEp-> get(path, targetType = Folder);
@@ -653,13 +654,13 @@ public client class Client {
     }
     # Permanently remove folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + return - Returns an empty response when the folder was permanently deleted.
-    remote isolated function deleteFoldersIdTrash(string folder_id) returns http:Response | error {
-        string  path = string `/folders/${folder_id}/trash`;
+    remote isolated function deleteFoldersIdTrash(string folderId) returns http:Response|error {
+        string  path = string `/folders/${folderId}/trash`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List trashed items
@@ -672,7 +673,7 @@ public client class Client {
     # + direction - The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.
     # + sort - Defines the **second** attribute by which items are sorted.  Items are always sorted by their `type` first, with folders listed before files, and files listed before web links.  This parameter is not supported when using marker-based pagination.
     # + return - Returns a list of items that have been deleted
-    remote isolated function getFoldersTrashItems(string[]? fields = (), int? 'limit = (), int? offset = 0, boolean? usemarker = (), string? marker = (), string? direction = (), string? sort = ()) returns Items|error {
+    remote isolated function getFoldersTrashItems(string[]? fields = (), int? 'limit = (), int offset = 0, boolean? usemarker = (), string? marker = (), string? direction = (), string? sort = ()) returns Items|error {
         string  path = string `/folders/trash/items`;
         map<anydata> queryParam = {"fields": fields, "limit": 'limit, "offset": offset, "usemarker": usemarker, "marker": marker, "direction": direction, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
@@ -681,19 +682,19 @@ public client class Client {
     }
     # Get watermark for folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + return - Returns an object containing information about the watermark associated for to this folder.
-    remote isolated function getFoldersIdWatermark(string folder_id) returns Watermark|error {
-        string  path = string `/folders/${folder_id}/watermark`;
+    remote isolated function getFoldersIdWatermark(string folderId) returns Watermark|error {
+        string  path = string `/folders/${folderId}/watermark`;
         Watermark response = check self.clientEp-> get(path, targetType = Watermark);
         return response;
     }
     # Apply watermark to folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + return - Returns an updated watermark if a watermark already existed on this folder.
-    remote isolated function putFoldersIdWatermark(string folder_id, Body14 payload) returns Watermark|error {
-        string  path = string `/folders/${folder_id}/watermark`;
+    remote isolated function putFoldersIdWatermark(string folderId, Body14 payload) returns Watermark|error {
+        string  path = string `/folders/${folderId}/watermark`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -702,13 +703,13 @@ public client class Client {
     }
     # Remove watermark from folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + return - An empty response will be returned when the watermark was successfully deleted.
-    remote isolated function deleteFoldersIdWatermark(string folder_id) returns http:Response | error {
-        string  path = string `/folders/${folder_id}/watermark`;
+    remote isolated function deleteFoldersIdWatermark(string folderId) returns http:Response|error {
+        string  path = string `/folders/${folderId}/watermark`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List folder locks
@@ -735,22 +736,22 @@ public client class Client {
     }
     # Delete folder lock
     #
-    # + folder_lock_id - The ID of the folder lock.
+    # + folderLockId - The ID of the folder lock.
     # + return - Returns an empty response when the folder lock is successfully deleted.
-    remote isolated function deleteFolderLocksId(string folder_lock_id) returns http:Response | error {
-        string  path = string `/folder_locks/${folder_lock_id}`;
+    remote isolated function deleteFolderLocksId(string folderLockId) returns http:Response|error {
+        string  path = string `/folder_locks/${folderLockId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Get comment
     #
-    # + comment_id - The ID of the comment.
+    # + commentId - The ID of the comment.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a full comment object.
-    remote isolated function getCommentsId(string comment_id, string[]? fields = ()) returns Comment|error {
-        string  path = string `/comments/${comment_id}`;
+    remote isolated function getCommentsId(string commentId, string[]? fields = ()) returns Comment|error {
+        string  path = string `/comments/${commentId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Comment response = check self.clientEp-> get(path, targetType = Comment);
@@ -758,11 +759,11 @@ public client class Client {
     }
     # Update comment
     #
-    # + comment_id - The ID of the comment.
+    # + commentId - The ID of the comment.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the updated comment object.
-    remote isolated function putCommentsId(string comment_id, Body16 payload, string[]? fields = ()) returns Comment|error {
-        string  path = string `/comments/${comment_id}`;
+    remote isolated function putCommentsId(string commentId, Body16 payload, string[]? fields = ()) returns Comment|error {
+        string  path = string `/comments/${commentId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -773,13 +774,13 @@ public client class Client {
     }
     # Remove comment
     #
-    # + comment_id - The ID of the comment.
+    # + commentId - The ID of the comment.
     # + return - Returns an empty response when the comment has been deleted.
-    remote isolated function deleteCommentsId(string comment_id) returns http:Response | error {
-        string  path = string `/comments/${comment_id}`;
+    remote isolated function deleteCommentsId(string commentId) returns http:Response|error {
+        string  path = string `/comments/${commentId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Create comment
@@ -798,11 +799,11 @@ public client class Client {
     }
     # Get collaboration
     #
-    # + collaboration_id - The ID of the collaboration
+    # + collaborationId - The ID of the collaboration
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a collaboration object.
-    remote isolated function getCollaborationsId(string collaboration_id, string[]? fields = ()) returns Collaboration|error {
-        string  path = string `/collaborations/${collaboration_id}`;
+    remote isolated function getCollaborationsId(string collaborationId, string[]? fields = ()) returns Collaboration|error {
+        string  path = string `/collaborations/${collaborationId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Collaboration response = check self.clientEp-> get(path, targetType = Collaboration);
@@ -810,10 +811,10 @@ public client class Client {
     }
     # Update collaboration
     #
-    # + collaboration_id - The ID of the collaboration
+    # + collaborationId - The ID of the collaboration
     # + return - Returns an updated collaboration object unless the owner has changed.
-    remote isolated function putCollaborationsId(string collaboration_id, Body18 payload) returns Collaboration|error {
-        string  path = string `/collaborations/${collaboration_id}`;
+    remote isolated function putCollaborationsId(string collaborationId, Body18 payload) returns Collaboration|error {
+        string  path = string `/collaborations/${collaborationId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -822,13 +823,13 @@ public client class Client {
     }
     # Remove collaboration
     #
-    # + collaboration_id - The ID of the collaboration
+    # + collaborationId - The ID of the collaboration
     # + return - A blank response is returned if the collaboration was successfully deleted.
-    remote isolated function deleteCollaborationsId(string collaboration_id) returns http:Response | error {
-        string  path = string `/collaborations/${collaboration_id}`;
+    remote isolated function deleteCollaborationsId(string collaborationId) returns http:Response|error {
+        string  path = string `/collaborations/${collaborationId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List pending collaborations
@@ -838,7 +839,7 @@ public client class Client {
     # + offset - The offset of the item at which to begin the response.
     # + 'limit - The maximum number of items to return per page.
     # + return - Returns a collection of pending collaboration objects.  If the user has no pending collaborations, the collection will be empty.
-    remote isolated function getCollaborations(string status, string[]? fields = (), int? offset = 0, int? 'limit = ()) returns Collaborations|error {
+    remote isolated function getCollaborations(string status, string[]? fields = (), int offset = 0, int? 'limit = ()) returns Collaborations|error {
         string  path = string `/collaborations`;
         map<anydata> queryParam = {"status": status, "fields": fields, "offset": offset, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
@@ -873,19 +874,19 @@ public client class Client {
     }
     # Get task
     #
-    # + task_id - The ID of the task.
+    # + taskId - The ID of the task.
     # + return - Returns a task object.
-    remote isolated function getTasksId(string task_id) returns Task|error {
-        string  path = string `/tasks/${task_id}`;
+    remote isolated function getTasksId(string taskId) returns Task|error {
+        string  path = string `/tasks/${taskId}`;
         Task response = check self.clientEp-> get(path, targetType = Task);
         return response;
     }
     # Update task
     #
-    # + task_id - The ID of the task.
+    # + taskId - The ID of the task.
     # + return - Returns the updated task object
-    remote isolated function putTasksId(string task_id, Body21 payload) returns Task|error {
-        string  path = string `/tasks/${task_id}`;
+    remote isolated function putTasksId(string taskId, Body21 payload) returns Task|error {
+        string  path = string `/tasks/${taskId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -894,21 +895,21 @@ public client class Client {
     }
     # Remove task
     #
-    # + task_id - The ID of the task.
+    # + taskId - The ID of the task.
     # + return - Returns an empty response when the task was successfully deleted.
-    remote isolated function deleteTasksId(string task_id) returns http:Response | error {
-        string  path = string `/tasks/${task_id}`;
+    remote isolated function deleteTasksId(string taskId) returns http:Response|error {
+        string  path = string `/tasks/${taskId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List task assignments
     #
-    # + task_id - The ID of the task.
+    # + taskId - The ID of the task.
     # + return - Returns a collection of task assignment defining what task on a file has been assigned to which users and by who.
-    remote isolated function getTasksIdAssignments(string task_id) returns TaskAssignments|error {
-        string  path = string `/tasks/${task_id}/assignments`;
+    remote isolated function getTasksIdAssignments(string taskId) returns TaskAssignments|error {
+        string  path = string `/tasks/${taskId}/assignments`;
         TaskAssignments response = check self.clientEp-> get(path, targetType = TaskAssignments);
         return response;
     }
@@ -925,19 +926,19 @@ public client class Client {
     }
     # Get task assignment
     #
-    # + task_assignment_id - The ID of the task assignment.
+    # + taskAssignmentId - The ID of the task assignment.
     # + return - Returns a task assignment, specifying who the task has been assigned to and by whom.
-    remote isolated function getTaskAssignmentsId(string task_assignment_id) returns TaskAssignment|error {
-        string  path = string `/task_assignments/${task_assignment_id}`;
+    remote isolated function getTaskAssignmentsId(string taskAssignmentId) returns TaskAssignment|error {
+        string  path = string `/task_assignments/${taskAssignmentId}`;
         TaskAssignment response = check self.clientEp-> get(path, targetType = TaskAssignment);
         return response;
     }
     # Update task assignment
     #
-    # + task_assignment_id - The ID of the task assignment.
+    # + taskAssignmentId - The ID of the task assignment.
     # + return - Returns the updated task assignment object.
-    remote isolated function putTaskAssignmentsId(string task_assignment_id, Body23 payload) returns TaskAssignment|error {
-        string  path = string `/task_assignments/${task_assignment_id}`;
+    remote isolated function putTaskAssignmentsId(string taskAssignmentId, Body23 payload) returns TaskAssignment|error {
+        string  path = string `/task_assignments/${taskAssignmentId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -946,13 +947,13 @@ public client class Client {
     }
     # Unassign task
     #
-    # + task_assignment_id - The ID of the task assignment.
+    # + taskAssignmentId - The ID of the task assignment.
     # + return - Returns an empty response when the task assignment was successfully deleted.
-    remote isolated function deleteTaskAssignmentsId(string task_assignment_id) returns http:Response | error {
-        string  path = string `/task_assignments/${task_assignment_id}`;
+    remote isolated function deleteTaskAssignmentsId(string taskAssignmentId) returns http:Response|error {
+        string  path = string `/task_assignments/${taskAssignmentId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Find file for shared link
@@ -972,11 +973,11 @@ public client class Client {
     }
     # Get shared link for file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns the base representation of a file with the additional shared link information.
-    remote isolated function getFilesIdGetSharedLink(string file_id, string fields) returns File|error {
-        string  path = string `/files/${file_id}#get_shared_link`;
+    remote isolated function getFilesIdGetSharedLink(string fileId, string fields) returns File|error {
+        string  path = string `/files/${fileId}#get_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         File response = check self.clientEp-> get(path, targetType = File);
@@ -984,11 +985,11 @@ public client class Client {
     }
     # Add shared link to file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns the base representation of a file with a new shared link attached.
-    remote isolated function putFilesIdAddSharedLink(string file_id, string fields, Body24 payload) returns File|error {
-        string  path = string `/files/${file_id}#add_shared_link`;
+    remote isolated function putFilesIdAddSharedLink(string fileId, string fields, Body24 payload) returns File|error {
+        string  path = string `/files/${fileId}#add_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -999,11 +1000,11 @@ public client class Client {
     }
     # Update shared link on file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns a basic representation of the file, with the updated shared link attached.
-    remote isolated function putFilesIdUpdateSharedLink(string file_id, string fields, Body25 payload) returns File|error {
-        string  path = string `/files/${file_id}#update_shared_link`;
+    remote isolated function putFilesIdUpdateSharedLink(string fileId, string fields, Body25 payload) returns File|error {
+        string  path = string `/files/${fileId}#update_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1014,11 +1015,11 @@ public client class Client {
     }
     # Remove shared link from file
     #
-    # + file_id - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
+    # + fileId - The unique identifier that represent a file.  The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns a basic representation of a file, with the shared link removed.
-    remote isolated function putFilesIdRemoveSharedLink(string file_id, string fields, Body26 payload) returns File|error {
-        string  path = string `/files/${file_id}#remove_shared_link`;
+    remote isolated function putFilesIdRemoveSharedLink(string fileId, string fields, Body26 payload) returns File|error {
+        string  path = string `/files/${fileId}#remove_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1044,11 +1045,11 @@ public client class Client {
     }
     # Get shared link for folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns the base representation of a folder with the additional shared link information.
-    remote isolated function getFoldersIdGetSharedLink(string folder_id, string fields) returns Folder|error {
-        string  path = string `/folders/${folder_id}#get_shared_link`;
+    remote isolated function getFoldersIdGetSharedLink(string folderId, string fields) returns Folder|error {
+        string  path = string `/folders/${folderId}#get_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Folder response = check self.clientEp-> get(path, targetType = Folder);
@@ -1056,11 +1057,11 @@ public client class Client {
     }
     # Add shared link to folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns the base representation of a folder with a new shared link attached.
-    remote isolated function putFoldersIdAddSharedLink(string folder_id, string fields, Body27 payload) returns Folder|error {
-        string  path = string `/folders/${folder_id}#add_shared_link`;
+    remote isolated function putFoldersIdAddSharedLink(string folderId, string fields, Body27 payload) returns Folder|error {
+        string  path = string `/folders/${folderId}#add_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1071,11 +1072,11 @@ public client class Client {
     }
     # Update shared link on folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns a basic representation of the folder, with the updated shared link attached.
-    remote isolated function putFoldersIdUpdateSharedLink(string folder_id, string fields, Body28 payload) returns Folder|error {
-        string  path = string `/folders/${folder_id}#update_shared_link`;
+    remote isolated function putFoldersIdUpdateSharedLink(string folderId, string fields, Body28 payload) returns Folder|error {
+        string  path = string `/folders/${folderId}#update_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1086,11 +1087,11 @@ public client class Client {
     }
     # Remove shared link from folder
     #
-    # + folder_id - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
+    # + folderId - The unique identifier that represent a folder.  The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.  The root folder of a Box account is always represented by the ID `0`.
     # + fields - Explicitly request the `shared_link` fields to be returned for this item.
     # + return - Returns a basic representation of a folder, with the shared link removed.
-    remote isolated function putFoldersIdRemoveSharedLink(string folder_id, string fields, Body29 payload) returns Folder|error {
-        string  path = string `/folders/${folder_id}#remove_shared_link`;
+    remote isolated function putFoldersIdRemoveSharedLink(string folderId, string fields, Body29 payload) returns Folder|error {
+        string  path = string `/folders/${folderId}#remove_shared_link`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1112,11 +1113,11 @@ public client class Client {
     }
     # Get web link
     #
-    # + web_link_id - The ID of the web link.
+    # + webLinkId - The ID of the web link.
     # + boxapi - The URL, and optional password, for the shared link of this item.  This header can be used to access items that have not been explicitly shared with a user.  Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`.  This header can be used on the file or folder shared, as well as on any files or folders nested within the item.
     # + return - Returns the web link object.
-    remote isolated function getWebLinksId(string web_link_id, string? boxapi = ()) returns WebLink|error {
-        string  path = string `/web_links/${web_link_id}`;
+    remote isolated function getWebLinksId(string webLinkId, string? boxapi = ()) returns WebLink|error {
+        string  path = string `/web_links/${webLinkId}`;
         map<any> headerValues = {"boxapi": boxapi};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         WebLink response = check self.clientEp-> get(path, accHeaders, targetType = WebLink);
@@ -1124,10 +1125,10 @@ public client class Client {
     }
     # Update web link
     #
-    # + web_link_id - The ID of the web link.
+    # + webLinkId - The ID of the web link.
     # + return - Returns the updated web link object.
-    remote isolated function putWebLinksId(string web_link_id, Body31 payload) returns WebLink|error {
-        string  path = string `/web_links/${web_link_id}`;
+    remote isolated function putWebLinksId(string webLinkId, Body31 payload) returns WebLink|error {
+        string  path = string `/web_links/${webLinkId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -1136,11 +1137,11 @@ public client class Client {
     }
     # Restore web link
     #
-    # + web_link_id - The ID of the web link.
+    # + webLinkId - The ID of the web link.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a web link object when it has been restored.
-    remote isolated function postWebLinksId(string web_link_id, Body32 payload, string[]? fields = ()) returns WebLink|error {
-        string  path = string `/web_links/${web_link_id}`;
+    remote isolated function postWebLinksId(string webLinkId, Body32 payload, string[]? fields = ()) returns WebLink|error {
+        string  path = string `/web_links/${webLinkId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1151,22 +1152,22 @@ public client class Client {
     }
     # Remove web link
     #
-    # + web_link_id - The ID of the web link.
+    # + webLinkId - The ID of the web link.
     # + return - An empty response will be returned when the web link was successfully deleted.
-    remote isolated function deleteWebLinksId(string web_link_id) returns http:Response | error {
-        string  path = string `/web_links/${web_link_id}`;
+    remote isolated function deleteWebLinksId(string webLinkId) returns http:Response|error {
+        string  path = string `/web_links/${webLinkId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Get trashed web link
     #
-    # + web_link_id - The ID of the web link.
+    # + webLinkId - The ID of the web link.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the web link that was trashed, including information about when the it was moved to the trash.
-    remote isolated function getWebLinksIdTrash(string web_link_id, string[]? fields = ()) returns Folder|error {
-        string  path = string `/web_links/${web_link_id}/trash`;
+    remote isolated function getWebLinksIdTrash(string webLinkId, string[]? fields = ()) returns Folder|error {
+        string  path = string `/web_links/${webLinkId}/trash`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Folder response = check self.clientEp-> get(path, targetType = Folder);
@@ -1174,13 +1175,13 @@ public client class Client {
     }
     # Permanently remove web link
     #
-    # + web_link_id - The ID of the web link.
+    # + webLinkId - The ID of the web link.
     # + return - Returns an empty response when the web link was permanently deleted.
-    remote isolated function deleteWebLinksIdTrash(string web_link_id) returns http:Response | error {
-        string  path = string `/web_links/${web_link_id}/trash`;
+    remote isolated function deleteWebLinksIdTrash(string webLinkId) returns http:Response|error {
+        string  path = string `/web_links/${webLinkId}/trash`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List enterprise users
@@ -1194,7 +1195,7 @@ public client class Client {
     # + usemarker - Specifies whether to use marker-based pagination instead of offset-based pagination. Only one pagination method can be used at a time.  By setting this value to true, the API will return a `marker` field that can be passed as a parameter to this endpoint to get the next page of the response.
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + return - Returns all of the users in the enterprise.
-    remote isolated function getUsers(string? filterTerm = (), string? userType = (), string? externalAppUserId = (), string[]? fields = (), int? offset = 0, int? 'limit = (), boolean? usemarker = (), string? marker = ()) returns Users|error {
+    remote isolated function getUsers(string? filterTerm = (), string? userType = (), string? externalAppUserId = (), string[]? fields = (), int offset = 0, int? 'limit = (), boolean? usemarker = (), string? marker = ()) returns Users|error {
         string  path = string `/users`;
         map<anydata> queryParam = {"filter_term": filterTerm, "user_type": userType, "external_app_user_id": externalAppUserId, "fields": fields, "offset": offset, "limit": 'limit, "usemarker": usemarker, "marker": marker};
         path = path + check getPathForQueryParam(queryParam);
@@ -1228,11 +1229,11 @@ public client class Client {
     }
     # Get user
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a single user object.  Not all available fields are returned by default. Use the [fields](#param-fields) query parameter to explicitly request any specific fields using the [fields](#get-users-id--request--fields) parameter.
-    remote isolated function getUsersId(string user_id, string[]? fields = ()) returns User|error {
-        string  path = string `/users/${user_id}`;
+    remote isolated function getUsersId(string userId, string[]? fields = ()) returns User|error {
+        string  path = string `/users/${userId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         User response = check self.clientEp-> get(path, targetType = User);
@@ -1240,11 +1241,11 @@ public client class Client {
     }
     # Update user
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the updated user object.
-    remote isolated function putUsersId(string user_id, Body34 payload, string[]? fields = ()) returns User|error {
-        string  path = string `/users/${user_id}`;
+    remote isolated function putUsersId(string userId, Body34 payload, string[]? fields = ()) returns User|error {
+        string  path = string `/users/${userId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1255,36 +1256,36 @@ public client class Client {
     }
     # Delete user
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + notify - Whether the user will receive email notification of the deletion
     # + force - Whether the user should be deleted even if this user still own files
     # + return - Removes the user and returns an empty response.
-    remote isolated function deleteUsersId(string user_id, boolean? notify = (), boolean? force = ()) returns http:Response | error {
-        string  path = string `/users/${user_id}`;
+    remote isolated function deleteUsersId(string userId, boolean? notify = (), boolean? force = ()) returns http:Response|error {
+        string  path = string `/users/${userId}`;
         map<anydata> queryParam = {"notify": notify, "force": force};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Get user avatar
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + return - When an avatar can be found for the user the image data will be returned in the body of the response.
-    remote isolated function getUsersIdAvatar(string user_id) returns string|error {
-        string  path = string `/users/${user_id}/avatar`;
+    remote isolated function getUsersIdAvatar(string userId) returns string|error {
+        string  path = string `/users/${userId}/avatar`;
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
     }
     # Transfer owned folders
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + notify - Determines if users should receive email notification for the action performed.
     # + return - Returns the information for the newly created destination folder.
-    remote isolated function putUsersIdFolders0(string user_id, Body35 payload, string[]? fields = (), boolean? notify = ()) returns Folder|error {
-        string  path = string `/users/${user_id}/folders/0`;
+    remote isolated function putUsersIdFolders0(string userId, Body35 payload, string[]? fields = (), boolean? notify = ()) returns Folder|error {
+        string  path = string `/users/${userId}/folders/0`;
         map<anydata> queryParam = {"fields": fields, "notify": notify};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1295,19 +1296,19 @@ public client class Client {
     }
     # List user's email aliases
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + return - Returns a collection of email aliases.
-    remote isolated function getUsersIdEmailAliases(string user_id) returns EmailAliases|error {
-        string  path = string `/users/${user_id}/email_aliases`;
+    remote isolated function getUsersIdEmailAliases(string userId) returns EmailAliases|error {
+        string  path = string `/users/${userId}/email_aliases`;
         EmailAliases response = check self.clientEp-> get(path, targetType = EmailAliases);
         return response;
     }
     # Create email alias
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + return - Returns the newly created email alias object.
-    remote isolated function postUsersIdEmailAliases(string user_id, Body36 payload) returns EmailAlias|error {
-        string  path = string `/users/${user_id}/email_aliases`;
+    remote isolated function postUsersIdEmailAliases(string userId, Body36 payload) returns EmailAlias|error {
+        string  path = string `/users/${userId}/email_aliases`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -1316,24 +1317,24 @@ public client class Client {
     }
     # Remove email alias
     #
-    # + user_id - The ID of the user.
-    # + email_alias_id - The ID of the email alias.
+    # + userId - The ID of the user.
+    # + emailAliasId - The ID of the email alias.
     # + return - Removes the alias and returns an empty response.
-    remote isolated function deleteUsersIdEmailAliasesId(string user_id, string email_alias_id) returns http:Response | error {
-        string  path = string `/users/${user_id}/email_aliases/${email_alias_id}`;
+    remote isolated function deleteUsersIdEmailAliasesId(string userId, string emailAliasId) returns http:Response|error {
+        string  path = string `/users/${userId}/email_aliases/${emailAliasId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List user's groups
     #
-    # + user_id - The ID of the user.
+    # + userId - The ID of the user.
     # + 'limit - The maximum number of items to return per page.
     # + offset - The offset of the item at which to begin the response.
     # + return - Returns a collection of membership objects. If there are no memberships, an empty collection will be returned.
-    remote isolated function getUsersIdMemberships(string user_id, int? 'limit = (), int? offset = 0) returns GroupMemberships|error {
-        string  path = string `/users/${user_id}/memberships`;
+    remote isolated function getUsersIdMemberships(string userId, int? 'limit = (), int offset = 0) returns GroupMemberships|error {
+        string  path = string `/users/${userId}/memberships`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         GroupMemberships response = check self.clientEp-> get(path, targetType = GroupMemberships);
@@ -1355,11 +1356,11 @@ public client class Client {
     }
     # Get user invite status
     #
-    # + invite_id - The ID of an invite.
+    # + inviteId - The ID of an invite.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns an invite object
-    remote isolated function getInvitesId(string invite_id, string[]? fields = ()) returns Invite|error {
-        string  path = string `/invites/${invite_id}`;
+    remote isolated function getInvitesId(string inviteId, string[]? fields = ()) returns Invite|error {
+        string  path = string `/invites/${inviteId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Invite response = check self.clientEp-> get(path, targetType = Invite);
@@ -1372,7 +1373,7 @@ public client class Client {
     # + 'limit - The maximum number of items to return per page.
     # + offset - The offset of the item at which to begin the response.
     # + return - Returns a collection of group objects. If there are no groups, an empty collection will be returned.
-    remote isolated function getGroups(string? filterTerm = (), string[]? fields = (), int? 'limit = (), int? offset = 0) returns Groups|error {
+    remote isolated function getGroups(string? filterTerm = (), string[]? fields = (), int? 'limit = (), int offset = 0) returns Groups|error {
         string  path = string `/groups`;
         map<anydata> queryParam = {"filter_term": filterTerm, "fields": fields, "limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
@@ -1395,11 +1396,11 @@ public client class Client {
     }
     # Get group
     #
-    # + group_id - The ID of the group.
+    # + groupId - The ID of the group.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the group object
-    remote isolated function getGroupsId(string group_id, string[]? fields = ()) returns Group|error {
-        string  path = string `/groups/${group_id}`;
+    remote isolated function getGroupsId(string groupId, string[]? fields = ()) returns Group|error {
+        string  path = string `/groups/${groupId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         Group response = check self.clientEp-> get(path, targetType = Group);
@@ -1407,11 +1408,11 @@ public client class Client {
     }
     # Update group
     #
-    # + group_id - The ID of the group.
+    # + groupId - The ID of the group.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the updated group object.
-    remote isolated function putGroupsId(string group_id, Body39 payload, string[]? fields = ()) returns Group|error {
-        string  path = string `/groups/${group_id}`;
+    remote isolated function putGroupsId(string groupId, Body39 payload, string[]? fields = ()) returns Group|error {
+        string  path = string `/groups/${groupId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1422,23 +1423,23 @@ public client class Client {
     }
     # Remove group
     #
-    # + group_id - The ID of the group.
+    # + groupId - The ID of the group.
     # + return - A blank response is returned if the group was successfully deleted.
-    remote isolated function deleteGroupsId(string group_id) returns http:Response | error {
-        string  path = string `/groups/${group_id}`;
+    remote isolated function deleteGroupsId(string groupId) returns http:Response|error {
+        string  path = string `/groups/${groupId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List members of group
     #
-    # + group_id - The ID of the group.
+    # + groupId - The ID of the group.
     # + 'limit - The maximum number of items to return per page.
     # + offset - The offset of the item at which to begin the response.
     # + return - Returns a collection of membership objects. If there are no memberships, an empty collection will be returned.
-    remote isolated function getGroupsIdMemberships(string group_id, int? 'limit = (), int? offset = 0) returns GroupMemberships|error {
-        string  path = string `/groups/${group_id}/memberships`;
+    remote isolated function getGroupsIdMemberships(string groupId, int? 'limit = (), int offset = 0) returns GroupMemberships|error {
+        string  path = string `/groups/${groupId}/memberships`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         GroupMemberships response = check self.clientEp-> get(path, targetType = GroupMemberships);
@@ -1446,12 +1447,12 @@ public client class Client {
     }
     # List group collaborations
     #
-    # + group_id - The ID of the group.
+    # + groupId - The ID of the group.
     # + 'limit - The maximum number of items to return per page.
     # + offset - The offset of the item at which to begin the response.
     # + return - Returns a collection of collaboration objects. If there are no collaborations, an empty collection will be returned.
-    remote isolated function getGroupsIdCollaborations(string group_id, int? 'limit = (), int? offset = 0) returns Collaborations|error {
-        string  path = string `/groups/${group_id}/collaborations`;
+    remote isolated function getGroupsIdCollaborations(string groupId, int? 'limit = (), int offset = 0) returns Collaborations|error {
+        string  path = string `/groups/${groupId}/collaborations`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         path = path + check getPathForQueryParam(queryParam);
         Collaborations response = check self.clientEp-> get(path, targetType = Collaborations);
@@ -1473,11 +1474,11 @@ public client class Client {
     }
     # Get group membership
     #
-    # + group_membership_id - The ID of the group membership.
+    # + groupMembershipId - The ID of the group membership.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the group membership object.
-    remote isolated function getGroupMembershipsId(string group_membership_id, string[]? fields = ()) returns GroupMembership|error {
-        string  path = string `/group_memberships/${group_membership_id}`;
+    remote isolated function getGroupMembershipsId(string groupMembershipId, string[]? fields = ()) returns GroupMembership|error {
+        string  path = string `/group_memberships/${groupMembershipId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         GroupMembership response = check self.clientEp-> get(path, targetType = GroupMembership);
@@ -1485,11 +1486,11 @@ public client class Client {
     }
     # Update group membership
     #
-    # + group_membership_id - The ID of the group membership.
+    # + groupMembershipId - The ID of the group membership.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns a new group membership object.
-    remote isolated function putGroupMembershipsId(string group_membership_id, Body41 payload, string[]? fields = ()) returns GroupMembership|error {
-        string  path = string `/group_memberships/${group_membership_id}`;
+    remote isolated function putGroupMembershipsId(string groupMembershipId, Body41 payload, string[]? fields = ()) returns GroupMembership|error {
+        string  path = string `/group_memberships/${groupMembershipId}`;
         map<anydata> queryParam = {"fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1500,13 +1501,13 @@ public client class Client {
     }
     # Remove user from group
     #
-    # + group_membership_id - The ID of the group membership.
+    # + groupMembershipId - The ID of the group membership.
     # + return - A blank response is returned if the membership was successfully deleted.
-    remote isolated function deleteGroupMembershipsId(string group_membership_id) returns http:Response | error {
-        string  path = string `/group_memberships/${group_membership_id}`;
+    remote isolated function deleteGroupMembershipsId(string groupMembershipId) returns http:Response|error {
+        string  path = string `/group_memberships/${groupMembershipId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List all webhooks
@@ -1534,19 +1535,19 @@ public client class Client {
     }
     # Get webhook
     #
-    # + webhook_id - The ID of the webhook.
+    # + webhookId - The ID of the webhook.
     # + return - Returns a webhook object
-    remote isolated function getWebhooksId(string webhook_id) returns Webhook|error {
-        string  path = string `/webhooks/${webhook_id}`;
+    remote isolated function getWebhooksId(string webhookId) returns Webhook|error {
+        string  path = string `/webhooks/${webhookId}`;
         Webhook response = check self.clientEp-> get(path, targetType = Webhook);
         return response;
     }
     # Update webhook
     #
-    # + webhook_id - The ID of the webhook.
+    # + webhookId - The ID of the webhook.
     # + return - Returns the new webhook object.
-    remote isolated function putWebhooksId(string webhook_id, Body43 payload) returns Webhook|error {
-        string  path = string `/webhooks/${webhook_id}`;
+    remote isolated function putWebhooksId(string webhookId, Body43 payload) returns Webhook|error {
+        string  path = string `/webhooks/${webhookId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -1555,25 +1556,25 @@ public client class Client {
     }
     # Remove webhook
     #
-    # + webhook_id - The ID of the webhook.
+    # + webhookId - The ID of the webhook.
     # + return - An empty response will be returned when the webhook was successfully deleted.
-    remote isolated function deleteWebhooksId(string webhook_id) returns http:Response | error {
-        string  path = string `/webhooks/${webhook_id}`;
+    remote isolated function deleteWebhooksId(string webhookId) returns http:Response|error {
+        string  path = string `/webhooks/${webhookId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Update all Box Skill cards on file
     #
-    # + skill_id - The ID of the skill to apply this metadata for.
+    # + skillId - The ID of the skill to apply this metadata for.
     # + return - Returns an empty response when the card has been successfully updated.
-    remote isolated function putSkillInvocationsId(string skill_id, Body44 payload) returns http:Response | error {
-        string  path = string `/skill_invocations/${skill_id}`;
+    remote isolated function putSkillInvocationsId(string skillId, Body44 payload) returns http:Response|error {
+        string  path = string `/skill_invocations/${skillId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        http:Response  response = check self.clientEp->put(path, request, targetType=http:Response );
+        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
         return response;
     }
     # List user and enterprise events
@@ -1585,7 +1586,7 @@ public client class Client {
     # + createdAfter - The lower bound date and time to return events for. This can only be used when requesting the events with a `stream_type` of `admin_logs`. For any other `stream_type` this value will be ignored.
     # + createdBefore - The upper bound date and time to return events for. This can only be used when requesting the events with a `stream_type` of `admin_logs`. For any other `stream_type` this value will be ignored.
     # + return - Returns a list of event objects.  Events objects are returned in pages, with each page (chunk) including a list of event objects. The response includes a `chunk_size` parameter indicating how many events were returned in this chunk, as well as the next `stream_position` that can be queried.
-    remote isolated function getEvents(string? streamType = "all", string? streamPosition = (), int? 'limit = 100, string[]? eventType = (), string? createdAfter = (), string? createdBefore = ()) returns Events|error {
+    remote isolated function getEvents(string streamType = "all", string? streamPosition = (), int 'limit = 100, string[]? eventType = (), string? createdAfter = (), string? createdBefore = ()) returns Events|error {
         string  path = string `/events`;
         map<anydata> queryParam = {"stream_type": streamType, "stream_position": streamPosition, "limit": 'limit, "event_type": eventType, "created_after": createdAfter, "created_before": createdBefore};
         path = path + check getPathForQueryParam(queryParam);
@@ -1606,7 +1607,7 @@ public client class Client {
     # + offset - The offset of the item at which to begin the response.
     # + 'limit - The maximum number of items to return per page.
     # + return - Returns all collections for the given user
-    remote isolated function getCollections(string[]? fields = (), int? offset = 0, int? 'limit = ()) returns Collections|error {
+    remote isolated function getCollections(string[]? fields = (), int offset = 0, int? 'limit = ()) returns Collections|error {
         string  path = string `/collections`;
         map<anydata> queryParam = {"fields": fields, "offset": offset, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
@@ -1615,13 +1616,13 @@ public client class Client {
     }
     # List collection items
     #
-    # + collection_id - The ID of the collection.
+    # + collectionId - The ID of the collection.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + offset - The offset of the item at which to begin the response.
     # + 'limit - The maximum number of items to return per page.
     # + return - Returns an array of items in the collection.
-    remote isolated function getCollectionsIdItems(string collection_id, string[]? fields = (), int? offset = 0, int? 'limit = ()) returns Items|error {
-        string  path = string `/collections/${collection_id}/items`;
+    remote isolated function getCollectionsIdItems(string collectionId, string[]? fields = (), int offset = 0, int? 'limit = ()) returns Items|error {
+        string  path = string `/collections/${collectionId}/items`;
         map<anydata> queryParam = {"fields": fields, "offset": offset, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
         Items response = check self.clientEp-> get(path, targetType = Items);
@@ -1666,19 +1667,19 @@ public client class Client {
     }
     # Get retention policy
     #
-    # + retention_policy_id - The ID of the retention policy.
+    # + retentionPolicyId - The ID of the retention policy.
     # + return - Returns the retention policy object.
-    remote isolated function getRetentionPoliciesId(string retention_policy_id) returns RetentionPolicy|error {
-        string  path = string `/retention_policies/${retention_policy_id}`;
+    remote isolated function getRetentionPoliciesId(string retentionPolicyId) returns RetentionPolicy|error {
+        string  path = string `/retention_policies/${retentionPolicyId}`;
         RetentionPolicy response = check self.clientEp-> get(path, targetType = RetentionPolicy);
         return response;
     }
     # Update retention policy
     #
-    # + retention_policy_id - The ID of the retention policy.
+    # + retentionPolicyId - The ID of the retention policy.
     # + return - Returns the updated retention policy object.
-    remote isolated function putRetentionPoliciesId(string retention_policy_id, Body46 payload) returns RetentionPolicy|error {
-        string  path = string `/retention_policies/${retention_policy_id}`;
+    remote isolated function putRetentionPoliciesId(string retentionPolicyId, Body46 payload) returns RetentionPolicy|error {
+        string  path = string `/retention_policies/${retentionPolicyId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -1687,13 +1688,13 @@ public client class Client {
     }
     # List retention policy assignments
     #
-    # + retention_policy_id - The ID of the retention policy.
+    # + retentionPolicyId - The ID of the retention policy.
     # + 'type - The type of the retention policy assignment to retrieve.
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + 'limit - The maximum number of items to return per page.
     # + return - Returns a list of the retention policy assignments associated with the specified retention policy.
-    remote isolated function getRetentionPoliciesIdAssignments(string retention_policy_id, string? 'type = (), string? marker = (), int? 'limit = ()) returns RetentionPolicyAssignments|error {
-        string  path = string `/retention_policies/${retention_policy_id}/assignments`;
+    remote isolated function getRetentionPoliciesIdAssignments(string retentionPolicyId, string? 'type = (), string? marker = (), int? 'limit = ()) returns RetentionPolicyAssignments|error {
+        string  path = string `/retention_policies/${retentionPolicyId}/assignments`;
         map<anydata> queryParam = {"type": 'type, "marker": marker, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
         RetentionPolicyAssignments response = check self.clientEp-> get(path, targetType = RetentionPolicyAssignments);
@@ -1712,10 +1713,10 @@ public client class Client {
     }
     # Get retention policy assignment
     #
-    # + retention_policy_assignment_id - The ID of the retention policy assignment.
+    # + retentionPolicyAssignmentId - The ID of the retention policy assignment.
     # + return - Returns the retention policy assignment object.
-    remote isolated function getRetentionPolicyAssignmentsId(string retention_policy_assignment_id) returns RetentionPolicyAssignment|error {
-        string  path = string `/retention_policy_assignments/${retention_policy_assignment_id}`;
+    remote isolated function getRetentionPolicyAssignmentsId(string retentionPolicyAssignmentId) returns RetentionPolicyAssignment|error {
+        string  path = string `/retention_policy_assignments/${retentionPolicyAssignmentId}`;
         RetentionPolicyAssignment response = check self.clientEp-> get(path, targetType = RetentionPolicyAssignment);
         return response;
     }
@@ -1746,19 +1747,19 @@ public client class Client {
     }
     # Get legal hold policy
     #
-    # + legal_hold_policy_id - The ID of the legal hold policy
+    # + legalHoldPolicyId - The ID of the legal hold policy
     # + return - Returns a legal hold policy object.
-    remote isolated function getLegalHoldPoliciesId(string legal_hold_policy_id) returns LegalHoldPolicy|error {
-        string  path = string `/legal_hold_policies/${legal_hold_policy_id}`;
+    remote isolated function getLegalHoldPoliciesId(string legalHoldPolicyId) returns LegalHoldPolicy|error {
+        string  path = string `/legal_hold_policies/${legalHoldPolicyId}`;
         LegalHoldPolicy response = check self.clientEp-> get(path, targetType = LegalHoldPolicy);
         return response;
     }
     # Update legal hold policy
     #
-    # + legal_hold_policy_id - The ID of the legal hold policy
+    # + legalHoldPolicyId - The ID of the legal hold policy
     # + return - Returns a new legal hold policy object.
-    remote isolated function putLegalHoldPoliciesId(string legal_hold_policy_id, Body49 payload) returns LegalHoldPolicy|error {
-        string  path = string `/legal_hold_policies/${legal_hold_policy_id}`;
+    remote isolated function putLegalHoldPoliciesId(string legalHoldPolicyId, Body49 payload) returns LegalHoldPolicy|error {
+        string  path = string `/legal_hold_policies/${legalHoldPolicyId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -1767,13 +1768,13 @@ public client class Client {
     }
     # Remove legal hold policy
     #
-    # + legal_hold_policy_id - The ID of the legal hold policy
+    # + legalHoldPolicyId - The ID of the legal hold policy
     # + return - A blank response is returned if the policy was successfully deleted.
-    remote isolated function deleteLegalHoldPoliciesId(string legal_hold_policy_id) returns http:Response | error {
-        string  path = string `/legal_hold_policies/${legal_hold_policy_id}`;
+    remote isolated function deleteLegalHoldPoliciesId(string legalHoldPolicyId) returns http:Response|error {
+        string  path = string `/legal_hold_policies/${legalHoldPolicyId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List legal hold policy assignments
@@ -1805,33 +1806,33 @@ public client class Client {
     }
     # Get legal hold policy assignment
     #
-    # + legal_hold_policy_assignment_id - The ID of the legal hold policy assignment
+    # + legalHoldPolicyAssignmentId - The ID of the legal hold policy assignment
     # + return - Returns a legal hold policy object.
-    remote isolated function getLegalHoldPolicyAssignmentsId(string legal_hold_policy_assignment_id) returns LegalHoldPolicyAssignment|error {
-        string  path = string `/legal_hold_policy_assignments/${legal_hold_policy_assignment_id}`;
+    remote isolated function getLegalHoldPolicyAssignmentsId(string legalHoldPolicyAssignmentId) returns LegalHoldPolicyAssignment|error {
+        string  path = string `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}`;
         LegalHoldPolicyAssignment response = check self.clientEp-> get(path, targetType = LegalHoldPolicyAssignment);
         return response;
     }
     # Unassign legal hold policy
     #
-    # + legal_hold_policy_assignment_id - The ID of the legal hold policy assignment
+    # + legalHoldPolicyAssignmentId - The ID of the legal hold policy assignment
     # + return - A blank response is returned if the assignment was successfully deleted.
-    remote isolated function deleteLegalHoldPolicyAssignmentsId(string legal_hold_policy_assignment_id) returns http:Response | error {
-        string  path = string `/legal_hold_policy_assignments/${legal_hold_policy_assignment_id}`;
+    remote isolated function deleteLegalHoldPolicyAssignmentsId(string legalHoldPolicyAssignmentId) returns http:Response|error {
+        string  path = string `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List current file versions for legal hold policy assignment
     #
-    # + legal_hold_policy_assignment_id - The ID of the legal hold policy assignment
+    # + legalHoldPolicyAssignmentId - The ID of the legal hold policy assignment
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + 'limit - The maximum number of items to return per page.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the list of current file versions held under legal hold for a specific legal hold policy assignment.
-    remote isolated function getLegalHoldPolicyAssignmentsIdFilesOnHold(string legal_hold_policy_assignment_id, string? marker = (), int? 'limit = (), string[]? fields = ()) returns FileVersionLegalHolds|error {
-        string  path = string `/legal_hold_policy_assignments/${legal_hold_policy_assignment_id}/files_on_hold`;
+    remote isolated function getLegalHoldPolicyAssignmentsIdFilesOnHold(string legalHoldPolicyAssignmentId, string? marker = (), int? 'limit = (), string[]? fields = ()) returns FileVersionLegalHolds|error {
+        string  path = string `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}/files_on_hold`;
         map<anydata> queryParam = {"marker": marker, "limit": 'limit, "fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         FileVersionLegalHolds response = check self.clientEp-> get(path, targetType = FileVersionLegalHolds);
@@ -1839,13 +1840,13 @@ public client class Client {
     }
     # List previous file versions for legal hold policy assignment
     #
-    # + legal_hold_policy_assignment_id - The ID of the legal hold policy assignment
+    # + legalHoldPolicyAssignmentId - The ID of the legal hold policy assignment
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + 'limit - The maximum number of items to return per page.
     # + fields - A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.  Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.
     # + return - Returns the list of previous file versions held under legal hold for a specific legal hold policy assignment.
-    remote isolated function getLegalHoldPolicyAssignmentsIdFileVersionsOnHold(string legal_hold_policy_assignment_id, string? marker = (), int? 'limit = (), string[]? fields = ()) returns FileVersionLegalHolds|error {
-        string  path = string `/legal_hold_policy_assignments/${legal_hold_policy_assignment_id}/file_versions_on_hold`;
+    remote isolated function getLegalHoldPolicyAssignmentsIdFileVersionsOnHold(string legalHoldPolicyAssignmentId, string? marker = (), int? 'limit = (), string[]? fields = ()) returns FileVersionLegalHolds|error {
+        string  path = string `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}/file_versions_on_hold`;
         map<anydata> queryParam = {"marker": marker, "limit": 'limit, "fields": fields};
         path = path + check getPathForQueryParam(queryParam);
         FileVersionLegalHolds response = check self.clientEp-> get(path, targetType = FileVersionLegalHolds);
@@ -1853,10 +1854,10 @@ public client class Client {
     }
     # Get retention on file
     #
-    # + file_version_retention_id - The ID of the file version retention
+    # + fileVersionRetentionId - The ID of the file version retention
     # + return - Returns a file version retention object.
-    remote isolated function getFileVersionRetentionsId(string file_version_retention_id) returns FileVersionRetention|error {
-        string  path = string `/file_version_retentions/${file_version_retention_id}`;
+    remote isolated function getFileVersionRetentionsId(string fileVersionRetentionId) returns FileVersionRetention|error {
+        string  path = string `/file_version_retentions/${fileVersionRetentionId}`;
         FileVersionRetention response = check self.clientEp-> get(path, targetType = FileVersionRetention);
         return response;
     }
@@ -1880,10 +1881,10 @@ public client class Client {
     }
     # Get file version legal hold
     #
-    # + file_version_legal_hold_id - The ID of the file version legal hold
+    # + fileVersionLegalHoldId - The ID of the file version legal hold
     # + return - Returns the legal hold policy assignments for the file version.
-    remote isolated function getFileVersionLegalHoldsId(string file_version_legal_hold_id) returns FileVersionLegalHold|error {
-        string  path = string `/file_version_legal_holds/${file_version_legal_hold_id}`;
+    remote isolated function getFileVersionLegalHoldsId(string fileVersionLegalHoldId) returns FileVersionLegalHold|error {
+        string  path = string `/file_version_legal_holds/${fileVersionLegalHoldId}`;
         FileVersionLegalHold response = check self.clientEp-> get(path, targetType = FileVersionLegalHold);
         return response;
     }
@@ -1902,33 +1903,33 @@ public client class Client {
     }
     # Get device pin
     #
-    # + device_pinner_id - The ID of the device pin
+    # + devicePinnerId - The ID of the device pin
     # + return - Returns information about a single device pin.
-    remote isolated function getDevicePinnersId(string device_pinner_id) returns DevicePinner|error {
-        string  path = string `/device_pinners/${device_pinner_id}`;
+    remote isolated function getDevicePinnersId(string devicePinnerId) returns DevicePinner|error {
+        string  path = string `/device_pinners/${devicePinnerId}`;
         DevicePinner response = check self.clientEp-> get(path, targetType = DevicePinner);
         return response;
     }
     # Remove device pin
     #
-    # + device_pinner_id - The ID of the device pin
+    # + devicePinnerId - The ID of the device pin
     # + return - Returns an empty response when the pin has been deleted.
-    remote isolated function deleteDevicePinnersId(string device_pinner_id) returns http:Response | error {
-        string  path = string `/device_pinners/${device_pinner_id}`;
+    remote isolated function deleteDevicePinnersId(string devicePinnerId) returns http:Response|error {
+        string  path = string `/device_pinners/${devicePinnerId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List enterprise device pins
     #
-    # + enterprise_id - The ID of the enterprise
+    # + enterpriseId - The ID of the enterprise
     # + marker - Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.  This requires `usemarker` to be set to `true`.
     # + 'limit - The maximum number of items to return per page.
     # + direction - The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.
     # + return - Returns a list of device pins for a given enterprise.
-    remote isolated function getEnterprisesIdDevicePinners(string enterprise_id, string? marker = (), int? 'limit = (), string? direction = ()) returns DevicePinners|error {
-        string  path = string `/enterprises/${enterprise_id}/device_pinners`;
+    remote isolated function getEnterprisesIdDevicePinners(string enterpriseId, string? marker = (), int? 'limit = (), string? direction = ()) returns DevicePinners|error {
+        string  path = string `/enterprises/${enterpriseId}/device_pinners`;
         map<anydata> queryParam = {"marker": marker, "limit": 'limit, "direction": direction};
         path = path + check getPathForQueryParam(queryParam);
         DevicePinners response = check self.clientEp-> get(path, targetType = DevicePinners);
@@ -1958,19 +1959,19 @@ public client class Client {
     }
     # Get terms of service
     #
-    # + terms_of_service_id - The ID of the terms of service.
+    # + termsOfServiceId - The ID of the terms of service.
     # + return - Returns a terms of service object.
-    remote isolated function getTermsOfServicesId(string terms_of_service_id) returns TermsOfService|error {
-        string  path = string `/terms_of_services/${terms_of_service_id}`;
+    remote isolated function getTermsOfServicesId(string termsOfServiceId) returns TermsOfService|error {
+        string  path = string `/terms_of_services/${termsOfServiceId}`;
         TermsOfService response = check self.clientEp-> get(path, targetType = TermsOfService);
         return response;
     }
     # Update terms of service
     #
-    # + terms_of_service_id - The ID of the terms of service.
+    # + termsOfServiceId - The ID of the terms of service.
     # + return - Returns an updated terms of service object.
-    remote isolated function putTermsOfServicesId(string terms_of_service_id, Body52 payload) returns TermsOfService|error {
-        string  path = string `/terms_of_services/${terms_of_service_id}`;
+    remote isolated function putTermsOfServicesId(string termsOfServiceId, Body52 payload) returns TermsOfService|error {
+        string  path = string `/terms_of_services/${termsOfServiceId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -2002,10 +2003,10 @@ public client class Client {
     }
     # Update terms of service status for existing user
     #
-    # + terms_of_service_user_status_id - The ID of the terms of service status.
+    # + termsOfServiceUserStatusId - The ID of the terms of service status.
     # + return - Returns the updated terms of service status object.
-    remote isolated function putTermsOfServiceUserStatusesId(string terms_of_service_user_status_id, Body54 payload) returns TermsOfServiceUserStatus|error {
-        string  path = string `/terms_of_service_user_statuses/${terms_of_service_user_status_id}`;
+    remote isolated function putTermsOfServiceUserStatusesId(string termsOfServiceUserStatusId, Body54 payload) returns TermsOfServiceUserStatus|error {
+        string  path = string `/terms_of_service_user_statuses/${termsOfServiceUserStatusId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -2037,22 +2038,22 @@ public client class Client {
     }
     # Get allowed collaboration domain
     #
-    # + collaboration_whitelist_entry_id - The ID of the entry in the list.
+    # + collaborationWhitelistEntryId - The ID of the entry in the list.
     # + return - Returns an entry on the list of allowed domains.
-    remote isolated function getCollaborationWhitelistEntriesId(string collaboration_whitelist_entry_id) returns CollaborationAllowlistEntry|error {
-        string  path = string `/collaboration_whitelist_entries/${collaboration_whitelist_entry_id}`;
+    remote isolated function getCollaborationWhitelistEntriesId(string collaborationWhitelistEntryId) returns CollaborationAllowlistEntry|error {
+        string  path = string `/collaboration_whitelist_entries/${collaborationWhitelistEntryId}`;
         CollaborationAllowlistEntry response = check self.clientEp-> get(path, targetType = CollaborationAllowlistEntry);
         return response;
     }
     # Remove domain from list of allowed collaboration domains
     #
-    # + collaboration_whitelist_entry_id - The ID of the entry in the list.
+    # + collaborationWhitelistEntryId - The ID of the entry in the list.
     # + return - A blank response is returned if the entry was successfully deleted.
-    remote isolated function deleteCollaborationWhitelistEntriesId(string collaboration_whitelist_entry_id) returns http:Response | error {
-        string  path = string `/collaboration_whitelist_entries/${collaboration_whitelist_entry_id}`;
+    remote isolated function deleteCollaborationWhitelistEntriesId(string collaborationWhitelistEntryId) returns http:Response|error {
+        string  path = string `/collaboration_whitelist_entries/${collaborationWhitelistEntryId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List users exempt from collaboration domain restrictions
@@ -2080,22 +2081,22 @@ public client class Client {
     }
     # Get user exempt from collaboration domain restrictions
     #
-    # + collaboration_whitelist_exempt_target_id - The ID of the exemption to the list.
+    # + collaborationWhitelistExemptTargetId - The ID of the exemption to the list.
     # + return - Returns the user's exempted from the list of collaboration domains.
-    remote isolated function getCollaborationWhitelistExemptTargetsId(string collaboration_whitelist_exempt_target_id) returns CollaborationAllowlistExemptTarget|error {
-        string  path = string `/collaboration_whitelist_exempt_targets/${collaboration_whitelist_exempt_target_id}`;
+    remote isolated function getCollaborationWhitelistExemptTargetsId(string collaborationWhitelistExemptTargetId) returns CollaborationAllowlistExemptTarget|error {
+        string  path = string `/collaboration_whitelist_exempt_targets/${collaborationWhitelistExemptTargetId}`;
         CollaborationAllowlistExemptTarget response = check self.clientEp-> get(path, targetType = CollaborationAllowlistExemptTarget);
         return response;
     }
     # Remove user from list of users exempt from domain restrictions
     #
-    # + collaboration_whitelist_exempt_target_id - The ID of the exemption to the list.
+    # + collaborationWhitelistExemptTargetId - The ID of the exemption to the list.
     # + return - A blank response is returned if the exemption was successfully deleted.
-    remote isolated function deleteCollaborationWhitelistExemptTargetsId(string collaboration_whitelist_exempt_target_id) returns http:Response | error {
-        string  path = string `/collaboration_whitelist_exempt_targets/${collaboration_whitelist_exempt_target_id}`;
+    remote isolated function deleteCollaborationWhitelistExemptTargetsId(string collaborationWhitelistExemptTargetId) returns http:Response|error {
+        string  path = string `/collaboration_whitelist_exempt_targets/${collaborationWhitelistExemptTargetId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # List storage policies
@@ -2113,10 +2114,10 @@ public client class Client {
     }
     # Get storage policy
     #
-    # + storage_policy_id - The ID of the storage policy.
+    # + storagePolicyId - The ID of the storage policy.
     # + return - Returns a storage policy object.
-    remote isolated function getStoragePoliciesId(string storage_policy_id) returns StoragePolicy|error {
-        string  path = string `/storage_policies/${storage_policy_id}`;
+    remote isolated function getStoragePoliciesId(string storagePolicyId) returns StoragePolicy|error {
+        string  path = string `/storage_policies/${storagePolicyId}`;
         StoragePolicy response = check self.clientEp-> get(path, targetType = StoragePolicy);
         return response;
     }
@@ -2146,19 +2147,19 @@ public client class Client {
     }
     # Get storage policy assignment
     #
-    # + storage_policy_assignment_id - The ID of the storage policy assignment.
+    # + storagePolicyAssignmentId - The ID of the storage policy assignment.
     # + return - Returns a storage policy assignment object.
-    remote isolated function getStoragePolicyAssignmentsId(string storage_policy_assignment_id) returns StoragePolicyAssignment|error {
-        string  path = string `/storage_policy_assignments/${storage_policy_assignment_id}`;
+    remote isolated function getStoragePolicyAssignmentsId(string storagePolicyAssignmentId) returns StoragePolicyAssignment|error {
+        string  path = string `/storage_policy_assignments/${storagePolicyAssignmentId}`;
         StoragePolicyAssignment response = check self.clientEp-> get(path, targetType = StoragePolicyAssignment);
         return response;
     }
     # Update storage policy assignment
     #
-    # + storage_policy_assignment_id - The ID of the storage policy assignment.
+    # + storagePolicyAssignmentId - The ID of the storage policy assignment.
     # + return - Returns an updated storage policy assignment object.
-    remote isolated function putStoragePolicyAssignmentsId(string storage_policy_assignment_id, Body58 payload) returns StoragePolicyAssignment|error {
-        string  path = string `/storage_policy_assignments/${storage_policy_assignment_id}`;
+    remote isolated function putStoragePolicyAssignmentsId(string storagePolicyAssignmentId, Body58 payload) returns StoragePolicyAssignment|error {
+        string  path = string `/storage_policy_assignments/${storagePolicyAssignmentId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
@@ -2167,13 +2168,13 @@ public client class Client {
     }
     # Unassign storage policy
     #
-    # + storage_policy_assignment_id - The ID of the storage policy assignment.
+    # + storagePolicyAssignmentId - The ID of the storage policy assignment.
     # + return - Returns an empty response when the storage policy assignment is successfully deleted.
-    remote isolated function deleteStoragePolicyAssignmentsId(string storage_policy_assignment_id) returns http:Response | error {
-        string  path = string `/storage_policy_assignments/${storage_policy_assignment_id}`;
+    remote isolated function deleteStoragePolicyAssignmentsId(string storagePolicyAssignmentId) returns http:Response|error {
+        string  path = string `/storage_policy_assignments/${storagePolicyAssignmentId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response  response = check self.clientEp-> delete(path, request, targetType = http:Response );
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
         return response;
     }
     # Create zip download
@@ -2189,19 +2190,19 @@ public client class Client {
     }
     # Download zip archive
     #
-    # + zip_download_id - The unique identifier that represent this `zip` archive.
+    # + zipDownloadId - The unique identifier that represent this `zip` archive.
     # + return - Returns the content of the items requested for this download, formatted as a stream of files and folders in a `zip` archive.
-    remote isolated function getZipDownloadsIdContent(string zip_download_id) returns string|error {
-        string  path = string `/zip_downloads/${zip_download_id}/content`;
+    remote isolated function getZipDownloadsIdContent(string zipDownloadId) returns string|error {
+        string  path = string `/zip_downloads/${zipDownloadId}/content`;
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
     }
     # Get zip download status
     #
-    # + zip_download_id - The unique identifier that represent this `zip` archive.
+    # + zipDownloadId - The unique identifier that represent this `zip` archive.
     # + return - Returns the status of the `zip` archive that is being downloaded.
-    remote isolated function getZipDownloadsIdStatus(string zip_download_id) returns ZipDownloadStatus|error {
-        string  path = string `/zip_downloads/${zip_download_id}/status`;
+    remote isolated function getZipDownloadsIdStatus(string zipDownloadId) returns ZipDownloadStatus|error {
+        string  path = string `/zip_downloads/${zipDownloadId}/status`;
         ZipDownloadStatus response = check self.clientEp-> get(path, targetType = ZipDownloadStatus);
         return response;
     }
@@ -2211,7 +2212,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -2245,7 +2246,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

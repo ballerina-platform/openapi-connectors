@@ -1,35 +1,25 @@
 ## Overview
 
-Orbit CRM connector consume the data exposed in https://orbit.org/v2. It is supporting all operations provided by Orbit API.
+This is a generated connector for [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
 
-## Configuring Connector
+Orbit API used to track activities of users and manage users.
 
-### Prerequisites
+## Prerequisites
 
-- Orbit Account
-
-### Obtaining tokens
-
-To utilize Orbit users have to obtain token given by [Orbit](https://app.orbit.love/)
-
-To obtain an API token please follow these steps
-    * Go to [Orbit](https://app.orbit.love/) and register a new account
-    * Submit information in register form
-    * After submitting needed information API token can be obtained by navigating to `Account Settings`
-
-Then provide the obtained API token in client configuration.
+Before using this connector in your Ballerina application, complete the following:
+* Create [Orbit Account](https://app.orbit.love/signup)
+* Obtaining tokens
+    1. Log into [Orbit Account](https://app.orbit.love/login) and get token by navigating to `Account Settings`
 
 ## Quickstart
 
-### Client configuration
-
-#### Step 1: Import Orbit module
-First, import the ballerinax/orbitcrm module into the Ballerina project.
+### Step 1: Import connector
+Import the ballerinax/orbitcrm module into the Ballerina project.
 
 ```ballerina
 import ballerinax/orbitcrm;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Create a new connector instance
 
 Add the project configuration file by creating a `Config.toml` file. Config file should have following configurations. Add the tokens obtained in the previous step to the `Config.toml` file.
 
@@ -44,23 +34,9 @@ orbitcrm:ClientConfig clientConfig = {authConfig : authConfig};
 
 orbitcrm:Client myclient = check new orbitcrm:Client(clientConfig, {}, "https://app.orbit.love/api/v1");
 ```
-#### Step 3: Get activities
-```ballerina
-orbitcrm:json result = check myclient->getActivitiesById(<Workspace_ID>);
-```
-
-## Snippets
-Snippets of some operations.
-
-### Get list of activities
-```ballerina
-orbitcrm:json result = check baseClient->getActivitiesInWorkspace(<Workspace_ID>);
-```
-### Get available workspaces
-```ballerina
-orbitcrm:json result = check myclient->getWorkspaces();
-```
-### Get activity detail
-```ballerina
-orbitcrm:json result = check myclient->getActivitiesById(<Workspace_ID>,<Activity_ID>);
-```
+### Step 3: Invoke connector operation
+1. You can get activity details as follows with `getActivitiesById` method by passing Id of a work sheet as a parameter. Successful creation returns the `json` containing activity detail and the error cases returns an `error` object.
+    ```ballerina
+    orbitcrm:json result = check myclient->getActivitiesById(<Workspace_ID>);
+    ```
+2. Use `bal run` command to compile and run the Ballerina program. 

@@ -1,42 +1,27 @@
 ## Overview
 
-The Movie Database (TMDB) connector consume the data exposed in https://developers.themoviedb.org/3/. It is currently supporting the following operations.
+This is a generated connector for [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification. 
 
-- getPopularMovies
-- getUpcomingMovies
-- getMovieByMovieId
-- getTopRatedTvShow
-- getTvShowByDetails
-- searchMovie
-- searchTvShow
+The Movie Database (TMDB) API provide data about movies and tv shows around the world.
 
-## Configuring Connector
-
-### Prerequisites
-
-- The Movie Database (TMDB) account
-
-### Obtaining tokens
-
-To utilize The Movie Database (TMDB) API users have to obtain API key given by [TMDB](https://www.themoviedb.org/)
-
-To obtain an API Key please follow these steps
-* Go to [TMDB](https://www.themoviedb.org/) and create an account
-* Click the "Settings"
-* Click the "API" tab in the left sidebar
-* Click "Create" or "click here" on the API page
-
-Then provide the obtained API Key in client configuration.
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create [TMDB Account](https://www.themoviedb.org/signup)
+* Obtaining tokens
+    1. Log into [TMDB Account](https://www.themoviedb.org/login)
+    2. Click the `Settings`
+    3. Click the `API` tab in the left sidebar
+    4. Click `Create` or `click here` on the API page
 
 ## Quickstart
 
-#### Step 1: Import The Movie Database (TMDB) module
-First, import the ballerinax/themoviedb module into the Ballerina project.
+### Step 1: Import connector
+Import the ballerinax/themoviedb module into the Ballerina project.
 
 ```ballerina
 import ballerinax/themoviedb;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Create a new connector instance
 ```ballerina
 themoviedb:ApiKeysConfig config = {
     apiKeys : {
@@ -46,24 +31,9 @@ themoviedb:ApiKeysConfig config = {
 
 themoviedb:Client myclient = check new themoviedb:Client(config);
 ```
-#### Step 3: Get Upcoming Movies
-
-```ballerina
-themoviedb:GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies();
-```
-
-## Snippets
-Snippets of some operations.
-
-- Get Upcoming Movies
-    ``` ballerina
+### Step 3: Invoke connector operation
+1. You can get list of upcoming movies as follows with `getUpcomingMovies` method. Successful creation returns the created `GetUpcomingMoviesResponse` and the error cases returns an `error` object.
+    ```ballerina
     themoviedb:GetUpcomingMoviesResponse result = check myclient->getUpcomingMovies();
     ```
-- Get Popular Movies
-    ``` ballerina
-    themoviedb:GetPopularMoviesResponse result = check myclient->getPopularMovies();
-    ```
-- Search Movies
-    ``` ballerina
-    themoviedb:SearchMovieResponse result = check myclient->searchMovie("Thor");
-    ```
+2. Use `bal run` command to compile and run the Ballerina program. 

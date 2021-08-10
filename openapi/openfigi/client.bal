@@ -39,7 +39,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
-    }appid
+    }
     #
     # + payload - A list of third-party identifiers and extra filters.
     # + return - A list of FIGIs and their metadata.

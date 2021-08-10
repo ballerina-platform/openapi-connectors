@@ -34,54 +34,23 @@ public type Owner record {
     OwnerAttribute attributes?;
 };
 
-# Event releationship
-public type EventRelationship record {
-    # Event session
-    Session[] sessions?;
-};
-
-# Session request attributes
-public type SessionRequestAttribute record {
-    # Estimated started time
-    string estimated_started_at?;
-    # Time zone
-    string timezone?;
-};
-
-# People attribute
-public type PeopleAttribute record {
-    # Role assigned to
-    string role?;
-    # Created time
-    string created_at?;
-    # Updated time
-    string updated_at?;
-    # Time zone
-    string timezone?;
-    # First name
-    string first_name?;
-    # Last name
-    string last_name?;
-    # Email address
-    string email?;
-    # Avatar url link
-    string avatar_link?;
-};
-
 # Session releationship
 public type SessionRelationship record {
     # People
     People[] people?;
 };
 
-# Event session
-public type People record {
-    # People type
-    string 'type?;
-    # People ID
-    string id?;
-    # People attribute
-    PeopleAttribute attributes?;
+# Create new event response
+public type InlineResponse201 record {
+    # Event response
+    Event data?;
+};
+
+public type InlineResponse200 record {
+    # Event Data
+    Event[] data;
+    # Metadata
+    Meta meta?;
 };
 
 # Event attributes
@@ -136,6 +105,122 @@ public type EventData record {
     EventRelationship relationships?;
 };
 
+# Event fields
+public type Field record {
+    # Event field ID
+    string id?;
+    # Type of fields
+    string 'type?;
+    # Order of fields
+    int 'order?;
+    # Required or not
+    boolean required?;
+};
+
+# People request attributes
+public type PeopleRequestAttribute record {
+    # Referrer detail
+    string referrer?;
+    # UTM tracking source
+    string utm_source?;
+    # UTM medium
+    string utm_medium?;
+    # UTM term
+    string utm_term?;
+    # UTM content
+    string utm_content?;
+    # UTM campaign
+    string utm_campaign?;
+};
+
+# Register participant response
+public type InlineResponse2012 record {
+    # Event session
+    People data?;
+};
+
+# Create session response
+public type InlineResponse2011 record {
+    # Event session
+    Session data?;
+};
+
+# PosteventsRequest
+public type Body record {
+    # Event post data
+    EventData data?;
+};
+
+# Owner attributes
+public type OwnerAttribute record {
+    # Role of owner
+    string role?;
+    # Created timestamp
+    int created_at?;
+    # Updated timestamp
+    int updated_at?;
+    # Timezone
+    string timezone?;
+    # First name
+    string first_name?;
+    # Last name
+    string last_name?;
+    # Email
+    string email?;
+    # Avatar link
+    string? avatar_link?;
+};
+
+# Event releationship
+public type EventRelationship record {
+    # Event session
+    Session[] sessions?;
+};
+
+# Session request attributes
+public type SessionRequestAttribute record {
+    # Estimated started time
+    string estimated_started_at?;
+    # Time zone
+    string timezone?;
+};
+
+# People attribute
+public type PeopleAttribute record {
+    # Role assigned to
+    string role?;
+    # Created time
+    string created_at?;
+    # Updated time
+    string updated_at?;
+    # Time zone
+    string timezone?;
+    # First name
+    string first_name?;
+    # Last name
+    string last_name?;
+    # Email address
+    string email?;
+    # Avatar url link
+    string avatar_link?;
+};
+
+# RegisterPeopleRequest
+public type Body2 record {
+    # Add People data
+    PeopleData data?;
+};
+
+# Event session
+public type People record {
+    # People type
+    string 'type?;
+    # People ID
+    string id?;
+    # People attribute
+    PeopleAttribute attributes?;
+};
+
 # Event session attribute
 public type SessionAttribute record {
     # Event type ID
@@ -166,18 +251,6 @@ public type SessionAttribute record {
     string registrants_count?;
 };
 
-# Event fields
-public type Field record {
-    # Event field ID
-    string id?;
-    # Type of fields
-    string 'type?;
-    # Order of fields
-    int 'order?;
-    # Required or not
-    boolean required?;
-};
-
 # Add People data
 public type PeopleData record {
     # Event type
@@ -186,20 +259,10 @@ public type PeopleData record {
     PeopleRequestAttribute attributes?;
 };
 
-# People request attributes
-public type PeopleRequestAttribute record {
-    # Referrer detail
-    string referrer?;
-    # UTM tracking source
-    string utm_source?;
-    # UTM medium
-    string utm_medium?;
-    # UTM term
-    string utm_term?;
-    # UTM content
-    string utm_content?;
-    # UTM campaign
-    string utm_campaign?;
+# Get an event by ID response
+public type InlineResponse2001 record {
+    # Event response
+    Event data?;
 };
 
 # Event response
@@ -212,6 +275,28 @@ public type Event record {
     EventAttribute attributes?;
 };
 
+# PostSessionRequest
+public type Body1 record {
+    # Add Session data
+    SessionData data?;
+};
+
+public type InlineResponse2003 record {
+    # Data
+    record {*Event; # Attributes
+        record  { string role?; int created_at?; int updated_at?; string timezone?; string first_name?; string last_name?; string email?; string avatar_link?; record  { string event_id?; string created_at?; string updated_at?; record  { string id?; string 'type?; int 'order?; string required?;} [] fields?;} [] registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;}  attributes?;}[] data;
+    # Metadata
+    Meta meta?;
+};
+
+public type InlineResponse2002 record {
+    # Data
+    record {*Event; # Attributes
+        record  { string event_type_id?; string status?; string timezone?; string room_link?; int attendees_count?; int duration?; int estimated_started_at?; int started_at?; int ended_at?; int canceled_at?; int created_at?; int updated_at?; int registrants_count?;}  attributes?;}[] data;
+    # Metadata
+    Meta meta?;
+};
+
 # Event request attributes
 public type EventRequestAttribute record {
     # Event ID to copy
@@ -222,26 +307,6 @@ public type EventRequestAttribute record {
     string title?;
     # Event slug
     string slug?;
-};
-
-# Owner attributes
-public type OwnerAttribute record {
-    # Role of owner
-    string role?;
-    # Created timestamp
-    int created_at?;
-    # Updated timestamp
-    int updated_at?;
-    # Timezone
-    string timezone?;
-    # First name
-    string first_name?;
-    # Last name
-    string last_name?;
-    # Email
-    string email?;
-    # Avatar link
-    string? avatar_link?;
 };
 
 # Event session

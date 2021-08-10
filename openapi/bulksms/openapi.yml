@@ -10,9 +10,7 @@ info:
   version: 1.0.0
   x-init-description: >-
     The connector initialization requires setting the API credentials. 
-    
-    create an [BulkSMS account](https://www.bulksms.com/) 
-    and obtain tokens following [this guide](https://www.bulksms.com/developer/json/v1/#section/Authentication).
+    Create an [BulkSMS account](https://www.bulksms.com/) and obtain tokens following [this guide](https://www.bulksms.com/developer/json/v1/#section/Authentication).
   x-logo:
     url: /developer/images/bulksms.png
 servers:

@@ -32,7 +32,7 @@ public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
-    # create an [BulkSMS account](https://www.bulksms.com/)  and obtain tokens following 
+    # Create an [BulkSMS account](https://www.bulksms.com/) and obtain tokens following 
     # [this guide](https://www.bulksms.com/developer/json/v1/#section/Authentication).
     #
     # + clientConfig - The configurations to be used when initializing the `connector`

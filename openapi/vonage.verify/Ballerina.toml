@@ -4,7 +4,7 @@ name = "vonage.verify"
 version = "0.1.0-SNAPSHOT"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["Vonage","Verify"]
+keywords = ["vonage","verify","communication"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

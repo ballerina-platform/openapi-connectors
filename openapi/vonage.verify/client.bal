@@ -14,21 +14,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
-
-# The Verify API helps you to implement 2FA (two-factor authentication) in your applications. More information is available at <https://developer.nexmo.com/verify>
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# This is a generated connector for [Vonage Verify API v1.1.7](https://nexmo-api-specification.herokuapp.com/verify) OpenAPI specification.
+# The Verify API helps you to implement 2FA (two-factor authentication) in your applications.
+# More information is available at https://developer.nexmo.com/verify/overview
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization doesn't require setting the API credentials. 
+    # Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
+    # Some operations may require passing the token as a parameter.
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.nexmo.com/verify") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
@@ -101,7 +103,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

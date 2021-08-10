@@ -1,39 +1,25 @@
 ## Overview
 
-News API connector consume the data exposed in https://newsapi.org/v2. It is supporting the following operations.
+This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification. 
 
-- listArticles
-- listTopHeadlines
-- listSources
+News API used to fetch news(articles, headlines and sources) from news sources and blogs across the web.
 
-## Configuring Connector
-
-### Prerequisites
-
-- News API Account
-
-### Obtaining tokens
-
-To utilize News API users have to obtain API key given by [News API](https://newsapi.org/register)
-
-To obtain an API Key please follow these steps
-    * Go to [News API](https://newsapi.org/) and register a new account
-    * Submit information in register form
-    * After submitting needed information API Key can be obtained
-
-Then provide the obtained API Key in client configuration.
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create [News API Account](https://newsapi.org/register)
+* Obtaining tokens
+    1. Log into [News API Account](https://newsapi.org/login)
+    2. Get API key by clicking to `Get API Key`
 
 ## Quickstart
 
-### Client configuration
-
-#### Step 1: Import News API module
-First, import the ballerinax/newsapi module into the Ballerina project.
+### Step 1: Import connector
+Import the ballerinax/newsapi module into the Ballerina project.
 
 ```ballerina
 import ballerinax/newsapi;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Create a new connector instance
 ```ballerina
 newsapi:ApiKeysConfig config = {
     apiKeys : {
@@ -43,23 +29,9 @@ newsapi:ApiKeysConfig config = {
 
 newsapi:Client myclient = check new newsapi:Client(config, {}, "https://newsapi.org/v2");
 ```
-#### Step 3: Get top headlines
-```ballerina
-newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
-```
-
-## Snippets
-Snippets of some operations.
-
-### Get top articles
-```ballerina
-newsapi:WSNewsTopHeadlineResponse articleResult = check myclient->listArticles(1, 5, domains="bbc.co.uk");
-```
-### Get top headlines
-```ballerina
-newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
-```
-### Get sources
-```ballerina
-newsapi:WSNewsSourcesResponse result = check myclient->listSources(country="us");
-```
+### Step 3: Invoke connector operation
+1. You can get top headlines as follows with `listTopHeadlines` method by passing country as a parameter.
+    ```ballerina
+    newsapi:WSNewsTopHeadlineResponse result = check myclient->listTopHeadlines(country="us");
+    ```
+2. Use `bal run` command to compile and run the Ballerina program. 

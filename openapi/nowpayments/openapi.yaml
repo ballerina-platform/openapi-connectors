@@ -607,4 +607,4 @@ components:
       type: apiKey
       in: header
       name: x-api-key
-      x-apikey-description: "Provide your API Key as apiKey. Eg: {\"apiKey\" : \"<Your API Key>\"}"
+      x-apikey-description: "Provide your API Key as x-api-key. Eg: {\"x-api-key\" : \"<Your API Key>\"}"

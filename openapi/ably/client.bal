@@ -14,25 +14,27 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 public type ClientConfig record {
     http:BearerTokenConfig|http:CredentialsConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# The [REST API specification](https://www.ably.io/documentation/rest-api) for Ably.
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+# This is a generated connector for [Ably REST API v1.1.0](https://ably.com/documentation/rest-api) OpenAPI specification.
+# The [Ably REST API](https://www.ably.io/documentation/rest-api) provides a way for a wide range of server and client devices to communicate with the Ably service over REST.
+# The REST API does not provide a realtime long-lived connection to Ably, but in all other respects is a simple subset of the full [realtime messaging API](https://ably.com/documentation/realtime).
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create an [Ably account](https://ably.com/) and obtain tokens following [this guide](https://ably.com/documentation/core-features/versions/v1.1/authentication).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://rest.ably.io") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -45,7 +47,7 @@ public client class Client {
     # + 'limit - Optionally specifies the maximum number of results to return. A limit greater than 1000 is unsupported
     # + prefix - Optionally limits the query to only those channels whose name starts with the given prefix
     # + return - OK
-    remote isolated function getMetadataOfAllChannels(string? xAblyVersion = (), string? format = (), int? 'limit = 100, string? prefix = ()) returns InlineResponse2xx|error {
+    remote isolated function getMetadataOfAllChannels(string? xAblyVersion = (), string? format = (), int 'limit = 100, string? prefix = ()) returns InlineResponse2xx|error {
         string  path = string `/channels`;
         map<anydata> queryParam = {"format": format, "limit": 'limit, "prefix": prefix};
         path = path + check getPathForQueryParam(queryParam);
@@ -56,12 +58,12 @@ public client class Client {
     }
     # Get metadata of a channel
     #
-    # + channel_id - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
+    # + channelId - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function getMetadataOfChannel(string channel_id, string? xAblyVersion = (), string? format = ()) returns ChannelDetails|error {
-        string  path = string `/channels/${channel_id}`;
+    remote isolated function getMetadataOfChannel(string channelId, string? xAblyVersion = (), string? format = ()) returns ChannelDetails|error {
+        string  path = string `/channels/${channelId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -71,7 +73,7 @@ public client class Client {
     }
     # Get message history for a channel
     #
-    # + channel_id - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
+    # + channelId - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + 'start - Beginning of time The start of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or after this time.
@@ -79,8 +81,8 @@ public client class Client {
     # + end - The end of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or before this time.
     # + direction - The direction of this query. The direction determines the order of the returned result array, but also determines which end of the query interval is the start point for the search. For example, a forwards query uses start as the start point, whereas a backwards query uses end as the start point.
     # + return - OK
-    remote isolated function getMessagesByChannel(string channel_id, string? xAblyVersion = (), string? format = (), string? 'start = (), int? 'limit = (), string? end = "now", string? direction = "backwards") returns Message[]|error {
-        string  path = string `/channels/${channel_id}/messages`;
+    remote isolated function getMessagesByChannel(string channelId, string? xAblyVersion = (), string? format = (), string? 'start = (), int? 'limit = (), string end = "now", string direction = "backwards") returns Message[]|error {
+        string  path = string `/channels/${channelId}/messages`;
         map<anydata> queryParam = {"format": format, "start": 'start, "limit": 'limit, "end": end, "direction": direction};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -90,13 +92,13 @@ public client class Client {
     }
     # Publish a message to a channel
     #
-    # + channel_id - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
+    # + channelId - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
     # + payload - Message
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function publishMessagesToChannel(string channel_id, Message payload, string? xAblyVersion = (), string? format = ()) returns InlineResponse2xx1|error {
-        string  path = string `/channels/${channel_id}/messages`;
+    remote isolated function publishMessagesToChannel(string channelId, Message payload, string? xAblyVersion = (), string? format = ()) returns InlineResponse2xx1|error {
+        string  path = string `/channels/${channelId}/messages`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -109,15 +111,15 @@ public client class Client {
     }
     # Get presence of a channel
     #
-    # + channel_id - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
+    # + channelId - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + clientId - Optional filter to restrict members present with that clientId
     # + connectionId - Optional filter to restrict members present with that connectionId
     # + 'limit - The maximum number of records to return. A limit greater than 1,000 is invalid.
     # + return - OK
-    remote isolated function getPresenceOfChannel(string channel_id, string? xAblyVersion = (), string? format = (), string? clientId = (), string? connectionId = (), int? 'limit = 100) returns PresenceMessage[]|error {
-        string  path = string `/channels/${channel_id}/presence`;
+    remote isolated function getPresenceOfChannel(string channelId, string? xAblyVersion = (), string? format = (), string? clientId = (), string? connectionId = (), int 'limit = 100) returns PresenceMessage[]|error {
+        string  path = string `/channels/${channelId}/presence`;
         map<anydata> queryParam = {"format": format, "clientId": clientId, "connectionId": connectionId, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -127,7 +129,7 @@ public client class Client {
     }
     # Get presence history of a channel
     #
-    # + channel_id - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
+    # + channelId - The [Channel's ID](https://www.ably.io/documentation/rest/channels).
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + 'start - Beginning of time The start of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or after this time.
@@ -135,8 +137,8 @@ public client class Client {
     # + end - The end of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or before this time.
     # + direction - The direction of this query. The direction determines the order of the returned result array, but also determines which end of the query interval is the start point for the search. For example, a forwards query uses start as the start point, whereas a backwards query uses end as the start point.
     # + return - OK
-    remote isolated function getPresenceHistoryOfChannel(string channel_id, string? xAblyVersion = (), string? format = (), string? 'start = (), int? 'limit = (), string? end = "now", string? direction = "backwards") returns PresenceMessage[]|error {
-        string  path = string `/channels/${channel_id}/presence/history`;
+    remote isolated function getPresenceHistoryOfChannel(string channelId, string? xAblyVersion = (), string? format = (), string? 'start = (), int? 'limit = (), string end = "now", string direction = "backwards") returns PresenceMessage[]|error {
+        string  path = string `/channels/${channelId}/presence/history`;
         map<anydata> queryParam = {"format": format, "start": 'start, "limit": 'limit, "end": end, "direction": direction};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -172,7 +174,7 @@ public client class Client {
     # + clientId - Optional filter to restrict to devices associated with that clientId. Cannot be used with deviceId.
     # + 'limit - The maximum number of records to return.
     # + return - OK
-    remote isolated function getPushSubscriptionsOnChannels(string? xAblyVersion = (), string? format = (), string? 'channel = (), string? deviceId = (), string? clientId = (), int? 'limit = 100) returns DeviceDetails|error {
+    remote isolated function getPushSubscriptionsOnChannels(string? xAblyVersion = (), string? format = (), string? 'channel = (), string? deviceId = (), string? clientId = (), int 'limit = 100) returns DeviceDetails|error {
         string  path = string `/push/channelSubscriptions`;
         map<anydata> queryParam = {"format": format, "channel": 'channel, "deviceId": deviceId, "clientId": clientId, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
@@ -240,7 +242,7 @@ public client class Client {
     # + clientId - Optional filter to restrict to devices associated with that clientId.
     # + 'limit - The maximum number of records to return.
     # + return - OK
-    remote isolated function getRegisteredPushDevices(string? xAblyVersion = (), string? format = (), string? deviceId = (), string? clientId = (), int? 'limit = 100) returns DeviceDetails|error {
+    remote isolated function getRegisteredPushDevices(string? xAblyVersion = (), string? format = (), string? deviceId = (), string? clientId = (), int 'limit = 100) returns DeviceDetails|error {
         string  path = string `/push/deviceRegistrations`;
         map<anydata> queryParam = {"format": format, "deviceId": deviceId, "clientId": clientId, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
@@ -287,12 +289,12 @@ public client class Client {
     }
     # Get a device registration
     #
-    # + device_id - Device's ID.
+    # + deviceId - Device's ID.
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function getPushDeviceDetails(string device_id, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
-        string  path = string `/push/deviceRegistrations/${device_id}`;
+    remote isolated function getPushDeviceDetails(string deviceId, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
+        string  path = string `/push/deviceRegistrations/${deviceId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -302,13 +304,13 @@ public client class Client {
     }
     # Update a device registration
     #
-    # + device_id - Device's ID.
+    # + deviceId - Device's ID.
     # + payload - Device Details
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function putPushDeviceDetails(string device_id, DeviceDetails payload, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
-        string  path = string `/push/deviceRegistrations/${device_id}`;
+    remote isolated function putPushDeviceDetails(string deviceId, DeviceDetails payload, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
+        string  path = string `/push/deviceRegistrations/${deviceId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -321,12 +323,12 @@ public client class Client {
     }
     # Unregister a single device for push notifications
     #
-    # + device_id - Device's ID.
+    # + deviceId - Device's ID.
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function unregisterPushDevice(string device_id, string? xAblyVersion = (), string? format = ()) returns http:Response|error {
-        string  path = string `/push/deviceRegistrations/${device_id}`;
+    remote isolated function unregisterPushDevice(string deviceId, string? xAblyVersion = (), string? format = ()) returns http:Response|error {
+        string  path = string `/push/deviceRegistrations/${deviceId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -338,13 +340,13 @@ public client class Client {
     }
     # Update a device registration
     #
-    # + device_id - Device's ID.
+    # + deviceId - Device's ID.
     # + payload - Device Details
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function patchPushDeviceDetails(string device_id, DeviceDetails payload, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
-        string  path = string `/push/deviceRegistrations/${device_id}`;
+    remote isolated function patchPushDeviceDetails(string deviceId, DeviceDetails payload, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
+        string  path = string `/push/deviceRegistrations/${deviceId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -357,12 +359,12 @@ public client class Client {
     }
     # Reset a registered device's update token
     #
-    # + device_id - Device's ID.
+    # + deviceId - Device's ID.
     # + xAblyVersion - The version of the API you wish to use.
     # + format - The response format you would like
     # + return - OK
-    remote isolated function updatePushDeviceDetails(string device_id, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
-        string  path = string `/push/deviceRegistrations/${device_id}/resetUpdateToken`;
+    remote isolated function updatePushDeviceDetails(string deviceId, string? xAblyVersion = (), string? format = ()) returns DeviceDetails|error {
+        string  path = string `/push/deviceRegistrations/${deviceId}/resetUpdateToken`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Ably-Version": xAblyVersion};
@@ -398,7 +400,7 @@ public client class Client {
     # + direction - The direction of this query. The direction determines the order of the returned result array, but also determines which end of the query interval is the start point for the search. For example, a forwards query uses start as the start point, whereas a backwards query uses end as the start point.
     # + unit - Specifies the unit of aggregation in the returned results.
     # + return - OK
-    remote isolated function getStats(string? xAblyVersion = (), string? format = (), string? 'start = (), int? 'limit = (), string? end = "now", string? direction = "backwards", string? unit = "minute") returns json|error {
+    remote isolated function getStats(string? xAblyVersion = (), string? format = (), string? 'start = (), int? 'limit = (), string end = "now", string direction = "backwards", string unit = "minute") returns json|error {
         string  path = string `/stats`;
         map<anydata> queryParam = {"format": format, "start": 'start, "limit": 'limit, "end": end, "direction": direction, "unit": unit};
         path = path + check getPathForQueryParam(queryParam);
@@ -427,7 +429,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -461,7 +463,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

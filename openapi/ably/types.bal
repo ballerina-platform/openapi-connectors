@@ -142,9 +142,9 @@ public type DeviceDetails record {
     # Platform of the push device.
     string platform?;
     # Push recipient details for a device.
-    Recipient 'push\.recipient?;
+    Recipient pushRecipient?;
     # the current state of the push device.
-    string 'push\.state?;
+    string pushState?;
 };
 
 public type PresenceMessage record {

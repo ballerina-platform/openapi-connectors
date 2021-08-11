@@ -14,30 +14,32 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 public type ApiKeysConfig record {
     map<string> apiKeys;
 };
 
-# The Numbers API enables you to manage your existing numbers and buy new virtual numbers for use with the Vonage APIs. Further information is here: <https://developer.nexmo.com/numbers/overview>
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    map<string> apiKeys;
-    # Client initialization.
+# This is a generated connector for [Vonage Numbers API v1.0.20](https://nexmo-api-specification.herokuapp.com/numbers) OpenAPI specification.
+# The Numbers API enables you to manage your existing numbers and buy new virtual numbers for use with the Vonage APIs. 
+# Further information is here: <https://developer.nexmo.com/numbers/overview>
+public isolated client class Client {
+    final http:Client clientEp;
+    final readonly & map<string> apiKeys;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
     #
-    # + apiKeyConfig - API key configuration detail
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + apiKeyConfig - Provide your API keys as `api_key` and `api_secret`. Eg: `{"api_key" : "<API key>", "api_secret" : "<API secret>"}`
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://rest.nexmo.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys;
+        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
     }
     # List the numbers you own
     #
@@ -49,9 +51,9 @@ public client class Client {
     # + size - Page size
     # + index - Page index
     # + return - OK
-    remote isolated function getOwnedNumbers(string? applicationId = (), boolean? hasApplication = (), string? country = (), string? pattern = (), int? searchPattern = 0, int? size = 10, int? index = 1) returns InboundNumbers|error {
+    remote isolated function getOwnedNumbers(string? applicationId = (), boolean? hasApplication = (), string? country = (), string? pattern = (), int searchPattern = 0, int size = 10, int index = 1) returns InboundNumbers|error {
         string  path = string `/account/numbers`;
-        map<anydata> queryParam = {"application_id": applicationId, "has_application": hasApplication, "country": country, "pattern": pattern, "search_pattern": searchPattern, "size": size, "index": index, api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"application_id": applicationId, "has_application": hasApplication, "country": country, "pattern": pattern, "search_pattern": searchPattern, "size": size, "index": index, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         InboundNumbers response = check self.clientEp-> get(path, targetType = InboundNumbers);
         return response;
@@ -66,9 +68,9 @@ public client class Client {
     # + size - Page size
     # + index - Page index
     # + return - OK
-    remote isolated function getAvailableNumbers(string country, string? 'type = (), string? pattern = (), int? searchPattern = 0, string? features = (), int? size = 10, int? index = 1) returns AvailableNumbers|error {
+    remote isolated function getAvailableNumbers(string country, string? 'type = (), string? pattern = (), int searchPattern = 0, string? features = (), int size = 10, int index = 1) returns AvailableNumbers|error {
         string  path = string `/number/search`;
-        map<anydata> queryParam = {"country": country, "type": 'type, "pattern": pattern, "search_pattern": searchPattern, "features": features, "size": size, "index": index, api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"country": country, "type": 'type, "pattern": pattern, "search_pattern": searchPattern, "features": features, "size": size, "index": index, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         AvailableNumbers response = check self.clientEp-> get(path, targetType = AvailableNumbers);
         return response;
@@ -79,7 +81,7 @@ public client class Client {
     # + return - OK
     remote isolated function buyANumber(NumberDetails payload) returns Response|error {
         string  path = string `/number/buy`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         Response response = check self.clientEp->post(path, request, targetType=Response);
@@ -91,7 +93,7 @@ public client class Client {
     # + return - OK
     remote isolated function cancelANumber(NumberDetails payload) returns Response|error {
         string  path = string `/number/cancel`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         Response response = check self.clientEp->post(path, request, targetType=Response);
@@ -103,7 +105,7 @@ public client class Client {
     # + return - OK
     remote isolated function updateANumber(NumberDetailsUpdate payload) returns Response|error {
         string  path = string `/number/update`;
-        map<anydata> queryParam = {api_key: self.apiKeys["api_key"], api_secret: self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         Response response = check self.clientEp->post(path, request, targetType=Response);
@@ -115,7 +117,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

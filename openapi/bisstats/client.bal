@@ -14,22 +14,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
+# This is a generated connector for [BIS SDMX RESTful API v1](https://stats.bis.org/api-doc/v1/) OpenAPI specification.
 # The BIS SDMX RESTful API is a subset of the official SDMX RESTful API v1.4.0, released in June 2019.
-# This service offers programmatic access to the BIS statistical data and metadata released to the public.
+# This service offers programmatic access to the BIS statistical data and metadata published on the [BIS statistics pages](https://www.bis.org/statistics/index.htm) released to the public.
 # For additional information about the SDMX RESTful API, check the [official sdmx-rest specification](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs) or the [dedicated Wiki](https://github.com/sdmx-twg/sdmx-rest/wiki), including [**useful tips for consumers**](https://github.com/sdmx-twg/sdmx-rest/wiki/Tips-for-consumers).
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization doesn't require setting the API credentials. 
+    # Please refer the [API documentation](https://stats.bis.org/api-doc/v1/) for more information.
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://stats.bis.org/api/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
@@ -45,7 +46,7 @@ public client class Client {
     # + detail - The **amount of information** to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getData(string flow, string 'key, string? startPeriod = (), string? endPeriod = (), int? firstNObservations = (), int? lastNObservations = (), string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getData(string flow, string 'key, string? startPeriod = (), string? endPeriod = (), int? firstNObservations = (), int? lastNObservations = (), string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/data/${flow}/${'key}/all`;
         map<anydata> queryParam = {"startPeriod": startPeriod, "endPeriod": endPeriod, "firstNObservations": firstNObservations, "lastNObservations": lastNObservations, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -65,7 +66,7 @@ public client class Client {
     # + endPeriod - The end of the period for which results should be supplied (inclusive).
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getDataAvailabilityInformation(string flow, string 'key, string componentID, string? mode = "exact", string? references = "none", string? startPeriod = (), string? endPeriod = (), string? acceptEncoding = ()) returns string|error {
+    remote isolated function getDataAvailabilityInformation(string flow, string 'key, string componentID, string mode = "exact", string references = "none", string? startPeriod = (), string? endPeriod = (), string acceptEncoding = "identity") returns string|error {
         string  path = string `/availableconstraint/${flow}/${'key}/all/${componentID}`;
         map<anydata> queryParam = {"mode": mode, "references": references, "startPeriod": startPeriod, "endPeriod": endPeriod};
         path = path + check getPathForQueryParam(queryParam);
@@ -83,7 +84,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getDataStructures(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getDataStructures(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/datastructure/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -101,7 +102,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getDataFlows(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getDataFlows(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/dataflow/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -119,7 +120,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getCategorisations(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getCategorisations(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/categorisation/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -137,7 +138,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getContentConstraints(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getContentConstraints(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/contentconstraint/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -155,7 +156,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getActualConstraints(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getActualConstraints(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/actualconstraint/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -173,7 +174,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getAllowedConstraints(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getAllowedConstraints(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/allowedconstraint/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -191,7 +192,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getStructures(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getStructures(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/structure/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -209,7 +210,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getConceptSchemes(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getConceptSchemes(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/conceptscheme/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -227,7 +228,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getCodelists(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getCodelists(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/codelist/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -245,7 +246,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getCategorySchemes(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getCategorySchemes(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/categoryscheme/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -263,7 +264,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getHierarchicalCodelists(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getHierarchicalCodelists(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/hierarchicalcodelist/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -281,7 +282,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getAgencySchemes(string agencyID, string resourceID, string 'version, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getAgencySchemes(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/agencyscheme/${agencyID}/${resourceID}/${'version}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -300,7 +301,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getConcepts(string agencyID, string resourceID, string 'version, string itemID, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getConcepts(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/conceptscheme/${agencyID}/${resourceID}/${'version}/${itemID}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -319,7 +320,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getCodes(string agencyID, string resourceID, string 'version, string itemID, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getCodes(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/codelist/${agencyID}/${resourceID}/${'version}/${itemID}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -338,7 +339,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getCategories(string agencyID, string resourceID, string 'version, string itemID, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getCategories(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/categoryscheme/${agencyID}/${resourceID}/${'version}/${itemID}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -357,7 +358,7 @@ public client class Client {
     # + detail - The amount of information to be returned. 
     # + acceptEncoding - Specifies whether the response should be compressed and how. 
     # + return - OK
-    remote isolated function getHierarchies(string agencyID, string resourceID, string 'version, string itemID, string? references = "none", string? detail = "full", string? acceptEncoding = ()) returns string|error {
+    remote isolated function getHierarchies(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
         string  path = string `/hierarchicalcodelist/${agencyID}/${resourceID}/${'version}/${itemID}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         path = path + check getPathForQueryParam(queryParam);
@@ -372,7 +373,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {
@@ -406,7 +407,7 @@ isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  str
 #
 # + headerParam - Headers  map
 # + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
+isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
     map<string|string[]> headerMap = {};
     foreach  var [key, value] in  headerParam.entries() {
         if  value  is  string ||  value  is  string[] {

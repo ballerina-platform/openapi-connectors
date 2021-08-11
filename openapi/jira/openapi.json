@@ -2,7 +2,8 @@
     "openapi": "3.0.1",
     "info": {
        "title": "The Jira Cloud platform REST API",
-       "description": "Client endpoint for Jira Cloud platform API",
+       "description": "This is a generated connector for [Jira Cloud platform API](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. \nJira Cloud platform API provide capability to access Jira operations related to projects, issues and user related operations.",
+       "x-init-description": "The connector initialization requires setting the API credentials. \nCreate an [Atlassian Account](https://id.atlassian.com/signup) \nand obtain tokens by following [this guide](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/).",
        "termsOfService": "http://atlassian.com/terms/",
        "contact": {
           "email": "ecosystem@atlassian.com"

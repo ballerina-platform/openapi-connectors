@@ -14,313 +14,32 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+#
+# + authConfig - Configurations related to client authentication
+# + secureSocketConfig - SSL/TLS-related configurations
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# List of meetings
-public type CompoundListMeetingsResponse record {
-    *PaginationObject;
-    *MeetingList;
-};
-
-# Response received from meeting creation
-public type CompoundCreateMeetingResponse record {
-    *MeetingMetadata;
-    *RequestedMeetingDetails;
-};
-
-# List of meeting registrants
-public type CompoundListMeetingRegistrantsResponse record {
-    *PaginationObject;
-    *RegistrantsList;
-};
-
-# Registrant base object
-public type CompoundAddMeetingRegistrantRequest record {
-    # Registrant's address.
-    string address?;
-    # Registrant's city.
-    string city?;
-    # A field that allows registrants to provide any questions or comments that they might have.
-    string comments?;
-    # Registrant's country. The value of this field must be in two-letter abbreviated form and must match the ID field provided in the [Countries](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries) table.
-    string country?;
-    # Custom questions.
-    RegistrantCustomQuestion[] custom_questions?;
-    # A valid email address of the registrant.
-    string email;
-    # Registrant's first name.
-    string first_name;
-    # Registrant's Industry.
-    string industry?;
-    # Registrant's job title.
-    string job_title?;
-    # Registrant's last name.
-    string last_name?;
-    # Number of Employees: `1-20`, `21-50`, `51-100`, `101-500`, `500-1,000`, `1,001-5,000`, `5,001-10,000`, `More than 10,000`
-    string no_of_employees?;
-    # Registrant's Organization.
-    string org?;
-    # Registrant's Phone number.
-    string phone?;
-    # This field can be included to gauge interest of webinar attendees towards buying your product or service.
-    string purchasing_time_frame?;
-    # Role in Purchase Process: `Decision Maker`, `Evaluator/Recommender`, `Influencer`, `Not involved` 
-    string role_in_purchase_process?;
-    # Registrant's State/Province.
-    string state?;
-    # Registrant's Zip/Postal Code.
-    string zip?;
-};
-
-# Add meeting registrant respond
-public type AddMeetingRegistrantResponse record {
-    # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
-    int id;
-    # Unique URL for this registrant to join the meeting. This URL should only be shared with the registrant for whom the API request was made.
-    string join_url?;
-    # Unique identifier of the registrant.
-    string registrant_id?;
-    # The start time for the meeting.
-    string start_time?;
-    # Topic of the meeting.
-    string topic?;
-};
-
-# Meeting registrant update request
-public type UpdateMeetingRegistrantStatusRequest record {
-    # Registrant Status:<br>`approve` - Approve registrant.<br>`cancel` - Cancel previously approved registrant's registration.<br>`deny` - Deny registrant.
-    string action;
-    # List of registrants.
-    SimplifiedRegistrantDetails[] registrants?;
-};
-
-# Meeting details 
-public type CompoundGetMeetingByIdResponse record {
-    *MeetingFullMetadata;
-    *RequestedMeetingDetails;
-};
-
-# Base object for sessions.
-public type CompoundUpdateMeetingRequest record {
-    # Email or userId if you want to schedule meeting for another user.
-    string schedule_for?;
-    # Meeting description.
-    string agenda?;
-    # Meeting duration (minutes). Used for scheduled meetings only.
-    int duration?;
-    # Meeting passcode. Passcode may only contain the following characters: [a-z A-Z 0-9 @ - _ *] and can have a maximum of 10 characters.
-    string password?;
-    # Recurrence related meeting informations
-    ReccurenceDetails recurrence?;
-    # Meeting settings
-    MeetingSettings settings?;
-    # Meeting start time. When using a format like "yyyy-MM-dd'T'HH:mm:ss'Z'", always use GMT time. When using a format like "yyyy-MM-dd'T'HH:mm:ss", you should use local time and  specify the time zone. Only used for scheduled meetings and recurring meetings with a fixed time.
-    string start_time?;
-    # Unique identifier of the meeting template. 
-    string template_id?;
-    # Time zone to format start_time. For example, "America/Los_Angeles". For scheduled meetings only. Please reference our [time zone](#timezones) list for supported time zones and their formats.
-    string timezone?;
-    # Meeting topic.
-    string topic?;
-    # Tracking fields
-    TrackingFields[] tracking_fields?;
-    # Meeting Types:<br>`1` - Instant meeting.<br>`2` - Scheduled meeting.<br>`3` - Recurring meeting with no fixed time.<br>`8` - Recurring meeting with a fixed time.
-    int 'type?;
-};
-
-# Meeting status update details
-public type UpdateMeetingStatusRequest record {
-    # `end` - End a meeting.<br>
-    string action?;
-};
-
-# List of ended meeting instances returned. **HTTP Status Code:** `200`. 
-public type ListPastMeetingsResponse record {
-    # List of ended meeting instances.
-    EndedMeetingDetails[] meetings?;
-};
-
-# Polls returned successfully. **HTTP Status Code:** `200` **OK**. 
-public type ListPastMeetingPollsResponse record {
-    # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
-    int id;
-    # Answers submitted by users.
-    UserSubmittedAnswers[] questions?;
-    # The start time of the meeting.
-    string start_time?;
-    # Meeting UUID.
-    string uuid?;
-};
-
-# Meeting details returned. **HTTP Status Code:** `200`. 
-public type GetPastMeetingDetailsResponse record {
-    # Meeting duration.
-    int duration?;
-    # Meeting end time (GMT).
-    string end_time?;
-    # Host ID.
-    string host_id?;
-    # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
-    int id;
-    # Number of meeting participants.
-    int participants_count?;
-    # Meeting start time (GMT).
-    string start_time?;
-    # Meeting topic.
-    string topic?;
-    # Sum of meeting minutes from all participants in the meeting.
-    int total_minutes?;
-    # Meeting type.
-    int 'type?;
-    # User email.
-    string user_email?;
-    # User display name.
-    string user_name?;
-    # Meeting UUID.
-    string uuid?;
-};
-
-# List of past meeting participants
-public type CompoundListPastMeetingParticipantsResponse record {
-    *PaginationObject;
-    *MeetingPartcipantsList;
-};
-
-# List polls of a Meeting  returned. **HTTP Status Code:**.
-public type GetMeetingPollsResponse record {
-    # Array of Polls
-    PollDetails[] polls?;
-    # The number of all records available across pages
-    int total_records?;
-};
-
-# Meeting poll object
-public type CreateMeetingPollRequest record {
-    # Array of Polls
-    PollQuestions[] questions?;
-    # Title for the poll.
-    string title?;
-};
-
-# Response received from poll creation
-public type CompoundCreateMeetingPollResponse record {
-    # Meeting Poll ID
-    string id?;
-    # Status of the Meeting Poll:<br>`notstart` - Poll not started<br>`started` - Poll started<br>`ended` - Poll ended<br>`sharing` - Sharing poll results
-    string status?;
-    # Array of Polls
-    PollQuestions[] questions?;
-    # Title for the poll.
-    string title?;
-};
-
-# Meeting poll details
-public type CompoundGetMeetingPollResponse record {
-    # Meeting Poll ID
-    string id?;
-    # Status of the Meeting Poll:<br>`notstart` - Poll not started<br>`started` - Poll started<br>`ended` - Poll ended<br>`sharing` - Sharing poll results
-    string status?;
-    # Array of Polls
-    PollQuestions[] questions?;
-    # Title for the poll.
-    string title?;
-};
-
-# Updated poll request 
-public type CompoundUpdateMeetingPollRequest record {
-    # Array of Polls
-    PollQuestions[] questions?;
-    # Title for the poll.
-    string title?;
-};
-
-# Batch meeting poll object
-public type CreateBatchPollsRequest record {
-    # Array of Poll Questions
-    PollQuestions[] questions?;
-    # Meeting Poll Title.
-    string title?;
-};
-
-# Meeting poll created. **HTTP Status Code:** `201`. 
-public type CreateBatchPollsResponse record {
-    # create batch poll response
-    AddPollQuestionsResponse[] polls?;
-};
-
-# Meeting invitation. **HTTP Status Code:** `200`.
-public type GetMeetingInvitationResponse record {
-    # Meeting invitation.
-    string invitation?;
-};
-
-# Live Stream details returned. **HTTP Status Code:** `200` **OK**.  
-public type GetLiveStreamDetailsResponse record {
-    # Live streaming page URL. This is the URL using which anyone can view the live stream of the meeting.
-    string page_url?;
-    # Stream Key.
-    string stream_key;
-    # Stream URL.
-    string stream_url;
-};
-
-# Meeting live stream update request. 
-public type UpdateMeetingLiveStreamRequest record {
-    # The livestream page URL.
-    string page_url;
-    # Stream name and key.
-    string stream_key;
-    # Streaming URL.
-    string stream_url;
-};
-
-# List of webinar registrants  
-public type CompoundListWebinarRegistrantsResponse record {
-    *PaginationObject;
-    *RegistrantsList;
-};
-
-# Webinar participants' details
-public type ListWebinarParticipantsResponse record {
-    # The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
-    string next_page_token?;
-    # The number of pages returned for this request.
-    int page_count?;
-    # The total number of records returned from a single API call.
-    int page_size?;
-    # ParticipantsDetails
-    WebinarParticipantDetails[] participants?;
-    # The total number of records available across all pages.
-    int total_records?;
-};
-
-# List of webinar absentees  
-public type CompoundListWebinarAbsenteesResponse record {
-    *PaginationObject;
-    *RegistrantsList;
-};
-
-# List of meeting templates. **HTTP Status Code:** `200` **OK**
-public type ListMeetingTemplatesResponse record {
-    # template details
-    TemplateDetails[] templates?;
-    # Total records found for this request.
-    int total_records?;
-};
-
-# Client endpoint for Zoom API
-#
-# + clientEp - Connector http endpoint
+# This is a generated connector for [Zoom API Version 2.0.0](https://marketplace.zoom.us/docs/api-reference/zoom-api) OpenAPI Specification.
+# The Zoom API allows developers to access information from Zoom. You can use this API to build private services or public applications on the [Zoom App Marketplace](http://marketplace.zoom.us). To learn how to get your credentials and create private/public applications, read our [Authorization Guide](https://marketplace.zoom.us/docs/guides/authorization/credentials). 
+# All endpoints are available via `https` and are located at `api.zoom.us/v2/`. For instance you can list all users on an account via `https://api.zoom.us/v2/users/`.
 @display {label: "Zoom Client"}
-public client class Client {
-    http:Client clientEp;
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Please create a [Zoom account](https://marketplace.zoom.us/) and obtain tokens following [this guide](https://marketplace.zoom.us/docs/guides/auth/oauth). Configure required scopes when obtaining the tokens. 
+    #
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error if connector initialization failed
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.zoom.us/v2") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
@@ -335,11 +54,11 @@ public client class Client {
     # + pageNumber - The page number of the current page in the returned records.
     # + return - HTTP Status Code:200. List of meetings returned.
     @display {label: "List Meetings"}
-    remote isolated function listMeetings(@display {label: "User Id"} string userId, @display {label: "Meeting Type"} string? 'type = "live", @display {label: "Page Size"} int? pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = (), @display {label: "Page Number"} string? pageNumber = ()) returns CompoundListMeetingsResponse|error {
+    remote isolated function listMeetings(@display {label: "User Id"} string userId, @display {label: "Meeting Type"} string 'type = "live", @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = (), @display {label: "Page Number"} string? pageNumber = ()) returns ListMeetingsResponse|error {
         string  path = string `/users/${userId}/meetings`;
         map<anydata> queryParam = {"type": 'type, "page_size": pageSize, "next_page_token": nextPageToken, "page_number": pageNumber};
         path = path + check getPathForQueryParam(queryParam);
-        CompoundListMeetingsResponse response = check self.clientEp-> get(path, targetType = CompoundListMeetingsResponse);
+        ListMeetingsResponse response = check self.clientEp-> get(path, targetType = ListMeetingsResponse);
         return response;
     }
     # Create a meeting
@@ -348,12 +67,12 @@ public client class Client {
     # + payload - Meeting detailed.
     # + return - HTTP Status Code:201 - Meeting created.
     @display {label: "Create Meeting"}
-    remote isolated function createMeeting(@display {label: "User Id"} string userId, @display {label: "Meeting Details"} MeetingDetails payload) returns CompoundCreateMeetingResponse|error {
+    remote isolated function createMeeting(@display {label: "User Id"} string userId, @display {label: "Meeting Details"} MeetingDetails payload) returns CreateMeetingResponse|error {
         string  path = string `/users/${userId}/meetings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        CompoundCreateMeetingResponse response = check self.clientEp->post(path, request, targetType=CompoundCreateMeetingResponse);
+        CreateMeetingResponse response = check self.clientEp->post(path, request, targetType=CreateMeetingResponse);
         return response;
     }
     # List meeting registrants
@@ -366,11 +85,11 @@ public client class Client {
     # + nextPageToken - The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
     # + return - HTTP Status Code:200. Successfully listed meeting registrants.
     @display {label: "List Meeting Registrants"}
-    remote isolated function listMeetingRegistrants(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Registrant Status"} string? status = "approved", @display {label: "Page Size"} int? pageSize = 30, @display {label: "Page Number"} int? pageNumber = 1, @display {label: "Next Page Token"} string? nextPageToken = ()) returns CompoundListMeetingRegistrantsResponse|error {
+    remote isolated function listMeetingRegistrants(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Registrant Status"} string status = "approved", @display {label: "Page Size"} int pageSize = 30, @display {label: "Page Number"} int pageNumber = 1, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListMeetingRegistrantsResponse|error {
         string  path = string `/meetings/${meetingId}/registrants`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "status": status, "page_size": pageSize, "page_number": pageNumber, "next_page_token": nextPageToken};
         path = path + check getPathForQueryParam(queryParam);
-        CompoundListMeetingRegistrantsResponse response = check self.clientEp-> get(path, targetType = CompoundListMeetingRegistrantsResponse);
+        ListMeetingRegistrantsResponse response = check self.clientEp-> get(path, targetType = ListMeetingRegistrantsResponse);
         return response;
     }
     # Add meeting registrant
@@ -378,9 +97,9 @@ public client class Client {
     # + meetingId - The meeting ID in **long** format. The data type of this field is "long"(represented as int64 in JSON).
     # + payload - Meeting Registrant Details
     # + occurrenceIds - Occurrence IDs. You can find these with the meeting get API. Multiple values separated by comma.
-    # + return - Add meeting registrant respond
+    # + return - Meeting registrant's details
     @display {label: "Add Meeting Registrant"}
-    remote isolated function addMeetingRegistrant(@display {label: "Meeting Id"} int meetingId, CompoundAddMeetingRegistrantRequest payload, @display {label: "Occurence Id"} string? occurrenceIds = ()) returns AddMeetingRegistrantResponse|error {
+    remote isolated function addMeetingRegistrant(@display {label: "Meeting Id"} int meetingId, AddMeetingRegistrantRequest payload, @display {label: "Occurence Id"} string? occurrenceIds = ()) returns AddMeetingRegistrantResponse|error {
         string  path = string `/meetings/${meetingId}/registrants`;
         map<anydata> queryParam = {"occurrence_ids": occurrenceIds};
         path = path + check getPathForQueryParam(queryParam);
@@ -406,28 +125,30 @@ public client class Client {
     # + payload - Meeting Registrant Questions
     # + return - **HTTP Status Code:** `204`. Meeting Registrant Questions Updated
     @display {label: "Update Registration Questions"}
-    remote isolated function updateMeetingRegistrantQuestions(@display {label: "Meeting Id"} int meetingId, RegistrantQuestions payload) returns error? {
+    remote isolated function updateMeetingRegistrantQuestions(@display {label: "Meeting Id"} int meetingId, RegistrantQuestions payload) returns http:Response|error {
         string  path = string `/meetings/${meetingId}/registrants/questions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> patch(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->patch(path, request, targetType=http:Response);
+        return response;
     }
     # Update registrant's status
     #
-    # + meetingId - The meeting ID in **long** format. The data type of this field is "long"(represented as int64 in JSON).  
+    # + meetingId - The meeting ID in **long** format. The data type of this field is "long"(represented as int64 in JSON).
     # + payload - Request payload for meeting registrant status update
     # + occurrenceId - The meeting occurrence ID.
     # + return - **HTTP Status Code:** `204`. Registrant status updated.
     @display {label: "Update Meeting Registrant's Status"}
-    remote isolated function updateMeetingRegistrantStatus(@display {label: "Meting Id"} int meetingId, UpdateMeetingRegistrantStatusRequest payload, @display {label: "Occurrence Id"} string? occurrenceId = ()) returns error? {
+    remote isolated function updateMeetingRegistrantStatus(@display {label: "Meting Id"} int meetingId, UpdateMeetingRegistrantstatusRequest payload, @display {label: "Occurrence Id"} string? occurrenceId = ()) returns http:Response|error {
         string  path = string `/meetings/${meetingId}/registrants/status`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> put(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        return response;
     }
     # Delete a meeting registrant
     #
@@ -436,13 +157,14 @@ public client class Client {
     # + occurrenceId - The meeting occurence ID.
     # + return - **HTTP status code:** `204` OK
     @display {label: "Delete Meeting Registrant"}
-    remote isolated function deleteMeetingregistrant(@display {label: "Meeting Id"} int meetingId, @display {label: "Registrant Id"} string registrantId, @display {label: "occurence Id"} string? occurrenceId = ()) returns error? {
+    remote isolated function deleteMeetingregistrant(@display {label: "Meeting Id"} int meetingId, @display {label: "Registrant Id"} string registrantId, @display {label: "occurence Id"} string? occurrenceId = ()) returns http:Response|error {
         string  path = string `/meetings/${meetingId}/registrants/${registrantId}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     # Get a meeting
     #
@@ -451,11 +173,11 @@ public client class Client {
     # + showPreviousOccurrences - Set the value of this field to `true` if you would like to view meeting details of all previous occurrences of a [recurring meeting](https://support.zoom.us/hc/en-us/articles/214973206-Scheduling-Recurring-Meetings). 
     # + return - **HTTP Status Code:** `200` Meeting object returned.
     @display {label: "Get Meeting Details"}
-    remote isolated function getMeetingById(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Show Previous Occurrences"} boolean? showPreviousOccurrences = ()) returns CompoundGetMeetingByIdResponse|error {
+    remote isolated function getMeetingById(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Show Previous Occurrences"} boolean? showPreviousOccurrences = ()) returns GetMeetingDetailsResponse|error {
         string  path = string `/meetings/${meetingId}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "show_previous_occurrences": showPreviousOccurrences};
         path = path + check getPathForQueryParam(queryParam);
-        CompoundGetMeetingByIdResponse response = check self.clientEp-> get(path, targetType = CompoundGetMeetingByIdResponse);
+        GetMeetingDetailsResponse response = check self.clientEp-> get(path, targetType = GetMeetingDetailsResponse);
         return response;
     }
     # Delete a meeting
@@ -466,13 +188,14 @@ public client class Client {
     # + cancelMeetingReminder - `true`: Notify registrants about the meeting cancellation via email. 
     # + return - **HTTP Status Code**: `204` Meeting deleted.
     @display {label: "Delete Meeting"}
-    remote isolated function deleteMeeting(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Schedule for Reminder"} boolean? scheduleForReminder = (), @display {label: "Meeting Cancellation Reminder"} string? cancelMeetingReminder = ()) returns error? {
+    remote isolated function deleteMeeting(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Schedule for Reminder"} boolean? scheduleForReminder = (), @display {label: "Meeting Cancellation Reminder"} string? cancelMeetingReminder = ()) returns http:Response|error {
         string  path = string `/meetings/${meetingId}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "schedule_for_reminder": scheduleForReminder, "cancel_meeting_reminder": cancelMeetingReminder};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     # Update a meeting
     #
@@ -481,14 +204,15 @@ public client class Client {
     # + occurrenceId - Meeting occurrence id. Support change of agenda, start_time, duration, settings: {host_video, participant_video, join_before_host, mute_upon_entry, waiting_room, watermark, auto_recording}
     # + return - **HTTP Status Code:** `204`. Meeting updated.
     @display {label: "Update Meeting"}
-    remote isolated function updateMeeting(@display {label: "Meeting Id"} int meetingId, CompoundUpdateMeetingRequest payload, @display {label: "Occurrence Id"} string? occurrenceId = ()) returns error? {
+    remote isolated function updateMeeting(@display {label: "Meeting Id"} int meetingId, UpdateMeetingRequest payload, @display {label: "Occurrence Id"} string? occurrenceId = ()) returns http:Response|error {
         string  path = string `/meetings/${meetingId}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> patch(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->patch(path, request, targetType=http:Response);
+        return response;
     }
     # Update meeting status
     #
@@ -496,12 +220,13 @@ public client class Client {
     # + payload - Meeting status update details
     # + return - **HTTP Status Code:** `204`. Meeting updated.
     @display {label: "Update Meeting Status"}
-    remote isolated function updateMeetingStatus(@display {label: "Meeting Id"} int meetingId, UpdateMeetingStatusRequest payload) returns error? {
+    remote isolated function updateMeetingStatus(@display {label: "Meeting Id"} int meetingId, UpdateMeetingstatusRequest payload) returns http:Response|error {
         string  path = string `/meetings/${meetingId}/status`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> put(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        return response;
     }
     # List ended meeting instances
     #
@@ -528,9 +253,9 @@ public client class Client {
     # + meetingUUID - The meeting UUID. Each meeting instance will generate its own Meeting UUID (i.e., after a meeting ends, a new UUID will be generated for the next instance of the meeting). Please double encode your UUID when using it for other API calls if the UUID begins with a '/'or contains '//' in it.
     # + return - **HTTP Status Code:** `200`. Meeting details returned.
     @display {label: "Get Past Meeting Details"}
-    remote isolated function getPastMeetingDetails(@display {label: "Meeting UUID"} string meetingUUID) returns GetPastMeetingDetailsResponse|error {
+    remote isolated function getPastMeetingDetails(@display {label: "Meeting UUID"} string meetingUUID) returns PastMeetingDetailsResponse|error {
         string  path = string `/past_meetings/${meetingUUID}`;
-        GetPastMeetingDetailsResponse response = check self.clientEp-> get(path, targetType = GetPastMeetingDetailsResponse);
+        PastMeetingDetailsResponse response = check self.clientEp-> get(path, targetType = PastMeetingDetailsResponse);
         return response;
     }
     # List past meeting participants
@@ -540,11 +265,11 @@ public client class Client {
     # + nextPageToken - The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
     # + return - **HTTP Status Code:** `200`. Meeting participants' report returned.
     @display {label: "List Past Meeting Participants"}
-    remote isolated function listPastMeetingParticipants(@display {label: "Meeting UUID"} string meetingUUID, @display {label: "Page Size"} int? pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns CompoundListPastMeetingParticipantsResponse|error {
+    remote isolated function listPastMeetingParticipants(@display {label: "Meeting UUID"} string meetingUUID, @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListPastMeetingParticipantsResponse|error {
         string  path = string `/past_meetings/${meetingUUID}/participants`;
         map<anydata> queryParam = {"page_size": pageSize, "next_page_token": nextPageToken};
         path = path + check getPathForQueryParam(queryParam);
-        CompoundListPastMeetingParticipantsResponse response = check self.clientEp-> get(path, targetType = CompoundListPastMeetingParticipantsResponse);
+        ListPastMeetingParticipantsResponse response = check self.clientEp-> get(path, targetType = ListPastMeetingParticipantsResponse);
         return response;
     }
     # List meeting polls
@@ -552,9 +277,9 @@ public client class Client {
     # + meetingId - The meeting ID in **long** format. The data type of this field is "long"(represented as int64 in JSON).
     # + return - **HTTP Status Code:**. List polls of a Meeting  returned
     @display {label: "Get Meeting Polls"}
-    remote isolated function getMeetingPolls(@display {label: "Meeting Id"} int meetingId) returns GetMeetingPollsResponse|error {
+    remote isolated function getMeetingPolls(@display {label: "Meeting Id"} int meetingId) returns MeetingPollsResponse|error {
         string  path = string `/meetings/${meetingId}/polls`;
-        GetMeetingPollsResponse response = check self.clientEp-> get(path, targetType = GetMeetingPollsResponse);
+        MeetingPollsResponse response = check self.clientEp-> get(path, targetType = MeetingPollsResponse);
         return response;
     }
     # Create a meeting poll
@@ -563,12 +288,12 @@ public client class Client {
     # + payload - Meeting poll object
     # + return - **HTTP Status Code:** `201`. Meeting Poll Created
     @display {label: "Create Meeting Poll"}
-    remote isolated function createMeetingPoll(@display {label: "Meeting Id"} int meetingId, CreateMeetingPollRequest payload) returns CompoundCreateMeetingPollResponse|error {
+    remote isolated function createMeetingPoll(@display {label: "Meeting Id"} int meetingId, CreateMeetingPollRequest payload) returns CreateMeetingPollResponse|error {
         string  path = string `/meetings/${meetingId}/polls`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-        CompoundCreateMeetingPollResponse response = check self.clientEp->post(path, request, targetType=CompoundCreateMeetingPollResponse);
+        CreateMeetingPollResponse response = check self.clientEp->post(path, request, targetType=CreateMeetingPollResponse);
         return response;
     }
     # Get a meeting poll
@@ -577,9 +302,9 @@ public client class Client {
     # + pollId - The poll ID
     # + return - **HTTP Status Code:** `200`. Meeting Poll object returned
     @display {label: "Get Meeting Poll"}
-    remote isolated function getMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId) returns CompoundGetMeetingPollResponse|error {
+    remote isolated function getMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId) returns GetMeetingPollResponse|error {
         string  path = string `/meetings/${meetingId}/polls/${pollId}`;
-        CompoundGetMeetingPollResponse response = check self.clientEp-> get(path, targetType = CompoundGetMeetingPollResponse);
+        GetMeetingPollResponse response = check self.clientEp-> get(path, targetType = GetMeetingPollResponse);
         return response;
     }
     # Update a meeting poll
@@ -589,12 +314,13 @@ public client class Client {
     # + payload - Meeting Poll
     # + return - **HTTP Status Code:** `204`. Meeting Poll Updated
     @display {label: "Update Meeting Poll"}
-    remote isolated function updateMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId, CompoundUpdateMeetingPollRequest payload) returns error? {
+    remote isolated function updateMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId, UpdateMeetingPollRequest payload) returns http:Response|error {
         string  path = string `/meetings/${meetingId}/polls/${pollId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> put(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        return response;
     }
     # Delete a meeting poll
     #
@@ -602,11 +328,12 @@ public client class Client {
     # + pollId - The poll ID
     # + return - **HTTP Status Code:** `204`. Meeting Poll deleted
     @display {label: "Delete Meeting Poll"}
-    remote isolated function deleteMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId) returns error? {
+    remote isolated function deleteMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId) returns http:Response|error {
         string  path = string `/meetings/${meetingId}/polls/${pollId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-         _ = check self.clientEp-> delete(path, request, targetType =http:Response);
+        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        return response;
     }
     # Perform batch poll creation
     #
@@ -648,12 +375,13 @@ public client class Client {
     # + payload - Meeting
     # + return - **HTTP Status Code:** `204`. Meeting live stream updated.
     @display {label: "Update Meeting Live Stream"}
-    remote isolated function updateMeetingLiveStream(@display {label: "Meeting Id"} int meetingId, UpdateMeetingLiveStreamRequest payload) returns error? {
+    remote isolated function updateMeetingLiveStream(@display {label: "Meeting Id"} int meetingId, UpdateMeetingLiveStreamDetailsRequest payload) returns http:Response|error {
         string  path = string `/meetings/${meetingId}/livestream`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
-         _ = check self.clientEp-> patch(path, request, targetType=http:Response);
+        http:Response response = check self.clientEp->patch(path, request, targetType=http:Response);
+        return response;
     }
     # List webinar registrants
     #
@@ -666,11 +394,11 @@ public client class Client {
     # + nextPageToken - The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
     # + return - HTTP Status Code: `200` Webinar plan subscription is missing. Enable webinar for this user once the subscription is added.
     @display {label: "List Webinar Meeting Registrants"}
-    remote isolated function listWebinarRegistrants(@display {label: "Webinar Id"} int webinarId, @display {label: "Meeting Occurence Id"} string? occurrenceId = (), @display {label: "Status"} string? status = "approved", @display {label: "Tracking Source Id"} string? trackingSourceId = (), @display {label: "Page Size"} int? pageSize = 30, @display {label: "Page Number"} int? pageNumber = 1, @display {label: "Next Page Token"} string? nextPageToken = ()) returns CompoundListWebinarRegistrantsResponse|error {
+    remote isolated function listWebinarRegistrants(@display {label: "Webinar Id"} int webinarId, @display {label: "Meeting Occurence Id"} string? occurrenceId = (), @display {label: "Status"} string status = "approved", @display {label: "Tracking Source Id"} string? trackingSourceId = (), @display {label: "Page Size"} int pageSize = 30, @display {label: "Page Number"} int pageNumber = 1, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListWebinarRegistrantsResponse|error {
         string  path = string `/webinars/${webinarId}/registrants`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "status": status, "tracking_source_id": trackingSourceId, "page_size": pageSize, "page_number": pageNumber, "next_page_token": nextPageToken};
         path = path + check getPathForQueryParam(queryParam);
-        CompoundListWebinarRegistrantsResponse response = check self.clientEp-> get(path, targetType = CompoundListWebinarRegistrantsResponse);
+        ListWebinarRegistrantsResponse response = check self.clientEp-> get(path, targetType = ListWebinarRegistrantsResponse);
         return response;
     }
     # List webinar participants
@@ -680,7 +408,7 @@ public client class Client {
     # + nextPageToken - The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
     # + return - Webinar participants' details
     @display {label: "List Webinar Participants"}
-    remote isolated function listWebinarParticipants(@display {label: "Webinar Id"} string webinarId, @display {label: "Page Size"} int? pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListWebinarParticipantsResponse|error {
+    remote isolated function listWebinarParticipants(@display {label: "Webinar Id"} string webinarId, @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListWebinarParticipantsResponse|error {
         string  path = string `/past_webinars/${webinarId}/participants`;
         map<anydata> queryParam = {"page_size": pageSize, "next_page_token": nextPageToken};
         path = path + check getPathForQueryParam(queryParam);
@@ -689,17 +417,17 @@ public client class Client {
     }
     # List webinar absentees
     #
-    # + WebinarUUID - Parameter Description  
-    # + occurrenceId - The meeting occurrence ID.  
-    # + pageSize - The number of records returned within a single API call.  
+    # + webinarUUID - The Webinar UUID. Each Webinar instance will generate its own Webinar UUID (i.e., after a Webinar ends, a new UUID will be generated for the next instance of the Webinar). Please double encode your UUID when using it for API calls if the UUID begins with a '/' or contains '//' in it.
+    # + occurrenceId - The meeting occurrence ID.
+    # + pageSize - The number of records returned within a single API call.
     # + nextPageToken - The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
-    # + return - **HTTP Status Code:** `200`
+    # + return - **HTTP Status Code:** `200` 
     @display {label: "List Webinar Absentees"}
-    remote isolated function listWebinarAbsentees(@display {label: "Webinar UUID"} string WebinarUUID, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Page Size"} int? pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns CompoundListWebinarAbsenteesResponse|error {
-        string  path = string `/past_webinars/${WebinarUUID}/absentees`;
+    remote isolated function listWebinarAbsentees(@display {label: "Webinar UUID"} string webinarUUID, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListWebinarAbsentees|error {
+        string  path = string `/past_webinars/${webinarUUID}/absentees`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "page_size": pageSize, "next_page_token": nextPageToken};
         path = path + check getPathForQueryParam(queryParam);
-        CompoundListWebinarAbsenteesResponse response = check self.clientEp-> get(path, targetType = CompoundListWebinarAbsenteesResponse);
+        ListWebinarAbsentees response = check self.clientEp-> get(path, targetType = ListWebinarAbsentees);
         return response;
     }
     # List meeting templates
@@ -718,7 +446,7 @@ public client class Client {
 #
 # + queryParam - Query parameter map
 # + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

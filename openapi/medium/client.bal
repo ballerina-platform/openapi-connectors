@@ -14,33 +14,38 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
+import ballerina/http;
 
 # Configuration record for Medium
 #
-# + authConfig - Bearer Token or OAuth2 Refresh Token Grant Configuration Tokens
-# + secureSocketConfig - Secure Socket Configuration 
+# + authConfig - Bearer token or OAuth2 refresh token grant configuration tokens
+# + secureSocketConfig - Secure socket configuration 
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-# Client endpoint for Medium API
-#
-# + clientEp - Client for Medium API
-public client class Client {
-    http:Client clientEp;
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.medium.com/v1") returns 
-                                  error? {
+# This is a generated connector for [Medium API v1](https://github.com/Medium/medium-api-docs) OpenAPI Specification.
+# Medium’s Publishing API provides capability to access the Medium network, create your content on Medium from  anywhere 
+# you write, and expand your audience and your influence.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [Medium account](https://medium.com/)  and obtain tokens following 
+    # [this guide](https://github.com/Medium/medium-api-docs#2-authentication).
+    #
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
+    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.medium.com/v1") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
         self.clientEp = httpEp;
     }
     # Get the authenticated user’s details
     #
-    # + return - If success returns details of the user who has granted permission to the application otherwise the 
-    # relevant error
-    @display {label: "Get User Detail"}
+    # + return - If success returns details of the user who has granted permission to the application otherwise the relevant error
     remote isolated function getUserDetail() returns UserResponse|error {
         string  path = string `/me`;
         UserResponse response = check self.clientEp-> get(path, targetType = UserResponse);
@@ -49,11 +54,8 @@ public client class Client {
     # List the user’s publications
     #
     # + userId - A unique identifier for the user.
-    # + return - If success returns a list of publications that the user is subscribed to, writes to, or edits otherwise 
-    # the relevant error
-    @display {label: "Get Publication List"}
-    remote isolated function getPublicationList(@display {label: "User ID"} string userId) returns PublicationResponse|
-                                                error {
+    # + return - If success returns a list of publications that the user is subscribed to, writes to, or edits otherwise the relevant error
+    remote isolated function getPublicationList(string userId) returns PublicationResponse|error {
         string  path = string `/users/${userId}/publications`;
         PublicationResponse response = check self.clientEp-> get(path, targetType = PublicationResponse);
         return response;
@@ -62,9 +64,7 @@ public client class Client {
     #
     # + publicationId - A unique identifier for the publication.
     # + return - If success returns a list of contributors
-    @display {label: "Get Contributor List"}
-    remote isolated function getContributorList(@display {label: "Publication ID"} string publicationId) returns 
-                                                ContributorResponse|error {
+    remote isolated function getContributorList(string publicationId) returns ContributorResponse|error {
         string  path = string `/publications/${publicationId}/contributors`;
         ContributorResponse response = check self.clientEp-> get(path, targetType = ContributorResponse);
         return response;
@@ -73,12 +73,8 @@ public client class Client {
     #
     # + authorId - authorId is the user id of the authenticated user.
     # + payload - Creates a post for user.
-    # + return - If success returns a Post record that includes the newly created post detail otherwise the relevant
-    #  error
-    @display {label: "Create Post"}
-    remote isolated function createUserPost(@display {label: "User ID"} string authorId, 
-                                            @display {label: "Post Detail"} Post payload) returns 
-                                            PostResponse|error {
+    # + return - If success returns a Post record that includes the newly created post detail otherwise the relevant error
+    remote isolated function createUserPost(string authorId, Post payload) returns PostResponse|error {
         string  path = string `/users/${authorId}/posts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);

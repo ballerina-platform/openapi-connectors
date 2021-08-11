@@ -1,23 +1,16 @@
-Connects to Medium from Ballerina.
+## Package overview
+The `ballerinax\medium` is a [Ballerina](https://ballerina.io/) connector for Medium.
+This package provides capability to access your Medium contents such as posting Medium articles, get user details etc.
 
-## Module Overview
+### Compatibility
+|                      | Version                   |
+|----------------------|---------------------------|
+| Ballerina Language   | Ballerina Swan Lake Beta2 |
+| Medium API           | v1                        |
 
-The Medium connector consume the data exposed in https://developers.medium.com/. It is currently supporting the following operations.
-
-- getUserDetail
-- createUserPost
-- getPublicationList
-- getContributorList
-
-
-## Compatibility
-
-| Ballerina Language Versions  | Medium API     |
-|:----------------------------:|:-----------------:|
-|  Swan Lake Alpha 5           |   V1              |
-
-## Configuration
-
-In order to publish on behalf of a Medium account, you will need an access token. An access token grants limited access to a user’s account. We offer two ways to acquire an access token: browser-based OAuth authentication, and self-issued access token.
-
-Please follow this [link](https://github.com/Medium/medium-api-docs#2-authentication) to obtain the tokens.
+## Report issues
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)
+## Useful links
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

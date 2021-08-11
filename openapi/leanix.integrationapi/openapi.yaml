@@ -2,6 +2,14 @@ openapi: 3.0.1
 info:
   title: Integration API
   version: 1.0.0
+  description: >
+    This is a generated connector for [LeanIX Integration API v1](https://eu.leanix.net/services/integration-api/v1/docs/) OpenAPI specification.
+
+    The Integration API provides the ability to import and export data using a generic LeanIX Data Interchange Format (LDIF). LDIF is a JSON format with a very simple structure described in the following sections. All mapping and processing of the incoming and outgoing data is done using "Data Processors" that are configured behind the API. Configuration of the processors can be done using the UI, please see the [Setup](https://docs-eas.leanix.net/docs/setup) page for more information. The configurations can be managed using the Integration API as well.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a [LeanIX Account](https://www.leanix.net/en/) and obtain tokens following [this guide](https://docs-eas.leanix.net/docs/authentication).
 servers:
 - url: https://eu.leanix.net/services/integration-api/v1
 - url: https://us.leanix.net/services/integration-api/v1
@@ -16,7 +24,7 @@ paths:
     get:
       tags:
       - examples
-      description: Returns a starter example including an Input object and processor
+      summary: Returns a starter example including an Input object and processor
         configuration
       responses:
         200:
@@ -29,7 +37,7 @@ paths:
     get:
       tags:
       - examples
-      description: Returns an advanced example including an Input object and processor
+      summary: Returns an advanced example including an Input object and processor
         configuration
       responses:
         200:
@@ -42,7 +50,7 @@ paths:
     get:
       tags:
       - configurations
-      description: Returns a list of available processor configurations
+      summary: Returns a list of available processor configurations
       operationId: getProcessorConfigurations
       parameters:
       - name: connectorType
@@ -90,7 +98,7 @@ paths:
     put:
       tags:
       - configurations
-      description: Inserts a new processor configuration or updates an existing one
+      summary: Inserts a new processor configuration or updates an existing one
       operationId: upsertProcessorConfiguration
       requestBody:
         content:
@@ -109,7 +117,7 @@ paths:
     delete:
       tags:
       - configurations
-      description: Delete a single processor configuration
+      summary: Delete a single processor configuration
       operationId: deleteProcessorConfiguration
       parameters:
       - name: connectorType
@@ -164,7 +172,7 @@ paths:
     get:
       tags:
       - synchronizationRuns
-      description: Returns the status of all existing synchronization runs
+      summary: Returns the status of all existing synchronization runs
       operationId: getSynchronizationRunsStatusList
       responses:
         200:
@@ -182,7 +190,7 @@ paths:
     post:
       tags:
       - synchronizationRuns
-      description: Creates a synchronization run.
+      summary: Creates a synchronization run.
       operationId: createSynchronizationRun
       parameters:
       - name: start
@@ -221,7 +229,7 @@ paths:
     post:
       tags:
       - synchronizationRuns
-      description: Starts an existing but not yet started synchronization run
+      summary: Starts an existing but not yet started synchronization run
       operationId: startSynchronizationRun
       parameters:
       - name: id
@@ -255,7 +263,7 @@ paths:
     get:
       tags:
       - synchronizationRuns
-      description: Shows the progress of a synchronization run, it gives updated counters
+      summary: Shows the progress of a synchronization run, it gives updated counters
         of the run level that is in execution.
       operationId: getSynchronizationRunProgress
       parameters:
@@ -283,7 +291,7 @@ paths:
     post:
       tags:
       - synchronizationRuns
-      description: Stops a running synchronization run
+      summary: Stops a running synchronization run
       operationId: stopSynchronizationRun
       parameters:
       - name: id
@@ -310,7 +318,7 @@ paths:
     get:
       tags:
       - synchronizationRuns
-      description: Returns the status of an existing synchronization run
+      summary: Returns the status of an existing synchronization run
       operationId: getSynchronizationRunStatus
       parameters:
       - name: id
@@ -333,7 +341,7 @@ paths:
     get:
       tags:
       - synchronizationRuns
-      description: Returns the results of a finished synchronization run
+      summary: Returns the results of a finished synchronization run
       operationId: getSynchronizationRunResults
       parameters:
       - name: id
@@ -360,7 +368,7 @@ paths:
     get:
       tags:
       - synchronizationRuns
-      description: Returns the url to the results of a finished synchronization run
+      summary: Returns the url to the results of a finished synchronization run
       operationId: getSynchronizationRunResultsUrl
       parameters:
       - name: id
@@ -385,7 +393,7 @@ paths:
     get:
       tags:
       - synchronizationRuns
-      description: Returns the warnings of a synchronization run
+      summary: Returns the warnings of a synchronization run
       operationId: getSynchronizationRunWarnings
       parameters:
       - name: offset
@@ -420,7 +428,7 @@ paths:
     post:
       tags:
       - synchronizationRuns
-      description: Starts a new synchronization run using the processor configuration
+      summary: Starts a new synchronization run using the processor configuration
         and input object provided in the request.
       operationId: createSynchronizationRunWithConfig
       parameters:
@@ -458,7 +466,7 @@ paths:
     post:
       tags:
       - synchronizationRuns
-      description: Starts a new synchronization run using a DataProvider information
+      summary: Starts a new synchronization run using a DataProvider information
         to obtain the LDIF input
       operationId: createSynchronizationRunWithUrlInput
       parameters:
@@ -497,7 +505,7 @@ paths:
     post:
       tags:
       - synchronizationRuns
-      description: Starts a new synchronization run using combined processor configuration
+      summary: Starts a new synchronization run using combined processor configuration
         within an execution group and input object provided in the request.
       operationId: createSynchronizationRunWithExecutionGroup
       parameters:
@@ -546,7 +554,7 @@ paths:
     post:
       tags:
       - fastSynchronizationRuns
-      description: Creates a fast synchronization run.
+      summary: Creates a fast synchronization run.
       operationId: createSynchronizationFastRun
       parameters:
       - name: test
@@ -580,7 +588,7 @@ paths:
     post:
       tags:
       - fastSynchronizationRuns
-      description: Starts a new fast run synchronization using the processor configuration
+      summary: Starts a new fast run synchronization using the processor configuration
         and input object provided in the request.
       operationId: createSynchronizationFastRunWithConfig
       parameters:
@@ -615,7 +623,7 @@ paths:
     get:
       tags:
       - storages
-      description: Provides storage resources that can be used for synchronisation
+      summary: Provides storage resources that can be used for synchronisation
         runs. It creates a blob file in Azure Storage.
       operationId: createInAzure
       responses:

@@ -1,64 +1,37 @@
-Connects to BulkSMS.com API from Ballerina. 
+##  Overview
 
-## Module Overview
+This is a generated connector for [BulkSMS API v1](https://www.bulksms.com/developer/) OpenAPI Specification.
 
-The BulkSMS connector consume the data exposed in [https://api.bulksms.com/v1](https://api.bulksms.com/v1). It is 
-currently supporting following operations.
-- Create BlockedNumber
-- Create Webhook
-- Delete Webhook
-- Get Message
-- Get Profile
-- Get SentMessages
-- Get WebhookByID
-- List BlockedNumbers
-- List Webhooks
-- Retrieve Messages
-- Send Batch Messages
-- Send Message
-- Update Webhook
+BulkSMS API provides capability to access you to submit and receive [BulkSMS](https://www.bulksms.com/) messages. You can also get 
+access to past messages and see your account profile. Dates are formatted according to ISO-8601, such as `1970-01-01T10:00:00+01:00` for 1st January 1970, 10AM UTC+1. It currently supports operations on messages, numbers, user profile, webhooks, and batch messages.
 
-This module supports v1 version.
+## Prerequisites
 
-## Configuring Connector
-
-### Prerequisites
-- A bulkSMS account
-
-### Obtaining tokens
-* Provide the username and password for the Authentication.
+Before using this connector in your Ballerina application, complete the following:
+* Create [bulkSMS account](https://www.bulksms.com/)
+* Obtaining tokens
+1. Provide the username and password for the Authentication. Follow [this link](https://www.bulksms.com/developer/json/v1/#section/Authentication) for more detail
 
 ## Quickstart
 
-* Get user profile
+To use the bulkSMS connector in your Ballerina application, update the .bal file as follows:
 
-1.  Add Config.toml file including the username and password as follows,
-```
-[<Org Name>.authConfig]
-username = <userName>
-password = <password>
-
-```
-2. Import the bulkSMS module and others
-```
-import ballerinax/bulksms;
-import ballerina/log;
-```
-
-3. Initialize a client 
+### Step 1 - Import connector
 ```ballerina
-    //Client Initialization
-    configurable http:CredentialsConfig & readonly authConfig = ?;
-    bulksms:ClientConfig clientConfig = {authConfig : authConfig};
-    bulksms:Client baseClient = check new Client(clientConfig);
+import ballerinax/bulksms;
 ```
-4. Use the client to call its remote functions as the following code
+
+ ### Step 2 - Create a new connector instance
+```ballerina
+configurable http:CredentialsConfig & readonly authConfig = ?;
+bulksms:ClientConfig clientConfig = {authConfig : authConfig};
+bulksms:Client baseClient = check new Client(clientConfig);
 ```
-    //Calling getProfile remote function  of the created client
-    var profile = baseClient->getProfile();
-    if profile is bulksms:Profile {
-        log:printInfo(profile.toString());
-    } else {
-        log:printError(profile.toString());
-    }
+### Step 3 - Invoke  connector operation
+1. Invoking connector operations using the client
+```ballerina
+    bulksms:Profile profile = check baseClient->getProfile();
+
 ```
+2. Use `bal run` command to compile and run the Ballerina program.
+

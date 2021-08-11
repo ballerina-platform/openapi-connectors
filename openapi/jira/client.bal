@@ -18,69 +18,28 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Configuration record for Jira
+# Configuration for Jira connector
 #
-# + authConfig - Basic authentication or CredentialsConfig Configuration Tokens
-# + secureSocketConfig - Secure Socket Configuration  
+# + authConfig - Bearer authentication or Credentials configuration tokens
+# + secureSocketConfig - Secure socket configuration  
 public type ClientConfig record {
     http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig|http:CredentialsConfig authConfig;
     http:ClientSecureSocket secureSocketConfig?;
 };
 
-public type AttachmentArr Attachment[];
-
-public type ColumnItemArr ColumnItem[];
-
-public type ResolutionArr Resolution[];
-
-public type IssueTypeDetailsArr IssueTypeDetails[];
-
-public type ProjectArr Project[];
-
-public type IssueTypeWithStatusArr IssueTypeWithStatus[];
-
-public type ProjectTypeArr ProjectType[];
-
-public type VersionArr Version[];
-
-public type DeprecatedWorkflowArr DeprecatedWorkflow[];
-
-public type PriorityArr Priority[];
-
-public type FieldDetailsArr FieldDetails[];
-
-public type TimeTrackingProviderArr TimeTrackingProvider[];
-
-public type WorklogArr Worklog[];
-
-public type StatusDetailsArr StatusDetails[];
-
-public type StatusCategoryArr StatusCategory[];
-
-public type ProjectCategoryArr ProjectCategory[];
-
-public type ProjectComponentArr ProjectComponent[];
-
-public type ProjectRoleDetailsArr ProjectRoleDetails[];
-
-public type ProjectRoleArr ProjectRole[];
-
-public type UserMigrationBeanArr UserMigrationBean[];
-
-public type GroupNameArr GroupName[];
-
-public type UserArr User[];
-
-# Client endpoint for Jira Cloud platform API
-#
+# This is a generated connector for [Jira Cloud platform API](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. 
+# Jira Cloud platform API provide capability to access Jira operations related to projects, issues and user related operations.
 # + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Initializes the Jira client endpoint.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create an [Atlassian Account](https://id.atlassian.com/signup) 
+    # and obtain tokens by following [this guide](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/).
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return -  Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error at the failure of client initialization
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://your-domain.atlassian.net") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });

@@ -1,50 +1,25 @@
 ## Overview
 
-Jira Cloud platform API connector consume the data exposed in https://your-domain.atlassian.net. It is currently supporting the Project, Issues and User related operations.
+This is a generated connector for [Jira Cloud platform API v2](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. 
 
-## Configuring Connector
+Jira Cloud platform API provide capability to access Jira operations related to projects, issues and user related operations.
 
-### Prerequisites
-
-- Atlassian account
-
-### Obtaining tokens
-
-To utilize Jira Cloud platform API users have to login to the atlassian account given by [Atlassian](https://id.atlassian.com/login), User can register for a new account if he/she doesn't have an account.
-
-There are two authentication possible.
-- Basic Authentication
-- OAuth Authentication
-#### Basic Authentication
-If user have to use basic authentication, user should obtain API token
-
-To obtain an API token please follow these steps
-* Go to [Atlassian](https://id.atlassian.com/login) and login or register for a new account
-* Submit information in register form and complete login process
-* After navigate to Account Settings -> Security and click `Create and manage API tokens`
-* Create and obtain API token and store somewhere securely
-
-Then provide the obtained API Key in client configuration.
-#### OAuth Authentication
-If user have to use OAuth authentication, user should obtain client credentials
-
-To obtain client credentials please follow these steps
-* Go to [Atlassian](https://id.atlassian.com/login) and login or register for a new account
-* Submit information in register form and complete login process
-* After navigate to Account Settings -> Security and click `Manage two-step verification`
-* Create and obtain client credentials and store somewhere securely
-
-Then provide the obtained client credentials in client configuration.
+## Prerequisites
+Before using this connector in your Ballerina application, complete the following:
+* Create [Atlassian Account](https://id.atlassian.com/signup)
+* Obtaining tokens
+    1. Log into [Atlassian Account](https://id.atlassian.com/login)
+    2. If you are using basic authentication navigate to `Account Settings` -> `Security and click` -> `Create and manage API tokens` and create API token. If you are using OAuth authentication navigate to `Account Settings` -> `Security and click` -> `Manage two-step verification` and create and obtain client credentials
 
 ## Quickstart
 
-#### Step 1: Import Jira module
+### Step 1: Import Jira module
 First, import the ballerinax/jira module into the Ballerina project.
 
 ```ballerina
 import ballerinax/jira;
 ```
-#### Step 2: Configure the connection credentials.
+### Step 2: Configure the connection credentials.
 ```ballerina
 jira:ClientConfig clientConfig = {
     authConfig : { 
@@ -55,31 +30,32 @@ jira:ClientConfig clientConfig = {
 
 jira:Client myclient = check new (clientConfig, "https://<your_domain>.atlassian.net");
 ```
-#### Step 3: Get project using project key
-```ballerina
-jira:Project result = check myclient->getProject("<Project_Key>");
-log:printInfo(result.toString());  
-```
+### Step 3: Invoke connector operation
+1. You can use this function to get project by providing project key as a parameter.
+    ```ballerina
+    jira:Project result = check myclient->getProject("<Project_Key>");
+    log:printInfo(result.toString());  
+    ```
+2. Use `bal run` command to compile and run the Ballerina program
 
-## Snippets
-Snippets of some operations.
+## Quick reference
 
-### Get project using project key
-```ballerina
-jira:Project result = check myclient->getProject("<Project_Key>"); 
-```
-### List all projects
-```ballerina
-jira:ProjectArr result = check myclient->getAllProjects();
-```
-### Create a project
-```ballerina
-jira:CreateProjectDetails details = {
-    name : "<Project_Name>", 
-    'key : "<Project_Key>", 
-    projectTypeKey : "software", 
-    leadAccountId: "<Lead_Account_ID>"
-};
+* Get project using project key
+    ```ballerina
+    jira:Project result = check myclient->getProject("<Project_Key>"); 
+    ```
+* List all projects
+    ```ballerina
+    jira:ProjectArr result = check myclient->getAllProjects();
+    ```
+* Create a project
+    ```ballerina
+    jira:CreateProjectDetails details = {
+        name : "<Project_Name>", 
+        'key : "<Project_Key>", 
+        projectTypeKey : "software", 
+        leadAccountId: "<Lead_Account_ID>"
+    };
 
-jira:ProjectIdentifiers result = check myclient->createProject(details);
-```
+    jira:ProjectIdentifiers result = check myclient->createProject(details);
+    ```

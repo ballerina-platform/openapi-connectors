@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Jira", "Projects", "Issues"]
+keywords = ["jira", "issues", "projects", "freemium"]
 org = "ballerinax"
 name = "jira"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

@@ -1,49 +1,29 @@
-
 ## Overview
 
-The Open Weather Map connector consume the data exposed in [openweathermap.org](https://openweathermap.org/). It is currently supporting the following operations.
+This is a generated connector from [Open Weather Map API v2.5](https://openweathermap.org/) OpenAPI Specification. 
 
-### Get Current Weather Data
+The Open Weather Map API provides access to current weather data and weather forecast of any location worldwide including 200,000 cities by consuming the [`Current Weather Data`](https://openweathermap.org/current) and [`One Call`](https://openweathermap.org/api/one-call-api) API endpoints.  
 
-Can be used to access current weather data for any location on Earth including over 200,000 cities.
+## Prerequisites
 
-For more details please check [here](https://openweathermap.org/current)
-
-### Get Weather Forecast
-
-Can be used to access current weather, minute forecast for 1 hour, hourly forecast for 48 hours, daily forecast for 7 days and government weather alerts.
-
-For more details please check [here](https://openweathermap.org/api/one-call-api)
-
-This module supports OpenWeatherMap API version 2.5.
-
-## Configuring connector
-
-### Prerequisites
-
-[OpenWeatherMap](https://openweathermap.org/) account.
-
-### Obtaining tokens
-
-To access the Open Weather API users need to have an API key given by [openweathermap.org](https://openweathermap.org/)  
-
-To obtain an API Key please follow these steps  
-* Go to openweathermap.org and create an account
-    - You can choose a subscription matching with your requirements
-* Go to [My API Keys](https://home.openweathermap.org/api_keys) and generate a new API Key
+* Create [OpenWeatherMap](https://openweathermap.org/) account.
+    - Choose a subscription that matches with your requirements
+* Obtain Api Key
+    - Visit [My API Keys](https://home.openweathermap.org/api_keys) and generate a new API Key
 
 ## Quickstart
 
-### Step 1: Import openweathermap module
-First, import the ballerinax/zoom module into the Ballerina project.
+To use the Open Weather Map connector in your Ballerina application, update the .bal file as follows:
+
+### Step 1: Import connector
 
 ```ballerina
     import ballerinax/openweathermap;
 ```
 
-### Step 2: Configure the connection credentials. 
+### Step 2: Create a new connector instance
 
-Then provide the obtained API Key in client configuration.
+Provide the obtained API Key in client configuration.
 
 ```ballerina
     ApiKeysConfig config = {
@@ -57,29 +37,13 @@ Then provide the obtained API Key in client configuration.
 };
 ```
 
-### Step 3: Get current weather data. 
+### Step 3: Invoke  connector operation
 
-Obtain current weather data by city name using `ballerinax/openweathermap` connector 
+1. Obtain current weather data by city name.
 
 ```ballerina
     CurrentWeatherData result = check weatherclient->getCurretWeatherData("Colombo");
     log:printInfo("Colombo Current Weather data : " + result.toString());
 
 ```
-
-## Snippets
-
-* Get Weather Forecast
-
-    ```ballerina
-    CurrentWeatherData result = check weatherclient->getWeatherForecast(lat = "6.93194", lon = "79.847778");
-    log:printInfo("Colombo Weather Forecast : " + result.toString());
-    ```
-    
-* Get current weather data by city id
-
-    Calling the API by city ID (using the `id` parameter) will provide the most precise location results.
-
-    ```ballerina
-    weather:CurrentWeatherData curretWeatherData = check weatherclient->getCurretWeatherData(id = "2172797");
-    ```
+2. Use `bal run` command to compile and run the Ballerina program.

@@ -44,6 +44,13 @@ public type GeolayerdataGeoViewport record {
     GeolayerdataGeoViewportLo lo?;
 };
 
+public type DownloadAccesses record {
+    # A list of download access responses.
+    DownloadAccessRestriction[] downloadAccessList?;
+    # Resource type.
+    string kind?;
+};
+
 # Books annotation range sent by client in different standards.
 public type BooksAnnotationsRange record {
     # The offset from the ending position.
@@ -152,6 +159,14 @@ public type DictlayerdataDictSenses record {
     DictlayerdataDictSource4 'source?;
     string syllabification?;
     DictlayerdataDictExamples1[] synonyms?;
+};
+
+# User settings in sub-objects, each for different purposes.
+public type UsersettingsNotesexport record {
+    # Folder name
+    string folderName?;
+    # Enabled or not
+    boolean isEnabled?;
 };
 
 # The content ranges to identify the selected text.
@@ -336,6 +351,25 @@ public type VolumeRecommendedinfo record {
     string explanation?;
 };
 
+public type FamilyInfo record {
+    # Resource type.
+    string kind?;
+    # Family membership info of the user that made the request.
+    FamilyinfoMembership membership?;
+};
+
+public type UsersettingsNotification record {
+    UsersettingsNotificationMatchmyinterests matchMyInterests?;
+    UsersettingsNotificationMatchmyinterests moreFromAuthors?;
+    UsersettingsNotificationMatchmyinterests moreFromSeries?;
+    UsersettingsNotificationMatchmyinterests priceDrop?;
+    UsersettingsNotificationMatchmyinterests rewardExpirations?;
+};
+
+public type UsersettingsNotificationMatchmyinterests record {
+    string opted_state?;
+};
+
 # Suggested retail price. (In LITE projection.)
 public type VolumeSaleinfoListprice record {
     # Amount in the currency listed below. (In LITE projection.)
@@ -380,6 +414,13 @@ public type GeolayerdataCommon record {
     string snippetUrl?;
     # The display title and localized canonical name to use when searching for this entity on Google search.
     string title?;
+};
+
+public type Metadata record {
+    # A list of offline dictionary metadata.
+    MetadataItems[] items?;
+    # Resource type.
+    string kind?;
 };
 
 public type AnnotationssummaryLayers record {
@@ -429,10 +470,33 @@ public type Dictlayerdata record {
     string kind?;
 };
 
+# Family membership info of the user that made the request.
+public type FamilyinfoMembership record {
+    # Restrictions on user buying and acquiring content.
+    string acquirePermission?;
+    # The age group of the user.
+    string ageGroup?;
+    # The maximum allowed maturity rating for the user.
+    string allowedMaturityRating?;
+    # Status of included in family
+    boolean isInFamily?;
+    # The role of the user in the family.
+    string role?;
+};
+
 # Author of this review.
 public type ReviewAuthor record {
     # Name of this person.
     string displayName?;
+};
+
+public type DiscoveryclustersClusters record {
+    DiscoveryclustersBannerWithContentContainer banner_with_content_container?;
+    string subTitle?;
+    string title?;
+    int totalVolumes?;
+    string uid?;
+    Volume[] volumes?;
 };
 
 # The volume series information.
@@ -672,6 +736,31 @@ public type VolumeUserinfoRentalperiod record {
     string startUtcSec?;
 };
 
+public type ConcurrentAccessRestriction record {
+    # Whether access is granted for this (user, device, volume).
+    boolean deviceAllowed?;
+    # Resource type.
+    string kind?;
+    # The maximum number of concurrent access licenses for this volume.
+    int maxConcurrentDevices?;
+    # Error/warning message.
+    string message?;
+    # Client nonce for verification. Download access and client-validation only.
+    string nonce?;
+    # Error/warning reason code.
+    string reasonCode?;
+    # Whether this volume has any concurrent access restrictions.
+    boolean restricted?;
+    # Response signature.
+    string signature?;
+    # Client app identifier for verification. Download access and client-validation only.
+    string 'source?;
+    # Time in seconds for license auto-expiration.
+    int timeWindowSeconds?;
+    # Identifies the volume for which this entry applies.
+    string volumeId?;
+};
+
 # The rental duration (for rental offers only).
 public type VolumeSaleinfoRentalduration record {
     # Count of rental duration.
@@ -767,6 +856,14 @@ public type SeriesSeriessubscriptionreleaseinfoCurrentreleaseinfo record {
     string releaseTime?;
 };
 
+public type Usersettings record {
+    # Resource type.
+    string kind?;
+    # User settings in sub-objects, each for different purposes.
+    UsersettingsNotesexport notesExport?;
+    UsersettingsNotification notification?;
+};
+
 public type VolumeseriesinfoVolumeseries record {
     # List of issues. Applicable only for Collection Edition and Omnibus.
     VolumeseriesinfoIssue[] issue?;
@@ -776,6 +873,14 @@ public type VolumeseriesinfoVolumeseries record {
     string seriesBookType?;
     # The series id.
     string seriesId?;
+};
+
+public type MetadataItems record {
+    string download_url?;
+    string encrypted_key?;
+    string language?;
+    string size?;
+    string 'version?;
 };
 
 public type OffersItems record {
@@ -843,6 +948,15 @@ public type VolumeSearchinfo record {
     string textSnippet?;
 };
 
+public type DiscoveryclustersBannerWithContentContainer record {
+    string fillColorArgb?;
+    string imageUrl?;
+    string maskColorArgb?;
+    string moreButtonText?;
+    string moreButtonUrl?;
+    string textColorArgb?;
+};
+
 # Review description.
 public type Review record {
     # Author of this review.
@@ -890,6 +1004,10 @@ public type GeoAnnotationdata record {
 public type DictlayerdataDictConjugations record {
     string 'type?;
     string value?;
+};
+
+# A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); } The JSON representation for `Empty` is empty JSON object `{}`.
+public type Empty record {
 };
 
 public type Volume2 record {
@@ -946,6 +1064,13 @@ public type CategoryItems record {
     string badgeUrl?;
     string categoryId?;
     string name?;
+};
+
+public type Discoveryclusters record {
+    DiscoveryclustersClusters[] clusters?;
+    # Resorce type.
+    string kind?;
+    int totalClusters?;
 };
 
 public type Seriesmembership record {
@@ -1064,6 +1189,14 @@ public type GeolayerdataGeoViewportLo record {
     float latitude?;
     # The longitude of the location.
     float longitude?;
+};
+
+public type RequestAccessData record {
+    ConcurrentAccessRestriction concurrentAccess?;
+    # The download access restriction.
+    DownloadAccessRestriction downloadAccess?;
+    # Resource type.
+    string kind?;
 };
 
 # The reading modes available for this volume.

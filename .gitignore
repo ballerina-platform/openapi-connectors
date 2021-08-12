@@ -30,3 +30,4 @@ gen
 hs_err_pid*
 
 .project
+.settings

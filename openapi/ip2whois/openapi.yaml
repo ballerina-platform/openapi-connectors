@@ -7,9 +7,11 @@ info:
 
     IP2WHOIS is a free tool to allow you to check WHOIS information for a particular domain, such as domain assigned owner contact information, registrar information, registrant information, location and much more.
   x-init-description: >
-    The connector initialization requires setting the API credentials.
+    The connector initialization doesn't require setting the API credentials
 
     Create a [IP2WHOIS Account](https://www.ip2whois.com/register) and obtain the API token by navigating to the [IP2WHOIS Profile](https://www.ip2whois.com/login)
+
+    Some operations may require passing the API Key as a parameter.
   title: IP2WHOIS Domain Lookup
   version: "1.0"
   x-apisguru-categories:
@@ -46,10 +48,82 @@ paths:
       responses:
         "200":
           content:
-            text/html; charset=UTF-8:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DomainInfo"
               examples:
                 "0":
                   value: '{"response": "","domain": "","domain_id": "","status": "","create_date": "","update_date": "","expire_date": "","domain_age": "","whois_server": "","registrar_iana_id": "","registrar_name": "","registrar_url": "","registrant_name": "","registrant_organization": "","registrant_street_address": "","registrant_city": "","registrant_region": "","registrant_zip_code": "","registrant_country": "","registrant_phone": "","registrant_fax": "","registrant_email": "","admin_name": "","admin_organization": "","admin_street_address":  "","admin_city": "","admin_region": "","admin_zip_code": "","admin_country": "","admin_phone": "","admin_fax": "","admin_email": "","tech_name": "","tech_organization": "","tech_street_address": "","tech_city": "","tech_region": "","tech_zip_code": "","tech_country": "","tech_phone": "","tech_fax": "","tech_email": "","billing_name": "","billing_organization": "","billing_street_address": "","billing_city": "","billing_region": "","billing_zip_code": "","billing_country": "","billing_phone": "","billing_fax": "","billing_email": "","name_servers": "","error_code": "","error_message":""}'
-              schema:
-                type: string
           description: Get response from IP2WHOIS
+components:
+  schemas:
+    DomainInfo:
+      properties:
+        domain:
+          type: string
+        domain_id:
+          type: string
+        status:
+          type: string
+        create_date:
+          type: string
+        update_date:
+          type: string
+        expire_date:
+          type: string
+        domain_age:
+          type: integer
+        whois_server:
+          type: string
+        registrar:
+          $ref: "#/components/schemas/Registrar"
+        registrant:
+          $ref: "#/components/schemas/Data"
+        admin:
+          $ref: "#/components/schemas/Data"
+        tech:
+          $ref: "#/components/schemas/Data"
+        billing:
+          $ref: "#/components/schemas/Data"
+        nameservers:
+          type: array
+          items:
+            type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+      type: object
+    Registrar:
+      properties:
+        iana_id:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+      type: object
+    Data:
+      properties:
+        name:
+          type: string
+        organization:
+          type: string
+        street_address:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        zip_code:
+          type: string
+        country:
+          type: string
+        phone:
+          type: string
+        fax:
+          type: string
+        email:
+          type: string
+      type: object
+    

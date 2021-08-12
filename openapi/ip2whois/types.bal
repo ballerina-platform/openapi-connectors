@@ -14,3 +14,40 @@
 // specific language governing permissions and limitations
 // under the License.
 
+public type Registrar record {
+    string iana_id?;
+    string name?;
+    string url?;
+};
+
+public type DomainInfo record {
+    string domain?;
+    string domain_id?;
+    string status?;
+    string create_date?;
+    string update_date?;
+    string expire_date?;
+    int domain_age?;
+    string whois_server?;
+    Registrar registrar?;
+    Data registrant?;
+    Data admin?;
+    Data tech?;
+    Data billing?;
+    string[] nameservers?;
+    string error_code?;
+    string error_message?;
+};
+
+public type Data record {
+    string name?;
+    string organization?;
+    string street_address?;
+    string city?;
+    string region?;
+    string zip_code?;
+    string country?;
+    string phone?;
+    string fax?;
+    string email?;
+};

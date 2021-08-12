@@ -43,20 +43,16 @@ public isolated client class Client {
     #
     # + payload - AnalyzeEntities request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function analyzeentitiesDocuments(AnalyzeEntitiesRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeEntitiesResponse|error {
+    remote isolated function analyzeentitiesDocuments(AnalyzeEntitiesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeEntitiesResponse|error {
         string  path = string `/v1/documents:analyzeEntities`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -68,20 +64,16 @@ public isolated client class Client {
     #
     # + payload - AnalyzeEntitySentiment request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function analyzeentitysentimentDocuments(AnalyzeEntitySentimentRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeEntitySentimentResponse|error {
+    remote isolated function analyzeentitysentimentDocuments(AnalyzeEntitySentimentRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeEntitySentimentResponse|error {
         string  path = string `/v1/documents:analyzeEntitySentiment`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -93,20 +85,16 @@ public isolated client class Client {
     #
     # + payload - AnalyzeSentiment request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function analyzesentimentDocuments(AnalyzeSentimentRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeSentimentResponse|error {
+    remote isolated function analyzesentimentDocuments(AnalyzeSentimentRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeSentimentResponse|error {
         string  path = string `/v1/documents:analyzeSentiment`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -118,20 +106,16 @@ public isolated client class Client {
     #
     # + payload - AnalyzeSyntax request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function analyzesyntaxDocuments(AnalyzeSyntaxRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeSyntaxResponse|error {
+    remote isolated function analyzesyntaxDocuments(AnalyzeSyntaxRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeSyntaxResponse|error {
         string  path = string `/v1/documents:analyzeSyntax`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -143,20 +127,16 @@ public isolated client class Client {
     #
     # + payload - AnnotateText request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function annotatetextDocuments(AnnotateTextRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnnotateTextResponse|error {
+    remote isolated function annotatetextDocuments(AnnotateTextRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnnotateTextResponse|error {
         string  path = string `/v1/documents:annotateText`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -168,20 +148,16 @@ public isolated client class Client {
     #
     # + payload - ClassifyText request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function classifytextDocuments(ClassifyTextRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ClassifyTextResponse|error {
+    remote isolated function classifytextDocuments(ClassifyTextRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ClassifyTextResponse|error {
         string  path = string `/v1/documents:classifyText`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);

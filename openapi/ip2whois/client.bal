@@ -23,8 +23,9 @@ import ballerina/lang.'string;
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials.
+    # The connector initialization doesn't require setting the API credentials
     # Create a [IP2WHOIS Account](https://www.ip2whois.com/register) and obtain the API token by navigating to the [IP2WHOIS Profile](https://www.ip2whois.com/login)
+    # Some operations may require passing the API Key as a parameter.
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
@@ -39,11 +40,11 @@ public isolated client class Client {
     # + 'key - API key.
     # + format - Returns the API response in json (default) or xml format.
     # + return - Get response from IP2WHOIS
-    remote isolated function getDomainInfo(string domain, string 'key, string? format = ()) returns string|error {
+    remote isolated function getDomainInfo(string domain, string 'key, string? format = ()) returns DomainInfo|error {
         string  path = string `/`;
         map<anydata> queryParam = {"domain": domain, "key": 'key, "format": format};
         path = path + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp-> get(path, targetType = string);
+        DomainInfo response = check self.clientEp-> get(path, targetType = DomainInfo);
         return response;
     }
 }

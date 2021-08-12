@@ -10,7 +10,7 @@ Before using this connector in your Ballerina application, complete the followin
  
 ## Quickstart
 
-To use the Google Slides API connector in your Ballerina application, update the .bal file as follows:
+To use the Google Slides connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
 Import the ballerinax/googleapis.slides module into the Ballerina project.
@@ -19,7 +19,7 @@ import ballerinax/googleapis.slides as slides;
 ```
 ### Step 2: Create a new connector instance
 
-You can now enter the credentials in the Google Slides API client configuration and create Google Slides API client by passing the configuration:
+You can now enter the credentials in the Google Slides client configuration and create Google Slides client by passing the configuration:
 
 ```ballerina
 slides:ClientConfig clientConfig = {
@@ -36,13 +36,13 @@ slides:Client baseClient = check new Client(clientConfig);
 
 ### Step 3: Invoke connector operation
 
-1. You can create a presentation as follows with `getSlidesPresentations` method by passing a `Presentation` record as parameter. Successful creation returns the created presentation as a `Presentation` and the error cases returns an `error` object.
+1. You can create a presentation as follows with `createPresentation` method by passing a `Presentation` record as parameter.
 
     ```ballerina
     slides:Presentation createPayload = {
         "title": "Sample Presentation"
     };
 
-    slides:Presentation presentation = check baseClient->createSlidesPresentations(createPayload);
+    slides:Presentation presentation = check baseClient->createPresentation(createPayload);
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 

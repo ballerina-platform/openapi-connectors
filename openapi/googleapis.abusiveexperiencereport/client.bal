@@ -43,14 +43,13 @@ public isolated client class Client {
     # + fields - Selector specifying which fields to include in a partial response.
     # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
     # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function listViolatingsites(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ViolatingSitesResponse|error {
+    remote isolated function listViolatingsites(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ViolatingSitesResponse|error {
         string  path = string `/v1/violatingSites`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         ViolatingSitesResponse response = check self.clientEp-> get(path, targetType = ViolatingSitesResponse);
         return response;
@@ -65,14 +64,13 @@ public isolated client class Client {
     # + fields - Selector specifying which fields to include in a partial response.
     # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
     # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function getSites(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SiteSummaryResponse|error {
+    remote isolated function getSites(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SiteSummaryResponse|error {
         string  path = string `/v1/${name}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         SiteSummaryResponse response = check self.clientEp-> get(path, targetType = SiteSummaryResponse);
         return response;

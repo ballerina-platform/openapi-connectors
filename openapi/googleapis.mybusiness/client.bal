@@ -23,8 +23,9 @@ import ballerina/lang.'string;
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials. 
+    # The connector initialization doesn't require setting the API credentials. 
     # Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
+    # Some operations may require passing the token as a parameter.
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
@@ -36,10 +37,12 @@ public isolated client class Client {
     # Lists all of the accounts for the authenticated user. This includes all accounts that the user owns, as well as any accounts for which the user has management rights.
     #
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -48,9 +51,9 @@ public isolated client class Client {
     # + pageSize - How many accounts to fetch per page. Default is 20, minimum is 2, and maximum page size is 20.
     # + pageToken - If specified, the next page of accounts is retrieved. The `pageToken` is returned when a call to `accounts.list` returns more results than can fit into the requested page size.
     # + return - Successful response
-    remote isolated function listAccounts(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? name = (), int? pageSize = (), string? pageToken = ()) returns ListAccountsResponse|error {
+    remote isolated function listAccounts(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? name = (), int? pageSize = (), string? pageToken = ()) returns ListAccountsResponse|error {
         string  path = string `/v4/accounts`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "name": name, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "name": name, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListAccountsResponse response = check self.clientEp-> get(path, targetType = ListAccountsResponse);
         return response;
@@ -59,18 +62,20 @@ public isolated client class Client {
     #
     # + payload - Account request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + primaryOwner - The resource name of the account which will be the primary owner of the account being created. It should be of the form `accounts/{account_id}/`.
     # + return - Successful response
-    remote isolated function createAccounts(Account payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? primaryOwner = ()) returns Account|error {
+    remote isolated function createAccounts(Account payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? primaryOwner = ()) returns Account|error {
         string  path = string `/v4/accounts`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "primaryOwner": primaryOwner};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "primaryOwner": primaryOwner};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -81,10 +86,12 @@ public isolated client class Client {
     # Returns the list of available attributes that would be available for a location with the given primary category and country.
     #
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -95,9 +102,9 @@ public isolated client class Client {
     # + pageSize - How many attributes to include per page. Default is 200, minimum is 1.
     # + pageToken - If specified, the next page of attribute metadata is retrieved. The `pageToken` is returned when a call to `attributes.list` returns more results than can fit into the requested page size.
     # + return - Successful response
-    remote isolated function listAttributes(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? categoryId = (), string? country = (), string? languageCode = (), string? name = (), int? pageSize = (), string? pageToken = ()) returns ListAttributeMetadataResponse|error {
+    remote isolated function listAttributes(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? categoryId = (), string? country = (), string? languageCode = (), string? name = (), int? pageSize = (), string? pageToken = ()) returns ListAttributeMetadataResponse|error {
         string  path = string `/v4/attributes`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "categoryId": categoryId, "country": country, "languageCode": languageCode, "name": name, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "categoryId": categoryId, "country": country, "languageCode": languageCode, "name": name, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListAttributeMetadataResponse response = check self.clientEp-> get(path, targetType = ListAttributeMetadataResponse);
         return response;
@@ -105,10 +112,12 @@ public isolated client class Client {
     # Returns a list of business categories. Search will match the category name but not the category ID. *Note:* Search only matches the front of a category name (that is, 'food' may return 'Food Court' but not 'Fast Food Restaurant').
     #
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -119,9 +128,9 @@ public isolated client class Client {
     # + searchTerm - Optional filter string from user.
     # + view - Optional. Specifies which parts to the Category resource should be returned in the response.
     # + return - Successful response
-    remote isolated function listCategories(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? languageCode = (), int? pageSize = (), string? pageToken = (), string? regionCode = (), string? searchTerm = (), string? view = ()) returns ListBusinessCategoriesResponse|error {
+    remote isolated function listCategories(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? languageCode = (), int? pageSize = (), string? pageToken = (), string? regionCode = (), string? searchTerm = (), string? view = ()) returns ListBusinessCategoriesResponse|error {
         string  path = string `/v4/categories`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "languageCode": languageCode, "pageSize": pageSize, "pageToken": pageToken, "regionCode": regionCode, "searchTerm": searchTerm, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "languageCode": languageCode, "pageSize": pageSize, "pageToken": pageToken, "regionCode": regionCode, "searchTerm": searchTerm, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         ListBusinessCategoriesResponse response = check self.clientEp-> get(path, targetType = ListBusinessCategoriesResponse);
         return response;
@@ -129,10 +138,12 @@ public isolated client class Client {
     # Returns a list of business categories for the provided language and GConcept ids.
     #
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -141,9 +152,9 @@ public isolated client class Client {
     # + regionCode - Optional. The ISO 3166-1 alpha-2 country code used to infer non-standard language.
     # + view - Required. Specifies which parts to the Category resource should be returned in the response.
     # + return - Successful response
-    remote isolated function batchgetCategories(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? categoryIds = (), string? languageCode = (), string? regionCode = (), string? view = ()) returns BatchGetBusinessCategoriesResponse|error {
+    remote isolated function batchgetCategories(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? categoryIds = (), string? languageCode = (), string? regionCode = (), string? view = ()) returns BatchGetBusinessCategoriesResponse|error {
         string  path = string `/v4/categories:batchGet`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "categoryIds": categoryIds, "languageCode": languageCode, "regionCode": regionCode, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "categoryIds": categoryIds, "languageCode": languageCode, "regionCode": regionCode, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         BatchGetBusinessCategoriesResponse response = check self.clientEp-> get(path, targetType = BatchGetBusinessCategoriesResponse);
         return response;
@@ -151,19 +162,21 @@ public isolated client class Client {
     # Searches the chain based on chain name.
     #
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + chainDisplayName - Search for a chain by its name. Exact/partial/fuzzy/related queries are supported. Examples: "walmart", "wal-mart", "walmmmart", "沃尔玛"
     # + resultCount - The maximum number of matched chains to return from this query. The default is 10. The maximum possible value is 500.
     # + return - Successful response
-    remote isolated function searchChains(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? chainDisplayName = (), int? resultCount = ()) returns SearchChainsResponse|error {
+    remote isolated function searchChains(string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? chainDisplayName = (), int? resultCount = ()) returns SearchChainsResponse|error {
         string  path = string `/v4/chains:search`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "chainDisplayName": chainDisplayName, "resultCount": resultCount};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "chainDisplayName": chainDisplayName, "resultCount": resultCount};
         path = path + check getPathForQueryParam(queryParam);
         SearchChainsResponse response = check self.clientEp-> get(path, targetType = SearchChainsResponse);
         return response;
@@ -172,17 +185,19 @@ public isolated client class Client {
     #
     # + payload - SearchGoogleLocations request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function searchGooglelocations(SearchGoogleLocationsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SearchGoogleLocationsResponse|error {
+    remote isolated function searchGooglelocations(SearchGoogleLocationsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SearchGoogleLocationsResponse|error {
         string  path = string `/v4/googleLocations:search`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -194,17 +209,19 @@ public isolated client class Client {
     #
     # + name - The chain's resource name, in the format `chains/{chain_place_id}`.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function getChains(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Chain|error {
+    remote isolated function getChains(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Chain|error {
         string  path = string `/v4/${name}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         Chain response = check self.clientEp-> get(path, targetType = Chain);
         return response;
@@ -214,17 +231,19 @@ public isolated client class Client {
     # + name - The notification settings resource name.
     # + payload - Notifications request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function updatenotificationsAccounts(string name, Notifications payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Notifications|error {
+    remote isolated function updatenotificationsAccounts(string name, Notifications payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Notifications|error {
         string  path = string `/v4/${name}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -236,17 +255,19 @@ public isolated client class Client {
     #
     # + name - The name of the question to delete.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function deleteAccountsLocationsQuestions(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function deleteAccountsLocationsQuestions(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${name}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -258,18 +279,20 @@ public isolated client class Client {
     # + name - The name of the question to update.
     # + payload - Question request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + updateMask - The specific fields to update. If no mask is specified, then this is treated as a full update and all editable fields are set to the values passed in.
     # + return - Successful response
-    remote isolated function patchAccountsLocationsQuestions(string name, Question payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Question|error {
+    remote isolated function patchAccountsLocationsQuestions(string name, Question payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Question|error {
         string  path = string `/v4/${name}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -282,17 +305,19 @@ public isolated client class Client {
     # + name - Required. The name of the location for which to fetch insights.
     # + payload - ReportLocalPostInsights request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function reportinsightsAccountsLocationsLocalposts(string name, ReportLocalPostInsightsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReportLocalPostInsightsResponse|error {
+    remote isolated function reportinsightsAccountsLocationsLocalposts(string name, ReportLocalPostInsightsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReportLocalPostInsightsResponse|error {
         string  path = string `/v4/${name}/localPosts:reportInsights`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -305,17 +330,19 @@ public isolated client class Client {
     # + name - The name of the account from which to fetch locations.
     # + payload - BatchGetLocations request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function batchgetAccountsLocations(string name, BatchGetLocationsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchGetLocationsResponse|error {
+    remote isolated function batchgetAccountsLocations(string name, BatchGetLocationsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchGetLocationsResponse|error {
         string  path = string `/v4/${name}/locations:batchGet`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -328,17 +355,19 @@ public isolated client class Client {
     # + name - The name of the account from which to retrieve a list of reviews across multiple locations.
     # + payload - BatchGetReviews request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function batchgetreviewsAccountsLocations(string name, BatchGetReviewsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchGetReviewsResponse|error {
+    remote isolated function batchgetreviewsAccountsLocations(string name, BatchGetReviewsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchGetReviewsResponse|error {
         string  path = string `/v4/${name}/locations:batchGetReviews`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -351,17 +380,19 @@ public isolated client class Client {
     # + name - The account resource name.
     # + payload - ReportLocationInsights request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function reportinsightsAccountsLocations(string name, ReportLocationInsightsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReportLocationInsightsResponse|error {
+    remote isolated function reportinsightsAccountsLocations(string name, ReportLocationInsightsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReportLocationInsightsResponse|error {
         string  path = string `/v4/${name}/locations:reportInsights`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -374,17 +405,19 @@ public isolated client class Client {
     # + name - The name of the review to respond to.
     # + payload - ReviewReply request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function updatereplyAccountsLocationsReviews(string name, ReviewReply payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReviewReply|error {
+    remote isolated function updatereplyAccountsLocationsReviews(string name, ReviewReply payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReviewReply|error {
         string  path = string `/v4/${name}/reply`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -396,17 +429,19 @@ public isolated client class Client {
     #
     # + name - The name of the review reply to delete.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function deletereplyAccountsLocationsReviews(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function deletereplyAccountsLocationsReviews(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${name}/reply`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -418,17 +453,19 @@ public isolated client class Client {
     # + name - The name of the invitation that is being accepted.
     # + payload - AcceptInvitation request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function acceptAccountsInvitations(string name, AcceptInvitationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function acceptAccountsInvitations(string name, AcceptInvitationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${name}:accept`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -441,17 +478,19 @@ public isolated client class Client {
     # + name - The resource name of the location to associate.
     # + payload - AssociateLocation request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function associateAccountsLocations(string name, AssociateLocationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function associateAccountsLocations(string name, AssociateLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${name}:associate`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -464,17 +503,19 @@ public isolated client class Client {
     # + name - The resource name of the location to disassociate.
     # + payload - ClearLocationAssociation request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function clearassociationAccountsLocations(string name, ClearLocationAssociationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function clearassociationAccountsLocations(string name, ClearLocationAssociationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${name}:clearAssociation`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -487,17 +528,19 @@ public isolated client class Client {
     # + name - Resource name of the verification to complete.
     # + payload - CompleteVerification request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function completeAccountsLocationsVerifications(string name, CompleteVerificationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CompleteVerificationResponse|error {
+    remote isolated function completeAccountsLocationsVerifications(string name, CompleteVerificationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CompleteVerificationResponse|error {
         string  path = string `/v4/${name}:complete`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -510,17 +553,19 @@ public isolated client class Client {
     # + name - The name of the account invitation that is being declined.
     # + payload - DeclineInvitation request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function declineAccountsInvitations(string name, DeclineInvitationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function declineAccountsInvitations(string name, DeclineInvitationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${name}:decline`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -533,17 +578,19 @@ public isolated client class Client {
     # + name - Resource name of the location to verify.
     # + payload - FetchVerificationOptions request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function fetchverificationoptionsAccountsLocations(string name, FetchVerificationOptionsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns FetchVerificationOptionsResponse|error {
+    remote isolated function fetchverificationoptionsAccountsLocations(string name, FetchVerificationOptionsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns FetchVerificationOptionsResponse|error {
         string  path = string `/v4/${name}:fetchVerificationOptions`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -556,17 +603,19 @@ public isolated client class Client {
     # + name - The resource name of the location to find matches for.
     # + payload - FindMatchingLocations request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function findmatchesAccountsLocations(string name, FindMatchingLocationsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns FindMatchingLocationsResponse|error {
+    remote isolated function findmatchesAccountsLocations(string name, FindMatchingLocationsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns FindMatchingLocationsResponse|error {
         string  path = string `/v4/${name}:findMatches`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -579,17 +628,19 @@ public isolated client class Client {
     # + name - The name of the account to generate an account number for.
     # + payload - GenerateAccountNumber request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function generateaccountnumberAccounts(string name, GenerateAccountNumberRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Account|error {
+    remote isolated function generateaccountnumberAccounts(string name, GenerateAccountNumberRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Account|error {
         string  path = string `/v4/${name}:generateAccountNumber`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -601,18 +652,20 @@ public isolated client class Client {
     #
     # + name - Required. Google identifier for this location in the form: `accounts/{account_id}/locations/{location_id}/lodging`
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + readMask - Optional. The specific fields to return. If no mask is specified, then it returns the full Lodging (same as "*"). Repeated field items cannot be individually specified.
     # + return - Successful response
-    remote isolated function getgoogleupdatedAccountsLocationsLodging(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? readMask = ()) returns GetGoogleUpdatedLodgingResponse|error {
+    remote isolated function getgoogleupdatedAccountsLocationsLodging(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? readMask = ()) returns GetGoogleUpdatedLodgingResponse|error {
         string  path = string `/v4/${name}:getGoogleUpdated`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "readMask": readMask};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "readMask": readMask};
         path = path + check getPathForQueryParam(queryParam);
         GetGoogleUpdatedLodgingResponse response = check self.clientEp-> get(path, targetType = GetGoogleUpdatedLodgingResponse);
         return response;
@@ -621,17 +674,19 @@ public isolated client class Client {
     #
     # + name - The name of the location to fetch.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function getgoogleupdatedAccountsLocations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleUpdatedLocation|error {
+    remote isolated function getgoogleupdatedAccountsLocations(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleUpdatedLocation|error {
         string  path = string `/v4/${name}:googleUpdated`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         GoogleUpdatedLocation response = check self.clientEp-> get(path, targetType = GoogleUpdatedLocation);
         return response;
@@ -640,19 +695,21 @@ public isolated client class Client {
     #
     # + name - Name of the account resource to fetch recommended Google locations for.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + pageSize - How many locations to fetch per page. Default is 25, minimum is 1, and maximum page size is 100.
     # + pageToken - If specified, the next page of locations is retrieved.
     # + return - Successful response
-    remote isolated function listrecommendgooglelocationsAccounts(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListRecommendedGoogleLocationsResponse|error {
+    remote isolated function listrecommendgooglelocationsAccounts(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListRecommendedGoogleLocationsResponse|error {
         string  path = string `/v4/${name}:recommendGoogleLocations`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListRecommendedGoogleLocationsResponse response = check self.clientEp-> get(path, targetType = ListRecommendedGoogleLocationsResponse);
         return response;
@@ -662,17 +719,19 @@ public isolated client class Client {
     # + name - Resource name of a [GoogleLocation], in the format `googleLocations/{googleLocationId}`.
     # + payload - ReportGoogleLocation request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function reportGooglelocations(string name, ReportGoogleLocationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function reportGooglelocations(string name, ReportGoogleLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${name}:report`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -685,17 +744,19 @@ public isolated client class Client {
     # + name - The name of the location to transfer.
     # + payload - TransferLocation request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function transferAccountsLocations(string name, TransferLocationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Location|error {
+    remote isolated function transferAccountsLocations(string name, TransferLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Location|error {
         string  path = string `/v4/${name}:transfer`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -708,17 +769,19 @@ public isolated client class Client {
     # + name - Resource name of the location to verify.
     # + payload - VerifyLocation request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function verifyAccountsLocations(string name, VerifyLocationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns VerifyLocationResponse|error {
+    remote isolated function verifyAccountsLocations(string name, VerifyLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns VerifyLocationResponse|error {
         string  path = string `/v4/${name}:verify`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -730,17 +793,19 @@ public isolated client class Client {
     #
     # + parent - The name of the location to list admins of.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function listAccountsLocationsAdmins(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ListLocationAdminsResponse|error {
+    remote isolated function listAccountsLocationsAdmins(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ListLocationAdminsResponse|error {
         string  path = string `/v4/${parent}/admins`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         ListLocationAdminsResponse response = check self.clientEp-> get(path, targetType = ListLocationAdminsResponse);
         return response;
@@ -750,17 +815,19 @@ public isolated client class Client {
     # + parent - The resource name of the location this admin is created for.
     # + payload - Admin request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function createAccountsLocationsAdmins(string parent, Admin payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Admin|error {
+    remote isolated function createAccountsLocationsAdmins(string parent, Admin payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Admin|error {
         string  path = string `/v4/${parent}/admins`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -772,10 +839,12 @@ public isolated client class Client {
     #
     # + parent - The name of the question to fetch answers for.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -783,9 +852,9 @@ public isolated client class Client {
     # + pageSize - How many answers to fetch per page. The default and maximum `page_size` values are 10.
     # + pageToken - If specified, the next page of answers is retrieved.
     # + return - Successful response
-    remote isolated function listAccountsLocationsQuestionsAnswers(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListAnswersResponse|error {
+    remote isolated function listAccountsLocationsQuestionsAnswers(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListAnswersResponse|error {
         string  path = string `/v4/${parent}/answers`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListAnswersResponse response = check self.clientEp-> get(path, targetType = ListAnswersResponse);
         return response;
@@ -794,17 +863,19 @@ public isolated client class Client {
     #
     # + parent - The name of the question to delete an answer for.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function deleteAccountsLocationsQuestionsAnswers(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function deleteAccountsLocationsQuestionsAnswers(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v4/${parent}/answers:delete`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -816,17 +887,19 @@ public isolated client class Client {
     # + parent - The name of the question to write an answer for.
     # + payload - UpsertAnswer request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function upsertAccountsLocationsQuestionsAnswers(string parent, UpsertAnswerRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Answer|error {
+    remote isolated function upsertAccountsLocationsQuestionsAnswers(string parent, UpsertAnswerRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Answer|error {
         string  path = string `/v4/${parent}/answers:upsert`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -838,10 +911,12 @@ public isolated client class Client {
     #
     # + parent - Required. The name of the location whose insurance networks will be listed. The name is in the form: accounts/{account_id}/locations/{location_id}
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -849,9 +924,9 @@ public isolated client class Client {
     # + pageSize - How many insurance networks to return per page. The default value is 5000. Maximum page size is 10000.
     # + pageToken - If specified, returns the next page of insurance networks.
     # + return - Successful response
-    remote isolated function listAccountsLocationsInsurancenetworks(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? languageCode = (), int? pageSize = (), string? pageToken = ()) returns ListInsuranceNetworksResponse|error {
+    remote isolated function listAccountsLocationsInsurancenetworks(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? languageCode = (), int? pageSize = (), string? pageToken = ()) returns ListInsuranceNetworksResponse|error {
         string  path = string `/v4/${parent}/insuranceNetworks`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "languageCode": languageCode, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "languageCode": languageCode, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListInsuranceNetworksResponse response = check self.clientEp-> get(path, targetType = ListInsuranceNetworksResponse);
         return response;
@@ -860,18 +935,20 @@ public isolated client class Client {
     #
     # + parent - The name of the account from which the list of invitations is being retrieved.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + targetType - Specifies which target types should appear in the response.
     # + return - Successful response
-    remote isolated function listAccountsInvitations(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? targetType = ()) returns ListInvitationsResponse|error {
+    remote isolated function listAccountsInvitations(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? targetType = ()) returns ListInvitationsResponse|error {
         string  path = string `/v4/${parent}/invitations`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "targetType": targetType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "targetType": targetType};
         path = path + check getPathForQueryParam(queryParam);
         ListInvitationsResponse response = check self.clientEp-> get(path, targetType = ListInvitationsResponse);
         return response;
@@ -880,19 +957,21 @@ public isolated client class Client {
     #
     # + parent - The name of the location whose local posts will be listed.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + pageSize - How many local posts to return per page. Default of 20. The minimum is 1, and maximum page size is 100.
     # + pageToken - If specified, returns the next page of local posts.
     # + return - Successful response
-    remote isolated function listAccountsLocationsLocalposts(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListLocalPostsResponse|error {
+    remote isolated function listAccountsLocationsLocalposts(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListLocalPostsResponse|error {
         string  path = string `/v4/${parent}/localPosts`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListLocalPostsResponse response = check self.clientEp-> get(path, targetType = ListLocalPostsResponse);
         return response;
@@ -902,17 +981,19 @@ public isolated client class Client {
     # + parent - The name of the location in which to create this local post.
     # + payload - LocalPost request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function createAccountsLocationsLocalposts(string parent, LocalPost payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns LocalPost|error {
+    remote isolated function createAccountsLocationsLocalposts(string parent, LocalPost payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns LocalPost|error {
         string  path = string `/v4/${parent}/localPosts`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -924,10 +1005,12 @@ public isolated client class Client {
     #
     # + parent - The name of the account to fetch locations from. If the Account is of AccountType PERSONAL, only Locations that are directly owned by the Account are returned, otherwise it will return all accessible locations from the Account, either directly or indirectly.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -937,9 +1020,9 @@ public isolated client class Client {
     # + pageSize - How many locations to fetch per page. Default is 100, minimum is 1, and maximum page size is 100.
     # + pageToken - If specified, it fetches the next `page` of locations. The page token is returned by previous calls to `ListLocations` when there were more locations than could fit in the requested page size.
     # + return - Successful response
-    remote isolated function listAccountsLocations(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? languageCode = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
+    remote isolated function listAccountsLocations(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? languageCode = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
         string  path = string `/v4/${parent}/locations`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "languageCode": languageCode, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "languageCode": languageCode, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListLocationsResponse response = check self.clientEp-> get(path, targetType = ListLocationsResponse);
         return response;
@@ -949,19 +1032,21 @@ public isolated client class Client {
     # + parent - The name of the account in which to create this location.
     # + payload - Location request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + requestId - A unique request ID for the server to detect duplicated requests. We recommend using UUIDs. Max length is 50 characters.
     # + validateOnly - If true, the request is validated without actually creating the location.
     # + return - Successful response
-    remote isolated function createAccountsLocations(string parent, Location payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? requestId = (), boolean? validateOnly = ()) returns Location|error {
+    remote isolated function createAccountsLocations(string parent, Location payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? requestId = (), boolean? validateOnly = ()) returns Location|error {
         string  path = string `/v4/${parent}/locations`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "requestId": requestId, "validateOnly": validateOnly};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "requestId": requestId, "validateOnly": validateOnly};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -973,19 +1058,21 @@ public isolated client class Client {
     #
     # + parent - The name of the location whose media items will be listed.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + pageSize - How many media items to return per page. The default value is 100, which is also the maximum supported number of media items able to be added to a location with the My Business API. Maximum page size is 2500.
     # + pageToken - If specified, returns the next page of media items.
     # + return - Successful response
-    remote isolated function listAccountsLocationsMedia(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListMediaItemsResponse|error {
+    remote isolated function listAccountsLocationsMedia(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListMediaItemsResponse|error {
         string  path = string `/v4/${parent}/media`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListMediaItemsResponse response = check self.clientEp-> get(path, targetType = ListMediaItemsResponse);
         return response;
@@ -995,17 +1082,19 @@ public isolated client class Client {
     # + parent - The resource name of the location where this media item will be created.
     # + payload - MediaItem request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function createAccountsLocationsMedia(string parent, MediaItem payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns MediaItem|error {
+    remote isolated function createAccountsLocationsMedia(string parent, MediaItem payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns MediaItem|error {
         string  path = string `/v4/${parent}/media`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1017,19 +1106,21 @@ public isolated client class Client {
     #
     # + parent - The name of the location whose customer media items will be listed.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + pageSize - How many media items to return per page. The default value is 100, the maximum supported page size is 200.
     # + pageToken - If specified, returns the next page of media items.
     # + return - Successful response
-    remote isolated function listAccountsLocationsMediaCustomers(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListCustomerMediaItemsResponse|error {
+    remote isolated function listAccountsLocationsMediaCustomers(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListCustomerMediaItemsResponse|error {
         string  path = string `/v4/${parent}/media/customers`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListCustomerMediaItemsResponse response = check self.clientEp-> get(path, targetType = ListCustomerMediaItemsResponse);
         return response;
@@ -1039,17 +1130,19 @@ public isolated client class Client {
     # + parent - The resource name of the location this media item is to be added to.
     # + payload - StartUploadMediaItemData request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function startuploadAccountsLocationsMedia(string parent, StartUploadMediaItemDataRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns MediaItemDataRef|error {
+    remote isolated function startuploadAccountsLocationsMedia(string parent, StartUploadMediaItemDataRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns MediaItemDataRef|error {
         string  path = string `/v4/${parent}/media:startUpload`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1061,10 +1154,12 @@ public isolated client class Client {
     #
     # + parent - The name of the location to fetch questions for.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -1074,9 +1169,9 @@ public isolated client class Client {
     # + pageSize - How many questions to fetch per page. The default and maximum `page_size` values are 10.
     # + pageToken - If specified, the next page of questions is retrieved.
     # + return - Successful response
-    remote isolated function listAccountsLocationsQuestions(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? answersPerQuestion = (), string? filter = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListQuestionsResponse|error {
+    remote isolated function listAccountsLocationsQuestions(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? answersPerQuestion = (), string? filter = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListQuestionsResponse|error {
         string  path = string `/v4/${parent}/questions`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "answersPerQuestion": answersPerQuestion, "filter": filter, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "answersPerQuestion": answersPerQuestion, "filter": filter, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListQuestionsResponse response = check self.clientEp-> get(path, targetType = ListQuestionsResponse);
         return response;
@@ -1086,17 +1181,19 @@ public isolated client class Client {
     # + parent - The name of the location to write a question for.
     # + payload - Question request
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function createAccountsLocationsQuestions(string parent, Question payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Question|error {
+    remote isolated function createAccountsLocationsQuestions(string parent, Question payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Question|error {
         string  path = string `/v4/${parent}/questions`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1108,10 +1205,12 @@ public isolated client class Client {
     #
     # + parent - The name of the location to fetch reviews for.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -1119,9 +1218,9 @@ public isolated client class Client {
     # + pageSize - How many reviews to fetch per page. The maximum `page_size` is 50.
     # + pageToken - If specified, it fetches the next page of reviews.
     # + return - Successful response
-    remote isolated function listAccountsLocationsReviews(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListReviewsResponse|error {
+    remote isolated function listAccountsLocationsReviews(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListReviewsResponse|error {
         string  path = string `/v4/${parent}/reviews`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListReviewsResponse response = check self.clientEp-> get(path, targetType = ListReviewsResponse);
         return response;
@@ -1130,19 +1229,21 @@ public isolated client class Client {
     #
     # + parent - Resource name of the location that verification requests belong to.
     # + xgafv - V1 error format.
+    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + prettyPrint - Returns response with indentations and line breaks.
+    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    # + oauthToken - OAuth 2.0 token for the current user.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + pageSize - How many verification to include per page. If not set, return all.
     # + pageToken - If specified, returns the next page of verifications.
     # + return - Successful response
-    remote isolated function listAccountsLocationsVerifications(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListVerificationsResponse|error {
+    remote isolated function listAccountsLocationsVerifications(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListVerificationsResponse|error {
         string  path = string `/v4/${parent}/verifications`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         path = path + check getPathForQueryParam(queryParam);
         ListVerificationsResponse response = check self.clientEp-> get(path, targetType = ListVerificationsResponse);
         return response;

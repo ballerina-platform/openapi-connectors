@@ -1,4 +1,4 @@
-Connects to Google Cloud Functions from Ballerina
+Connects to [Google Cloud Functions](https://cloud.google.com/functions/docs/reference/rest) from Ballerina
 
 ## Package overview
 The `ballerinax/googleapis.cloudfunctions` is a [Ballerina](https://ballerina.io/) connector for Google Cloud Functions API.

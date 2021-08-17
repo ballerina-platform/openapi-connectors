@@ -1,4 +1,4 @@
-Connects to Storecove from Ballerina
+Connects to [Storecove](https://app.storecove.com/docs) from Ballerina
 
 ## Package overview
 

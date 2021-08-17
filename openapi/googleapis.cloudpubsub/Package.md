@@ -1,4 +1,4 @@
-Connects to Google Cloud Pub/Sub from Ballerina
+Connects to [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/reference/rest) from Ballerina
 
 ## Package overview
 The `ballerinax/googleapis.cloudpubsub` is a [Ballerina](https://ballerina.io/) connector for Google Cloud Pub/Sub API.

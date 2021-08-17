@@ -24,7 +24,7 @@ import ballerinax/googleapis.bigquery;
 Create a `bigquery:ClientConfig` with the OAuth2 tokens obtained, and initialize the connector with it. 
 ```ballerina
 bigquery:ClientConfig clientConfig = {authConfig : {token: "<Your access token>"}};
-bigquery:Client baseClient = check new Client(clientConfig, serviceUrl = "https://bigquery.googleapis.com/bigquery/v2");
+bigquery:Client baseClient = check new Client(clientConfig);
 ```
 
 ### Step 3: Invoke connector operation

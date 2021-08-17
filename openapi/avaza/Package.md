@@ -1,4 +1,4 @@
-Connects to Avaza from Ballerina
+Connects to [Avaza API v1](https://api.avaza.com/swagger/ui/index) from Ballerina
 
 ## Package overview
 The `ballerinax/avaza` is a [Ballerina](https://ballerina.io/) connector for Avaza.

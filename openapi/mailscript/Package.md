@@ -1,4 +1,4 @@
-Connects to Mailscript from Ballerina.
+Connects to [Mailscript](https://docs.mailscript.com/#api) from Ballerina.
 
 ## Package overview
 

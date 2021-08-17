@@ -1,4 +1,4 @@
-Connects to WhatsApp Business API from Ballerina
+Connects to [WhatsApp Business](https://developers.facebook.com/docs/whatsapp/) from Ballerina
 
 ## Package overview
 

@@ -1,4 +1,4 @@
-Connects to Paylocity from Ballerina
+Connects to [Paylocity](https://www.paylocity.com/our-products/integrations/api-library/) from Ballerina
 
 ## Package overview
 

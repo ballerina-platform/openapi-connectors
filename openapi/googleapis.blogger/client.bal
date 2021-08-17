@@ -43,21 +43,17 @@ public isolated client class Client {
     #
     # + url - Blog URL
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + view - View type
     # + return - Successful response
-    remote isolated function getbyurlBloggerBlogs(string url, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Blog|error {
+    remote isolated function getbyurlBloggerBlogs(string url, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Blog|error {
         string  path = string `/v3/blogs/byurl`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "url": url, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "url": url, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         Blog response = check self.clientEp-> get(path, targetType = Blog);
         return response;
@@ -66,22 +62,18 @@ public isolated client class Client {
     #
     # + blogId - Blog ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + maxPosts - Maximum posts
     # + view - View type
     # + return - Successful response
-    remote isolated function getBloggerBlogs(string blogId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxPosts = (), string? view = ()) returns Blog|error {
+    remote isolated function getBloggerBlogs(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxPosts = (), string? view = ()) returns Blog|error {
         string  path = string `/v3/blogs/${blogId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxPosts": maxPosts, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxPosts": maxPosts, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         Blog response = check self.clientEp-> get(path, targetType = Blog);
         return response;
@@ -90,13 +82,9 @@ public isolated client class Client {
     #
     # + blogId - Blog ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -107,9 +95,9 @@ public isolated client class Client {
     # + startDate - Start date
     # + status - Status
     # + return - Successful response
-    remote isolated function listbyblogBloggerComments(string blogId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string? startDate = (), string[]? status = ()) returns CommentList|error {
+    remote isolated function listbyblogBloggerComments(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string? startDate = (), string[]? status = ()) returns CommentList|error {
         string  path = string `/v3/blogs/${blogId}/comments`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "startDate": startDate, "status": status};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "startDate": startDate, "status": status};
         path = path + check getPathForQueryParam(queryParam);
         CommentList response = check self.clientEp-> get(path, targetType = CommentList);
         return response;
@@ -118,13 +106,9 @@ public isolated client class Client {
     #
     # + blogId - Blog ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -134,9 +118,9 @@ public isolated client class Client {
     # + status - Status
     # + view - View
     # + return - Successful response
-    remote isolated function listBloggerPages(string blogId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string[]? status = (), string? view = ()) returns PageList|error {
+    remote isolated function listBloggerPages(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string[]? status = (), string? view = ()) returns PageList|error {
         string  path = string `/v3/blogs/${blogId}/pages`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "status": status, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "status": status, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         PageList response = check self.clientEp-> get(path, targetType = PageList);
         return response;
@@ -146,21 +130,17 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + payload - Page request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + isDraft - Is draft
     # + return - Successful response
-    remote isolated function insertBloggerPages(string blogId, Page payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? isDraft = ()) returns Page|error {
+    remote isolated function insertBloggerPages(string blogId, Page payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? isDraft = ()) returns Page|error {
         string  path = string `/v3/blogs/${blogId}/pages`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "isDraft": isDraft};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "isDraft": isDraft};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -173,21 +153,17 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + pageId - Page ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + view - View type
     # + return - Successful response
-    remote isolated function getBloggerPages(string blogId, string pageId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Page|error {
+    remote isolated function getBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Page|error {
         string  path = string `/v3/blogs/${blogId}/pages/${pageId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         Page response = check self.clientEp-> get(path, targetType = Page);
         return response;
@@ -198,22 +174,18 @@ public isolated client class Client {
     # + pageId - Page ID
     # + payload - Page request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + publish - Publish
     # + revert - Revert
     # + return - Successful response
-    remote isolated function updateBloggerPages(string blogId, string pageId, Page payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? publish = (), boolean? revert = ()) returns Page|error {
+    remote isolated function updateBloggerPages(string blogId, string pageId, Page payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? publish = (), boolean? revert = ()) returns Page|error {
         string  path = string `/v3/blogs/${blogId}/pages/${pageId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publish": publish, "revert": revert};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publish": publish, "revert": revert};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -226,20 +198,16 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + pageId - Page ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function deleteBloggerPages(string blogId, string pageId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function deleteBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v3/blogs/${blogId}/pages/${pageId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -252,22 +220,18 @@ public isolated client class Client {
     # + pageId - Page ID
     # + payload - Page request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + publish - Publish
     # + revert - Revert
     # + return - Successful response
-    remote isolated function patchBloggerPages(string blogId, string pageId, Page payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? publish = (), boolean? revert = ()) returns Page|error {
+    remote isolated function patchBloggerPages(string blogId, string pageId, Page payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? publish = (), boolean? revert = ()) returns Page|error {
         string  path = string `/v3/blogs/${blogId}/pages/${pageId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publish": publish, "revert": revert};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publish": publish, "revert": revert};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -280,20 +244,16 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + pageId - Page ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function publishBloggerPages(string blogId, string pageId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
+    remote isolated function publishBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
         string  path = string `/v3/blogs/${blogId}/pages/${pageId}/publish`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -305,20 +265,16 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + pageId - Page ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function revertBloggerPages(string blogId, string pageId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
+    remote isolated function revertBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
         string  path = string `/v3/blogs/${blogId}/pages/${pageId}/revert`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -329,21 +285,17 @@ public isolated client class Client {
     #
     # + blogId - Blog ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + range - Range
     # + return - Successful response
-    remote isolated function getBloggerPageviews(string blogId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? range = ()) returns Pageviews|error {
+    remote isolated function getBloggerPageviews(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? range = ()) returns Pageviews|error {
         string  path = string `/v3/blogs/${blogId}/pageviews`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "range": range};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "range": range};
         path = path + check getPathForQueryParam(queryParam);
         Pageviews response = check self.clientEp-> get(path, targetType = Pageviews);
         return response;
@@ -352,13 +304,9 @@ public isolated client class Client {
     #
     # + blogId - Blog ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -373,9 +321,9 @@ public isolated client class Client {
     # + status - Status
     # + view - View
     # + return - Successful response
-    remote isolated function listBloggerPosts(string blogId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), boolean? fetchImages = (), string? labels = (), int? maxResults = (), string? orderBy = (), string? pageToken = (), string? startDate = (), string[]? status = (), string? view = ()) returns PostList|error {
+    remote isolated function listBloggerPosts(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), boolean? fetchImages = (), string? labels = (), int? maxResults = (), string? orderBy = (), string? pageToken = (), string? startDate = (), string[]? status = (), string? view = ()) returns PostList|error {
         string  path = string `/v3/blogs/${blogId}/posts`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "fetchImages": fetchImages, "labels": labels, "maxResults": maxResults, "orderBy": orderBy, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "fetchImages": fetchImages, "labels": labels, "maxResults": maxResults, "orderBy": orderBy, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         PostList response = check self.clientEp-> get(path, targetType = PostList);
         return response;
@@ -385,13 +333,9 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + payload - Post request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -399,9 +343,9 @@ public isolated client class Client {
     # + fetchImages - Fetch images
     # + isDraft - Is draft
     # + return - Successful response
-    remote isolated function insertBloggerPosts(string blogId, Post payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), boolean? isDraft = ()) returns Post|error {
+    remote isolated function insertBloggerPosts(string blogId, Post payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), boolean? isDraft = ()) returns Post|error {
         string  path = string `/v3/blogs/${blogId}/posts`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "isDraft": isDraft};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "isDraft": isDraft};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -414,22 +358,18 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + path - Path
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + maxComments - Maximum comments
     # + view - View
     # + return - Successful response
-    remote isolated function getbypathBloggerPosts(string blogId, string path, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxComments = (), string? view = ()) returns Post|error {
+    remote isolated function getbypathBloggerPosts(string blogId, string path, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxComments = (), string? view = ()) returns Post|error {
         string  paths = string `/v3/blogs/${blogId}/posts/bypath`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "path": path, "maxComments": maxComments, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "path": path, "maxComments": maxComments, "view": view};
         paths = paths + check getPathForQueryParam(queryParam);
         Post response = check self.clientEp-> get(paths, targetType = Post);
         return response;
@@ -439,22 +379,18 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + q - q
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + fetchBodies - Fetch bodies
     # + orderBy - Order by
     # + return - Successful response
-    remote isolated function searchBloggerPosts(string blogId, string q, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBodies = (), string? orderBy = ()) returns PostList|error {
+    remote isolated function searchBloggerPosts(string blogId, string q, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBodies = (), string? orderBy = ()) returns PostList|error {
         string  path = string `/v3/blogs/${blogId}/posts/search`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "q": q, "fetchBodies": fetchBodies, "orderBy": orderBy};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "q": q, "fetchBodies": fetchBodies, "orderBy": orderBy};
         path = path + check getPathForQueryParam(queryParam);
         PostList response = check self.clientEp-> get(path, targetType = PostList);
         return response;
@@ -464,13 +400,9 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + postId - Post ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -479,9 +411,9 @@ public isolated client class Client {
     # + maxComments - Maximum comments
     # + view - View
     # + return - Successful response
-    remote isolated function getBloggerPosts(string blogId, string postId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), string? view = ()) returns Post|error {
+    remote isolated function getBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), string? view = ()) returns Post|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         Post response = check self.clientEp-> get(path, targetType = Post);
         return response;
@@ -492,13 +424,9 @@ public isolated client class Client {
     # + postId - Post ID
     # + payload - Post request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -508,9 +436,9 @@ public isolated client class Client {
     # + publish - Publish
     # + revert - Revert
     # + return - Successful response
-    remote isolated function updateBloggerPosts(string blogId, string postId, Post payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), boolean? publish = (), boolean? revert = ()) returns Post|error {
+    remote isolated function updateBloggerPosts(string blogId, string postId, Post payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), boolean? publish = (), boolean? revert = ()) returns Post|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "publish": publish, "revert": revert};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "publish": publish, "revert": revert};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -523,20 +451,16 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + postId - Post ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function deleteBloggerPosts(string blogId, string postId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function deleteBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -549,13 +473,9 @@ public isolated client class Client {
     # + postId - Post ID
     # + payload - Post request
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -565,9 +485,9 @@ public isolated client class Client {
     # + publish - Publish
     # + revert - Revert
     # + return - Successful response
-    remote isolated function patchBloggerPosts(string blogId, string postId, Post payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), boolean? publish = (), boolean? revert = ()) returns Post|error {
+    remote isolated function patchBloggerPosts(string blogId, string postId, Post payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), boolean? publish = (), boolean? revert = ()) returns Post|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "publish": publish, "revert": revert};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "publish": publish, "revert": revert};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -580,13 +500,9 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + postId - Post ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -598,9 +514,9 @@ public isolated client class Client {
     # + status - Status
     # + view - View type
     # + return - Successful response
-    remote isolated function listBloggerComments(string blogId, string postId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string? startDate = (), string? status = (), string? view = ()) returns CommentList|error {
+    remote isolated function listBloggerComments(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string? startDate = (), string? status = (), string? view = ()) returns CommentList|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/comments`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         CommentList response = check self.clientEp-> get(path, targetType = CommentList);
         return response;
@@ -611,21 +527,17 @@ public isolated client class Client {
     # + postId - Post ID
     # + commentId - Comment ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + view - View
     # + return - Successful response
-    remote isolated function getBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Comment|error {
+    remote isolated function getBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Comment|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         Comment response = check self.clientEp-> get(path, targetType = Comment);
         return response;
@@ -636,20 +548,16 @@ public isolated client class Client {
     # + postId - Post ID
     # + commentId - Comment ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function deleteBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+    remote isolated function deleteBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -662,20 +570,16 @@ public isolated client class Client {
     # + postId - Post ID
     # + commentId - Comment ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function approveBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
+    remote isolated function approveBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}/approve`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -688,20 +592,16 @@ public isolated client class Client {
     # + postId - Post ID
     # + commentId - Comment ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function removecontentBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
+    remote isolated function removecontentBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}/removecontent`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -714,20 +614,16 @@ public isolated client class Client {
     # + postId - Post ID
     # + commentId - Comment ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function markasspamBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
+    remote isolated function markasspamBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}/spam`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -739,21 +635,17 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + postId - Post ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + publishDate - Publish date
     # + return - Successful response
-    remote isolated function publishBloggerPosts(string blogId, string postId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? publishDate = ()) returns Post|error {
+    remote isolated function publishBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? publishDate = ()) returns Post|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/publish`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publishDate": publishDate};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publishDate": publishDate};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -765,20 +657,16 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + postId - Post ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function revertBloggerPosts(string blogId, string postId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Post|error {
+    remote isolated function revertBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Post|error {
         string  path = string `/v3/blogs/${blogId}/posts/${postId}/revert`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -789,20 +677,16 @@ public isolated client class Client {
     #
     # + userId - User ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + return - Successful response
-    remote isolated function getBloggerUsers(string userId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns User|error {
+    remote isolated function getBloggerUsers(string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns User|error {
         string  path = string `/v3/users/${userId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         User response = check self.clientEp-> get(path, targetType = User);
         return response;
@@ -811,13 +695,9 @@ public isolated client class Client {
     #
     # + userId - User ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -826,9 +706,9 @@ public isolated client class Client {
     # + status - Default value of status is LIVE.
     # + view - View type
     # + return - Successful response
-    remote isolated function listbyuserBloggerBlogs(string userId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchUserInfo = (), string[]? role = (), string[]? status = (), string? view = ()) returns BlogList|error {
+    remote isolated function listbyuserBloggerBlogs(string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchUserInfo = (), string[]? role = (), string[]? status = (), string? view = ()) returns BlogList|error {
         string  path = string `/v3/users/${userId}/blogs`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchUserInfo": fetchUserInfo, "role": role, "status": status, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchUserInfo": fetchUserInfo, "role": role, "status": status, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         BlogList response = check self.clientEp-> get(path, targetType = BlogList);
         return response;
@@ -838,21 +718,17 @@ public isolated client class Client {
     # + userId - User ID
     # + blogId - Blog ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + maxPosts - Maximum posts
     # + return - Successful response
-    remote isolated function getBloggerBloguserinfos(string userId, string blogId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxPosts = ()) returns BlogUserInfo|error {
+    remote isolated function getBloggerBloguserinfos(string userId, string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxPosts = ()) returns BlogUserInfo|error {
         string  path = string `/v3/users/${userId}/blogs/${blogId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxPosts": maxPosts};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxPosts": maxPosts};
         path = path + check getPathForQueryParam(queryParam);
         BlogUserInfo response = check self.clientEp-> get(path, targetType = BlogUserInfo);
         return response;
@@ -862,13 +738,9 @@ public isolated client class Client {
     # + userId - User ID
     # + blogId - Blog ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
@@ -882,9 +754,9 @@ public isolated client class Client {
     # + status - Status
     # + view - View type
     # + return - Successful response
-    remote isolated function listBloggerPostuserinfos(string userId, string blogId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), string? labels = (), int? maxResults = (), string? orderBy = (), string? pageToken = (), string? startDate = (), string[]? status = (), string? view = ()) returns PostUserInfosList|error {
+    remote isolated function listBloggerPostuserinfos(string userId, string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), string? labels = (), int? maxResults = (), string? orderBy = (), string? pageToken = (), string? startDate = (), string[]? status = (), string? view = ()) returns PostUserInfosList|error {
         string  path = string `/v3/users/${userId}/blogs/${blogId}/posts`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "labels": labels, "maxResults": maxResults, "orderBy": orderBy, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "labels": labels, "maxResults": maxResults, "orderBy": orderBy, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
         path = path + check getPathForQueryParam(queryParam);
         PostUserInfosList response = check self.clientEp-> get(path, targetType = PostUserInfosList);
         return response;
@@ -895,21 +767,17 @@ public isolated client class Client {
     # + blogId - Blog ID
     # + postId - Post ID
     # + xgafv - V1 error format.
-    # + accessToken - OAuth access token.
     # + alt - Data format for response.
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response.
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    # + oauthToken - OAuth 2.0 token for the current user.
-    # + prettyPrint - Returns response with indentations and line breaks.
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
     # + maxComments - Maximum Comments
     # + return - Successful response
-    remote isolated function getBloggerPostuserinfos(string userId, string blogId, string postId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxComments = ()) returns PostUserInfo|error {
+    remote isolated function getBloggerPostuserinfos(string userId, string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxComments = ()) returns PostUserInfo|error {
         string  path = string `/v3/users/${userId}/blogs/${blogId}/posts/${postId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxComments": maxComments};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxComments": maxComments};
         path = path + check getPathForQueryParam(queryParam);
         PostUserInfo response = check self.clientEp-> get(path, targetType = PostUserInfo);
         return response;

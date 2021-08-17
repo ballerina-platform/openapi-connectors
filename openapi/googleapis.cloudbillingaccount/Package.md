@@ -1,4 +1,4 @@
-Connects to Google Cloud Billing Account from Ballerina
+Connects to [Google Cloud Billing Account API](https://cloud.google.com/billing/docs/apis) from Ballerina
 
 ## Package Overview
 The `googleapis.cloudbillingaccount` is a [Ballerina](https://ballerina.io/) connector for [Google Cloud Billing Account API](https://cloud.google.com/billing/v1/getting-started).

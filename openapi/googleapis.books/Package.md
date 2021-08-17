@@ -1,4 +1,4 @@
-Connects to Google Books from Ballerina
+Connects to [Google Books API v1](https://developers.google.com/books) from Ballerina
 
 ## Package Overview
 The `googleapis.books` is a [Ballerina](https://ballerina.io/) connector for [Google Books API](https://developers.google.com/books).

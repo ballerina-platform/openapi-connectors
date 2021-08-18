@@ -1,4 +1,4 @@
-Connects to Google Vault from Ballerina
+Connects to [Google Vault](https://developers.google.com/vault/reference/rest) from Ballerina
 
 ## Package overview
 The `ballerinax/googleapis.vault` is a [Ballerina](https://ballerina.io/) connector for Google Vault API.

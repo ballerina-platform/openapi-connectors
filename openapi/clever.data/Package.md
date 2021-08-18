@@ -1,4 +1,4 @@
-Connects to Clever Data from Ballerina.
+Connects to [Clever Data](https://dev.clever.com/v1.2/docs/) from Ballerina.
 
 ## Package overview
 

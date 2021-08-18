@@ -1,4 +1,4 @@
-Connects to iSendPro from Ballerina.
+Connects to [iSendPro](https://www.isendpro.com/docs/?type=7) from Ballerina.
 
 ## Package overview
 

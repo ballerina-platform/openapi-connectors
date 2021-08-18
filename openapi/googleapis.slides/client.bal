@@ -47,20 +47,16 @@ public isolated client class Client {
     #
     # + payload - A record of type `Presentation` which contains the necessary data to create a presentation
     # + xgafv - V1 error format
-    # + accessToken - OAuth access token
     # + alt - Data format for response
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token
-    # + oauthToken - OAuth 2.0 token for the current user
-    # + prettyPrint - Returns response with indentations and line breaks
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart")
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart")
     # + return - Successful response
-    remote isolated function createPresentation(Presentation payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Presentation|error {
+    remote isolated function createPresentation(Presentation payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Presentation|error {
         string  path = string `/v1/presentations`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -72,20 +68,16 @@ public isolated client class Client {
     #
     # + presentationId - The ID of the presentation to retrieve
     # + xgafv - V1 error format
-    # + accessToken - OAuth access token
     # + alt - Data format for response
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token
-    # + oauthToken - OAuth 2.0 token for the current user
-    # + prettyPrint - Returns response with indentations and line breaks
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart")
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart")
     # + return - Successful response
-    remote isolated function getPresentation(string presentationId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Presentation|error {
+    remote isolated function getPresentation(string presentationId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Presentation|error {
         string  path = string `/v1/presentations/${presentationId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         Presentation response = check self.clientEp-> get(path, targetType = Presentation);
         return response;
@@ -95,20 +87,16 @@ public isolated client class Client {
     # + presentationId - The ID of the presentation to retrieve
     # + pageObjectId - The object ID of the page to retrieve
     # + xgafv - V1 error format
-    # + accessToken - OAuth access token
     # + alt - Data format for response
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token
-    # + oauthToken - OAuth 2.0 token for the current user
-    # + prettyPrint - Returns response with indentations and line breaks
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart")
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart")
     # + return - Successful response
-    remote isolated function getPresentationPage(string presentationId, string pageObjectId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
+    remote isolated function getPresentationPage(string presentationId, string pageObjectId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
         string  path = string `/v1/presentations/${presentationId}/pages/${pageObjectId}`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         Page response = check self.clientEp-> get(path, targetType = Page);
         return response;
@@ -118,22 +106,18 @@ public isolated client class Client {
     # + presentationId - The ID of the presentation to retrieve
     # + pageObjectId - The object ID of the page whose thumbnail to retrieve
     # + xgafv - V1 error format
-    # + accessToken - OAuth access token
     # + alt - Data format for response
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token
-    # + oauthToken - OAuth 2.0 token for the current user
-    # + prettyPrint - Returns response with indentations and line breaks
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart")
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart")
     # + thumbnailpropertiesMimetype - The optional mime type of the thumbnail image. If you don't specify the mime type, the mime type defaults to PNG
     # + thumbnailpropertiesThumbnailsize - The optional thumbnail image size. If you don't specify the size, the server chooses a default size of the image
     # + return - Successful response
-    remote isolated function getPresentationPageThumbnail(string presentationId, string pageObjectId, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? thumbnailpropertiesMimetype = (), string? thumbnailpropertiesThumbnailsize = ()) returns Thumbnail|error {
+    remote isolated function getPresentationPageThumbnail(string presentationId, string pageObjectId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? thumbnailpropertiesMimetype = (), string? thumbnailpropertiesThumbnailsize = ()) returns Thumbnail|error {
         string  path = string `/v1/presentations/${presentationId}/pages/${pageObjectId}/thumbnail`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "thumbnailProperties.mimeType": thumbnailpropertiesMimetype, "thumbnailProperties.thumbnailSize": thumbnailpropertiesThumbnailsize};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "thumbnailProperties.mimeType": thumbnailpropertiesMimetype, "thumbnailProperties.thumbnailSize": thumbnailpropertiesThumbnailsize};
         path = path + check getPathForQueryParam(queryParam);
         Thumbnail response = check self.clientEp-> get(path, targetType = Thumbnail);
         return response;
@@ -143,20 +127,16 @@ public isolated client class Client {
     # + presentationId - The presentation to apply the updates to
     # + payload - A record of type `BatchUpdatePresentationRequest` which contains the necessary data to make one or more updates to the presentation
     # + xgafv - V1 error format
-    # + accessToken - OAuth access token
     # + alt - Data format for response
     # + callback - JSONP
     # + fields - Selector specifying which fields to include in a partial response
-    # + 'key - API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token
-    # + oauthToken - OAuth 2.0 token for the current user
-    # + prettyPrint - Returns response with indentations and line breaks
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart")
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart")
     # + return - Successful response
-    remote isolated function batchUpdatePresentations(string presentationId, BatchUpdatePresentationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), boolean? prettyPrint = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchUpdatePresentationResponse|error {
+    remote isolated function batchUpdatePresentations(string presentationId, BatchUpdatePresentationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchUpdatePresentationResponse|error {
         string  path = string `/v1/presentations/${presentationId}:batchUpdate`;
-        map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "prettyPrint": prettyPrint, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);

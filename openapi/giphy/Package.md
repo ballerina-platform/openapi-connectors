@@ -1,4 +1,4 @@
-Connects to Giphy from Ballerina
+Connects to [Giphy](https://developers.giphy.com/docs/api/) from Ballerina
 
 ## Package overview
 

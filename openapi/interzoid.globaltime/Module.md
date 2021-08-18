@@ -14,7 +14,7 @@ Before using this connector in your Ballerina application, complete the followin
 
 ## Quickstart
 
-To use the Interzoid zip code detailed information connector convert currency connector in your Ballerina application, update the .bal file as follows:
+To use the Interzoid zip code detailed information connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
 First, import the ballerinax/interzoid.globaltime module into the Ballerina project.

@@ -1,0 +1,1807 @@
+openapi: 3.0.0
+info:
+  title: 'SamCart Public API'
+  description: |
+    This is a generated connector for [SamCart API v1.0.0](https://developer.samcart.com/) OpenAPI specification.
+    SamCart's Public API is used for accessing the data inside your SamCart marketplace.
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [SamCart account](https://www.samcart.com/) and obtain tokens following [this guide](https://developer.samcart.com/#section/Authentication).
+  termsOfService: 'https://www.samcart.com/terms-and-conditions'
+  contact:
+    name: 'API Support'
+    email: support@samcart.com
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+  x-logo:
+    url: 'https://qn03e1pj8r21z48mq2u9ctcv-wpengine.netdna-ssl.com/wp-content/themes/samcart/assets/images/logo-samcart.svg'
+    altText: 'SamCart logo'
+servers:
+  -
+    url: 'https://api.samcart.com/v1'
+    description: 'Public API server'
+paths:
+  /charges:
+    get:
+      tags:
+        - Charges
+      description: 'Retrieve all charges'
+      operationId: getCharges
+      parameters:
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+        -
+          $ref: '#/components/parameters/pagination_offset'
+        -
+          $ref: '#/components/parameters/pagination_limit'
+        -
+          $ref: '#/components/parameters/pagination_direction'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more charges'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/ChargeService' } }
+                  pagination: { $ref: '#/components/schemas/Pagination' }
+                type: object
+      security:
+        -
+          apiKeyAuth: []
+  '/charges/{id}':
+    get:
+      tags:
+        - Charges
+      description: 'Retrieve a charge'
+      operationId: getByChargeId
+      parameters:
+        -
+          $ref: '#/components/parameters/charge_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargeService'
+        '404':
+          description: 'Charge could not found'
+      security:
+        -
+          apiKeyAuth: []
+  '/charges/{id}/refunds':
+    get:
+      tags:
+        - Charges
+      description: 'Retrieve all refunds on a charge'
+      operationId: getMultipleRefundsByChargeId
+      parameters:
+        -
+          $ref: '#/components/parameters/charge_id'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more refunds'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RefundService'
+        '404':
+          description: 'Charge could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/charges/{id}/refunds/{refund_id}':
+    get:
+      tags:
+        - Charges
+      description: 'Retrieve a refund on a charge'
+      operationId: getRefundByChargeId
+      parameters:
+        -
+          $ref: '#/components/parameters/charge_id'
+        -
+          $ref: '#/components/parameters/refund_id'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundService'
+        '404':
+          description: 'Charge or refund could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  /customers:
+    get:
+      tags:
+        - Customers
+      description: 'Retrieve all customers'
+      operationId: getCustomers
+      parameters:
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/pagination_offset'
+        -
+          $ref: '#/components/parameters/pagination_limit'
+        -
+          $ref: '#/components/parameters/pagination_direction'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more customers'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/CustomerService' } }
+                  pagination: { $ref: '#/components/schemas/Pagination' }
+                type: object
+      security:
+        -
+          apiKeyAuth: []
+  '/customers/{id}':
+    get:
+      tags:
+        - Customers
+      description: 'Retrieve a customer'
+      operationId: getByCustomerId
+      parameters:
+        -
+          $ref: '#/components/parameters/customer_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerService'
+        '404':
+          description: 'Customer could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/customers/{id}/addresses':
+    get:
+      tags:
+        - Customers
+      description: 'Retrieve all addresses for a customer'
+      operationId: getAddressesByCustomerId
+      parameters:
+        -
+          $ref: '#/components/parameters/customer_id'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more addresses'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressService'
+        '404':
+          description: 'Customer could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/customers/{id}/charges':
+    get:
+      tags:
+        - Customers
+      description: 'Retrieve all charges for a customer'
+      operationId: getChargesByCustomerId
+      parameters:
+        -
+          $ref: '#/components/parameters/customer_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more charges'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChargeService'
+        '404':
+          description: 'Customer could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/customers/{id}/orders':
+    get:
+      tags:
+        - Customers
+      description: 'Retrieve all orders for a customer'
+      operationId: getOrdersByCustomerId
+      parameters:
+        -
+          $ref: '#/components/parameters/customer_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more orders'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderService'
+        '404':
+          description: 'Customer could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/customers/{id}/subscriptions':
+    get:
+      tags:
+        - Customers
+      description: 'Retrieve all subscriptions for a customer'
+      operationId: getSubscriptionsByCustomerId
+      parameters:
+        -
+          $ref: '#/components/parameters/customer_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/rebilling_at_min'
+        -
+          $ref: '#/components/parameters/rebilling_at_max'
+        -
+          $ref: '#/components/parameters/canceled_at_min'
+        -
+          $ref: '#/components/parameters/canceled_at_max'
+        -
+          $ref: '#/components/parameters/subscription_status'
+        -
+          $ref: '#/components/parameters/subscription_type'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more subscriptions'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionService'
+        '404':
+          description: 'Customer could not found'
+      security:
+        -
+          apiKeyAuth: []
+  /failed-charges:
+    get:
+      tags:
+        - 'Failed Charges'
+      description: 'Retrieve all failed charges'
+      operationId: getFailedCharges
+      parameters:
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+        -
+          $ref: '#/components/parameters/pagination_offset'
+        -
+          $ref: '#/components/parameters/pagination_limit'
+        -
+          $ref: '#/components/parameters/pagination_direction'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more failed charges'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/FailedChargeService' } }
+                  pagination: { $ref: '#/components/schemas/Pagination' }
+                type: object
+      security:
+        -
+          apiKeyAuth: []
+  '/failed-charges/{id}':
+    get:
+      tags:
+        - 'Failed Charges'
+      description: 'Retrieve a failed charge'
+      operationId: getByFailedChargeId
+      parameters:
+        -
+          $ref: '#/components/parameters/charge_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedChargeService'
+        '404':
+          description: 'Failed charge could not found'
+      security:
+        -
+          apiKeyAuth: []
+  /orders:
+    get:
+      tags:
+        - Orders
+      description: 'Retrieve all orders'
+      operationId: getOrders
+      parameters:
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+        -
+          $ref: '#/components/parameters/pagination_offset'
+        -
+          $ref: '#/components/parameters/pagination_limit'
+        -
+          $ref: '#/components/parameters/pagination_direction'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more orders'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/OrderService' } }
+                  pagination: { $ref: '#/components/schemas/Pagination' }
+                type: object
+      security:
+        -
+          apiKeyAuth: []
+  '/orders/{id}':
+    get:
+      tags:
+        - Orders
+      description: 'Retrieve an order'
+      operationId: getByOrderId
+      parameters:
+        -
+          $ref: '#/components/parameters/order_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderService'
+        '404':
+          description: 'Order could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/orders/{id}/charges':
+    get:
+      tags:
+        - Orders
+      description: 'Retrieve all charges on an order'
+      operationId: getChargesByOrderId
+      parameters:
+        -
+          $ref: '#/components/parameters/order_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more charges'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChargeService'
+      security:
+        -
+          apiKeyAuth: []
+  '/orders/{id}/customer':
+    get:
+      tags:
+        - Orders
+      description: 'Retrieve customer on an order'
+      operationId: getCustomerByOrderId
+      parameters:
+        -
+          $ref: '#/components/parameters/order_id'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerService'
+        '404':
+          description: 'Order or customer could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/orders/{id}/subscriptions':
+    get:
+      tags:
+        - Orders
+      description: 'Retrieve all subscriptions on an order'
+      operationId: getSubscriptionsByOrderId
+      parameters:
+        -
+          $ref: '#/components/parameters/order_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/rebilling_at_min'
+        -
+          $ref: '#/components/parameters/rebilling_at_max'
+        -
+          $ref: '#/components/parameters/canceled_at_min'
+        -
+          $ref: '#/components/parameters/canceled_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+        -
+          $ref: '#/components/parameters/subscription_status'
+        -
+          $ref: '#/components/parameters/subscription_type'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more subscriptions'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionService'
+      security:
+        -
+          apiKeyAuth: []
+  /products:
+    get:
+      tags:
+        - Products
+      description: 'Retrieve all products'
+      operationId: getProducts
+      parameters:
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/product_status'
+        -
+          $ref: '#/components/parameters/product_category'
+        -
+          $ref: '#/components/parameters/pricing_type'
+        -
+          $ref: '#/components/parameters/pagination_offset'
+        -
+          $ref: '#/components/parameters/pagination_limit'
+        -
+          $ref: '#/components/parameters/pagination_direction'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more products'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/ProductService' } }
+                  pagination: { $ref: '#/components/schemas/Pagination' }
+                type: object
+      security:
+        -
+          apiKeyAuth: []
+  '/products/{id}':
+    get:
+      tags:
+        - Products
+      description: 'Retrieve a product'
+      operationId: getByProductId
+      parameters:
+        -
+          $ref: '#/components/parameters/product_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/product_status'
+        -
+          $ref: '#/components/parameters/product_category'
+        -
+          $ref: '#/components/parameters/pricing_type'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductService'
+        '404':
+          description: 'Product could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  /subscriptions:
+    get:
+      tags:
+        - Subscriptions
+      description: 'Retrieve all subscriptions'
+      operationId: getSubscriptions
+      parameters:
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/rebilling_at_min'
+        -
+          $ref: '#/components/parameters/rebilling_at_max'
+        -
+          $ref: '#/components/parameters/canceled_at_min'
+        -
+          $ref: '#/components/parameters/canceled_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+        -
+          $ref: '#/components/parameters/subscription_status'
+        -
+          $ref: '#/components/parameters/subscription_type'
+        -
+          $ref: '#/components/parameters/pagination_offset'
+        -
+          $ref: '#/components/parameters/pagination_limit'
+        -
+          $ref: '#/components/parameters/pagination_direction'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more subscriptions'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/SubscriptionService' } }
+                  pagination: { $ref: '#/components/schemas/Pagination' }
+                type: object
+      security:
+        -
+          apiKeyAuth: []
+  '/subscriptions/{id}':
+    get:
+      tags:
+        - Subscriptions
+      description: 'Retrieve a subscription'
+      operationId: getSubscriptionById
+      parameters:
+        -
+          $ref: '#/components/parameters/subscription_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/rebilling_at_min'
+        -
+          $ref: '#/components/parameters/rebilling_at_max'
+        -
+          $ref: '#/components/parameters/canceled_at_min'
+        -
+          $ref: '#/components/parameters/canceled_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+        -
+          $ref: '#/components/parameters/subscription_status'
+        -
+          $ref: '#/components/parameters/subscription_type'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionService'
+        '404':
+          description: 'Subscription could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/subscriptions/{id}/charges':
+    get:
+      tags:
+        - Subscriptions
+      description: 'Retrieve charges on a subscription'
+      operationId: getChargesBySubscriptionID
+      parameters:
+        -
+          $ref: '#/components/parameters/subscription_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+        -
+          $ref: '#/components/parameters/test_mode'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more charges'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChargeService'
+        '404':
+          description: 'Subscription could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/subscriptions/{id}/customer':
+    get:
+      tags:
+        - Subscriptions
+      description: 'Retrieve a customer on a subscription'
+      operationId: getCustomerBySubscriptionID
+      parameters:
+        -
+          $ref: '#/components/parameters/subscription_id'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerService'
+        '404':
+          description: 'Subscription or customer could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/subscriptions/{id}/history':
+    get:
+      tags:
+        - Subscriptions
+      description: 'Retrieve a subscription''s history'
+      operationId: getHistoriesBySubscriptionID
+      parameters:
+        -
+          $ref: '#/components/parameters/subscription_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+      responses:
+        '200':
+          description: 'Successful operation. Response will return an array of 0 or more history entries'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionHistoryService'
+        '404':
+          description: 'Subscription could not be found'
+      security:
+        -
+          apiKeyAuth: []
+  '/subscriptions/{id}/plan':
+    get:
+      tags:
+        - Subscriptions
+      description: 'Retrieve a plan for a subscription'
+      operationId: getPlanBySubscriptionID
+      parameters:
+        -
+          $ref: '#/components/parameters/subscription_id'
+        -
+          $ref: '#/components/parameters/created_at_min'
+        -
+          $ref: '#/components/parameters/created_at_max'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionPlanService'
+        '404':
+          description: 'Subscription could not be found'
+      security:
+        -
+          apiKeyAuth: []
+components:
+  schemas:
+    Pagination:
+      description: 'Optional information for paginating large data sets.'
+      properties:
+        next:
+          description: 'A URL to the next page of data to be retrieve. If current page is the last page this value will be null.'
+          type: string
+          format: uri
+          example: 'https://example.samcart.com/v1/example?offset=1337&dir=next'
+          nullable: true
+        prev:
+          description: 'A URL to the previous page of data to be retrieve. If current page is the first page this value will be null.'
+          type: string
+          format: uri
+          example: null
+          nullable: true
+      type: object
+    AddressService:
+      title: Address
+      description: Address
+      properties:
+        type:
+          description: 'The type of address for the customer'
+          enum:
+            - shipping
+            - billing
+          example: shipping
+        street:
+          description: 'The street for the customer'
+          type: string
+          example: '221B Baker Street'
+        postal_code:
+          description: 'The postal code for the customer'
+          type: string
+          example: 1234
+        city:
+          description: 'The city name for the customer'
+          type: string
+          example: Austin
+        state:
+          description: 'The 2-letter state code for US customers. For non-US addresses this value will be null.'
+          type: string
+          example: TX
+          nullable: true
+        region:
+          description: 'The optional sub-divided area of a country for international customers. For US addresses this value will be null.'
+          type: string
+          example: Quebec
+          nullable: true
+        country:
+          description: 'The country for the customer'
+          type: string
+          example: 'United States'
+      type: object
+    ChargeService:
+      title: Charge
+      description: Charge
+      properties:
+        id:
+          description: 'The SamCart ID for the charge'
+          type: integer
+          example: 1337
+        customer_id:
+          description: 'The SamCart ID for the customer that created the charge'
+          type: integer
+          example: 1234
+        affiliate_id:
+          description: 'The SamCart ID of the affiliate credited for the order'
+          type: integer
+          example: 1001
+          nullable: true
+        order_id:
+          description: 'The SamCart ID for the order. For subscriptions, this will be the order ID of the original purchase'
+          type: integer
+          example: 1001
+        subscription_rebill_id:
+          description: 'The SamCart ID for the subscription rebill. If the charge is for a non-subscription product, this will be null.'
+          type: integer
+          example: 1001
+          nullable: true
+        test_mode:
+          description: 'Indicates whether the transaction was done while the product was in test mode'
+          type: boolean
+          example: true
+        processor_name:
+          description: 'The name of the processor for the order'
+          enum:
+            - Stripe
+            - Braintree
+            - Authorize.net
+            - PayPal
+          example: Stripe
+        processor_transaction_id:
+          description: 'The processor ID generated for the charge'
+          type: string
+          example: 01234ABCD
+        currency:
+          description: 'The 3 letter identifier for the currency for the charge'
+          type: string
+          example: USD
+        card_used:
+          description: 'The last 4 digits of the card that was used. PayPal charges will have a null value.'
+          type: number
+          example: '4242'
+          nullable: true
+        charge_refund_status:
+          description: 'Indicates whether a refund and the type of refund. If no refund was created the value will be null.'
+          enum:
+            - refunded
+            - partially_refunded
+          example: partially_refunded
+          nullable: true
+        order_date:
+          description: 'The UTC date and time for when the order was created'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+        created_at:
+          description: 'The UTC date and time that the charge was created'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+        total:
+          description: 'The total (in cents) for the charge including taxes and shipping fees'
+          type: integer
+          example: 10025
+      type: object
+    CustomerService:
+      title: Customer
+      description: Customer
+      properties:
+        id:
+          description: 'The SamCart ID of the customer'
+          type: integer
+          example: 1337
+        first_name:
+          description: 'The first name of the customer'
+          type: string
+          example: John
+          nullable: true
+        last_name:
+          description: 'The last name of the customer'
+          type: string
+          example: Doe
+          nullable: true
+        email:
+          description: 'The email address of the customer'
+          type: string
+          format: email
+          example: jdoe@gmail.com
+        phone:
+          description: 'The phone number of the customer'
+          type: string
+          example: '5555555555'
+          nullable: true
+        customer_tags:
+          description: 'The tags applied to the customer'
+          type: array
+          items:
+            properties:
+              name:
+                description: 'The name of the customer tag'
+                type: string
+                example: new
+            type: object
+        lifetime_value:
+          description: 'The lifetime value (in cents) of the customer. Value is for live data only'
+          type: integer
+          example: 95025
+        updated_at:
+          description: 'The UTC date and time when the customer information was updated'
+          type: string
+          format: date-time
+          example: '2020-03-04 00:18:35'
+        created_at:
+          description: 'The UTC date and time when the customer was created'
+          type: string
+          format: date-time
+          example: '2020-03-04 00:18:35'
+        addresses:
+          description: 'Addresses associated with the customer'
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressService'
+      type: object
+    FailedChargeService:
+      title: 'Failed Charge'
+      description: 'Failed Charge'
+      properties:
+        id:
+          description: 'The SamCart ID for the charge'
+          type: integer
+          example: 1337
+        customer_id:
+          description: 'The SamCart ID for the customer that created the charge'
+          type: integer
+          example: 1234
+          nullable: true
+        affiliate_id:
+          description: 'The SamCart ID of the affiliate credited for the order'
+          type: integer
+          example: 1001
+          nullable: true
+        order_id:
+          description: 'The SamCart ID for the order. For subscriptions, this will be the order ID of the original purchase'
+          type: integer
+          example: 1001
+          nullable: true
+        subscription_rebill_id:
+          description: 'The SamCart ID for the subscription rebill. If the charge is for a non-subscription product, this will be null.'
+          type: integer
+          example: 1001
+          nullable: true
+        test_mode:
+          description: 'Indicates whether the transaction was done while the product was in test mode'
+          type: boolean
+          example: true
+        processor_name:
+          description: 'The name of the processor for the order'
+          enum:
+            - Stripe
+            - Braintree
+            - Authorize.net
+            - PayPal
+          example: Stripe
+        processor_transaction_id:
+          description: 'The processor ID generated for the charge'
+          type: string
+          example: 01234ABCD
+        error:
+          description: 'The error message provided by the payment processor'
+          type: string
+          example: 'Your card was declined'
+          nullable: true
+        currency:
+          description: 'The 3 letter identifier for the currency for the charge'
+          type: string
+          example: USD
+        card_used:
+          description: 'The last 4 digits of the card that was used. PayPal charges will have a null value.'
+          type: number
+          example: '4242'
+          nullable: true
+        created_at:
+          description: 'The UTC date and time that the charge was created'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+        total:
+          description: 'The total (in cents) for the charge including taxes and shipping fees'
+          type: integer
+          example: 10025
+      type: object
+    OrderService:
+      title: Order
+      description: Order
+      properties:
+        id:
+          description: 'The SamCart ID of the order'
+          type: integer
+          example: 1337
+        customer_id:
+          description: 'The SamCart ID of the customer'
+          type: integer
+          example: 1234
+        affiliate_id:
+          description: 'The SamCart ID of the affiliate credited for the order'
+          type: integer
+          example: 1001
+          nullable: true
+        test_mode:
+          description: 'Indicates whether the transaction was done while the product was in test mode'
+          type: boolean
+          example: true
+        order_date:
+          description: 'The UTC date and time for when the order was created'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+        cart_items:
+          description: 'A list of cart items on the order'
+          type: array
+          items:
+            properties:
+              id:
+                description: 'The ID for the specific cart item'
+                type: integer
+                example: 1234
+              product_id:
+                description: 'The SamCart ID for the product'
+                type: integer
+                example: 1234
+              subscription_id:
+                description: 'The subscription ID for the product. If the cart item is for a non-subscription product the value will be null'
+                type: integer
+                example: 1234
+                nullable: true
+              sku:
+                description: 'The optional product SKU of the cart item purchased'
+                type: string
+                example: sku1234
+                nullable: true
+              internal_product_name:
+                description: 'An optional product name displayed on the marketplace dashboard'
+                type: string
+                example: internal-book-product
+                nullable: true
+              product_name:
+                description: 'The product name displayed to customers'
+                type: string
+                example: Book
+              charge_id:
+                description: 'The SamCart ID for the charge'
+                type: integer
+                example: 1234
+              pricing_type:
+                description: 'Indicates how the product is priced'
+                enum:
+                  - one_time
+                  - recurring_subscription
+                  - limited_subscription
+                  - pwyw_onetime
+                  - pwyw_recurring_subscription
+                  - pwyw_limited_subscription
+                example: one_time
+              processor_transaction_id:
+                description: 'The processor ID generated for the charge'
+                type: string
+                example: 01234ABCD
+              currency:
+                description: 'The 3 letter identifier for the currency for the charge on the cart item'
+                type: string
+                example: USD
+              quantity:
+                description: 'The quantity of the cart item purchased'
+                type: integer
+                example: 2
+              status:
+                description: 'The current status of the charge on the cart item'
+                enum:
+                  - pending
+                  - charged
+                  - declined
+                  - refunded
+                  - fulfilled
+                  - reversed
+                  - partially_refunded
+                example: charged
+              initial_price:
+                description: 'The pricing structure for one-time purchases and for the first charge on subscription products'
+                properties:
+                  subtotal: { description: 'The price for the cart item (in cents) excluding discount, taxes and shipping fees', type: integer, example: 10000 }
+                  taxes: { description: 'The tax fees (in cents) for the cart item', type: integer, example: 500 }
+                  shipping: { description: 'The shipping fees (in cents) for the cart item', type: integer, example: 300 }
+                  total: { description: 'The price for the cart item (in cents) including discount, taxes and shipping fees', type: integer, example: 9800 }
+                type: object
+              recurring_price:
+                description: 'The pricing structure for limited and recurring subscription products. This structure could differ from the initial price.'
+                properties:
+                  subtotal: { description: 'The recurring price for the cart item (in cents) excluding discount, taxes and shipping fees', type: integer, example: 10000 }
+                  taxes: { description: 'The recurring tax fees (in cents) for the cart item', type: integer, example: 500 }
+                  shipping: { description: 'The recurring shipping fees (in cents) for the cart item', type: integer, example: 300 }
+                  total: { description: 'The recurring price for the cart item (in cents) including discount, taxes and shipping fees', type: integer, example: 10800 }
+                type: object
+              coupon:
+                description: 'An optional coupon that was applied to the cart item'
+                properties:
+                  id: { description: 'The ID of the coupon that was used on the cart item', type: integer, example: '1234' }
+                  charge_instance: { description: 'Whether the coupon applies only once or for recurring charges also', enum: [one_time, recurring], example: one_time }
+                  code: { description: 'The code of the coupon used', type: string, example: summersale }
+                  type: { description: 'The type of discount applied', enum: [flat_rate, percentage], example: flat_rate }
+                  discount_amount: { description: 'The flat_rate discount amount (in cents) on the cart item', type: integer, example: null, nullable: true }
+                  discount_percentage: { description: 'The percentage discount on the cart item', type: integer, example: 10, nullable: true }
+                type: object
+            type: object
+        subtotal:
+          description: 'The total price of the order (in cents) excluding discount, shipping and tax fees'
+          type: integer
+          example: 10000
+        discount:
+          description: 'The total discount (in cents) on the order'
+          type: integer
+          example: 1000
+        taxes:
+          description: 'The total of tax fees (in cents) of the order'
+          type: integer
+          example: 500
+        shipping:
+          description: 'The total of shipping fees (in cents) of the order'
+          type: integer
+          example: 300
+        total:
+          description: 'The total price of the order (in cents) including discount, shipping and tax fees'
+          type: integer
+          example: 9800
+        card_used:
+          description: 'The last 4 digits of the card that was used. PayPal charges will have a null value.'
+          type: string
+          example: '0123'
+          nullable: true
+        processor_name:
+          description: 'The name of the processor for the order'
+          enum:
+            - Stripe
+            - Braintree
+            - Authorize.net
+            - PayPal
+          example: Stripe
+        custom_fields:
+          description: 'Optional custom fields applied to the order'
+          type: object
+      type: object
+    ProductService:
+      title: Product
+      description: Product
+      properties:
+        id:
+          description: 'The SamCart ID of the product'
+          type: integer
+          example: 1337
+        sku:
+          description: 'An optional product SKU displayed on the marketplace dashboard'
+          type: string
+          example: sku123
+          nullable: true
+        internal_product_name:
+          description: 'An optional product name displayed on the marketplace dashboard'
+          type: string
+          example: internal-book-product
+          nullable: true
+        product_name:
+          description: 'The product name displayed to customers'
+          type: string
+          example: Book
+        description:
+          description: 'The optional description of the product'
+          type: string
+          example: 'This is a good book'
+          nullable: true
+        currency:
+          description: 'The 3 letter identifier for the currency currently configured on the product. This can be changed.'
+          type: string
+          example: USD
+        price:
+          description: 'The price of the product. For subscription products, it is the initial price (in cents)'
+          type: number
+          format: float
+          example: 1025
+        product_category:
+          description: 'Indicates the type of product being sold'
+          enum:
+            - physical
+            - digital
+          example: physical
+        pricing_type:
+          description: 'Indicates how the product will be priced'
+          enum:
+            - one_time
+            - limited
+            - recurring
+            - pwyw
+          example: one_time
+        status:
+          description: 'Indicates the current status of the product'
+          enum:
+            - live
+            - test
+            - archived
+          example: live
+        taxes:
+          description: 'Indicates if the product is currently configured to have taxes. This can be changed.'
+          type: boolean
+          example: true
+        upsell_funnel:
+          description: 'The name of the upsell funnel attached to the product'
+          type: string
+          example: 'Additional Offer'
+          nullable: true
+        order_bumps:
+          description: 'An optional list of additional products added with the product before checkout'
+          type: array
+          items:
+            properties:
+              product_id:
+                description: 'The SamCart ID for the additional product'
+                type: integer
+                example: 1234
+              product_name:
+                description: 'The name of the additional product'
+                type: string
+                example: Binder
+            type: object
+        bundled_products:
+          description: 'An optional list of products bundled to the product'
+          type: array
+          items:
+            properties:
+              product_id:
+                description: 'The SamCart ID of the bundled product'
+                type: integer
+                example: 3423
+              product_name:
+                description: 'The bundled product name displayed to customers'
+                type: string
+                example: Magazine
+            type: object
+        slug:
+          description: 'The URL slug for the product'
+          type: string
+          example: book
+        custom_domain:
+          description: 'An optional custom domain used for the product'
+          type: string
+          format: uri
+          example: 'https://google.com'
+          nullable: true
+        product_tags:
+          description: 'An optional list of product tags'
+          type: array
+          items:
+            properties:
+              name:
+                description: 'The name of the product tag'
+                type: string
+                example: digital
+            type: object
+        created_at:
+          description: 'The UTC date and time the product was created'
+          type: string
+          format: date-time
+          example: '2021-01-14 18:03:59'
+        updated_at:
+          description: 'The UTC date and time the product was updated'
+          type: string
+          format: date-time
+          example: '2021-01-14 18:03:59'
+        archived_date:
+          description: 'The UTC date and time the product was archived. If the product has not been archive the value will be null.'
+          type: string
+          format: date-time
+          example: '2021-01-14 18:03:59'
+          nullable: true
+      type: object
+    RefundService:
+      title: Refund
+      description: Refund
+      properties:
+        id:
+          description: 'The SamCart ID for the refund'
+          type: integer
+          example: 1337
+        charge_id:
+          description: 'The SamCart ID for the charge'
+          type: integer
+          example: 1337
+        cart_item_id:
+          description: 'The ID for the refunded cart item'
+          type: integer
+          example: 1234
+        created_at:
+          description: 'The UTC date and time the refund was issued'
+          type: string
+          format: date-time
+          example: '2020-03-04 00:18:35'
+        test_mode:
+          description: 'Indicates whether the transaction was done while the transaction was in test mode.'
+          type: boolean
+          example: true
+        charge_refund_status:
+          description: 'Indicates whether a refund and the type of refund. If no refund was created the value will be null.'
+          enum:
+            - refunded
+            - partially_refunded
+          example: partially_refunded
+          nullable: true
+        currency:
+          description: 'This will match the currency that the original charge was created in and will be the currency of the created refund'
+          type: string
+          example: USD
+        refund_amount:
+          description: 'The total refund amount (in cents)'
+          type: integer
+          example: 1525
+      type: object
+    SubscriptionHistoryService:
+      title: 'Subscription History'
+      description: 'Subscription History'
+      properties:
+        id:
+          description: 'The SamCart ID for the subscription history record'
+          type: integer
+          example: 1337
+        subscription_id:
+          description: 'The SamCart ID for the subscription'
+          type: integer
+          example: 1001
+        new_status:
+          description: 'The status of the subscription'
+          enum:
+            - active
+            - canceled
+            - delinquent
+            - completed
+            - paused
+            - invalid_processor
+            - sca_required
+            - deleted
+          example: active
+        source:
+          description: 'The source of the change'
+          type: string
+          example: dashboard
+        type:
+          description: 'The type of change'
+          type: string
+          example: status
+        change_date:
+          description: 'The UTC date and time that the change was made'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+      type: object
+    SubscriptionPlanService:
+      title: 'Subscription Plan'
+      description: 'Subscription Plan'
+      properties:
+        id:
+          description: 'The SamCart ID for the subscription plan'
+          type: integer
+          example: 1337
+        product_id:
+          description: 'The SamCart ID for the product'
+          type: integer
+          example: 1234
+        plan_status:
+          description: 'The current status of the subscription plan'
+          enum:
+            - active
+            - archived
+          example: active
+        plan_archived_date:
+          description: 'The UTC date and time for when the subscription plan was archived'
+          type: string
+          format: date-time
+          example: '2021-03-02 01:23:34'
+          nullable: true
+        plan_duration:
+          description: 'For a limited subscription, this indicates the number of rebills'
+          type: integer
+          example: 2
+        plan_frequency:
+          description: 'Indicates how frequently the subscription will rebill'
+          enum:
+            - days
+            - weekly
+            - monthly
+            - quarterly
+            - yearly
+          example: days
+        plan_price:
+          description: 'The recurring price of subscription exclusing tax and shipping fees'
+          type: integer
+          example: 9825
+        trial_period:
+          description: 'The number of days that the subscription has for a trial'
+          type: integer
+          example: 2
+        rebill_days:
+          description: 'The number of days between each subscription rebill, used for ''days'' frequency only'
+          type: integer
+          example: 15
+        stripe_compatible:
+          description: 'Indicates whether the subscription will be Stripe-managed'
+          type: boolean
+          example: true
+        stripe_plan_id:
+          description: 'For Stripe-managed subscriptions, this is the plan ID from within Stripe'
+          type: string
+          example: samcart_plan_1_12345
+          nullable: true
+        on_stripe_sandbox:
+          description: 'Indicates whether the subscription is associated with a Stripe testing environment'
+          type: boolean
+          example: true
+        recurring_shipping:
+          description: 'Indicates whether the shipping prices for the subscription will be charged at every subscription rebill'
+          type: boolean
+          example: true
+      type: object
+    SubscriptionService:
+      title: Subscription
+      description: Subscription
+      properties:
+        id:
+          description: 'The SamCart ID for the subscription'
+          type: integer
+          example: 1337
+        customer_id:
+          description: 'The SamCart ID for the customer that created the charge'
+          type: integer
+          example: 1234
+        affiliate_id:
+          description: 'The SamCart ID of the affiliate credited for the order.'
+          type: integer
+          example: 1001
+          nullable: true
+        order_id:
+          description: 'The SamCart ID for the order. For subscriptions, this will be the order ID of the original purchase.'
+          type: integer
+          example: 1001
+        product_id:
+          description: 'The SamCart ID for a product in the cart'
+          type: integer
+          example: 1001
+        sku:
+          description: 'The optional product SKU for the subscription'
+          type: string
+          example: sku123
+          nullable: true
+        status:
+          description: 'The status of the subscription'
+          enum:
+            - active
+            - canceled
+            - delinquent
+            - completed
+            - paused
+            - invalid_processor
+            - sca_required
+            - deleted
+          example: active
+        type:
+          description: 'Indicates the format of the subscription'
+          enum:
+            - limited_subscription
+            - recurring_subscription
+          example: recurring_subscription
+        product_name:
+          description: 'The name of the product for the subscription'
+          type: string
+          example: 'Cool Product'
+        internal_product_name:
+          description: 'An optional product name displayed on the marketplace dashboard for the subscription'
+          type: string
+          example: 'Cool Product'
+          nullable: true
+        initial_price:
+          description: 'The pricing structure for the first charge of the subscription'
+          properties:
+            subtotal:
+              description: 'The initial price (in cents) excluding discount, taxes and shipping fees'
+              type: integer
+              example: 10000
+            taxes:
+              description: 'The initial tax fees (in cents)'
+              type: integer
+              example: 500
+            shipping:
+              description: 'The initial shipping fees (in cents)'
+              type: integer
+              example: 300
+            total:
+              description: 'The initial price (in cents) including discount, taxes and shipping fees'
+              type: integer
+              example: 9800
+          type: object
+        recurring_price:
+          description: 'The pricing structure for all the recurring charges of the subscription'
+          properties:
+            subtotal:
+              description: 'The recurring price (in cents) excluding discount, taxes and shipping fees'
+              type: integer
+              example: 10000
+            taxes:
+              description: 'The recurring tax fees (in cents)'
+              type: integer
+              example: 500
+            shipping:
+              description: 'The recurring shipping fees (in cents)'
+              type: integer
+              example: 300
+            total:
+              description: 'The recurring price (in cents) including discount, taxes and shipping fees'
+              type: integer
+              example: 10800
+          type: object
+        coupon:
+          description: 'An optional coupon that is applied to the subscription rebill'
+          properties:
+            id:
+              description: 'The ID of the coupon that was used on the subscription'
+              type: integer
+              example: '1234'
+            charge_instance:
+              description: 'Whether the coupon applies only once or for recurring charges also'
+              enum:
+                - one_time
+                - recurring
+              example: one_time
+            code:
+              description: 'The code of the coupon used'
+              type: string
+              example: summersale
+            type:
+              description: 'The type of discount applied'
+              enum:
+                - flat_rate
+                - percentage
+              example: flat_rate
+            discount_amount:
+              description: 'The flat_rate discount amount (in cents) on the subscription'
+              type: integer
+              example: null
+              nullable: true
+            discount_percentage:
+              description: 'The percentage discount on the subscription'
+              type: integer
+              example: 10
+              nullable: true
+          type: object
+        processor_name:
+          description: 'The name of the processor for the order'
+          enum:
+            - Stripe
+            - Braintree
+            - Authorize.net
+            - PayPal
+          example: Stripe
+        test_mode:
+          description: 'Indicates whether the transaction was done while the product was in test mode.'
+          type: boolean
+          example: true
+        card_used:
+          description: 'The last 4 digits of the card that was used. PayPal charges will have a null value.'
+          type: number
+          example: '4242'
+          nullable: true
+        created_at:
+          description: 'The UTC date and time the subscription was created. This is also when the original order was created.'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+        start_date:
+          description: 'The UTC date and time the first rebill occurred. For subscriptions with trials, this will be the first rebill after the trial.'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+        end_date:
+          description: 'The UTC date and time that a limited subscription will end. Recurring subscriptions will not have a value.'
+          type: string
+          format: date-time
+          example: '2021-03-08 00:18:35'
+          nullable: true
+        next_rebilling_date:
+          description: 'The UTC date and time of the next rebill for the subscription'
+          type: string
+          format: date-time
+          example: '2021-04-08 00:18:35'
+        total_failed_charges:
+          description: 'The number of unsuccessful charges for this subscription'
+          type: integer
+          example: 1
+      type: object
+  parameters:
+    created_at_min:
+      name: created_at_min
+      in: query
+      description: 'Filter by UTC created at date at or after given date'
+      schema:
+        type: string
+        format: date
+    created_at_max:
+      name: created_at_max
+      in: query
+      description: 'Filter by UTC created at date at or before given date'
+      schema:
+        type: string
+        format: date
+    canceled_at_min:
+      name: canceled_at_min
+      in: query
+      description: 'Filter by UTC canceled date at or after given date'
+      schema:
+        type: string
+        format: date
+    canceled_at_max:
+      name: canceled_at_max
+      in: query
+      description: 'Filter by UTC canceled date at or before given date'
+      schema:
+        type: string
+        format: date
+    rebilling_at_min:
+      name: rebilling_at_min
+      in: query
+      description: 'Filter by UTC rebilling date at or after given date'
+      schema:
+        type: string
+        format: date
+    rebilling_at_max:
+      name: rebilling_at_max
+      in: query
+      description: 'Filter by UTC rebilling date at or before given date'
+      schema:
+        type: string
+        format: date
+    test_mode:
+      name: test_mode
+      in: query
+      description: 'Filter by test mode'
+      schema:
+        type: boolean
+    subscription_status:
+      name: status
+      in: query
+      description: 'Filter subscriptions by status'
+      schema:
+        type: string
+        enum:
+          - active
+          - canceled
+          - delinquent
+          - completed
+          - paused
+          - invalid_processor
+          - sca_required
+          - deleted
+    product_status:
+      name: status
+      in: query
+      description: 'Filter product by status'
+      schema:
+        type: string
+        enum:
+          - live
+          - test
+          - archived
+    subscription_type:
+      name: type
+      in: query
+      description: 'Filter subscriptions by type'
+      schema:
+        type: string
+        enum:
+          - limited_subscription
+          - recurring_subscription
+    product_category:
+      name: product_category
+      in: query
+      description: 'Filter product by category'
+      schema:
+        type: string
+        enum:
+          - physical
+          - digital
+    pricing_type:
+      name: pricing_type
+      in: query
+      description: 'Filter product by pricing type'
+      schema:
+        type: string
+        enum:
+          - one_time
+          - limited_subscription
+          - recurring_subscription
+          - pwyw_one_time
+          - pwyw_recurring_subscription
+          - pwyw_limited_subscription
+    charge_id:
+      name: id
+      in: path
+      description: 'The SamCart ID for the charge'
+      required: true
+      schema:
+        type: integer
+    refund_id:
+      name: refund_id
+      in: path
+      description: 'The SamCart ID for the refund'
+      required: true
+      schema:
+        type: integer
+    order_id:
+      name: id
+      in: path
+      description: 'The SamCart ID for the order'
+      required: true
+      schema:
+        type: integer
+    subscription_id:
+      name: id
+      in: path
+      description: 'The SamCart ID for the subscription'
+      required: true
+      schema:
+        type: integer
+    product_id:
+      name: id
+      in: path
+      description: 'The SamCart ID for the product'
+      required: true
+      schema:
+        type: integer
+    customer_id:
+      name: id
+      in: path
+      description: 'The SamCart ID for the customer'
+      required: true
+      schema:
+        type: integer
+    pagination_offset:
+      name: offset
+      in: query
+      description: 'The offset value used to paginate through a list of entries. If the dir query parameter is prev then the offset will be the id of the first record of the data set otherwise the offset will be the id of the last record'
+      schema:
+        type: integer
+      example: 100
+    pagination_limit:
+      name: limit
+      in: query
+      description: 'An optional limit for the number of entries on a page with a maximum value of 100. Default value is 100 if not provided.'
+      schema:
+        type: integer
+        maximum: 100
+      example: 100
+    pagination_direction:
+      name: dir
+      in: query
+      description: 'The direction to paginate the next set of data. If dir is prev the page will return a data set before the offset otherwise the data set will be after the offset. Default value is next if not provided.'
+      schema:
+        type: string
+        enum:
+          - next
+          - prev
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      name: sc-api
+      in: header
+      x-apikey-description: "Provide your API key as `sc-api`. Eg: `{\"sc-api\" : \"<API key>\"}`"
+      

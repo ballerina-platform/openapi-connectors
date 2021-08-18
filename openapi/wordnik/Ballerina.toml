@@ -1,0 +1,9 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["wordnik", "dictionary", "words"]
+org = "ballerinax"
+name = "wordnik"
+version = "0.1.0-SNAPSHOT"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

@@ -60,10 +60,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
           description: Successful response
       security:
         - Oauth2:
@@ -201,10 +197,6 @@ paths:
             type: string
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EmptyResponse"
           description: Successful response
       security:
         - Oauth2:
@@ -553,13 +545,6 @@ components:
       schema:
         type: string
   schemas:
-    EmptyResponse:
-      description: Empty response.
-      properties:
-        errors:
-          $ref: "#/components/schemas/Errors"
-          description: Apiary error details
-      type: object
     ErrorProto:
       description: Describes one specific error.
       properties:

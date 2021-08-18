@@ -145,9 +145,3 @@ public type ListGroupItemsResponse record {
     # Identifies the API resource's type. The value will be `youtube#groupItemListResponse`.
     string kind?;
 };
-
-# Empty response.
-public type EmptyResponse record {
-    # Request Error information. The presence of an error field signals that the operation has failed.
-    Errors errors?;
-};

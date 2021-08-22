@@ -15,7 +15,7 @@ Before using this connector in your Ballerina application, complete the followin
 
 * Create a [Bing Resource](https://portal.azure.com/#create/microsoft.bingsearch)
 
-* Obtain tokens by following [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal)
+* Obtain tokens by following [this guide](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys)
 
 ## Quickstart
 
@@ -39,11 +39,11 @@ You can do this step in two ways. You can use any one of this.
     
     autosuggest:ApiKeysConfig apiKeyConfig = {
         apiKeys :{
-            Ocp-Apim-Subscription-Key:"<AZURE_TEXT_ANALYTICS_API_KEY>"
+            Ocp-Apim-Subscription-Key:"<AZURE_API_KEY>"
         }
     };
 
-    autosuggest:Client myClient = check new Client(apiKeyConfig, serviceUrl = "https://<REGION>.api.cognitive.microsoft.com/text/analytics/v3.1");
+    autosuggest:Client myClient = check new Client(apiKeyConfig, serviceUrl);
 
     ```
 
@@ -53,14 +53,14 @@ You can do this step in two ways. You can use any one of this.
     1. Set up `Ocp-Apim-Subscription-Key` in `Config.toml` as shown below.
     ```
     [apiKeyConfig.apiKeys]
-    Ocp-Apim-Subscription-Key = "<AZURE_TEXT_ANALYTICS_API_KEY>"
+    Ocp-Apim-Subscription-Key = "<AZURE_API_KEY>"
     ```
 
     2. Configure the client in ballerina file as shown below.
     ```ballerina
     configurable ApiKeysConfig & readonly apiKeyConfig = ?;
 
-    autosuggest:Client myClient = check new Client(apiKeyConfig, serviceUrl = "https://<REGION>.api.cognitive.microsoft.com/text/analytics/v3.1");
+    autosuggest:Client myClient = check new Client(apiKeyConfig, serviceUrl);
     ```
 
 ### Step 3: Invoke connector operation

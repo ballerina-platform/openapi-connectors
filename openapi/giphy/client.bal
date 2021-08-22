@@ -38,7 +38,7 @@ public isolated client class Client {
     # + apiKeyConfig - Provide your API Key as api_key. Eg: {api_key : <Your API Key>}
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.giphy.com/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

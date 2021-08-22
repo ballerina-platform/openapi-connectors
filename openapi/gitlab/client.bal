@@ -36,7 +36,7 @@ public isolated client class Client {
     # + apiKeyConfig - Provide your PAT token as `Private-Token`. Eg: `{"Private-Token" : "<PAT token>"}`
     # + clientConfig - Client configuration details
     # + serviceUrl - Connector server URL
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://gitlab.com/api/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

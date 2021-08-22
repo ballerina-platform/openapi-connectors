@@ -33,7 +33,7 @@ public isolated client class Client {
     # + apiKeyConfig - Provide your API key as `Authorization`. Eg: {"Authorization" : "OAuth <your API key>"}
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, 
                                   string serviceUrl = "https://api.soundcloud.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);

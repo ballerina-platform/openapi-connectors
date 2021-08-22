@@ -13,7 +13,7 @@ Before using this connector in your Ballerina application, complete the followin
 
 * Create a [Text Analysis resource](https://portal.azure.com/#create/Microsoft.CognitiveServicesTextAnalytics)
 
-* Obtain tokens by following [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal)
+* Obtain tokens by following [this guide](https://docs.microsoft.com/en-us/azure/cognitive-services/authentication?tabs=powershell#authenticate-with-an-authentication-token)
 
 ## Quickstart
 

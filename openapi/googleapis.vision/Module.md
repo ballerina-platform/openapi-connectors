@@ -21,7 +21,7 @@ import ballerinax/googleapis.vision;
 Create a `vision:ClientConfig` with the OAuth2 tokens obtained, and initialize the connector with it. 
 ```ballerina
 vision:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         clientId: <CLIENT_ID>,
         clientSecret: <CLIENT_SECRET>,
         refreshUrl: <REFRESH_URL>,

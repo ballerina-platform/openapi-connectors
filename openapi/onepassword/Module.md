@@ -24,7 +24,7 @@ import ballerinax/onepassword;
 Create a `shippit:ClientConfig` with the `API key` obtained, and initialize the connector with it.
 ```ballerina
 onepassword:ClientConfig clientConfig = {
-    authConfig : {
+    auth : {
         token: <ACCESS_TOKEN>
     }
 };

@@ -22,7 +22,7 @@ Create a `data:ClientConfig` with the tokens obtained, and initialize the connec
 
 ```ballerina
 data:ClientConfig configuration = {
-    authConfig: {
+    auth: {
         token : "<TOKEN>"
     }
 };

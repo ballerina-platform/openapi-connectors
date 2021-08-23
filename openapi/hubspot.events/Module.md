@@ -20,7 +20,7 @@ import ballerinax/hubspot.event;
 You can now make the connection configuration using the access token.
 ```ballerina
 event:ClientConfig clientConfig = {
-    authConfig : {
+    auth : {
         token: <ACCESS_TOKEN>
     }
 };

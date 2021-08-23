@@ -39,14 +39,14 @@ You can do this step in two ways. You can use any one of this.
 
     1. Set up token in `Config.toml` as shown below.
     ```
-    [authConfig]
+    [auth]
     token = "<Enter your token here>"
     ```
 
     2. Configure the client in ballerina file as shown below.
     ```ballerina
-    configurable http:BearerTokenConfig & readonly authConfig = ?;
-    vimeo:ClientConfig clientConfig = {auth : authConfig};
+    configurable http:BearerTokenConfig & readonly auth = ?;
+    vimeo:ClientConfig clientConfig = {auth : auth};
     vimeo:Client baseClient = check new Client(clientConfig);
     ```
 

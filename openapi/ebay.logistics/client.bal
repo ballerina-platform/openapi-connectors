@@ -16,10 +16,39 @@
 
 import ballerina/http;
 
-public type ClientConfig record {
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
-    http:ClientSecureSocket secureSocketConfig?;
-};
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+public type ClientConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    # The HTTP version understood by the client
+    string httpVersion = "1.1";
+    # Configurations related to HTTP/1.x protocol
+    http:ClientHttp1Settings http1Settings = {};
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings = {};
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with Redirection
+    http:FollowRedirects? followRedirects = ();
+    # Configurations associated with request pooling
+    http:PoolConfiguration? poolConfig = ();
+    # HTTP caching related configurations
+    http:CacheConfig cache = {};
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig? circuitBreaker = ();
+    # Configurations associated with retrying
+    http:RetryConfig? retryConfig = ();
+    # Configurations associated with cookies
+    http:CookieConfig? cookieConfig = ();
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits = {};
+    # SSL/TLS-related options
+    http:ClientSecureSocket? secureSocket = ();
+|};
 
 # This is a generated connector for [eBay logistics API v1_beta.0.0](https://developer.ebay.com/api-docs/sell/logistics/static/overview.html) OpenAPI Specification.
 # This is an API available only to select developers approved by business units.The Logistics API resources offer the following capabilities: 
@@ -41,8 +70,7 @@ public isolated client class Client {
     # + serviceUrl - URL of the target service
     # + return - An error if connector initialization failed
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.ebay.com/sell/logistics/v1_beta") returns error? {
-        http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
-        http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
+        http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
     }
     # The createShippingQuote method returns a shipping quote that contains a list of live rates. Each rate represents an offer made by a shipping carrier for a specific service and each offer has a live quote for the base service cost. Rates have a time window in which they are live, and rates expire when their purchase window ends. If offered by the carrier, rates can include shipping options (and their associated prices), and users can add any offered shipping option to the base service should they desire. Also, depending on the services required, rates can also include pickup and delivery windows. Each rate is for a single package and is based on the following information: The shipping origin The shipping destination The package size (weight and dimensions) Rates are identified by a unique eBay-assigned rateId and rates are based on price points, pickup and delivery time frames, and other user requirements. Because each rate offered must be compliant with the eBay shipping program, all rates reflect eBay-negotiated prices. The various rates returned in a shipping quote offer the user a choice from which they can choose a shipping service that best fits their needs. Select the rate for your shipment and using the associated rateId, call cerateFromShippingQuote to create a shipment and generate a shipping label that you can use to ship the package.

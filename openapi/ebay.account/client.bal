@@ -18,10 +18,39 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-public type ClientConfig record {
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig authConfig;
-    http:ClientSecureSocket secureSocketConfig?;
-};
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+public type ClientConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    # The HTTP version understood by the client
+    string httpVersion = "1.1";
+    # Configurations related to HTTP/1.x protocol
+    http:ClientHttp1Settings http1Settings = {};
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings = {};
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with Redirection
+    http:FollowRedirects? followRedirects = ();
+    # Configurations associated with request pooling
+    http:PoolConfiguration? poolConfig = ();
+    # HTTP caching related configurations
+    http:CacheConfig cache = {};
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig? circuitBreaker = ();
+    # Configurations associated with retrying
+    http:RetryConfig? retryConfig = ();
+    # Configurations associated with cookies
+    http:CookieConfig? cookieConfig = ();
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits = {};
+    # SSL/TLS-related options
+    http:ClientSecureSocket? secureSocket = ();
+|};
 
 # This is a generated connector for [eBay Account API v1.6.3](https://developer.ebay.com/api-docs/sell/account/overview.html) 
 # OpenAPI Specification.
@@ -39,8 +68,7 @@ public isolated client class Client {
     # + serviceUrl - URL of the target service
     # + return - An error if connector initialization failed
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.ebay.com/sell/account/v1") returns error? {
-        http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
-        http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });
+        http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
     }
     # This method retrieves all the fulfillment policies configured for the marketplace you specify using the marketplace_id query parameter. Marketplaces and locales Get the correct policies for a marketplace that supports multiple locales using the Content-Language request header. For example, get the policies for the French locale of the Canadian marketplace by specifying fr-CA for the Content-Language header. Likewise, target the Dutch locale of the Belgium marketplace by setting Content-Language: nl-BE. For details on header values, see HTTP request headers.

@@ -24,7 +24,7 @@ To use the connector, first you must create a `mailchimp:Client` object. The sam
 
 ```ballerina
 mailchimp:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         username: "<username>",
         password: "<API_KEY>"
     }

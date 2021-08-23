@@ -24,7 +24,7 @@ You can now enter the credentials in the Google Cloud Billing Account client con
 
 ```ballerina
 cloudbillingaccount:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         clientId: <CLIENT_ID>,
         clientSecret: <CLIENT_SECRET>,
         refreshUrl: <REFRESH_URL>,

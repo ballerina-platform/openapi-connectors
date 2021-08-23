@@ -23,9 +23,9 @@ import ballerinax/boxapi;
 
 ### Step 2: Create a new connector instance
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
+configurable http:BearerTokenConfig & readonly auth = ?;
 boxapi:ClientConfig clientConfig = {
-    authConfig : authConfig
+    auth : auth
 };
 
 boxapi:Client baseClient = check new Client(clientConfig, serviceUrl = "https://api.box.com/2.0");

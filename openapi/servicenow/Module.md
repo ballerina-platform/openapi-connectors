@@ -28,7 +28,7 @@ You can now make the connection configuration using either one of the following,
 
 ```ballerina
  ClientConfig clientConfig = {
-     authConfig : {
+     auth : {
          refreshUrl : "<YOUR INSTANCE URL>/oauth_token",
          refreshToken : "<REFRESH TOKEN>",
          clientId : "<CLIENT ID>",
@@ -42,7 +42,7 @@ servicenow:Client servicenowClient = check new (configuration, serviceUrl = <YOU
 
 ```ballerina
  ClientConfig clientConfig = {
-     authConfig : {
+     auth : {
          token : "<YOUR ACCESS TOKEN>"
      }
  };
@@ -53,7 +53,7 @@ servicenow:Client servicenowClient = check new (configuration, serviceUrl = <YOU
 
 ```ballerina
  ClientConfig clientConfig = {
-    authConfig : {
+    auth : {
         username: "<USERNAME>",
         password: "<PASSWORD>"
     }

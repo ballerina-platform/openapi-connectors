@@ -22,8 +22,8 @@ import ballerinax/medium;
 ```
 ### Step 2 - Create a new connector instance
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
-ClientConfig clientConfig = {authConfig : authConfig};
+configurable http:BearerTokenConfig & readonly auth = ?;
+ClientConfig clientConfig = {auth : auth};
 Client baseClient = check new Client(clientConfig);
 ```
 ### Step 3 - Invoke connector operation 

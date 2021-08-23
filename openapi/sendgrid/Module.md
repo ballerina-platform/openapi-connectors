@@ -30,7 +30,7 @@ Configure the connection using the API-Key obtained.
 
 ```ballerina
 sendgrid:ClientConfig configuration = {
-    authConfig: {
+    auth: {
         token: "<API-Key>"
     }
 };

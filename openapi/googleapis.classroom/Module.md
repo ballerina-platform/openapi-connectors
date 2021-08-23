@@ -23,7 +23,7 @@ import ballerinax/googleapis.classroom;
 Create a `classroom:ClientConfig` with the OAuth2 tokens obtained, and initialize the connector with it. 
 ```ballerina
 classroom:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         clientId: <CLIENT_ID>,
         clientSecret: <CLIENT_SECRET>,
         refreshUrl: <REFRESH_URL>,

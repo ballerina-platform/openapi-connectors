@@ -26,9 +26,9 @@ import ballerinax/notion;
 ### Step 2 - Create a new connector instance
 You can initialize the client as follows using ballerina configurable variables.
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
+configurable http:BearerTokenConfig & readonly auth = ?;
 notion:ClientConfig clientConfig = { 
-    authConfig : authConfig
+    auth : auth
 };
 notion:Client baseClient = check new Client(clientConfig);
 ```

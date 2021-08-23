@@ -23,7 +23,7 @@ You can now enter the credentials in the Google Slides client configuration and 
 
 ```ballerina
 slides:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         clientId: <CLIENT_ID>,
         clientSecret: <CLIENT_SECRET>,
         refreshUrl: <REFRESH_URL>,

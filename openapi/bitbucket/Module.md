@@ -39,7 +39,7 @@ import ballerinax/bitbucket;
 ### Step 2 - Create a new connector instance
 ```ballerina
 bitbucket:ClientConfig configuration = {
-    authConfig: {
+    auth: {
         clientId: "<Client Id>",
         clientSecret: "<Client Secret>",
         refreshUrl: "<Refresh Url>",

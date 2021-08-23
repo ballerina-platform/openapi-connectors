@@ -20,7 +20,7 @@ import ballerinax/hubspot.crm.contact;
 You can now make the connection configuration using the access token.
 ```ballerina
 contact:ClientConfig clientConfig = {
-    authConfig : {
+    auth : {
         token: <ACCESS_TOKEN>
     }
 };

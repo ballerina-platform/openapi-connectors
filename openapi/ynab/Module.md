@@ -27,7 +27,7 @@ import ballerinax/ynab;
 Create a `ynab:ClientConfig` with the `access token` obtained, and initialize the connector with it.
 ```ballerina
 ynab:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         token: <ACCESS_TOKEN>
     }
 };

@@ -24,7 +24,7 @@ You can now enter the credentials in the Google Books client configuration and c
 
 ```ballerina
 books:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         clientId: <CLIENT_ID>,
         clientSecret: <CLIENT_SECRET>,
         refreshUrl: <REFRESH_URL>,

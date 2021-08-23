@@ -29,7 +29,7 @@ Configure the connection using http:OAuth2RefreshTokenGrantConfig or http:Bearer
 
 ```ballerina
 zoom:Configuration configuration = {
-    authConfig: {
+    auth: {
         refreshUrl: "https://zoom.us/oauth/token",
         refreshToken : "<REFRESH_TOKEN>",
         clientId : "<CLIENT_ID>",

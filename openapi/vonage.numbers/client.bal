@@ -35,7 +35,7 @@ public isolated client class Client {
     # + apiKeyConfig - Provide your API keys as `api_key` and `api_secret`. Eg: `{"api_key" : "<API key>", "api_secret" : "<API secret>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://rest.nexmo.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

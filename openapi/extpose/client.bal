@@ -32,7 +32,7 @@ public isolated client class Client {
     # + apiKeyConfig - Provide your API Key as X-API-Key. Eg: {"X-API-Key" : "<Your API Key>"}
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://extpose.com/api/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

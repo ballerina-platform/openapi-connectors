@@ -37,7 +37,7 @@ public isolated client class Client {
     # + apiKeyConfig - Provide your API Key and token as `'key` and `token`. Eg: `{'key: trelloKey, token: trelloToken}`
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://trello.com/1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

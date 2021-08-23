@@ -35,7 +35,7 @@ public isolated client class Client {
     # + apiKeyConfig - Provide your API key as `X-IBM-Client-Id`. Eg: `{"X-IBM-Client-Id" : "<API key>"}`
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://connect.apptigent.com/api/utilities") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;

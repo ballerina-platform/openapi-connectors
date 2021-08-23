@@ -37,7 +37,7 @@ public isolated client class Client {
     #
     # + clientConfig - The configurations to be used when initializing the `connector`
     # + serviceUrl - URL of the target service
-    # + return - An error at the failure of client initialization
+    # + return - An error if connector initialization failed
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://app.orbit.love/api/v1") returns error? {
         http:ClientSecureSocket? secureSocketConfig = clientConfig?.secureSocketConfig;
         http:Client httpEp = check new (serviceUrl, { auth: clientConfig.authConfig, secureSocket: secureSocketConfig });

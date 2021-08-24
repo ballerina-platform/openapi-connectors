@@ -23,7 +23,7 @@ import ballerinax/flatapi;
 You can use Personal Access Token(PAT) for authentication:
 ```ballerina
 flatapi:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         token: <PAT_TOKEN>
     }
 };

@@ -22,10 +22,10 @@ import ballerinax/asana;
 ```
 ### Step 2: Create a new connector instance
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
+configurable http:BearerTokenConfig & readonly auth = ?;
 
 asana:ClientConfig clientConfig = {
-    authConfig : authConfig
+    auth : auth
     };
 
 asana:Client myclient = check new asana:Client(clientConfig, "https://app.asana.com/api/1.0");

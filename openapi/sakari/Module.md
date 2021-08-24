@@ -21,7 +21,7 @@ import ballerinax/sakari;
 You can now make the connection configuration using the obtained credentials.
 ```ballerina
 sakari:ClientConfig configuration = {
-    authConfig: {
+    auth: {
         clientId: <>,
         clientSecret: <>,
         tokenUrl: "https://api.sakari.io/oauth2/token"   

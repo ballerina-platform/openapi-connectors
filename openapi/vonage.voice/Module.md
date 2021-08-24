@@ -29,7 +29,7 @@ You can initialize the client as follows. You can now provide the JWT obtained a
 Create a `voice:ClientConfig` with the JWT token obtained, and initialize the connector with it.
 ```ballerina
 vv:ClientConfig config = {
-    authConfig: {
+    auth: {
         token: "JWT"
     }
 }

@@ -27,8 +27,8 @@ To use the `ballerinax/ebay.finances` connector in your Ballerina application, u
 ```
 ### Step 2 -  Create a new connector instance
 ```ballerina
-   configurable http:BearerTokenConfig & readonly authConfig = ?;
-   finances:ClientConfig clientConfig = {authConfig: authConfig};
+   configurable http:BearerTokenConfig & readonly auth = ?;
+   finances:ClientConfig clientConfig = {auth: auth};
    finances:Client baseClient = check new Client(clientConfig);
 ```
 

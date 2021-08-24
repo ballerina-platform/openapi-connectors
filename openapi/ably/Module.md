@@ -26,7 +26,7 @@ import ballerinax/ably;
 Create a `ably:ClientConfig` with the application key split at the first colon as username and password, and initialize the connector with it.
 ```ballerina
 ably:ClientConfig configuration = {
-    authConfig: {
+    auth: {
         username: <ABLY_USERNAME>,
         password: <ABLY_PASSWORD>
     }

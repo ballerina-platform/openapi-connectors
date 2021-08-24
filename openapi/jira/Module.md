@@ -22,7 +22,7 @@ import ballerinax/jira;
 ### Step 2: Configure the connection credentials.
 ```ballerina
 jira:ClientConfig clientConfig = {
-    authConfig : { 
+    auth : { 
         username : "<your_atlassian_account_email>", 
         password : "<atlassian_account_api_key>"
     }

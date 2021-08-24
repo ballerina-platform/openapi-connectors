@@ -22,8 +22,8 @@ import ballerinax/figshare;
 You can now enter the credentials in the Figshare client configuration and create Figshare client by passing the configuration:
 
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
-figshare:ClientConfig clientConfig = {auth : authConfig};
+configurable http:BearerTokenConfig & readonly auth = ?;
+figshare:ClientConfig clientConfig = {auth : auth};
 
 figshare:Client baseClient = check new Client(clientConfig);
 ```

@@ -18,12 +18,11 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Visit [here](https://docs.elmah.io/where-is-my-api-key/) to get information on obtaining API key
-#
-# + apiKeys - Provide your API key as `api_key`. Eg: `{"api_key" : "<API key>"}` 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Elmah.io REST API v3](https://elmah.io) OpenAPI Specification. 
 # The public REST API for elmah.io. All of the integrations communicates with elmah.io through this API.

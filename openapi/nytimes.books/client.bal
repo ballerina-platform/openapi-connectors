@@ -18,12 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://developer.nytimes.com/get-started) and obtain an `API key`. 
-#
-# + apiKeys - Provide your API key as `api-key`. Eg: `{"api-key" : "<your API key>"}`
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
 # The Books API provides information about book reviews and The New York Times bestsellers lists.

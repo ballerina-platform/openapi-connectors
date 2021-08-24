@@ -16,9 +16,11 @@
 
 import ballerina/http;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Apptigent PowerTools Developer API v2021.1.01](https://portal.apptigent.com/node/612) OpenAPI specification.
 # 'Apptigent PowerTools Developer Edition is a powerful suite of API endpoints for custom applications running on any stack. 

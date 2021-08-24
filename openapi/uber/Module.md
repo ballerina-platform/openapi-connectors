@@ -26,9 +26,9 @@ import ballerinax/log;
 Step 2: Configure the connection credentials.
 You can now make the connection configuration using the access token
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
+configurable http:BearerTokenConfig & readonly auth = ?;
 uber:ClientConfig clientConfig = {
-    authConfig : authConfig
+    auth : auth
 };
 uber:Client baseClient = check new Client(apiKeyConfig);
 ```

@@ -23,8 +23,8 @@ import ballerinax/bulksms;
 
  ### Step 2 - Create a new connector instance
 ```ballerina
-configurable http:CredentialsConfig & readonly authConfig = ?;
-bulksms:ClientConfig clientConfig = {authConfig : authConfig};
+configurable http:CredentialsConfig & readonly auth = ?;
+bulksms:ClientConfig clientConfig = {auth : auth};
 bulksms:Client baseClient = check new Client(clientConfig);
 ```
 ### Step 3 - Invoke  connector operation

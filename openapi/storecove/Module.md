@@ -22,7 +22,7 @@ Create a `storecove:ClientConfig` with the OAuth2 tokens obtained, and initializ
 
 ```ballerina
 storecove:ClientConfig configuration = {
-    authConfig: {
+    auth: {
         token : "<API_KEY>"
     }
 };

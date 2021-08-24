@@ -24,13 +24,13 @@ import ballerinax/orbitcrm;
 Add the project configuration file by creating a `Config.toml` file. Config file should have following configurations. Add the tokens obtained in the previous step to the `Config.toml` file.
 
 ```ballerina
-[authConfig]
+[auth]
 token = "<Bearer_token">
 ```
 
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
-orbitcrm:ClientConfig clientConfig = {authConfig : authConfig};
+configurable http:BearerTokenConfig & readonly auth = ?;
+orbitcrm:ClientConfig clientConfig = {auth : auth};
 
 orbitcrm:Client myclient = check new orbitcrm:Client(clientConfig, {}, "https://app.orbit.love/api/v1");
 ```

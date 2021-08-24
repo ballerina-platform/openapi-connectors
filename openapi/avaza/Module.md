@@ -23,12 +23,12 @@ import ballerinax/avaza;
 Add the project configuration file by creating a `Config.toml` file. Config file should have following configurations. Add the tokens obtained in the previous step to the `Config.toml` file.
 
 ```ballerina
-[authConfig]
+[auth]
 token = "<Bearer_token">
 ```
 ```ballerina
-configurable http:BearerTokenConfig & readonly authConfig = ?;
-avaza:ClientConfig clientConfig = {authConfig : authConfig};
+configurable http:BearerTokenConfig & readonly auth = ?;
+avaza:ClientConfig clientConfig = {auth : auth};
 
 avaza:Client baseClient = check new Client(clientConfig, serviceUrl = "https://api.avaza.com/");
 ```

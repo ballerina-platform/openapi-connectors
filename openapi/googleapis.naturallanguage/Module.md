@@ -23,7 +23,7 @@ import ballerinax/googleapis.cloudnaturallanguage;
 Create a `cloudnaturallanguage:ClientConfig` with the OAuth2 tokens obtained, and initialize the connector with it. 
 ```ballerina
 cloudnaturallanguage:ClientConfig clientConfig = {
-    authConfig: {
+    auth: {
         clientId: <CLIENT_ID>,
         clientSecret: <CLIENT_SECRET>,
         refreshUrl: <REFRESH_URL>,

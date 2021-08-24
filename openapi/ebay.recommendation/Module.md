@@ -23,8 +23,8 @@ To use the `ballerinax/ebay.recommendation` connector in your Ballerina applicat
 ### Step 2: Create a new connector instance
 Create a `recommendation:ClientConfig` with the OAuth2 tokens obtained, and initialize the connector with it.
 ```ballerina
-   configurable http:BearerTokenConfig & readonly authConfig = ?;
-   recommendation:ClientConfig clientConfig = {authConfig: authConfig};
+   configurable http:BearerTokenConfig & readonly auth = ?;
+   recommendation:ClientConfig clientConfig = {auth: auth};
    recommendation:Client baseClient = check new Client(clientConfig);
 ```
 

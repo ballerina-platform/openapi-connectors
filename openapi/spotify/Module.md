@@ -29,7 +29,7 @@ Configure the connection using OAuth2 refresh token grant config.
 
 ```ballerina
 spotify:Configuration configuration = {
-    authConfig: {
+    auth: {
         refreshUrl: "https://accounts.spotify.com/api/token",
         refreshToken : "<REFRESH_TOKEN>",
         clientId : "<CLIENT_ID>",

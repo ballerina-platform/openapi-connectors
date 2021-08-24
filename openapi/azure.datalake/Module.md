@@ -20,7 +20,7 @@ import ballerinax/azure.datalake;
 You can now make the connection configuration using the access token.
 ```ballerina
 datalake:ClientConfig clientConfig = {
-    authConfig : {
+    auth : {
         token: token
     }
 };

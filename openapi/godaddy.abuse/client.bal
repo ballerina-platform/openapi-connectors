@@ -18,9 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [GoDaddy Abuse API v1](https://developer.godaddy.com/doc/endpoint/abuse) OpenAPI specification.
 # <strong>GoDaddy Abuse API Terms of Use:</strong><p>GoDaddy’s Abuse API is provided to simplify and standardize the abuse 

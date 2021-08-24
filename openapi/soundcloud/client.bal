@@ -15,9 +15,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [SoundCloud API v1.0.0](https://developers.soundcloud.com/) OpenAPI Specification.
 # SoundCloud API provides capability to access the online audio distribution platform and music sharing website that 

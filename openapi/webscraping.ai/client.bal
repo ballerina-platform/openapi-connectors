@@ -18,9 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification.
 # It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.

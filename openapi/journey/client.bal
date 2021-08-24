@@ -18,12 +18,12 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://developers.journy.io/#section/Authentication) to get information on obtaining API key
-#
-# + apiKeys - Provide your API Key as `X-Api-Key`. Eg: {"X-Api-Key" : "<API Key>}"
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
+
 # This is a generated connector for [Journey.io API v1.0.0](https://www.journey.io/) OpenAPI specification.
 # The journy.io API is organized around REST. Our API has predictable resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
 public isolated client class Client {

@@ -16,12 +16,12 @@
 
 import  ballerina/http;
 
-# Visit [here](https://account.cloudmersive.com/keys) to get more information on obtaining API key
-#
-# + apiKeys - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
+
 # This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. 
 # The  Cloudmersive Barcode APIs let you generate barcode images, and recognize values from images of barcodes.
 public isolated client class Client {

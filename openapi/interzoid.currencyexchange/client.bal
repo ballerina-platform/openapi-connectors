@@ -18,12 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://www.interzoid.com/account) and obtain an `private license key`. 
-#
-# + apiKeys - Provide your private license key as `license`. Eg: `{"license" : "<private license key>"}`  
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Interzoid Get Currency Rate API v1.0.0](https://www.interzoid.com/services/getcurrencyrate) OpenAPI specification.
 # This API retrieves the latest currency exchange rate, against the US Dollar, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.

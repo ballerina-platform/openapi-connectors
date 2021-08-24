@@ -18,9 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime) OpenAPI specification.
 # This API retrieves the current time for a city or geographic location around the globe.

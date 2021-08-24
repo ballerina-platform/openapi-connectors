@@ -18,9 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Interzoid Zip Code Detailed Info API v1.0.0] (https://www.interzoid.com/services/getzipcodeinfo) OpenAPI specification.
 # The Interzoid Zip Code Detailed Info connector module provides detailed information for a given zip code, including city, state, latitude, longitude, area size, and various population demographics.

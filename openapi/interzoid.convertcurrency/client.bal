@@ -18,12 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://www.interzoid.com/account) and obtain an `private license key`. 
-#
-# + apiKeys - Provide your private license key as `license`. Eg: `{"license" : "<private license key>"}` 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
 # This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.

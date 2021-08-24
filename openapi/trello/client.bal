@@ -18,12 +18,11 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Visit [here](https://trello.com/app-key) and obtain an `Key` and `Token`
-#
-# + apiKeys - Provide your API Key and token as `'key` and `token`. Eg: `{'key: trelloKey, token: trelloToken}`
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Trello API v1](https://trello.com) OpenAPI specification.
 # Client endpoint for Trello API provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resources in a Trello account.

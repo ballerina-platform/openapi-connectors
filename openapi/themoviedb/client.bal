@@ -18,12 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://wwww.themoviedb.org/) and obtain an `API key` in the settings.
-#
-# + apiKeys - Provide your API key as `api_key`. Eg: `{"api_key" : "<your API key>"}`
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
 # The Movie Database (TMDB) API provide data about movies and tv shows around the world.

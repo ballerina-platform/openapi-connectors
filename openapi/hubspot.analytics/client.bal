@@ -18,12 +18,11 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Visit [here](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.1626409334) to get information on obtaining API key
-#
-# + apiKeys - Provide your API key as `hapikey`. Eg: `{"hapikey" : "<API key>"}` 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
 # These APIs allow triggering instances of custom behavioral events

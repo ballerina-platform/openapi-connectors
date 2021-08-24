@@ -18,12 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://newsapi.org/register) and obtain an `API key`.
-#
-# + apiKeys - Provide your API key as `apiKey`. Eg: `{"apiKey" : "<your API key>"}` 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification.
 # News API used to fetch news(articles, headlines and sources) from news sources and blogs across the web.

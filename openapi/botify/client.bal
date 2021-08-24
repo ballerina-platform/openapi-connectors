@@ -18,12 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# Visit [here](https://app.botify.com/signin/) and obtain an `API key`. 
-#
-# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
 # API for Internet Archive's Search-related services.

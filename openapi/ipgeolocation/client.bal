@@ -18,13 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-# API key configuration
-#
-# + apiKeys - Unique API key obtained from Abstract API to access IP Geolocation API. 
-#             Provide in following format in the example. Eg: `{"api_key" : "<API KEY>"}`
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Abstract IP geolocation API version 1](https://www.abstractapi.com/ip-geolocation-api#docs) OpenAPI Specification.
 # Abstract IP geolocation API allows developers to retrieve the region, country and city behind any IP worldwide.

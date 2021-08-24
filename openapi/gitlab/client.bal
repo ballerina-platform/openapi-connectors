@@ -18,12 +18,12 @@ import  ballerina/http;
 import  ballerina/url;
 import  ballerina/lang.'string;
 
-# Visit [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) and obtain a PAT token.
-#
-# + apiKeys - Provide your PAT token as `Private-Token`. Eg: `{"Private-Token" : "<PAT token>"}` 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
+
 # This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification. 
 # Client endpoint for GitLab API currently supports operations related to access requests and access tokens in GitLab.
 public isolated client class Client {

@@ -18,9 +18,11 @@ import ballerina/http;
 import ballerina/url;
 import ballerina/lang.'string;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector from [New York Times Top Stories API v2.0.0](https://developer.nytimes.com/docs/top-stories-product/1/overview) OpenAPI specification.
 # With the New York Times Top Stories API you can get articles currently on a section front or home page. The Top Stories API returns an array of articles currently on the specified section (arts, business, ...). 

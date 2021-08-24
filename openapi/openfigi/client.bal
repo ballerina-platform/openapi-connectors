@@ -16,9 +16,11 @@
 
 import ballerina/http;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [OpenFIGI API v3](https://www.openfigi.com/api) OpenAPI Specification.
 # OpenFIGI API provides capability to access multiple tools for identifying, mapping and requesting a free and open symbology dataset.  

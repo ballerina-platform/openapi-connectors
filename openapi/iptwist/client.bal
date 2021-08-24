@@ -16,9 +16,11 @@
 
 import ballerina/http;
 
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector from [ipTwist API v1](https://iptwist.com/) OpenAPI Specification. 
 # The reliable, secure, and simple IP geolocation API.

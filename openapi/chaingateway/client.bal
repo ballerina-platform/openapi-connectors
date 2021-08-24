@@ -16,12 +16,11 @@
 
 import ballerina/http;
 
-# Visit [here](https://chaingateway.io/account) and obtain an `API key`. 
-#
-# + apiKeys - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<your API key>"}`   
-public type ApiKeysConfig record {
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # API keys related to connector authentication
     map<string> apiKeys;
-};
+|};
 
 # This is a generated connector for [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.
 # This is the REST API to build the bridge between Ethereum and the real world. 

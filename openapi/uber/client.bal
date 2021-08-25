@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
+import ballerina/url;
+import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -53,25 +53,23 @@ public type ClientConfig record {|
 |};
 
 # Move your app forward with the Uber API
-#
-# + clientEp - Connector http endpoint
-public client class Client {
-    http:Client clientEp;
-    # Client initialization.
+public isolated client class Client {
+    final http:Client clientEp;
+    # Gets invoked to initialize the `connector`.
     #
-    # + clientConfig - Client configuration details
-    # + serviceUrl - Connector server URL
-    # + return - Error at failure of client initialization
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.uber.com/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
     }
     # Product Types
     #
-    # + latitude - Latitude component of location.
-    # + longitude - Longitude component of location.
-    # + return - An array of products
-    remote isolated function  getProducts(float latitude, float longitude) returns Product[]|error {
+    # + latitude - Latitude component of location. 
+    # + longitude - Longitude component of location. 
+    # + return - An array of products 
+    remote isolated function getProducts(float latitude, float longitude) returns Product[]|error {
         string  path = string `/products`;
         map<anydata> queryParam = {"latitude": latitude, "longitude": longitude};
         path = path + check getPathForQueryParam(queryParam);
@@ -80,39 +78,35 @@ public client class Client {
     }
     # Price Estimates
     #
-    # + startLatitude - Latitude component of start location.
-    # + startLongitude - Longitude component of start location.
-    # + endLatitude - Latitude component of end location.
-    # + endLongitude - Longitude component of end location.
-    # + return - An array of price estimates by product
-    remote isolated function getPrices(float startLatitude, float startLongitude, float endLatitude, float endLongitude) 
-                                    returns PriceEstimate[]|error {
+    # + startLatitude - Latitude component of start location. 
+    # + startLongitude - Longitude component of start location. 
+    # + endLatitude - Latitude component of end location. 
+    # + endLongitude - Longitude component of end location. 
+    # + return - An array of price estimates by product 
+    remote isolated function getPrices(float startLatitude, float startLongitude, float endLatitude, float endLongitude) returns PriceEstimate[]|error {
         string  path = string `/estimates/price`;
-        map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, 
-            "end_latitude": endLatitude, "end_longitude": endLongitude};
+        map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, "end_latitude": endLatitude, "end_longitude": endLongitude};
         path = path + check getPathForQueryParam(queryParam);
         PriceEstimate[] response = check self.clientEp-> get(path, targetType = PriceEstimateArr);
         return response;
     }
     # Time Estimates
     #
-    # + startLatitude - Latitude component of start location.
-    # + startLongitude - Longitude component of start location.
-    # + customerUuid - Unique customer identifier to be used for experience customization.
-    # + productId - Unique identifier representing a specific product for a given latitude & longitude.
-    # + return - An array of products
-    remote isolated function  getTimes(float startLatitude, float startLongitude, string? customerUuid = (), 
-                                    string? productId = ()) returns Product[]|error {
+    # + startLatitude - Latitude component of start location. 
+    # + startLongitude - Longitude component of start location. 
+    # + customerUuid - Unique customer identifier to be used for experience customization. 
+    # + productId - Unique identifier representing a specific product for a given latitude & longitude. 
+    # + return - An array of products 
+    remote isolated function getTimes(float startLatitude, float startLongitude, string? customerUuid = (), string? productId = ()) returns Product[]|error {
         string  path = string `/estimates/time`;
-        map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, 
-            "customer_uuid": customerUuid, "product_id": productId};
+        map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, "customer_uuid": customerUuid, "product_id": productId};
         path = path + check getPathForQueryParam(queryParam);
         Product[] response = check self.clientEp-> get(path, targetType = ProductArr);
         return response;
     }
     # User Profile
     #
-    # + return - Profile information for a user
+    # + return - Profile information for a user 
     remote isolated function getUser() returns Profile|error {
         string  path = string `/me`;
         Profile response = check self.clientEp-> get(path, targetType = Profile);
@@ -120,10 +114,10 @@ public client class Client {
     }
     # User Activity
     #
-    # + offset - Offset the list of returned results by this amount. Default is zero.
-    # + 'limit - Number of items to retrieve. Default is 5, maximum is 100.
-    # + return - History information for the given user
-    remote isolated function  history(int? offset = (), int? 'limit = ()) returns Activities|error {
+    # + offset - Offset the list of returned results by this amount. Default is zero. 
+    # + 'limit - Number of items to retrieve. Default is 5, maximum is 100. 
+    # + return - History information for the given user 
+    remote isolated function history(int? offset = (), int? 'limit = ()) returns Activities|error {
         string  path = string `/history`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
@@ -134,9 +128,9 @@ public client class Client {
 
 # Generate query path with query parameter.
 #
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
+# + queryParam - Query parameter map 
+# + return - Returns generated Path or error at failure of client initialization 
+isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
     string[] param = [];
     param[param.length()] = "?";
     foreach  var [key, value] in  queryParam.entries() {

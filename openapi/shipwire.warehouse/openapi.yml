@@ -1,0 +1,1259 @@
+openapi: 3.0.1
+info:
+  title: Shipwire Warehouses API
+  description: |
+    This is a generated connector for [Shipwire Warehouses API v3.0](https://www.shipwire.com/developers/warehouse/) OpenAPI specification.
+    The Warehouse API is used to manage Shipwire Anywhere warehouses and dropship locations. 
+    Use it to create a new warehouse, to update an existing warehouse, or to get information about already created warehouses.
+  x-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Shipwire account](https://www.shipwire.com) and obtain tokens by following [this guide](https://www.shipwire.com/developers/getting-started).
+  version: "3.0"
+servers:
+- url: https://api.shipwire.com/
+security:
+- basicAuth: []
+paths:
+  /api/v3.1/warehouses:
+    get:
+      summary: Get warehouses
+      description: Get a collection of warehouses
+      operationId: getWarehouses
+      parameters:
+      - name: id
+        in: query
+        description: Filter by warehouse ids, supports comma separated list
+        schema:
+          type: integer
+      - name: externalId
+        in: query
+        description: Filter by warehouse external ids, supports comma separated list
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter by warehouse names, supports comma separated list
+        schema:
+          type: string
+      - name: vendorId
+        in: query
+        description: Filter by associated vendor's id, supports comma separated list
+        schema:
+          type: integer
+      - name: vendorExternalId
+        in: query
+        description: Filter by associated vendor's external id, supports comma separated
+          list
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: Filter by country, supports comma separated list
+        schema:
+          type: string
+      - name: generatesLabels
+        in: query
+        description: Filter by warehouses that require label generation
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Filter by type ("SHIPWIRE", "SHIPWIRE_ANYWHERE")
+        schema:
+          type: string
+          enum:
+          - SHIPWIRE
+          - SHIPWIRE_ANYWHERE
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWarehousesResponse'
+    post:
+      summary: Create a new warehouse
+      description: Create a new warehouse
+      operationId: postWarehouse
+      requestBody:
+        description: Create a new warehouse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateANewWarehouseRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateANewWarehouseResponse'
+      x-codegen-request-body-name: body
+  /api/v3.1/warehouses/{id}:
+    get:
+      summary: Get a warehouse
+      description: Get a warehouse by id or external id.
+      operationId: GetWarehousesById
+      parameters:
+      - name: id
+        in: path
+        description: The warehouse id or external id.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAWarehouseResponse'
+    put:
+      summary: Update a warehouse
+      description: Modify a warehouse based on its id or external id
+      operationId: PutWarehousesById
+      parameters:
+      - name: id
+        in: path
+        description: The warehouse's id or external id.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Update a warehouse request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAWarehouseRequest'
+        required: true
+      responses:
+        200:
+          description: "Create a new warehouse response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateANewWarehouseResponse'
+      x-codegen-request-body-name: body
+  /api/v3.1/warehouses/{id}/retire:
+    post:
+      summary: Retire a warehouse
+      description: Indicates that the warehouse will not longer be used. If the warehouse
+        is not associated with any active vendors or orders, the warehouse will be
+        deleted. Otherwise the warehouse will have its "isActive" property set to
+        false.
+      operationId: PostWarehousesRetireById
+      parameters:
+      - name: id
+        in: path
+        description: Warehouse id or external id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Retire a warehouse response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetireAWarehouseResponse'
+        404:
+          description: Unexpected error in API call. See HTTP response body for details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetireAWarehouse404Response'
+  /api/v3.1/warehouses/{id}/containers:
+    get:
+      summary: Get containers associated with a warehouse
+      operationId: GetWarehousesContainersById
+      parameters:
+      - name: id
+        in: path
+        description: The warehouse id or external id.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Get containers associated with a warehouse response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContainersAssociatedWithAWarehouseResponse'
+  /api/v3.1/warehouses/{id}/carriers:
+    get:
+      summary: Get carriers associated with a warehouse
+      description: Returns a list of carriers associated with the specified warehouse.
+      operationId: GetWarehousesCarriersById
+      parameters:
+      - name: id
+        in: path
+        description: The warehouse id or external id.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Get carriers response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCarriersResponse'
+  /api/v3.1/warehouses/{id}/addCarriers:
+    post:
+      summary: Add carriers to a warehouse
+      description: Creates the association of a carrier with the specified warehouse.
+      operationId: AddCarriersByIdToWarehouse
+      parameters:
+      - name: id
+        in: path
+        description: Warehouse id or external id.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Add carrier request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCarrierRequest'
+        required: true
+      responses:
+        200:
+          description: "Get carriers response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCarriersResponse'
+      x-codegen-request-body-name: body
+  /api/v3.1/warehouses/{id}/removeCarriers:
+    post:
+      summary: Remove carriers to a warehouse
+      description: Removes the association of a carrier with the specified warehouse,
+        and returns the list of updated carriers supported for the warehouse.
+      operationId: RemoveCarriersByIdToWarehouse
+      parameters:
+      - name: id
+        in: path
+        description: Warehouse id or external id.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Remove carrier request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveCarrierRequest'
+        required: true
+      responses:
+        200:
+          description: "Get carriers response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCarriersResponse'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    WarehouseServerResponse:
+      title: Warehouse Server Response
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          example: 200
+        message:
+          type: string
+          description: This is the HTTP status message.
+          example: Successful
+      description: Get Warehouses Response based on the criteria provided in the URL
+    WarehouserPaginationResponse:
+      title: Warehouse Pagination Response
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: This is an integer that matches the offset given in the request
+            and dictates the number of items to skip while fetching results. For example,
+            there is a preset limit of 20 results per page. If there are 30 total
+            results and offset is set to 20, then the response will show the second
+            "page" of results, with items 21 to 30.
+          example: 0
+        total:
+          type: integer
+          description: Total number of available items in the API response.
+          example: 1
+        previous:
+          type: string
+          description: A link used to fetch the previous set or page of items in the
+            API response.
+          example: null
+        next:
+          type: string
+          description: A link used to fetch the next set or page of items in the API
+            response.
+          example: null
+      description: Server Pagination Response
+    GetWarehousesResponse:
+      allOf:
+      - $ref: '#/components/schemas/WarehouseServerResponse'
+      - title: Get Warehouses Response
+        type: object
+      - type: object
+        description: Get Warehouses Response based on the criteria provided in the
+          URL
+      - type: object
+    GetCarriersResponse:
+      allOf:
+      - $ref: '#/components/schemas/WarehouseServerResponse'
+      - title: Get Carriers Response
+        type: object
+      - type: object
+        description: Get Carriers Response based on the criteria provided in the URL
+      - type: object
+    PostWarehouseRequest:
+      title: Post request to create a new warehouse
+      required:
+      - address
+      - isActive
+      - labelFormat
+      - name
+      type: object
+      properties:
+        externalId:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: A unique user-provided identifier for the warehouse in an external
+            system.
+          example: "3"
+        name:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Name of the warehouse
+          example: West Coast DC
+        code:
+          maxLength: 25
+          minLength: 1
+          type: string
+          description: This is the code assigned to the warehouse for easy reference.
+          example: RCKTS
+        vendorId:
+          type: integer
+          description: A unique ID assigned to each vendor in the Shipwire system.
+            (See the Vendors API.)
+        vendorExternalId:
+          type: string
+          description: A unique user provided identifier for a vendor in an external
+            system.
+          example: null
+        isActive:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse is available
+            to the customer for storage, shipping and receiving inventory.
+          example: 1
+        address:
+          description: Address
+          type: object
+        latitude:
+          maximum: 9E+1
+          minimum: -9E+1
+          type: number
+          description: Latitude of the warehouse. This is useful for routing purposes
+            to find the nearest warehouse.
+          format: float
+          example: 37.7915
+        longitude:
+          maximum: 1.8E+2
+          minimum: -1.8E+2
+          type: number
+          description: Longitude of the warehouse. This is useful for routing purposes
+            to find the nearest warehouse.
+          format: float
+          example: -122.402
+        isRoutable:
+          type: integer
+          description: A boolean which indicates whether orders may be routed to this
+            warehouse by our routing engine.
+          example: 1
+        labelFormat:
+          type: string
+          description: This is the generic format of the label that the warehouse
+            generates for each customer
+          example: 8.5x11
+          enum:
+          - 4x6
+          - 8.5x11
+        generatesLabels:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse can
+            generate shipping labels. These labels are stored on the server and can
+            be given to the customer if required
+          example: 1
+        returnWarehouseId:
+          type: integer
+          description: This is the unique ID of the Shipwire warehouse used for RMA
+            process and will store returned goods.
+          example: 11
+        returnWarehouseExternalId:
+          maxLength: 11
+          minLength: 1
+          type: string
+          description: This is the external ID of the Shipwire warehouse used for
+            RMA process.
+          example: null
+      description: Sample Post request to create a new warehouse
+    CreateANewWarehouseRequest:
+      title: Create a New Warehouse Request
+      description: Create a New Shipwire Anywhere Warehouse
+      allOf:
+      - $ref: '#/components/schemas/PostWarehouseRequest'
+      - type: object
+    CreateANewWarehouseResponse:
+      allOf:
+      - $ref: '#/components/schemas/WarehouseServerResponse'
+      - title: Create a New Warehouse Response
+        type: object
+      - type: object
+        description: Response for new Shipwire Anhywhere Warehouse creation
+      - type: object
+    GetAWarehouseResponse:
+      allOf:
+      - $ref: '#/components/schemas/WarehouseServerResponse'
+      - title: Get a Warehouse Response
+        type: object
+      - type: object
+        description: Get a Warehouse information for the mentioned ID
+      - type: object
+    UpdateAWarehouseRequest:
+      title: Update a Warehouse Request
+      type: object
+      properties:
+        externalId:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: A unique user-provided identifier for the warehouse in an external
+            system.
+          example: "3"
+        name:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Name of the warehouse
+          example: West Coast DC
+        code:
+          maxLength: 25
+          minLength: 1
+          type: string
+          description: This is the code assigned to the warehouse for easy reference.
+          example: RCKTS
+        vendorId:
+          type: integer
+          description: A unique ID assigned to each vendor in the Shipwire system.
+            (See the Vendors API.)
+        vendorExternalId:
+          type: string
+          description: A unique user provided identifier for a vendor in an external
+            system.
+          example: null
+        isActive:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse is available
+            to the customer for storage, shipping and receiving inventory.
+          example: 1
+        address:
+          $ref: '#/components/schemas/WarehouseAddress'
+        latitude:
+          maximum: 9E+1
+          minimum: -9E+1
+          type: number
+          description: Latitude of the warehouse. This is useful for routing purposes
+            to find the nearest warehouse.
+          format: float
+          example: 37.7915
+        longitude:
+          maximum: 1.8E+2
+          minimum: -1.8E+2
+          type: number
+          description: Longitude of the warehouse. This is useful for routing purposes
+            to find the nearest warehouse.
+          format: float
+          example: -122.402
+        isRoutable:
+          type: integer
+          description: A boolean which indicates whether orders may be routed to this
+            warehouse by our routing engine.
+          example: 1
+        generatesLabels:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse can
+            generate shipping labels. These labels are stored on the server and can
+            be given to the customer if required
+          example: 1
+        returnWarehouseId:
+          maxLength: 11
+          minLength: 1
+          type: string
+          description: This is the unique ID of the Shipwire warehouse used for RMA
+            process and will store returned goods.
+          example: "11"
+        returnWarehouseExternalId:
+          maxLength: 11
+          minLength: 1
+          type: string
+          description: This is the external ID of the Shipwire warehouse used for
+            RMA process.
+          example: null
+      description: Update Shipwire Warehouse Information
+    RetireAWarehouseResponse:
+      title: Retire a Warehouse Response
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          example: 200
+        message:
+          maxLength: 30
+          minLength: 6
+          type: string
+          description: This is the HTTP status message.
+          example: Deleted
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: null
+      description: Delete Shipwire Anywhere Warehouse from the system
+    RetireAWarehouse404Response:
+      title: Retire a warehouse 404 response
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          format: int32
+          nullable: true
+          example: 404
+        message:
+          type: string
+          description: This is the HTTP status message.
+          example: Warehouse not found
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: https://api.shipwire.com/api/v3.1/warehouses?offset=0&limit=1
+    GetContainersAssociatedWithAWarehouseResponse:
+      title: Get containers associated with a warehouse response
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          example: 200
+        message:
+          type: string
+          description: This is the HTTP status message.
+          example: Successful
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: https://api.shipwire.com/api/v3.1/containers?offset=0&limit=20
+        resource:
+          $ref: '#/components/schemas/GetContainersAssociatedWithAWarehouseResponse_resource'
+      description: Get list of containers associated with Warehouse. This contains
+        information for both Shipwire and Shipwire anywhere Warehouse
+    WarehouseAddress:
+      title: Warehouse Address
+      required:
+      - address1
+      - city
+      - country
+      - name
+      - phone
+      - postalCode
+      - state
+      type: object
+      properties:
+        address1:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: This is the first line of the address of the warehouse.
+          example: 1409 S Lilac Ave
+        address2:
+          maxLength: 35
+          minLength: 0
+          type: string
+          description: This is the second line of the address of the warehouse.
+          example: ""
+        address3:
+          maxLength: 35
+          minLength: 0
+          type: string
+          description: This is the third line of the address of the warehouse.
+          example: ""
+        city:
+          maxLength: 35
+          type: string
+          description: City where the warehouse is located.
+          example: Bloomington
+        state:
+          maxLength: 3
+          minLength: 2
+          type: string
+          description: State where the warehouse is located.
+          example: CA
+        postalCode:
+          maxLength: 10
+          pattern: /^[0-9]{5}(?:-[0-9]{4})?$/
+          type: string
+          description: Postal code of the warehouse
+          example: "92316"
+        country:
+          type: string
+          description: 2 digit country code of the warehouse
+          example: US
+        continent:
+          type: string
+          description: Name of the continent where the warehouse is located.
+          format: enum
+          example: NORTH_AMERICA
+          enum:
+          - NORTH_AMERICA
+          - SOUTH_AMERICA
+          - EUROPE
+          - AFRICA
+          - ASIA
+          - AUSTRALIA
+          - ANTARCTICA
+        name:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: Name of the warehouse
+          example: NGL Bloomington
+        email:
+          type: string
+          description: Email address of contact at the warehouse for any communication
+          example: foo@bar.com
+        phone:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Contact phone number of the warehouse for any communication
+          example: 650-561-4800
+        fax:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Contact fax number of the warehouse for any communication
+          example: null
+      description: Shipwire Anywhere Warehouse Address
+    WarehouseInformation:
+      title: Warehouse Information
+      type: object
+      properties:
+        id:
+          type: integer
+          description: A unique auto-generated ID assigned to each new warehouse added
+            to the Shipwire Platform.
+          example: 11
+        externalId:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: A unique user-provided identifier for the warehouse in an external
+            system.
+          example: "3"
+        name:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Name of the warehouse
+          example: LA
+        code:
+          maxLength: 25
+          minLength: 1
+          type: string
+          description: This is the code assigned to the warehouse for easy reference.
+          example: LAX3
+        vendorId:
+          type: integer
+          description: A unique ID assigned to each vendor in the Shipwire system.
+            (See the Vendors API.)
+        vendorExternalId:
+          type: string
+          description: A unique user provided identifier for a vendor in an external
+            system.
+          example: null
+        isActive:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse is available
+            to the customer for storage, shipping and receiving inventory.
+          format: enum
+          example: 1
+        address:
+          $ref: '#/components/schemas/WarehouseInformation_address'
+        latitude:
+          maximum: 9E+1
+          minimum: -9E+1
+          type: number
+          description: Latitude of the warehouse. This is useful for routing purposes
+            to find the nearest warehouse.
+          format: float
+          example: 37.7915
+        longitude:
+          maximum: 1.8E+2
+          minimum: -1.8E+2
+          type: number
+          description: Longitude of the warehouse. This is useful for routing purposes
+            to find the nearest warehouse.
+          format: float
+          example: -122.402
+        isRoutable:
+          type: integer
+          description: A boolean which indicates whether orders may be routed to this
+            warehouse by our routing engine.
+          format: enum
+          example: 1
+        generatesLabels:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse can
+            generate shipping labels. These labels are stored on the server and can
+            be given to the customer if required
+          format: enum
+          example: 1
+        type:
+          type: string
+          description: This is the type of the warehouse. It can be Shipwire or Shipwire
+            Anywhere.
+          format: enum
+          example: SHIPWIRE
+          enum:
+          - SHIPWIRE
+          - SHIPWIRE_ANYWHERE
+        labelFormat:
+          type: string
+          description: This is the generic format of the label that the warehouse
+            generates for each customer
+          format: enum
+          example: 8.5x11
+          enum:
+          - 4x6
+          - 8.5x11
+        combineShippingDocuments:
+          type: boolean
+          description: This warehouse property ensures all shipping labels generated
+            are a combination of packing list and label.
+          example: false
+        returnWarehouseId:
+          maxLength: 11
+          minLength: 1
+          type: string
+          description: This is the unique ID of the Shipwire warehouse used for RMA
+            process and will store returned goods.
+          example: "11"
+        returnWarehouseExternalId:
+          maxLength: 11
+          minLength: 1
+          type: string
+          description: This is the external ID of the Shipwire warehouse used for
+            RMA process.
+          example: null
+        physicalWarehouseId:
+          type: integer
+          description: A shipwire warehouse ID used to identify a specific physical
+            warehouse that corresponds to a Shipwire Anywhere warehouse and is useful
+            in consolidating inventory. If the SKU item is at a Shipwire warehouse,
+            then this will be "null".
+          example: 5011
+        containers:
+          $ref: '#/components/schemas/WarehouseInformation_containers'
+        carriers:
+          type: string
+          description: These are customizations to carrier settings (ex. FDX 1D) specific
+            to a warehouse. May relate to destination/origin country & zip code, max
+            shipment dimensions & carrier capabilities etc.
+          example: null
+      description: Warehouse resource information
+    CarrierResourceLocation:
+      title: Carrier Resource Location
+      type: object
+      properties:
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: https://api.shipwire.com/api/v3.1/carriers/ABM-PLITE
+        resource:
+          $ref: '#/components/schemas/GetCarrierProperties'
+      description: Carrier Resource Location
+    GetWarehouseResources:
+      title: Warehouse Resources
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: This is an integer that matches the offset given in the request
+            and dictates the number of items to skip while fetching results. For example,
+            there is a preset limit of 20 results per page. If there are 30 total
+            results and offset is set to 20, then the response will show the second
+            "page" of results, with items 21 to 30.
+          example: 0
+        total:
+          type: integer
+          description: Total number of available items in the API response.
+          example: 1
+        previous:
+          type: string
+          description: A link used to fetch the previous set or page of items in the
+            API response.
+          example: null
+        next:
+          type: string
+          description: A link used to fetch the next set or page of items in the API
+            response.
+          example: null
+        items:
+          description: GetWarehouseResources items
+          type: array
+          items:
+            $ref: '#/components/schemas/GetWarehouseResources_items'
+      description: Warehouse Resources
+    CarrierResources:
+      title: Carrier Resources
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: This is an integer that matches the offset given in the request
+            and dictates the number of items to skip while fetching results. For example,
+            there is a preset limit of 20 results per page. If there are 30 total
+            results and offset is set to 20, then the response will show the second
+            "page" of results, with items 21 to 30.
+          example: 0
+        total:
+          type: integer
+          description: Total number of available items in the API response.
+          example: 1
+        previous:
+          type: string
+          description: A link used to fetch the previous set or page of items in the
+            API response.
+          example: null
+        next:
+          type: string
+          description: A link used to fetch the next set or page of items in the API
+            response.
+          example: null
+        items:
+          description: Items
+          type: array
+          items:
+            type: object
+            properties: {}
+      description: Carrier Resources
+    ContainerDimensions:
+      title: Container Dimensions
+      type: object
+      properties:
+        length:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the length of the container based on its Unit of Measurement
+            (lengthUnit)
+          format: float
+          example: 5.0
+        width:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the width of the container based on its Unit of Measurement
+            (widthUnit)
+          format: float
+          example: 5.0
+        height:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the width of the container based on its Unit of Measurement
+            (widthUnit)
+          format: float
+          example: 1.0
+        weight:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the weight of the container based on its Unit of Measurement
+            (weightUnit)
+          format: float
+          example: 0.0
+        maxWeight:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the maximum weight that the container can hold based
+            on its Unit of Measurement (maxWeightUnit)
+          format: float
+          example: 150.0
+        lengthUnit:
+          type: string
+          description: This is the Unit of Measurement for Container length (e.g.
+            inches)
+          format: enum
+          example: IN
+          enum:
+          - IN
+          - CM
+        widthUnit:
+          type: string
+          description: This is the Unit of Measurement for Container width (e.g. inches)
+          format: enum
+          example: IN
+          enum:
+          - IN
+          - CM
+        heightUnit:
+          type: string
+          description: This is the Unit of Measurement for Container height (e.g.
+            inches)
+          format: enum
+          example: IN
+          enum:
+          - IN
+          - CM
+        weightUnit:
+          type: string
+          description: This is the Unit of Measurement for Container weight (e.g.
+            pounds)
+          format: enum
+          example: LB
+          enum:
+          - LB
+          - KG
+        maxWeightUnit:
+          type: string
+          description: This is the Unit of Measurement for Container's max weight
+            (e.g. pounds)
+          format: enum
+          example: LB
+          enum:
+          - LB
+          - KG
+    ResourceDimensionValues:
+      title: Container Information
+      type: object
+      properties:
+        id:
+          type: integer
+          description: A unique auto-generated ID assigned to each new container added
+            to the Shipwire Platform.
+          example: 268041
+        externalId:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: A unique user-provided identifier for a container in an external
+            system.
+          example: null
+        name:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: A unique identifier for the container in the Shipwire system.
+          example: Small Box
+        type:
+          maxLength: 25
+          minLength: 1
+          type: string
+          description: This is the type of container based on the contents stored
+            in it.
+          format: enum
+          example: box
+          enum:
+          - box
+          - envelope
+          - tube
+          - pallet
+        isActive:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse can
+            use the container for a particular customer for packaging.
+          example: 0
+        warehouseId:
+          type: integer
+          description: 'A unique identifier for a Shipwire or Shipwire Anywhere warehouse. '
+          example: 11
+        warehouseExternalId:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: A unique user-provided identifier for a Shipwire Anywhere warehouse
+            in an external system.
+          example: "3"
+        basis:
+          type: number
+          description: Basis is a parameter that is used by Shipwire to prioritize
+            the use of some boxes over the others depending on the product dimensions.
+            The higher the box dimensions are the higher the basis will be. The highest
+            basis for standard boxes is 1025. Pallets have the highest basis where
+            as envelopes have the lowest basis. When setting up a merchant specific
+            box, if you want to use this new box over some of the generic boxes that
+            are bigger in volume, you need to assign a higher basis for the new box
+            to ensure products rate into the box you create.
+          format: float
+          example: 1000.0
+        serviceSpecificCarrierCode:
+          type: string
+          description: It indicates that this container is used with a particular
+            carrier service (eg. FDX 1D).
+          example: null
+        dimensions:
+          $ref: '#/components/schemas/ResourceDimensionValues_dimensions'
+    AddCarrierRequest:
+      required:
+      - carrierCodes
+      type: object
+      properties:
+        carrierCodes:
+          type: array
+          description: A string consisting of carrier code and service level.
+          items:
+            type: string
+            example: ABM PLITE
+    RemoveCarrierRequest:
+      required:
+      - carrierCodes
+      type: object
+      properties:
+        carrierCodes:
+          type: array
+          description: A string consisting of carrier code and service level.
+          items:
+            type: string
+            example: FDX 1D
+    GetCarrierProperties:
+      title: Carrier Properties
+      type: object
+      properties:
+        code:
+          type: string
+          description: A string consisting of carrier code and service level.
+          example: ABM PLITE
+        serviceLevelCode:
+          type: string
+          description: This is the service level code associated with the carrier.
+            There are multiple levels for one type of service. Each level has a specific
+            code. (e.g. For FDX the codes are 1D, 2D, GD, etc.)
+          example: PLITE
+        name:
+          maxLength: 50
+          minLength: 1
+          type: string
+          description: Name of the carrier
+          example: ABM Parcel Lite Large
+        isFreightCarrier:
+          type: integer
+          description: A boolean that indicates the carrier is a freight carrier.
+            The value "1" (True) means this carrier supports heavy weight orders or
+            large items.
+          example: 0
+        isRestrictedCarrier:
+          type: integer
+          description: A boolean that indicates whether or not the carrier is restricted.
+            The value "1" (True) means this carrier is not available for general use.
+            If required, contact customer care for possible enablement.
+          example: 0
+        isPostalCarrier:
+          type: integer
+          description: A boolean that indicates the carrier uses a national government
+            postal service, either for aggregated or for last mile delivery.
+          example: 0
+        isTerritorySupported:
+          type: integer
+          description: A boolean that indicates if the carrier supports US territories.
+            (e.g. Puerto Rico, Guam, etc.)
+          example: 0
+        isPoBoxSupported:
+          type: integer
+          description: A boolean that indicates if the carrier supports PO box delivery.
+          example: 0
+        isApoFpoSupported:
+          type: integer
+          description: A boolean that indicates the carrier supports delivery to military
+            addresses (APO, FPO).
+          example: 0
+        isPickupRequired:
+          type: integer
+          description: A boolean that indicates the carrier requires pickup. A "0"
+            (False) value would mean that the carrier supports delivery to doorstep.
+            This feature is related to third party carriers.
+          example: 0
+        isSignatureRequired:
+          type: integer
+          description: A boolean that indicates the carrier requires a signature upon
+            delivery of the order.
+          example: 0
+        isSelfInsured:
+          type: integer
+          description: A boolean that indicates the carrier is self-insured for damages
+            that occur to an order while in transit.
+          example: 0
+        isDangerousGoodsSupported:
+          type: integer
+          description: A boolean that indicates the carrier can transport orders that
+            include dangerous goods. (e.g. chemicals, etc.)
+          example: 0
+        isTrackable:
+          type: integer
+          description: A boolean that indicates orders transported by the carrier
+            will receive a tracking ID so that it can be tracked after leaving the
+            warehouse through to delivery.
+          example: 0
+        isMediaSupported:
+          type: integer
+          description: A boolean that indicates the carrier provides special services
+            specific to the handling of media. (e.g. books, videotapes, DVDs, CDs,
+            printed music and other sound recordings)
+          example: 0
+        minimumShippingDays:
+          type: integer
+          description: The minimum number of days the carrier takes for shipping the
+            order.
+          example: 2
+        maximumShippingDays:
+          type: integer
+          description: The maximum number of days the carrier takes for shipping the
+            order.
+          example: 5
+      description: Carrier properties for container
+    CostValues:
+      title: Container Cost Values
+      type: object
+      properties:
+        costValue:
+          type: string
+          description: This is the cost value for the container. During cartonization
+            (choosing packaging) phase for an order, Shipwire will first consider
+            containers with a lower cost, even if chosing one will end up making the
+            shipping cost comparatively higher. E.g. Shipwire will chose a container
+            1 with a $0 cost over a container 2 with a $1 cost, even if the shipping
+            cost for using an overly large container 1 is $10 higher than for using
+            a container 2.
+          example: "1.0"
+        retailValue:
+          type: string
+          description: This is the retail value for the container. Container retail
+            value will be added to the shipping quote for the customer. If a merchant
+            doesn't plan to charge customers for cartons/boxes, the container retail
+            value should be set to $0.
+          example: "2.0"
+        costValueCurrency:
+          type: string
+          description: This is the currency used in determining cost value for the
+            container.
+          example: USD
+        retailValueCurrency:
+          type: string
+          description: This is the currency used in determining retail value for the
+            container.
+          example: USD
+    ResourceInWarehouseResponse:
+      title: Warehouse Response Resource
+      type: object
+      properties:
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource
+          example: https://api.shipwire.com/api/v3.1/containers/268041
+        resource:
+          $ref: '#/components/schemas/ResourceInWarehouseResponse_resource'
+    GetContainersAssociatedWithAWarehouseResponse_resource:
+      description: GetContainersAssociatedWithAWarehouseResponse resource
+      type: object
+      properties:
+        items:
+          description: ResourceInWarehouseResponse list
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceInWarehouseResponse'
+    WarehouseInformation_address:
+      description: WarehouseInformation address
+      type: object
+      properties:
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: null
+        resource:
+          $ref: '#/components/schemas/WarehouseAddress'
+    WarehouseInformation_containers:
+      description: WarehouseInformation containers
+      type: object
+      properties:
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: https://api.shipwire.com/api/v3.1/warehouses/11/containers?offset=0&limit=20
+    GetWarehouseResources_items:
+      type: object
+      properties:
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: https://api.shipwire.com/api/v3.1/warehouses/11
+        resource:
+          $ref: '#/components/schemas/WarehouseInformation'
+    ResourceDimensionValues_dimensions:
+      type: object
+      properties:
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: null
+        resource:
+          $ref: '#/components/schemas/ContainerDimensions'
+    ResourceInWarehouseResponse_resource_values:
+      type: object
+      properties:
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A "null" value would mean that no further information is available for
+            that resource.
+          example: null
+        resource:
+          $ref: '#/components/schemas/CostValues'
+    ResourceInWarehouseResponse_resource:
+      type: object
+      properties:
+        values:
+          $ref: '#/components/schemas/ResourceInWarehouseResponse_resource_values'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

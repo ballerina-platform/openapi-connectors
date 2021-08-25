@@ -45,7 +45,6 @@ public type FactSheetOwnerDeletion record {
 };
 
 # Upload the outbound result LDFI to the default cloud storage provided by LeanIX
-#
 public type LeanIxStorageDataConsumer record {
     *DataConsumer;
 };
@@ -312,7 +311,6 @@ public type FastRunStatsReport record {
 };
 
 # Represents a LeanIX Data Interchange Format (LDIF)
-#
 public type LeanIxDataInterchangeFormat record {
     *Input;
     # The type of connector that is used
@@ -572,7 +570,6 @@ public type SynchronizationRunWithConfiguration record {
 };
 
 # Upload the outbound result LDFI to the target Azure storage account and container
-#
 public type AzureStorageDataConsumer record {
     *DataConsumer;
 };

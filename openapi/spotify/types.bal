@@ -35,14 +35,22 @@ public type FeaturedplaylistobjectPlaylists record {
 # Information needed to reorder the playlist
 public type PlayListReorderDetails record {
     # The position where the items should be inserted.  
+    # To reorder the items to the end of the playlist, simply set *insert_before* to the position after the last item.  
+    # Examples:  
+    # To reorder the first item to the last position in a playlist with 10 items, set *range_start* to 0, and *insert_before* to 10.  
+    # To reorder the last item in a playlist with 10 items to the start of the playlist, set *range_start* to 9, and *insert_before* to 0.
     int insert_before?;
     # The amount of items to be reordered. Defaults to 1 if not set.  
+    # The range of items to be reordered begins from the *range_start* position, and includes the *range_length* subsequent items.  
+    # Example:  
+    # To move the items at index 9-10 to the start of the playlist, *range_start* is set to 9, and *range_length* is set to 2.
     int range_length?;
     # The position of the first item to be reordered.
     int range_start?;
     # The playlist's snapshot ID against which you want to make the changes.
     string snapshot_id?;
     # A comma-separated list of [Spotify URIs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) to set, can be track or episode URIs. For example: `uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh,spotify:track:1301WleyT98MSxVHPZCA6M,spotify:episode:512ojhOuo1ktJprKbVcKyQ`  
+    # A maximum of 100 items can be set in one request.
     string[] uris?;
 };
 
@@ -289,6 +297,11 @@ public type PlaylistTrackDetails record {
 # Episode restriction object
 public type EpisodeRestrictionObject record {
     # The reason for the restriction. Supported values:  
+    # 
+    # - `market` - The content item is not available in the given market.  
+    # - `product` - The content item is not available for the user's subscription type.  
+    # - `explicit` - The content item is explicit and the user's account is set to not play explicit content.  
+    #   Additional reasons may be added in the future. **Note**: If you use this field, make sure that your application safely handles unknown values.
     string reason?;
 };
 
@@ -357,6 +370,11 @@ public type PublicUserObject record {
 # Track restriction object
 public type TrackRestrictionObject record {
     # The reason for the restriction. Supported values:  
+    # 
+    # - `market` - The content item is not available in the given market.  
+    # - `product` - The content item is not available for the user's subscription type.  
+    # - `explicit` - The content item is explicit and the user's account is set to not play explicit content.  
+    #   Additional reasons may be added in the future. **Note**: If you use this field, make sure that your application safely handles unknown values.
     string reason?;
 };
 
@@ -409,6 +427,8 @@ public type TrackObject record {
     # The name of the track.
     string name?;
     # The popularity of the track. The value will be between 0 and 100, with 100 being the most popular.  
+    # The popularity of a track is a value between 0 and 100, with 100 being the most popular. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are.  
+    # Generally speaking, songs that are being played a lot now will have a higher popularity than songs that were played a lot in the past. Duplicate tracks (e.g. the same track from a single and an album) are rated independently. Artist and album popularity is derived mathematically from track popularity. Note that the popularity value may lag actual popularity by a few days: the value is not updated in real time.
     int popularity?;
     # A link to a 30 second preview (MP3 format) of the track. Can be `null`
     string preview_url?;
@@ -506,6 +526,11 @@ public type SimplifiedShowObject record {
 # Album restriction object
 public type AlbumRestrictionObject record {
     # The reason for the restriction. Supported values:  
+    # 
+    # - `market` - The content item is not available in the given market.  
+    # - `product` - The content item is not available for the user's subscription type.  
+    # - `explicit` - The content item is explicit and the user's account is set to not play explicit content.  
+    #   Additional reasons may be added in the future. **Note**: If you use this field, make sure that your application safely handles unknown values.
     string reason?;
 };
 

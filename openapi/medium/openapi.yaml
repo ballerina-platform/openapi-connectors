@@ -12,6 +12,9 @@ info:
     
     Create a [Medium account](https://medium.com/) 
     and obtain tokens following [this guide](https://github.com/Medium/medium-api-docs#2-authentication).
+  x-display:
+    label: Medium
+    iconPath: "resources/medium.svg"
 servers:
 - url: https://api.medium.com/v1
 paths:

@@ -19,7 +19,8 @@ info:
   title: Zoom API
   version: 2.0.0
   x-display:
-    label: Zoom Client
+    label: Zoom
+    iconPath: "resources/zoom.svg"
   x-init-description: >
     The connector initialization requires setting the API credentials. 
     

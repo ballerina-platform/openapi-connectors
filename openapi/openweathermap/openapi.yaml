@@ -15,7 +15,8 @@ info:
     name: "CC Attribution-ShareAlike 4.0 (CC BY-SA 4.0)"
     url: "https://openweathermap.org/price"
   x-display:
-    label: Open Weather Client
+    label: OpenWeatherMap
+    iconPath: "resources/openweathermap.svg"
   x-init-description: >
     The connector initialization requires setting the API credentials. 
     

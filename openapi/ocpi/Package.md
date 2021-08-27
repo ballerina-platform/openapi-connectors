@@ -1,4 +1,4 @@
-Connects to  from Ballerina
+Connects to Open Charge Networks(OCNs) from Ballerina
 ## Package overview
 The Open Charge Point Interface(OCPI) is a [Ballerina](https://ballerina.io/) connector for Open Charge Point Interface(OCPI) 2.2 specification.
 This package provides capabilities to access to Open Charging Network(OCN) that offers market participants in EV an attractive and scalable solution for (international) roaming between networks, avoiding the costs and innovation-limiting complexities involved with today’s non-automated solutions or with central roaming hubs. As such it helps to enable EV drivers to charge everywhere in a fully-informed way, helps the market to develop quickly and helps market players to execute their business models in the best way

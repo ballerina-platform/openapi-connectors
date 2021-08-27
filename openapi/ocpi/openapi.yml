@@ -21,11 +21,17 @@ servers:
 paths:
   /admin/connection-status/{countryCode}/{partyID}:
     get:
-      summary: gets connection status
+      summary: Gets connection status
       tags:
         - admin-controller
       operationId: getConnectionStatus
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: countryCode
           description: Country code
           in: path
@@ -51,6 +57,13 @@ paths:
       tags:
         - admin-controller
       operationId: generateRegistrationToken
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         description: An array of Basic roles
         content:
@@ -97,7 +110,7 @@ paths:
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
       requestBody:
@@ -116,7 +129,7 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseObject"
   /ocn/registry/node-info:
     get:
-      summary: gets registry information
+      summary: Gets registry information
       tags:
         - registry-controller
       operationId: getMyNodeInfo
@@ -157,10 +170,17 @@ paths:
                 type: object
   /ocpi/2.2:
     get:
-      summary: fetches information about the supported endpoints for this version
+      summary: Fetches information about the supported endpoints for this version
       tags:
         - versions-controller
       operationId: getVersionsDetail
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -174,6 +194,13 @@ paths:
       tags:
         - versions-controller
       operationId: getVersions
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -190,10 +217,16 @@ paths:
         - cdrs-controller
       operationId: getCdrsFromDataOwner
       parameters:
-        - name: OCN-Signature
-          description: OCN-Signature
+        - name: Authorization
+          description: Authorization token
           in: header
           required: true
+          schema:
+            type: string
+        - name: OCN-Signature
+          description: OCN Signature
+          in: header
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -272,10 +305,16 @@ paths:
         - cdrs-controller
       operationId: getCdrPageFromDataOwner
       parameters:
-        - name: OCN-Signature
-          description: OCN signature
+        - name: Authorization
+          description: Authorization token
           in: header
           required: true
+          schema:
+            type: string
+        - name: OCN-Signature
+          description: OCN Signature
+          in: header
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -334,10 +373,16 @@ paths:
         - cdrs-controller
       operationId: getClientOwnedCdr
       parameters:
-        - name: OCN-Signature
-          description: OCN signature
+        - name: Authorization
+          description: Authorization token
           in: header
           required: true
+          schema:
+            type: string
+        - name: OCN-Signature
+          description: OCN Signature
+          in: header
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -396,10 +441,16 @@ paths:
         - cdrs-controller
       operationId: postClientOwnedCdr
       parameters:
-        - name: OCN-Signature
-          description: OCN signature
+        - name: Authorization
+          description: Authorization token
           in: header
           required: true
+          schema:
+            type: string
+        - name: OCN-Signature
+          description: OCN Signature
+          in: header
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -459,10 +510,16 @@ paths:
         - charging-profiles-controller
       operationId: postGenericChargingProfileResult
       parameters:
-        - name: OCN-Signature
-          description: OCN signature
+        - name: Authorization
+          description: Authorization token
           in: header
           required: true
+          schema:
+            type: string
+        - name: OCN-Signature
+          description: OCN Signature
+          in: header
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -528,10 +585,16 @@ paths:
         - charging-profiles-controller
       operationId: putSenderChargingProfile
       parameters:
-        - name: OCN-Signature
-          description: OCN signature
+        - name: Authorization
+          description: Authorization token
           in: header
           required: true
+          schema:
+            type: string
+        - name: OCN-Signature
+          description: OCN Signature
+          in: header
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -597,10 +660,16 @@ paths:
         - charging-profiles-controller
       operationId: getReceiverChargingProfile
       parameters:
-        - name: OCN-Signature
-          description: OCN signature
+        - name: Authorization
+          description: Authorization token
           in: header
           required: true
+          schema:
+            type: string
+        - name: OCN-Signature
+          description: OCN Signature
+          in: header
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -671,10 +740,16 @@ paths:
         - charging-profiles-controller
       operationId: putReceiverChargingProfile
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -739,10 +814,16 @@ paths:
         - charging-profiles-controller
       operationId: deleteReceiverChargingProfile
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -807,10 +888,16 @@ paths:
         - commands-controller
       operationId: postAsyncResponse
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -888,10 +975,16 @@ paths:
         - commands-controller
       operationId: postCancelReservation
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -946,15 +1039,21 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseCommandResponse"
   /ocpi/receiver/2.2/commands/RESERVE_NOW:
     post:
-      summary: Reserve a (specific) connector of a Charge Point for a given Token
+      summary: Reserves a (specific) connector of a Charge Point for a given Token
       tags:
         - commands-controller
       operationId: postReserveNow
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1014,10 +1113,16 @@ paths:
         - commands-controller
       operationId: postStartSession
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1077,10 +1182,16 @@ paths:
         - commands-controller
       operationId: postStopSession
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1135,15 +1246,21 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseCommandResponse"
   /ocpi/receiver/2.2/commands/UNLOCK_CONNECTOR:
     post:
-      summary: Unlock a connector of a Charge Point
+      summary: Unlocks a connector of a Charge Point
       tags:
         - commands-controller
       operationId: postUnlockConnector
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1202,6 +1319,13 @@ paths:
       tags:
         - credentials-controller
       operationId: getCredentials
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1214,6 +1338,13 @@ paths:
       tags:
         - credentials-controller
       operationId: putCredentials
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         description: Credentials detail
         content:
@@ -1233,6 +1364,13 @@ paths:
       tags:
         - credentials-controller
       operationId: postCredentials
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         description: Credentials Detail
         content:
@@ -1252,6 +1390,13 @@ paths:
       tags:
         - credentials-controller
       operationId: deleteCredentials
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1266,10 +1411,16 @@ paths:
         - locations-controller
       operationId: getLocationListFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1348,10 +1499,16 @@ paths:
         - locations-controller
       operationId: getLocationPageFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1410,6 +1567,12 @@ paths:
         - locations-controller
       operationId: getLocationObjectFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string      
         - name: X-Request-ID
           description: Every request shall contain a unique request ID, the response to this request shall contain the same ID
           in: header
@@ -1419,7 +1582,7 @@ paths:
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Correlation-ID
@@ -1472,10 +1635,16 @@ paths:
         - locations-controller
       operationId: getEvseObjectFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1540,10 +1709,16 @@ paths:
         - locations-controller
       operationId: getConnectorObjectFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1609,15 +1784,21 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseConnector"
   /ocpi/receiver/2.2/locations/{countryCode}/{partyID}/{locationID}:
     get:
-      summary: Retrieve a Location as it is stored in the eMSP system.
+      summary: Retrieves a Location as it is stored in the eMSP system.
       tags:
         - locations-controller
       operationId: getClientOwnedLocation
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1682,15 +1863,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseLocation"
     put:
-      summary: Push new/updated Location and/or Connector to the eMSP
+      summary: Pushes new/updated Location and/or Connector to the eMSP
       tags:
         - locations-controller
       operationId: putClientOwnedLocation
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1762,15 +1949,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseUnit"
     patch:
-      summary: Notify the eMSP of partial updates to a Location, EVSE or Connector (such as the status).
+      summary: Notifies the eMSP of partial updates to a Location, EVSE or Connector (such as the status).
       tags:
         - locations-controller
       operationId: patchClientOwnedLocation
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1845,15 +2038,21 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseUnit"
   /ocpi/receiver/2.2/locations/{countryCode}/{partyID}/{locationID}/{evseUID}:
     get:
-      summary: Retrieve a Location as it is stored in the eMSP system by EVSE UID
+      summary: Retrieves a Location as it is stored in the eMSP system by EVSE UID
       tags:
         - locations-controller
       operationId: getClientOwnedEvse
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -1924,15 +2123,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseEvse"
     put:
-      summary: Push new/updated Location, EVSE and/or Connector to the eMSP by EVSE UID
+      summary: Pushes new/updated Location, EVSE and/or Connector to the eMSP by EVSE UID
       tags:
         - locations-controller
       operationId: putClientOwnedEvse
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string      
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2010,15 +2215,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseUnit"
     patch:
-      summary: Notify the eMSP of partial updates to a Location, EVSE or Connector (such as the status) by EVSE UID
+      summary: Notifies the eMSP of partial updates to a Location, EVSE or Connector (such as the status) by EVSE UID
       tags:
         - locations-controller
       operationId: patchClientOwnedEvse
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2097,17 +2308,23 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/OcpiResponseUnit"
-  ? /ocpi/receiver/2.2/locations/{countryCode}/{partyID}/{locationID}/{evseUID}/{connectorID}
-  : get:
-      summary: Retrieve a Location as it is stored in the eMSP system by EVSE UID and Connector ID
+  /ocpi/receiver/2.2/locations/{countryCode}/{partyID}/{locationID}/{evseUID}/{connectorID}:
+    get:
+      summary: Retrieves a Location as it is stored in the eMSP system by EVSE UID and Connector ID
       tags:
         - locations-controller
       operationId: getClientOwnedConnector
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2184,15 +2401,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseConnector"
     put:
-      summary: Push new/updated Location, EVSE and/or Connector to the eMSP by EVSE UID and connector ID
+      summary: Pushes new/updated Location, EVSE and/or Connector to the eMSP by EVSE UID and connector ID
       tags:
         - locations-controller
       operationId: putClientOwnedConnector
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2276,15 +2499,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseUnit"
     patch:
-      summary: Notify the eMSP of partial updates to a Location, EVSE or Connector (such as the status) by EVSE UID and connector ID
+      summary: Notifies the eMSP of partial updates to a Location, EVSE or Connector (such as the status) by EVSE UID and connector ID
       tags:
         - locations-controller
       operationId: patchClientOwnedConnector
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2375,6 +2604,13 @@ paths:
       tags:
         - ocn-rules-controller
       operationId: updateWhitelist
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         description: OCN Rules List Details
         content:
@@ -2395,6 +2631,13 @@ paths:
       tags:
         - ocn-rules-controller
       operationId: appendToWhitelist
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         description: OCN Rules List Details
         content:
@@ -2415,6 +2658,13 @@ paths:
       tags:
         - ocn-rules-controller
       operationId: updateBlacklist
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         description: OCN Rules List Details
         content:
@@ -2435,6 +2685,13 @@ paths:
       tags:
         - ocn-rules-controller
       operationId: appendToBlacklist
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         description: OCN Rules List Details
         content:
@@ -2455,6 +2712,13 @@ paths:
       tags:
         - ocn-rules-controller
       operationId: updateSignatures
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -2464,10 +2728,17 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseUnit"
   /ocpi/receiver/2.2/ocnrules/block-all:
     put:
-      summary: Update OCN Rules - `block-all`
+      summary: Updates OCN Rules - `block-all`
       tags:
         - ocn-rules-controller
       operationId: blockAll
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -2482,6 +2753,12 @@ paths:
         - ocn-rules-controller
       operationId: deleteFromWhitelist
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: countryCode
           description: Country code
           in: path
@@ -2508,6 +2785,12 @@ paths:
         - ocn-rules-controller
       operationId: deleteFromBlacklist
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: countryCode
           description: Country code
           in: path
@@ -2533,6 +2816,13 @@ paths:
       tags:
         - ocn-rules-controller
       operationId: getRules
+      parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -2547,10 +2837,16 @@ paths:
         - sessions-controller
       operationId: getSessionsFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2629,10 +2925,16 @@ paths:
         - sessions-controller
       operationId: getSessionsPageFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2691,10 +2993,16 @@ paths:
         - sessions-controller
       operationId: putChargingPreferences
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2760,10 +3068,16 @@ paths:
         - sessions-controller
       operationId: getClientOwnedSession
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2828,15 +3142,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseSession"
     put:
-      summary: Inform the eMSP’s system about a new/updated Session object in the CPO’s system
+      summary: Informs the eMSP’s system about a new/updated Session object in the CPO’s system
       tags:
         - sessions-controller
       operationId: putClientOwnedSession
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2913,10 +3233,16 @@ paths:
         - sessions-controller
       operationId: patchClientOwnedSession
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -2996,10 +3322,16 @@ paths:
         - tariffs-controller
       operationId: getClientOwnedTariff
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3064,15 +3396,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseTariff"
     put:
-      summary: Push new/updated Tariff object to the eMSP.
+      summary: Pushes new/updated Tariff object to the eMSP.
       tags:
         - tariffs-controller
       operationId: putClientOwnedTariff
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3144,15 +3482,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseUnit"
     delete:
-      summary: Delete a Tariff object which is not used any more and will not be used in future either
+      summary: Deletes a Tariff object which is not used any more and will not be used in future either
       tags:
         - tariffs-controller
       operationId: deleteClientOwnedTariff
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3223,10 +3567,16 @@ paths:
         - tariffs-controller
       operationId: getTariffsFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3305,10 +3655,16 @@ paths:
         - tariffs-controller
       operationId: getTariffsPageFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3362,15 +3718,21 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseTariffList"
   /ocpi/sender/2.2/tokens:
     get:
-      summary: Get the list of known Tokens, last updated between the {date_from} and {date_to}(Paginated)
+      summary: Gets the list of known Tokens, last updated between the {date_from} and {date_to}(Paginated)
       tags:
         - tokens-controller
       operationId: getTokensFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3444,15 +3806,21 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseTokenList"
   /ocpi/sender/2.2/tokens/page/{uid}:
     get:
-      summary: Get the list of known Tokens Page ID
+      summary: Gets the list of known Tokens Page ID
       tags:
         - tokens-controller
       operationId: getTokensPageFromDataOwner
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3506,15 +3874,21 @@ paths:
                 $ref: "#/components/schemas/OcpiResponseTokenList"
   /ocpi/sender/2.2/tokens/{tokenUID}/authorize:
     post:
-      summary: Do a 'real-time' authorization request to the eMSP system, validating if a Token might be used (at the optionally given Location)
+      summary: Does a 'real-time' authorization request to the eMSP system, validating if a Token might be used (at the optionally given Location)
       tags:
         - tokens-controller
       operationId: postRealTimeTokenAuthorization
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3591,10 +3965,16 @@ paths:
         - tokens-controller
       operationId: getClientOwnedToken
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3676,10 +4056,16 @@ paths:
         - tokens-controller
       operationId: putClientOwnedToken
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3768,10 +4154,16 @@ paths:
         - tokens-controller
       operationId: patchClientOwnedToken
       parameters:
+        - name: Authorization
+          description: Authorization token
+          in: header
+          required: true
+          schema:
+            type: string
         - name: OCN-Signature
           description: OCN Signature
           in: header
-          required: true
+          required: false
           schema:
             type: string
         - name: X-Request-ID
@@ -3857,12 +4249,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/OcpiResponseUnit"
 components:
-  securitySchemes:
-    Authorization:
-      type: apiKey
-      name: authorization
-      in: header
-      x-apikey-description: "Provide your API Key as `authorization`. Eg: {authorization : Token <Your API_Key>}, The literal 'Token' indicates that the token-based authentication mechanism is used, in OCPI this is called the 'credentials token'.'Credentials tokens' are exchanged via the credentials module. These are different 'tokens' then the Tokens exchanged via theToken Module: Tokens used by drivers to authorize charging. To prevent confusion, when talking about the token used here in theHTTP Authorization header, call them: 'Credentials Tokens'"
   schemas:
     BasicRole:
       required:

@@ -9,7 +9,8 @@ info:
     Through the Spotify Web API, external applications retrieve Spotify content such as album data and playlists.
   version: 0.1.0
   x-display:
-    label: "Spotify Client"
+    label: "Spotify"
+    iconPath: "resources/spotify.svg"
   x-init-description: >
     The connector initialization requires setting the API credentials. 
     

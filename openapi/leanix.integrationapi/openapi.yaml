@@ -10,6 +10,9 @@ info:
     The connector initialization requires setting the API credentials.
 
     Create a [LeanIX Account](https://www.leanix.net/en/) and obtain tokens following [this guide](https://docs-eas.leanix.net/docs/authentication).
+  x-display:
+    label: Leanix Integration
+    iconPath: "resources/leanix.integrationapi.svg"
 servers:
 - url: https://eu.leanix.net/services/integration-api/v1
 - url: https://us.leanix.net/services/integration-api/v1
@@ -26,6 +29,7 @@ paths:
       - examples
       summary: Returns a starter example including an Input object and processor
         configuration
+      operationId: starterExample
       responses:
         200:
           description: Returns a complete input example with processor configurations
@@ -39,6 +43,7 @@ paths:
       - examples
       summary: Returns an advanced example including an Input object and processor
         configuration
+      operationId: advancedExample
       responses:
         200:
           description: Returns a complete input example with processor configurations

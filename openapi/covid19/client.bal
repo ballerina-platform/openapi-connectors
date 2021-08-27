@@ -164,7 +164,7 @@ public isolated client class Client {
     #
     # + county - Name of any county in the USA. All counties are listed in the /v3/covid-19/jhucsse/counties/ endpoint 
     # + return - Status OK 
-    remote isolated function getUSStatusByCounty(string county) returns CovidJHUCounties|error {
+    remote isolated function getUSAStatusByCounty(string county) returns CovidJHUCounties|error {
         string  path = string `/v3/covid-19/jhucsse/counties/${county}`;
         CovidJHUCounties response = check self.clientEp-> get(path, targetType = CovidJHUCounties);
         return response;
@@ -265,7 +265,7 @@ public isolated client class Client {
     #
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
-    remote isolated function getTimeSeriesForAllUSAStates(string lastdays = "30") returns CovidNYTState|error {
+    remote isolated function getTimeSeriesForAllUSAStatesNYT(string lastdays = "30") returns CovidNYTState|error {
         string  path = string `/v3/covid-19/nyt/states`;
         map<anydata> queryParam = {"lastdays": lastdays};
         path = path + check getPathForQueryParam(queryParam);
@@ -277,22 +277,11 @@ public isolated client class Client {
     # + state - State name(s), separated by commas (e.g. 'Illinois, California') 
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
-    remote isolated function getTimeSeriesByUSAState(string state, string lastdays = "30") returns CovidNYTState|error {
+    remote isolated function getTimeSeriesByUSAStateNYT(string state, string lastdays = "30") returns CovidNYTState|error {
         string  path = string `/v3/covid-19/nyt/states/${state}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         path = path + check getPathForQueryParam(queryParam);
         CovidNYTState response = check self.clientEp-> get(path, targetType = CovidNYTState);
-        return response;
-    }
-    # Get COVID-19 time series data for all available US counties, with an entry for each day since the pandemic began.
-    #
-    # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
-    # + return - Status Ok 
-    remote isolated function getTimeSeriesForAllUSACounties(string lastdays = "30") returns CovidNYTCounty|error {
-        string  path = string `/v3/covid-19/nyt/counties`;
-        map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidNYTCounty response = check self.clientEp-> get(path, targetType = CovidNYTCounty);
         return response;
     }
     # Get COVID-19 time series data for a county or set of counties, with an entry for each day since the pandemic began.
@@ -300,7 +289,7 @@ public isolated client class Client {
     # + county - County name(s), separated by commas (e.g. 'Alameda, Humboldt') 
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
-    remote isolated function getTimeSeriesByUSACounty(string county, string lastdays = "30") returns CovidNYTCounty|error {
+    remote isolated function getTimeSeriesByUSACountyNYT(string county, string lastdays = "30") returns CovidNYTCounty|error {
         string  path = string `/v3/covid-19/nyt/counties/${county}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         path = path + check getPathForQueryParam(queryParam);
@@ -310,7 +299,7 @@ public isolated client class Client {
     # Get COVID-19 time series data for the entire USA, with an entry for each day since the pandemic began.
     #
     # + return - Status Ok 
-    remote isolated function getTimeSeriesForUSA() returns CovidNYTUSA|error {
+    remote isolated function getTimeSeriesForUSANYT() returns CovidNYTUSA|error {
         string  path = string `/v3/covid-19/nyt/usa`;
         CovidNYTUSA response = check self.clientEp-> get(path, targetType = CovidNYTUSA);
         return response;

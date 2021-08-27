@@ -14,13 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-public type CovidhistoricalcountryTimeline record {
-    CovidhistoricalallCases cases?;
-    CovidhistoricalallCases deaths?;
-    CovidhistoricalallCases recovered?;
-};
-
 public type CovidState record {
     string state?;
     decimal updated?;
@@ -36,29 +29,6 @@ public type CovidState record {
     decimal population?;
 };
 
-public type CovidAll record {
-    decimal updated?;
-    decimal cases?;
-    decimal todayCases?;
-    decimal deaths?;
-    decimal todayDeaths?;
-    decimal recovered?;
-    decimal todayRecovered?;
-    decimal active?;
-    decimal critical?;
-    decimal casesPerOneMillion?;
-    decimal deathsPerOneMillion?;
-    decimal tests?;
-    decimal testsPerOneMillion?;
-    decimal population?;
-    decimal oneCasePerPeople?;
-    decimal oneDeathPerPeople?;
-    decimal oneTestPerPeople?;
-    decimal activePerOneMillion?;
-    decimal recoveredPerOneMillion?;
-    decimal criticalPerOneMillion?;
-    decimal affectedCountries?;
-};
 public type CovidCountry record {
     decimal updated?;
     string country?;
@@ -96,6 +66,10 @@ public type Vaccines record {
     string totalCandidates?;
     Phases[] phases?;
     Vaccine[] data?;
+};
+
+public type TimelineDeaths record {
+    decimal date?;
 };
 
 public type CovidContinent record {
@@ -186,24 +160,29 @@ public type InfluenzaUSPHL record {
 
 # The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
 public type CovidHistoricalAll record {
-    CovidhistoricalallCases cases?;
-    CovidhistoricalallCases deaths?;
-    CovidhistoricalallCases recovered?;
+    TimelineDeaths cases?;
+    TimelineDeaths deaths?;
+    TimelineDeaths recovered?;
 };
 
-public type CovidjhucountriesStats record {
+public type CovidjhucountryCoordinates record {
+    string latitude?;
+    string longitude?;
+};
+
+public type CovidContinents CovidContinent[];
+
+public type CovidjhucountyStats record {
     decimal confirmed?;
     decimal deaths?;
     decimal recovered?;
 };
 
-public type CovidContinents CovidContinent[];
-
 public type CovidHistoricalCountry record {
     string country?;
     string[] province?;
     # The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-    CovidhistoricalcountryTimeline timeline?;
+    Timeline timeline?;
 };
 
 public type Therapeutics record {
@@ -211,6 +190,15 @@ public type Therapeutics record {
     string totalCandidates?;
     Phases[] phases?;
     Therapeutic[] data?;
+};
+
+public type CovidJHUCountry record {
+    string country?;
+    string? county?;
+    string updatedAt?;
+    CovidjhucountryStats stats?;
+    CovidjhucountryCoordinates coordinates?;
+    string? province?;
 };
 
 public type CovidcountryCountryinfo record {
@@ -226,25 +214,42 @@ public type CovidhistoricaluscountyInner record {
     string province?;
     string county?;
     # The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-    record  { record  { decimal date?;}  cases?; record  { decimal date?;}  deaths?; record  { decimal date?;}  recovered?;}  timeline?;
+    Timeline timeline?;
 };
 
 public type CovidNYTCounty CovidnytcountyInner[];
 
-public type CovidJHUCountries record {
-    string country?;
-    string county?;
-    string updatedAt?;
-    CovidjhucountriesStats stats?;
-    CovidjhucountriesCoordinates coordinates?;
-    string province?;
-};
+public type CovidJHUCountries CovidJHUCountry[];
 
 public type VaccineStatesCoverage VaccineStateCoverage[];
 
 public type  VaccineCoverage SimpleVaccineTimeline|FullVaccineTimeline;
 
 public type CovidHistoricalUSCounties string[];
+
+public type CovidAll record {
+    decimal updated?;
+    decimal cases?;
+    decimal todayCases?;
+    decimal deaths?;
+    decimal todayDeaths?;
+    decimal recovered?;
+    decimal todayRecovered?;
+    decimal active?;
+    decimal critical?;
+    decimal casesPerOneMillion?;
+    decimal deathsPerOneMillion?;
+    decimal tests?;
+    decimal testsPerOneMillion?;
+    decimal population?;
+    decimal oneCasePerPeople?;
+    decimal oneDeathPerPeople?;
+    decimal oneTestPerPeople?;
+    decimal activePerOneMillion?;
+    decimal recoveredPerOneMillion?;
+    decimal criticalPerOneMillion?;
+    decimal affectedCountries?;
+};
 
 public type CovidnytusaInner record {
     string date?;
@@ -279,19 +284,15 @@ public type ILINet record {
 
 public type VaccineCountriesCoverage VaccineCountryCoverage[];
 
-public type CovidhistoricalallCases record {
-    decimal date?;
-};
-
 public type CovidStates CovidState[];
 
 public type CovidGov string[];
 
 public type CovidhistoricalInner record {
     string country?;
-    string province?;
+    string? province?;
     # The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-    record  { record  { decimal date?;}  cases?; record  { decimal date?;}  deaths?; record  { decimal date?;}  recovered?;}  timeline?;
+    Timeline timeline?;
 };
 
 public type CovidappledataData record {
@@ -304,14 +305,15 @@ public type CovidappledataData record {
     decimal walking?;
 };
 
-public type CovidjhucountriesCoordinates record {
-    string latitude?;
-    string longitude?;
-};
-
 public type CovidCountries CovidCountry[];
 
 public type FullVaccineTimeline FullvaccinetimelineInner[];
+
+public type CovidjhucountryStats record {
+    decimal? confirmed?;
+    decimal? deaths?;
+    decimal? recovered?;
+};
 
 public type CovidnytstateInner record {
     string date?;
@@ -347,8 +349,8 @@ public type CovidJHUCounty record {
     string province?;
     string county?;
     string updatedAt?;
-    CovidjhucountriesStats stats?;
-    CovidjhucountriesCoordinates coordinates?;
+    CovidjhucountyStats stats?;
+    CovidjhucountryCoordinates coordinates?;
 };
 
 public type CovidJHUCounties CovidJHUCounty[];
@@ -357,7 +359,14 @@ public type CovidHistoricalProvince record {
     string country?;
     string province?;
     # The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-    CovidhistoricalcountryTimeline timeline?;
+    Timeline timeline?;
+};
+
+# The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
+public type Timeline record {
+    Cases cases?;
+    TimelineDeaths deaths?;
+    TimelineDeaths recovered?;
 };
 
 public type CovidHistoricalCountries CovidHistoricalCountry[];
@@ -379,5 +388,9 @@ public type CovidnytcountyInner record {
 };
 
 public type SimpleVaccineTimeline record {
+    decimal date?;
+};
+
+public type Cases record {
     decimal date?;
 };

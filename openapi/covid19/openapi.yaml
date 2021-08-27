@@ -480,7 +480,7 @@ paths:
     get:
       tags:
         - 'COVID-19: JHUCSSE'
-      operationId: getUSStatusByCounty
+      operationId: getUSAStatusByCounty
       parameters:
         - name: county
           in: path
@@ -696,7 +696,7 @@ paths:
     get:
       tags:
         - 'COVID-19: NYT'
-      operationId: getTimeSeriesForAllUSAStates
+      operationId: getTimeSeriesForAllUSAStatesNYT
       parameters:
         - name: lastdays
           in: query
@@ -716,7 +716,7 @@ paths:
     get:
       tags:
         - 'COVID-19: NYT'
-      operationId: getTimeSeriesByUSAState
+      operationId: getTimeSeriesByUSAStateNYT
       parameters:
         - name: state
           in: path
@@ -738,31 +738,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/covidNYTState'
-  /v3/covid-19/nyt/counties:
-    get:
-      tags:
-        - 'COVID-19: NYT'
-      operationId: getTimeSeriesForAllUSACounties
-      parameters:
-        - name: lastdays
-          in: query
-          description: Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24)
-          schema:
-            type: string
-            default: 30
-      summary: Get COVID-19 time series data for all available US counties, with an entry for each day since the pandemic began
-      responses:
-        '200':
-          description: Status Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/covidNYTCounty'
   /v3/covid-19/nyt/counties/{county}:
     get:
       tags:
         - 'COVID-19: NYT'
-      operationId: getTimeSeriesByUSACounty
+      operationId: getTimeSeriesByUSACountyNYT
       parameters:
         - name: county
           in: path
@@ -788,7 +768,7 @@ paths:
     get:
       tags:
         - 'COVID-19: NYT'
-      operationId: getTimeSeriesForUSA
+      operationId: getTimeSeriesForUSANYT
       summary: Get COVID-19 time series data for the entire USA, with an entry for each day since the pandemic began
       responses:
         '200':
@@ -1332,11 +1312,16 @@ components:
       items:
         $ref: '#/components/schemas/covidCountry'
     covidJHUCountries:
+      type: array
+      items:
+        $ref: '#/components/schemas/covidJHUCountry'
+    covidJHUCountry:
       properties:
         country:
           type: string
         county:
           type: string
+          nullable: true
         updatedAt:
           type: string
         stats:
@@ -1344,10 +1329,13 @@ components:
           properties:
             confirmed:
               type: number
+              nullable: true
             deaths:
               type: number
+              nullable: true
             recovered:
               type: number
+              nullable: true
         coordinates:
           type: object
           properties:
@@ -1357,6 +1345,7 @@ components:
               type: string
         province:
           type: string
+          nullable: true
     covidJHUCounty:
       properties:
         country:
@@ -1383,6 +1372,27 @@ components:
               type: string
             longitude:
               type: string
+    Timeline:
+      type: object
+      description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
+      properties:
+        cases:
+          $ref: "#/components/schemas/Cases"
+        deaths:
+          type: object
+          properties:
+            date:
+              type: number
+        recovered:
+          type: object
+          properties:
+            date:
+              type: number
+    Cases:
+      type: object
+      properties:
+        date:
+          type: number
     covidJHUCounties:
       type: array
       items:
@@ -1396,25 +1406,9 @@ components:
             type: string
           province:
             type: string
+            nullable: true
           timeline:
-            type: object
-            description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-            properties:
-              cases:
-                type: object
-                properties:
-                  date:
-                    type: number
-              deaths:
-                type: object
-                properties:
-                  date:
-                    type: number
-              recovered:
-                type: object
-                properties:
-                  date:
-                    type: number
+            $ref: '#/components/schemas/Timeline'
     covidHistoricalAll:
       description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
       properties:
@@ -1442,24 +1436,7 @@ components:
           items:
             type: string
         timeline:
-          type: object
-          description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-          properties:
-            cases:
-              type: object
-              properties:
-                date:
-                  type: number
-            deaths:
-              type: object
-              properties:
-                date:
-                  type: number
-            recovered:
-              type: object
-              properties:
-                date:
-                  type: number
+          $ref: '#/components/schemas/Timeline'
     covidHistoricalCountries:
       type: array
       items:
@@ -1478,24 +1455,7 @@ components:
           county:
             type: string
           timeline:
-            type: object
-            description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-            properties:
-              cases:
-                type: object
-                properties:
-                  date:
-                    type: number
-              deaths:
-                type: object
-                properties:
-                  date:
-                    type: number
-              recovered:
-                type: object
-                properties:
-                  date:
-                    type: number
+            $ref: '#/components/schemas/Timeline'
     covidHistoricalProvince:
       properties:
         country:
@@ -1503,24 +1463,7 @@ components:
         province:
           type: string
         timeline:
-          type: object
-          description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
-          properties:
-            cases:
-              type: object
-              properties:
-                date:
-                  type: number
-            deaths:
-              type: object
-              properties:
-                date:
-                  type: number
-            recovered:
-              type: object
-              properties:
-                date:
-                  type: number
+          $ref: '#/components/schemas/Timeline'
     covidHistoricalProvinces:
       type: array
       items:

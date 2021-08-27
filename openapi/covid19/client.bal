@@ -20,7 +20,7 @@ import ballerina/lang.'string;
 
 # This is a generated connector from [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
 # Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
-@display {label: "COVID-19 Client"}
+@display {label: "COVID-19", iconPath: "resources/covid19.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

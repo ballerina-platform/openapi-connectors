@@ -56,7 +56,8 @@ public type ClientConfig record {|
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials. Create an [PdfBroker account](https://www.pdfbroker.io/) and obtain tokens following  [this guide](https://www.pdfbroker.io/docs/authentication).
+    # The connector initialization requires setting the API credentials. 
+    # Create an [PdfBroker account](https://www.pdfbroker.io/) and obtain tokens following [this guide](https://www.pdfbroker.io/docs/authentication).
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 

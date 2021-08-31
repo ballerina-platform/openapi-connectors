@@ -3,6 +3,7 @@ info:
   title: PdfBroker.io API
   x-init-description: >- 
     The connector initialization requires setting the API credentials.
+    
     Create an [PdfBroker account](https://www.pdfbroker.io/) and obtain tokens following 
     [this guide](https://www.pdfbroker.io/docs/authentication).
   description: >-

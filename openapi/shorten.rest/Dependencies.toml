@@ -1,0 +1,9 @@
+[[dependency]]
+org = "ballerina"
+name = "http"
+version = "2.0.0"
+
+[[dependency]]
+org = "ballerina"
+name = "url"
+version = "2.0.0"

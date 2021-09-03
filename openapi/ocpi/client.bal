@@ -27,9 +27,8 @@ import ballerina/lang.'string;
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials. Follow the section [OCPI v2.2 - 4. Transport and 
-    # format section](https://evroaming.org/app/uploads/2020/06/OCPI-2.2-d2.pdf#transport_and_format_pagination) and obtain 
-    # tokens according to your Open Charge Point network.
+    # The connector initialization doesn't require setting the API credentials.
+    # Follow the section [OCPI v2.2 - 4. Transport and format section](https://evroaming.org/app/uploads/2020/06/OCPI-2.2-d2.pdf#transport_and_format_pagination) and obtain tokens according to your Open Charge Point network. Some operations may require setting the token as a parameter.
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 

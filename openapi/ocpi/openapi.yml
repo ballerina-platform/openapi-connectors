@@ -10,8 +10,9 @@ info:
     updates and transaction events), charge detail record exchange, remote charge point commands and the exchange of 
     smart-charging related information between parties.
   x-init-description: >-
-    The connector initialization requires setting the API credentials.
-    Follow the section [OCPI v2.2 - 4. Transport and format section](https://evroaming.org/app/uploads/2020/06/OCPI-2.2-d2.pdf#transport_and_format_pagination) and obtain tokens according to your Open Charge Point network.
+    The connector initialization doesn't require setting the API credentials.
+
+    Follow the section [OCPI v2.2 - 4. Transport and format section](https://evroaming.org/app/uploads/2020/06/OCPI-2.2-d2.pdf#transport_and_format_pagination) and obtain tokens according to your Open Charge Point network. Some operations may require setting the token as a parameter.
   x-display:
     label: OCPI
     iconPath: "resources/ocpi.svg"

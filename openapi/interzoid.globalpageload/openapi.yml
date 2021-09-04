@@ -1,0 +1,93 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.interzoid.com
+info:
+  version: "1.0.0"
+  title: Interzoid Global Page Load Performance API
+  description: >
+    This is a generated connector for [Interzoid Global Page Load Performance API v1.0.0](https://interzoid.com/services/globalpageload) OpenAPI specification.
+
+    This API provides a timed, browser-simulated page load function (or a measured API call) from the specified geography using a server from that geography.
+  
+    For additional help getting started with the API, 
+    visit [Interzoid Global Page Load Performance API](https://interzoid.com/services/globalpageload)
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create an [Interzoid Account](https://www.interzoid.com/register) 
+    and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+  contact:
+    name: API Support
+    email: support@interzoid.com
+    url: https://www.interzoid.com
+  termsOfService: https://www.interzoid.com/terms
+  license:
+    name: Interzoid license
+    url: 'https://www.interzoid.com/license'
+externalDocs:
+  description: API home page and documentation
+  url: https://www.interzoid.com/services/globalpageload
+components: 
+  schemas:
+    PageLoadPerformance:
+      properties:
+        Origin:
+          type: string
+        Seconds:
+          type: string
+        PageResponseStatus:
+          type: string
+        Contents:
+          type: string
+        Code:
+          type: string
+        Credits:
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      description: All requests on this API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+      type: apiKey
+      in: query
+      name: license
+      x-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
+paths:
+  /globalpageload:
+    get:
+      tags:
+        - Page Load Performance Time
+      summary: Gets page load (or an API call) performance from a specified global geography such as Paris, Tokyo, Virginia, Mumbai, Frankfurt, London, Seoul, California, Sao Paolo, and many more.
+      operationId: getGlobalPageLoad
+      description: |
+        Gets page load performance from a specified geography
+      parameters:
+        - in: query
+          name: origin
+          description: Geographic location to perform the measurement from (Paris, Hong Kong, Seoul, Mumbai, Sao Paolo, London, etc. see API home page for full list)
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: url
+          description: specific URL to perform load test time
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Page load performance measurement response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageLoadPerformance'
+        '400':
+          description: bad request - insufficient parameters
+        '402':
+          description: credits exhausted
+        '403':
+          description: invalid license API key
+        '404':
+          description: origin or url note found
+        '405':
+          description: method not allowed
+        '500':
+          description: internal server error

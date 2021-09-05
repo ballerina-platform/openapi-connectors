@@ -1,0 +1,777 @@
+openapi: 3.0.1
+info:
+  title: VisibleThread API
+  description: >
+    This is a generated connector for [VisibleThread API v1.0](https://api.visiblethread.com/example/index.html) OpenAPI specification. 
+    
+    The VisibleThread API provides services for analyzing or searching documents and web pages.
+  x-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Contact support@visiblethread.com to request an API key.
+  x-display:
+    label: VisibleThread
+    iconPath: "resources/visiblethread.svg"
+  version: "1.0"
+servers:
+- url: https://api.visiblethread.com/api/v1
+security:
+- api_key: []
+paths:
+  /documents:
+    get:
+      tags:
+      - Documents
+      summary: Get your list of documents
+      description: Get your list of documents
+      operationId: getDocs
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Documents
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentListSummary'
+    post:
+      tags:
+      - Documents
+      summary: Upload a document
+      description: "Upload a document to your VisibleThread account. \nWe return a\
+        \ JSON response that contains a \"docId\" that represents your document. \
+        \       \nYou can use this id in other requests to check on the analysis status\
+        \ for the document and run a dictionary search and retrieve search\nresults. "
+      operationId: uploadDoc
+      requestBody:
+        description: Request payload to upload document
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  description: The uploaded file data
+                  format: binary
+                longSentenceWordCount:
+                  type: integer
+                  description: Optional setting what constitutes a long sentence (default
+                    25)
+                  format: int32
+                veryLongSentenceWordCount:
+                  type: integer
+                  description: Optional setting what constitutes a very long sentence
+                    (default 30)
+                  format: int32
+        required: true
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewDocumentResponse'
+        405:
+          description: Invalid input
+          content: {}
+        413:
+          description: The document exceeds the maximum supported file size (15mb)
+          content: {}
+  /documents/{docId}:
+    get:
+      tags:
+      - Documents
+      summary: Get data from a previously submitted document
+      description: Get data from a previously submitted document identified by ***docId***
+      operationId: getDocById
+      parameters:
+      - name: docId
+        in: path
+        description: Id of document to fetch
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: document response contained readability details for the document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponseDetailed'
+        404:
+          description: document not found
+          content: {}
+        415:
+          description: the document is an unsupported file type
+          content: {}
+        500:
+          description: an unknown error occurred processing the document
+          content: {}
+        503:
+          description: the document analysis has not yet completed, try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponseNotReady'
+  /dictionaries:
+    get:
+      tags:
+      - Documents
+      summary: Get your list of dictionaries
+      description: Get your list of dictionaries
+      operationId: getDictionaries
+      responses:
+        200:
+          description: Successful response
+          content: {}
+    post:
+      tags:
+      - Documents
+      summary: Upload a dictionary (CSV)
+      description: 'Upload a dictionary (CSV format) to your VisibleThread account. '
+      operationId: uploadDictionary
+      requestBody:
+        description: Request payload to upload dictionary
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  description: The uploaded CSV dictionary
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: Successful response
+          content: {}
+        405:
+          description: Invalid input
+          content: {}
+  /searches:
+    get:
+      tags:
+      - Documents
+      summary: Get your list of searches
+      description: Get your list of searches
+      operationId: getSearchResults
+      responses:
+        200:
+          description: Successful response
+          content: {}
+    post:
+      tags:
+      - Documents
+      summary: Run a search
+      description: 'Run a search on document **docId** using dictionary **dictId** '
+      operationId: runSearch
+      requestBody:
+        description: Run a search on document **docId** using dictionary**dictId**
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Search'
+        required: true
+      responses:
+        200:
+          description: Successful response
+          content:
+            text/plain:
+              schema:
+                type: object
+        405:
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
+  /searches/{docId}/{dictionaryId}:
+    get:
+      tags:
+      - Documents
+      summary: Gets search results for a particular document/dictionary
+      description: Get detailed results for a scan/url (readability, long sentence
+        and passive language instances), identified by **scanId** & **urlId**
+      operationId: getSearchResultsById
+      parameters:
+      - name: docId
+        in: path
+        description: Id of document
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dictionaryId
+        in: path
+        description: Id of dictionary
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: matchingOnly
+        in: query
+        description: Only returning paragraphs containing a match
+        required: true
+        schema:
+          type: boolean
+      responses:
+        200:
+          description: scan response
+          content: {}
+  /webscans:
+    get:
+      tags:
+      - Webscans
+      summary: Get your list of scans
+      description: Get your list of scans
+      operationId: getScans
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Scans
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScanResponseSummary'
+    post:
+      tags:
+      - Webscans
+      summary: Run a new scan
+      description: "The scan runs in the background but returns immediately with a\
+        \ JSON response containing an \"id\" that represents your scan.        \n\
+        You can use this id in other requests to retrieve your scan result. \n\nAlso,\
+        \ an \"id\" is returned for each url which can be used to retrieve detailed\
+        \ results for individual scan urls. "
+      operationId: runScan
+      requestBody:
+        description: Scan title and webUrls to analyze
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewScan'
+        required: true
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewScanResponse'
+        405:
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
+  /webscans/{scanId}:
+    get:
+      tags:
+      - Webscans
+      summary: Get data from a previously run scan
+      description: Get data from a previously run scan, identified by **scanId**
+      operationId: getScanById
+      parameters:
+      - name: scanId
+        in: path
+        description: Id of scan to fetch
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: scan response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanResponseDetailed'
+        404:
+          description: webscan not found
+          content: {}
+        503:
+          description: the web analysis has not yet completed, try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebResponseNotReady'
+  /webscans/{scanId}/webUrls/{urlId}:
+    get:
+      tags:
+      - Webscans
+      summary: Gets data for a particular scan/webUrl
+      description: Get detailed results for a scan/url (readability, long sentence
+        and passive language instances), identified by **scanId** & **urlId**
+      operationId: getScanUrlById
+      parameters:
+      - name: scanId
+        in: path
+        description: Id of scan
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: urlId
+        in: path
+        description: Id of url to fetch
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: scan response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebUrlDetail'
+        404:
+          description: scan url not found
+          content: {}
+components:
+  schemas:
+    Search:
+      required:
+      - dictId
+      - docId
+      type: object
+      properties:
+        docId:
+          type: integer
+          format: int64
+          example: 56487
+        dictId:
+          type: integer
+          format: int64
+          example: 47364
+    NewScan:
+      required:
+      - title
+      - webUrls
+      type: object
+      properties:
+        title:
+          type: string
+          example: My fancy scan title
+        webUrls:
+          type: array
+          items:
+            required:
+            - url
+            type: object
+            properties:
+              url:
+                type: string
+                example: http://visiblethread.com
+        scanSettings:
+          type: object
+          properties:
+            longSentenceWordCount:
+              type: integer
+              format: int32
+              example: 20
+            veryLongSentenceWordCount:
+              type: integer
+              format: int32
+              example: 30
+    NewDocumentResponse:
+      required:
+      - docId
+      - scanSettings
+      - task
+      type: object
+      properties:
+        docId:
+          type: integer
+          format: int64
+        task:
+          type: string
+          example: parse
+        scanSettings:
+          type: object
+          properties:
+            longSentenceWordCount:
+              type: integer
+              format: int32
+            veryLongSentenceWordCount:
+              type: integer
+              format: int32
+    NewScanResponse:
+      required:
+      - id
+      - title
+      - webUrls
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 56487
+        title:
+          type: string
+          example: My fancy scan title
+        webUrls:
+          type: array
+          items:
+            required:
+            - id
+            - url
+            type: object
+            properties:
+              url:
+                type: string
+                example: http://visiblethread.com
+              id:
+                type: integer
+                format: int64
+                example: 88596
+    WebUrlHeader:
+      required:
+      - id
+      - url
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        url:
+          type: string
+          example: http://visiblethread.com
+    ScanSummary:
+      required:
+      - title
+      - webUrls
+      type: object
+      properties:
+        title:
+          type: string
+          example: My fancy scan title
+        webUrls:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebUrlHeader'
+    ScanResponseSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        started:
+          type: string
+          format: date-time
+        eta:
+          type: string
+          format: date-time
+        completed:
+          type: string
+          format: date-time
+        scan:
+          $ref: '#/components/schemas/ScanSummary'
+    WebResponseNotReady:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        started:
+          type: string
+          format: date-time
+        eta:
+          type: string
+          format: date-time
+    DocumentResponseNotReady:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        started:
+          type: string
+          format: date-time
+        eta:
+          type: string
+          format: date-time
+    DocumentListSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: My Document.pdf
+    DocumentResponseDetailed:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        started:
+          type: string
+          format: date-time
+        eta:
+          type: string
+          format: date-time
+        completed:
+          type: string
+          format: date-time
+        title:
+          type: string
+        stats:
+          $ref: '#/components/schemas/Stats'
+        scanSettings:
+          type: object
+          properties:
+            longSentenceWordCount:
+              type: integer
+              format: int32
+            veryLongSentenceWordCount:
+              type: integer
+              format: int32
+        paragraphs:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+                example: This is an exmaple sentence which was extracted from a web
+                  page during a scan previously run using the VisibleThread API service.
+                  This is a short, simple sentence.
+              paragraphIndex:
+                type: integer
+                example: 22
+              paragraphCounter:
+                type: integer
+                example: 12
+              stats:
+                type: object
+                properties:
+                  longSentences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LongSentences'
+                  passives:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Passives'
+                  veryLongSentences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VeryLongSentences'
+                  hiddenVerbs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HiddenVerbs'
+                  adverbs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Adverbs'
+    Stats:
+      type: object
+      properties:
+        avgSentenceLength:
+          type: integer
+        fleschReadingLevel:
+          type: integer
+        wordCount:
+          type: integer
+        sentenceCount:
+          type: integer
+        longSentenceCount:
+          type: integer
+        fleschKincaidGradeLevel:
+          type: number
+          format: float
+        passiveSentenceCount:
+          type: integer
+    Analysis:
+      type: object
+      properties:
+        title:
+          type: string
+          example: My funky scan title
+        stats:
+          $ref: '#/components/schemas/Stats'
+    WebUrl:
+      allOf:
+      - $ref: '#/components/schemas/WebUrlHeader'
+      - required:
+        - analysis
+        type: object
+        properties:
+          analysis:
+            $ref: '#/components/schemas/Analysis'
+    ScanDetailed:
+      required:
+      - stats
+      - title
+      - webUrls
+      type: object
+      properties:
+        title:
+          type: string
+          example: My fancy scan title
+        webUrls:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebUrl'
+        stats:
+          $ref: '#/components/schemas/Stats'
+    ScanResponseDetailed:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        started:
+          type: string
+          format: date-time
+        eta:
+          type: string
+          format: date-time
+        completed:
+          type: string
+          format: date-time
+        scan:
+          $ref: '#/components/schemas/ScanDetailed'
+    LongSentences:
+      type: array
+      items:
+        type: object
+        properties:
+          start:
+            type: integer
+            example: 0
+          end:
+            type: integer
+            example: 130
+          wordCount:
+            type: integer
+            example: 22
+    VeryLongSentences:
+      type: array
+      items:
+        type: object
+        properties:
+          start:
+            type: integer
+            example: 0
+          end:
+            type: integer
+            example: 130
+          wordCount:
+            type: integer
+            example: 34
+    Passives:
+      type: array
+      items:
+        type: object
+        properties:
+          start:
+            type: integer
+            example: 34
+          end:
+            type: integer
+            example: 47
+          verb:
+            type: string
+            example: extracted
+          passivePiece:
+            type: string
+            example: was extracted
+    HiddenVerbs:
+      type: array
+      items:
+        type: object
+        properties:
+          start:
+            type: integer
+            example: 185
+          end:
+            type: integer
+            example: 210
+          noun:
+            type: string
+            example: investment
+          text:
+            type: string
+            example: investment in intangibles
+    Adverbs:
+      type: array
+      items:
+        type: object
+        properties:
+          start:
+            type: integer
+            example: 386
+          end:
+            type: integer
+            example: 399
+          text:
+            type: string
+            example: exceptionally
+    WebUrlDetail:
+      required:
+      - stats
+      - title
+      - url
+      type: object
+      properties:
+        title:
+          type: string
+          example: My fancy scan title
+        url:
+          type: string
+          example: http://visiblethread.com
+        stats:
+          $ref: '#/components/schemas/Stats'
+        paragraphs:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+                example: This is an exmaple sentence which was extracted from a web
+                  page during a scan previously run using the VisibleThread API service.
+                  This is a short, simple sentence.
+              paragraphIndex:
+                type: integer
+                example: 22
+              paragraphCounter:
+                type: integer
+                example: 12
+              stats:
+                type: object
+                properties:
+                  longSentences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LongSentences'
+                  passives:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Passives'
+                  veryLongSentences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VeryLongSentences'
+                  hiddenVerbs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HiddenVerbs'
+                  adverbs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Adverbs'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: apiKey
+      description: All requests on the VisibleThread API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `apiKey`
+      in: header
+      x-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key >\"}`"

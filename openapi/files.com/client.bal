@@ -2464,16 +2464,16 @@ public isolated client class Client {
     # + filterLt - If set, return records where the specifiied field is less than the supplied value. Valid fields are `user_id`, `group_id` or `path`. 
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `user_id`, `group_id` or `path`. 
     # + groupId - DEPRECATED: Show notifications for this Group ID. Use `filter[group_id]` instead. 
-    # + notificationPath - Show notifications for this Path. 
+    # + path - Show notifications for this Path. 
     # + includeAncestors - If `include_ancestors` is `true` and `path` is specified, include notifications for any parent paths. Ignored if `path` is not specified. 
     # + return - A list of Notifications objects. 
-    remote isolated function getNotifications(int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), int? groupId = (), string? notificationPath = (), boolean? includeAncestors = ()) returns NotificationEntity[]|error {
-        string  path = string `/notifications`;
-        map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "group_id": groupId, "notificationPath": notificationPath, "include_ancestors": includeAncestors};
-        path = path + check getPathForQueryParam(queryParam);
+    remote isolated function getNotifications(int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), int? groupId = (), string? path = (), boolean? includeAncestors = ()) returns NotificationEntity[]|error {
+        string resourcePath = string `/notifications`;
+        map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "group_id": groupId, "path": path, "include_ancestors": includeAncestors};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeys["X-FilesAPI-Key"]};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NotificationEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = NotificationEntityArr);
+        NotificationEntity[] response = check self.clientEp-> get(resourcePath, accHeaders, targetType = NotificationEntityArr);
         return response;
     }
     # Create Notification

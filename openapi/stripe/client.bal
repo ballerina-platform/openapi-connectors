@@ -50,13 +50,16 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
-# Stripe offers payment processing software and application programming interfaces for e-commerce websites and mobile applications. The Stripe API is organized around REST. Our API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
+# This is a generated connector for [Stripe API v1](https://stripe.com/docs/api) OpenAPI Specification.
+# Stripe offers payment processing software and application programming interfaces for e-commerce websites and mobile applications. 
+# The Stripe API is organized around REST. Our API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
+@display {label: "Stripe", iconPath: "resources/stripe.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [Stripe](https://dashboard.stripe.com/login) account and obtain API Key following [this guide](https://stripe.com/docs/api/authentication). 
-    # Provide obtained API Key as the token at HTTP client initialization. Configure required permissions when generating the API Key.
+    # Provide obtained API Key as the token at connector initialization. Configure required permissions when generating the API Key.
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
@@ -141,8 +144,8 @@ public isolated client class Client {
     }
     # <p>Retrieves the invoice with the given ID.</p>
     #
-    # + invoice - Invoice Id 
     # + expand - Specifies which fields in the response should be expanded. 
+    # + invoice - Invoice Id 
     # + return - Successful response. 
     remote isolated function getInvoice(string invoice, string[]? expand = ()) returns Invoice|error {
         string  path = string `/v1/invoices/${invoice}`;
@@ -155,11 +158,11 @@ public isolated client class Client {
     # <p>Returns a list of PaymentMethods for a given Customer</p>
     #
     # + customer - The ID of the customer whose PaymentMethods will be retrieved. 
-    # + 'type - A required filter on the list, based on the object `type` field. 
     # + endingBefore - A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list. 
     # + expand - Specifies which fields in the response should be expanded. 
     # + 'limit - A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10. 
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
+    # + 'type - A required filter on the list, based on the object `type` field. 
     # + return - Successful response. 
     remote isolated function listPaymentMethods(string customer, string 'type, string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = ()) returns PaymentFlowsPaymentMethodList|error {
         string  path = string `/v1/payment_methods`;
@@ -187,8 +190,8 @@ public isolated client class Client {
     }
     # <p>Retrieves a PaymentMethod object.</p>
     #
-    # + paymentMethod - Payment method Id 
     # + expand - Specifies which fields in the response should be expanded. 
+    # + paymentMethod - Payment method Id 
     # + return - Successful response. 
     remote isolated function getPaymentMethod(string paymentMethod, string[]? expand = ()) returns PaymentMethod|error {
         string  path = string `/v1/payment_methods/${paymentMethod}`;
@@ -384,8 +387,8 @@ public isolated client class Client {
     }
     # <p>Retrieves the subscription with the given ID.</p>
     #
-    # + subscriptionExposedId - Subscription Id 
     # + expand - Specifies which fields in the response should be expanded. 
+    # + subscriptionExposedId - Subscription Id 
     # + return - Successful response. 
     remote isolated function getSubscription(string subscriptionExposedId, string[]? expand = ()) returns Subscription|error {
         string  path = string `/v1/subscriptions/${subscriptionExposedId}`;

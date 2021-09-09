@@ -56,7 +56,7 @@ public isolated client class Client {
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [Stripe](https://dashboard.stripe.com/login) account and obtain API Key following [this guide](https://stripe.com/docs/api/authentication). 
-    # Provide obtained API Key as the token at HTTP client initialization. Configure required permissions when generating the API Key.
+    # Provide obtained API Key as the token at connector initialization. Configure required permissions when generating the API Key.
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 

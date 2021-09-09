@@ -82,9 +82,9 @@ public type SubscriptionsResourcePauseCollection record {
     int? resumes_at?;
 };
 
-public type TaxRateArray string?[]?;
+public type TaxRateArray string[]?;
 
-public type InvoiceSettingsCustomFields CustomFieldParams?[]?;
+public type InvoiceSettingsCustomFields CustomFieldParams[]?;
 
 # These fields can be used to create a new product that this price will belong to.
 public type InlineProductParams record {
@@ -2158,11 +2158,11 @@ public type Quote record {
     # The customer which this quote belongs to. A customer is required before finalizing the quote. Once specified, it cannot be changed.
     string|Customer|DeletedCustomer? customer?;
     # The tax rates applied to this quote.
-    string|TaxRate?[]? default_tax_rates?;
+    string|TaxRate[]? default_tax_rates?;
     # A description that will be displayed on the quote PDF.
     string? description?;
     # The discounts applied to this quote.
-    string|Discount?[]? discounts;
+    string|Discount[]? discounts;
     # The date on which the quote will be canceled if in `open` or `draft` status. Measured in seconds since the Unix epoch.
     int? expires_at;
     # A footer that will be displayed on the quote PDF.
@@ -2281,7 +2281,7 @@ public type Invoice record {
     # The public name of the business associated with this invoice, most often the business creating the invoice.
     string? account_name?;
     # The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
-    string|TaxId|DeletedTaxId?[]? account_tax_ids?;
+    string|TaxId|DeletedTaxId[]? account_tax_ids?;
     # Final amount due at this time for this invoice. If the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`.
     int? amount_due;
     # The amount, in %s, that was paid.
@@ -2336,7 +2336,7 @@ public type Invoice record {
     # Describes the current discount applied to this invoice, if there is one. Not populated if there are multiple discounts.
     Discount? discount?;
     # The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-    string|Discount|DeletedDiscount?[]? discounts?;
+    string|Discount|DeletedDiscount[]? discounts?;
     # The date on which payment for this invoice is due. This value will be `null` for invoices where `collection_method=charge_automatically`.
     int? due_date?;
     # Ending customer balance after the invoice is finalized. Invoices are finalized approximately an hour after successful webhook delivery or when payment collection is attempted for the invoice. If the invoice has not been finalized yet, this will be null.
@@ -2879,7 +2879,7 @@ public type PaymentMethodDetailsCardPresentReceipt record {
 # The customer's payment sources, if any.
 public type Apmssourcessourcelist1 record {
     # Details about each object.
-    AlipayAccount|BankAccount|BitcoinReceiver|Card|Source?[]? data;
+    AlipayAccount|BankAccount|BitcoinReceiver|Card|Source[]? data;
     # True if this list has another page of items after this one that can be fetched.
     boolean? has_more;
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -3298,7 +3298,7 @@ public type LineItem record {
     # If true, discounts will apply to this line item. Always false for prorations.
     boolean? discountable;
     # The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
-    string|Discount?[]? discounts?;
+    string|Discount[]? discounts?;
     # Unique identifier for the object.
     string? id;
     # The ID of the [invoice item](https://stripe.com/docs/api/invoiceitems) associated with this line item if any.
@@ -3766,7 +3766,7 @@ public type PaymentMethodCardWalletVisaCheckout record {
 # External accounts (bank accounts and debit cards) currently attached to this account
 public type Externalaccountlist1 record {
     # The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards.
-    BankAccount|Card?[]? data;
+    BankAccount|Card[]? data;
     # True if this list has another page of items after this one that can be fetched.
     boolean? has_more;
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -4185,7 +4185,7 @@ public type Param16 record {
     string? iban;
 };
 
-public type PaymentMethodTypesArray string?[]?;
+public type PaymentMethodTypesArray string[]?;
 
 # If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
 public type Param17 record {

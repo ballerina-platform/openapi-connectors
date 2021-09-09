@@ -55,22 +55,7 @@ isolated function createFormURLEncodedRequestBody(record {|anydata...; |} anyRec
                 payload.push(getFormStyleRequest(key, value));
             }
         } else if (value is record {}[]) {
-            int count = 0;
-            foreach var recordItem in value {
-                if encodingData.style == DEEPOBJECT {
-                    payload.push(getDeepObjectStyleRequest(key + "[" + count.toString() + "]", recordItem), "&");
-                } else if encodingData.style == FORM && encodingData.explode == false {
-                    if count > 0 {
-                        payload.push(getFormStyleRequest(key, recordItem, encodingData.explode, true), ",");
-                    } else {
-                        payload.push(getFormStyleRequest(key, recordItem, encodingData.explode), ",");
-                    }
-                } else {
-                    payload.push(getFormStyleRequest(key, recordItem), "&");
-                }
-                count = count + 1;
-            }
-            _ = payload.pop();
+            payload.push(getSerializedRecordArray(key, value, encodingData.style, encodingData.explode));
         }
         payload.push("&");
     }
@@ -95,12 +80,7 @@ isolated function getDeepObjectStyleRequest(string parent, record {} anyRecord) 
             recordArray.push(getDeepObjectStyleRequest(nextParent, value));
         } else if value is record {}[] {
             string nextParent = parent + "[" + key + "]";
-            int count = 0;
-            foreach var recordItem in value {
-                recordArray.push(getDeepObjectStyleRequest(nextParent + "[" + count.toString() + "]", recordItem), "&");
-                count = count + 1;
-            }
-            _ = recordArray.pop();
+            recordArray.push(getSerializedRecordArray(nextParent, value, DEEPOBJECT));
         }
         recordArray.push("&");
     }
@@ -113,9 +93,8 @@ isolated function getDeepObjectStyleRequest(string parent, record {} anyRecord) 
 # + parent - Parent record name
 # + anyRecord - Record to be serialized
 # + explode - Specifies whether arrays and objects should generate separate parameters
-# + isNested - Whether the record is inside another record
 # + return - Serialized record as a string
-isolated function getFormStyleRequest(string parent, record {} anyRecord, boolean explode = true, boolean isNested = false) returns string {
+isolated function getFormStyleRequest(string parent, record {} anyRecord, boolean explode = true) returns string {
     string[] recordArray = [];
     if explode {
         foreach [string, anydata] [key, value] in anyRecord.entries() {
@@ -130,16 +109,13 @@ isolated function getFormStyleRequest(string parent, record {} anyRecord, boolea
         }
         _ = recordArray.pop();
     } else {
-        if (!isNested) {
-            recordArray.push(parent, "=");
-        }
         foreach [string, anydata] [key, value] in anyRecord.entries() {
             if (value is SimpleBasicType) {
                 recordArray.push(key, ",", getEncodedUri(value.toString()));
             } else if (value is SimpleBasicType[]) {
                 recordArray.push(getSerializedArray(key, value, explode = false));
             } else if (value is record {}) {
-                recordArray.push(getFormStyleRequest(parent, value, explode, true));
+                recordArray.push(getFormStyleRequest(parent, value, explode));
             }
             recordArray.push(",");
         }
@@ -186,6 +162,34 @@ isolated function getSerializedArray(string arrayName, anydata[] anyArray, strin
         _ = arrayValues.pop();
     }
     return string:'join("", ...arrayValues);
+}
+
+# Serialize the array of records according to the form style.
+#
+# + parent - Parent record name
+# + value - Array of records to be serialized
+# + style - Defines how multiple values are delimited
+# + explode - Specifies whether arrays and objects should generate separate parameters
+# + return - Serialized record as a string
+isolated function getSerializedRecordArray(string parent, record {}[] value, string style = FORM, boolean explode = true) returns string {
+    int arayIndex = 0;
+    string[] serializedArray = [];
+    if style == DEEPOBJECT {
+        foreach var recordItem in value {
+            serializedArray.push(getDeepObjectStyleRequest(parent + "[" + arayIndex.toString() + "]", recordItem), "&");
+            arayIndex = arayIndex + 1;
+        }
+    } else {
+        if (!explode) {
+            serializedArray.push(parent, "=");
+        }
+        foreach var recordItem in value {
+            serializedArray.push(getFormStyleRequest(parent, recordItem, explode), ",");
+            arayIndex = arayIndex + 1;
+        }
+    }
+    _ = serializedArray.pop();
+    return string:'join("", ...serializedArray);
 }
 
 # Get Encoded URI for a given value.

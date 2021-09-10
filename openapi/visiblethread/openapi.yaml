@@ -5,11 +5,11 @@ info:
     This is a generated connector for [VisibleThread API v1.0](https://api.visiblethread.com/example/index.html) OpenAPI specification. 
     
     The VisibleThread API provides services for analyzing or searching documents and web pages.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Contact support@visiblethread.com to request an API key.
-  x-display:
+  x-ballerina-display:
     label: VisibleThread
     iconPath: "resources/visiblethread.svg"
   version: "1.0"
@@ -774,4 +774,4 @@ components:
       name: apiKey
       description: All requests on the VisibleThread API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `apiKey`
       in: header
-      x-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key >\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key >\"}`"

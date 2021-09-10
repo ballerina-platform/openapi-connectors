@@ -1,0 +1,830 @@
+openapi: 3.0.1
+info:
+  title: Public API
+  description: |
+    This is a generated connector for [Optirtc Public API v1.0](https://docs.optirtc.com/api/opti-publicapi-v1.html) OpenAPI specification.
+    The Opti Public API provides a simple, read-only interface to access metadata and the last 3 days of real-time data points of all metrics in an Opti Platform Account:
+    * **Web developers** can use the Public API to display real-time metrics from Opti facilities on their own websites - no backend database required.
+    * **Systems integrators** can use the Public API to pull data into their own GIS or ETL systems, for example, to connect real-time stormwater conditions to their existing asset management software.
+    * **Analysts** can use the Public API to pull data into their analysis scripts for repeated analysis.
+    To learn about how Opti's data-driven products are enhancing community resilience to heavy rainfall across North America, see the [Opti Home Page](https://www.optirtc.com).
+    OptiRTC provides simple examples of using open-source technologies to interact with the OptiRTC Public API. Find out more on our [Github page.](https://github.com/OptiRTC/OptiRTC-API-examples)
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Optirtc account](https://www.optirtc.com) and obtain tokens by following [this guide](https://docs.optirtc.com/api/opti-publicapi-v1.html#section/Authentication).
+  x-ballerina-display:
+    label: Optirtc Public 
+    iconPath: "resources/optirtc.public.svg"
+  version: '1.0'
+  x-logo:
+    url: https://optidocs.blob.core.windows.net/$web/img/opti-logo.svg
+    backgroundColor: '#FFFFFF'
+    altText: OptiRTC, Inc. logo
+servers:
+  - url: https://public.optirtc.com/api
+paths:
+  /Datastream:
+    get:
+      summary: Datastream
+      description: |-
+        Get all DataStreams associated with the passed in key. This endpoint implements server-side data paging to control the size of each response.
+        Clients should check for the presence of a 'NextPageLink' property along with the response Items, indicating that there is more data to be returned for the original request.
+        The 'at=X' query parameter is the UTC date to filter by. (yyyy-mm-dd or yyyy-mm-ddThh:mm:ssZ) 
+        The 'top=Y' query parameter will restrict the results to the top Y values.
+        The 'skiptoken=Z' query parameter will tell the server to omit the first Z datastreams from the results.
+      operationId: datastream
+      parameters:
+        - name: at
+          in: query
+          description: ISO-8601 Date String in UTC. (yyyy-mm-dd or yyyy-mm-ddThh:mm:ssZ); if omitted, server will interpret as “now”.
+          schema:
+            type: string
+        - name: top
+          in: query
+          description: Limit results to the first top ordered by Id.
+          schema:
+            type: integer
+        - name: skiptoken
+          in: query
+          description: Paging parameter to return the page after this number of results.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lists the DataStreams available with the provided API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataStreamPageResult'
+              example:
+                Items:
+                  - title: 'ExampleRd - Nimbus: Elevation'
+                    id: 43674
+                    resourceId: 80766
+                    validFrom: '2017-04-12T21:00:00.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -75.156246
+                        - 38.616841
+                      bbox:
+                        - -75.156246
+                        - 38.616841
+                        - -75.156246
+                        - 38.616841
+                      type: Point
+                    unitName: inches
+                    unitAbbreviation: in
+                  - title: 'ExampleRd - Nimbus: Current Valve Percent Open'
+                    id: 43692
+                    resourceId: 80787
+                    validFrom: '2017-04-12T21:00:00.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -75.156246
+                        - 38.616841
+                      bbox:
+                        - -75.156246
+                        - 38.616841
+                        - -75.156246
+                        - 38.616841
+                      type: Point
+                    unitName: percent
+                    unitAbbreviation: '%'
+                  - title: 'ExampleRd - Nimbus: Expected Incoming Volume'
+                    id: 43708
+                    resourceId: 80803
+                    validFrom: '2017-04-12T21:00:00.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -75.156246
+                        - 38.616841
+                      bbox:
+                        - -75.156246
+                        - 38.616841
+                        - -75.156246
+                        - 38.616841
+                      type: Point
+                    unitName: cubic feet
+                    unitAbbreviation: ft^3
+                  - title: 'ExampleRd - Nimbus: Target Release Rate'
+                    id: 43736
+                    resourceId: 80837
+                    validFrom: '2017-04-12T21:00:00.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -75.156246
+                        - 38.616841
+                      bbox:
+                        - -75.156246
+                        - 38.616841
+                        - -75.156246
+                        - 38.616841
+                      type: Point
+                    unitName: cubic feet per second
+                    unitAbbreviation: cfs
+                  - title: 'ExampleRd - PES: Precipitation Intensity'
+                    id: 84249
+                    resourceId: 144179
+                    validFrom: '2018-09-14T14:11:16.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -75.156246
+                        - 38.616841
+                      bbox:
+                        - -75.156246
+                        - 38.616841
+                        - -75.156246
+                        - 38.616841
+                      type: Point
+                    unitName: inches per hour
+                    unitAbbreviation: in/hr
+                  - title: 'ExampleRd - PES: Precipitation In This Event'
+                    id: 84257
+                    resourceId: 144191
+                    validFrom: '2018-09-14T14:11:16.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -75.156246
+                        - 38.616841
+                      bbox:
+                        - -75.156246
+                        - 38.616841
+                        - -75.156246
+                        - 38.616841
+                      type: Point
+                    unitName: inches
+                    unitAbbreviation: in
+                  - title: 'Dilboy 4200 - Nimbus: Elevation'
+                    id: 112484
+                    resourceId: 186451
+                    validFrom: '2020-06-30T18:08:14.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -73.153581
+                        - 39.231453
+                      bbox:
+                        - -73.153581
+                        - 39.231453
+                        - -73.153581
+                        - 39.231453
+                      type: Point
+                    unitName: inches
+                    unitAbbreviation: in
+                  - title: 'Dilboy 4200 - Nimbus: Current Valve Percent Open'
+                    id: 112491
+                    resourceId: 186470
+                    validFrom: '2020-06-30T18:08:14.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -73.153581
+                        - 39.231453
+                      bbox:
+                        - -73.153581
+                        - 39.231453
+                        - -73.153581
+                        - 39.231453
+                      type: Point
+                    unitName: percent
+                    unitAbbreviation: '%'
+                  - title: 'Dilboy 4200 - Nimbus: Expected Incoming Volume'
+                    id: 112517
+                    resourceId: 186526
+                    validFrom: '2020-06-30T18:08:14.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -73.153581
+                        - 39.231453
+                      bbox:
+                        - -73.153581
+                        - 39.231453
+                        - -73.153581
+                        - 39.231453
+                      type: Point
+                    unitName: cubic feet
+                    unitAbbreviation: ft^3
+                  - title: 'Dilboy 4200 - Nimbus: Target Release Rate'
+                    id: 112544
+                    resourceId: 186563
+                    validFrom: '2020-06-30T18:08:14.0000000+00:00'
+                    location:
+                      coordinates:
+                        - -73.153581
+                        - 39.231453
+                      bbox:
+                        - -73.153581
+                        - 39.231453
+                        - -73.153581
+                        - 39.231453
+                      type: Point
+                    unitName: cubic feet per second
+                    unitAbbreviation: cfs
+                Count: 10
+        '400':
+          description: Your request cannot be processed.
+        '401':
+          description: Invalid API key.
+        '403':
+          description: The API key does not authorize access to the requested resources.
+        '429':
+          description: Too many requests have been made for this API key recently.
+          headers:
+            Retry-After:
+              description: Period of time in seconds to wait before retrying the request.
+              required: true
+              schema:
+                type: integer
+          content:
+            text/html:
+              example: Too Many Requests
+  /DataPoint:
+    get:
+      summary: DataPoint-Get-Range
+      description: "Get a range of DataPoints of a particular DataStream bounded by time coordinates, DataPoint ids, and paging parameters.\nThis endpoint implements server-side data paging to control the size of each response.\nClients should check for the presence of a 'NextPageLink' property along with the response Items, indicating that there is more data to be returned for the original request.\nThe example below shows the first page of a response assuming the page limit is set at 3 DataPoints per page and the request was for 5 DataPoints (top=5 in query string).\nSee  https://github.com/OptiRTC/OptiRTC-API-examples for examples using this endpoint.\t"
+      operationId: datapoint-get-range
+      parameters:
+        - name: dataStreamId
+          in: query
+          description: Id property of the DataStream to get DataPoints of. See the [Datastream endpoint](#operation/datastream) for the DataStreams this API key can access.
+          required: true
+          schema:
+            type: integer
+        - name: historicalId
+          in: query
+          description: Id property of the historical DataPoint, inclusive. This should have a bigger value than the modernId. Specifying 1 less than the id of the most-modern DataPoint you have received as the historicalId will return all DataPoints that have been created since you last requested DataPoints of this DataStream.
+          schema:
+            type: string
+        - name: modernId
+          in: query
+          description: Id property of the modern DataPoint, inclusive. This should have a smaller value than the historicalId.
+          schema:
+            type: string
+        - name: utcHistorical
+          in: query
+          description: Historical time boundary of datapoints to return. ISO-8601.
+          schema:
+            type: string
+        - name: utcModern
+          in: query
+          description: Modern time boundary of datapoints to return. ISO-8601.
+          schema:
+            type: string
+        - name: skiptoken
+          in: query
+          description: Paging parameter. Skip this many of the most-recent values, given other query string parameters.
+          schema:
+            type: string
+        - name: top
+          in: query
+          description: Paging parameter. Return this many of the most-recent values, given other query string parameters.
+          schema:
+            type: integer
+        - name: verbosity
+          in: query
+          description: Scope of data request. Either `identity` (default) or `display`. See [/api/datapointverbosity/](#operation/get-datapoint-verbosities) for additional information.
+          schema:
+            type: string
+        - name: unit
+          in: query
+          description: Abbreviation of the unit in which to return data. May be null, in which case the stored unit of the datastream will be used.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of data points matching your query, including a link to follow for the next page if there are more data points in the full response to the client's request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPointPage'
+              example:
+                Items:
+                  - id: '2518054908899999999'
+                    timeValue: '2020-08-07T14:18:30.0000000+00:00'
+                    value:
+                      - resourceId: 82130
+                        value: ONLINE
+                  - id: '2518054909519999999'
+                    timeValue: '2020-08-07T14:17:28.0000000+00:00'
+                    value:
+                      - resourceId: 82130
+                        value: ONLINE
+                  - id: '2518054910159999999'
+                    timeValue: '2020-08-07T14:16:24.0000000+00:00'
+                    value:
+                      - resourceId: 82130
+                        value: ONLINE
+                  - id: '2518054910789999999'
+                    timeValue: '2020-08-07T14:15:21.0000000+00:00'
+                    value:
+                      - resourceId: 82130
+                        value: ONLINE
+                  - id: '2518054911419999999'
+                    timeValue: '2020-08-07T14:14:18.0000000+00:00'
+                    value:
+                      - resourceId: 82130
+                        value: ONLINE
+                NextPageLink: https://public.optirtc.com/api/datapoint/?key=YOUR-API-KEY-HERE&dataStreamId=123412341234&skiptoken=2518054911419999999
+                Count: 5
+        '400':
+          description: Your request cannot be processed.
+        '401':
+          description: Invalid API key.
+        '403':
+          description: The API key does not authorize access to the requested resources.
+        '429':
+          description: Too many requests have been made for this API key recently.
+          headers:
+            Retry-After:
+              description: Period of time in seconds to wait before retrying the request.
+              required: true
+              schema:
+                type: integer
+          content:
+            text/html:
+              example: Too Many Requests
+  /DataPointVerbosity:
+    get:
+      summary: Get-DataPoint-Verbosities
+      description: Get all DataPointVerbosities currently available in this domain of OptiRTC.
+      operationId: get-datapoint-verbosities
+      responses:
+        '200':
+          description: Lists the options available in for use with the Public API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPointVerbosityList'
+              example:
+                - name: display
+                  definition: Returns the minimal payload of the latest-version of the data as a time-indexed set of parameters. Null values are not returned.
+                  isDefault: false
+                  isAvailableInApi: true
+                - name: identity
+                  definition: Default. Returns the minimal payload of Display but also includes the 64-bit integer identity property of each DataPoint, which is useful for making updates to the system. Null values are not returned.
+                  isDefault: true
+                  isAvailableInApi: true
+        '400':
+          description: Your request cannot be processed.
+        '401':
+          description: Invalid API key.
+        '429':
+          description: Too many requests have been made for this API key recently.
+          headers:
+            Retry-After:
+              description: Period of time in seconds to wait before retrying the request.
+              required: true
+              schema:
+                type: integer
+          content:
+            text/html:
+              example: Too Many Requests
+components:
+  schemas:
+    DataPoint:
+      type: object
+      properties:
+        id:
+          type: string
+        timeValue:
+          type: string
+        value:
+          type: array
+          items:
+            required:
+              - resourceId
+              - value
+            type: object
+            properties:
+              resourceId:
+                type: integer
+              value:
+                type: object
+      example:
+        id: '2518054908899999999'
+        timeValue: '2020-01-07T11:22:41Z'
+        value:
+          - resourceId: 4984230
+            value: '42'
+    DataPointPage:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            required:
+              - id
+              - timeValue
+              - value
+            type: object
+            properties:
+              id:
+                type: string
+              timeValue:
+                type: string
+              value:
+                type: array
+                items:
+                  required:
+                    - resourceId
+                    - value
+                  type: object
+                  properties:
+                    resourceId:
+                      type: integer
+                    value:
+                      type: object
+        NextPageLink:
+          type: string
+        Count:
+          type: integer
+      example:
+        Count: 5
+        Items:
+          - id: '2518054908899999999'
+            timeValue: '2020-08-07T14:18:30Z'
+            value:
+              - resourceId: 82130
+                value: ONLINE
+          - id: '2518054909519999999'
+            timeValue: '2020-08-07T14:17:28Z'
+            value:
+              - resourceId: 82130
+                value: ONLINE
+          - id: '2518054910159999999'
+            timeValue: '2020-08-07T14:16:24Z'
+            value:
+              - resourceId: 82130
+                value: ONLINE
+          - id: '2518054910789999999'
+            timeValue: '2020-08-07T14:15:21Z'
+            value:
+              - resourceId: 82130
+                value: ONLINE
+          - id: '2518054911419999999'
+            timeValue: '2020-08-07T14:14:18Z'
+            value:
+              - resourceId: 82130
+                value: ONLINE
+        NextPageLink: https://public.optirtc.com/api/datapoint/?key=YOUR-API-KEY-HERE&dataStreamId=123412341234&skiptoken=2518054911419999999
+    DataPointVerbosityList:
+      type: array
+      items:
+        required:
+          - name
+          - definition
+          - isDefault
+          - isAvailableInApi
+        type: object
+        properties:
+          name:
+            type: string
+          definition:
+            type: string
+          isDefault:
+            type: boolean
+          isAvailableInApi:
+            type: boolean
+      example:
+        - name: display
+          definition: Returns the minimal payload of the latest-version of the data as a time-indexed set of parameters. Null values are not returned.
+          isDefault: false
+          isAvailableInApi: true
+        - name: identity
+          definition: Default. Returns the minimal payload of Display but also includes the 64-bit integer identity property of each DataPoint, which is useful for making updates to the system. Null values are not returned.
+          isDefault: true
+          isAvailableInApi: true
+    DataPointVerbosity:
+      type: object
+      properties:
+        name:
+          type: string
+        definition:
+          type: string
+        isDefault:
+          type: boolean
+        isAvailableInApi:
+          type: boolean
+      example:
+        name: identity
+        definition: Default. Returns the minimal payload of Display but also includes the 64-bit integer identity property of each DataPoint, which is useful for making updates to the system. Null values are not returned.
+        isDefault: true
+        isAvailableInApi: true
+    DataStreamPageResult:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            required:
+              - title
+              - id
+              - resourceId
+              - validFrom
+              - location
+              - unitName
+              - unitAbbreviation
+            type: object
+            properties:
+              title:
+                type: string
+              id:
+                type: integer
+              resourceId:
+                type: integer
+              validFrom:
+                type: string
+              location:
+                type: object
+                properties:
+                  coordinates:
+                    type: array
+                    items:
+                      type: number
+                  bbox:
+                    type: array
+                    items:
+                      type: number
+                  type:
+                    type: string
+              unitName:
+                type: string
+              unitAbbreviation:
+                type: string
+        Count:
+          type: integer
+      example:
+        Items:
+          - title: 'ExampleRd - Nimbus: Elevation'
+            id: 43674
+            resourceId: 80766
+            validFrom: '2017-04-12T21:00:00'
+            location:
+              coordinates:
+                - -75.156246
+                - 38.616841
+              bbox:
+                - -75.156246
+                - 38.616841
+                - -75.156246
+                - 38.616841
+              type: Point
+            unitName: inches
+            unitAbbreviation: in
+          - title: 'ExampleRd - Nimbus: Current Valve Percent Open'
+            id: 43692
+            resourceId: 80787
+            validFrom: '2017-04-12T21:00:00'
+            location:
+              coordinates:
+                - -75.156246
+                - 38.616841
+              bbox:
+                - -75.156246
+                - 38.616841
+                - -75.156246
+                - 38.616841
+              type: Point
+            unitName: percent
+            unitAbbreviation: '%'
+          - title: 'ExampleRd - Nimbus: Expected Incoming Volume'
+            id: 43708
+            resourceId: 80803
+            validFrom: '2017-04-12T21:00:00'
+            location:
+              coordinates:
+                - -75.156246
+                - 38.616841
+              bbox:
+                - -75.156246
+                - 38.616841
+                - -75.156246
+                - 38.616841
+              type: Point
+            unitName: cubic feet
+            unitAbbreviation: ft^3
+          - title: 'ExampleRd - Nimbus: Target Release Rate'
+            id: 43736
+            resourceId: 80837
+            validFrom: '2017-04-12T21:00:00'
+            location:
+              coordinates:
+                - -75.156246
+                - 38.616841
+              bbox:
+                - -75.156246
+                - 38.616841
+                - -75.156246
+                - 38.616841
+              type: Point
+            unitName: cubic feet per second
+            unitAbbreviation: cfs
+          - title: 'ExampleRd - PES: Precipitation Intensity'
+            id: 84249
+            resourceId: 144179
+            validFrom: '2018-09-14T14:11:16'
+            location:
+              coordinates:
+                - -75.156246
+                - 38.616841
+              bbox:
+                - -75.156246
+                - 38.616841
+                - -75.156246
+                - 38.616841
+              type: Point
+            unitName: inches per hour
+            unitAbbreviation: in/hr
+          - title: 'ExampleRd - PES: Precipitation In This Event'
+            id: 84257
+            resourceId: 144191
+            validFrom: '2018-09-14T14:11:16'
+            location:
+              coordinates:
+                - -75.156246
+                - 38.616841
+              bbox:
+                - -75.156246
+                - 38.616841
+                - -75.156246
+                - 38.616841
+              type: Point
+            unitName: inches
+            unitAbbreviation: in
+          - title: 'Dilboy 4200 - Nimbus: Elevation'
+            id: 112484
+            resourceId: 186451
+            validFrom: '2020-06-30T18:08:14'
+            location:
+              coordinates:
+                - -73.153581
+                - 39.231453
+              bbox:
+                - -73.153581
+                - 39.231453
+                - -73.153581
+                - 39.231453
+              type: Point
+            unitName: inches
+            unitAbbreviation: in
+          - title: 'Dilboy 4200 - Nimbus: Current Valve Percent Open'
+            id: 112491
+            resourceId: 186470
+            validFrom: '2020-06-30T18:08:14'
+            location:
+              coordinates:
+                - -73.153581
+                - 39.231453
+              bbox:
+                - -73.153581
+                - 39.231453
+                - -73.153581
+                - 39.231453
+              type: Point
+            unitName: percent
+            unitAbbreviation: '%'
+          - title: 'Dilboy 4200 - Nimbus: Expected Incoming Volume'
+            id: 112517
+            resourceId: 186526
+            validFrom: '2020-06-30T18:08:14'
+            location:
+              coordinates:
+                - -73.153581
+                - 39.231453
+              bbox:
+                - -73.153581
+                - 39.231453
+                - -73.153581
+                - 39.231453
+              type: Point
+            unitName: cubic feet
+            unitAbbreviation: ft^3
+          - title: 'Dilboy 4200 - Nimbus: Target Release Rate'
+            id: 112544
+            resourceId: 186563
+            validFrom: '2020-06-30T18:08:14'
+            location:
+              coordinates:
+                - -73.153581
+                - 39.231453
+              bbox:
+                - -73.153581
+                - 39.231453
+                - -73.153581
+                - 39.231453
+              type: Point
+            unitName: cubic feet per second
+            unitAbbreviation: cfs
+        Count: 10
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      description: "You must include a 'key' parameter in the query string of each request to the Opti Public API. Opti uses this key to authenticate and throttle all requests to the Public API to help provide reliable and rapid services to all of its customers.\r\n\r\nAPI Keys can be acquired and replaced by contacting your [Opti Support](mailto:support@optirtc.com?subject=[Opti%20Developer%20Docs]%20Public%20API%20Throttling) representative. If you are building multiple web sites, ETL workflows, or other applications on top of the Opti Public API, Opti recommends using a different API key for each application to avoid unnecessary throttling from occurring. All throttled requests will return an [HTTP 429 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429)."
+      name: key
+      in: query
+      x-ballerina-apikey-description: "Provide your API key as `key`. Eg: `{\"key\" : \"<API key>\"}`"
+security:
+  - apiKeyQuery: []
+x-ms-paths:
+  /DataPoint?id={id}&key={key}&dataStreamId={dataStreamId}:
+    get:
+      summary: DataPoint-Get-Single
+      description: 'Get a DataPoint by its key properties: DataStream.id and DataPoint.id. A DataPoint is a set of resources of interest to a Project''s scope viewed together at a moment in time.'
+      operationId: datapoint-get-single
+      parameters:
+        - name: id
+          in: query
+          description: id identity property of a DataPoint to Get.
+          required: true
+          schema:
+            type: string
+        - name: key
+          in: query
+          description: OptiRTC Public API key authorizing access to this DataPoint resource.
+          required: true
+          schema:
+            type: string
+        - name: dataStreamId
+          in: query
+          description: id property of the DataStream. See the OptiRTC Management API /datastream/ endpoint for discovery options.
+          required: true
+          schema:
+            type: integer
+        - name: verbosity
+          in: query
+          description: (default = 'identity'). Scope of data request. See /api/datapointverbosity/ for all available options on this subdomain of OptiRTC.
+          schema:
+            type: string
+        - name: unit
+          in: query
+          description: Abbreviation of the unit in which to return data. May be null, in which case the stored unit of the datastream will be used.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns the requested DataPoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPoint'
+              example:
+                id: '2518054912049999999'
+                timeValue: '2020-08-07T14:13:15.0000000+00:00'
+                value:
+                  - resourceId: 82106
+                    value: 0
+        '401':
+          description: Invalid API key.
+        '403':
+          description: The API key does not authorize access to the requested resources.
+        '404':
+          description: The requested resource was not found.
+        '429':
+          description: Too many requests have been made for this API key recently.
+          headers:
+            Retry-After:
+              description: Period of time in seconds to wait before retrying the request.
+              required: true
+              schema:
+                type: integer
+          content:
+            text/html:
+              example: Too Many Requests
+  /DataPointVerbosity?name={name}:
+    get:
+      summary: Get-DataPoint-Verbosity-Metadata
+      description: Get the full metadata description of a given DataPointVerbosity by name.
+      operationId: get-datapoint-verbosity-metadata
+      parameters:
+        - name: name
+          in: query
+          description: Identity of the DataPointVerbosity as used in URI requests.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The full description of the requested DataPoint Verbosity.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPointVerbosity'
+              example:
+                name: identity
+                definition: Default. Returns the minimal payload of Display but also includes the 64-bit integer identity property of each DataPoint, which is useful for making updates to the system. Null values are not returned.
+                isDefault: true
+                isAvailableInApi: true
+        '400':
+          description: Your request cannot be processed.
+        '401':
+          description: Invalid API key.
+        '429':
+          description: Too many requests have been made for this API key recently.
+          headers:
+            Retry-After:
+              description: Period of time in seconds to wait before retrying the request.
+              required: true
+              schema:
+                type: integer
+          content:
+            text/html:
+              example: Too Many Requests

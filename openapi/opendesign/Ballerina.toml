@@ -1,0 +1,10 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["design", "code based design"]
+org = "ballerinax"
+name = "opendesign"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "0.1.0-SNAPSHOT"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

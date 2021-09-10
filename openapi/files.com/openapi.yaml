@@ -24147,7 +24147,7 @@ paths:
             instead.'
         x-ms-summary: 'DEPRECATED: Show notifications for this Group ID. Use `filter[group_id]`
           instead.'
-      - name: notificationPath
+      - name: path
         in: query
         description: Show notifications for this Path.
         schema:
@@ -30627,6 +30627,7 @@ components:
           description: Image URI
           example: https://mysite.files.com/.../my_image.png
       x-docs: null
+      description: Image entity
     SessionEntity:
       type: object
       properties:
@@ -31039,6 +31040,7 @@ components:
       type: object
       properties:
         dynamic:
+          description: Dynamic properties
           type: object
           properties: {}
       x-docs: null

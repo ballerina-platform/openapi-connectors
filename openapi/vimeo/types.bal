@@ -14,13 +14,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
+public type CategoryArr Category[];
+
 public type ChannelArr Channel[];
 
 public type GroupArr Group[];
 
 public type VideoArr Video[];
-
-public type CategoryArr Category[];
 
 public type UserArr User[];
 
@@ -44,11 +44,58 @@ public type AlbumArr Album[];
 
 public type Activity31Arr Activity31[];
 
+public type OnDemandPageArr OnDemandPage[];
+
 public type PortfolioArr Portfolio[];
+
+public type PresetsArr Presets[];
 
 public type ProjectArr Project[];
 
+public type OnDemandGenreArr OnDemandGenre[];
+
+public type OnDemandRegionArr OnDemandRegion[];
+
+public type OnDemandSeasonArr OnDemandSeason[];
+
 public type DomainArr Domain[];
+
+public type MeondemandpagesBuyPrice record {
+    # The purchase price of this video in AUD.
+    decimal AUD?;
+    # The purchase price of this video in CAD.
+    decimal CAD?;
+    # The purchase price of this video in CHF.
+    decimal CHF?;
+    # The purchase price of this video in DKK.
+    decimal DKK?;
+    # The purchase price of this video in EUR.
+    decimal EUR?;
+    # The purchase price of this video in GBP.
+    decimal GBP?;
+    # The purchase price of this video in JPY.
+    decimal JPY?;
+    # The purchase price of this video in KRW.
+    decimal KRW?;
+    # The purchase price of this video in NOK.
+    decimal NOK?;
+    # The purchase price of this video in PLN.
+    decimal PLN?;
+    # The purchase price of this video in SEK.
+    decimal SEK?;
+    # The purchase price of this video in USD when `type` is `film`, or the purchase price of the entire collection in USD when `type` is `series`.
+    decimal USD?;
+};
+
+# Information about the user's Like interactions with this video.
+public type OndemandvideoMetadataInteractionsLikes record {
+    # Whether the user has liked this video.
+    boolean added;
+    # The time in ISO 8601 format when the user liked this video.
+    string added_time;
+    # The URI for the user to like this video.
+    string uri;
+};
 
 # Information about the user's usage for the current period.
 public type UserUploadQuotaPeriodic record {
@@ -114,9 +161,25 @@ public type VideoMetadataConnections record {
     VideoMetadataConnectionsVersions versions;
 };
 
+public type OnDemandRegion record {
+    # The ISO 3166-1 alpha-2 code for this country.
+    string country_code;
+    # The descriptive name of this country.
+    string country_name;
+    # The region container's relative URI.
+    string uri;
+};
+
 # The video version's metadata.
 public type VideoversionsMetadata record {
     VideoversionsMetadataConnections connections;
+};
+
+public type OndemandpageEpisodesBuy record {
+    # Whether all the videos on this On Demand page can be purchased as a whole.
+    boolean active;
+    # The default price to buy an episode.
+    decimal? price;
 };
 
 public type PlayProgressive record {
@@ -146,6 +209,20 @@ public type PlayProgressive record {
     string? 'type;
     # The width in pixels of the video.
     decimal? width;
+};
+
+# Information about this season.
+public type OndemandvideoMetadataConnectionsSeason record {
+    # The name of the season on this connection.
+    string name;
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The API URI that resolves to the connection data.
+    string uri;
+};
+
+public type OndemandpagesondemandIdvideosvideoIdBuy record {
+    OndemandpagesondemandIdvideosvideoIdBuyPrice price?;
 };
 
 # The group's privacy settings.
@@ -226,6 +303,17 @@ public type Picture record {
     string uri;
 };
 
+public type OndemandpagePreorder record {
+    # Whether this page is available for preorder.
+    boolean active;
+    # The time in ISO 8601 format when the preorder was cancelled.
+    string cancel_time;
+    # The time in ISO 8601 format when the preorder was released to the public.
+    string publish_time;
+    # The time in ISO 8601 format when the preorder started.
+    string time;
+};
+
 # The list of resource URIs related to the user.
 public type UserMetadataConnections record {
     # Information about the albums created by this user.
@@ -276,6 +364,11 @@ public type PortfolioMetadataConnections record {
     PortfolioMetadataConnectionsVideos videos;
 };
 
+public type MeondemandpagesEpisodesRentPrice record {
+    # The default price to rent an episode. This field is applicable only when `type` is `series`. *Required if `episodes.rent.active` is true.
+    decimal USD?;
+};
+
 # Information about the channels related to this category.
 public type CategoryMetadataConnectionsChannels record {
     # An array of HTTP methods permitted on this URI.
@@ -298,6 +391,11 @@ public type ChannelMetadataInteractions record {
     ChannelMetadataInteractionsModerateVideos moderate_videos;
 };
 
+public type OndemandgenreMetadata record {
+    # A collection of information connected to this resource.
+    OndemandgenreMetadataConnections connections;
+};
+
 public type MevideosEmbedLogosCustom record {
     # Show or hide your custom logo.
     boolean active?;
@@ -317,6 +415,63 @@ public type VideoMetadataInteractionsSubscribe record {
     string purchase_time?;
     # The stream type.
     string 'stream?;
+};
+
+public type OnDemandPromotion record {
+    # The type of access that this promotion grants:
+    # 
+    # Option descriptions:
+    #  * `default` - Grants discounts on existing product offerings.
+    #  * `vip` - Grants free access either to VOD content before it is released or to access types that aren't part of the existing product offerings.
+    string access_type;
+    # The type of discount for which this promotion can be used.
+    # 
+    # Option descriptions:
+    #  * `dollars` - The discount is a certain fixed amount.
+    #  * `free` - The discount is the full purchase price. VIP access promotions always use this discount type.
+    #  * `percent` - The discount is a certain percentage of the full price.
+    string discount_type;
+    # Whether this promotion grants download access to On Demand content.
+    boolean download;
+    # The prefix string for batch codes, or the null value for single codes.
+    string? label;
+    # The video's metadata.
+    OndemandpromotionMetadata metadata;
+    # The percentage amount that is deducted from the product price.
+    decimal percent_off;
+    # The type of product to which this promotion can be applied. Only `buy` and `rent` are available for the VIP access type:
+    # 
+    # Option descriptions:
+    #  * `any` - The promotion can be applied to any product.
+    #  * `buy` - The promotion can be applied to a buyable single video.
+    #  * `buy_episode` - The promotion can be applied to a buyable single episode.
+    #  * `rent` - The promotion can be applied to a rentable single video.
+    #  * `rent_episode` - The promotion can be applied to a rentable single episode.
+    #  * `subscribe` - The promotion can be applied to a subscription.
+    string product_type;
+    # The amount of time that the user has access to the VOD content after redeeming a promo code.
+    # 
+    # Option descriptions:
+    #  * `1_week` - Access lasts for one week.
+    #  * `1_year` - Access lasts for one year.
+    #  * `24_hour` - Access lasts for 24 hours.
+    #  * `30_days` - Access lasts for 30 days.
+    #  * `3_month` - Access lasts for 3 months.
+    #  * `48_hour` - Access lasts for 48 hours.
+    #  * `6_month` - Access lasts for 6 months.
+    #  * `72_hour` - Access lasts for 72 hours.
+    string? stream_period;
+    # The total amount of times that this promotion can be used.
+    decimal total;
+    # The way in which this promotion can generate promo codes:
+    # 
+    # Option descriptions:
+    #  * `batch` - Provides many unique promo codes that can only be used once each.
+    #  * `batch_prefix` - Similar to `batch`, except that all codes have a similar prefix string. This mode is deprecated, yet it may still appear for some users.
+    #  * `single` - Provides a single promo code with many uses.
+    string 'type;
+    # The promotion's canonical relative URI.
+    string uri;
 };
 
 # Information about the albums created by this user.
@@ -350,6 +505,16 @@ public type CategoryMetadataConnectionsGroups record {
     # An array of HTTP methods permitted on this URI.
     string[] options;
     # The total number of groups on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
+};
+
+# Information about the comments associated with this page.
+public type OndemandpageMetadataConnectionsMetadataConnectionsComments record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of comments on this connection.
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
@@ -393,6 +558,13 @@ public type MevideosRatingsMpaa record {
     #  * `ss` - Sexual situations
     #  * `v` - Violence
     string reason?;
+};
+
+public type AuthError record {
+    # The name of the error.
+    string _error;
+    # The description of the error.
+    string error_description;
 };
 
 public type ContentRating record {
@@ -457,6 +629,12 @@ public type VideoMetadataInteractions record {
     VideoMetadataInteractionsWatchlater watchlater;
 };
 
+# An object containing information about how the authenticated user can interact with this On Demand page.
+public type OndemandvideoInteractions record {
+    # Information about how the authenticated user can interact with the connection to the video's On Demand page.
+    OndemandvideoInteractionsPage page;
+};
+
 # Information about this video's VOD trailer.
 public type VideoMetadataConnectionsTrailer record {
     # An array of HTTP methods permitted on this URI.
@@ -477,6 +655,20 @@ public type VideoMetadataInteractionsWatchlater record {
     string[] options;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+# Information about the likes associated with this page.
+public type OndemandpageMetadataConnectionsMetadataConnectionsLikes record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of likes on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
+};
+
+public type OndemandseasonMetadata record {
+    OndemandseasonMetadataConnections connections;
 };
 
 # The video's metadata.
@@ -507,11 +699,53 @@ public type VideoMetadataConnectionsUsersWithAccess record {
     string uri;
 };
 
+public type MeondemandpagesBuy record {
+    # Whether the Buy action is active. *Required if `rent.active` is false.
+    boolean active?;
+    # Whether people who buy the video can download it. To use this field, `type` must be `film`.
+    boolean download?;
+    MeondemandpagesBuyPrice price?;
+};
+
+public type PurchaseInteraction record {
+    # Information on purchasing this video.
+    PurchaseinteractionBuy buy?;
+    # Information on renting this video.
+    record {} rent?;
+    # Information on subscribing to this video.
+    PurchaseinteractionSubscribe subscribe?;
+};
+
+public type OndemandpageMetadataConnectionsMetadataConnections record {
+    # Information about the comments associated with this page.
+    OndemandpageMetadataConnectionsMetadataConnectionsComments comments;
+    # Information about the genres associated with this page.
+    OndemandpageMetadataConnectionsMetadataConnectionsGenres genres;
+    # Information about the likes associated with this page.
+    OndemandpageMetadataConnectionsMetadataConnectionsLikes likes;
+    # Information about the pictures associated with this page.
+    OndemandpageMetadataConnectionsMetadataConnectionsPictures pictures;
+    # Information about the seasons associated with this page.
+    OndemandpageMetadataConnectionsMetadataConnectionsSeasons seasons;
+    # Information about the videos associated with this page.
+    OndemandpageMetadataConnectionsMetadataConnectionsVideos videos;
+};
+
 # An action indicating that the authenticated user is an admin of the album and may therefore add videos. This data requires a bearer token with the `private` scope.
 public type AlbumMetadataInteractionsAddVideos record {
     # An array of HTTP methods allowed on this URI. This data requires a bearer token with the `private` scope.
     string[] options;
     # The API URI that resolves to the connection data. This data requires a bearer token with the `private` scope.
+    string uri;
+};
+
+# Interactions for On Demand pages that are in this genre.
+public type OndemandgenreInteractionsPage record {
+    # Whether this On Demand genre was added.
+    boolean added;
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The URI to access the On Demand page.
     string uri;
 };
 
@@ -535,6 +769,10 @@ public type UserMetadataInteractionsBlock record {
     string[] options;
     # The URI to block or unblock the user.
     string uri;
+};
+
+public type OndemandpageMetadataConnectionsMetadata record {
+    OndemandpageMetadataConnectionsMetadataConnections connections;
 };
 
 # Information provided to channel moderators about which users they have specifically permitted to access a private channel. This data requires a bearer token with the `private` scope.
@@ -565,6 +803,10 @@ public type VideoMetadataConnectionsPlayback record {
     string uri;
 };
 
+public type MeondemandpagesSubscription record {
+    MeondemandpagesSubscriptionMonthly monthly?;
+};
+
 public type VideoSpatialDirectorTimeline record {
     # The director timeline pitch, from -90 (minimum) to 90 (maximum).
     decimal pitch?;
@@ -581,6 +823,11 @@ public type ApiApp record {
     string name;
     # The canonical URI of the API app.
     string uri;
+};
+
+public type MeondemandpagesSubscriptionMonthlyPrice record {
+    # The monthly subscription price in USD. *Required if `subscription.active` is true.
+    decimal USD?;
 };
 
 # Metadata about the channel.
@@ -645,6 +892,14 @@ public type VideoMetadataInteractionsChannel record {
     string uri;
 };
 
+public type MeondemandpagesEpisodesBuy record {
+    # Whether episodes can be bought.
+    boolean active?;
+    # Whether people who buy the episode can download it. To use this field, `type` must be `series`.
+    boolean download?;
+    MeondemandpagesEpisodesBuyPrice price?;
+};
+
 # A collection of information relating to custom logos in the embeddable player.
 public type EmbedsettingsLogosCustom record {
     # Whether the custom logo appears in the embeddable player.
@@ -665,6 +920,14 @@ public type GroupMetadataConnectionsUsers record {
     string uri;
 };
 
+# The outro link settings. Present only if the type is `link`.
+public type PresetsSettingsOutroLink record {
+    # The name of the outro link.
+    string name?;
+    # The URL of the outro link.
+    string url?;
+};
+
 # Information about this video's text tracks.
 public type VideoMetadataConnectionsTexttracks record {
     # An array of HTTP methods permitted on this URI.
@@ -673,6 +936,18 @@ public type VideoMetadataConnectionsTexttracks record {
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+# Information about subscribing to this On Demand page, if enabled.
+public type OndemandpageSubscription record {
+    # Whether this product is active.
+    boolean active;
+    # The link to this product on Vimeo.
+    string? link;
+    # The product's rental period.
+    string period?;
+    # The accepted currencies and respective pricing for this product.
+    record {} price;
 };
 
 # An action indicating if the authenticated user has followed this channel. This data requires a bearer token with the `private` scope.
@@ -815,10 +1090,26 @@ public type Domain record {
     string uri;
 };
 
+# The video's metadata.
+public type OndemandpromotionMetadata record {
+    # A list of resource URIs related to the On Demand promotion.
+    OndemandpromotionMetadataConnections connections;
+};
+
 # A collection of stats associated with this video.
 public type VideoStats record {
     # The current total number of times that the video has been played.
     decimal? plays;
+};
+
+# Information about the videos in this preset.
+public type PresetsMetadataConnectionsVideos record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of videos on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
 };
 
 # Information on the users that the current user has blocked. This data requires a bearer token with the `private` scope.
@@ -841,10 +1132,119 @@ public type VideoMetadataConnectionsCredits record {
     string uri?;
 };
 
+public type OnDemandSeason record {
+    # The description for this season.
+    string description;
+    OndemandseasonMetadata metadata;
+    # The descriptive name of the season.
+    string name;
+    # The position of the season relative to other seasons in the series.
+    decimal position;
+    # The unique identifier for this On Demand season.
+    string resource_key;
+    # The type of season.
+    string 'type;
+    # The season container's relative URI.
+    string uri;
+    # The creator of this On Demand page.
+    record {*User;} user;
+};
+
+public type OnDemandPage record {
+    # The background image for the On Demand page on Vimeo.
+    record {*Picture;} background;
+    # The primary and secondary colors used for rendering this On Demand page.
+    OndemandpageColors colors;
+    # An array of the page's content ratings.
+    string[] content_rating;
+    # The time in ISO 8601 format when the page was created.
+    string created_time?;
+    # The description of this On Demand page.
+    string? description;
+    # The link to this page on its own domain.
+    string? domain_link;
+    # Information about this On Demand page's episodes, if the page is for a series.
+    OndemandpageEpisodes episodes;
+    # This On Demand page's film, if it is a film.
+    record {*Video;} film?;
+    # All the genres assigned to this page.
+    OnDemandGenre[] genres;
+    # The link to the page on Vimeo.
+    string link;
+    # Metadata about the On Demand page.
+    OndemandpageMetadata metadata;
+    # he time in ISO 8601 format when the page was last modified.
+    string modified_time?;
+    # A descriptive title of this On Demand page.
+    string name;
+    # The active poster for this On Demand page.
+    record {*Picture;} pictures;
+    OndemandpagePreorder preorder;
+    OndemandpagePublished published;
+    # The rating of this page.
+    decimal? rating;
+    # The VOD resource key.
+    string resource_key;
+    # The creator-designated SKU for this On Demand page.
+    string? sku?;
+    # Information about subscribing to this On Demand page, if enabled.
+    OndemandpageSubscription subscription;
+    # The graphical theme for this On Demand page.
+    string theme;
+    # The thumbnail image for the On Demand page on Vimeo.
+    record {*Picture;} thumbnail;
+    # The trailer for this On Demand page.
+    record {*Video;} trailer;
+    # Whether this On Demand page is for a film or a series.
+    # 
+    # Option descriptions:
+    #  * `film` - The On Demand page is for a film.
+    #  * `series` - The On Demand page is for a series.
+    string 'type;
+    # The relative URI of the On Demand page.
+    string uri;
+    # The user who created this On Demand page.
+    record {*User;} user;
+};
+
 public type MevideosEmbedLogos record {
     MevideosEmbedLogosCustom custom?;
     # Show or hide the Vimeo logo.
     boolean vimeo?;
+};
+
+public type OndemandpagesondemandIdPreorder record {
+    # If set to true, you will enable pre-orders on the On Demand page.
+    boolean active?;
+    # The time that the On Demand page will be published. *Required if `preorder.active` is `true`.
+    string publish_time?;
+};
+
+public type OndemandpagesondemandIdvideosvideoIdRentPrice record {
+    # The rental price of this video in AUD.
+    decimal AUD?;
+    # The rental price of this video in CAD.
+    decimal CAD?;
+    # The rental price of this video in CHF.
+    decimal CHF?;
+    # The rental price of this video in DKK.
+    decimal DKK?;
+    # The rental price of this video in EUR.
+    decimal EUR?;
+    # The rental price of this video in GBP.
+    decimal GBP?;
+    # The rental price of this video in JPY.
+    decimal JPY?;
+    # The rental price of this video in KRW.
+    decimal KRW?;
+    # The rental price of this video in NOK.
+    decimal NOK?;
+    # The rental price of this video in PLN.
+    decimal PLN?;
+    # The rental price of this video in SEK.
+    decimal SEK?;
+    # The rental price of this video in USD. *Required if `rent.active` is true.
+    decimal USD?;
 };
 
 # A collection of information relating to the embeddable player's title bar.
@@ -965,6 +1365,40 @@ public type UserMetadataConnectionsRecommendedChannels record {
     string uri;
 };
 
+public type MeondemandpagesRentPrice record {
+    # The rental price of this video in AUD.
+    decimal AUD?;
+    # The rental price of this video in CAD.
+    decimal CAD?;
+    # The rental price of this video in CHF.
+    decimal CHF?;
+    # The rental price of this video in DKK.
+    decimal DKK?;
+    # The rental price of this video in EUR.
+    decimal EUR?;
+    # The rental price of this video in GBP.
+    decimal GBP?;
+    # The rental price of this video in JPY.
+    decimal JPY?;
+    # The rental price of this video in KRW.
+    decimal KRW?;
+    # The rental price of this video in NOK.
+    decimal NOK?;
+    # The rental price of this video in PLN.
+    decimal PLN?;
+    # The rental price of this video in SEK.
+    decimal SEK?;
+    # The rental price of this video in USD when `type` is `film`, or the rental price of the entire collection in USD when `type` is `series`.
+    decimal USD?;
+};
+
+# The contents of the presets group.
+public type PresetsSettings record {
+    PresetsSettingsButtons buttons;
+    PresetsSettingsLogos logos;
+    PresetsSettingsOutro outro;
+};
+
 # The video's privacy setting.
 public type VideoPrivacy record {
     # Whether the video can be added to collections.
@@ -1009,6 +1443,11 @@ public type UserUploadQuotaSpace record {
     decimal used;
 };
 
+public type MeondemandpagesEpisodes record {
+    MeondemandpagesEpisodesBuy buy?;
+    MeondemandpagesEpisodesRent rent?;
+};
+
 # Information about the channels that this user moderates.
 public type UserMetadataConnectionsModeratedChannels record {
     # An array of HTTP methods permitted on this URI.
@@ -1049,6 +1488,55 @@ public type VideoUpload record {
     string upload_link?;
 };
 
+public type OndemandseasonMetadataConnections record {
+    # The Videos connection.
+    OndemandseasonMetadataConnectionsVideos videos;
+};
+
+public type OnDemandVideo record {
+    # Information about purchasing this video.
+    OndemandvideoBuy buy;
+    # Description of the On Demand video.
+    string description?;
+    # The duration of the On Demand video.
+    string duration?;
+    # The episode number of the On Demand video.
+    decimal episode?;
+    # An object containing information about how the authenticated user can interact with this On Demand page.
+    OndemandvideoInteractions interactions;
+    # The link to this video on Vimeo.
+    string link;
+    # Metadata information about this video.
+    OndemandvideoMetadata metadata;
+    # The title of the On Demand video.
+    string name?;
+    # An array of HTTP methods permitted on this URI.
+    string[] options?;
+    # The active picture for this video.
+    record {*Picture;} pictures?;
+    # The user's most recent play position in seconds for this video.
+    decimal play_progress;
+    # Describes the manual position of this video relative to the other videos owned by this On Demand page.
+    decimal position?;
+    # The time in ISO 8601 format when the On Demand video was created or published.
+    string release_date?;
+    # The year that this On Demand video was released.
+    decimal? release_year;
+    # Information about renting this video.
+    OndemandvideoRent rent;
+    # The type of the On Demand video:
+    # 
+    # Option descriptions:
+    #  * `extra` - The On Demand video is an extra feature.
+    #  * `main` - The On Demand video is a main feature.
+    #  * `trailer` - The On Demand video is a trailer.
+    string 'type;
+    # The video container's relative URI.
+    string uri;
+    # The owner of the video.
+    record {*User;} user?;
+};
+
 public type TextTrack record {
     # Whether this text track is active.
     boolean active;
@@ -1087,6 +1575,10 @@ public type MevideosEmbed record {
     boolean volume?;
 };
 
+public type OndemandpagesondemandIdvideosvideoIdRent record {
+    OndemandpagesondemandIdvideosvideoIdRentPrice price?;
+};
+
 public type UploadAttempt record {
     # The video to upload.
     record {*Video;} clip?;
@@ -1102,6 +1594,14 @@ public type UploadAttempt record {
     string uri;
     # The owner of the uploaded video.
     record {*User;} user;
+};
+
+# The primary and secondary colors used for rendering this On Demand page.
+public type OndemandpageColors record {
+    # The hexadecimal color code for the page's primary color.
+    string primary;
+    # The hexadecimal color code for the page's secondary color.
+    string secondary;
 };
 
 public type Body56 record {
@@ -1154,6 +1654,16 @@ public type Body55 record {
     string text;
 };
 
+# Information about the pictures associated with this page.
+public type OndemandpageMetadataConnectionsMetadataConnectionsPictures record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of pictures on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
+};
+
 # Information about the videos contained within this portfolio.
 public type PortfolioMetadataConnectionsVideos record {
     # An array of HTTP methods permitted on this URI.
@@ -1189,6 +1699,12 @@ public type Body54 record {
 public type Body53 record {
     # The text of the comment.
     string text;
+};
+
+# A collection of information connected to this resource.
+public type OndemandgenreMetadataConnections record {
+    # Information about the On Demand pages related to this group.
+    OndemandgenreMetadataConnectionsPages pages;
 };
 
 public type Body59 record {
@@ -1231,6 +1747,37 @@ public type Body57 record {
     string name?;
     # The role of the person being credited.
     string role?;
+};
+
+public type PresetsSettingsOutro record {
+    # A comma-separated list of video URIs. Present only if the type is `uploaded_clips`.
+    string? clips?;
+    # The outro link settings. Present only if the type is `link`.
+    PresetsSettingsOutroLink link?;
+    # The outro text. Present only if the type is `text`.
+    string? text?;
+    # The preset outro type:
+    string 'type;
+    # A comma-separated list of video URIs. Present only if type is `no idea`.
+    string? videos?;
+};
+
+# A collection of information that is connected to this resource, including videos, genres, and pictures connections.
+public type OndemandpageMetadataConnections record {
+    OndemandpageMetadataConnectionsMetadata metadata;
+};
+
+public type Presets record {
+    # Metadata about the album.
+    PresetsMetadata metadata;
+    # The display name of the presets group.
+    string name;
+    # The contents of the presets group.
+    PresetsSettings settings;
+    # The canonical relative URI of the presets object.
+    string uri;
+    # The owner of the preset.
+    record {*User;} user;
 };
 
 public type Body63 record {
@@ -1284,6 +1831,33 @@ public type Body60 record {
     decimal page?;
     # The number of items to show on each page of results, up to a maximum of 100.
     decimal per_page?;
+};
+
+public type OndemandpagesondemandIdvideosvideoIdBuyPrice record {
+    # The purchase price of this video in AUD.
+    decimal AUD?;
+    # The purchase price of this video in CAD.
+    decimal CAD?;
+    # The purchase price of this video in CHF.
+    decimal CHF?;
+    # The purchase price of this video in DKK.
+    decimal DKK?;
+    # The purchase price of this video in EUR.
+    decimal EUR?;
+    # The purchase price of this video in GBP.
+    decimal GBP?;
+    # The purchase price of this video in JPY.
+    decimal JPY?;
+    # The purchase price of this video in KRW.
+    decimal KRW?;
+    # The purchase price of this video in NOK.
+    decimal NOK?;
+    # The purchase price of this video in PLN.
+    decimal PLN?;
+    # The purchase price of this video in SEK.
+    decimal SEK?;
+    # The purchase price of this video in USD. *Required if `buy.active` is true.
+    decimal USD?;
 };
 
 # Information about this user's feed.
@@ -1361,6 +1935,41 @@ public type GroupMetadataConnections record {
     GroupMetadataConnectionsVideos videos;
 };
 
+public type Body45 record {
+    # An array of accepted currencies.
+    # 
+    # Option descriptions:
+    #  * `AUD` - Australian Dollar
+    #  * `CAD` - Canadian Dollar
+    #  * `CHF` - Swiss Franc
+    #  * `DKK` - Danish Krone
+    #  * `EUR` - Euro
+    #  * `GBP` - British Pound
+    #  * `JPY` - Japanese Yen
+    #  * `KRW` - South Korean Won
+    #  * `NOK` - Norwegian Krone
+    #  * `PLN` - Polish Zloty
+    #  * `SEK` - Swedish Krona
+    #  * `USD` - US Dollar
+    string accepted_currencies?;
+    MeondemandpagesBuy buy?;
+    # One or more ratings, either as a comma-separated list or as a JSON array depending on the request format.
+    string content_rating;
+    # The description of the On Demand page.
+    string description;
+    # The custom domain of the On Demand page.
+    string domain_link?;
+    MeondemandpagesEpisodes episodes?;
+    # The custom string to use in this On Demand page's Vimeo URL.
+    string link?;
+    # The name of the On Demand page.
+    string name;
+    MeondemandpagesRent rent?;
+    MeondemandpagesSubscription subscription?;
+    # The type of On Demand page.
+    string 'type;
+};
+
 public type Body44 record {
     # An array of user URIs for the list of users to follow.
     string[] users;
@@ -1412,6 +2021,16 @@ public type Body49 record {
 public type Body48 record {
     # The name of the project.
     string name;
+};
+
+public type Body47 record {
+    # Disable the outro.
+    string outro?;
+};
+
+public type MeondemandpagesEpisodesBuyPrice record {
+    # The purchase price per episode. *Required if `episodes.buy.active` is true.
+    decimal USD?;
 };
 
 public type Body46 record {
@@ -1514,6 +2133,20 @@ public type AlbumEmbed record {
     string? html;
 };
 
+# Metadata about the On Demand page.
+public type OndemandpageMetadata record {
+    # A collection of information that is connected to this resource, including videos, genres, and pictures connections.
+    OndemandpageMetadataConnections connections;
+    # The user's available purchase interactions.
+    record {*PurchaseInteraction;} interactions;
+};
+
+# A list of resource URIs related to the On Demand promotion.
+public type OndemandpromotionMetadataConnections record {
+    # Information about the codes associated with this promotion.
+    OndemandpromotionMetadataConnectionsCodes codes;
+};
+
 # The recommendations for this video.
 public type VideoMetadataConnectionsRecommendations record {
     # An array of HTTP methods allowed on this URI.
@@ -1524,6 +2157,14 @@ public type VideoMetadataConnectionsRecommendations record {
 
 public type UserPreferences record {
     UserPreferencesVideos videos?;
+};
+
+public type MeondemandpagesEpisodesRent record {
+    # Whether episodes can be rented
+    boolean active?;
+    # The period in which this episode can be rented for.
+    string period?;
+    MeondemandpagesEpisodesRentPrice price?;
 };
 
 public type Body39 record {
@@ -1553,6 +2194,82 @@ public type Body39 record {
     string? url?;
     # Whether the user has opted in to use a custom domain for their album.
     boolean use_custom_domain?;
+};
+
+public type OndemandvideoMetadataInteractions record {
+    # Information about the user's Like interactions with this video.
+    OndemandvideoMetadataInteractionsLikes likes;
+    # Information about the user's Watch Later interactions with this video.
+    OndemandvideoMetadataInteractionsWatchlater watchlater;
+};
+
+# Information about renting this video.
+public type OndemandvideoRent record {
+    # Whether this On Demand video can be rented.
+    boolean active;
+    # A map of currency type to price.
+    record {} price;
+    # Whether this On Demand video has been rented.
+    boolean purchased?;
+};
+
+public type OndemandpagesondemandIdPublish record {
+    # Whether to publish the On Demand page.
+    boolean active?;
+};
+
+public type Body34 record {
+    # An array of country codes.
+    string[] countries;
+};
+
+public type Body33 record {
+    # The promotion access type, which is a purchase option that isn't available on the container. VIP promotions always make the content free of charge. If you use this type, you must further define the promotion with the `download` or `stream_period` fields.
+    # 
+    # Option descriptions:
+    #  * `default` - Promotions grant discount on the existing purchase options for an On Demand Container.
+    #  * `vip` - Promotions can be used to grant free access to VOD content before it is released, or to offer a purchase option that isn't available on the container. "vip" promotions will always make the content free, and must be further defined with the `download` or `stream_period` fields.
+    string access_type?;
+    # The promotion code. This field is ignored for batch promotions.
+    string code?;
+    # The type of discount offered by the promo code. When `access_type` is `vip`, the value of this field must be `free`.
+    # 
+    # Option descriptions:
+    #  * `free` - Reduces the price to zero.
+    #  * `percent` - Reduces the price by an amount defined in the "percent_off" field.
+    string discount_type?;
+    # Whether the promotion grants download access to VOD content. This is necessary only when not previously defined in the On Demand container or when `access_type` is `vip` or `product_type` is `buy`.
+    boolean download;
+    # The end of the promotion period. If you don't specify a value, the promotion will never expire.
+    string end_time?;
+    # The description of a batch promotion. This field is ignored for single promotions.
+    string label?;
+    # The percentage of the discount by using this promo code. This field is applicable only when `discount_type` is `percent`.
+    decimal percent_off?;
+    # The type of transaction to which the promotion applies. When `access_type` is `default`, the default value is `any`, but the default value is `rent` when `access_type` is `vip`. Also, when `access_type` is `vip`, the only valid product types are `buy` and `rent`.
+    string product_type?;
+    # The start of the promotion period. If you don't specify a value, the start time defaults to the time that the promotion was created.
+    string start_time?;
+    # The amount of time that a user has access to the VOD content upon redeeming a promo code. This field is necessary only when not defined in the On Demand container or when creating promotions when `access_type` is `vip` or `product_type` is `rent`.
+    string stream_period;
+    # The number of promotions to generate when `type` is `batch`, or the number of uses of the promotion when `type` is `single`.
+    decimal total;
+    # The type of promotion. When `access_type` is `vip`, the value for this field must be `batch`.
+    # 
+    # Option descriptions:
+    #  * `batch` - Generates many random promo codes with one use each.
+    #  * `single` - Generates one promo code that can be used many times.
+    string 'type;
+};
+
+public type Body32 record {
+    # Whether to make this picture the active picture.
+    boolean active?;
+};
+
+public type Body31 record {
+    # Whether to make this background the active background.
+    boolean active?;
 };
 
 public type Body38 record {
@@ -1616,11 +2333,37 @@ public type MevideosRatingsTv record {
     string reason?;
 };
 
+public type Body36 record {
+    OndemandpagesondemandIdvideosvideoIdBuy buy?;
+    # The position of this video in the On Demand collection.
+    decimal position?;
+    # The video release year.
+    decimal release_year?;
+    OndemandpagesondemandIdvideosvideoIdRent rent?;
+    # The type of video that you are adding to the On Demand page.
+    string 'type;
+};
+
+public type Body35 record {
+    # An array of country codes.
+    string[] countries?;
+};
+
 # Information about the comments on this video.
 public type VideoMetadataConnectionsComments record {
     # An array of HTTP methods permitted on this URI.
     string[] options;
     # The total number of comments on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
+};
+
+# Information about the seasons associated with this page.
+public type OndemandpageMetadataConnectionsMetadataConnectionsSeasons record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of seasons on this connection.
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
@@ -1659,6 +2402,16 @@ public type VideosvideoIdPrivacy record {
 
 public type CommentMetadata record {
     CommentMetadataConnections connections;
+};
+
+# Information about the genres associated with this page.
+public type OndemandpageMetadataConnectionsMetadataConnectionsGenres record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of genres on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
 };
 
 # A list of resource URIs related to the album.
@@ -1799,6 +2552,11 @@ public type UserMetadataConnectionsAppearances record {
     string uri;
 };
 
+public type Body23 record {
+    # Disable the outro.
+    string outro?;
+};
+
 public type UserPreferencesVideos record {
     UserPreferencesVideosPrivacy privacy?;
 };
@@ -1834,9 +2592,69 @@ public type VideoContext record {
     string resource_type;
 };
 
+public type Body21 record {
+    # An array of accepted currencies.
+    # 
+    # Option descriptions:
+    #  * `AUD` - Australian Dollar
+    #  * `CAD` - Canadian Dollar
+    #  * `CHF` - Swiss Franc
+    #  * `DKK` - Danish Krone
+    #  * `EUR` - Euro
+    #  * `GBP` - British Pound
+    #  * `JPY` - Japanese Yen
+    #  * `KRW` - South Korean Won
+    #  * `NOK` - Norwegian Krone
+    #  * `PLN` - Polish Zloty
+    #  * `SEK` - Swedish Krona
+    #  * `USD` - US Dollar
+    string accepted_currencies?;
+    MeondemandpagesBuy buy?;
+    # One or more ratings, either as a comma-separated list or as a JSON array depending on the request format.
+    string content_rating;
+    # The description of the On Demand page.
+    string description;
+    # The custom domain of the On Demand page.
+    string domain_link?;
+    MeondemandpagesEpisodes episodes?;
+    # The custom string to use in this On Demand page's Vimeo URL.
+    string link?;
+    # The name of the On Demand page.
+    string name;
+    MeondemandpagesRent rent?;
+    MeondemandpagesSubscription subscription?;
+    # The type of On Demand page.
+    string 'type;
+};
+
 public type Body20 record {
     # An array of user URIs for the list of users to follow.
     string[] users;
+};
+
+# Information about the codes associated with this promotion.
+public type OndemandpromotionMetadataConnectionsCodes record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of uses on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
+};
+
+public type PresetsSettingsButtons record {
+    # Whether the preset includes Embed button settings.
+    boolean embed;
+    # Whether the preset includes HD button settings.
+    boolean hd;
+    # Whether the preset includes Like button settings.
+    boolean like;
+    # Whether the present includes Share button settings.
+    boolean share;
+    # Whether the preset includes Vote button settings.
+    boolean vote;
+    # Whether the preset includes Watch Later button settings.
+    boolean watchlater;
 };
 
 public type Body27 record {
@@ -1882,6 +2700,11 @@ public type AlbumPrivacy record {
     string view;
 };
 
+public type OndemandvideoMetadataConnections record {
+    # Information about this season.
+    OndemandvideoMetadataConnectionsSeason season;
+};
+
 # A collection of information that is connected to this resource.
 public type TagMetadataConnections record {
     # Information about the videos related to this tag.
@@ -1905,6 +2728,17 @@ public type EmbedSettings record {
     string uri?;
     # Whether the volume controls appear in the embeddable player for this video.
     boolean volume;
+};
+
+public type OnDemandPromotionCode record {
+    # A promotion code that can be redeemed on Vimeo.
+    string code;
+    # A link to redeem the promotion code instantly.
+    string link;
+    # The total amount of times this code can be used.
+    decimal max_uses;
+    # The number of times that this code has been used.
+    decimal uses;
 };
 
 public type Body25 record {
@@ -1959,12 +2793,37 @@ public type VideoVersions record {
     record {*User;} user;
 };
 
+public type Body30 record {
+    # The custom string to use in this On Demand page's Vimeo URL.
+    string link?;
+    OndemandpagesondemandIdPreorder preorder?;
+    OndemandpagesondemandIdPublish publish?;
+    # Whether to publish the On Demand page automatically after all videos are finished transcoding.
+    boolean publish_when_ready?;
+};
+
 # An action indicating that the authenticated user is an admin of the album and may therefore add custom logos. This data requires a bearer token with the `private` scope.
 public type AlbumMetadataInteractionsAddLogos record {
     # An array of HTTP methods permitted on this URI. This data requires a bearer token with the `private` scope.
     string[] options;
     # The API URI that resolves to the connection data. This data requires a bearer token with the `private` scope.
     string uri;
+};
+
+# Information about how the authenticated user can interact with the connection to the video's On Demand page.
+public type OndemandvideoInteractionsPage record {
+    # Whether this On Demand page was added.
+    boolean added;
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The URI to access the On Demand page.
+    string uri;
+};
+
+# A list of resource URIs related to the album.
+public type PresetsMetadataConnections record {
+    # Information about the videos in this preset.
+    PresetsMetadataConnectionsVideos videos;
 };
 
 public type MeVideos record {
@@ -2031,6 +2890,12 @@ public type GroupMetadataInteractionsJoin record {
     string? 'type;
     # The URI for following. PUT to this URI to follow, or DELETE to this URI to unfollow. This data requires a bearer token with the `private` scope.
     string uri;
+};
+
+# Information about this On Demand page's episodes, if the page is for a series.
+public type OndemandpageEpisodes record {
+    OndemandpageEpisodesBuy buy;
+    OndemandpageEpisodesRent rent;
 };
 
 public type Body19 record {
@@ -2246,6 +3111,13 @@ public type UserMetadataConnectionsPictures record {
     string uri;
 };
 
+public type Body14 record {
+    # The description of the new group.
+    string description?;
+    # The name of the new group.
+    string name;
+};
+
 public type Body13 record {
     # Active text tracks appear in the player and are visible to other users. Only one text track per language can be active.
     boolean active?;
@@ -2255,6 +3127,61 @@ public type Body13 record {
     string name;
     # The type of the text track.
     string 'type;
+};
+
+# Information about the videos associated with this page.
+public type OndemandpageMetadataConnectionsMetadataConnectionsVideos record {
+    # The total number of extra videos.
+    decimal extra_total;
+    # The total number of main videos.
+    decimal main_total;
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of videos on this connection.
+    decimal total;
+    # The API URI that resolves to the connection data.
+    string uri;
+    # The total number of viewable videos.
+    decimal viewable_total;
+};
+
+# Information on purchasing this video.
+public type PurchaseinteractionBuy record {
+    # Whether the On Demand video for purchase has DRM.
+    boolean drm?;
+};
+
+# Information about the On Demand pages related to this group.
+public type OndemandgenreMetadataConnectionsPages record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The API URI that resolves to the connection data.
+    string uri;
+};
+
+public type OndemandpageEpisodesRent record {
+    # Whether all the videos on this On Demand page can be rented as a whole.
+    boolean active;
+    # The rental period for the video:
+    # 
+    # Option descriptions:
+    #  * `1 day` - The rental period is one day.
+    #  * `1 month` - The rental period is one month.
+    #  * `1 week` - The rental period is one week.
+    #  * `1 year` - The rental period is one year.
+    #  * `2 day` - The rental period is two days.
+    #  * `24 hour` - The rental period is 24 hours.
+    #  * `3 day` - The rental period is three days.
+    #  * `3 month` - The rental period is three months.
+    #  * `30 day` - The rental period is 30 days.
+    #  * `48 hour` - The rental period is 48 hours.
+    #  * `6 month` - The rental period is six months.
+    #  * `60 day` - The rental period is 60 days.
+    #  * `7 day` - The rental period is 7 days.
+    #  * `72 hour` - The rental period is 72 hours.
+    string? period;
+    # The default price to rent an episode.
+    decimal? price;
 };
 
 # The transcode information for a video upload.
@@ -2268,6 +3195,12 @@ public type LegacyError record {
     string _error;
 };
 
+# Metadata information about this video.
+public type OndemandvideoMetadata record {
+    OndemandvideoMetadataConnections connections;
+    OndemandvideoMetadataInteractions interactions;
+};
+
 # Information about the versions of this video.
 public type VideoMetadataConnectionsVersions record {
     # The URI of the current version of the video.
@@ -2278,6 +3211,14 @@ public type VideoMetadataConnectionsVersions record {
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+public type MeondemandpagesRent record {
+    # Whether the video can be rented. *Required if `buy.active` is false.
+    boolean active?;
+    # The period in which this can be rented for.
+    string period?;
+    MeondemandpagesRentPrice price?;
 };
 
 # Metadata about the group.
@@ -2317,6 +3258,37 @@ public type Channel record {
     record {*User;} user;
 };
 
+public type PresetsSettingsLogos record {
+    # Whether the preset includes custom logo settings.
+    boolean custom;
+    # Whether the present includes sticky custom logo settings.
+    boolean sticky_custom;
+    # Whether the preset includes Vimeo logo settings.
+    boolean vimeo;
+};
+
+# Information on subscribing to this video.
+public type PurchaseinteractionSubscribe record {
+    # Whether the On Demand subscription has DRM.
+    boolean drm?;
+    # The time in ISO 8601 format when the On Demand video will expire.
+    string? expires_time?;
+    # The URL to purchase this On Demand subscription on Vimeo.
+    string? link?;
+    # The time in ISO 8601 format when the On Demand was purchased.
+    string? purchase_time?;
+    # The user's streaming access to this On Demand subscription:
+    # 
+    # Option descriptions:
+    #  * `available` - The On Demand subscription is available for streaming.
+    #  * `purchased` - The On Demand subscription has been purchased.
+    #  * `restricted` - Streaming for the On Demand subscription is restricted.
+    #  * `unavailable` - The On Demand subscription is unavailable.
+    string 'stream?;
+    # The On Demand subscription's product URI.
+    string? uri?;
+};
+
 # Data from video associated with version
 public type VideoversionsMetadataConnectionsVideo record {
     # An array of HTTP methods permitted on this URI.
@@ -2343,6 +3315,12 @@ public type UserMetadataConnectionsWatchlater record {
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+# Metadata about the album.
+public type PresetsMetadata record {
+    # A list of resource URIs related to the album.
+    PresetsMetadataConnections connections;
 };
 
 # Information about this video's ondemand data.
@@ -2390,6 +3368,16 @@ public type ChannelMetadataInteractionsAddModerators record {
     string[] options;
     # The API URI that resolves to the connection data. This data requires a bearer token with the `private` scope.
     string uri;
+};
+
+# Information about purchasing this video.
+public type OndemandvideoBuy record {
+    # Whether this On Demand video can be purchased.
+    boolean active;
+    # A map of currency type to price.
+    record {} price;
+    # Whether this On Demand video has been purchased.
+    boolean purchased?;
 };
 
 public type Category record {
@@ -2509,6 +3497,11 @@ public type MevideosEmbedButtons record {
     boolean watchlater?;
 };
 
+public type OndemandgenreInteractions record {
+    # Interactions for On Demand pages that are in this genre.
+    OndemandgenreInteractionsPage page;
+};
+
 public type Credit record {
     # The name of the person credited.
     string name;
@@ -2520,6 +3513,16 @@ public type Credit record {
     record {*User;} user?;
     # The video associated with this credit.
     record {*Video;} video?;
+};
+
+# The Videos connection.
+public type OndemandseasonMetadataConnectionsVideos record {
+    # An array of HTTP methods permitted on this URI.
+    string[] options;
+    # The total number of videos on this connection.
+    decimal total;
+    # The API URI that resolves to the connection ∂data.
+    string uri;
 };
 
 # A collection of information that is connected to this resource.
@@ -2615,6 +3618,13 @@ public type AlbumMetadata record {
     AlbumMetadataInteractions interactions;
 };
 
+public type OndemandpagePublished record {
+    # Whether this On Demand page has been published.
+    boolean enabled;
+    # The time in IS 8601 format when this page was published.
+    string time;
+};
+
 public type Comment record {
     # The time in ISO 8601 format when the comment was posted.
     string created_on;
@@ -2646,6 +3656,19 @@ public type CategoryMetadataConnections record {
     CategoryMetadataConnectionsVideos videos;
 };
 
+public type OnDemandGenre record {
+    # The canonical name or URL slug of the genre.
+    string canonical;
+    OndemandgenreInteractions interactions;
+    # The Vimeo URL for this genre.
+    string link;
+    OndemandgenreMetadata metadata;
+    # The descriptive name of the genre.
+    string name;
+    # The relative URI of the On Demand genre.
+    string uri;
+};
+
 # Information about the videos related to this category.
 public type CategoryMetadataConnectionsVideos record {
     # An array of HTTP methods permitted on this URI.
@@ -2654,6 +3677,23 @@ public type CategoryMetadataConnectionsVideos record {
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+public type Error record {
+    # The error message that developers receive.
+    string developer_message;
+    # The error message that non-developer users receive.
+    string _error;
+    # The error code.
+    decimal error_code;
+    # A link to more information about the error.
+    string link;
+};
+
+public type MeondemandpagesSubscriptionMonthly record {
+    # Whether monthly subscription is active. *Required if `rent.active` and `buy.active` are false.
+    boolean active?;
+    MeondemandpagesSubscriptionMonthlyPrice price?;
 };
 
 # A collection of information that is connected to this resource.
@@ -2673,6 +3713,16 @@ public type GroupMetadataConnectionsVideos record {
     # The total number of videos on this connection.
     decimal total;
     # The API URI that resolves to the connection data.
+    string uri;
+};
+
+# Information about the user's Watch Later interactions with this video.
+public type OndemandvideoMetadataInteractionsWatchlater record {
+    # Whether the user has added this video to their Watch Later queue.
+    boolean added;
+    # The time in ISO 8601 format when the user added this video to their Watch Later queue.
+    string added_time;
+    # The URI for the user to add this video to their Watch Later queue.
     string uri;
 };
 

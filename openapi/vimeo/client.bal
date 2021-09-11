@@ -16,7 +16,6 @@
 
 import ballerina/http;
 import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -76,6 +75,29 @@ public isolated client class Client {
         map<anydata> queryParam = {"openapi": openapi};
         path = path + check getPathForQueryParam(queryParam);
         Endpoint response = check self.clientEp-> get(path, targetType = Endpoint);
+        return response;
+    }
+    # Get all categories
+    #
+    # + direction - The sort direction of the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + sort - The way to sort the results. 
+    # + return - The categories were returned. 
+    remote isolated function getCategories(string? direction = (), decimal? page = (), decimal? perPage = (), string? sort = ()) returns Category[]|error {
+        string  path = string `/categories`;
+        map<anydata> queryParam = {"direction": direction, "page": page, "per_page": perPage, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        Category[] response = check self.clientEp-> get(path, targetType = CategoryArr);
+        return response;
+    }
+    # Get a specific category
+    #
+    # + category - The name of the category. 
+    # + return - The category was returned. 
+    remote isolated function getCategory(string category) returns Category|error {
+        string  path = string `/categories/${category}`;
+        Category response = check self.clientEp-> get(path, targetType = Category);
         return response;
     }
     # Get all the channels in a category
@@ -180,9 +202,7 @@ public isolated client class Client {
     # + return - The channel was deleted. 
     remote isolated function deleteChannel(decimal channelId) returns http:Response|error {
         string  path = string `/channels/${channelId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a channel
@@ -237,9 +257,7 @@ public isolated client class Client {
     # + return - The channel was removed. 
     remote isolated function deleteChannelCategory(string category, decimal channelId) returns http:Response|error {
         string  path = string `/channels/${channelId}/categories/${category}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the moderators in a channel
@@ -323,9 +341,7 @@ public isolated client class Client {
     # + return - The moderator was removed. 
     remote isolated function removeChannelModerator(decimal channelId, decimal userId) returns http:Response|error {
         string  path = string `/channels/${channelId}/moderators/${userId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the users who can view a private channel
@@ -373,9 +389,7 @@ public isolated client class Client {
     # + return - The user can no longer view the private channel. 
     remote isolated function deleteChannelPrivacyUser(decimal channelId, decimal userId) returns http:Response|error {
         string  path = string `/channels/${channelId}/privacy/users/${userId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the tags that have been added to a channel
@@ -428,9 +442,7 @@ public isolated client class Client {
     # + return - The tag was removed. 
     remote isolated function deleteTagFromChannel(decimal channelId, string word) returns http:Response|error {
         string  path = string `/channels/${channelId}/tags/${word}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the followers of a channel
@@ -522,9 +534,7 @@ public isolated client class Client {
     # + return - The video was removed. 
     remote isolated function deleteVideoFromChannel(decimal channelId, decimal videoId) returns http:Response|error {
         string  path = string `/channels/${channelId}/videos/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the comments on a video
@@ -628,6 +638,32 @@ public isolated client class Client {
         Picture response = check self.clientEp->post(path, request, targetType=Picture);
         return response;
     }
+    # Get all the users who can view a user's private videos by default
+    #
+    # + channelId - The ID of the channel. 
+    # + videoId - The ID of the video. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The users were returned. 
+    remote isolated function getVideoPrivacyUsersAlt1(decimal channelId, decimal videoId, decimal? page = (), decimal? perPage = ()) returns User[]|error {
+        string  path = string `/channels/${channelId}/videos/${videoId}/privacy/users`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        User[] response = check self.clientEp-> get(path, targetType = UserArr);
+        return response;
+    }
+    # Permit a list of users to view a private video
+    #
+    # + channelId - The ID of the channel. 
+    # + videoId - The ID of the video. 
+    # + return - The users can now view the private video. 
+    remote isolated function addVideoPrivacyUsersAlt1(decimal channelId, decimal videoId) returns User[]|error {
+        string  path = string `/channels/${channelId}/videos/${videoId}/privacy/users`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        User[] response = check self.clientEp-> put(path, request, targetType = UserArr);
+        return response;
+    }
     # Get all the text tracks of a video
     #
     # + channelId - The ID of the channel. 
@@ -665,6 +701,118 @@ public isolated client class Client {
     remote isolated function getCcLicenses() returns CreativeCommons[]|error {
         string  path = string `/creativecommons`;
         CreativeCommons[] response = check self.clientEp-> get(path, targetType = CreativeCommonsArr);
+        return response;
+    }
+    # Get all groups
+    #
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + query - The search query to use to filter the results. 
+    # + sort - The way to sort the results. Option descriptions:  * `relevant` - Relevant sorting is available only for search queries. 
+    # + return - The groups were returned. 
+    remote isolated function getGroups(string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? query = (), string? sort = ()) returns Group[]|error {
+        string  path = string `/groups`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "query": query, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        Group[] response = check self.clientEp-> get(path, targetType = GroupArr);
+        return response;
+    }
+    # Create a group
+    #
+    # + return - The group was created. 
+    remote isolated function createGroup(Body14 payload) returns Group|error {
+        string  path = string `/groups`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        Group response = check self.clientEp->post(path, request, targetType=Group);
+        return response;
+    }
+    # Get a specific group
+    #
+    # + groupId - The ID of the group. 
+    # + return - The group was returned. 
+    remote isolated function getGroup(decimal groupId) returns Group|error {
+        string  path = string `/groups/${groupId}`;
+        Group response = check self.clientEp-> get(path, targetType = Group);
+        return response;
+    }
+    # Delete a group
+    #
+    # + groupId - The ID of the group. 
+    # + return - The group was deleted. 
+    remote isolated function deleteGroup(decimal groupId) returns http:Response|error {
+        string  path = string `/groups/${groupId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the members of a group
+    #
+    # + groupId - The ID of the group. 
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + query - The search query to use to filter the results. 
+    # + sort - The way to sort the results. 
+    # + return - The members were returned. 
+    remote isolated function getGroupMembers(decimal groupId, string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? query = (), string? sort = ()) returns User[]|error {
+        string  path = string `/groups/${groupId}/users`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "query": query, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        User[] response = check self.clientEp-> get(path, targetType = UserArr);
+        return response;
+    }
+    # Get all the videos in a group
+    #
+    # + groupId - The ID of the group. 
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + filterEmbeddable - Whether to filter the results by embeddable videos (`true`) or non-embeddable videos (`false`). Required only if **filter** is `embeddable`. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + query - The search query to use to filter the results. 
+    # + sort - The way to sort the results. 
+    # + return - The videos were returned. 
+    remote isolated function getGroupVideos(decimal groupId, string? direction = (), string? filter = (), boolean? filterEmbeddable = (), decimal? page = (), decimal? perPage = (), string? query = (), string? sort = ()) returns Video[]|error {
+        string  path = string `/groups/${groupId}/videos`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "filter_embeddable": filterEmbeddable, "page": page, "per_page": perPage, "query": query, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        Video[] response = check self.clientEp-> get(path, targetType = VideoArr);
+        return response;
+    }
+    # Get a specific video in a group
+    #
+    # + groupId - The ID of the group. 
+    # + videoId - The ID of the video. 
+    # + return - The video was returned. 
+    remote isolated function getGroupVideo(decimal groupId, decimal videoId) returns Video|error {
+        string  path = string `/groups/${groupId}/videos/${videoId}`;
+        Video response = check self.clientEp-> get(path, targetType = Video);
+        return response;
+    }
+    # Add a video to a group
+    #
+    # + groupId - The ID of the group. 
+    # + videoId - The ID of the video. 
+    # + return - The video was added. 
+    remote isolated function addVideoToGroup(decimal groupId, decimal videoId) returns Video|error {
+        string  path = string `/groups/${groupId}/videos/${videoId}`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        Video response = check self.clientEp-> put(path, request, targetType = Video);
+        return response;
+    }
+    # Remove a video from a group
+    #
+    # + groupId - The ID of the group. 
+    # + videoId - The ID of the video. 
+    # + return - The video was deleted. 
+    remote isolated function deleteVideoFromGroup(decimal groupId, decimal videoId) returns http:Response|error {
+        string  path = string `/groups/${groupId}/videos/${videoId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all languages
@@ -738,9 +886,7 @@ public isolated client class Client {
     # + return - The album was deleted. 
     remote isolated function deleteAlbumAlt1(decimal albumId) returns http:Response|error {
         string  path = string `/me/albums/${albumId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit an album
@@ -820,9 +966,7 @@ public isolated client class Client {
     # + return - The video was removed. 
     remote isolated function removeVideoFromAlbumAlt1(decimal albumId, decimal videoId) returns http:Response|error {
         string  path = string `/me/albums/${albumId}/videos/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Set a video as the album thumbnail
@@ -895,9 +1039,7 @@ public isolated client class Client {
     # + return - The user was unsubscribed. 
     remote isolated function unsubscribeFromCategoryAlt1(string category) returns http:Response|error {
         string  path = string `/me/categories/${category}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the channels to which a user subscribes
@@ -942,9 +1084,34 @@ public isolated client class Client {
     # + return - The user is no longer a follower of the channel. 
     remote isolated function unsubscribeFromChannelAlt1(decimal channelId) returns http:Response|error {
         string  path = string `/me/channels/${channelId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the custom logos that belong to a user
+    #
+    # + return - The custom logos were returned. 
+    remote isolated function getCustomLogosAlt1() returns Picture[]|error {
+        string  path = string `/me/customlogos`;
+        Picture[] response = check self.clientEp-> get(path, targetType = PictureArr);
+        return response;
+    }
+    # Add a custom logo
+    #
+    # + return - The custom logo was created. 
+    remote isolated function createCustomLogoAlt1() returns Picture|error {
+        string  path = string `/me/customlogos`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        Picture response = check self.clientEp-> post(path, request, targetType = Picture);
+        return response;
+    }
+    # Get a specific custom logo
+    #
+    # + logoId - The ID of the custom logo. 
+    # + return - The custom logo was returned. 
+    remote isolated function getCustomLogoAlt1(decimal logoId) returns Picture|error {
+        string  path = string `/me/customlogos/${logoId}`;
+        Picture response = check self.clientEp-> get(path, targetType = Picture);
         return response;
     }
     # Get all videos in a user's feed
@@ -1029,9 +1196,52 @@ public isolated client class Client {
     # + return - The user was unfollowed. 
     remote isolated function unfollowUserAlt1(decimal followUserId) returns http:Response|error {
         string  path = string `/me/following/${followUserId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the groups that a user has joined
+    #
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + query - The search query to use to filter the results. 
+    # + sort - The way to sort the results. 
+    # + return - The groups were returned. 
+    remote isolated function getUserGroupsAlt1(string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? query = (), string? sort = ()) returns Group[]|error {
+        string  path = string `/me/groups`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "query": query, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        Group[] response = check self.clientEp-> get(path, targetType = GroupArr);
+        return response;
+    }
+    # Check if a user has joined a group
+    #
+    # + groupId - The ID of the group. 
+    # + return - The user has joined the group. 
+    remote isolated function checkIfUserJoinedGroupAlt1(decimal groupId) returns http:Response|error {
+        string  path = string `/me/groups/${groupId}`;
+        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        return response;
+    }
+    # Add a user to a group
+    #
+    # + groupId - The ID of the group. 
+    # + return - The user joined the group. 
+    remote isolated function joinGroupAlt1(decimal groupId) returns http:Response|error {
+        string  path = string `/me/groups/${groupId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> put(path, request, targetType = http:Response);
+        return response;
+    }
+    # Remove a user from a group
+    #
+    # + groupId - The ID of the group. 
+    # + return - The user left the group. 
+    remote isolated function leaveGroupAlt1(decimal groupId) returns http:Response|error {
+        string  path = string `/me/groups/${groupId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the videos that a user has liked
@@ -1076,9 +1286,57 @@ public isolated client class Client {
     # + return - The video was unliked. 
     remote isolated function unlikeVideoAlt1(decimal videoId) returns http:Response|error {
         string  path = string `/me/likes/${videoId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the On Demand pages of a user
+    #
+    # + direction - The sort direction of the results. 
+    # + filter - The type of On Demand pages to return. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + sort - The way to sort the results. 
+    # + return - The On Demand pages were returned. 
+    remote isolated function getUserVodsAlt1(string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? sort = ()) returns OnDemandPage[]|error {
+        string  path = string `/me/ondemand/pages`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        OnDemandPage[] response = check self.clientEp-> get(path, targetType = OnDemandPageArr);
+        return response;
+    }
+    # Create an On Demand page
+    #
+    # + return - The On Demand page was created. 
+    remote isolated function createVodAlt1(Body21 payload) returns OnDemandPage|error {
+        string  path = string `/me/ondemand/pages`;
         http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OnDemandPage response = check self.clientEp->post(path, request, targetType=OnDemandPage);
+        return response;
+    }
+    # Get all the On Demand purchases and rentals that a user has made
+    #
+    # + direction - The sort direction of the results. 
+    # + filter - The type of On Demand videos to show. Option descriptions:  * `important` - Will show all pages which are about to expire. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + sort - The way to sort the results. 
+    # + return - The purchases and rentals were returned. 
+    remote isolated function getVodPurchases(string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? sort = ()) returns OnDemandPage[]|error {
+        string  path = string `/me/ondemand/purchases`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        OnDemandPage[] response = check self.clientEp-> get(path, targetType = OnDemandPageArr);
+        return response;
+    }
+    # Check if a user has made a purchase or rental from an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - You have purchased the On Demand page. 
+    remote isolated function checkIfVodWasPurchasedAlt1(decimal ondemandId) returns OnDemandPage|error {
+        string  path = string `/me/ondemand/purchases/${ondemandId}`;
+        OnDemandPage response = check self.clientEp-> get(path, targetType = OnDemandPage);
         return response;
     }
     # Get all the pictures that belong to a user
@@ -1118,9 +1376,7 @@ public isolated client class Client {
     # + return - The picture was deleted. 
     remote isolated function deletePictureAlt1(decimal portraitsetId) returns http:Response|error {
         string  path = string `/me/pictures/${portraitsetId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a user picture
@@ -1205,9 +1461,53 @@ public isolated client class Client {
     # + return - The video was deleted. 
     remote isolated function deleteVideoFromPortfolioAlt1(decimal portfolioId, decimal videoId) returns http:Response|error {
         string  path = string `/me/portfolios/${portfolioId}/videos/${videoId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the embed presets that a user has created
+    #
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The embed presets were returned. 
+    remote isolated function getEmbedPresetsAlt1(decimal? page = (), decimal? perPage = ()) returns Presets[]|error {
+        string  path = string `/me/presets`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        Presets[] response = check self.clientEp-> get(path, targetType = PresetsArr);
+        return response;
+    }
+    # Get a specific embed preset
+    #
+    # + presetId - The ID of the preset. 
+    # + return - The embed preset was returned. 
+    remote isolated function getEmbedPresetAlt1(decimal presetId) returns Presets|error {
+        string  path = string `/me/presets/${presetId}`;
+        Presets response = check self.clientEp-> get(path, targetType = Presets);
+        return response;
+    }
+    # Edit an embed preset
+    #
+    # + presetId - The ID of the preset. 
+    # + return - The embed preset was edited. 
+    remote isolated function editEmbedPresetAlt1(decimal presetId, Body23 payload) returns Presets|error {
+        string  path = string `/me/presets/${presetId}`;
         http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        Presets response = check self.clientEp->patch(path, request, targetType=Presets);
+        return response;
+    }
+    # Get all the videos that have been added to an embed preset
+    #
+    # + presetId - The ID of the preset. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The videos were returned. 
+    remote isolated function getEmbedPresetVideosAlt1(decimal presetId, decimal? page = (), decimal? perPage = ()) returns Video[]|error {
+        string  path = string `/me/presets/${presetId}/videos`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        Video[] response = check self.clientEp-> get(path, targetType = VideoArr);
         return response;
     }
     # Get all the projects that belong to a user
@@ -1253,9 +1553,7 @@ public isolated client class Client {
         string  path = string `/me/projects/${projectId}`;
         map<anydata> queryParam = {"should_delete_clips": shouldDeleteClips};
         path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a project
@@ -1309,9 +1607,7 @@ public isolated client class Client {
         string  path = string `/me/projects/${projectId}/videos`;
         map<anydata> queryParam = {"should_delete_clips": shouldDeleteClips, "uris": uris};
         path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Add a specific video to a project
@@ -1333,9 +1629,7 @@ public isolated client class Client {
     # + return - The video was removed. 
     remote isolated function removeVideoFromProjectAlt1(decimal projectId, decimal videoId) returns http:Response|error {
         string  path = string `/me/projects/${projectId}/videos/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the videos that a user has uploaded
@@ -1394,9 +1688,7 @@ public isolated client class Client {
     # + return - The watch history was deleted. 
     remote isolated function deleteWatchHistory() returns http:Response|error {
         string  path = string `/me/watched/videos`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Delete a specific video from a user's watch history
@@ -1405,9 +1697,7 @@ public isolated client class Client {
     # + return - The video was deleted from your watch history. 
     remote isolated function deleteFromWatchHistory(decimal videoId) returns http:Response|error {
         string  path = string `/me/watched/videos/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the videos in a user's Watch Later queue
@@ -1453,9 +1743,7 @@ public isolated client class Client {
     # + return - The video was deleted. 
     remote isolated function deleteVideoFromWatchLaterAlt1(decimal videoId) returns http:Response|error {
         string  path = string `/me/watchlater/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Exchange an authorization code for an access token
@@ -1499,6 +1787,178 @@ public isolated client class Client {
         Auth response = check self.clientEp-> get(path, targetType = Auth);
         return response;
     }
+    # Get all On Demand genres
+    #
+    # + return - The On Demand genres were returned. 
+    remote isolated function getVodGenres() returns OnDemandGenre[]|error {
+        string  path = string `/ondemand/genres`;
+        OnDemandGenre[] response = check self.clientEp-> get(path, targetType = OnDemandGenreArr);
+        return response;
+    }
+    # Get a specific On Demand genre
+    #
+    # + genreId - The ID of the genre. 
+    # + return - The On Demand genre was returned. 
+    remote isolated function getVodGenre(string genreId) returns OnDemandGenre|error {
+        string  path = string `/ondemand/genres/${genreId}`;
+        OnDemandGenre response = check self.clientEp-> get(path, targetType = OnDemandGenre);
+        return response;
+    }
+    # Get all the On Demand pages in a genre
+    #
+    # + genreId - The ID of the genre. 
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + query - The search query to use to filter the results. 
+    # + sort - The way to sort the results. 
+    # + return - The On Demand pages were returned. 
+    remote isolated function getGenreVods(string genreId, string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? query = (), string? sort = ()) returns OnDemandPage[]|error {
+        string  path = string `/ondemand/genres/${genreId}/pages`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "query": query, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        OnDemandPage[] response = check self.clientEp-> get(path, targetType = OnDemandPageArr);
+        return response;
+    }
+    # Get a specific On Demand page in a genre
+    #
+    # + genreId - The ID of the genre. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand page belongs to the genre. 
+    remote isolated function getGenreVod(string genreId, decimal ondemandId) returns OnDemandPage|error {
+        string  path = string `/ondemand/genres/${genreId}/pages/${ondemandId}`;
+        OnDemandPage response = check self.clientEp-> get(path, targetType = OnDemandPage);
+        return response;
+    }
+    # Get a specific On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand page was returned. 
+    remote isolated function getVod(decimal ondemandId) returns OnDemandPage|error {
+        string  path = string `/ondemand/pages/${ondemandId}`;
+        OnDemandPage response = check self.clientEp-> get(path, targetType = OnDemandPage);
+        return response;
+    }
+    # Delete a draft of an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The page draft was deleted. 
+    remote isolated function deleteVodDraft(decimal ondemandId) returns http:Response|error {
+        string  path = string `/ondemand/pages/${ondemandId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Edit an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand page was edited. 
+    remote isolated function editVod(decimal ondemandId, Body30 payload) returns OnDemandPage|error {
+        string  path = string `/ondemand/pages/${ondemandId}`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OnDemandPage response = check self.clientEp->patch(path, request, targetType=OnDemandPage);
+        return response;
+    }
+    # Get all the backgrounds of an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The background images were returned. 
+    remote isolated function getVodBackgrounds(decimal ondemandId, decimal? page = (), decimal? perPage = ()) returns Picture[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/backgrounds`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        Picture[] response = check self.clientEp-> get(path, targetType = PictureArr);
+        return response;
+    }
+    # Add a background to an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The background was created. 
+    remote isolated function createVodBackground(decimal ondemandId) returns Picture|error {
+        string  path = string `/ondemand/pages/${ondemandId}/backgrounds`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        Picture response = check self.clientEp-> post(path, request, targetType = Picture);
+        return response;
+    }
+    # Get a specific background of an On Demand page
+    #
+    # + backgroundId - The ID of the background. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The background image was returned. 
+    remote isolated function getVodBackground(decimal backgroundId, decimal ondemandId) returns Picture|error {
+        string  path = string `/ondemand/pages/${ondemandId}/backgrounds/${backgroundId}`;
+        Picture response = check self.clientEp-> get(path, targetType = Picture);
+        return response;
+    }
+    # Remove a background from an On Demand page
+    #
+    # + backgroundId - The ID of the background. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The background image was deleted. 
+    remote isolated function deleteVodBackground(decimal backgroundId, decimal ondemandId) returns Picture|error {
+        string  path = string `/ondemand/pages/${ondemandId}/backgrounds/${backgroundId}`;
+        Picture response = check self.clientEp-> delete(path, targetType = Picture);
+        return response;
+    }
+    # Edit a background of an On Demand page
+    #
+    # + backgroundId - The ID of the background. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The background was edited. 
+    remote isolated function editVodBackground(decimal backgroundId, decimal ondemandId, Body31 payload) returns Picture|error {
+        string  path = string `/ondemand/pages/${ondemandId}/backgrounds/${backgroundId}`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        Picture response = check self.clientEp->patch(path, request, targetType=Picture);
+        return response;
+    }
+    # Get all the genres of an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The genres were returned. 
+    remote isolated function getVodGenresByOndemandId(decimal ondemandId) returns OnDemandGenre[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/genres`;
+        OnDemandGenre[] response = check self.clientEp-> get(path, targetType = OnDemandGenreArr);
+        return response;
+    }
+    # Check whether an On Demand page belongs to a genre
+    #
+    # + genreId - The ID of the genre. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand page's genre was returned. 
+    remote isolated function getVodGenreByOndemandId(string genreId, decimal ondemandId) returns OnDemandGenre|error {
+        string  path = string `/ondemand/pages/${ondemandId}/genres/${genreId}`;
+        OnDemandGenre response = check self.clientEp-> get(path, targetType = OnDemandGenre);
+        return response;
+    }
+    # Add a genre to an On Demand page
+    #
+    # + genreId - The ID of the genre. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The genre was added. 
+    remote isolated function addVodGenre(string genreId, decimal ondemandId) returns OnDemandGenre|error {
+        string  path = string `/ondemand/pages/${ondemandId}/genres/${genreId}`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        OnDemandGenre response = check self.clientEp-> put(path, request, targetType = OnDemandGenre);
+        return response;
+    }
+    # Remove a genre from an On Demand page
+    #
+    # + genreId - The ID of the genre. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand genre was deleted. 
+    remote isolated function deleteVodGenre(string genreId, decimal ondemandId) returns http:Response|error {
+        string  path = string `/ondemand/pages/${ondemandId}/genres/${genreId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
     # Get all the users who have liked a video on an On Demand page
     #
     # + ondemandId - The ID of the On Demand page. 
@@ -1513,6 +1973,286 @@ public isolated client class Client {
         map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
         User[] response = check self.clientEp-> get(path, targetType = UserArr);
+        return response;
+    }
+    # Get all the posters of an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The posters were returned. 
+    remote isolated function getVodPosters(decimal ondemandId, decimal? page = (), decimal? perPage = ()) returns Picture[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/pictures`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        Picture[] response = check self.clientEp-> get(path, targetType = PictureArr);
+        return response;
+    }
+    # Add a poster to an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The poster was added. 
+    remote isolated function addVodPoster(decimal ondemandId) returns Picture|error {
+        string  path = string `/ondemand/pages/${ondemandId}/pictures`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        Picture response = check self.clientEp-> post(path, request, targetType = Picture);
+        return response;
+    }
+    # Get a specific poster of an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + posterId - The ID of the picture. 
+    # + return - The poster was returned. 
+    remote isolated function getVodPoster(decimal ondemandId, decimal posterId) returns Picture|error {
+        string  path = string `/ondemand/pages/${ondemandId}/pictures/${posterId}`;
+        Picture response = check self.clientEp-> get(path, targetType = Picture);
+        return response;
+    }
+    # Edit a poster of an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + posterId - The ID of the picture. 
+    # + return - The poster was edited. 
+    remote isolated function editVodPoster(decimal ondemandId, decimal posterId, Body32 payload) returns Picture|error {
+        string  path = string `/ondemand/pages/${ondemandId}/pictures/${posterId}`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        Picture response = check self.clientEp->patch(path, request, targetType=Picture);
+        return response;
+    }
+    # Get all the promotions on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + filter - The filter to apply to the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The promotions were returned. 
+    remote isolated function getVodPromotions(decimal ondemandId, string filter, decimal? page = (), decimal? perPage = ()) returns OnDemandPromotion|error {
+        string  path = string `/ondemand/pages/${ondemandId}/promotions`;
+        map<anydata> queryParam = {"filter": filter, "page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        OnDemandPromotion response = check self.clientEp-> get(path, targetType = OnDemandPromotion);
+        return response;
+    }
+    # Add a promotion to an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The promotion was added. 
+    remote isolated function createVodPromotion(decimal ondemandId, Body33 payload) returns OnDemandPromotion|error {
+        string  path = string `/ondemand/pages/${ondemandId}/promotions`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OnDemandPromotion response = check self.clientEp->post(path, request, targetType=OnDemandPromotion);
+        return response;
+    }
+    # Get a specific promotion on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + promotionId - The ID of the promotion. 
+    # + return - The promotion was returned. 
+    remote isolated function getVodPromotion(decimal ondemandId, decimal promotionId) returns OnDemandPromotion|error {
+        string  path = string `/ondemand/pages/${ondemandId}/promotions/${promotionId}`;
+        OnDemandPromotion response = check self.clientEp-> get(path, targetType = OnDemandPromotion);
+        return response;
+    }
+    # Remove a promotion from an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + promotionId - The ID of the promotion. 
+    # + return - The promotion was deleted. 
+    remote isolated function deleteVodPromotion(decimal ondemandId, decimal promotionId) returns http:Response|error {
+        string  path = string `/ondemand/pages/${ondemandId}/promotions/${promotionId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the codes of a promotion on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + promotionId - The ID of the promotion. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The codes were returned. 
+    remote isolated function getVodPromotionCodes(decimal ondemandId, decimal promotionId, decimal? page = (), decimal? perPage = ()) returns OnDemandPromotionCode|error {
+        string  path = string `/ondemand/pages/${ondemandId}/promotions/${promotionId}/codes`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        OnDemandPromotionCode response = check self.clientEp-> get(path, targetType = OnDemandPromotionCode);
+        return response;
+    }
+    # Get all the regions of an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The regions were returned. 
+    remote isolated function getVodRegions(decimal ondemandId) returns OnDemandRegion[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/regions`;
+        OnDemandRegion[] response = check self.clientEp-> get(path, targetType = OnDemandRegionArr);
+        return response;
+    }
+    # Add a list of regions to an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The list of regions was set. 
+    remote isolated function setVodRegions(decimal ondemandId, Body34 payload) returns OnDemandRegion|error {
+        string  path = string `/ondemand/pages/${ondemandId}/regions`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OnDemandRegion response = check self.clientEp->put(path, request, targetType=OnDemandRegion);
+        return response;
+    }
+    # Remove a list of regions from an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand regions were deleted. 
+    remote isolated function deleteVodRegions(decimal ondemandId, Body35 payload) returns OnDemandRegion[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/regions`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OnDemandRegion[] response = check self.clientEp->delete(path, request, targetType=OnDemandRegionArr);
+        return response;
+    }
+    # Get a specific region of an On Demand page
+    #
+    # + country - The country code. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand page's region was returned. 
+    remote isolated function getVodRegion(string country, decimal ondemandId) returns OnDemandRegion|error {
+        string  path = string `/ondemand/pages/${ondemandId}/regions/${country}`;
+        OnDemandRegion response = check self.clientEp-> get(path, targetType = OnDemandRegion);
+        return response;
+    }
+    # Add a specific region to an On Demand page
+    #
+    # + country - The country code. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The region was added. 
+    remote isolated function addVodRegion(string country, decimal ondemandId) returns OnDemandRegion|error {
+        string  path = string `/ondemand/pages/${ondemandId}/regions/${country}`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        OnDemandRegion response = check self.clientEp-> put(path, request, targetType = OnDemandRegion);
+        return response;
+    }
+    # Remove a specific region from an On Demand page
+    #
+    # + country - The country code. 
+    # + ondemandId - The ID of the On Demand. 
+    # + return - The On Demand region was deleted. 
+    remote isolated function deleteVodRegion(string country, decimal ondemandId) returns http:Response|error {
+        string  path = string `/ondemand/pages/${ondemandId}/regions/${country}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the seasons on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + sort - The way to sort the results. 
+    # + return - The seasons were returned. 
+    remote isolated function getVodSeasons(decimal ondemandId, string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? sort = ()) returns OnDemandSeason[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/seasons`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        OnDemandSeason[] response = check self.clientEp-> get(path, targetType = OnDemandSeasonArr);
+        return response;
+    }
+    # Get a specific season on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + seasonId - The ID of the season. 
+    # + return - The season was returned. 
+    remote isolated function getVodSeason(decimal ondemandId, decimal seasonId) returns OnDemandSeason|error {
+        string  path = string `/ondemand/pages/${ondemandId}/seasons/${seasonId}`;
+        OnDemandSeason response = check self.clientEp-> get(path, targetType = OnDemandSeason);
+        return response;
+    }
+    # Get all the videos in a season on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + seasonId - The ID of the season. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + sort - The way to sort the results. 
+    # + return - The videos were returned. 
+    remote isolated function getVodSeasonVideos(decimal ondemandId, decimal seasonId, string? filter = (), decimal? page = (), decimal? perPage = (), string? sort = ()) returns Video[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/seasons/${seasonId}/videos`;
+        map<anydata> queryParam = {"filter": filter, "page": page, "per_page": perPage, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        Video[] response = check self.clientEp-> get(path, targetType = VideoArr);
+        return response;
+    }
+    # Get all the videos on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + sort - The way to sort the results. 
+    # + return - * The videos were returned. * The videos were returned. 
+    remote isolated function getVodVideos(decimal ondemandId, string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? sort = ()) returns Video[]|error {
+        string  path = string `/ondemand/pages/${ondemandId}/videos`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        Video[] response = check self.clientEp-> get(path, targetType = VideoArr);
+        return response;
+    }
+    # Get a specific video on an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + videoId - The ID of the video. 
+    # + return - The video is on the On Demand page. 
+    remote isolated function getVodVideo(decimal ondemandId, decimal videoId) returns Video|error {
+        string  path = string `/ondemand/pages/${ondemandId}/videos/${videoId}`;
+        Video response = check self.clientEp-> get(path, targetType = Video);
+        return response;
+    }
+    # Add a video to an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + videoId - The ID of the video. 
+    # + return - The video was added. 
+    remote isolated function addVideoToVod(decimal ondemandId, decimal videoId, Body36 payload) returns OnDemandVideo|error {
+        string  path = string `/ondemand/pages/${ondemandId}/videos/${videoId}`;
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OnDemandVideo response = check self.clientEp->put(path, request, targetType=OnDemandVideo);
+        return response;
+    }
+    # Remove a video from an On Demand page
+    #
+    # + ondemandId - The ID of the On Demand. 
+    # + videoId - The ID of the video. 
+    # + return - The video was deleted. 
+    remote isolated function deleteVideoFromVod(decimal ondemandId, decimal videoId) returns http:Response|error {
+        string  path = string `/ondemand/pages/${ondemandId}/videos/${videoId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the On Demand regions
+    #
+    # + return - The On Demand regions were returned. 
+    remote isolated function getRegions() returns OnDemandRegion[]|error {
+        string  path = string `/ondemand/regions`;
+        OnDemandRegion[] response = check self.clientEp-> get(path, targetType = OnDemandRegionArr);
+        return response;
+    }
+    # Get a specific On Demand region
+    #
+    # + country - The country code. 
+    # + return - The On Demand region was returned. 
+    remote isolated function getRegion(string country) returns OnDemandRegion|error {
+        string  path = string `/ondemand/regions/${country}`;
+        OnDemandRegion response = check self.clientEp-> get(path, targetType = OnDemandRegion);
         return response;
     }
     # Get a specific tag
@@ -1544,9 +2284,7 @@ public isolated client class Client {
     # + return - The token was revoked. 
     remote isolated function deleteToken() returns Auth|error {
         string  path = string `/tokens`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        Auth response = check self.clientEp-> delete(path, request, targetType = Auth);
+        Auth response = check self.clientEp-> delete(path, targetType = Auth);
         return response;
     }
     # Search for users
@@ -1630,9 +2368,7 @@ public isolated client class Client {
     # + return - The album was deleted. 
     remote isolated function deleteAlbum(decimal albumId, decimal userId) returns http:Response|error {
         string  path = string `/users/${userId}/albums/${albumId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit an album
@@ -1693,9 +2429,7 @@ public isolated client class Client {
     # + return - The custom thumbnail was removed. 
     remote isolated function deleteAlbumCustomThumbnail(decimal albumId, decimal thumbnailId, decimal userId) returns http:Response|error {
         string  path = string `/users/${userId}/albums/${albumId}/custom_thumbnails/${thumbnailId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Replace a custom uploaded album thumbnail
@@ -1757,9 +2491,7 @@ public isolated client class Client {
     # + return - The custom logo was removed. 
     remote isolated function deleteAlbumLogo(decimal albumId, decimal logoId, decimal userId) returns http:Response|error {
         string  path = string `/users/${userId}/albums/${albumId}/logos/${logoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Replace a custom album logo
@@ -1846,9 +2578,7 @@ public isolated client class Client {
     # + return - The video was removed. 
     remote isolated function removeVideoFromAlbum(decimal albumId, decimal userId, decimal videoId) returns http:Response|error {
         string  path = string `/users/${userId}/albums/${albumId}/videos/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Set a video as the album thumbnail
@@ -1927,9 +2657,7 @@ public isolated client class Client {
     # + return - The user was unsubscribed. 
     remote isolated function unsubscribeFromCategory(string category, decimal userId) returns http:Response|error {
         string  path = string `/users/${userId}/categories/${category}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the channels to which a user subscribes
@@ -1978,9 +2706,37 @@ public isolated client class Client {
     # + return - The user is no longer a follower of the channel. 
     remote isolated function unsubscribeFromChannel(decimal channelId, decimal userId) returns http:Response|error {
         string  path = string `/users/${userId}/channels/${channelId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the custom logos that belong to a user
+    #
+    # + userId - The ID of the user. 
+    # + return - The custom logos were returned. 
+    remote isolated function getCustomLogos(decimal userId) returns Picture[]|error {
+        string  path = string `/users/${userId}/customlogos`;
+        Picture[] response = check self.clientEp-> get(path, targetType = PictureArr);
+        return response;
+    }
+    # Add a custom logo
+    #
+    # + userId - The ID of the user. 
+    # + return - The custom logo was created. 
+    remote isolated function createCustomLogo(decimal userId) returns Picture|error {
+        string  path = string `/users/${userId}/customlogos`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        Picture response = check self.clientEp-> post(path, request, targetType = Picture);
+        return response;
+    }
+    # Get a specific custom logo
+    #
+    # + logoId - The ID of the custom logo. 
+    # + userId - The ID of the user. 
+    # + return - The custom logo was returned. 
+    remote isolated function getCustomLogo(decimal logoId, decimal userId) returns Picture|error {
+        string  path = string `/users/${userId}/customlogos/${logoId}`;
+        Picture response = check self.clientEp-> get(path, targetType = Picture);
         return response;
     }
     # Get all videos in a user's feed
@@ -2072,9 +2828,56 @@ public isolated client class Client {
     # + return - The user was unfollowed. 
     remote isolated function unfollowUser(decimal followUserId, decimal userId) returns http:Response|error {
         string  path = string `/users/${userId}/following/${followUserId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the groups that a user has joined
+    #
+    # + userId - The ID of the user. 
+    # + direction - The sort direction of the results. 
+    # + filter - The attribute by which to filter the results. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + query - The search query to use to filter the results. 
+    # + sort - The way to sort the results. 
+    # + return - The groups were returned. 
+    remote isolated function getUserGroups(decimal userId, string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? query = (), string? sort = ()) returns Group[]|error {
+        string  path = string `/users/${userId}/groups`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "query": query, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        Group[] response = check self.clientEp-> get(path, targetType = GroupArr);
+        return response;
+    }
+    # Check if a user has joined a group
+    #
+    # + groupId - The ID of the group. 
+    # + userId - The ID of the user. 
+    # + return - The user has joined the group. 
+    remote isolated function checkIfUserJoinedGroup(decimal groupId, decimal userId) returns http:Response|error {
+        string  path = string `/users/${userId}/groups/${groupId}`;
+        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        return response;
+    }
+    # Add a user to a group
+    #
+    # + groupId - The ID of the group. 
+    # + userId - The ID of the user. 
+    # + return - The user joined the group. 
+    remote isolated function joinGroup(decimal groupId, decimal userId) returns http:Response|error {
+        string  path = string `/users/${userId}/groups/${groupId}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> put(path, request, targetType = http:Response);
+        return response;
+    }
+    # Remove a user from a group
+    #
+    # + groupId - The ID of the group. 
+    # + userId - The ID of the user. 
+    # + return - The user left the group. 
+    remote isolated function leaveGroup(decimal groupId, decimal userId) returns http:Response|error {
+        string  path = string `/users/${userId}/groups/${groupId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the videos that a user has liked
@@ -2123,9 +2926,44 @@ public isolated client class Client {
     # + return - The video was unliked. 
     remote isolated function unlikeVideo(decimal userId, decimal videoId) returns http:Response|error {
         string  path = string `/users/${userId}/likes/${videoId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the On Demand pages of a user
+    #
+    # + userId - The ID of the user. 
+    # + direction - The sort direction of the results. 
+    # + filter - The type of On Demand pages to return. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + sort - The way to sort the results. 
+    # + return - The On Demand pages were returned. 
+    remote isolated function getUserVods(decimal userId, string? direction = (), string? filter = (), decimal? page = (), decimal? perPage = (), string? sort = ()) returns OnDemandPage[]|error {
+        string  path = string `/users/${userId}/ondemand/pages`;
+        map<anydata> queryParam = {"direction": direction, "filter": filter, "page": page, "per_page": perPage, "sort": sort};
+        path = path + check getPathForQueryParam(queryParam);
+        OnDemandPage[] response = check self.clientEp-> get(path, targetType = OnDemandPageArr);
+        return response;
+    }
+    # Create an On Demand page
+    #
+    # + userId - The ID of the user. 
+    # + return - The On Demand page was created. 
+    remote isolated function createVod(decimal userId, Body45 payload) returns OnDemandPage|error {
+        string  path = string `/users/${userId}/ondemand/pages`;
         http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OnDemandPage response = check self.clientEp->post(path, request, targetType=OnDemandPage);
+        return response;
+    }
+    # Check if a user has made a purchase or rental from an On Demand page
+    #
+    # + userId - The ID of the user. 
+    # + return - You have purchased the On Demand page. 
+    remote isolated function checkIfVodWasPurchased(decimal userId) returns OnDemandPage|error {
+        string  path = string `/users/${userId}/ondemand/purchases`;
+        OnDemandPage response = check self.clientEp-> get(path, targetType = OnDemandPage);
         return response;
     }
     # Get all the pictures that belong to a user
@@ -2169,9 +3007,7 @@ public isolated client class Client {
     # + return - The picture was deleted. 
     remote isolated function deletePicture(decimal portraitsetId, decimal userId) returns http:Response|error {
         string  path = string `/users/${userId}/pictures/${portraitsetId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a user picture
@@ -2263,9 +3099,57 @@ public isolated client class Client {
     # + return - The video was deleted. 
     remote isolated function deleteVideoFromPortfolio(decimal portfolioId, decimal userId, decimal videoId) returns http:Response|error {
         string  path = string `/users/${userId}/portfolios/${portfolioId}/videos/${videoId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the embed presets that a user has created
+    #
+    # + userId - The ID of the user. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The embed presets were returned. 
+    remote isolated function getEmbedPresets(decimal userId, decimal? page = (), decimal? perPage = ()) returns Presets[]|error {
+        string  path = string `/users/${userId}/presets`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        Presets[] response = check self.clientEp-> get(path, targetType = PresetsArr);
+        return response;
+    }
+    # Get a specific embed preset
+    #
+    # + presetId - The ID of the preset. 
+    # + userId - The ID of the user. 
+    # + return - The embed preset was returned. 
+    remote isolated function getEmbedPreset(decimal presetId, decimal userId) returns Presets|error {
+        string  path = string `/users/${userId}/presets/${presetId}`;
+        Presets response = check self.clientEp-> get(path, targetType = Presets);
+        return response;
+    }
+    # Edit an embed preset
+    #
+    # + presetId - The ID of the preset. 
+    # + userId - The ID of the user. 
+    # + return - The embed preset was edited. 
+    remote isolated function editEmbedPreset(decimal presetId, decimal userId, Body47 payload) returns Presets|error {
+        string  path = string `/users/${userId}/presets/${presetId}`;
         http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        Presets response = check self.clientEp->patch(path, request, targetType=Presets);
+        return response;
+    }
+    # Get all the videos that have been added to an embed preset
+    #
+    # + presetId - The ID of the preset. 
+    # + userId - The ID of the user. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The videos were returned. 
+    remote isolated function getEmbedPresetVideos(decimal presetId, decimal userId, decimal? page = (), decimal? perPage = ()) returns Video[]|error {
+        string  path = string `/users/${userId}/presets/${presetId}/videos`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        Video[] response = check self.clientEp-> get(path, targetType = VideoArr);
         return response;
     }
     # Get all the projects that belong to a user
@@ -2315,9 +3199,7 @@ public isolated client class Client {
         string  path = string `/users/${userId}/projects/${projectId}`;
         map<anydata> queryParam = {"should_delete_clips": shouldDeleteClips};
         path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a project
@@ -2375,9 +3257,7 @@ public isolated client class Client {
         string  path = string `/users/${userId}/projects/${projectId}/videos`;
         map<anydata> queryParam = {"should_delete_clips": shouldDeleteClips, "uris": uris};
         path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Add a specific video to a project
@@ -2401,9 +3281,7 @@ public isolated client class Client {
     # + return - The video was removed. 
     remote isolated function removeVideoFromProject(decimal projectId, decimal userId, decimal videoId) returns http:Response|error {
         string  path = string `/users/${userId}/projects/${projectId}/videos/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get a user's upload attempt
@@ -2427,9 +3305,7 @@ public isolated client class Client {
         string  path = string `/users/${userId}/uploads/${upload}`;
         map<anydata> queryParam = {"signature": signature, "video_file_id": videoFileId};
         path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the videos that a user has uploaded
@@ -2521,9 +3397,7 @@ public isolated client class Client {
     # + return - The video was deleted. 
     remote isolated function deleteVideoFromWatchLater(decimal userId, decimal videoId) returns http:Response|error {
         string  path = string `/users/${userId}/watchlater/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Search for videos
@@ -2559,9 +3433,7 @@ public isolated client class Client {
     # + return - The video was deleted. 
     remote isolated function deleteVideo(decimal videoId) returns http:Response|error {
         string  path = string `/videos/${videoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a video
@@ -2649,9 +3521,7 @@ public isolated client class Client {
     # + return - The comment was deleted. 
     remote isolated function deleteComment(decimal commentId, decimal videoId) returns http:Response|error {
         string  path = string `/videos/${videoId}/comments/${commentId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a video comment
@@ -2739,9 +3609,7 @@ public isolated client class Client {
     # + return - The credit was deleted. 
     remote isolated function deleteVideoCredit(decimal creditId, decimal videoId) returns http:Response|error {
         string  path = string `/videos/${videoId}/credits/${creditId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a credit for a user in a video
@@ -2814,9 +3682,7 @@ public isolated client class Client {
     # + return - The thumbnail was deleted. 
     remote isolated function deleteVideoThumbnail(decimal pictureId, decimal videoId) returns http:Response|error {
         string  path = string `/videos/${videoId}/pictures/${pictureId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a video thumbnail
@@ -2830,6 +3696,38 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
         Picture response = check self.clientEp->patch(path, request, targetType=Picture);
+        return response;
+    }
+    # Check if an embed preset has been added to a video
+    #
+    # + presetId - The ID of the preset. 
+    # + videoId - The ID of the video. 
+    # + return - The embed presets exists. 
+    remote isolated function getVideoEmbedPreset(decimal presetId, decimal videoId) returns http:Response|error {
+        string  path = string `/videos/${videoId}/presets/${presetId}`;
+        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        return response;
+    }
+    # Add an embed preset to a video
+    #
+    # + presetId - The ID of the preset. 
+    # + videoId - The ID of the video. 
+    # + return - The embed preset was assigned. 
+    remote isolated function addVideoEmbedPreset(decimal presetId, decimal videoId) returns http:Response|error {
+        string  path = string `/videos/${videoId}/presets/${presetId}`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        http:Response response = check self.clientEp-> put(path, request, targetType = http:Response);
+        return response;
+    }
+    # Remove an embed preset from a video
+    #
+    # + presetId - The ID of the preset. 
+    # + videoId - The ID of the video. 
+    # + return - The embed preset was unassigned. 
+    remote isolated function deleteVideoEmbedPreset(decimal presetId, decimal videoId) returns http:Response|error {
+        string  path = string `/videos/${videoId}/presets/${presetId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the domains on which a video can be embedded
@@ -2864,9 +3762,53 @@ public isolated client class Client {
     # + return - The video was disallowed from being embedded on the domain. 
     remote isolated function deleteVideoPrivacyDomain(string domain, decimal videoId) returns http:Response|error {
         string  path = string `/videos/${videoId}/privacy/domains/${domain}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        return response;
+    }
+    # Get all the users who can view a user's private videos by default
+    #
+    # + videoId - The ID of the video. 
+    # + page - The page number of the results to show. 
+    # + perPage - The number of items to show on each page of results, up to a maximum of 100. 
+    # + return - The users were returned. 
+    remote isolated function getVideoPrivacyUsers(decimal videoId, decimal? page = (), decimal? perPage = ()) returns User[]|error {
+        string  path = string `/videos/${videoId}/privacy/users`;
+        map<anydata> queryParam = {"page": page, "per_page": perPage};
+        path = path + check getPathForQueryParam(queryParam);
+        User[] response = check self.clientEp-> get(path, targetType = UserArr);
+        return response;
+    }
+    # Permit a list of users to view a private video
+    #
+    # + videoId - The ID of the video. 
+    # + return - The users can now view the private video. 
+    remote isolated function addVideoPrivacyUsers(decimal videoId) returns User[]|error {
+        string  path = string `/videos/${videoId}/privacy/users`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        User[] response = check self.clientEp-> put(path, request, targetType = UserArr);
+        return response;
+    }
+    # Permit a specific user to view a private video
+    #
+    # + userId - The ID of the user. 
+    # + videoId - The ID of the video. 
+    # + return - The user can now view the private video. 
+    remote isolated function addVideoPrivacyUser(decimal userId, decimal videoId) returns User|error {
+        string  path = string `/videos/${videoId}/privacy/users/${userId}`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        User response = check self.clientEp-> put(path, request, targetType = User);
+        return response;
+    }
+    # Restrict a user from viewing a private video
+    #
+    # + userId - The ID of the user. 
+    # + videoId - The ID of the video. 
+    # + return - The user was disallowed from viewing the private video. 
+    remote isolated function deleteVideoPrivacyUser(decimal userId, decimal videoId) returns http:Response|error {
+        string  path = string `/videos/${videoId}/privacy/users/${userId}`;
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the tags of a video
@@ -2919,9 +3861,7 @@ public isolated client class Client {
     # + return - The tag was deleted. 
     remote isolated function deleteVideoTag(decimal videoId, string word) returns http:Response|error {
         string  path = string `/videos/${videoId}/tags/${word}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Get all the text tracks of a video
@@ -2962,9 +3902,7 @@ public isolated client class Client {
     # + return - The text track was deleted. 
     remote isolated function deleteTextTrack(decimal texttrackId, decimal videoId) returns http:Response|error {
         string  path = string `/videos/${videoId}/texttracks/${texttrackId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
         return response;
     }
     # Edit a text track
@@ -2978,6 +3916,27 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
         TextTrack response = check self.clientEp->patch(path, request, targetType=TextTrack);
+        return response;
+    }
+    # Add a new custom logo to a video
+    #
+    # + videoId - The ID of the video. 
+    # + return - Standard request. 
+    remote isolated function createVideoCustomLogo(decimal videoId) returns Picture|error {
+        string  path = string `/videos/${videoId}/timelinethumbnails`;
+        http:Request request = new;
+        //TODO: Update the request as needed;
+        Picture response = check self.clientEp-> post(path, request, targetType = Picture);
+        return response;
+    }
+    # Get a custom video logo
+    #
+    # + thumbnailId - The ID of the picture. 
+    # + videoId - The ID of the video. 
+    # + return - The custom logo was returned. 
+    remote isolated function getVideoCustomLogo(decimal thumbnailId, decimal videoId) returns Picture|error {
+        string  path = string `/videos/${videoId}/timelinethumbnails/${thumbnailId}`;
+        Picture response = check self.clientEp-> get(path, targetType = Picture);
         return response;
     }
     # Add a version to a video

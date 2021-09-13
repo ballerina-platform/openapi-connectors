@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>B8FBA12D-FC14-460C-8E06-A8DEC8D5EAC2</title>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-120.000000, -1024.000000)">
+            <g id="Connector/Ably-Copy-50" transform="translate(120.000000, 1024.000000)">
+                <rect id="Rectangle" fill="#40404B" x="1" y="1" width="46" height="46" rx="6"></rect>
+                <path d="M13.5898438,32.8046875 L16.90625,21.5195312 L20.2226562,32.8046875 L23.703125,32.8046875 L28.7890625,16 L25.3320312,16 L21.875,28.1757812 L18.3710938,16 L15.4179688,16 L11.9140625,28.1757812 L8.45703125,16 L5,16 L10.109375,32.8046875 L13.5898438,32.8046875 Z M38.1992188,32.8046875 L38.1992188,18.9765625 L43.8359375,18.9765625 L43.8359375,16 L29.2695312,16 L29.2695312,18.9765625 L34.90625,18.9765625 L34.90625,32.8046875 L38.1992188,32.8046875 Z" id="WT" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

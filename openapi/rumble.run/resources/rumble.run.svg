@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>E66EEBA5-8064-491D-832B-7B4DCEA0AEDD</title>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-420.000000, -1608.000000)" fill-rule="nonzero">
+            <g id="Connector/Ably-Copy-93" transform="translate(420.000000, 1608.000000)">
+                <g id="Group" transform="translate(1.000000, 1.000000)">
+                    <rect id="Rectangle" fill="#006CEB" x="0" y="0" width="46" height="46"></rect>
+                    <path d="M30.15576,17.5788489 L40.9980111,17.5788489 C40.9980111,24.6263044 37.3839444,28.4210489 30.15576,28.4210489 L30.15576,17.5788489 Z" id="Path" fill="#FFFFFF"></path>
+                    <path d="M15.8439333,28.4211 L5.00170778,28.4211 C5.00170778,21.3736444 8.6158,17.5789 15.8439333,17.5789 L15.8439333,28.4211 Z" id="Path" fill="#FFFFFF"></path>
+                    <path d="M28.4209978,30.1558622 L28.4209978,40.9981133 C21.3735422,40.9981133 17.5787978,37.3839956 17.5787978,30.1558622 L28.4209978,30.1558622 Z" id="Path" fill="#FFFFFF"></path>
+                    <path d="M30.1555556,15.8440867 L30.1555556,5.00186111 C37.2030111,5.00186111 40.9978067,8.61595333 40.9978067,15.8440867 L30.1555556,15.8440867 Z" id="Path" fill="#FFFFFF"></path>
+                    <polygon id="Path" fill="#FFFFFF" points="17.5786956 5.00186111 28.4209467 5.00186111 28.4209467 15.8440867 17.5786956 15.8440867"></polygon>
+                    <polygon id="Path" fill="#FFFFFF" points="5.001902 5.00194289 15.8441378 5.00194289 15.8441378 15.8441889 5.001902 15.8441889"></polygon>
+                    <polygon id="Path" fill="#FFFFFF" points="5.00170778 30.1558111 15.8439333 30.1558111 15.8439333 40.9980622 5.00170778 40.9980622"></polygon>
+                    <polygon id="Path" fill="#FFFFFF" points="30.1555556 30.1558111 40.9978067 30.1558111 40.9978067 40.9980622 30.1555556 40.9980622"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

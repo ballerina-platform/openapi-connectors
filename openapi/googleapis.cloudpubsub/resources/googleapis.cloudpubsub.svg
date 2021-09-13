@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>3894EA65-6D06-44A1-AF90-33C4E2311BA0</title>
+    <defs>
+        <linearGradient x1="50.0002779%" y1="0.000877708828%" x2="50.0002779%" y2="99.8446455%" id="linearGradient-1">
+            <stop stop-color="#4387FD" offset="0%"></stop>
+            <stop stop-color="#4683EA" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-420.000000, -1160.000000)" fill-rule="nonzero">
+            <g id="Connector/Ably-Copy-63" transform="translate(420.000000, 1160.000000)">
+                <g id="google-cloud-pub-sub-logo" transform="translate(0.000000, 3.000000)">
+                    <path d="M10.4214297,40.6497086 L0.577713236,23.5652881 C-0.192571079,22.2284577 -0.192571079,20.5814148 0.577713236,19.2445845 L10.4214297,2.16053968 C11.1918284,0.823510776 12.6156195,0 14.1564169,0 L33.8438498,0 C35.3845133,0 36.8081303,0.823627035 37.5784621,2.16053968 L47.4221785,19.2445845 C48.1926072,20.5815103 48.1926072,22.228738 47.4221785,23.5656638 L37.5784621,40.6497086 C36.808035,41.9864766 35.3844359,42.8098725 33.8438498,42.8098725 L14.1564169,42.8098725 C12.6155988,42.8098725 11.1917717,41.9864185 10.4214297,40.6493328 L10.4214297,40.6497086 Z" id="Path" fill="url(#linearGradient-1)"></path>
+                    <polygon id="Path" fill="#000000" opacity="0.07" points="45.3953104 27.2592473 33.4568511 15.2977481 31.2601086 15.7539038 25.7840023 10.2672603 24.0316333 13.5509048 23.0813865 17.3493215 24.689756 18.9612719 21.6005166 19.5932768 17.364531 15.3488496 14.4882908 18.1192251 19.7843977 23.4266378 14.1706669 27.8980155 29.2429905 43 36.5858405 42.9286083"></polygon>
+                    <g id="Group" transform="translate(13.395920, 9.528544)" fill="#FFFFFF">
+                        <ellipse id="Oval" cx="18.6738113" cy="7.20831185" rx="1.99649319" ry="2.00047187"></ellipse>
+                        <ellipse id="Oval" cx="2.53424136" cy="7.20831185" rx="1.99649319" ry="2.00047187"></ellipse>
+                        <ellipse id="Oval" cx="10.6042138" cy="21.2134937" rx="1.99686819" ry="2.00084761"></ellipse>
+                        <ellipse id="Oval" cx="10.6042138" cy="11.8765805" rx="3.225739" ry="3.23216736"></ellipse>
+                        <ellipse id="Oval" cx="2.53424136" cy="16.5448492" rx="2.53424136" ry="2.53929168"></ellipse>
+                        <ellipse id="Oval" cx="18.6738113" cy="16.5448492" rx="2.53424136" ry="2.53929168"></ellipse>
+                        <ellipse id="Oval" cx="10.6042138" cy="2.53966742" rx="2.53461636" ry="2.53966742"></ellipse>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

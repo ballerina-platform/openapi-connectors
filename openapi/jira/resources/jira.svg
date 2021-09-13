@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>18F430BA-2695-424B-B0B7-97FBC081CCA8</title>
+    <defs>
+        <linearGradient x1="67.3575093%" y1="40.3276956%" x2="40.9882577%" y2="81.6596195%" id="linearGradient-1">
+            <stop stop-color="#0052CC" offset="18%"></stop>
+            <stop stop-color="#2684FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="32.9723615%" y1="59.1664468%" x2="59.1726017%" y2="17.9899763%" id="linearGradient-2">
+            <stop stop-color="#0052CC" offset="18%"></stop>
+            <stop stop-color="#2684FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-320.000000, -600.000000)" fill-rule="nonzero">
+            <g id="Group" transform="translate(320.000000, 600.000000)">
+                <path d="M45.4492157,22.656811 L24.9837674,2.00211193 L23,0 L23,0 L7.59441406,15.5480465 L7.59441406,15.5480465 L0.550784309,22.656811 C-0.18359477,23.398904 -0.18359477,24.601096 0.550784309,25.343189 L14.6254883,39.5480465 L23,48 L38.4055859,32.4519535 L38.6441402,32.2111932 L45.4492157,25.343189 C46.1835948,24.601096 46.1835948,23.398904 45.4492157,22.656811 Z M23,31.0960929 L15.9689257,24 L23,16.9039071 L30.0310743,24 L23,31.0960929 Z" id="Shape" fill="#2684FF"></path>
+                <path d="M23,16.9039071 C18.3965788,12.2573677 18.3741434,4.73143353 22.949778,0.0570221753 L7.56302534,15.5797254 L15.937537,24.031679 L23,16.9039071 Z" id="Path" fill="url(#linearGradient-1)"></path>
+                <path d="M30.0499075,23.9809926 L23,31.0960929 C25.2219218,33.3372279 26.4702956,36.3776598 26.4702956,39.5480465 C26.4702956,42.7184331 25.2219218,45.758865 23,48 L23,48 L38.4244192,32.4329461 L30.0499075,23.9809926 Z" id="Path" fill="url(#linearGradient-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

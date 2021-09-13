@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ED6CCBF8-EAD0-4EEB-B5DA-52F9FB29B573</title>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-620.000000, -464.000000)" fill-rule="nonzero">
+            <g id="Connector/Ably-Copy-15" transform="translate(620.000000, 464.000000)">
+                <g id="giphy-logo-1" transform="translate(5.000000, 0.000000)">
+                    <polygon id="Path" fill="#000000" points="5.57040441 5.4864 33.4319853 5.4864 33.4319853 42.5136 5.56801471 42.5136"></polygon>
+                    <g id="Group">
+                        <polygon id="Path" fill="#04FF8E" points="0 4.1136 5.57040441 4.1136 5.57040441 43.8864 0 43.8864"></polygon>
+                        <polygon id="Path" fill="#8E2EFF" points="33.4295956 15.0864 39 15.0864 39 43.8864 33.4295956 43.8864"></polygon>
+                        <polygon id="Path" fill="#00C5FF" points="0 42.5136 39 42.5136 39 48 0 48"></polygon>
+                        <polygon id="Path" fill="#FFF152" points="0 0 22.2863971 0 22.2863971 5.4864 0 5.4864"></polygon>
+                        <polyline id="Path" fill="#FF5B5B" points="33.4295956 10.9704 33.4295956 5.4864 27.8568015 5.4864 27.8568015 0 22.2863971 0 22.2863971 16.4568 39 16.4568 39 10.9704"></polyline>
+                        <polyline id="Path" fill="#551C99" points="33.4295956 21.9432 33.4295956 16.4568 39 16.4568"></polyline>
+                    </g>
+                    <polyline id="Path" fill="#999131" points="22.2863971 0 22.2863971 5.4864 16.7136029 5.4864"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

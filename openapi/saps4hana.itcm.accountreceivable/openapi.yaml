@@ -1,0 +1,595 @@
+openapi: 3.0.1
+info:
+  title: Account Receivable Open Item Service
+  description: >
+    This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
+    
+    A user in SAP Intelligent Trade Claims Management can create and update existing accounts receivable open items within SAP Intelligent Trade Claims Management. Accounts receivable open items contribute to baseline information for claims to be built.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA ITCM Account Receivable Open Item
+    iconPath: "resources/saps4hana.itcm.accountreceivable.svg"
+  license:
+    name: SAP
+  version: 1.0.0
+externalDocs:
+  description: Business Documentation for Account Receivable Open Item Service
+  url: https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US/88c4ff8bbd8246ff9d8c0899f5939ccb.html
+# servers:
+# - url: https://{host}.{environment}.{domain}/v1
+#   variables:
+#     host:
+#       default: api.dev1
+#       description: Your host where SAP Intelligent Trade Claims Management has deployed
+#     environment:
+#       default: e2e
+#       description: Your defined environment for your SAP Intelligent Trade Claims Management account
+#     domain:
+#       default: eurekacloud.io
+security:
+- OAuth2: []
+tags:
+- name: AR Open Item
+- name: Reason Codes
+paths:
+  /arOpenItems:
+    post:
+      tags:
+      - AR Open Item
+      summary: Create a new AR Open Item
+      description: Using this API, user can create a AR Open Item. As of now, batch creation is not supported
+      operationId: createAROpenItem
+      requestBody:
+        description: Request payload to create AR Open Item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceivedParamDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAROpenItemsMessage'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /arOpenItems/{id}:
+    get:
+      tags:
+      - AR Open Item
+      summary: Get the detail of an AR Open Item by id
+      description: Using this API, user can get particular AR Open Item using {id}
+      operationId: getAROpenItemById
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResidualAccountingDocumentItem4ApiDTO'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /reasonCodes:
+    post:
+      tags:
+      - Reason Codes
+      summary: Create a Reason Code
+      description: Using this API, user can create a Reason Code. As of now, batch creation is not supported
+      operationId: batchCreateReasonCode
+      requestBody:
+        description: Request payload to create reason code
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonCodeMockDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseReasonCodesMessage'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /reasonCodes/{code}:
+    get:
+      tags:
+      - Reason Codes
+      summary: Get the detail of a Reason Code by code
+      description: Using this API, user can get particular Reason Code based on the {code}
+      operationId: getReasonCodeList
+      parameters:
+      - name: code
+        in: path
+        description: code
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReasonCodeDTO'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ReasonCodeDTO:
+      title: ReasonCodeDTO
+      type: object
+      example:
+        id: 170
+        code: '001'
+        description: ''
+        reasonCodeTradeType: '30'
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+        id:
+          type: integer
+          format: int64
+        reasonCodeTradeType:
+          type: string
+    ReasonCodeDescriptionDto:
+      title: ReasonCodeDescriptionDto
+      type: object
+      properties:
+        Language:
+          type: string
+        PaymentDifferenceReason:
+          type: string
+        PaymentDifferenceReasonDesc:
+          type: string
+        PaymentDifferenceReasonName:
+          type: string
+    ReasonCodeMockDTO:
+      title: ReasonCodeMockDTO
+      type: object
+      example:
+        IsDisputed: false
+        PaymentDifferenceReason: '8881'
+        PaytDiffIsChargedToSprtGLAcct: false
+        CompanyCode: 00LT
+        to_Text:
+        - PaymentDifferenceReasonDesc: '123'
+          PaymentDifferenceReason: '8881'
+          Language: BG
+          PaymentDifferenceReasonName: '888'
+          CompanyCode: 00LT
+        - PaymentDifferenceReasonDesc: '123'
+          PaymentDifferenceReason: '8881'
+          Language: LT
+          PaymentDifferenceReasonName: '888'
+          CompanyCode: 00LT
+      properties:
+        CompanyCode:
+          type: string
+        IsDisputed:
+          type: boolean
+        PaymentDifferenceReason:
+          type: string
+        PaytDiffIsChargedToSprtGLAcct:
+          type: boolean
+        to_Text:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReasonCodeDescriptionDto'
+    ReceivedParamDTO:
+      title: ReceivedParamDTO
+      example:
+        invoiceReference: '0090010066'
+        arOpenItemList:
+        - COMPANYCODE: '0002'
+          FISCALYEAR: '2020'
+          ACCOUNTINGDOCUMENT: '1400000008'
+          ACCOUNTINGDOCUMENTITEM: '002'
+          ASSIGNMENTREFERENCE: '0090010066'
+          PAYMENTDIFFERENCEREASON: '055'
+          AMOUNTINTRANSACTIONCURRENCY: 2659.6
+          TRANSACTIONCURRENCY: EUR
+          ITEMTTEXT: General payment on account
+          CUSTOMER: TMCH500000
+          DEBITCREDITCODE: !!binary |-
+            AA==
+          INVOICEREFERENCE: '0090010066'
+          INVOICEITEMREFERENCE: '001'
+          INVOICEREFERENCEFISCALYEAR: '2020'
+          BILLINGDOCUMENT: '0090010066'
+          CLEARINGDATE: null
+          CLEARINGCREATIONDATE: null
+          CREATIONDATE: '1597968000000'
+          CREATIONTIME: '36313000'
+          OPENITEMCREATIONDATE: null
+          OPENITEMCREATIONTIME: null
+          LASTCHANGEDATE: null
+          CHANGEDOCUMENTCREATIONDATE: null
+          CHANGEDOCUMENTCREATIONTIME: null
+          CLEAREDACCOUNTINGDOCUMENT: '1400000007'
+          CLEAREDACCOUNTINGDOCUMENTITEM: '002'
+          CLEARINGACCOUNTINGDOCUMENT: '1400000009'
+          recordScenario: AROpenItemsInitial
+        - COMPANYCODE: '0002'
+          FISCALYEAR: '2020'
+          ACCOUNTINGDOCUMENT: '1400000009'
+          ACCOUNTINGDOCUMENTITEM: '002'
+          ASSIGNMENTREFERENCE: '0090010066'
+          PAYMENTDIFFERENCEREASON: '055'
+          AMOUNTINTRANSACTIONCURRENCY: 1600.6
+          TRANSACTIONCURRENCY: EUR
+          ITEMTTEXT: General payment on account
+          CUSTOMER: TMCH500000
+          DEBITCREDITCODE: !!binary |-
+            AA==
+          CLEARINGACCOUNTINGDOCUMENT: ''
+          INVOICEREFERENCE: '0090010066'
+          INVOICEITEMREFERENCE: '001'
+          INVOICEREFERENCEFISCALYEAR: '2020'
+          BILLINGDOCUMENT: '0090010066'
+          CLEARINGDATE: null
+          CLEARINGCREATIONDATE: null
+          CREATIONDATE: '1597968000000'
+          CREATIONTIME: '37313000'
+          OPENITEMCREATIONDATE: null
+          OPENITEMCREATIONTIME: null
+          LASTCHANGEDATE: null
+          CHANGEDOCUMENTCREATIONDATE: null
+          CHANGEDOCUMENTCREATIONTIME: null
+          CLEAREDACCOUNTINGDOCUMENT: '1400000008'
+          CLEAREDACCOUNTINGDOCUMENTITEM: '002'
+          recordScenario: AROpenItemsInitial
+        - COMPANYCODE: '0002'
+          FISCALYEAR: '2020'
+          ACCOUNTINGDOCUMENT: '1400000007'
+          ACCOUNTINGDOCUMENTITEM: '002'
+          ASSIGNMENTREFERENCE: '0090010066'
+          PAYMENTDIFFERENCEREASON: '055'
+          AMOUNTINTRANSACTIONCURRENCY: 4339.6
+          TRANSACTIONCURRENCY: EUR
+          ITEMTTEXT: General payment on account
+          CUSTOMER: TMCH500000
+          DEBITCREDITCODE: !!binary |-
+            AA==
+          INVOICEREFERENCE: '0090010066'
+          INVOICEITEMREFERENCE: '001'
+          INVOICEREFERENCEFISCALYEAR: '2020'
+          BILLINGDOCUMENT: '0090010066'
+          CLEARINGDATE: null
+          CLEARINGCREATIONDATE: null
+          CREATIONDATE: '1597968000000'
+          CREATIONTIME: '38313000'
+          OPENITEMCREATIONDATE: null
+          OPENITEMCREATIONTIME: null
+          LASTCHANGEDATE: null
+          CHANGEDOCUMENTCREATIONDATE: null
+          CHANGEDOCUMENTCREATIONTIME: null
+          CLEAREDACCOUNTINGDOCUMENT: null
+          CLEAREDACCOUNTINGDOCUMENTITEM: null
+          CLEARINGACCOUNTINGDOCUMENT: '1400000008'
+          recordScenario: AROpenItemsInitial
+      type: object
+      properties:
+        arOpenItemList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResidualAccountingDocumentItemDTO'
+        invoiceReference:
+          type: string
+        salesArea:
+          $ref: '#/components/schemas/SalesAreaDTO'
+    ResidualAccountingDocumentItem4ApiDTO:
+      title: ResidualAccountingDocumentItem4ApiDTO
+      type: object
+      example:
+        assignmentReference: '999'
+        paymentDifferenceReason: '143'
+        customer: '9300485'
+        companyCode: '2333'
+        fiscalYear: '2021'
+        accountingDocument: '1400000015'
+        accountingDocumentItem: '2'
+        accountingDocumentItemText: null
+        transactionCurrency: USD
+        amountInTransactionCurrency: 2323.0
+        clearingDocFiscalYear: null
+        clearingAccountingDocument: null
+        clearedFiscalYear: null
+        clearedAccountingDocument: null
+        clearedAccountingDocumentItem: null
+        invoiceReference: '575647465337'
+        invoiceItemReference: '1'
+        tradeType: '30'
+        isOpen: true
+        creationDate: '2020-11-08T15:59:17'
+        creationTime: '1970-01-01T17:41:13'
+        customerName: Wholesaler
+        lastChangedDate: null
+        clearedDate: null
+        itemText: null
+      properties:
+        accountingDocument:
+          type: string
+        accountingDocumentItem:
+          type: string
+        accountingDocumentItemText:
+          type: string
+        amountInTransactionCurrency:
+          type: number
+        assignmentReference:
+          type: string
+        clearedAccountingDocument:
+          type: string
+        clearedAccountingDocumentItem:
+          type: string
+        clearedDate:
+          type: string
+          format: date-time
+        clearedFiscalYear:
+          type: string
+        clearingAccountingDocument:
+          type: string
+        clearingDocFiscalYear:
+          type: string
+        companyCode:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        creationTime:
+          type: string
+          format: date-time
+        customer:
+          type: string
+        customerName:
+          type: string
+        fiscalYear:
+          type: string
+        invoiceItemReference:
+          type: string
+        invoiceReference:
+          type: string
+        isOpen:
+          type: boolean
+        itemText:
+          type: string
+        lastChangedDate:
+          type: string
+          format: date-time
+        paymentDifferenceReason:
+          type: string
+        tradeType:
+          type: string
+        transactionCurrency:
+          type: string
+    ResponseForbiddenMessage:
+      type: object
+      example:
+        message: Access denied
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Forbidden Message
+    ResponseMessage:
+      type: object
+      example:
+        error: Invalid request body
+        message: request body cannot be empty or null
+        timestamp: '2021-01-18T18:33:18.914Z'
+        uri: /arOpenItems
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Response Message
+    ResidualAccountingDocumentItemDTO:
+      title: ResidualAccountingDocumentItemDTO
+      type: object
+      properties:
+        ACCOUNTINGDOCUMENT:
+          type: string
+        ACCOUNTINGDOCUMENTITEM:
+          type: string
+        AMOUNTINTRANSACTIONCURRENCY:
+          type: number
+        ASSIGNMENTREFERENCE:
+          type: string
+        BILLINGDOCUMENT:
+          type: string
+        CHANGEDOCUMENTCREATIONDATE:
+          type: integer
+          format: int64
+        CHANGEDOCUMENTCREATIONTIME:
+          type: integer
+          format: int64
+        CLEAREDACCOUNTINGDOCUMENT:
+          type: string
+        CLEAREDACCOUNTINGDOCUMENTITEM:
+          type: string
+        CLEAREDFISCALYEAR:
+          type: string
+        CLEARINGACCOUNTINGDOCUMENT:
+          type: string
+        CLEARINGCREATIONDATE:
+          type: integer
+          format: int64
+        CLEARINGDATE:
+          type: integer
+          format: int64
+        CLEARINGDOCFISCALYEAR:
+          type: string
+        COMPANYCODE:
+          type: string
+        CREATIONDATE:
+          type: integer
+          format: int64
+        CREATIONTIME:
+          type: integer
+          format: int64
+        CUSTOMER:
+          type: string
+        DEBITCREDITCODE:
+          type: string
+        FISCALYEAR:
+          type: string
+        INVOICEITEMREFERENCE:
+          type: string
+        INVOICEREFERENCE:
+          type: string
+        INVOICEREFERENCEFISCALYEAR:
+          type: string
+        ITEMTTEXT:
+          type: string
+        LASTCHANGEDATE:
+          type: integer
+          format: int64
+        OPENITEMCREATIONDATE:
+          type: integer
+          format: int64
+        OPENITEMCREATIONTIME:
+          type: integer
+          format: int64
+        PAYMENTDIFFERENCEREASON:
+          type: string
+        TRANSACTIONCURRENCY:
+          type: string
+        amountInCompanyCodeCurrency:
+          type: integer
+          format: int64
+        lastChangeDateTime:
+          type: string
+        recordScenario:
+          type: string
+        salesArea:
+          $ref: '#/components/schemas/SalesAreaDTO'
+        sortedTime:
+          type: string
+    SalesAreaDTO:
+      title: SalesAreaDTO
+      type: object
+      properties:
+        distributionChannelCode:
+          type: string
+        salesDivision:
+          type: string
+        salesOrganizationID:
+          type: string
+    ResponseAROpenItemsMessage:
+      type: object
+      example:
+        invoiceReference: '0090010066'
+        message: Success Created!
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        invoiceReference:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Response AROpenItem Message
+    ResponseReasonCodesMessage:
+      type: object
+      example:
+        PaymentDifferenceReason: '8881'
+        message: Success Created!
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        invoiceReference:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Response AROpenItem Message
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client ID and secret) from SAP ITCM, and be authorized to use the relevant scope. Refer to the <a href="https://developer.sap.com/api-reference/authentication/getting-started.html">full authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token
+          scopes: {}
+x-sap-shortText: The AR Open Item services represent AR Open Item that can be posted to or queried from SAP Intelligent Trade Claims Management by a user.

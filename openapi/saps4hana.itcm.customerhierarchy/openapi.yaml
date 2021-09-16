@@ -1,0 +1,1287 @@
+openapi: 3.0.1
+info:
+  title: Customer Hierarchy Service
+  description: >
+    This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
+    
+    In SAP Intelligent Trade Claims Management, users can group and organize their customers and nodes and assign them to a customer hierarchy.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA ITCM Customer Hierarchy
+    iconPath: "resources/saps4hana.itcm.customerhierarchy.svg"
+  license:
+    name: SAP
+  version: 1.0.0
+externalDocs:
+  description: Business Documentation for Customer Hierarchy Service
+  url: https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US/2d67d668cbca4cdfbd6ede19ad6d60e6.html
+servers:
+- url: https://{host}.{environment}.{domain}/v1
+  variables:
+    host:
+      default: api.dev1
+      description: Your host where SAP Intelligent Trade Claims Management has deployed
+    environment:
+      default: e2e
+      description: Your defined environment for your SAP Intelligent Trade Claims Management account
+    domain:
+      default: eurekacloud.io
+security:
+- OAuth2: []
+tags:
+- name: Customer Hierarchy
+paths:
+  /hierarchy/customers:
+    post:
+      tags:
+      - Customer Hierarchy
+      summary: Create a new Customer Hierarchy
+      description: Using this API, user can create a Customer Hierarchy. As of now, batch creation is not supported
+      operationId: createCustomerHierarchy
+      requestBody:
+        description: Request payload to create customer hierarchy
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HierarchyHeaderEO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HierarchyCreationResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /hierarchy/customers/header/{externalId}:
+    get:
+      tags:
+      - Customer Hierarchy
+      summary: Get Customer Hierarchy Nodes with header externalId
+      description: Using this API, user can get particular Customer Hierarchy using header {externalId}
+      operationId: getAllNodes
+      parameters:
+      - name: externalId
+        description: External Id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HierarchyNodeHeaderResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /hierarchy/customers/{externalId}:
+    get:
+      tags:
+      - Customer Hierarchy
+      summary: Get Customer Hierarchy Nodes with externalId
+      description: Using this API, user can get particular Customer Hierarchy header node using {externalId}
+      operationId: getNode
+      parameters:
+      - name: externalId
+        description: External Id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HierarchyNodeResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /hierarchy/customers/{headerExternalId}:
+    delete:
+      tags:
+      - Customer Hierarchy
+      summary: Delete a Customer Hierarchy Entity with externalId
+      description: Using this api, user can delete the particular Customer Hierarchy using {externalId}
+      operationId: deleteCustomerHierarchy
+      parameters:
+      - name: headerExternalId
+        description: Header external Id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDeleteMessage'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    Action:
+      title: Action
+      type: object
+      properties:
+        actionPermissionItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionPermissionItem'
+        enabled:
+          type: boolean
+        exposed:
+          type: boolean
+        implCommandCode:
+          type: integer
+        inputParameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputParameter'
+        name:
+          type: string
+        outputParameter:
+          $ref: '#/components/schemas/OutputParameter'
+        permission:
+          type: string
+        requireFullOn:
+          type: array
+          items:
+            type: string
+        requireReadOn:
+          type: array
+          items:
+            type: string
+        requiredPermission:
+          type: string
+        sideEffecting:
+          type: boolean
+        statical:
+          type: boolean
+    ActionPermissionItem:
+      title: Action Permission Item
+      type: object
+      properties:
+        id:
+          type: string
+        permissionId:
+          type: string
+        value:
+          type: string
+    Association:
+      title: Association
+      type: object
+      properties:
+        allowCustomizeDefaultValue:
+          type: boolean
+        allowCustomizeLabel:
+          type: boolean
+        allowCustomizeValidValues:
+          type: boolean
+        column:
+          type: string
+        defaultValue:
+          type: string
+        description:
+          type: string
+        descriptionChanged:
+          type: boolean
+        exposed:
+          type: boolean
+        fullName:
+          type: string
+        hasCustomerPersonalData:
+          type: boolean
+        implTargetTable:
+          type: string
+        label:
+          type: string
+        labelChanged:
+          type: boolean
+        mandatory:
+          type: boolean
+        multiplicity:
+          type: string
+        name:
+          type: string
+        namespace:
+          type: string
+        rawLabel:
+          type: string
+        readonly:
+          type: boolean
+        targetBOName:
+          type: string
+        targetBONamespace:
+          type: string
+        targetPropertyName:
+          type: string
+        updatable:
+          type: boolean
+        userDefined:
+          type: boolean
+    BusinessObject:
+      title: Business Object
+      type: object
+      properties:
+        bo:
+          $ref: '#/components/schemas/BusinessObject'
+        businessKey:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        businessKeyValue:
+          type: object
+          properties: {}
+        businessObjectType:
+          $ref: '#/components/schemas/BusinessObjectType'
+        changedAssociations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+        changedProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        id:
+          type: integer
+          format: int64
+        identifier:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        nodeType:
+          $ref: '#/components/schemas/NodeType'
+        parent:
+          $ref: '#/components/schemas/BusinessObjectNode'
+        typeCode:
+          type: string
+    BusinessObjectIdentifier:
+      title: Business Object Identifier
+      type: object
+      properties:
+        boName:
+          type: string
+        boNamespace:
+          type: string
+        boNodeTypeName:
+          type: string
+        keyValues:
+          type: object
+          properties: {}
+        valid:
+          type: boolean
+    BusinessObjectNode:
+      title: Business Object Node
+      type: object
+      properties:
+        bo:
+          $ref: '#/components/schemas/BusinessObject'
+        businessKey:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        changedAssociations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+        changedProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        id:
+          type: integer
+          format: int64
+        identifier:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        nodeType:
+          $ref: '#/components/schemas/NodeType'
+        parent:
+          $ref: '#/components/schemas/BusinessObjectNode'
+    BusinessObjectType:
+      title: Business Object Type
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+        analysable:
+          type: boolean
+        boSetName:
+          type: string
+        complexTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComplexType'
+        creatable:
+          type: boolean
+        customizable:
+          type: boolean
+        deletable:
+          type: boolean
+        enumerations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumType'
+        exposed:
+          type: boolean
+        fullName:
+          type: string
+        label:
+          type: string
+        lastModified:
+          type: string
+        metadataRepository:
+          $ref: '#/components/schemas/MetadataRepository'
+        name:
+          type: string
+        namespace:
+          type: string
+        nodeTypes:
+          $ref: '#/components/schemas/Iterable-NodeType-'
+        onBOChanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnBOChange'
+        pluralLabel:
+          type: string
+        rawLabel:
+          type: string
+        rawPluralLabel:
+          type: string
+        readable:
+          type: boolean
+        rootNode:
+          $ref: '#/components/schemas/NodeType'
+        updatable:
+          type: boolean
+        userDefined:
+          type: boolean
+    BusinessServiceType:
+      title: Business Service Type
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+        fullyQualifiedName:
+          type: string
+        namespace:
+          type: string
+        serviceName:
+          type: string
+        userDefined:
+          type: boolean
+    ComplexType:
+      title: Complex Type
+      type: object
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Element'
+        name:
+          type: string
+    Element:
+      title: Element
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+    EnumType:
+      title: Enum Type
+      type: object
+      properties:
+        exposed:
+          type: boolean
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+        name:
+          type: string
+    ResponseForbiddenMessage:
+      type: object
+      example:
+        message: Access denied
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Forbidden Message
+    ResponseNotFoundMessage:
+      type: object
+      example:
+        message: There is no data found based on the given inputs.
+        error: No Result Found
+        timestamp: '2021-01-18T19:37:13.701+00:00'
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Not Found Message
+    ResponseUnauthorizedMessage:
+      type: object
+      example:
+        message: Unauthorized/API key not found
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Unauthorized Message
+    ResponseDeleteMessage:
+      title: Response Delete
+      type: object
+      example:
+        message: Success Deleted
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    HierarchyCreationResponse:
+      title: Hierarchy Creation Response
+      type: object
+      example:
+        message: Created Successfully
+        timestamp: '2021-01-18T22:50:10.806+00:00'
+        externalId: '620003'
+      properties:
+        hierarchyHeader:
+          $ref: '#/components/schemas/HierarchyHeader'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    HierarchyHeader:
+      title: Hierarchy Header
+      type: object
+      properties:
+        CreatorCode:
+          type: integer
+          format: int64
+        Instance:
+          type: integer
+          format: int64
+        InternalCreationTime:
+          type: string
+          format: date-time
+        InternalUpdateTime:
+          type: string
+          format: date-time
+        UpdatorCode:
+          type: integer
+          format: int64
+        Version:
+          type: integer
+          format: int64
+        bo:
+          $ref: '#/components/schemas/BusinessObject'
+        businessCodeForMsgReport:
+          type: string
+        businessKey:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        businessKeyValue:
+          type: object
+          properties: {}
+        businessObjectType:
+          $ref: '#/components/schemas/BusinessObjectType'
+        businessSystem:
+          type: integer
+          format: int64
+        externalId:
+          type: string
+        hierarchyHeaderDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyHeaderDescription'
+        hierarchyNodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNode'
+        hierarchyType:
+          type: string
+        identifier:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        internalId:
+          type: string
+        isDeleted:
+          type: boolean
+        parent:
+          $ref: '#/components/schemas/BusinessObjectNode'
+        typeCode:
+          type: string
+    HierarchyHeaderDescription:
+      title: Hierarchy Header Description
+      type: object
+      properties:
+        CreatorCode:
+          type: integer
+          format: int64
+        Instance:
+          type: integer
+          format: int64
+        InternalCreationTime:
+          type: string
+          format: date-time
+        InternalUpdateTime:
+          type: string
+          format: date-time
+        UpdatorCode:
+          type: integer
+          format: int64
+        Version:
+          type: integer
+          format: int64
+        bo:
+          $ref: '#/components/schemas/BusinessObject'
+        businessCodeForMsgReport:
+          type: string
+        businessKey:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        businessKeyValue:
+          type: object
+          properties: {}
+        businessObjectType:
+          $ref: '#/components/schemas/BusinessObjectType'
+        description:
+          type: string
+        hierarchyHeader:
+          $ref: '#/components/schemas/HierarchyHeader'
+        id:
+          type: integer
+          format: int64
+        identifier:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        internalId:
+          type: string
+        languageKey:
+          type: string
+        parent:
+          $ref: '#/components/schemas/BusinessObjectNode'
+        typeCode:
+          type: string
+    HierarchyHeaderDescriptionEO:
+      title: Hierarchy Header DescriptionEO
+      type: object
+      properties:
+        description:
+          type: string
+        languageKey:
+          type: string
+    HierarchyHeaderEO:
+      title: Hierarchy HeaderEO
+      type: object
+      example:
+        businessSystem: 0
+        externalId: '620003'
+        hierarchyHeaderDescriptions:
+        - description: Colgate Inc
+          languageKey: EN
+        hierarchyNodes:
+        - externalId: '620004'
+          externalNodeIdPath: string
+          externalParentId: ''
+          hierarchyNodeAssignments:
+          - assignmentType: C1
+            objectId: '620004'
+          hierarchyNodeDescriptions:
+          - description: Customer description for externalId 620003
+            languageKey: EN
+          internalNodeIdPath: '620003.620004'
+          leafNode: true
+          nodeLevel: 1
+        - externalId: '620005'
+          externalNodeIdPath: string
+          externalParentId: '620004'
+          hierarchyNodeAssignments:
+          - assignmentType: C1
+            objectId: '620005'
+          hierarchyNodeDescriptions:
+          - description: Customer description for externalId 620005
+            languageKey: EN
+          internalNodeIdPath: '620003.620005'
+          leafNode: true
+          nodeLevel: 1
+        hierarchyType: C1
+        isDeleted: true
+      properties:
+        businessSystem:
+          type: integer
+          format: int64
+        externalId:
+          type: string
+        hierarchyHeaderDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyHeaderDescriptionEO'
+        hierarchyNodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeEO'
+        hierarchyType:
+          type: string
+        isDeleted:
+          type: boolean
+    HierarchyNode:
+      title: Hierarchy Node
+      type: object
+      properties:
+        CreatorCode:
+          type: integer
+          format: int64
+        Instance:
+          type: integer
+          format: int64
+        InternalCreationTime:
+          type: string
+          format: date-time
+        InternalUpdateTime:
+          type: string
+          format: date-time
+        UpdatorCode:
+          type: integer
+          format: int64
+        Version:
+          type: integer
+          format: int64
+        bo:
+          $ref: '#/components/schemas/BusinessObject'
+        businessCodeForMsgReport:
+          type: string
+        businessKey:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        businessKeyValue:
+          type: object
+          properties: {}
+        businessObjectType:
+          $ref: '#/components/schemas/BusinessObjectType'
+        externalId:
+          type: string
+        externalIdNodePath:
+          type: string
+        externalParentId:
+          type: string
+        hierarchyHeader:
+          $ref: '#/components/schemas/HierarchyHeader'
+        hierarchyId:
+          type: string
+        hierarchyNodeAssignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeAssignment'
+        hierarchyNodeDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeDescription'
+        id:
+          type: integer
+          format: int64
+        identifier:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        internalNodeId:
+          type: string
+        leafNode:
+          type: boolean
+        nodeLevel:
+          type: integer
+          format: int32
+        nodePath:
+          type: string
+        parent:
+          $ref: '#/components/schemas/BusinessObjectNode'
+        parentId:
+          type: string
+        typeCode:
+          type: string
+    HierarchyNodeAssignment:
+      title: Hierarchy Node Assignment
+      type: object
+      properties:
+        CreatorCode:
+          type: integer
+          format: int64
+        Instance:
+          type: integer
+          format: int64
+        InternalCreationTime:
+          type: string
+          format: date-time
+        InternalUpdateTime:
+          type: string
+          format: date-time
+        UpdatorCode:
+          type: integer
+          format: int64
+        Version:
+          type: integer
+          format: int64
+        assignmentType:
+          type: string
+        bo:
+          $ref: '#/components/schemas/BusinessObject'
+        businessCodeForMsgReport:
+          type: string
+        businessKey:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        businessKeyValue:
+          type: object
+          properties: {}
+        businessObjectType:
+          $ref: '#/components/schemas/BusinessObjectType'
+        hierarchyNode:
+          $ref: '#/components/schemas/HierarchyNode'
+        identifier:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        internalId:
+          type: string
+        objectId:
+          type: string
+        parent:
+          $ref: '#/components/schemas/BusinessObjectNode'
+        typeCode:
+          type: string
+    HierarchyNodeAssignmentDTO:
+      title: Hierarchy Node AssignmentDTO
+      type: object
+      properties:
+        assignmentType:
+          maxLength: 4
+          minLength: 0
+          pattern: '[a-zA-Z0-9/ ]*'
+          type: string
+        objectId:
+          maxLength: 40
+          minLength: 0
+          type: string
+    HierarchyNodeAssignmentEO:
+      title: Hierarchy Node AssignmentEO
+      type: object
+      properties:
+        assignmentType:
+          type: string
+        objectId:
+          type: string
+    HierarchyNodeDTO:
+      title: Hierarchy NodeDTO
+      type: object
+      properties:
+        externalId:
+          maxLength: 40
+          minLength: 0
+          type: string
+        externalParentId:
+          maxLength: 40
+          minLength: 0
+          type: string
+        hierarchyNodeAssignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeAssignmentDTO'
+        hierarchyNodeDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeDescriptionDTO'
+        nodeLevel:
+          type: integer
+          format: int32
+    HierarchyNodeDescription:
+      title: Hierarchy Node Description
+      type: object
+      properties:
+        CreatorCode:
+          type: integer
+          format: int64
+        Instance:
+          type: integer
+          format: int64
+        InternalCreationTime:
+          type: string
+          format: date-time
+        InternalUpdateTime:
+          type: string
+          format: date-time
+        UpdatorCode:
+          type: integer
+          format: int64
+        Version:
+          type: integer
+          format: int64
+        bo:
+          $ref: '#/components/schemas/BusinessObject'
+        businessCodeForMsgReport:
+          type: string
+        businessKey:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        businessKeyValue:
+          type: object
+          properties: {}
+        businessObjectType:
+          $ref: '#/components/schemas/BusinessObjectType'
+        description:
+          type: string
+        hierarchyNode:
+          $ref: '#/components/schemas/HierarchyNode'
+        identifier:
+          $ref: '#/components/schemas/BusinessObjectIdentifier'
+        internalId:
+          type: string
+        languageKey:
+          type: string
+        parent:
+          $ref: '#/components/schemas/BusinessObjectNode'
+        typeCode:
+          type: string
+    HierarchyNodeDescriptionDTO:
+      title: Hierarchy Node DescriptionDTO
+      type: object
+      properties:
+        description:
+          maxLength: 40
+          minLength: 0
+          pattern: '[a-zA-Z0-9/.+!@#$%^&*()+\- ]*'
+          type: string
+        languageKey:
+          maxLength: 2
+          minLength: 2
+          pattern: '[a-zA-Z0-9/ ]*'
+          type: string
+    HierarchyNodeDescriptionEO:
+      title: Hierarchy Node DescriptionEO
+      type: object
+      properties:
+        description:
+          type: string
+        languageKey:
+          type: string
+    HierarchyNodeEO:
+      title: Hierarchy NodeEO
+      type: object
+      properties:
+        externalId:
+          type: string
+        externalNodeIdPath:
+          type: string
+        externalParentId:
+          type: string
+        hierarchyNodeAssignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeAssignmentEO'
+        hierarchyNodeDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeDescriptionEO'
+        internalNodeIdPath:
+          type: string
+        leafNode:
+          type: boolean
+        nodeLevel:
+          type: integer
+          format: int32
+    HierarchyNodeResponse:
+      title: Hierarchy Node Response
+      type: object
+      example:
+        message: Fetched Customer Hierarchy Nodes Successfully with externalId
+        timestamp: '2021-01-18T22:50:28.675+00:00'
+        hierarchyNodeData:
+        - externalId: '620004'
+          nodeLevel: 1
+          externalParentId: null
+          hierarchyNodeDescriptions:
+          - languageKey: EN
+            description: Customer description for externalId 620003
+          hierarchyNodeAssignments:
+          - objectId: '620004'
+            assignmentType: C1
+      properties:
+        hierarchyNodeData:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeDTO'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    HierarchyNodeHeaderResponse:
+      title: Hierarchy Node Response
+      type: object
+      example:
+        message: Fetched Customer Hierarchy Nodes Successfully with headerExternalId
+        timestamp: '2021-01-19T03:53:29.573+00:00'
+        hierarchyNodeData:
+        - externalId: '620004'
+          nodeLevel: 1
+          externalParentId: null
+          hierarchyNodeDescriptions:
+          - languageKey: EN
+            description: Customer description for externalId 620003
+          hierarchyNodeAssignments:
+          - objectId: '620004'
+            assignmentType: C1
+        - externalId: '620005'
+          nodeLevel: 2
+          externalParentId: '620004'
+          hierarchyNodeDescriptions:
+          - languageKey: EN
+            description: Customer description for externalId 620005
+          hierarchyNodeAssignments:
+          - objectId: '620005'
+            assignmentType: C1
+      properties:
+        hierarchyNodeData:
+          type: array
+          items:
+            $ref: '#/components/schemas/HierarchyNodeDTO'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    InputParameter:
+      title: InputParameter
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+    Iterable-NodeType-:
+      title: Iterable«NodeType»
+      type: object
+    Member:
+      title: Member
+      type: object
+      properties:
+        exposed:
+          type: boolean
+        label:
+          type: string
+        name:
+          type: string
+        rawLabel:
+          type: string
+        validValue:
+          type: string
+        value:
+          type: integer
+          format: int32
+    MetadataRepository:
+      title: MetadataRepository
+      type: object
+      properties:
+        businessObjectTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessObjectType'
+        businessServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessServiceType'
+        version:
+          type: integer
+          format: int32
+    Node:
+      title: Node
+      type: object
+      properties:
+        name:
+          type: string
+        nodeType:
+          $ref: '#/components/schemas/NodeType'
+        type:
+          type: string
+    NodeType:
+      title: NodeType
+      type: object
+      properties:
+        associations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+        businessKey:
+          type: array
+          items:
+            type: string
+        businessObjectType:
+          $ref: '#/components/schemas/BusinessObjectType'
+        displayName:
+          type: array
+          items:
+            type: string
+        exposed:
+          type: boolean
+        exposedProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        extTable:
+          type: string
+        fullName:
+          type: string
+        implTable:
+          type: string
+        label:
+          type: string
+        name:
+          type: string
+        nodeSetName:
+          type: string
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Node'
+        parentKey:
+          $ref: '#/components/schemas/ParentRef'
+        pluralLabel:
+          type: string
+        primaryKey:
+          type: array
+          items:
+            type: string
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        rawLabel:
+          type: string
+        rawPluralLabel:
+          type: string
+        rootNodeType:
+          type: boolean
+        uniqueConstraints:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        userDefined:
+          type: boolean
+        userFieldsMeta:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+    OnBOChange:
+      title: OnBOChange
+      type: object
+      properties:
+        bindingPath:
+          type: string
+        name:
+          type: string
+    OutputParameter:
+      title: OutputParameter
+      type: object
+      properties:
+        type:
+          type: string
+    ParentRef:
+      title: ParentRef
+      type: object
+      properties:
+        column:
+          type: string
+        name:
+          type: string
+    Property:
+      title: Property
+      type: object
+      properties:
+        allowCustomizeDefaultValue:
+          type: boolean
+        allowCustomizeDescription:
+          type: boolean
+        allowCustomizeLabel:
+          type: boolean
+        allowCustomizeValidValues:
+          type: boolean
+        allowCustomizeValidationRule:
+          type: boolean
+        baseType:
+          type: string
+        customErrorMessage:
+          type: string
+        customizable:
+          type: boolean
+        defaultValue:
+          type: string
+        description:
+          type: string
+        descriptionChanged:
+          type: boolean
+        embedded:
+          type: boolean
+        embeddedColumnBaseType:
+          type: string
+        exposed:
+          type: boolean
+        fullName:
+          type: string
+        globalSearchResult:
+          type: boolean
+        globalSearchable:
+          type: boolean
+        implColumn:
+          type: string
+        label:
+          type: string
+        labelChanged:
+          type: boolean
+        mandatory:
+          type: boolean
+        name:
+          type: string
+        namespace:
+          type: string
+        rawLabel:
+          type: string
+        readOnly:
+          type: boolean
+        searchPath:
+          type: string
+        searchable:
+          type: boolean
+        sensitive:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        skipValidation:
+          type: boolean
+        type:
+          type: string
+        unique:
+          type: boolean
+        updatable:
+          type: boolean
+        userDefined:
+          type: boolean
+        validValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidValue'
+        validationRule:
+          type: string
+        valueConverter:
+          type: string
+          enum:
+          - ENUM_STRING
+          - ENUM_ORDINAL
+    ValidValue:
+      title: ValidValue
+      type: object
+      properties:
+        deletable:
+          type: boolean
+        description:
+          type: string
+        rawDescription:
+          type: string
+        systemPredefined:
+          type: boolean
+        value:
+          type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client ID, secret, and geolocation) from SAP ITCM, and be authorized to use the relevant scope. Refer to the <a href="https://developer.sap.com/api-reference/authentication/getting-started.html">full authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token
+          scopes: {}
+x-sap-shortText: The Customer Hierarchy service represent customer hierarchy that can be posted to, deleted or queried from SAP Intelligent Trade Claims Management by a user.

@@ -20,7 +20,7 @@ For more details please check [here](https://openweathermap.org/api/one-call-api
 
 | Ballerina Language Versions  | OpenWeatherMap API |
 |:----------------------------:|:------------------:|
-|  Swan Lake Alpha 5           |   2.5              |
+|  Swan Lake beta 3            |   2.5              |
 
 
 # Quickstart

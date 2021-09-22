@@ -1,0 +1,342 @@
+openapi: 3.0.1
+info:
+  title: barcodeapi
+  description: Barcode APIs let you generate barcode images, and recognize values
+    from images of barcodes.
+  version: v1
+servers:
+- url: https://testapi.cloudmersive.com/
+paths:
+  /barcode/lookup/ean:
+    post:
+      tags:
+      - BarcodeLookup
+      summary: Lookup EAN barcode value, return product data
+      description: Lookup an input EAN barcode and return key details about the product
+      operationId: Barcode Ean Lookup
+      requestBody:
+        description: Barcode value
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/xml:
+            schema:
+              type: string
+          text/xml:
+            schema:
+              type: string
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BarcodeLookupResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BarcodeLookupResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BarcodeLookupResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/BarcodeLookupResponse'
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /barcode/scan/image:
+    post:
+      tags:
+      - BarcodeScan
+      summary: Scan and recognize an image of a barcode
+      description: Scan an image or photo of a barcode and return the result.  Supported
+        barcode types include AZTEC, CODABAR, CODE_39, CODE_93, CODE_128, DATA_MATRIX,
+        EAN_8, EAN_13, ITF, MAXICODE, PDF_417, QR_CODE, RSS_14, RSS_EXPANDED, UPC_A,
+        UPC_E, All_1D, UPC_EAN_EXTENSION, MSI, PLESSEY, IMB
+      operationId: Barcode Scan_Image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              description: The image file to scan
+              required:
+              - imageFile
+              properties:
+                imageFile:
+                  type: string
+                  description: Image file to perform the operation on.  Common file
+                    formats such as PNG, JPEG are supported.
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BarcodeScanResult'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BarcodeScanResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BarcodeScanResult'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/BarcodeScanResult'
+      security:
+      - Apikey: []
+  /barcode/generate/qrcode:
+    post:
+      tags:
+      - GenerateBarcode
+      summary: Generate a QR code barcode as PNG file
+      description: Generate a QR code barcode as a PNG file, a type of 2D barcode
+        which can encode free-form text information
+      operationId: Generate Barcode_QRCode
+      requestBody:
+        description: QR code text to convert into the QR code barcode
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/xml:
+            schema:
+              type: string
+          text/xml:
+            schema:
+              type: string
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                title: OutputContent
+                type: string
+                description: Output file content from the operation
+                format: byte
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /barcode/generate/upc-a:
+    post:
+      tags:
+      - GenerateBarcode
+      summary: Generate a UPC-A code barcode as PNG file
+      description: Validate and generate a UPC-A barcode as a PNG file, a type of
+        1D barcode
+      operationId: Generate Barcode_UPCA
+      requestBody:
+        description: UPC-A barcode value to generate from
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/xml:
+            schema:
+              type: string
+          text/xml:
+            schema:
+              type: string
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                title: OutputContent
+                type: string
+                description: Output file content from the operation
+                format: byte
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /barcode/generate/upc-e:
+    post:
+      tags:
+      - GenerateBarcode
+      summary: Generate a UPC-E code barcode as PNG file
+      description: Validates and generate a UPC-E barcode as a PNG file, a type of
+        1D barcode
+      operationId: Generate Barcode_UPCE
+      requestBody:
+        description: UPC-E barcode value to generate from
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/xml:
+            schema:
+              type: string
+          text/xml:
+            schema:
+              type: string
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                title: OutputContent
+                type: string
+                description: Output file content from the operation
+                format: byte
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /barcode/generate/ean-13:
+    post:
+      tags:
+      - GenerateBarcode
+      summary: Generate a EAN-13 code barcode as PNG file
+      description: Validates and generate a EAN-13 barcode as a PNG file, a type of
+        1D barcode
+      operationId: Generate Barcode_EAN13
+      requestBody:
+        description: Barcode value to generate from
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/xml:
+            schema:
+              type: string
+          text/xml:
+            schema:
+              type: string
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                title: OutputContent
+                type: string
+                description: Output file content from the operation
+                format: byte
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+  /barcode/generate/ean-8:
+    post:
+      tags:
+      - GenerateBarcode
+      summary: Generate a EAN-8 code barcode as PNG file
+      description: Validates and generate a EAN-8 barcode as a PNG file, a type of
+        1D barcode
+      operationId: Generate Barcode_EAN8
+      requestBody:
+        description: Barcode value to generate from
+        content:
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/xml:
+            schema:
+              type: string
+          text/xml:
+            schema:
+              type: string
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                title: OutputContent
+                type: string
+                description: Output file content from the operation
+                format: byte
+      security:
+      - Apikey: []
+      x-codegen-request-body-name: value
+components:
+  schemas:
+    BarcodeLookupResponse:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if operation was successful, false otherwise
+        Matches:
+          type: array
+          description: Resulting product matches for the input barcode
+          items:
+            $ref: '#/components/schemas/ProductMatch'
+      description: Result of performing a barcode lookup
+    ProductMatch:
+      type: object
+      properties:
+        EAN:
+          type: string
+          description: EAN code for the product
+        Title:
+          type: string
+          description: Title of the product
+      description: Matching product for the input barcode
+    BarcodeScanResult:
+      type: object
+      properties:
+        Successful:
+          type: boolean
+          description: True if the operation was successful, false otherwise
+        BarcodeType:
+          type: string
+          description: The type of the barcode; possible values are AZTEC, CODABAR,
+            CODE_39, CODE_93, CODE_128, DATA_MATRIX, EAN_8, EAN_13, ITF, MAXICODE,
+            PDF_417, QR_CODE, RSS_14, RSS_EXPANDED, UPC_A, UPC_E, All_1D, UPC_EAN_EXTENSION,
+            MSI, PLESSEY, IMB
+        RawText:
+          type: string
+          description: The barcode text
+      description: Result of the barcode scan
+  securitySchemes:
+    Apikey:
+      type: apiKey
+      description: API Key Authentication
+      name: Apikey
+      in: header

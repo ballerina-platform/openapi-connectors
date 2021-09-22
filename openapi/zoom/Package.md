@@ -38,4 +38,4 @@ The Zoom connector consume the data exposed in https://api.zoom.us/v2. It is cur
 
 | Ballerina Language Versions  | Zoom API          |
 |:----------------------------:|:-----------------:|
-|  Swan Lake Alpha 5           |   V2              |
+|  Swan Lake Beta 3            |   V2              |

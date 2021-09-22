@@ -12,9 +12,9 @@ The Medium connector consume the data exposed in https://developers.medium.com/.
 
 ## Compatibility
 
-| Ballerina Language Versions  | Medium API     |
+| Ballerina Language Versions  | Medium API        |
 |:----------------------------:|:-----------------:|
-|  Swan Lake Alpha 5           |   V1              |
+|  Swan Lake Beta 3            |   V1              |
 
 ## Configuration
 

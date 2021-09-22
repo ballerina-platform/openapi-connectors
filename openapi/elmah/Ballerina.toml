@@ -1,0 +1,10 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["Elmah.io", "developer tools", "logging"]
+org = "ballerinax"
+name = "elmah"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "0.1.1-SNAPSHOT"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

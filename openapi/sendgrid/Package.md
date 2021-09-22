@@ -19,4 +19,4 @@ The Sendgrid connector consume the data exposed in https://api.sendgrid.com/v3. 
 
 | Ballerina Language Versions  | Sendgrid API             |
 |:----------------------------:|:------------------------:|
-|  Swan Lake Alpha 5           |   v3                     |
+|  Swan Lake Beta 3            |   v3                     |

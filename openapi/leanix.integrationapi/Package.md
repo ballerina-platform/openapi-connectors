@@ -7,7 +7,7 @@ LeanIX Integration API connector consume the data exposed in https://eu.leanix.n
 #### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Alpha5**  |
+| Ballerina Language Version    | **Swan Lake Beta3**   |
 | LeanIX Integration API        | **V2**                |
 
 ### Package Overview

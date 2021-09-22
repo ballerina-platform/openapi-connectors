@@ -1,0 +1,1116 @@
+---
+openapi: 3.0.0
+info:
+  version: 1.3.6
+  title: Voice API
+  x-init-description: >
+    The HTTP client initialization requires setting the API credentials. 
+  
+    Please create a [Vonage account](https://dashboard.nexmo.com/) and obtain tokens following [this guide](https://dashboard.nexmo.com/getting-started/voice).
+  description:
+    The Voice API lets you create outbound calls, control in-progress calls
+    and get information about historical calls. More information about the Voice API
+    can be found at <https://developer.nexmo.com/voice/voice-api/overview>.
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: "https://developer.nexmo.com/"
+servers:
+  - url: https://api.nexmo.com/v1/calls
+paths:
+  "/":
+    get:
+      tags:
+        - Calls
+      security:
+        - bearerAuth: []
+      summary: Get details of your calls
+      description: Get details of your calls
+      operationId: getCalls
+      parameters:
+        - name: status
+          in: query
+          description: Filter by call status
+          schema:
+            type: string
+            example: started
+            enum:
+              - started
+              - ringing
+              - answered
+              - machine
+              - completed
+              - busy
+              - cancelled
+              - failed
+              - rejected
+              - timeout
+              - unanswered
+        - name: date_start
+          in: query
+          description: Return the records that occurred after this point in time
+          schema:
+            type: string
+            format: date-time
+            example: 2016-11-14T07:45:14Z
+        - name: date_end
+          in: query
+          description: Return the records that occurred before this point in time
+          schema:
+            type: string
+            format: date-time
+            example: 2016-11-14T07:45:14Z
+        - name: page_size
+          in: query
+          description: Return this amount of records in the response
+          schema:
+            type: integer
+            maximum: 100
+            minimum: 1
+            default: 10
+        - name: record_index
+          in: query
+          description: Return calls from this index in the response
+          schema:
+            type: integer
+            default: 0
+        - name: order
+          in: query
+          description: Either ascending or  descending order.
+          schema:
+            type: string
+            default: asc
+            enum:
+              - asc
+              - desc
+        - name: conversation_uuid
+          in: query
+          description: Return all the records associated with a specific conversation.
+          schema:
+            type: string
+            format: uuid
+            title: The UUID of the Conversation
+            example: CON-f972836a-550f-45fa-956c-12a2ab5b7d22
+            description: The unique identifier for the conversation this call leg is part of.
+            # $ref: "#/components/schemas/conversation_uuid"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GetCallsResponse"
+    post:
+      tags:
+        - Calls
+      security:
+        - bearerAuth: []
+      summary: Create an outbound call
+      description: Create an outbound Call
+      operationId: createCall
+      requestBody:
+        description: Call Details
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - "$ref": "#/components/schemas/CreateCallRequestNcco"
+                - "$ref": "#/components/schemas/CreateCallRequestAnswerUrl"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CreateCallResponse"
+  "/{uuid}":
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: UUID of the Call
+        example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    get:
+      tags:
+        - Calls
+      security:
+        - bearerAuth: []
+      summary: Get detail of a specific call
+      description: Get detail of a specific call
+      operationId: getCall
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GetCallResponse"
+    put:
+      tags:
+        - Calls
+      security:
+        - bearerAuth: []
+      summary: Modify an in progress call
+      description: Modify an in progress call
+      operationId: updateCall
+      requestBody:
+        description: Request Body
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - "$ref": "#/components/schemas/UpdateCallRequestTransferNcco"
+                - "$ref": "#/components/schemas/UpdateCallRequestTransferAnswerUrl"
+                - "$ref": "#/components/schemas/UpdateCallRequestHangup"
+                - "$ref": "#/components/schemas/UpdateCallRequestMute"
+                - "$ref": "#/components/schemas/UpdateCallRequestUnmute"
+                - "$ref": "#/components/schemas/UpdateCallRequestEarmuff"
+                - "$ref": "#/components/schemas/UpdateCallRequestUnearmuff"
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+
+  "/{uuid}/stream":
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: UUID of the Call Leg
+        example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    put:
+      tags:
+        - Stream Audio
+      security:
+        - bearerAuth: []
+      summary: Play an audio file into a call
+      description: Play an audio file into a call
+      operationId: startStream
+      requestBody:
+        description: action to perform
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/StartStreamRequest"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StartStreamResponse"
+
+    delete:
+      tags:
+        - Stream Audio
+      security:
+        - bearerAuth: []
+      summary: Stop playing an audio file into a call
+      description: Stop playing an audio file into a call
+      operationId: stopStream
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StopStreamResponse"
+
+  "/{uuid}/talk":
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: UUID of the Call Leg
+        example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    put:
+      tags:
+        - Play TTS
+      security:
+        - bearerAuth: []
+      summary: Play text to speech into a call
+      description: Play text to speech into a call
+      operationId: startTalk
+      requestBody:
+        description: Action to perform
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/StartTalkRequest"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StartTalkResponse"
+
+    delete:
+      tags:
+        - Play TTS
+      security:
+        - bearerAuth: []
+      summary: Stop text to speech in a call
+      description: Stop text to speech in a call
+      operationId: stopTalk
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StopTalkResponse"
+
+  "/{uuid}/dtmf":
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: UUID of the Call Leg
+        example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+    put:
+      tags:
+        - Play DTMF
+      security:
+        - bearerAuth: []
+      summary: Play DTMF tones into a call
+      description: Play DTMF tones into a call
+      operationId: startDTMF
+      requestBody:
+        description: action to perform
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DTMFRequest"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DTMFResponse"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    DTMFRequest:
+      type: object
+      properties:
+        digits:
+          type: string
+          example: 1713
+          description: The digits to send
+
+    StartTalkRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: The text to read
+          example: Hello. How are you today?
+        language:
+          $ref: "#/components/schemas/language"
+        style:
+          $ref: "#/components/schemas/style"
+        voice_name:
+          $ref: "#/components/schemas/voice_name"
+        loop:
+          type: integer
+          description: The number of times to repeat the text the file, 0
+            for infinite
+          default: 1
+        level:
+          type: string
+          description: The volume level that the speech is played. This can be any value between `-1` to `1` in `0.1` increments, with `0` being the default.
+          example: "0.4"
+          default: "0"
+
+    StartStreamRequest:
+      type: object
+      required:
+        - stream_url
+      properties:
+        stream_url:
+          x-nexmo-developer-collection-description-shown: true
+          example: ["https://example.com/waiting.mp3"]
+          type: array
+          items:
+            type: string
+        loop:
+          type: integer
+          description: the number of times to play the file, 0 for infinite
+          default: 1
+        level:
+          type: string
+          description: Set the audio level of the stream in the range `-1 >= level <= 1` with a precision of 0.1. The default value is 0.
+          example: "0.4"
+          default: "0"
+    
+    RequestTransferActionParam:
+      description: Transfer the call to a new NCCO
+      type: string
+      example: transfer
+      enum:
+        - transfer
+
+
+    UpdateCallRequestTransferAnswerUrl:
+      title: Transfer with Answer URL
+      type: object
+      required:
+        - action
+        - destination
+      properties:
+        action: 
+          $ref: "#/components/schemas/RequestTransferActionParam" 
+        destination:
+          type: object
+          required:
+            - type
+            - url
+          properties:
+            type:
+              type: string
+              description: Always `ncco`
+              example: ncco
+              x-nexmo-developer-collection-description-shown: true
+            url:
+              type: array
+              example: ["https://example.com/ncco.json"]
+              items:
+                type: string
+              description: The URL that Vonage makes a request to. Must return an NCCO.
+              x-nexmo-developer-collection-description-shown: true
+
+    UpdateCallRequestTransferNcco:
+      title: Transfer with NCCO
+      type: object
+      required:
+        - action
+        - destination
+      properties:
+        action:
+          $ref: "#/components/schemas/RequestTransferActionParam" 
+        destination:
+          type: object
+          required:
+            - type
+            - ncco
+          properties:
+            type:
+              type: string
+              example: ncco
+              description: Always `ncco`
+              x-nexmo-developer-collection-description-shown: true
+            ncco:
+              type: array
+              example:
+                - action: talk
+                  text: Hello World
+              items:
+                type: object
+              description: Refer to the [NCCO Guide](https://developer.nexmo.com/voice/voice-api/ncco-reference) for a description of possible NCCO parameters.
+              x-nexmo-developer-collection-description-shown: true
+
+    UpdateCallRequestHangup:
+      title: Hangup
+      properties:
+        action:
+          type: string
+          example: hangup
+          enum:
+            - hangup
+          description: End the call for the specified UUID
+
+    UpdateCallRequestMute:
+      title: Mute
+      properties:
+        action:
+          type: string
+          example: mute
+          enum:
+            - mute
+          description: Mute the specified UUID
+
+    UpdateCallRequestUnmute:
+      title: Unmute
+      properties:
+        action:
+          type: string
+          example: unmute
+          enum:
+            - mute
+          description: Unmute the specified UUID
+
+    UpdateCallRequestEarmuff:
+      title: Earmuff
+      properties:
+        action:
+          type: string
+          example: earmuff
+          enum:
+            - earmuff
+          description: Prevent the specified UUID from hearing audio
+
+    UpdateCallRequestUnearmuff:
+      title: Unearmuff
+      properties:
+        action:
+          type: string
+          example: unearmuff
+          enum:
+            - unearmuff
+          description: Allow the specified UUID to hear audio
+
+    CreateCallRequestNcco:
+      allOf:
+        - title: With NCCO
+          required:
+            - ncco
+        - properties:
+            ncco:
+              description: |
+                The [Nexmo Call Control Object](/voice/voice-api/ncco-reference) to use for this call.
+              type: array
+              x-nexmo-developer-collection-description-shown: true
+              example:
+                - action: talk
+                  text: Hello World
+              items:
+                type: object
+        - "$ref": "#/components/schemas/CreateCallRequestBase"
+
+    CreateCallRequestAnswerUrl:
+      allOf:
+        - title: With Answer URL
+          required:
+            - answer_url
+        - properties:
+            answer_url:
+              description: |
+                The webhook endpoint where you provide the [Nexmo Call Control Object](/voice/voice-api/ncco-reference) that governs this call.
+              type: array
+              x-nexmo-developer-collection-description-shown: true
+              example: ["https://example.com/answer"]
+              items:
+                type: string
+            answer_method:
+              description: The HTTP method used to send event information to answer_url.
+              type: string
+              default: GET
+              enum:
+                - POST
+                - GET
+        - "$ref": "#/components/schemas/CreateCallRequestBase"
+
+    CreateCallRequestBase:
+      type: object
+      required:
+        - to
+        - from
+      properties:
+        to:
+          type: array
+          items:
+            oneOf:
+              - "$ref": "#/components/schemas/EndpointPhoneTo"
+              - "$ref": "#/components/schemas/EndpointSip"
+              - "$ref": "#/components/schemas/EndpointWebsocket"
+              - "$ref": "#/components/schemas/EndpointVBCExtension"
+        from:
+          "$ref": "#/components/schemas/EndpointPhoneFrom"
+
+        event_url:
+          description: |
+            **Required** unless `event_url` is configured at the application
+            level, see [Create an Application](/api/application.v2#createApplication)
+
+            The webhook endpoint where call progress events are
+            sent to. For more information about the values sent, see
+            [Event webhook](/voice/voice-api/webhook-reference#event-webhook).
+          type: array
+          x-nexmo-developer-collection-description-shown: true
+          example: ["https://example.com/event"]
+          items:
+            type: string
+            format: uri
+        event_method:
+          description: The HTTP method used to send event information to `event_url`.
+          type: string
+          default: POST
+          enum:
+            - POST
+            - GET
+        machine_detection:
+          description: Configure the behavior when Vonage detects that the
+            call is answered by voicemail. If `continue`, Vonage sends an HTTP
+            request to `event_url` with the Call event machine. If `hangup`, Vonage ends
+            the call.
+          type: string
+          enum:
+            - continue
+            - hangup
+          example: continue
+        length_timer:
+          description: Set the number of seconds that elapse before Vonage
+            hangs up after the call state changes to answered.
+          minimum: 1
+          maximum: 7200
+          default: 7200
+          type: integer
+        ringing_timer:
+          description: Set the number of seconds that elapse before Vonage
+            hangs up after the call state changes to ‘ringing’.
+          minimum: 1
+          maximum: 120
+          default: 60
+          type: integer
+
+    StopTalkResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Talk stopped
+        uuid:
+          $ref: "#/components/schemas/uuid"
+
+    StartTalkResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Talk started
+        uuid:
+          $ref: "#/components/schemas/uuid"
+
+    DTMFResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: DTMF sent
+        uuid:
+          $ref: "#/components/schemas/uuid"
+
+    StopStreamResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Stream stopped
+        uuid:
+          $ref: "#/components/schemas/uuid"
+
+    StartStreamResponse:
+      type: object
+      properties:
+        message:
+          description: Description of the action taken
+          type: string
+          example: Stream started
+        uuid:
+          $ref: "#/components/schemas/uuid"
+
+    NCCO:
+      type: object
+      properties:
+        action:
+          description: Action
+          type: string
+        text:
+          description: Text
+          type: string
+
+    GetCallResponse:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+                  title: Link to the Call Object
+                  example: "/calls/63f61863-4a51-4f6b-86e1-46edebcf9356"
+        uuid:
+          $ref: "#/components/schemas/uuid"
+        conversation_uuid:
+          $ref: "#/components/schemas/conversation_uuid"
+        to:
+          $ref: "#/components/schemas/to"
+        from:
+          $ref: "#/components/schemas/from"
+        status:
+          $ref: "#/components/schemas/status"
+        direction:
+          $ref: "#/components/schemas/direction"
+        rate:
+          $ref: "#/components/schemas/rate"
+        price:
+          $ref: "#/components/schemas/price"
+        duration:
+          $ref: "#/components/schemas/duration"
+        start_time:
+          $ref: "#/components/schemas/start_time"
+        end_time:
+          $ref: "#/components/schemas/end_time"
+        network:
+          $ref: "#/components/schemas/network"
+
+    GetCallsResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          title: The total number of records returned by your request.
+          example: 100
+        page_size:
+          type: integer
+          title: The amount of records returned in this response.
+          example: 10
+        record_index:
+          type: integer
+          title: The `record_index` used in your request.
+          example: 0
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+                  title: Link to the object
+                  example: "/calls?page_size=10&record_index=20&order=asc"
+        _embedded:
+          description: >-
+            A list of call objects. See the
+            [get details of a specific call](#getCall)
+            response fields for a description of the nested objects
+          type: object
+          properties:
+            calls:
+              description: Array of Get Call Response
+              type: array
+              items:
+                $ref: "#/components/schemas/GetCallResponse"
+
+    CreateCallResponse:
+      type: object
+      properties:
+        uuid:
+          $ref: "#/components/schemas/uuid"
+        status:
+          $ref: "#/components/schemas/status"
+        direction:
+          $ref: "#/components/schemas/direction"
+        conversation_uuid:
+          $ref: "#/components/schemas/conversation_uuid"
+
+    network:
+      description: >-
+        The Mobile Country Code Mobile Network Code
+        ([MCCMNC](https://en.wikipedia.org/wiki/Mobile_country_code)) for
+        the carrier network used to make this call.
+      type: string
+      title: "The Network ID of the destination "
+      example: "65512"
+    start_time:
+      description: "The time the call started in the following format: `YYYY-MM-DD HH:MM:SS`. For example, `2020-01-01 12:00:00`. This is only sent if `status` is `completed`."
+      type: string
+      format: timestamp
+      title: "The Start Time of the call "
+      example: "2020-01-01 12:00:00"
+    end_time:
+      description: "The time the call started in the following format: `YYYY-MM-DD HH:MM:SS`. For xample, `2020-01-01 12:00:00`. This is only sent if `status` is `completed`."
+      type: string
+      format: timestamp
+      title: "The End Time of the call "
+      example: "2020-01-01 12:00:00"
+    duration:
+      description: The time elapsed for the call to take place in seconds. This is only sent if `status` is `completed`.
+      type: string
+      title: "The Duration of the call "
+      example: "60"
+    price:
+      description: The total price charged for this call. This is only sent if `status` is `completed`.
+      type: string
+      title: "The total price of the call "
+      example: "23.40"
+    rate:
+      description: The price per minute for this call. This is only sent if `status` is `completed`.
+      type: string
+      title: The Price per minute of the called destination
+      example: "0.39"
+    direction:
+      type: string
+      description: Possible values are `outbound` or `inbound`
+      example: outbound
+      enum:
+        - outbound
+        - inbound
+    uuid:
+      type: string
+      format: uuid
+      title: The UUID of the Call Leg
+      example: 63f61863-4a51-4f6b-86e1-46edebcf9356
+      description: >-
+        The unique identifier for this call leg. The UUID is created when
+        your call request is accepted by Vonage. You use the UUID in all
+        requests for individual live calls
+    conversation_uuid:
+      type: string
+      format: uuid
+      title: The UUID of the Conversation
+      example: CON-f972836a-550f-45fa-956c-12a2ab5b7d22
+      description: The unique identifier for the conversation this call leg is part of.
+    from:
+      type: object
+      description: The endpoint you called from. Possible values are the same as `to`.
+      properties:
+        type:
+          description: The type of Endpoint that made the call
+          type: string
+          title: The type of Endpoint that made the call
+          example: phone
+        number:
+          description: The number that made the call
+          type: string
+          title: The number that made the call
+          example: '447700900001'
+    to:
+      type: object
+      description: The single or mixed collection of endpoint types you connected to
+      properties:
+        type:
+          description: The Type of Endpoint Called
+          type: string
+          title: The Type of Endpoint Called
+          example: phone
+        number:
+          description: The number of the endpoint called
+          type: string
+          title: The number of the endpoint called
+          example: '447700900000'
+    status:
+      type: string
+      title: The State of the call
+      example: started
+      description: The status of the call. [See possible values](https://developer.nexmo.com/voice/voice-api/guides/call-flow#event-objects)
+
+    EndpointApp:
+      type: object
+      description: Connect to an App User
+      required:
+        - type
+        - user
+      properties:
+        type:
+          type: string
+          example: app
+          description: The type of connection. Must be `app`
+        user:
+          type: string
+          example: jamie
+          description: The username to connect to
+    EndpointPhoneTo:
+      type: object
+      description: Connect to a Phone (PSTN) number
+      required:
+        - number
+        - type
+      properties:
+        type:
+          type: string
+          example: phone
+          description: The type of connection. Must be `phone`
+        number:
+          "$ref": "#/components/schemas/AddressE164"
+        dtmfAnswer:
+          description: Provide [DTMF digits](https://developer.nexmo.com/voice/voice-api/guides/dtmf) to send when the call is answered
+          type: string
+          example: p*123#
+    EndpointPhoneFrom:
+      type: object
+      description: Connect to a Phone (PSTN) number
+      required:
+        - number
+        - type
+      properties:
+        type:
+          type: string
+          example: phone
+          description: The type of connection. Must be `phone`
+        number:
+          "$ref": "#/components/schemas/AddressE164"
+    EndpointWebsocket:
+      type: object
+      description: Connect to a Websocket
+      required:
+        - type
+        - content-type
+      properties:
+        type:
+          description: The type of connection. Must be `websocket`
+          type: string
+          example: websocket
+        uri:
+          "$ref": "#/components/schemas/AddressWebsocket"
+        content-type:
+          description: Content Type
+          type: string
+          example: audio/l16;rate=16000
+          enum:
+            - audio/l16;rate=8000
+            - audio/l16;rate=16000
+        headers:
+          description: Details of the Websocket you want to connect to
+          type: object
+          properties:
+            customer_id:
+              type: string
+              example: ABC123
+              description: This is an example header. You can provide any headers you may need
+    EndpointSip:
+      type: object
+      description: Connect to a SIP Endpoint
+      required:
+        - type
+      properties:
+        type:
+          description: The type of connection. Must be `sip`
+          type: string
+          example: sip
+        uri:
+          "$ref": "#/components/schemas/AddressSip"
+    EndpointVBCExtension:
+      type: object
+      description: Connect to a VBC extension
+      required:
+        - type
+        - extension
+      properties:
+        type:
+          type: string
+          example: vbc
+          description: The type of connection. Must be `vbc`
+        extension:
+          description: Extension
+          type: string
+          example: "1234"
+    AddressE164:
+      description: The phone number to connect to
+      type: string
+      minLength: 7
+      maxLength: 15
+      example: "14155550100"
+      pattern: "\\d{7,15}"
+    AddressSip:
+      description: The SIP URI to connect to
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: sip:rebekka@sip.example.com
+    AddressWebsocket:
+      description: Websocket URI
+      type: string
+      minLength: 1
+      maxLength: 50
+      example: wss://example.com/socket
+
+    language:
+      description: The language to use
+      type: string
+      default: en-US
+      enum:
+        - "ar"
+        - "ca-ES"
+        - "cmn-CN"
+        - "cmn-TW"
+        - "cs-CZ"
+        - "cy-GB"
+        - "da-DK"
+        - "de-DE"
+        - "el-GR"
+        - "en-AU"
+        - "en-GB"
+        - "en-GB-WLS"
+        - "en-IN"
+        - "en-US"
+        - "en-ZA"
+        - "es-ES"
+        - "es-MX"
+        - "es-US"
+        - "eu-ES"
+        - "fi-FI"
+        - "fil-PH"
+        - "fr-CA"
+        - "fr-FR"
+        - "he-IL"
+        - "hi-IN"
+        - "hu-HU"
+        - "id-ID"
+        - "is-IS"
+        - "it-IT"
+        - "ja-JP"
+        - "ko-KR"
+        - "nb-NO"
+        - "nl-NL"
+        - "no-NO"
+        - "pl-PL"
+        - "pt-BR"
+        - "pt-PT"
+        - "ro-RO"
+        - "ru-RU"
+        - "sk-SK"
+        - "sv-SE"
+        - "th-TH"
+        - "tr-TR"
+        - "uk-UA"
+        - "vi-VN"
+        - "yue-CN"
+    style:
+      description: The vocal style (vocal range, tessitura, and timbre) to use
+      type: integer
+      default: 0
+      
+    voice_name:
+      description: <strong>DEPRECATED</strong> The voice & language to use
+      type: string
+      deprecated: true
+      default: Kimberly
+      enum:
+        - Aditi
+        - Agnieszka
+        - Alva
+        - Amy
+        - Astrid
+        - Bianca
+        - Brian
+        - Carla
+        - Carmen
+        - Carmit
+        - Catarina
+        - Celine
+        - Cem
+        - Chantal
+        - Chipmunk
+        - Conchita
+        - Cristiano
+        - Damayanti
+        - Dora
+        - Emma
+        - Empar
+        - Enrique
+        - Eric
+        - Ewa
+        - Felipe
+        - Filiz
+        - Geraint
+        - Giorgio
+        - Gwyneth
+        - Hans
+        - Henrik
+        - Ines
+        - Ioana
+        - Iveta
+        - Ivy
+        - Jacek
+        - Jan
+        - Jennifer
+        - Joana
+        - Joanna
+        - Joey
+        - Jordi
+        - Justin
+        - Kanya
+        - Karl
+        - Kendra
+        - Kimberly
+        - Laila
+        - Laura
+        - Lea
+        - Lekha
+        - Liv
+        - Lotte
+        - Lucia
+        - Luciana
+        - Mads
+        - Maged
+        - Maja
+        - Mariska
+        - Marlene
+        - Mathieu
+        - Matthew
+        - Maxim
+        - Mei-Jia
+        - Melina
+        - Mia
+        - Miguel
+        - Miren
+        - Mizuki
+        - Montserrat
+        - Naja
+        - Nicole
+        - Nikos
+        - Nora
+        - Oskar
+        - Penelope
+        - Raveena
+        - Ricardo
+        - Ruben
+        - Russell
+        - Salli
+        - Satu
+        - Seoyeon
+        - Sin-Ji
+        - Sora
+        - Takumi
+        - Tarik
+        - Tatyana
+        - Tessa
+        - Tian-Tian
+        - Vicki
+        - Vitoria
+        - Yelda
+        - Zeina
+        - Zhiyu
+        - Zuzana
+
+tags:
+  - name: Calls
+    description: Fetch, Create and Modify voice calls
+  - name: Stream Audio
+    description: Start or stop streaming audio in to an active call
+  - name: Play TTS
+    description: Start or stop playing Text to Speech in to an active call
+  - name: Play DTMF
+    description: Play DTMF tones in to an active call

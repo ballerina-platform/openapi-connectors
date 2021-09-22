@@ -19,7 +19,7 @@ The Spotify Playlist connector consume the data exposed in [https://api.spotify.
 
 |                       |    Version                  |
 |:---------------------:|:---------------------------:|
-| Ballerina Language    | Swan-Lake-Alpha5            |
+| Ballerina Language    | Swan Lake Beta3             |
 | Spotify Playlist API  | v1                          |
 
 

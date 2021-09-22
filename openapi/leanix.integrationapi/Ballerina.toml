@@ -4,7 +4,7 @@ keywords = ["LeanIX", "LeanIX Integration API"]
 org = "ballerinax"
 name = "leanix.integrationapi"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.2.2"
+version = "0.1.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

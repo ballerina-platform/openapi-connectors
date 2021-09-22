@@ -19,4 +19,4 @@ The Covid19 connector consume the data exposed in https://disease.sh. It is curr
 
 | Ballerina Language Versions  | Novel Covid19 API |
 |:----------------------------:|:-----------------:|
-|  Swan Lake Alpha 5           |   3.0.0           |
+|  Swan Lake Beta 3            |   3.0.0           |

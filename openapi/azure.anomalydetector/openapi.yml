@@ -15,7 +15,7 @@ info:
     \ is one of the main reasons we developed this service. Our team is dedicated\
     \ to \r\ncontinuing to improve the anomaly detection service to provide precise\
     \ results."
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create a [Azure Anomaly Detector account](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) and 
@@ -1515,12 +1515,11 @@ components:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header
-      x-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
     apiKeyQuery:
       type: apiKey
       name: subscription-key
       in: query
-      x-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
 # x-servers:
 # - url: https://westus.api.cognitive.microsoft.com
 # - url: https://cognitive-wu.cognitiveservices.azure.com

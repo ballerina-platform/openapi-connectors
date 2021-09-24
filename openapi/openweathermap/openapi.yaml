@@ -14,10 +14,10 @@ info:
   license:
     name: "CC Attribution-ShareAlike 4.0 (CC BY-SA 4.0)"
     url: "https://openweathermap.org/price"
-  x-display:
+  x-ballerina-display:
     label: OpenWeatherMap
     iconPath: "resources/openweathermap.svg"
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
     
     Please create an account at https://openweathermap.org and an API key following [this guide](https://openweathermap.org/appid).  Choose a subscription that matches with your requirements.
@@ -41,7 +41,7 @@ paths:
         - $ref: '#/components/parameters/units'
         - $ref: '#/components/parameters/lang'
         - $ref: '#/components/parameters/mode'
-      x-display: 
+      x-ballerina-display: 
         label: "Current Weather"
       responses:
         200:
@@ -72,7 +72,7 @@ paths:
           required: true
           schema:
             type: string 
-          x-display: 
+          x-ballerina-display: 
             label: Latitude
         - description: "Longtitude"
           in: query
@@ -80,7 +80,7 @@ paths:
           required: true
           schema:
             type: string 
-          x-display: 
+          x-ballerina-display: 
             label: Longtitude
         - description: "Exclude parts of the weather data from the API response. It should be a comma-delimited list (without spaces)."
           in: query
@@ -94,7 +94,7 @@ paths:
                 - 'daily'
                 - 'alerts'
             type: string 
-          x-display: 
+          x-ballerina-display: 
             label: Exclude
         - description: "For temperature in Fahrenheit and wind speed in miles/hour, use `units=imperial`. For temperature in Celsius and wind speed in meter/sec, use `units=metric`. Temperature in Kelvin and wind speed in meter/sec is used by default, so there is no need to use the units parameter in the API call if you want this."
           in: query
@@ -102,7 +102,7 @@ paths:
           required: false
           schema:
             type: string 
-          x-display: 
+          x-ballerina-display: 
             label: Units
         - description: 'Language'
           in: query
@@ -110,9 +110,9 @@ paths:
           required: false
           schema:
             type: string 
-          x-display: 
+          x-ballerina-display: 
             label: Language
-      x-display: 
+      x-ballerina-display: 
         label: "Weather Forecast"
       responses:
         200:
@@ -151,7 +151,7 @@ components:
       description: "City name, or city name and country code. For the query value, type the city name and optionally the country code divided by comma; use ISO 3166 country codes."
       schema:
         type: string
-      x-display: 
+      x-ballerina-display: 
         label: "CityName or StateCode or CountryCode"
     id:
       name: id
@@ -159,7 +159,7 @@ components:
       description: "City ID. Example: `2172797`. The List of city IDs can be downloaded [here](http://bulk.openweathermap.o/sample/)."
       schema:
         type: string
-      x-display: 
+      x-ballerina-display: 
         label: "City Id"
     lat:
       name: lat
@@ -167,7 +167,7 @@ components:
       description: "Latitude"
       schema:
         type: string
-      x-display: 
+      x-ballerina-display: 
         label: "Latitude"
 
     lon:
@@ -176,7 +176,7 @@ components:
       description: "Longtitude"
       schema:
         type: string
-      x-display: 
+      x-ballerina-display: 
         label: "Longitude"
 
     zip:
@@ -185,7 +185,7 @@ components:
       description: "Zip code. Search by zip code. Example: 95050,us."
       schema:
         type: string
-      x-display: 
+      x-ballerina-display: 
         label: "Zip Code"
 
     units:
@@ -196,7 +196,7 @@ components:
         type: string
         enum: [standard, metric, imperial]
         default: "imperial"
-      x-display: 
+      x-ballerina-display: 
         label: "Units"
 
     lang:
@@ -207,7 +207,7 @@ components:
         type: string
         enum: [ar, bg, ca, cz, de, el, en, fa, fi, fr, gl, hr, hu, it, ja, kr, la, lt, mk, nl, pl, pt, ro, ru, se, sk, sl, es, tr, ua, vi, zh_cn, zh_tw]
         default: "en"
-      x-display: 
+      x-ballerina-display: 
         label: "Language"
 
     mode:
@@ -218,7 +218,7 @@ components:
         type: string
         enum: [json, xml, html]
         default: "json"
-      x-display: 
+      x-ballerina-display: 
         label: "Mode"
   schemas:
     WeatherForecast:
@@ -702,4 +702,4 @@ components:
       description: API key to authorize requests. If you don't have an OpenWeatherMap API key, use `fd4698c940c6d1da602a70ac34f0b147`.
       name: appid
       in: query
-      x-apikey-description: "Provide your API Key as `appid`. Eg: `{\"appid\" : \"<Your API Key>\"}"  
+      x-ballerina-apikey-description: "Provide your API Key as `appid`. Eg: `{\"appid\" : \"<Your API Key>\"}"  

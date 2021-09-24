@@ -18,7 +18,7 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API key to authorize requests. If you don't have an OpenWeatherMap API key, use `fd4698c940c6d1da602a70ac34f0b147`.
+    # Represents API Key `appid`
     string appid;
 |};
 
@@ -32,7 +32,7 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials. 
     # Please create an account at https://openweathermap.org and an API key following [this guide](https://openweathermap.org/appid).  Choose a subscription that matches with your requirements.
     #
-    # + apiKeyConfig -  Provide your API Key as `appid`. Eg: `{"appid" : "<Your API Key>"} 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 

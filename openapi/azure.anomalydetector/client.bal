@@ -18,7 +18,9 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
+    # Represents API Key `Ocp-Apim-Subscription-Key`
     string ocpApimSubscriptionKey;
+    # Represents API Key `subscription-key`
     string subscriptionKey;
 |};
 
@@ -31,7 +33,7 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials.
     # Create a [Azure Anomaly Detector account](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) and  obtain API key following [this guide](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
     #
-    # + apiKeyConfig -  Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {"Ocp-Apim-Subscription-Key" : "<API key>", "subscription-key" : "<API key>"} 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 

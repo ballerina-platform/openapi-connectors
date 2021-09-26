@@ -1,0 +1,4283 @@
+openapi: 3.0.0
+
+info:
+  title: ProdPad
+  description: >
+    This is a generated connector for [ProdPad API v1.0](https://www.prodpad.com/) OpenAPI specification. 
+
+    ProdPad is product management software that helps product managers develop product strategy. Easily manage teams, customers and roadmaps.  
+  x-ballerina-init-description: > 
+    The connector initialization requires setting the API credentials.
+
+    Create a [ProdPad account](https://www.prodpad.com/) and obtain tokens by following [this guide](https://help.prodpad.com/article/763-generating-an-api-key).
+  x-ballerina-display:
+    label: ProdPad 
+    iconPath: "resources/prodpad.svg"
+  termsOfService: https://www.prodpad.com/terms
+  contact: 
+    name: Support
+    url: https://help.prodpad.com
+    email: hello@prodpad.com
+  version: '1.0'
+
+servers:
+- url: https://api.prodpad.com/v1
+
+paths:
+  /feedbacks:
+    get:
+      tags:
+      - Feedback
+      summary: Get list of feedbacks
+      description: > 
+        Returns a list of feedback which can be a straight list or grouped by contact using the group_by parameter. 
+        
+        The list can also be filtered by state query parameter for active, archived, unsorted or all. 
+        
+        Default active feedback is returned.
+      operationId: GetFeedbacks
+      parameters:
+        - in: query
+          name: group_by
+          schema:
+            type: string
+            enum: [contact]
+          description: Setting to customer will group the feedback by customer
+          required: false
+        - in: query
+          name: state
+          schema:
+            type: string
+            enum: [active, unsorted, archived, all]
+          description: Set to value of active for active, archived for archived feedback, unsorted for unsorted feedback and all for all feedback. Default is active.
+          required: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: Set to page through the results. Default is 1.
+          required: false
+        - in: query
+          name: size
+          schema:
+            type: integer
+            maximum: 500
+          description: For setting the number of results per page. Default is 100.
+          required: false
+        - in: query
+          name: company
+          schema:
+            type: string
+          description: Set to filter the feedback results based on whether the feedback was entered for a contact linked to the company.
+          required: false
+        - in: query
+          name: company_country
+          schema:
+            type: string
+          description: Set to filter the feedback results based on the country set for the associated company.
+          required: false
+        - in: query
+          name: company_size
+          schema:
+            type: string
+            enum: [1-10,11-50,50-250,250-500,500-1000,1000-5000,5000-10000,10000+]
+          description: Set to filter the feedback results based on the size of the company for the associated company.
+          required: false
+        - in: query
+          name: company_value
+          schema:
+            type: string
+            enum: [high, medium, low]
+          description: Set to filter the feedback results based on the value of the company for the company assocaited to the feedback.
+          required: false
+        - in: query
+          name: customer
+          schema:
+            type: string
+          description: Can be either numeric ID, UUID of a contac or contact email.
+          required: false
+        - in: query
+          name: product
+          schema:
+            type: string
+          description: Filter results by the product associated to feedback. Can either be the product UUID or product ID.
+          required: false
+        - in: query
+          name: persona
+          schema:
+            type: string
+          description: Filter results by the persona associated to feedback. Can either be the persona UUID or persona ID.
+          required: false
+        - in: query
+          name: job_role
+          schema:
+            type: string
+            format: uuid
+          description: Filter results by the job role of the contact associated to the feedback. Use the JobRole UUID.
+          required: false
+        - in: query
+          name: tags
+          schema:
+            type: array
+            items:
+              type: string
+          description: Filter feedback results by the tags associated to the feedback. Mulitple tags can be specified and acts as an OR. Use the tag ID or UUID.
+          style: form
+          explode: false
+          required: false
+        - in: query
+          name: has_ideas
+          schema:
+            type: boolean
+          description: Whether the feedback is associated to one or more ideas. Default is either.
+          required: false
+        - in: query
+          name: external_id
+          schema:
+            type: string
+          description: Filter feedback to return the feedback associated with a specific External ID. An example of an external ID is the ID of a record in a CRM or ID of a ticket in a customer support application.
+        - in: query
+          name: external_url
+          schema:
+            type: string
+          description: Filter feedback to return the feedback associated with a specific external url. An example of an external url is that of a record in a CRM or a ticket in a customer support application
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackList'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+      deprecated: false
+    post:
+      tags:
+      - Feedback
+      summary: Create a new feedback.
+      description: > 
+        Create a new feedback in the account. The feedback has to have either a name or an email and the actual feedback. The email is used to add the feedback to an existing contact.
+      operationId: PostFeedbacks
+      requestBody:
+        description: Post body for the feedback.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackPost'
+        required: true
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/ContactLinkWithFeedback'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+      deprecated: false
+  /feedbacks/{id}:
+    get:
+      tags:
+        - Feedback
+      summary: Get a piece of feedback.
+      description: >
+        Return an individual piece of feedback. The feedback is returned with the details of the contact that provided the piece of feedback.
+      operationId: GetFeedback
+      parameters:
+        - name: id
+          in: path
+          description: Feedback ID.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200': 
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactLinkWithFeedback'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Feedback not found.
+
+    put:
+      tags:
+        - Feedback
+      summary: Edit an existing piece of feedback.
+      description: >
+        Use this endpoint to edit the details of an existing piece of feedback including the feedback, the status and external links to add (for example link to a record in the CRM, other 3rd party application or video of the customer interview).
+      operationId: PutFeedback
+      parameters:
+        - name: id
+          in: path
+          description: Feedback ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Edits of the feedback.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackPut'
+      responses:
+        '204':
+          description: Success response.
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Feedback not found.
+
+  # /feedbacks/{id}/attachments:
+  #   post:
+  #     tags:
+  #     - Feedback
+  #     summary: Add attachments to existing feedback.
+  #     description: >
+  #       Upload an attachment (movie, file, image etc.) to a piece of feedback. This can be used to attach customer interviews, screenshots etc to the feedback to provide more context. The size is limited to 20MB.
+  #     operationId: PostFeedbackAttachments
+  #     parameters:
+  #     - name: id
+  #       in: path
+  #       description: Feedback ID
+  #       required: true
+  #       schema:
+  #         type: integer
+  #     requestBody:
+  #       description: Attachment as a binary payload
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               file:
+  #                 type: string
+  #                 format: binary
+  #     responses:
+  #       '201':
+  #         description: Success response.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FeedbackAttachment'
+  #       '400':
+  #         $ref: '#/components/responses/Malformed'
+  #       '401':
+  #         $ref: '#/components/responses/NotAuthenticated'
+  #       '403':
+  #         $ref: '#/components/responses/Forbidden'
+  #       '404':
+  #         description: Feedback not found.
+  #     deprecated: false
+
+  /feedbacks/{id}/ideas:
+    get:
+      tags:
+        - Feedback
+      summary: Get all ideas associated with a feedback
+      description: >
+        Return all the ideas linked to this piece of feedback. This allows you see how the feedback is being incorporated into various stages of Product Management. For example, fetching the assocaited ideas would then show the workflow stage of the idea allowing you to notify the contact when the something related to their feedback has been released.
+      operationId: GetFeedbackIdeas
+      parameters:
+        - name: id
+          in: path
+          description: Feedback ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200': 
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Idea'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Feedback not found.
+  /contacts:
+    get:
+      tags:
+        - Feedback
+      summary: Get a list of contacts
+      description: >
+        Get a list of all the contacts in the account. This can be used to sync contacts between ProdPad and CRMs.
+      operationId: GetContacts
+      parameters:
+        - in: query
+          name: company
+          schema:
+            type: string
+            format: uuid
+          description: UUID of a company to filter contacts by.
+          required: false
+        - in: query
+          name: persona
+          schema:
+            type: string
+          description: ID of a persona to filter contacts by.
+          required: false
+        - in: query
+          name: job_role
+          schema:
+            type: string
+            format: uuid
+          description: UUID of a job role to filter contacts by.
+          required: false
+        - in: query
+          name: tags
+          schema:
+            type: array
+            items:
+              type: string
+          description: ID, UUID or name of one or more tags to filter the contacts by.
+          style: form
+          explode: false
+          required: false
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Name of contact or partial name of contacts to filter the list by
+          required: false
+        - in: query
+          name: external_id
+          schema:
+            type: string
+          description: Filter the contacts by an ID from another application such as a CRM
+        - in: query
+          name: external_url
+          schema:
+            type: string
+          description: Filter the contacts by a URL from another application such as a CRM
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: Filter the contacts by an email.
+        - in: query
+          name: feedbacks
+          schema:
+            type: boolean
+            default: false
+          description: Wheter to include the feedback for each contact in the results. Default is false.
+          required: false      
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: Page number of results to return.
+          required: false
+        - in: query
+          name: size
+          schema:
+            type: integer
+            maximum: 500
+          description: Number of results per page.
+          required: false
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags:
+        - Feedback
+      summary: Create a new contact
+      description: >
+        Create a new contact in the account. Each contact needs a name and email at the very least. 
+      operationId: PostContacts
+      requestBody:
+        description: New contact details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactPost'
+        required: true
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false    
+
+  /contacts/{id}:
+    get:
+      tags:
+      - Feedback
+      summary: Get a contact
+      description: >
+        Returns the details of a contact. This will include a contacts PII (such as name and email) so be aware of the privacy of the individual when using this endpoint. 
+        
+        You can choose to include the feedback provided by the contact or not.
+      operationId: GetContact
+      parameters:
+        - name: id
+          in: path
+          description: Contact ID to fetch.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: feedbacks
+          in: query
+          description: Whether to include the feedback provided by the contact in the response or not.
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Contact'
+                  - $ref: '#/components/schemas/ContactWithFeedback'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Contact not found.
+      deprecated: false
+
+    put:
+      tags:
+        - Feedback
+      summary: Edit a contact.
+      description: >
+        Edit the details of the contact such as name, company, about etc. Remember you are adding PII details for the contact os make sure you really need it in ProdPad before you add it.
+      operationId: PutContact
+      parameters:
+        - name: id
+          in: path
+          description: Contact ID to edit.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Edits to the contact.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactPost'
+      responses:
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Contact not found
+
+  /companies:
+    get:
+      summary: Get a list of companies.
+      description: >
+        Return a list of companies. Companies are a collection of contacts that are providing feedback. Using companies allows you to group feedback from the same organisational source. 
+        
+        While very useful for business to busines,s companies can be used to create a any sort grouping of contacts for example by a conference or a cohort. 
+        
+        Using parameters allows you to also select whether to return feedback associated to the company via the contacts connected to the company. This is only available to accounts with an Advanced+ subscription.
+      operationId: GetCompanies
+      tags:
+        - Feedback
+      parameters:
+        - in: query
+          name: country
+          schema:
+            type: string
+          description: Set to filter the companies based on the country. Use ISO Alpha-2 country codes. Only one country can be filtered at a time.
+          required: false
+        - in: query
+          name: size
+          schema:
+            type: string
+            enum: [1-10,11-50,50-250,250-500,500-1000,1000-5000,5000-10000,10000+]
+          description: Set to filter the companies based on their size.
+          required: false
+        - in: query
+          name: value
+          schema:
+            type: string
+            enum: [high, medium, low]
+          description: Set to filter the companies based on their value.
+          required: false
+        - in: query
+          name: city
+          schema:
+            type: string
+          description: Set to filter the companies based on city.
+          required: false
+        - in: query
+          name: tags
+          schema:
+            type: array
+            items:
+              type: string
+          description: Filter companies by the tags associated to the feedback. Mulitple tags can be specified and acts as an OR. Use the tag ID or UUID.
+          style: form
+          explode: false
+          required: false 
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Filter the companies by the name or partial name of the companies.
+        - in: query
+          name: external_id
+          schema:
+            type: string
+          description: Filter the companies by an ID from a 3rd party application associated to the companies in Prodpad
+        - in: query
+          name: external_url
+          schema:
+            type: string
+          description: Filter the companies by a URL that is associated to a company.
+        - in: query
+          name: contacts
+          schema:
+            type: boolean
+            default: true
+          description: Whether to include contacts associated with each company in the results. Default is true.
+          required: false
+        - in: query
+          name: feedbacks
+          schema:
+            type: boolean
+            default: true
+          description: Whether to include the feedback for each contact associated to a company in the results. Default is true. Note if this is set to true then contacts will be returned whether or not contacts is set to true or false.
+          required: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: The page of results to return (size is always 100).
+          required: false
+      responses: 
+        '200': 
+          description: Success response.
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/CompanyList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags:
+        - Feedback
+      summary: Create a new company
+      description: >
+        Create a new company in the account. This is only available to accounts with an Advanced or higher subscription. If you try on an account without an advanced or higher subscription package it will return a 403.
+      operationId: PostCompanies
+      requestBody:
+        description: Post body request with the company details used to create a new company.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyPost'
+      responses: 
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /companies/{id}:
+    get:
+      tags:
+        - Feedback
+      summary: Get a company
+      description: >
+        Fetch a company's details. This is only available to accounts with an Advanced or higher subscription.
+      operationId: GetCompany
+      parameters:
+        - name: id
+          in: path
+          description: UUID of the company to fetch.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses: 
+        '200': 
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    put: 
+      tags:
+        - Feedback
+      summary: Edit a company.
+      description: >
+        Update the details of a company. This is only available to Advanced or higher subscriptions.
+      operationId: PutCompany
+      parameters:
+        - name: id
+          in: path
+          description: UUID of the company to edit.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Changes to be made to a company.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyPost'
+      responses: 
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Company not found.
+
+  /jobroles:
+    get:
+      tags:
+        - Feedback
+      summary: Get the job roles for the account.
+      description: >
+        Get the job roles that can be assigned to contacts. Job roles are used to filter contacts and feedback from contacts with certain job roles.
+      operationId: GetJobRoles
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobRoleList'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /ideas:
+    get: 
+      tags:
+        - Ideas
+      summary: Get a list of ideas.
+      description: >
+        Return a list of ideas that match any supplied filter criteria.
+      operationId: GetIdeas
+      parameters:
+        - name: tags
+          in: query
+          description: One or more tag names to filter the ideas by. These act as an OR not AND.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+        - name: product
+          in: query
+          description: Name of a product to filter the ideas by.
+          required: false
+          schema:
+            type: string
+        - name: persona
+          in: query
+          description: Name of a persona to filter the ideas by.
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Name of a workflow status to filter the ideas by.
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: Filters the returned ideas based on their state. Active Public is same as portal in the UI. If not included then the endpoint returns all active and active_public the same as the UI.
+          required: false
+          schema:
+            type: string
+            enum: [active, active_public, archived]
+        - name: external_id
+          in: query
+          description: Return ideas or idea with a specific external_id.
+          required: false
+          schema:
+            type: string
+        - name: external_url
+          in: query
+          description: Return ideas or idea with a specific URL to an external resource
+          required: false
+          schema:
+            type: string
+        - name: withfeedback
+          in: query
+          description: Return the associated feedback to the ideas
+          schema:
+            type: boolean
+          required: false
+        - name: page
+          in: query
+          description: Page of results to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          description: The number of results per page
+          required: false
+          schema:
+            type: integer
+            maximum: 500
+            default: 20
+      responses: 
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdeaList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags:
+        - Ideas
+      summary: Create a new idea.
+      description: >
+        Add a new idea to the account. An idea must have either a title or a description.
+      operationId: PostIdeas
+      requestBody:
+        description: Idea to add to the account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdeaPost'
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Idea'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false   
+
+  /ideas/{id}:
+    get:
+      summary: Get an idea.
+      description: >
+        Use the numeric ID to return an idea. You can get a simple version of the idea or an expanded one using the expanded parameter which returns the business case, functional specs, notes, user stories, comments and other linked data.
+        
+        If you have the project_id (the numerical number from the ProdPad UI in the idea canvas url) you can use that to fetch the idea by using the query parameter by_project_id, otherwise you need to use the global numerical ID.
+      tags:
+      - Ideas
+      operationId: GetIdeaByID
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea unless using the by_project_id then it is the numeric project ID (the Idea number seen in the UI).
+          required: true
+          schema:
+            type: integer
+        - name: expand
+          in: query
+          description: Whether to return the expanded version of the idea ojbect. This adds in business case, user stories, comments, etc.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: by_project_id
+          in: query
+          description: Whether the ID represents the project_id instead of the numeric ID.
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Idea'
+                  - $ref: '#/components/schemas/IdeaExpanded'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea with the id not found.
+      deprecated: false
+
+    put:
+      tags:
+        - Ideas
+      summary: Edit an existing idea.
+      description: >
+        Update the fields of an existing idea.
+      operationId: PutIdea
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea (not the project id).
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Edits to an idea
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdeaPut'
+      responses:
+        '204':
+          description: Success response.
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea not found.
+
+  /ideas/{id}/votes:
+    get:
+      tags:
+        - Ideas
+      summary: Get thoughts on an idea
+      description: >
+        Return the number of thoughts split by type (yay, nay, maybe) and who made them on the idea.
+      operationId: GetIdeaVotes
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdeaThoughts'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea not found.
+    post:
+      tags:
+        - Ideas
+      summary: Add a new thought to ideas. This is an alias for POST /votes.
+      description: >
+        Add a new thought to an idea. A thought is either a yay, nay or maybe and who provided it. The thoughts can only be provided for users who have a role in the ProdPad account. 
+        
+        A use for this endpoint is to allow users to quickly provide yay, nay or maybe on a list of ideas without having to go into ProdPad.
+      operationId: PostIdeaVotes
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: New vote to be added.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThoughtPost'
+      responses:
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThoughtPostResponse'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea not found.
+  /ideas/{id}/statuses:
+    post:
+      tags:
+        - Ideas
+      summary: Update workflow status of idea.
+      description: >
+        Update the workflow stage of an idea. This allows you to move the idea through the workflow based on the flow of the related data in other applications. An example would be to update ProdPad workflow stage for an idea when a related ticket is moved between columns in Clubhouse.io
+        
+        The ID of the workflow stages can be obtained from GET /statuses
+      operationId: PostIdeaStatus
+      parameters:
+      - name: id
+        in: path
+        description: Numeric ID of the idea.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: New workflow status of the idea.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdeaStatusChangePost'
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdeaStatusChangeResponse'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea is not found.    
+  /ideas/{id}/userstories:
+    get:
+      tags:
+        - Ideas
+      summary: Get a list of user stories associated to the idea.
+      description: >
+        Returns a list of all the user stories associated to an idea. This can be useful for importing into other applications for development.
+        
+        You could also use this endpoint to see if an user story has been added to an idea and if so add it to a 3rd party application.
+      operationId: GetIdeaUserstories
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStories'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea not found.
+  /ideas/{id}/comments:
+    get:
+      tags:
+        - Ideas
+      summary: Get comments for an idea.
+      description: >
+        Return all the discussion that an idea has had. This can be useful for showing the discussion in other applications. 
+      operationId: GetIdeaComments
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/CommentList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea not found.
+  /ideas/{id}/comments/{commentId}:
+    get:
+      tags:
+        - Ideas
+      summary: Get a specific comment on an idea.
+      description: >
+        Returns a specific comment on the idea along with the replies to that comment if there are any. A use case for this endpoint is displaying a particular thread in another application or for syncing conversations between ProdPad and another application.
+        
+        Comments can only be left by users with a role in the ProdPad account.
+      operationId: PutIdeaComment
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea.
+          required: true
+          schema:
+            type: integer
+        - name: commentId
+          in: path
+          description: Numeric ID of the comment.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Comment'
+                  - $ref: '#/components/schemas/CommentWithDesign'
+                  - $ref: '#/components/schemas/CommentWithThought'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea or comment not found
+  /ideas/{id}/feedback: 
+    get:
+      tags:
+        - Ideas
+      summary: Get feedback associated to an idea.
+      description: >
+        This endpoint returns a list of all the feedback that is associated to the idea. This allows you to display the feedback in other apps for a particular idea or sync feedback between ProdPad and other applications.
+      operationId: GetIdeaFeedback
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea not found.
+  /ideas/{id}/ideas:
+    get:
+      tags:
+        - Ideas
+      summary: Get ideas linked to an idea.
+      description: >
+        This endpoint returns all the ideas that have been marked as related or duplicate to the primary idea. 
+        
+        This endpoint can be used to showcase related ideas in 3rd party applications.
+      operationId: GetIdeaRelatedIdeas
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the idea.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/RelatedIdeas'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Idea not found.
+  /userstories:
+    get:
+      tags:
+        - Ideas
+      summary: Get the user stories in an account.
+      description: >
+        This endpoint returns a list of user stories in the account along with the idea they are part of. One use of this endpoint is to spot when new user stories have been added and add them to a 3rd party application.
+      operationId: GetUserStories
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStoryList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /votes:
+    get:
+      tags:
+        - Ideas
+      summary: Get the thoughts.
+      description: >
+        This endpoint returns a list of all thoughts (yay, nay and maybe) along with the comment made at the time the thought was added and the idea the thought belongs to. This endpoint can be used to spot when new thoughts have been added and which idea they have been added to.
+      operationId: GetThoughts
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThoughtList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags:
+        - Ideas
+      summary: Create a new thought on an idea.
+      description: > 
+        Add a yay, nay or maybe thought on an idea in ProdPad along with a comment. This endpoint can be used to allow users with a role in ProdPad to add a thought to an idea from a 3rd party application.
+      operationId: PostThoughts
+      requestBody:
+        description: New thought to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThoughtPost'
+      responses:
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThoughtPostResponse'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /personas:
+    get:
+      tags:
+        - Personas
+      summary: Get a list of Personas
+      description: >
+        Returns a list of personas in the account. This only includes basic details. For full details of the persona use GET /persona/{id}
+        
+        The endpoint is useful for getting the persona IDs to be used in other endpoints to link an idea or feedback to a persona.
+      operationId: GetPersonas
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonaList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /personas/{id}:
+    get:
+      tags:
+        - Personas
+      summary: Get a persona.
+      description: >
+        Returns the details on the persona. This inculdes the behavior, goals, constraints and description of the persona.
+        
+        This endpoint can be used to showcase the personas in 3rd party applications.
+      operationId: GetPersona
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the persona.
+          required: true
+          schema:
+            type: integer      
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persona'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Persona not found.
+  
+  /products:
+    get:
+      tags:
+      - Products
+      summary: List products.
+      description: >
+        This endpoints returns a list of the products in the account. The products can be returned grouped via product lines by using the group parameter.
+      operationId: GetProducts
+      parameters:
+        - name: group
+          in: query
+          description: Whether the returned list is grouped by product lines or not.
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ProductList'
+                  - $ref: '#/components/schemas/ProductListGroup'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false
+
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get a product.
+      description: >
+        Returns an individual product. Note this doesn't return the current updated canvas style.
+      operationId: GetProduct
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the product.
+          required: true
+          schema:
+            type: integer  
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Product not found.
+
+  /products/{id}/roadmap:
+    get:
+      tags:
+        - Products
+      summary: Get a product roadmap
+      description: >
+        This endpoint returns the roadmap for the specific product. This only includes the roadmap cards that are active and not in the completed or candidate columns.
+      operationId: GetProductRoadmap
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the product.
+          required: true
+          schema:
+            type: integer  
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Roadmap'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Product not found. 
+
+  /roadmaps:
+    get: 
+      tags:
+        - Products
+      summary: Get a list of the roadmaps.
+      description: >
+        This endpoint returns a list of all the roadmaps that are in the account along with the product they are related to. This does not return product line roadmaps or the portfolio roadmap.
+      operationId: GetRoadmaps
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadmapList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /roadmaps/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get an individual roadmap.
+      description: >
+        This endpoint returns an individual roadmap. This includes the roadmap cards. It does not return the cards that are either completed or in candidates.
+      operationId: GetRoadmap
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the roadmap. 
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Roadmap'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Roadmap not found.
+      deprecated: false
+
+  /roadmaps/{id}/cards:
+    post:
+      tags:
+      - Products
+      summary: Create roadmap card.
+      description: >
+        This endpoint is for creating a new roadmap card on the specified roadmap.
+      operationId: PostRoadmapCard
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the roadmap.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Details of roadmap card.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoadmapCardPost'
+        required: true
+      responses:
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadmapCardPostResponse'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Roadmap not found.
+      deprecated: false
+
+  /roadmaps/{id}/cards/{cardid}:
+    get:
+      tags:
+        - Products
+      summary: Get a roadmap card.
+      description: >
+        This endpoint returns the details of the specified card on the roadmap. 
+      operationId: GetRoadmapCard
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the roadmap.
+          required: true
+          schema:
+            type: integer
+        - name: cardid
+          in: path
+          description: Numeric ID of the card.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadmapCardColumn'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false    
+    put:
+      tags:
+        - Products
+      summary: Edit a roadmap card.
+      description: >
+        This endpoint allows you to edit the details of the roadmap card including title, description, tags and objectives.
+      operationId: PutRoadmapCard
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the roadmap.
+          required: true
+          schema:
+            type: integer
+        - name: cardid
+          in: path
+          description: Numeric ID of the roadmap card.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: The card details to change.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoadmapCardPost'
+        required: true
+      responses:
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadmapCardColumn'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false
+
+  /objectives:
+    get:
+      tags:
+        - Products
+      summary: Get list of objectives.
+      description: >
+        Get a list of objectives in the account. The list indicates whether they are associated to a product or not. Use this list to update the objectives associated with a card. Note if you use a an objective that is associated to one product to add to a card on another product roadmap it will error.
+      operationId: GetObjectives
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectiveList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags:
+        - Products
+      summary: Create a new objective.
+      description: >
+        Create a new objective in the account. This can be linked to a specific product. This endpoint can be used to sync objectives between a 3rd party tool and ProdPad.
+      operationId: PostObjectives
+      requestBody:
+        description: Objective details.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectivePost'
+        required: true
+      responses:
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /objectives/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get an objective.
+      description: >
+        This endpoint returns the details of an objective. This is primarily for listing objectives in a 3rd party application.
+      operationId: GetObjective
+      parameters:
+        - name: id
+          in: path
+          description: UUID of the objective.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Objective not found.
+
+    put:
+      tags:
+        - Products
+      summary: Edit an objective.
+      description: >
+        This endpoints allows you to edit the objective to change its name, the associated product and its status.
+      operationId: PutObjective
+      parameters:
+        - name: id
+          in: path
+          description: UUID of the objective.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Details of objective to be changed.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectivePost'
+        required: true
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Objective not found.
+  /tags:
+    get:
+      tags:
+      - Misc
+      summary: Get a list of tags.
+      description: >
+        Get a list of tags used in the account. Use this endpoint to find the IDs of tags when you want to add a tag to another object such as an Idea, feedback or roadmap card.
+      operationId: GetTags
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false 
+
+  /tags/{id}:
+    get:
+      tags:
+        - Misc
+      summary: Get a tag.
+      description: >
+        Get the details of an individual tag.
+      operationId: GetTag
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the tag.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false    
+
+
+  /statuses:
+    get:
+      tags:
+        - Misc
+      summary: Get a list of workflow statuses.
+      description: > 
+        Get a list of the workflow statuses/stages used in the account. This can be used when changing the workflow stage of an idea. 
+      operationId: GetStatuses
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/StatusList'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+   
+  /statuses/{id}:
+    get:
+      tags:
+        - Misc
+      summary: Get a workflow status.
+      description: >
+        Get the details of an individual workflow status.
+      operationId: GetStatus
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the workflow status.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/Status'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Status not found.
+
+  /search:
+    get:
+      tags:
+      - Misc
+      summary: Search across ideas, products, personas and feedback.
+      description: >
+        Search across ideas, products, personas and feedback for the specific query. 
+      operationId: GetSearch
+      parameters:
+        - name: q
+          in: query
+          description: Query to search for.
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: snow gum      
+        - name: page
+          in: query
+          description: Page of results.
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Number of entries per page of results.
+          required: false
+          schema:
+            type: integer
+        - name: type
+          in: query
+          required: false
+          description: Limit the search results to ideas, products, personas or feedback. Default is all.
+          schema:
+            type: string
+            enum: [ideas,products,personas,feedback]
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      deprecated: false
+
+  /users:
+    get:
+      tags:
+        - Misc
+      summary: Get a list of users.
+      description: >
+        This endpoint returns a list of users with roles in the account. 
+      operationId: GetUsers
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      tags:
+        - Misc
+      summary: Create a new user.
+      description: >
+        Creates a new user with the specified role in the account. If the account doesn't have spare slots for editors or admins then the user will be created as a reviewer.
+      operationId: PostUsers
+      requestBody:
+        description: User details.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPost'
+        required: true
+      responses:
+        '201':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/Malformed'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /user/{id}:
+    get:
+      tags:
+        - Misc
+      summary: Get a user.
+      description: >
+        Return the details on the user and their role.
+      operationId: GetUser
+      parameters:
+        - name: id
+          in: path
+          description: Numeric ID of the user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/NotAuthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'    
+        '404':
+          description: User not found.
+
+
+components:
+  responses:
+    NotAuthenticated:
+      description: The call was not authenticated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_4XX'
+    Forbidden:
+      description: The API or account doesn't have permissions for that operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_4XX'
+    Malformed:
+      description: The API call was not correct.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_4XX'
+  schemas:
+    UserLink:
+      type: object
+      description: User link information.
+      nullable: true
+      properties:
+        id:
+          type: integer
+          description: Numeric ID of the user.
+        username:
+          type: string
+          description: User name of the user.
+        display_name:
+          type: string
+          description: Name of the user that can be shown in an UI.
+      example:
+        id: 74702
+        username: sam897
+        display_name: Dot Dotty
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the tag.
+        tag:
+          type: string
+          description: Tag name.
+        created_at:
+          type: string
+          format: date-time
+          description: When the tag was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the tag was last updated.
+    TagList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tag'
+    TagLink:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the tag.
+        tag:
+          type: string
+          description: Tag name.
+        added:
+          type: string
+          format: date-time
+          description: Date time when the tag was added to the object.
+    StatusLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the status.
+        status:
+          type: string
+          description: Status name.
+    Status:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: integer
+          description: ID of the status.
+        status:
+          type: string
+          description: The status name.
+        state:
+          type: string
+          description: Whether the status is active or archived.
+        created_at:
+          type: string
+          format: date-time
+          description: When the status was added.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the status was updated.
+    StatusListing:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the status.
+        status:
+          type: string
+          description: The status name.
+        created_at:
+          type: string
+          format: date-time
+          description: When the status was added.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the status was updated.
+    StatusList:
+      type: array
+      items:
+        $ref: '#/components/schemas/StatusListing'
+    AccountLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the account.
+        slug:
+          type: string
+          description: Slug for the account (not used).
+        name:
+          type: string
+          description: The name of the account.
+    IdeaLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the idea.
+    IdeaLinkWithAdded:
+      allOf:
+        - $ref: '#/components/schemas/IdeaLink'
+        - type: object
+          properties:
+            added:
+              type: string
+              format: date-time
+              description: When the idea was associated to the object.
+    PersonaLink:
+      type: object
+      properties:
+        id: 
+          type: integer
+          description: ID of the persona.
+        persona:
+          type: string
+          description: name of the persona.
+        added:
+          type: string
+          format: date-time
+          description: When the presona was linked to the object.
+    ProductLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the product.
+        product:
+          type: string
+          description: Name of the product.
+        added:
+          type: string
+          format: date-time
+          description: When the product was linked to the other object
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the file attachment.
+        name:
+          type: string
+          description: Name of the file attachment.
+        url:
+          type: string
+          description: Url to the file attachment.
+        added:
+          type: string
+          format: date-time
+          description: When the attachment was added to another object.
+    ExternalLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the external link.
+        name:
+          type: string
+          description: Name of the external link.
+        url:
+          type: string
+          description: The URL of the external link.
+        external_id:
+          type: string
+          description: An ID from another 3rd party application
+        added:
+          type: string
+          format: date-time
+          description: When the external link was added to another object.
+    CompanyLink:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID of the company.
+        name:
+          type: string
+          description: Name of the company.
+        city:
+          type: string
+          description: City the company is in.
+        country:
+          type: string
+          description: The ISO Alpha-2 country code.
+        size:
+          type: string
+          enum: [1-10,11-50,50-250,250-500,500-1000,1000-5000,5000-10000,10000+]
+          description: The relative size of the company.
+        value:
+          type: string
+          enum: [high, medium, low]
+          description: The value of the company as a client.
+        image:
+          type: string
+          description: URL to the company logo.
+        created_at:
+          type: string
+          format: date-time
+          description: When when the company was added to the account.
+        updated_at:
+          type: string
+          format: date-time
+          description: When when the company details were last updated.
+    ContactLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: ID of the contact.
+        name:
+          type: string
+          description: Name of the contact.
+        email:
+          type: string
+          description: Email of the contact.
+        about:
+          type: string
+          description: Details about the contact.
+        company:
+          $ref: '#/components/schemas/CompanyLink'
+        job_role:
+          $ref: '#/components/schemas/JobRoleLink'
+        created_at:
+          type: string
+          format: date-time
+          description: When the contact was added to the account.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the contact was last updated.
+      example:
+        id: 180807
+        name: biggles
+        email: example@example.com
+        about: An example contact.
+        company: ''
+        job_role: ''
+        created_at: 2018-08-28 16:18:06
+        updated_at: 2018-08-28 16:18:29 
+    UserStory:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the user story.
+        title:
+          type: string
+          description: Title of the user story.
+        story:
+          type: string
+          description: The details of the user story. This field can contain HTML markup and UTF-8 character codes.
+        acceptance_criteria:
+          type: string
+          description: The acceptance criteria that indicate the user story has been achieved. This field can contain HTML markup and UTF-8 character codes.
+        created_at:
+          type: string
+          format: date-time
+          description: When the user story was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the user story was last updated.
+    UserStoryWithIdea:
+      allOf:
+        - $ref: '#/components/schemas/UserStory'
+        - type: object
+          properties:
+            ideas:
+              $ref: '#/components/schemas/IdeaLink'
+    UserStories:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserStory'
+    UserStoryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserStoryWithIdea'
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the comment.
+        comment:
+          type: string
+          description: The comment. This field can contain HTML markup and UTF-8 character codes.
+        created_by:
+          $ref: '#/components/schemas/UserLink'
+        created_at:
+          type: string
+          format: date-time
+          description: When the comment was created.
+        replies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          description: Replies to the original comment.
+    CommentWithDesign:
+      allOf:
+        - $ref: '#/components/schemas/Comment'
+        - type: object
+          properties:
+            mockup:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: ID of the mockup.
+                name:
+                  type: string
+                  description: Name of the mockup.
+    CommentWithThought:
+      allOf:
+        - $ref: '#/components/schemas/Comment'
+        - type: object
+          properties:
+            vote:
+              type: object
+              properties:
+                id: 
+                  type: string
+                  description: ID of the thought.
+                vote:
+                  type: string
+                  enum: [yea, nay, maybe]
+                  description: The thought associated to the comment.
+                added_at:
+                  type: string
+                  format: date-time
+                  description: When the vote was added.
+    CommentList:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/Comment'
+          - $ref: '#/components/schemas/CommentWithThought'
+          - $ref: '#/components/schemas/CommentWithDesign'
+    RoadmapCard:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the Roamdap card.
+        title:
+          type: string
+          description: Title of the roadmap card.
+        description:
+          type: string
+          description: Roadmap card description. This field can contain HTML markup and UTF-8 character codes.
+        column:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: ID of the column.
+            title:
+              type: string
+              description: Title of the roadmap column.
+            column_number:
+              type: string
+              description: Number of the column on the roadmap.
+        roadmap:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the roadmap.
+    Thought:
+      type: object
+      description: Quick yay, nay or maybe on an idea.
+      properties:
+        id:
+          type: integer
+          description: ID of the thought.
+        voter:
+          $ref: '#/components/schemas/UserLink'
+        comments: 
+          type: object
+          description: Comment
+          properties:
+            id: 
+              type: integer
+              description: ID of the comment associated to the thought.
+            comment:
+              type: string
+              description: The comment with the though. This field can contain HTML markup and UTF-8 character codes.
+        created_at:
+          type: string
+          format: date-time
+          description: When the thought was added.
+    ThoughtWithIdea:
+      allOf:
+        - $ref: '#/components/schemas/Thought'
+        - type: object
+          required:
+            - ideas
+          description: ''
+          properties:
+            ideas: 
+              $ref: '#/components/schemas/IdeaLink'
+    ThoughtList:
+      type: object
+      description: List of all thoughts made in an account.
+      properties:
+        total_votes:
+          type: string
+          description: Total number of votes.
+        yea:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThoughtWithIdea'
+          description: All the users who indicated yea on the idea.
+        nay:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThoughtWithIdea'
+          description: All the users who indicated nay on the idea.
+        maybe:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThoughtWithIdea'
+          description: All the users who indicated maybe on the idea.   
+    IdeaThoughts:
+      type: object
+      description: List of thoughts on an idea.
+      properties:
+        yea:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thought'
+          description: All the users who indicated yea on the idea.
+        nay:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thought'
+          description: All the users who indicated nay on the idea.
+        maybe:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thought'
+          description: All the users who indicated maybe on the idea.    
+    DesignVersion:
+      type: object
+      description: Previous version of a design.
+      properties:
+        id:
+          type: integer
+          description: ID of the design version.
+        name:
+          type: string
+          description: Name of the design version.
+        version:
+          type: string
+          description: Version of the design.
+    Design:
+      type: object
+      description: A design or mockup.
+      properties:
+        id:
+          type: integer
+          description: ID of the design.
+        name:
+          type: string
+          description: Name of the design.
+        previous_versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DesignVersion'
+          description: List of previous versions of the design.
+    File:
+      type: object
+      description: A file.
+      properties:
+        id:
+          type: integer
+          description: ID of the file.
+        name:
+          type: string
+          description: Name of the file.
+    JobRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID of the job role.
+        name:
+          type: string
+          description: Name of the job role.
+        created_at:
+          type: string
+          format: date-time
+          description: When the job role was added.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the job role was last updated.
+    JobRoleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/JobRole'
+    JobRoleLink:
+      type: object
+      nullable: true
+      properties:
+        id: 
+          type: string
+          format: uuid
+          description: UUID of the job role.
+        name:
+          type: string
+          description: Name of job role.
+    Objective:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID of objective.
+        name:
+          type: string
+          description: Objective name.
+        state:
+          type: string
+          description: Whether the objective is active or archived.
+        product:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: The ID of the product the objective belongs too.
+        created_at:
+          type: string
+          format: date-time
+          description: When the objective was added.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the objective was last updated.
+    ObjectiveLink:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID of objective.
+        name:
+          type: string
+          description: Name of objective.
+        state:
+          type: string
+          description: State of objective (active or archived).
+        added:
+          type: string
+          format: date-time
+          description: When the objective was linked.
+    ObjectiveIdLink:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+          description: The UUID of the objective.
+    ObjectiveList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Objective'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of user.
+        username:
+          type: string
+          description: Username of user. (depreciated and not used)
+        display_name:
+          type: string
+          description: Displayable name for the user.
+        email:
+          type: string
+          description: Email of user.
+        role_id:
+          type: string
+          description: Role ID.
+        role_type:
+          type: string
+          enum: [admin, editor, reviewer]
+          description: The role type of the user.
+        image: 
+          type: object
+          nullable: true
+          properties:
+            original:
+              type: string
+              format: uri
+              description: URL to user image.
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    FeedbackLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Feedback id.
+        feedback:
+          type: string
+          description: The feedback. This field can contain HTML markup and UTF-8 character codes.
+        source:
+          type: string
+          description: The source or channel that the feedback was received by.
+        state:
+          type: string
+          enum: [unsorted, active, archived]
+          description: Whether the feedback is unsorted, active or archived.
+        created_at:
+          type: string
+          format: date-time
+          description: When the feedback was added to the account.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the feedback was last updated.
+    Feedback:
+      type: object
+      properties: 
+        id:
+          type: integer
+          description: Feedback id.
+        feedback:
+          type: string
+          description: The feedback. This field can contain HTML markup and UTF-8 character codes.
+        source:
+          type: string
+          enum: [api,email,conference,in_person_conversation,sales_team,social_media,telephone_conversation,user_test,website_contact_form,customer_feedback_portal,customer_feedback_widget]
+          description: The source or channel that the feedback was received through.
+        created_at:
+          type: string
+          format: date-time
+          description: When the feedback was added to the account.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the feedback was last updated.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagLink'
+          description: List of associated tags.
+        ideas:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdeaLinkWithAdded'
+          description: List of associated ideas.
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductLink'
+          description: List of associated products.
+        personas:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonaLink'
+          description: List of associated personas.
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+          description: List of attachments.
+        external_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalLink'
+          description: List of external links.
+    FeedbackListing:
+      allOf:
+        - $ref: '#/components/schemas/Feedback'
+        - type: object
+          properties:
+            state:
+              type: string
+              enum: [unsorted, active, archived]
+              description: State of the feedback
+            customer:
+              $ref: '#/components/schemas/ContactLink'
+            added_by:
+              $ref: '#/components/schemas/UserLink'
+    ContactLinkWithFeedback:
+      allOf:
+        - $ref: '#/components/schemas/ContactLink'
+        - type: object
+          properties:
+            feedbacks:
+              type: array
+              items:
+                $ref: '#/components/schemas/Feedback'
+    ContactIdPostLink:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the contact
+    FeedbackList:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/ContactLinkWithFeedback'
+          - $ref: '#/components/schemas/FeedbackListing'
+      description: List of feedback.
+    FeedbackAttachment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Numeric id of the file attachment.
+        file_id:
+          type: string
+          format: uuid
+          description: UUID of the file attachment.
+        url:
+          type: string
+          format: uri
+          description: URL to the file.
+        filename:
+          type: string
+          description: Name of the file attachment.
+        extension:
+          type: string
+          description: The file attachment extension.
+        created_at:
+          type: string
+          format: date-time
+          description: When the attachment was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the attachment was last updated.
+    Idea:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Data store ID of the idea.
+        project_id:
+          type: string
+          description: The displayed ID for the idea in the UI.
+        account:
+          $ref: '#/components/schemas/AccountLink'
+        web_url:
+          type: string
+          format: uri
+          description: The URL to the idea in the ProdPad UI. Useful for providing a link to the original source in other applications. 
+        impact:
+          type: string
+          description: The raw impact value.
+          minimum: 0
+          maximum: 11
+        impact_scaled:
+          type: string
+          description: The impact value in the scale.
+          nullable: true
+        effort:
+          type: string
+          description: the raw effort value.
+          minimum: 0
+          maximum: 11
+        effort_scaled:
+          type: string
+          description: The effort value in the scale.
+          nullable: true
+        popularity: 
+          type: integer
+          description: The raw popularity value.
+          minimum: 0
+          maximum: 11
+        engagement: 
+          type: integer
+          description: The raw engagement value.
+          minimum: 0
+          maximum: 11
+        created_at:
+          type: string
+          format: date-time
+          description: When the idea was added to the account.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the idea was last updated.
+        title:
+          type: string
+          description: Title for the idea.
+        description:
+          type: string
+          description: The details of the idea. This field can contain HTML markup and UTF-8 character codes.
+        state:
+          type: string
+          description: State of the idea.
+        creator:
+          $ref: '#/components/schemas/UserLink'
+    IdeaExpanded:
+      allOf:
+        - $ref: '#/components/schemas/Idea'
+        - type: object
+          properties:
+            business_case:
+              type: object
+              properties:
+                problem:
+                  type: string
+                  description: What problem is this idea solving. This field can contain HTML markup and UTF-8 character codes.
+                value:
+                  type: string
+                  description: What is the value of solving this problem. This field can contain HTML markup and UTF-8 character codes.
+            functional_spec:
+              type: string
+              description: The functional specs for this idea. It is a free text field. This field can contain HTML markup and UTF-8 character codes.
+            notes:
+              type: string
+              description: Notes on the idea. It is a free text field. This field can contain HTML markup and UTF-8 character codes.
+            status:
+              $ref: '#/components/schemas/Status'
+            owner:
+              $ref: '#/components/schemas/UserLink'
+            author:
+              $ref: '#/components/schemas/UserLink'
+            tags:
+              type: array
+              items:
+                $ref: '#/components/schemas/TagLink'
+              description: List of associated tags.
+            products:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductLink'
+              description: List of associated products.
+            personas:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonaLink'
+              description: List of associated personas.
+            comments:
+              type: array
+              items:
+                $ref: '#/components/schemas/Comment'
+              description: List of comments made on the idea.
+            userstories:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserStory'
+              description: List of associated user stories.
+            external_links:
+              type: array
+              items:
+                $ref: '#/components/schemas/ExternalLink'
+              description: List of associated external links.
+            roadmap_cards:
+              type: array
+              items:
+                $ref: '#/components/schemas/RoadmapCard'
+              description: List of roadmap cards the idea is associated to.
+            votes:
+              $ref: '#/components/schemas/IdeaThoughts'
+            mockups:
+              type: array
+              items:
+                $ref: '#/components/schemas/Design'
+              description: List of all the associated mockups and designs.
+            files:
+              type: array
+              items:
+                $ref: '#/components/schemas/File'
+              description: List of files associated to the idea.
+    IdeaList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the call worked or not.
+          default: true
+        idea_count:
+          type: integer
+          description: The number of ideas that match the filters.
+        page:
+          type: integer
+          description: Page number of the results.
+        size: 
+          type: integer
+          description: The number of results per page.
+        ideas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Idea'
+    RelatedIdeas:
+      type: object
+      properties:
+        related:
+          type: array
+          items:
+            $ref: '#/components/schemas/Idea'
+        duplicate:
+          type: array
+          items:
+            $ref: '#/components/schemas/Idea'
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the contact.
+        name:
+          type: string
+          description: Name of the contact.
+        email:
+          type: string
+          description: Email of the contact.
+        about:
+          type: string
+          description: Details about the contact. This field can contain HTML markup and UTF-8 character codes.
+          nullable: true
+        phone:
+          type: string
+          description: Contact's phone number.
+          nullable: true
+        twitter_url:
+          type: string
+          description: Contact's twitter handle.
+          nullable: true
+        image:
+          type: object
+          properties:
+            original:
+              type: string
+              description: URL to the original image of contact.
+            large:
+              type: string
+              description: Resized image of the contact.
+          description: Photo or image of contact
+          nullable: true
+        job_role:
+          $ref: '#/components/schemas/JobRoleLink'
+        company:
+          $ref: '#/components/schemas/CompanyLink'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagLink'
+        personas:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonaLink'
+        external_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalLink'
+        created_at:
+          type: string
+          format: date-time
+          description: When the contact was added to the account.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the contact was last updated
+    ContactWithFeedback:
+      allOf:
+        - $ref: '#/components/schemas/Contact'
+        - type: object
+          required:
+            - feedbacks
+          properties:
+            feedbacks:
+              type: array
+              items:
+                $ref: '#/components/schemas/FeedbackLink'
+    ContactList:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the fetch worked.
+        contact_count:
+          type: string
+          description: Number of contacts found.
+        page:
+          type: integer
+          description: Which page of results.
+        size:
+          type: integer
+          description: Number of results on each page.
+        filters:
+          type: object
+          properties:
+            tags:
+              type: string
+              description: Comma separate list of tags filtered on.
+              nullable: true
+            persona:
+              type: string
+              description: Comma separated list of personas filtered on.
+              nullable: true
+            company:
+              type: string
+              description: ID of the company filtered on.
+              nullable: true
+            job_role:
+              type: string
+              description: ID of the job role filtered on.
+              nullable: true
+        includes:
+          type: object
+          properties:
+            feedbacks:
+              type: boolean
+              description: Whether to return the feedbacks for each contact.
+              default: false
+            numeric_id:
+              type: boolean
+              description: Depreciated
+              default: false
+        contacts:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/Contact'
+              - $ref: '#/components/schemas/ContactWithFeedback'
+    CompanyContact:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the contact.
+        name:
+          type: string
+          description: Name of the contact.
+        email:
+          type: string
+          description: Email of the contact.
+        about:
+          type: string
+          description: Details about the contact. This field can contain HTML markup and UTF-8 character codes.
+        phone:
+          type: string
+          description: Contact's phone number.
+        twitter_url:
+          type: string
+          description: Contact's twitter handle
+        image:
+          type: object
+          properties:
+            original:
+              type: string
+              description: URL to the original image of contact.
+            large:
+              type: string
+              description: Resized image of the contact.
+          description: Photo or image of contact.
+        created_at:
+          type: string
+          format: date-time
+          description: When the contact was added to the account.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the contact was last updated.
+    CompanyContactWithFeedback:
+      allOf:
+        - $ref: '#/components/schemas/CompanyContact'
+        - type: object
+          required:
+            - feedbacks
+          properties:
+            feedbacks:
+              type: array
+              items:
+                $ref: '#/components/schemas/FeedbackLink'
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID of the company.
+        name:
+          type: string
+          description: Name of the company.
+        city:
+          type: string
+          description: The city of the company.
+          nullable: true 
+        country:
+          type: string
+          description: ISO Alpha-2 two letter country code.
+          nullable: true
+        size:
+          type: string
+          enum: [1-10,11-50,50-250,250-500,500-1000,1000-5000,5000-10000,10000+]
+          description: The number of employees.
+          nullable: true
+        value:
+          type: string
+          enum: [high, medium, low]
+          description: The value of the company.
+          nullable: true
+        image:
+          type: string
+          format: uri
+          description: The URL to the logo/image that represents the company in the UI.
+          nullable: true
+        tags: 
+          type: array
+          items:
+            $ref: '#/components/schemas/TagLink'
+        external_links: 
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalLink'
+        created_at:
+          type: string
+          format: date-time
+          description: When the company was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the company details were last updated.
+    CompanyWithContacts:
+      allOf:
+        - $ref: '#/components/schemas/Company'
+        - type: object
+          required:
+           - contacts
+          properties:
+            contacts:
+              type: array
+              items: 
+                $ref: '#/components/schemas/CompanyContact'
+    CompanyWithContactsFeedback:
+      allOf:
+        - $ref: '#/components/schemas/Company'
+        - type: object
+          required:
+           - contacts
+          properties:
+            contacts:
+              type: array
+              items: 
+                $ref: '#/components/schemas/CompanyContactWithFeedback'
+    CompanyList:
+      type: object
+      properties:
+        success:
+          type: string
+          description: Whether the API call worked.
+        company_count:
+          type: integer
+          description: Number of companies that match the filters.
+        page:
+          type: integer
+          description: Page number of results.
+        size:
+          type: integer
+          description: Number of items per page. Default is 100
+        filters:
+          type: object
+          properties:
+            tags: 
+              type: string
+              description: Comma separate list of tags filtered on.
+              nullable: true
+            size: 
+              type: string
+              enum: [1-10,11-50,50-250,250-500,500-1000,1000-5000,5000-10000,10000+]
+              description: the size of the company filtered on.
+              nullable: true
+            value:
+              type: string
+              enum: [high, medium, low]
+              description: the value of the company filtered on.
+              nullable: true
+            country: 
+              type: string
+              description: ISO Alpha-2 two letter country code filtered on.
+              nullable: true
+            city: 
+              type: string
+              description: City filtered on.
+              nullable: true
+        include:
+          type: object
+          properties:
+            feedbacks: 
+              type: boolean
+              default: false
+              description: Whether the feedback associated to the company via the contacts associated to the company are included in the results.
+            contacts:
+              type: boolean
+              default: false
+              description: Whether the company contacts are included in the results.
+        companies:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/Company'
+              - $ref: '#/components/schemas/CompanyWithContacts'
+              - $ref: '#/components/schemas/CompanyWithContactsFeedback'
+    IdeaLinkPipeline:
+      type: object
+      properties:
+        id: 
+          type: string
+          description: ID of idea.
+        title:
+          type: string
+          description: Title of the idea.
+        description:
+          type: string
+          description: Description of the idea. This field can contain HTML markup and UTF-8 character codes.
+        state:
+          type: string
+          description: State of the idea.
+        status:
+          $ref: '#/components/schemas/StatusLink'
+        added:
+          type: string
+          format: date-time
+          description: When the idea was added to roadmap card.
+        order:
+          type: integer
+          description: Order of idea on the card.
+    SpecLinkPipeline:
+      type: object
+      properties: 
+        id:
+          type: string
+          description: ID of the user story.
+        story:
+          type: string
+          description: The user story. This field can contain HTML markup and UTF-8 character codes.
+        acceptance_critiera:
+          type: string
+          description: Acceptance criteria for the story. This field can contain HTML markup and UTF-8 character codes.
+        added:
+          type: string
+          format: date-time
+          description: When the user story was added to the roadmap card.
+        order:
+          type: integer
+          description: Order of the user story on the card.
+    RoadmapCardColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of roadmap card.
+        numeric_product_id:
+          type: string
+          description: ID of product.
+        title:
+          type: string
+          description: Title of roadmap card.
+        description:
+          type: string
+          description: Description of roadmap card. This field can contain HTML markup and UTF-8 character codes.
+        public:
+          type: string
+          description: Whether the roadmap card is visible on embedded roadmaps.
+        position:
+          type: string
+          description: Position in the roadmap colum. 0 is top.
+        effort:
+          type: integer
+          description: Raw effort score.
+          minimum: 0
+          maximum: 11          
+        effort_scaled:
+          type: string
+          description: Effort value on the scale.
+          nullable: true
+        impact:
+          type: integer
+          description: Raw impact score.
+          minimum: 0
+          maximum: 11          
+        impact_scaled:
+          type: string
+          description: Impact value on the scale.
+          nullable: true
+        status:
+          type: string
+          description: Current status.
+        status_raw:
+          type: integer
+          description: Raw status value.
+        state:
+          type: string
+          description: Current state of roadmap card.
+        state_raw:
+          type: integer
+          description: Raw state value.
+        created_at:
+          type: string
+          format: date-time
+          description: When the card was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the card was last updated.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagLink'
+        objectives:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveLink'
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserLink'
+        pipeline:
+          type: object
+          properties:
+            ideas:
+              type: array
+              items:
+                $ref: '#/components/schemas/IdeaLinkPipeline'
+            specs:
+              type: array
+              items:
+                $ref: '#/components/schemas/SpecLinkPipeline'
+    RoadmapColumn:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the roadmap column.
+        title:
+          type: string
+          description: Column title.
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoadmapCardColumn'
+        column_number:
+          type: integer
+          description: Column position on the roadmap.
+        products:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Product ID.
+        created_at:
+          type: string
+          format: date-time
+          description: When the column was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the column details were last updated.
+    Roadmap:
+      type: array
+      items:
+        $ref: '#/components/schemas/RoadmapColumn'
+    RoadmapLink:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of roadmap.
+        name:
+          type: string
+          description: Name of roadmap.
+        products:
+          type: object
+          properties:
+            id: 
+              type: integer
+              description: ID of the associated product.
+        created_at:
+          type: string
+          format: date-time
+          description: When the roadmap was created.
+    ProductlineLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of productline.
+        name:
+          type: string
+          description: Name of productline.
+        roadmaps:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoadmapLink'
+        created_at:
+          type: string
+          description: When the product line was created.
+    RoadmapList:
+      type: object
+      properties:
+        roadmap_count:
+          type: integer
+          description: Number of roadmaps.
+        productline_roadmaps:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductlineLink'
+        roadmaps:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoadmapLink'
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of product.
+        name:
+          type: string
+          description: Name of product.
+        description:
+          type: string
+          description: Description of the product. This field can contain HTML markup and UTF-8 character codes.
+        vision:
+          type: string
+          description: Vision for the product. This field can contain HTML markup and UTF-8 character codes.
+        kpis:
+          type: string
+          description: KPIs for the product. This field can contain HTML markup and UTF-8 character codes.
+        value:
+          type: string
+          description: Value of the product to end users and the business. This field can contain HTML markup and UTF-8 character codes.
+        documentation:
+          type: string
+          description: Documentation related to the product. This field can contain HTML markup and UTF-8 character codes.
+        image:
+          type: object
+          nullable: true
+          properties:
+            original: 
+              type: string
+              format: uri
+              description: URL of the product image.
+        roadmaps:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the product roadmap.
+        created_at:
+          type: string
+          format: date-time
+          description: When the product was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the product details were last updatd.
+    ProductListing:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Numeric product ID.
+        product_id:
+          type: string
+          format: uuid
+          description: UUID of the product.
+        name:
+          type: string
+          description: Name of the product.
+        description:
+          type: string
+          description: Description of the product. This field can contain HTML markup and UTF-8 character codes.
+        image:
+          type: object
+          nullable: true
+          properties:
+            original:
+              type: string
+              format: uri
+              description: URL of the product image.
+        roadmaps:
+          type: object
+          properties:
+            id: 
+              type: integer
+              description: ID of the product roadmap.
+        productlines:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: ID of productline a product is in.
+            name:
+              type: string
+              description: Name of product line.
+            order:
+              type: string
+              description: Order of the product in the product line.
+        order:
+          type: string
+          description: Order of product in portfolio .
+        created_at:
+          type: string
+          format: date-time
+          description: When the product was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the product details were last updated.
+    ProductList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductListing'
+    Productline:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the product line.
+        name:
+          type: string
+          description: Name of the product line.
+        created_at:
+          type: string
+          format: date-time
+          description: When the product line was created.
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductListing'
+    ProductListGroup:
+      type: object
+      properties:
+        productlines:
+          type: array
+          items:
+            $ref: '#/components/schemas/Productline'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductListing'
+        product_count:
+          type: string
+          description: Count of products.
+    Persona:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the persona.
+        persona_id:
+          type: string
+          format: uuid
+          description: UUID of the persona.
+        name:
+          type: string
+          description: Persona name.
+        description:
+          type: string
+          description: Description of the persona. This field can contain HTML markup and UTF-8 character codes.
+        image:
+          type: object
+          nullable: true
+          properties:
+            original:
+              type: string
+              format: uri
+              description: URL to persona image.
+        created_at:
+          type: string
+          description: When the persona was created.
+        updated_at:
+          type: string
+          description: When the persona details were last updated.
+        behaviours:
+          type: string
+          description: Key behaviours of the persona. This field can contain HTML markup and UTF-8 character codes.
+        goals:
+          type: string
+          description: Key goals of the persona. This field can contain HTML markup and UTF-8 character codes.
+        constraints:
+          type: string
+          description: Key constraints of the persona. This field can contain HTML markup and UTF-8 character codes.
+    PersonaListing:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the persona.
+        persona_id:
+          type: string
+          format: uuid
+          description: UUID of the persona.
+        name:
+          type: string
+          description: Persona name.
+        description:
+          type: string
+          description: Description of the persona. This field can contain HTML markup and UTF-8 character codes.
+        image:
+          type: object
+          nullable: true
+          properties:
+            original:
+              type: string
+              format: uri
+              description: URL of the persona image.
+        created_at:
+          type: string
+          format: date-time
+          description: When the persona was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the persona details were last updated.
+    PersonaList:
+      type: array
+      items:
+        $ref: '#/components/schemas/PersonaListing'
+    SearchIdea:
+      type: object
+      description: Search idea
+      properties:
+        id:
+          type: integer
+          description: ID of the idea.
+        project_id:
+          type: integer
+          description: The displayed ID of the idea.
+        title:
+          type: string
+          description: Title of the idea.
+        summary:
+          type: string
+          description: The description of the idea. This field can contain HTML markup and UTF-8 character codes.
+    SearchProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the product.
+        name:
+          type: string
+          description: Name of the product.
+    SearchPersona:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the persona.
+        name:
+          type: string
+          description: Name of the persona.
+    SearchFeedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the feedback.
+        feedback:
+          type: string
+          description: The feedback. This field can contain HTML markup and UTF-8 character codes.
+        customer:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: The contact ID.
+            name:
+              type: string
+              description: The contact Name.
+    SearchResults:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The query that was searched on.
+        filter:
+          type: object
+          description: The filters applied.
+        page:
+          type: integer
+          description: The page number of results.
+        size:
+          type: integer
+          description: The number of results per page.
+        ideas:
+          type: object
+          description: The list of ideas that match the query and filters.
+          properties:
+            count:
+              type: integer
+              description: Count of ideas that match the query and filters.
+            results:
+              description: An array of search ideas.
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchIdea'
+        products:
+          type: object
+          description: The list of products that match the query and filters.
+          properties:
+            count:
+              type: integer
+              description: Count of products that match the query and filters.
+            results:
+              description: Searched product result.
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchProduct'
+        personas:
+          type: object
+          description: The list of personas of that match the query and filters.
+          properties:
+            count:
+              type: integer
+              description: The count of personas that match the query and filters.
+            results:
+              description: Search persona result.
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchPersona'
+        feedback:
+          type: object
+          description: The feedback that matches the query and filters.
+          properties:
+            count:
+              type: integer
+              description: The count of pieces of feedback that match the query and filters.
+            results:
+              description: Search feedback
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchFeedback'
+    FeedbackPostLink:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Numeric id of the feedback to link to an object when creating.
+    IdeaPostLink:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Numeric id of the idea to link to an object when creating.
+    TagIdPostLink:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Numeric id of the tag to link to an object when creating.
+    TagNamePostLink:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the tag to link to an object when creating.
+    ProductIdPostLink:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          description: Numeric ID of the product to link to an object when creating.
+    ProductNamePostLink:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the product to link to an object when creating. It must match exactly.
+    PersonaIdPostLink:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          description: Numeric ID of the persona to link to an object when creating.
+    PersonaNamePostLink:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the persona to link to an object when creating. It must match exactly.
+    ExternalUrlPost:
+      type: object
+      required:
+        - name
+        - url
+      properties:
+        name:
+          type: string
+          description: Name/title of the URL.
+        url:
+          type: string
+          format: uri
+          description: The URL of the external link.
+        external_id:
+          type: string
+          description: The ID for the object in a 3rd party application
+    ExternalUrlIdeaPost:
+      type: object
+      required:
+        - title
+        - url
+      properties:
+        title:
+          type: string
+          description: Name/title of the URL.
+        url:
+          type: string
+          format: uri
+          description: The URL of the external link.     
+    FeedbackPost:
+      type: object
+      description: >
+        Fields to create a feedback. Note either the contact ID or contact name is required. Otherwise a 400 error will be returned. If a name and email field are used, the value in the email field will be used to see if the contact already exists and if it does the feedback will be automatically added to the existing contact.
+      required:
+        - feedback
+      properties: 
+        contact_id:
+          type: string
+          format: uuid
+          description: ID of the contact providing the feedback. Either Contact ID or Contact name is required.
+        name: 
+          type: string
+          description: Name of the contact providing the feedback. Either Contact ID or Contact name is required.
+        company_id:
+          type: string
+          format: uuid
+          description: UUID of the company to link the contact to. The UUID can be determined using /GET companies endpoint.
+        feedback: 
+          type: string
+          description: The feedback. This field accepts HTML and is stored as UTF-8.
+        email: 
+          type: string
+          description: The email of the contact. This is used to avoid duplication of contacts. This can be any unique ID for each contact. 
+        about: 
+          type: string
+          description: Text field about the contact. This will overright the existing about if the contact already exists. This field accepts HTML and is stored as UTF-8.
+        ideas:
+          description: Ihe one or more ideas  associated to the feedback.
+          type: array
+          items: 
+              $ref: '#/components/schemas/IdeaPostLink'
+        tags: 
+          description: The tags associated to the feedback. Mulitple tags can be specified and acts as an OR. Use the tag ID or UUID.
+          type: array
+          items: 
+            anyOf:
+              - $ref: '#/components/schemas/TagIdPostLink'
+              - $ref: '#/components/schemas/TagNamePostLink'
+        personas: 
+          description: The persona associated to feedback. Can either be the persona UUID or persona ID.
+          type: array
+          items: 
+            anyOf:
+              - $ref: '#/components/schemas/PersonaIdPostLink'
+              - $ref: '#/components/schemas/PersonaNamePostLink'
+        products: 
+          description: The product associated to feedback. Can either be the product UUID or product ID.
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProductIdPostLink'
+              - $ref: '#/components/schemas/ProductNamePostLink'
+        source: 
+          type: string
+          description: The source from where the feedback was gathered. If none is supplied the default is API.
+          enum: [api,email,conference,in_person_conversation,sales_team,social_media,telephone_conversation,user_test,website_contact_form,customer_feedback_portal,customer_feedback_widget]
+        external_links: 
+          description: The external url associated with the feedback. An example of an external url is that of a record in a CRM or a ticket in a customer support application
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalUrlPost'
+    ContactPost:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the contact.
+        email:
+          type: string
+          description: Can be email or other unique identifier. This is used to de-duplicate contacts.
+        about:
+          type: string
+          description: Details on the contact. This field accepts HTML and is stored as UTF-8.
+        phone:
+          type: string
+          description: Phone number of the contact.
+        twitter_url:
+          type: string
+          description: Twitter handle of the contact.
+        tags:
+          type: array
+          items: 
+            anyOf:
+              - $ref: '#/components/schemas/TagIdPostLink'
+              - $ref: '#/components/schemas/TagNamePostLink'
+        external_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalUrlPost'
+        personas:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/PersonaIdPostLink'
+              - $ref: '#/components/schemas/PersonaNamePostLink'
+        company:
+          type: string
+          format: uuid
+          description: UUID of the company to link the contact to. The UUID can be determined using /GET companies endpoint. Only used in the creation of a new contact.
+        job_role:
+          type: string
+          format: uuid
+          description: The UUID of the job role. The UUID can be /GET job_roles endpoint
+    CompanyPost:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the company.
+        city:
+          type: string
+          description: City the company is located in or you want to tag with.
+        country:
+          type: string
+          description: ISO Alpha-2 two letter country code.
+        size:
+          type: string
+          enum: [1-10,11-50,50-250,250-500,500-1000,1000-5000,5000-10000,10000+]
+          description: The size of the company by employees 
+        value:
+          type: string
+          enum: [high, medium, low]
+          description: The value of the company.
+        tags:
+          type: array
+          items: 
+            anyOf:
+              - $ref: '#/components/schemas/TagIdPostLink'
+              - $ref: '#/components/schemas/TagNamePostLink'
+        external_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalUrlPost'
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactIdPostLink'
+    IdeaStoryPost:
+      type: object
+      properties:
+        story:
+          type: string
+          description: The main body of a user story. This field accepts HTML and is stored as UTF-8.
+        acceptance_criteria:
+          type: string
+          description: The acceptance criteria for passing tests. This field accepts HTML and is stored as UTF-8.
+    IdeaCommentPost:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: The comment someone has made on the idea. This field accepts HTML and is stored as UTF-8.
+        user_id:
+          type: integer
+          description: Numeric ID of the user in ProdPad who is making the comment.
+    IdeaStatusChangePost:
+      type: object
+      properties:
+        idea_id:
+          type: integer
+          description: Numeric ID of the idea to change the status on.
+        user_id:
+          type: integer
+          description: Numeric ID of the user changing the workflow status of an idea.
+        status_id:
+          type: integer
+          description: Numeric ID of the status to change the idea to. Can be found using GET /statuses.
+    IdeaStatusChangeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Numeric ID of the idea
+        statuses:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Numeric ID of the status.
+            added:
+              type: string
+              description: When the idea was switched to the workflow status.
+        comments:
+          type: object
+          description: Any comment added when changing the status.
+          properties:
+            id:
+              type: integer
+              description: ID of the comment.
+            comment:
+              type: string
+              description: The comment. This field may contain HTML and UTF-8 characters.
+            created_at:
+              type: string
+              format: date-time
+              description: When the comment was created.
+    IdeaPost:
+      type: object
+      properties:
+        title: 
+          type: string
+          description: The title of the idea. Either the title or description is required.
+        description: 
+          type: string
+          description: The description of the idea. This field accepts HTML and is stored as UTF-8.
+        creator: 
+          type: integer
+          description: Numeric ID of a user that has a role in the account.
+        business_case: 
+          type: object
+          properties:
+            problem:
+              type: string
+              description: The problem or hypothesis this idea is aiming to address. This field accepts HTML and is stored as UTF-8.
+            value:
+              type: string
+              description: The value of solving this problem or hypothesis to the user and the company. This field accepts HTML and is stored as UTF-8.
+        functional: 
+          type: string
+          description: The functional specs of how this idea could be implemented. This field accepts HTML and is stored as UTF-8.
+        notes: 
+          type: string
+          description: Free text field for notes on the idea. This field accepts HTML and is stored as UTF-8.
+        user_stories: 
+          type: array
+          items:
+            $ref: '#/components/schemas/IdeaStoryPost'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdeaCommentPost'
+        Feedbacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedbackPostLink'
+        products: 
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProductIdPostLink'
+              - $ref: '#/components/schemas/ProductNamePostLink'
+        personas:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/PersonaIdPostLink'
+              - $ref: '#/components/schemas/PersonaNamePostLink'
+        tags: 
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/TagIdPostLink'
+              - $ref: '#/components/schemas/TagNamePostLink'
+        external_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalUrlIdeaPost'
+        status: 
+          type: object
+          properties:
+            id: 
+              type: integer
+              description: ID of the workflow status. This can be retrieved from GET /statuses.
+        state: 
+          type: string
+          enum: [active, active_public, archived, unsorted]
+          description: Set the state of the idea to active, archived or unsorted. 
+    ObjectivePost:
+      type: object
+      properties: 
+        name: 
+          type: string
+          description: Name of the objective
+        state:
+          type: string
+          enum: [active, archived]
+          description: The state of the objective
+        product: 
+         type: object
+         properties:
+          id: 
+            type: integer
+            description: Numeric poduct ID to link the objective too.
+    RoadmapCardPost:
+      type: object
+      properties: 
+        title:
+          type: string
+          description: The title of the roadmap card.
+        roadmap_id: 
+          type: integer
+          description: Numeric roadmap ID.
+        column_id: 
+          type: integer
+          description: Numeric column ID. This can be found using GET /roadmaps/{id}.
+        description: 
+          type: string
+          description: The description of the problem(s) and/or hypothesis this card is about. This field accepts HTML and is stored as UTF-8.
+        tags: 
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/TagIdPostLink'
+              - $ref: '#/components/schemas/TagNamePostLink'
+        objectives: 
+          type: array
+          items:
+            type: object
+            properties:
+              id: 
+                type: string
+                format: uuid
+                description: UUID of the objective to link to the roadmap card.
+    RoadmapCardPostResponse:
+      allOf:
+        - $ref: '#/components/schemas/RoadmapCard'
+        - type: object
+          description: ''
+          properties:
+            account:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Account ID for the roadmap card.
+            product:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: ID of the product that the roadmap belongs to.
+            # column:
+            #   type: object
+            #   properties:
+            #     id: 
+            #       type: string
+            #       description: ID of the roadmap column the card is on.
+            tags:
+              type: array
+              items:
+                $ref: '#/components/schemas/TagLink'
+            ojectives:
+              type: array
+              items:
+                $ref: '#/components/schemas/ObjectiveIdLink'
+    ThoughtPost:
+      type: object
+      properties:
+        vote: 
+          type: string
+          enum: [Yea, Nay, Maybe]
+          description: The thought type.
+        idea_id: 
+          type: integer
+          description: Numeric ID of the idea to associate the vote too. This can be retrieved from GET /ideas
+        user_id: 
+          type: integer
+          description: Numeric ID of the user with a role in the account who is making the thought. 
+        comment:
+          type: string
+          description: Comment made when adding the thought. This field accepts HTML and is stored as UTF-8.
+    ThoughtPostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Numeric ID of the thought
+        vote: 
+          type: string
+          enum: [Yea, Nay, Maybe]
+          description: The thought type
+        ideas: 
+          $ref: '#/components/schemas/IdeaLink'
+        comments: 
+          type: object
+          properties:
+            id: 
+              type: integer
+              description: ID of the comment associated to the thought.
+            ideas:
+              $ref: '#/components/schemas/IdeaLink'
+            comment:
+              type: string
+              description: The comment with the though. May include HTML and UTF-8 characters.
+            created_at:
+              type: string
+              format: date-time
+              description: When the comment was created.
+        created_at:
+          type: string
+          format: date-time
+          description: When the thought was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the thought was last updated.
+    UserPost:
+      type: object
+      properties: 
+        email: 
+          type: string
+          format: email
+          description: The email of the user.
+        role_type: 
+          type: string
+          enum: [Admin, Editor, Reviewer]
+          description: Role of the user in the account.
+        name:
+          type: string
+          description: The name to display for the user in the UI.
+        timezone: 
+          type: string
+          description: Timezone of the user using the format like Europe/London.
+    IdeaPut:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the idea.
+        description:
+          type: string
+          description: The description of the idea. This field accepts HTML and is stored as UTF-8.
+        business_case:
+          type: object
+          properties:
+            problem:
+              type: string
+              description: The problem or hypothesis this idea focuses on. This field accepts HTML and is stored as UTF-8.
+            value:
+              type: string
+              description: The value to user and company to address the problem. This field accepts HTML and is stored as UTF-8.
+        functional:
+          type: string
+          description: Functional specs for the idea. This field accepts HTML and is stored as UTF-8.
+        notes:
+          type: string
+          description: General notes on the idea. This field accepts HTML and is stored as UTF-8.
+        state:
+          type: string
+          enum: [active, active_public, archived, unsorted]
+          description: The state of the idea.
+    FeedbackPut:
+      type: object
+      properties:
+        feedback: 
+          type: string
+          description: Update to the actual feedback. This field accepts HTML and is stored as UTF-8.
+        state:
+          type: string
+          enum: [active, archived, unsorted]
+          description: The state of the feedback.
+        external_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalUrlPost'
+    error_4XX:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        developer_message:
+          type: string
+          description: Error message for developers.
+        user_message:
+          type: string
+          description: Error message that can be displayed to users.
+          
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+- bearerAuth: []
+
+tags:
+- name: Misc
+  description: Miscellaneous endpoints.
+- name: Ideas
+  description: Endpoints for Ideas and associated items like user stories and comments.
+- name: Feedback
+  description: Endpoints for Feedback, Contacts and Companies.
+- name: Products
+  description: Endpoints for Products and Roadmaps.

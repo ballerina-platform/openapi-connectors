@@ -56,6 +56,7 @@ public type ClientConfig record {|
 # YNAB API uses a REST based design, leverages the JSON data format, and relies upon HTTPS for transport. 
 # We respond with meaningful HTTP response codes and if an error occurs, we include error details in the response body. 
 # API Documentation is at https://api.youneedabudget.com
+@display {label: "Ynab", iconPath: "resources/ynab.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

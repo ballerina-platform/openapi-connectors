@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Figshare API v2.0.0](https://docs.figshare.com/) OpenAPI specification.
 # Figshare is a repository where users can make all of their research outputs available in a citable, shareable and discoverable manner.
+@display {label: "Figshare", iconPath: "resources/figshare.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: PdfBroker.io API
-  x-init-description: >- 
+  x-ballerina-init-description: >- 
     The connector initialization requires setting the API credentials.
     
     Create an [PdfBroker account](https://www.pdfbroker.io/) and obtain tokens following 
@@ -10,7 +10,7 @@ info:
     This is a generated connector from [PdfBroker.io API v1](https://www.pdfbroker.io/docs) OpenAPI Specification.
 
     PdfBroker.io is an api for creating pdf files from Xsl-Fo or Html and other useful pdf utilities.
-  x-display:
+  x-ballerina-display:
     label: PdfBroker
     iconPath: "resources/pdfbroker.svg"
   termsOfService: https://www.pdfbroker.io/terms

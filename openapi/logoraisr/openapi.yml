@@ -5,11 +5,11 @@ info:
     This is a generated connector from [Logoraisr API v1](https://docs.logoraisr.com/) OpenAPI Specification.
 
     Logoraisr API provides capability to access operations related to your graphic design tasks automatically using best-in-class algorithms and artificial intelligence.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Logoraisr account](https://logoraisr.com/) and obtain OAuth tokens following [this guide](https://docs.logoraisr.com/#section/Authentication).
-  x-display:
+  x-ballerina-display:
     label: Logoraisr
     iconPath: "resources/logoraisr.svg"
   termsOfService: https://logoraisr.com/terms-conditions
@@ -1096,4 +1096,4 @@ components:
       type: apiKey
       name: Authorization
       in: header
-      x-apikey-description: "Provide your API Key as `Authorization`. Eg: {Authorization:Token [<API_KEY>]}"
+      x-ballerina-apikey-description: "Provide your API Key as `Authorization`. Eg: {Authorization:Token [<API_KEY>]}"

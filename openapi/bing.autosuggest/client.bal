@@ -26,6 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Bing Autosuggest API v1](https://www.microsoft.com/en-us/bing/apis/bing-autosuggest-api) OpenAPI specification.
 # "The Autosuggest API lets partners send a partial search query to Bing\ \ and get back a list of suggested queries that other users have searched on.\ \ In addition to including searches that other users have made, the list may include\ \ suggestions based on user intent. For example, if the query string is weather\ \ in Lo, the list will include relevant weather suggestions.\r\n<br><br>\r\nTypically,\ \ you use this API to support an auto-suggest search box feature. For example,\ \ as the user types a query into the search box, you would call this API to populate\ \ a drop-down list of suggested query strings. If the user selects a query from\ \ the list, you would either send the user to the Bing search results page for\ \ the selected query or call the Bing Search API to get the search results and\ \ display the results yourself.\r\n"
+@display {label: "Bing Autosuggest", iconPath: "resources/bing.autosuggest.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -7,11 +7,14 @@ tags:
   - name: access_tokens
     description: Access tokens for projects
 info:
+  x-ballerina-display:
+    label: Gitlab
+    iconPath: "resources/gitlab.svg"
   description: |
     This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
 
     Client endpoint for GitLab API currently supports operations related to access requests and access tokens in GitLab.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [GitLab](https://about.gitlab.com/) account and obtain tokens following [this](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) guide.
@@ -29,7 +32,7 @@ components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
-      x-apikey-description: "Provide your PAT token as `Private-Token`. Eg: `{\"Private-Token\" : \"<PAT token>\"}`"
+      x-ballerina-apikey-description: "Provide your PAT token as `Private-Token`. Eg: `{\"Private-Token\" : \"<PAT token>\"}`"
       in: header
       name: Private-Token
 paths:
@@ -39,7 +42,7 @@ paths:
         - version
       summary: Retrieve version information for this GitLab instance.
       operationId: getVersion
-      x-display:
+      x-ballerina-display:
         label: Get GitLab Instance Version
       responses:
         '200':
@@ -69,7 +72,7 @@ paths:
       description: Lists access requests for a project
       summary: List access requests for a project
       operationId: accessRequestsProjects_get
-      x-display:
+      x-ballerina-display:
         label: List Access Requests
       tags:
         - access_requests
@@ -130,7 +133,7 @@ paths:
       description: Requests access for the authenticated user to a project
       summary: Requests access for the authenticated user to a project
       operationId: accessRequestsProjects_post
-      x-display:
+      x-ballerina-display:
         label: Request Access to a Project
       tags:
         - access_requests
@@ -189,7 +192,7 @@ paths:
       description: Approves access for the authenticated user to a project
       summary: Approves access for the authenticated user to a project
       operationId: accessRequestsProjectsApprove_put
-      x-display:
+      x-ballerina-display:
         label: Approve Access to User
       tags:
         - access_requests
@@ -269,7 +272,7 @@ paths:
       description: Denies a project access request for the given user
       summary: Denies a project access request for the given user
       operationId: accessRequestProjectsDeny_delete
-      x-display:
+      x-ballerina-display:
         label: Reject Access Request from User
       tags:
         - access_requests
@@ -302,7 +305,7 @@ paths:
       description: List access requests for a group
       summary: List access requests for a group
       operationId: accessRequestsGroups_get
-      x-display:
+      x-ballerina-display:
         label: List Access Requests for Group
       tags:
         - access_requests
@@ -366,7 +369,7 @@ paths:
       description: Requests access for the authenticated user to a group
       summary: Requests access for the authenticated user to a group
       operationId: accessRequestsGroups_post
-      x-display:
+      x-ballerina-display:
         label: Request Access to a Group
       tags:
         - access_requests
@@ -425,7 +428,7 @@ paths:
       description: Approves access for the authenticated user to a group
       summary: Approves access for the authenticated user to a group
       operationId: accessRequestsGroupsApprove_put
-      x-display:
+      x-ballerina-display:
         label: Approve Access Request to a Group
       tags:
         - access_requests
@@ -507,7 +510,7 @@ paths:
       description: Denies a group access request for the given user
       summary: Denies a group access request for the given user
       operationId: accessRequestsGroupsDeny_delete
-      x-display:
+      x-ballerina-display:
         label: Delete Access Request to a Group
       tags:
         - access_requests
@@ -540,7 +543,7 @@ paths:
       description: Lists access tokens for a project
       summary: List access tokens for a project
       operationId: accessTokens_get
-      x-display:
+      x-ballerina-display:
         label: List Access Tokens for a Project
       tags:
         - access_tokens
@@ -607,7 +610,7 @@ paths:
       description: Creates an access token for a project
       summary: Creates an access token for a project
       operationId: accessTokens_post
-      x-display:
+      x-ballerina-display:
         label: Create Access Tokens for a Project
       tags:
         - access_tokens
@@ -706,7 +709,7 @@ paths:
       description: Revokes an access token
       summary: Revokes an access token
       operationId: accessTokens_delete
-      x-display:
+      x-ballerina-display:
         label: Revoke an Access Token
       tags:
         - access_tokens

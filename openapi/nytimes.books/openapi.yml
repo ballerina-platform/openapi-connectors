@@ -2,13 +2,16 @@ openapi: 3.0.0
 servers:
   - url: https://api.nytimes.com/svc/books/v3
 info:
+  x-ballerina-display:
+    label: Nytimes Books
+    iconPath: "resources/nytimes.books.svg"
   description: >
     This is a generated connector for [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
 
     The Books API provides information about book reviews and The New York Times bestsellers lists.
 
     For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [New York Times Account](https://developer.nytimes.com/accounts/create) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
@@ -905,4 +908,4 @@ components:
       in: query
       name: api-key
       type: apiKey
-      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<your API key>\"}`" 
+      x-ballerina-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<your API key>\"}`" 

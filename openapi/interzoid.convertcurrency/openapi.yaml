@@ -2,13 +2,16 @@ openapi: 3.0.0
 servers:
   - url: https://api.interzoid.com
 info:
+  x-ballerina-display:
+      label: Interzoid Convertcurrency
+      iconPath: "resources/interzoid.convertcurrency.svg"
   version: "1.0.0"
   title: Interzoid Convert Currency Rate API
   description: >
     This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
 
     This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
@@ -77,7 +80,7 @@ components:
       type: apiKey
       in: query
       name: license
-      x-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
+      x-ballerina-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
   schemas:
     CurrencyConversionInfo:
       description: Contains details about converted currency information

@@ -1,10 +1,13 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Cloudmersive Currency
+    iconPath: "resources/cloudmersive.currency.svg"
   title: currencyapi
   description: This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
   
     The Cloudmersive Currency APIs help you retrieve exchange rates and convert prices between currencies.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
@@ -198,7 +201,7 @@ components:
   securitySchemes:
     Apikey:
       type: apiKey
-      x-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
+      x-ballerina-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
       description: API Key Authentication
       name: Apikey
       in: header

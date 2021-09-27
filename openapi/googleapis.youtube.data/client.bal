@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Youtube Data API v3](https://developers.google.com/youtube/v3/docs) OpenAPI specification.
 # The Youtube Data API provides the capability to access YouTube data such as videos, playlists, and channels.
+@display {label: "Googleapis Youtube Data", iconPath: "resources/googleapis.youtube.data.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Youtube Reporting API v1](https://developers.google.com/youtube/reporting) OpenAPI specification.
 # The Youtube Reporting API provides the capability to schedule reporting jobs containing your YouTube Analytics data and download the resulting bulk data reports in the form of CSV files.
+@display {label: "Googleapis Youtube Reporting", iconPath: "resources/googleapis.youtube.reporting.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

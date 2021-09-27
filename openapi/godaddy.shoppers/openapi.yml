@@ -1,11 +1,14 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Godaddy Shopper
+    iconPath: "resources/godaddy.shopper.svg"
   title: GoDaddy Shopper API
   version: v1
   description: >-
     This is a generated connector for [GoDaddy Shoppers API v1](https://developer.godaddy.com/doc/endpoint/shoppers) OpenAPI specification.
     The GoDaddy Shoppers API provides capability to access GoDaddy operations related to shopper.
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials. 
     Create a [GoDaddy](https://sg.godaddy.com/) and obtain tokens by following [this guide](https://developer.godaddy.com/getstarted).  
 servers:

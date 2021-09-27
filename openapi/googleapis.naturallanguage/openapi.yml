@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://language.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Googleapis Cloudnaturallanguage
+    iconPath: "resources/googleapis.cloudnaturallanguage.svg"
   contact:
     name: Google
     url: https://google.com
@@ -9,7 +12,7 @@ info:
   description: |
     This is a generated connector for [Google Cloud Natural Language API v1](https://cloud.google.com/natural-language/) OpenAPI specification.
     Provides natural language understanding technologies, such as sentiment analysis, entity recognition, entity sentiment analysis, and other text annotations, to developers.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

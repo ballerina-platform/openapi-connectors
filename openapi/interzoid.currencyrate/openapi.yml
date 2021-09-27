@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://api.interzoid.com
 info:
+  x-ballerina-display:
+      label: Interzoid Currencyrate
+      iconPath: "resources/interzoid.currencyrate.svg"
   version: "1.0.0"
   title: Interzoid Get Currency Rate API
   description: >

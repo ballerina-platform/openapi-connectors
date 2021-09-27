@@ -3,6 +3,9 @@ servers:
   - url: https://cloudbuild.googleapis.com/
 x-hasEquivalentPaths: true
 info:
+  x-ballerina-display:
+    label: Googleapis Cloudbuild
+    iconPath: "resources/googleapis.cloudbuild.svg"
   contact:
     name: Google
     url: https://google.com
@@ -10,7 +13,7 @@ info:
   description: |
     This is a generated connector for [Google Cloud Build REST API v1](https://cloud.google.com/build/docs/api/reference/rest) OpenAPI specification.
     The Google Cloud Build API provides the capability to manage builds on Google Cloud Platform.
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:

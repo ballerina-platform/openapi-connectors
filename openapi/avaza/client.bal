@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Avaza API v1](https://api.avaza.com/swagger/ui/index) OpenAPI specification.
 # Avaza API allows to collaborate on projects, chat, schedule resources, track time, manage expenses & invoice customers.
+@display {label: "Avaza", iconPath: "resources/avaza.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -54,6 +54,7 @@ public type ClientConfig record {|
 |};
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
 # This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).
+@display {label: "Hubspot Crm Product", iconPath: "resources/hubspot.crm.product.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

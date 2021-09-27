@@ -1,11 +1,14 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Hubspot Crm Feedback
+    iconPath: "resources/hubspot.crm.feedback.svg"
   title: Feedback Submissions
   version: v3
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
 
     This API provides access to collections of CRM objects, which return a map of property names to values. Each object type has its own set of default properties, which can be found by exploring the [CRM Object Properties API](https://developers.hubspot.com/docs/methods/crm-properties/crm-properties-overview).
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [HubSpot account](https://www.hubspot.com/) and obtain the API Key following [this guide](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.162640933)."
@@ -849,7 +852,7 @@ components:
       type: apiKey
       name: hapikey
       in: query
-      x-apikey-description: "Provide your API key as `hapikey`. Eg: `{\"hapikey\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `hapikey`. Eg: `{\"hapikey\" : \"<API key>\"}`"
 x-hubspot-available-client-libraries:
   - PHP
   - Node

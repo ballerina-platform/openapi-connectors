@@ -3,6 +3,9 @@ servers:
   - url: https://vision.googleapis.com/
 x-hasEquivalentPaths: true
 info:
+  x-ballerina-display:
+    label: Googleapis Vision
+    iconPath: "resources/googleapis.vision.svg"
   contact:
     name: Google
     url: https://google.com
@@ -11,7 +14,7 @@ info:
     This is a generated connector for [Google Cloud Vision API v1](https://cloud.google.com/vision/docs/reference/rest) OpenAPI specification.
 
     Integrates Google Vision features, including image labeling, face, logo, and landmark detection, optical character recognition (OCR), and detection of explicit content, into applications.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

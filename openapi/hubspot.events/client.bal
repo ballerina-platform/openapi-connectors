@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
 # These APIs allow accessing CRM object events.
+@display {label: "Hubspot Events", iconPath: "resources/hubspot.events.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

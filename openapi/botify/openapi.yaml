@@ -2,10 +2,13 @@ openapi: 3.0.0
 servers:
   - url: https://api.botify.com/v1
 info:
+  x-ballerina-display:
+    label: Botify
+    iconPath: "resources/botify.svg"
   description: |
     This is a generated connector for [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
     API for Internet Archive's Search-related services.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Request a [Botify Account](https://www.botify.com/request-a-demo) and obtain tokens following [this guide](https://www.botify.com/blog/seo-guide-botify-api).
@@ -2666,4 +2669,4 @@ components:
       in: header
       name: Authorization
       type: apiKey
-      x-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 
+      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 

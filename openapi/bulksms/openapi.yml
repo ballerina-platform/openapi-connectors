@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Bulksms
+    iconPath: "resources/bulksms.svg"
   title: BulkSMS JSON REST API
   description: >- 
     This is a generated connector for [BulkSMS API v1](https://www.bulksms.com/developer/) OpenAPI Specification.
@@ -8,7 +11,7 @@ info:
     access to past messages and see your account profile. Dates are formatted according to ISO-8601, such as `1970-01-01T10:00:00+01:00` for 1st January 1970, 10AM UTC+1.
     It currently supports operations on messages, numbers, user profile, webhooks, and batch messages.
   version: 1.0.0
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials. 
     Create an [BulkSMS account](https://www.bulksms.com/) and obtain tokens following [this guide](https://www.bulksms.com/developer/json/v1/#section/Authentication).
   x-logo:

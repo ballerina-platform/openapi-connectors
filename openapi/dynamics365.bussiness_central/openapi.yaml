@@ -1,12 +1,15 @@
 openapi: '3.0.0'
 info:
+ x-ballerina-display:
+    label: Dynamics365 Bussiness_central
+    iconPath: "resources/dynamics365.bussiness_central.svg"
  version: 1.0.0
  title: (v1.0) Dynamics 365 Business Central
  description: >-
     This is a generated connector from [Microsoft Dynamics 365 Business Central API v1.0](https://dynamics.microsoft.com/en-us/business-central/overview/) OpenAPI specification.
     
     (v1.0) Business Central Standard APIs
- x-init-description: >
+ x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Dynamics 365 Business Central Account](https://dynamics.microsoft.com/en-us/business-central/overview/) and obtain tokens following [this guide](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-develop-connect-apps#AAD).

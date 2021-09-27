@@ -1,5 +1,8 @@
 openapi: "3.0.0"
 info:
+  x-ballerina-display:
+    label: Vonage Sms
+    iconPath: "resources/vonage.sms.svg"
   version: 1.0.10
   title: SMS API
   description: >
@@ -8,7 +11,7 @@ info:
     With the SMS API you can send SMS from your account and lookup messages both messages that you've sent as well as messages sent to your virtual numbers. 
     
     Numbers are specified in E.164 format. More SMS API documentation is at https://developer.nexmo.com/messaging/sms/overview
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization doesn't require setting the API credentials.
   
     Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).

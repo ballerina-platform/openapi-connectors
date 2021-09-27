@@ -2,11 +2,14 @@ openapi: 3.0.1
 servers:
   - url: https://app.orbit.love/api/v1
 info:
+  x-ballerina-display:
+    label: Orbitcrm
+    iconPath: "resources/orbitcrm.svg"
   description: >-
     This is a generated connector for [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
 
     Orbit API used to track activities of users and manage users.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Orbit Account](https://app.orbit.love/signup) and obtain tokens by following [this guide](https://docs.orbit.love/reference/authorization).

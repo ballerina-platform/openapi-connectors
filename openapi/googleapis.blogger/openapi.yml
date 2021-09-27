@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://blogger.googleapis.com
 info:
+  x-ballerina-display:
+    label: Googleapis Blogger
+    iconPath: "resources/googleapis.blogger.svg"
   contact:
     name: Google
     url: https://google.com
@@ -9,7 +12,7 @@ info:
   description: |
     This is a generated connector for [Google Blogger API v3.0](https://developers.google.com/blogger/docs/3.0/getting_started) OpenAPI specification.
     The Blogger API provides access to posts, comments and pages of a Blogger blog.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

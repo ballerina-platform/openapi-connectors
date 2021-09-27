@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: Ebay Listing
+    iconPath: "resources/ebay.listing.svg"
   title: Listing API
   description: >
     This is a generated connector for [eBay Listing API v1_beta.3.0](https://developer.ebay.com) OpenAPI specification.
@@ -9,7 +12,7 @@ info:
   
     API available only to select developers approved by business units.</span><br /><br />Enables a seller adding an ad or item on a Partner''s site to automatically 
     create an eBay listing draft using the item details from the Partner''s site.'
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [developer account](https://developer.ebay.com/api-docs/static/creating-edp-account.html) 

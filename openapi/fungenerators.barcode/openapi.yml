@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: Fungenerators Barcode
+    iconPath: "resources/fungenerators.barcode.svg"
   termsOfService: https://fungenerators.com/terms
   description: >
     This is a generated connector for [fungenerators BarCode API v1](http://fungenerators.com/api/barcode/) OpenAPI specification.
@@ -8,7 +11,7 @@ info:
     images and get the barcodes in a numberic form as well. Many industry
     standard barcode types are supported. The best and complete Barcode API on
     the cloud.
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials. 
     
     Create a [fungenerators account](https://fungenerators.com/) and obtain tokens by following [this guide](https://fungenerators.com/api/barcode/#authentication).
@@ -281,4 +284,4 @@ components:
       type: apiKey
       name: X-Fungenerators-Api-Secret
       in: header
-      x-apikey-description: "Provide your API Key as `X-Fungenerators-Api-Secret`. Eg: {X-Fungenerators-Api-Secret : <Your API_Key>}"
+      x-ballerina-apikey-description: "Provide your API Key as `X-Fungenerators-Api-Secret`. Eg: {X-Fungenerators-Api-Secret : <Your API_Key>}"

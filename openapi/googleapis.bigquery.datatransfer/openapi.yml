@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://bigquerydatatransfer.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Googleapis Bigquery Datatransfer
+    iconPath: "resources/googleapis.bigquery.datatransfer.svg"
   contact:
     name: Google
     url: https://google.com
@@ -10,7 +13,7 @@ info:
     This is a generated connector for [Google BigQuery Data Transfer API v2.0](https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest) OpenAPI specification.
 
     The BigQuery Data Transfer API schedule queries or transfer external data from SaaS applications to Google BigQuery on a regular basis.
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials.
     
     Create an [google account](https://accounts.google.com/signup) and obtain tokens following [this guide](https://developers.google.com/identity/protocols/oauth2)

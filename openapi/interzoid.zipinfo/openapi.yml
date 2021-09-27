@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://api.interzoid.com
 info:
+  x-ballerina-display:
+      label: Interzoid Zipinfo
+      iconPath: "resources/interzoid.zipinfo.svg"
   contact:
     email: support@interzoid.com
     name: API Support
@@ -17,7 +20,7 @@ info:
                 For additional help getting started with the API, 
                 visit [Interzoid Zip Code Detailed Info API]
                 (https://www.interzoid.com/services/getzipcodeinfo).
-  x-init-description: |-
+  x-ballerina-init-description: |-
     The connector initialization requires setting the API credentials.
     Create an [Interzoid Account](https://www.interzoid.com/register) 
     and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
@@ -47,7 +50,7 @@ components:
       type: apiKey
       in: query
       name: license
-      x-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"  
+      x-ballerina-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"  
   schemas:
     ZipInfo:
       description: Contains details about Zip Information

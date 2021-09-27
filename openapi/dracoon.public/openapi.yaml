@@ -2,12 +2,15 @@ openapi: 3.0.1
 servers:
   - url: https://stats.bis.org/api/v1
 info:
+  x-ballerina-display:
+    label: Dracoon Public
+    iconPath: "resources/dracoon.public.svg"
   contact:
     x-twitter: dracoongmbh
   description: "This is a generated connector from [Dracoon API v4.28.3](https://www.dracoon.com/en/home) OpenAPI specification.
 
   REST Web Services for DRACOON. <a title='Developer Information' href='https://developer.dracoon.com'>Developer Information</a>&emsp;&emsp;<a title='Get SDKs on GitHub' href='https://github.com/dracoon'>Get SDKs on GitHub</a><br><br><a title='Terms of service' href='https://www.dracoon.com/terms/general-terms-and-conditions/'>Terms of service</a>"
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
   
     Create a [Dracoon account](https://www.dracoon.com/en/home) and obtain OAuth tokens following [this guide](https://cloud.support.dracoon.com/hc/en-us/articles/360001329825-OAuth-2-0-example).

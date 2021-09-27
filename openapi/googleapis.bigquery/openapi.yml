@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://bigquery.googleapis.com/bigquery/v2
 info:
+  x-ballerina-display:
+    label: Googleapis Bigquery
+    iconPath: "resources/googleapis.bigquery.svg"
   contact:
     name: Google
     url: https://google.com
@@ -10,7 +13,7 @@ info:
     This is a generated connector for [Google BigQuery API v2.0](https://cloud.google.com/bigquery/docs/reference/rest) OpenAPI specification.
 
     The BigQuery API provides access to create, manage, share and query data.
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials.
 
     Create an [google account](https://accounts.google.com/signup) and obtain tokens following [this guide](https://developers.google.com/identity/protocols/oauth2)

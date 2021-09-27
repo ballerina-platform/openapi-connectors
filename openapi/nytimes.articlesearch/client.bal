@@ -27,6 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [New York Times Article Search API v1.0.0](https://developer.nytimes.com/docs/articlesearch-product/1/overview) OpenAPI specification.
 # With the Article Search API, you can search New York Times articles from Sept. 18, 1851 to today, retrieving headlines, abstracts, lead paragraphs, links to associated multimedia and other article metadata.  
 # Use the Article Search API to look up articles by keyword. You can refine your search using filters and facets.
+@display {label: "Nytimes Articlesearch", iconPath: "resources/nytimes.articlesearch.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

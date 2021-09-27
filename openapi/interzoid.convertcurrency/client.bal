@@ -26,6 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
 # This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
+@display {label: "Interzoid Convertcurrency", iconPath: "resources/interzoid.convertcurrency.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

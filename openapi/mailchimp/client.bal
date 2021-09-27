@@ -52,6 +52,7 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+@display {label: "Mailchimp", iconPath: "resources/mailchimp.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -2,10 +2,13 @@ openapi: 3.0.2
 servers:
   - url: https://dash.readme.io/api/v1
 info:
+  x-ballerina-display:
+    label: Readme
+    iconPath: "resources/readme.svg"
   description: |
     This is a generated connector for [Readme API v2.0](https://docs.readme.com/reference) OpenAPI specification.  
     The Readme API provides the capability to create product and API documentation programmatically.
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials.
     Create a [Readme account](https://dash.readme.com/signup) and obtain tokens by following [this guide](https://docs.readme.com/reference/authentication).
   title: API Endpoints

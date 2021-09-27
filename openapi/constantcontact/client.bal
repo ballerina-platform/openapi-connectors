@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Constant Contact API v3](https://v3.developer.constantcontact.com/api_guide/index.html) OpenAPI specification.
 # The Constant Contact, Inc. V3 public API, for building integrations with Constant Contact, the leading small-business email marketing platform.
+@display {label: "Constantcontact", iconPath: "resources/constantcontact.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

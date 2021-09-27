@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Talent Solution API v4](https://cloud.google.com/talent-solution/job-search/docs/) OpenAPI specification.
 # Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
+@display {label: "Googleapis Cloudtalentsolution", iconPath: "resources/googleapis.cloudtalentsolution.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

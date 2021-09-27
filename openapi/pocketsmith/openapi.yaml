@@ -1,10 +1,13 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: PocketSmith
+    iconPath: "resources/pocketSmith.svg"
   title: PocketSmith
   description: This is a generated connector for [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
 
     The public PocketSmith API. It's a powerful interface for online money management with cash flow forecasts as well as superb historical tracking.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [PocketSmith account](https://www.pocketsmith.com/) and obtain OAuth tokens following [this guide](https://developers.pocketsmith.com/docs/oauth).
@@ -30,7 +33,7 @@ components:
     #   description: 'If you want to build a tool just for yourself, be it a desktop widget to display your balances or a tool to import transactions from a bank without a bank feed, you can use our developer keys feature. You can issue yourself a key which will give you persistent API access to just your account. You should rotate your keys regularly.'
     oauth2:
       type: oauth2
-      x-apikey-description: "Provide your http:BearerTokenConfig record as {authConfig : bearerAuthConfig}"
+      x-ballerina-apikey-description: "Provide your http:BearerTokenConfig record as {authConfig : bearerAuthConfig}"
       description: 'If you want to a create an app for PocketSmith that other PocketSmith users can use, you''ll be using OAuth 2. To register an app with PocketSmith, email us on api@pocketsmith.com. Let us know a bit about yourself and what you plan on building. When approved, you will be provided with your client_id and client_secret to start using OAuth. Then, check out our guide for integrating OAuth to get started.'
       flows:
         authorizationCode:

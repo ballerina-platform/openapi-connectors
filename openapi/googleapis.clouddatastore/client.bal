@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Datastore REST API v1](https://cloud.google.com/datastore/docs/reference/data/rest) OpenAPI specification.
 # The Google Cloud Datastore API provides the capability to access the schemaless NoSQL database to provide fully managed, robust, scalable storage for your application.
+@display {label: "Googleapis Clouddatastore", iconPath: "resources/googleapis.clouddatastore.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: Chaingateway
+    iconPath: "resources/chaingateway.svg"
   title: Chaingateway.io
   description: |-
     This is a generated connector for [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.
@@ -7,7 +10,7 @@ info:
     All of the integrations communicates with chaingateway.io through this API.
   contact: {}
   version: '1.0'
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create an [Chaingateway.io Account](https://chaingateway.io/register) and obtain tokens following [this guide](https://chaingateway.io/docs-ethereum#apikey).
@@ -1704,7 +1707,7 @@ components:
       in: header
       name: Authorization
       type: apiKey
-      x-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 
+      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 
 tags:
   - name: Info Requests
     description: 'Requests that return information on balances, transactions, gas price, exchange rates, ...'

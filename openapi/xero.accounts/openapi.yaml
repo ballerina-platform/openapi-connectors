@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: Xero Accounts
+    iconPath: "resources/xero.accounts.svg"
   title: Xero Accounting API
   version: "2.13.4"
   termsOfService: "https://developer.xero.com/xero-developer-platform-terms-conditions/"
@@ -12,7 +15,7 @@ info:
 
     The Xero Accounting API exposes accounting and related functions of the main Xero application and can be used for a 
     variety of purposes such as creating transactions like invoices and credit notes, right through to extracting accounting data via our reports endpoint.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens following [this guide](https://developer.xero.com/documentation/getting-started-guide/).

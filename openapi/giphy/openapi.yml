@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://api.giphy.com/v1
 info:
+  x-ballerina-display:
+    label: Giphy
+    iconPath: "resources/giphy.svg"
   contact:
     email: support@giphy.com
   description: |
@@ -19,7 +22,7 @@ info:
       url: https://raw.githubusercontent.com/faragorn/open-api-specs/master/specs/giphy_api/1.0/index.yml
       version: "3.0"
   x-providerName: giphy.com
-  x-init-description: | 
+  x-ballerina-init-description: | 
     The connector initialization requires setting the API credentials.
     Create a [Giphy account](https://giphy.com/login) and obtain tokens by following [this guide](https://support.giphy.com/hc/en-us/articles/360020283431-Request-A-GIPHY-API-Key).
 externalDocs:
@@ -669,4 +672,4 @@ components:
       in: query
       name: api_key
       type: apiKey
-      x-apikey-description: "Provide your API Key as api_key. Eg: {api_key : <Your API Key>}"
+      x-ballerina-apikey-description: "Provide your API Key as api_key. Eg: {api_key : <Your API Key>}"

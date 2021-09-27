@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Youtube Analytics API v2](https://developers.google.com/youtube/analytics) OpenAPI specification.
 # The Youtube Analytics API provides the capability to retrieve your YouTube Analytics data.
+@display {label: "Googleapis Youtube Analytics", iconPath: "resources/googleapis.youtube.analytics.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -3,6 +3,9 @@ servers:
   - url: https://cloudfunctions.googleapis.com/
 x-hasEquivalentPaths: true
 info:
+  x-ballerina-display:
+    label: Googleapis Cloudfunctions
+    iconPath: "resources/googleapis.cloudfunctions.svg"
   contact:
     name: Google
     url: https://google.com
@@ -10,7 +13,7 @@ info:
   description: |
     This is a generated connector for [Google Cloud Functions REST API v1](https://cloud.google.com/functions/docs/reference/rest) OpenAPI specification.
     The Google Cloud Functions API provides the capability to  manage lightweight user-provided functions executed in response to events.
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:

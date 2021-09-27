@@ -26,6 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification. 
 # Client endpoint for GitLab API currently supports operations related to access requests and access tokens in GitLab.
+@display {label: "Gitlab", iconPath: "resources/gitlab.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

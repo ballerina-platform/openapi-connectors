@@ -56,7 +56,8 @@ public type ClientConfig record {|
 # OpenAPI Specification.
 # The Account API provides capability to configure their eBay seller accounts, including the seller's policies 
 # (the Fulfillment Policy, Payment Policy, and Return Policy), opt in and out of eBay seller programs, configure sales tax tables, 
-# and get account information. 
+# and get account information.
+@display {label: "Ebay Account", iconPath: "resources/ebay.account.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

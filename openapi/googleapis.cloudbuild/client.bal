@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Build REST API v1](https://cloud.google.com/build/docs/api/reference/rest) OpenAPI specification.
 # The Google Cloud Build API provides the capability to manage builds on Google Cloud Platform.
+@display {label: "Googleapis Cloudbuild", iconPath: "resources/googleapis.cloudbuild.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

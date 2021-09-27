@@ -3,6 +3,9 @@ servers:
   - url: http://api.nytimes.com/svc/semantic/v2/concept
   - url: https://api.nytimes.com/svc/semantic/v2/concept
 info:
+  x-ballerina-display:
+    label: Nytimes Semantic
+    iconPath: "resources/nytimes.semantic.svg"
   description: >
     This is a generated connector from [New York Times Semantic API v2.0.0](https://developer.nytimes.com/docs/semantic-api-product/1/overview) OpenAPI specification.
 
@@ -14,7 +17,7 @@ info:
   termsOfService: http://developer.nytimes.com/tou
   title: Semantic API
   version: 2.0.0
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
@@ -355,4 +358,4 @@ components:
       in: query
       name: api-key
       type: apiKey
-      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"

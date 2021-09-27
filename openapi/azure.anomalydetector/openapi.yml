@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Azure Anomalydetector
+    iconPath: "resources/azure.anomalydetector.svg"
   title: Anomaly Detector
   description: >
     This is a generated connector for [Azure Anomaly Detector API v1](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) OpenAPI specification.

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   termsOfService: https://fungenerators.com/terms
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials. 
     
     Create a [fungenerators account](https://fungenerators.com/) and obtain tokens by following [this guide](https://fungenerators.com/api/uuid/#authentication).
@@ -9,9 +9,9 @@ info:
     This is a generated connector from [fungenerators UUID API v1.5](https://fungenerators.com/api/uuid/) OpenAPI Specification.
 
     A full featured, REST based UUID generator with json/xml/jsonp result support. You can try them out right here. [Click here to subscribe](http://fungenerators.com/api/uuid/)
-  x-display:
-    label: fungenerators.UUID
-    iconPath: "resources/fungeneratorsUuid.svg"
+  x-ballerina-display:
+    label: Fungenerators Uuid
+    iconPath: "resources/fungenerators.uuid.svg"
   title: UUID Generation API
   version: "1.5"
   contact:
@@ -244,5 +244,5 @@ components:
       type: apiKey
       name: X-Fungenerators-Api-Secret
       in: header
-      x-apikey-description: "Provide your API Key as `X-Fungenerators-Api-Secret`. Eg: {X-Fungenerators-Api-Secret : <Your API_Key>}"
+      x-ballerina-apikey-description: "Provide your API Key as `X-Fungenerators-Api-Secret`. Eg: {X-Fungenerators-Api-Secret : <Your API_Key>}"
 

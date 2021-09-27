@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Azure Qnamaker
+    iconPath: "resources/azure.qnamaker.svg"
   title: QnA Maker V4.0
   description: > 
     This is a generated connector for [Azure QnA Maker API v4](https://docs.microsoft.com/en-us/rest/api/cognitiveservices-qnamaker/QnAMaker4.0/) OpenAPI specification.
@@ -10,7 +13,7 @@ info:
 
     QnA Maker REST API V4.0
   version: v4.0
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create a [Azure Text Analytics account](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) and 
@@ -2577,12 +2580,12 @@ components:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header
-      x-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
     apiKeyQuery:
       type: apiKey
       name: subscription-key
       in: query
-      x-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
 x-servers:
 - url: https://westus.api.cognitive.microsoft.com
 - url: https://cognitive-wu.cognitiveservices.azure.com

@@ -7,11 +7,11 @@ info:
     Recurly is a subscription management platform delivering a competitive advantage for leading brands worldwide. 
     Trusted by Sling TV, BarkBox, Asana, and thousands more to drive recurring revenue.
     Onboard and manage customers through Recurly API.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [Recurly account](https://recurly.com) and obtain tokens by following [this guide](https://developers.recurly.com/api/v2021-02-25/index.html#section/Authentication).
-  x-display:
+  x-ballerina-display:
     label: Recurly
     iconPath: "resources/recurly.svg"
   version: v2021-02-25

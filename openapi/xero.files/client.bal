@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Xero Files API v2.16.1](https://developer.xero.com/documentation/api/files/overview) OpenAPI specification.
 # The Files API provides access to the files, folders, and the association of files within a Xero organisation. It can be used to upload/download files, manage folders and associate files to invoices, contacts, payments etc.
-@display {label: "Xero Files", iconPath: "resources/xerofiles.svg"}
+@display {label: "Xero Files", iconPath: "resources/xero.files.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

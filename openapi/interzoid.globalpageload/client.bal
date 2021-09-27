@@ -27,6 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Interzoid Global Page Load Performance API v1.0.0](https://interzoid.com/services/globalpageload) OpenAPI specification.
 # This API provides a timed, browser-simulated page load function (or a measured API call) from the specified geography using a server from that geography.
 # For additional help getting started with the API,  visit [Interzoid Global Page Load Performance API](https://interzoid.com/services/globalpageload)
+@display {label: "Interzoid Globalpageload", iconPath: "resources/interzoid.globalpageload.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

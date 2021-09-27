@@ -1,11 +1,14 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Shipwire Carrier
+    iconPath: "resources/shipwire.carrier.svg"
   title: Shipwire Carrier API
   description: |
     This is a generated connector for [Shipwire Carrier API v3.0](https://www.shipwire.com/developers/carrier/) OpenAPI specification.
     The Carriers API is used to manage supported carriers and their respective capabilities. 
     Use it to view, add or remove carriers enabled to function with Shipwire and Shipwire Anywhere warehouses.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Shipwire account](https://www.shipwire.com) and obtain tokens by following [this guide](https://www.shipwire.com/developers/getting-started).

@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: Ebay Finances
+    iconPath: "resources/ebay.finances.svg"
   title: eBay Finances API
   description: >-
     This is a generated connector for [eBay finances API v1.9.0](https://developer.ebay.com/api-docs/sell/finances/overview.html) OpenAPI Specification. 
@@ -11,7 +14,7 @@ info:
     Seller Hub in My eBay. With eBay's managed payments program, eBay manages the entire payments process, including the 
     available payment methods, and shortly after a buyer's payment clears, eBay distributes payouts directly to the 
     seller's preferred bank account.
-  x-init-description: >- 
+  x-ballerina-init-description: >- 
     The connector initialization requires setting the API credentials. 
     
     Create a [developer account](https://developer.ebay.com/api-docs/static/creating-edp-account.html) 

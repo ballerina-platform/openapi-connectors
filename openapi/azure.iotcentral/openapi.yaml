@@ -1,11 +1,14 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Azure Iotcentral
+    iconPath: "resources/azure.iotcentral.svg"
   title: Azure IoT Central
   description: >
     This is a generated connector from [Azure IoT Central API v1.0](https://azure.microsoft.com/en-us/services/iot-central/) OpenAPI specification.
 
     Azure IoT Central is a service that makes it easy to connect, monitor, and manage your IoT devices at scale.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Azure  IoT Central account](https://azure.microsoft.com/en-us/services/iot-central/) and obtain OAuth tokens following [this guide](https://docs.microsoft.com/en-us/rest/api/iotcentral/authentication#aad-bearer-token).

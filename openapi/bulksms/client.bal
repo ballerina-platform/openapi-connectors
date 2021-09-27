@@ -57,6 +57,7 @@ public type ClientConfig record {|
 # You can also get  access to past messages and see your account profile. Dates are formatted according to ISO-8601, 
 # such as `1970-01-01T10:00:00+01:00` for 1st January 1970, 10AM UTC+1. It currently supports operations on messages, 
 # numbers, user profile, webhooks, and batch messages.
+@display {label: "Bulksms", iconPath: "resources/bulksms.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

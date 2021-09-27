@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://docs.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Googleapis Docs
+    iconPath: "resources/googleapis.docs.svg"
   contact:
     name: Google
     url: https://google.com
@@ -10,7 +13,7 @@ info:
     This is a generated connector for [Google Docs API v1.0](https://developers.google.com/docs/api) OpenAPI specification.
 
     The Docs API provides access to reads and writes Google Docs documents.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

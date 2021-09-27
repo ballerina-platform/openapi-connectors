@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Azure Iothub
+    iconPath: "resources/azure.iothub.svg"
   title: Azure IoT Hub
   description: >
     This is a generated connector from [Azure IoT Hub API v1.0](https://docs.microsoft.com/en-us/rest/api/iothub/) OpenAPI specification.
@@ -8,7 +11,7 @@ info:
     You can access messaging services from within an IoT service running in Azure, or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
     Use this API to manage the IoT hubs in your Azure subscription.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Azure  IoT Hub account](https://azure.microsoft.com/en-us/services/iot-hub/) and obtain OAuth tokens following [this guide](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-security).

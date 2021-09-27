@@ -28,6 +28,7 @@ public type ApiKeysConfig record {|
 # Abstract IP geolocation API allows developers to retrieve the region, country and city behind any IP worldwide.
 # The API covers the geolocation of IPv4 and IPv6 addresses in 180+ countries worldwide.
 # Extra information can be retrieved like the currency, flag or language associated to an IP.
+@display {label: "Ipgeolocation", iconPath: "resources/ipgeolocation.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

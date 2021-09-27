@@ -1,5 +1,8 @@
 openapi: 3.0.2
 info:
+  x-ballerina-display:
+    label: Flatapi
+    iconPath: "resources/flatapi.svg"
   title: Flat API
   description: |-
     This is a generated connector for [Flat API v2.13.0](https://flat.io/developers/docs/api/) OpenAPI specification.
@@ -17,7 +20,7 @@ info:
     * [SDKs](https://flat.io/developers/docs/api/sdks.html)
     * [Rate Limits](https://flat.io/developers/docs/api/rate-limits.html)
     * [Changelog](https://flat.io/developers/docs/api/changelog.html)
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create an [Flat Platform Account](https://flat.io/auth/signup) and obtain tokens following [this guide](https://flat.io/developers/docs/api/authentication.html).

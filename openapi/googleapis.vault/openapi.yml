@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://vault.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Googleapis Vault
+    iconPath: "resources/googleapis.vault.svg"
   contact:
     name: Google
     url: https://google.com
@@ -34,7 +37,7 @@ info:
       version: v1
   x-providerName: googleapis.com
   x-serviceName: vault
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials. 
     Create a [Google Workspace account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
 externalDocs:

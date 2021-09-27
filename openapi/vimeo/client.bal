@@ -53,6 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Vimeo API v3.4](https://developer.vimeo.com/) OpenAPI specification.
 # The Vimeo API provides access to manage Vimeo platform. This includes management of videos, channels, albums, users etc.
+@display {label: "Vimeo", iconPath: "resources/vimeo.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://cloudbilling.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Googleapis Cloudbillingaccount
+    iconPath: "resources/googleapis.cloudbillingaccount.svg"
   contact:
     name: Google
     url: https://google.com
@@ -10,7 +13,7 @@ info:
     This is a generated connector for [Google Cloud Billing Account API v1](https://cloud.google.com/billing/v1/getting-started) OpenAPI specification.
 
     The Google Cloud Billing Account API allows developers to manage billing for their Google Cloud Platform projects programmatically.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

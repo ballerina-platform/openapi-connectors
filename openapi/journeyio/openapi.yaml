@@ -1,10 +1,13 @@
 openapi: 3.0.3
 info:
+  x-ballerina-display:
+      label: Journeyio
+      iconPath: "resources/journeyio.svg"
   title: journy.io API docs
   description: "This is a generated connector for [Journey.io API v1.0.0](https://www.journey.io/) OpenAPI specification.
 
   The journy.io API is organized around REST. Our API has predictable resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs."
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
   
     Create a [Journy.io account](https://www.journey.io) and obtain the API Key following [this guide](https://developers.journy.io/#section/Authentication).
@@ -2970,7 +2973,7 @@ components:
   securitySchemes:
     api_key:
       type: apiKey
-      x-apikey-description: "Provide your API Key as `X-Api-Key`. Eg: `{\"X-Api-Key\" : \"<API Key>}`\""
+      x-ballerina-apikey-description: "Provide your API Key as `X-Api-Key`. Eg: `{\"X-Api-Key\" : \"<API Key>}`\""
       description: API Key Authentication
       name: X-Api-Key
       in: header

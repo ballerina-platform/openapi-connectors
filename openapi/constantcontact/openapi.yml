@@ -1,10 +1,13 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Constantcontact
+    iconPath: "resources/constantcontact.svg"
   title: AppConnect V3
   description: |
     This is a generated connector for [Constant Contact API v3](https://v3.developer.constantcontact.com/api_guide/index.html) OpenAPI specification.
     The Constant Contact, Inc. V3 public API, for building integrations with Constant Contact, the leading small-business email marketing platform.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Constant Contact account](https://v3.developer.constantcontact.com/login/index.html) and obtain tokens by following [this guide](https://v3.developer.constantcontact.com/api_guide/getting_started.html).

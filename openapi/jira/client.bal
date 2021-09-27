@@ -55,6 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Jira Cloud platform API](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. 
 # Jira Cloud platform API provide capability to access Jira operations related to projects, issues and user related operations.
 # + clientEp - Connector http endpoint
+@display {label: "Jira", iconPath: "resources/jira.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

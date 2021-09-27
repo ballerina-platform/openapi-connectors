@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://api.storecove.com/api/v2
 info:
+  x-ballerina-display:
+    label: Storecove
+    iconPath: "resources/storecove.svg"
   contact:
     email: apisupport@storecove.nl
   description: | 
@@ -19,7 +22,7 @@ info:
       url: https://www.storecove.com/api/v2/openapi.json
       version: "3.0"
   x-providerName: storecove.com
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials.
     Create [Storcove account](https://www.storecove.com) and obtain tokens by following [this guide](https://app.storecove.com/docs#_getting_started).
 security:

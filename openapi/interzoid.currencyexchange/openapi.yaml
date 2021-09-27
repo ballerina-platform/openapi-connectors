@@ -2,13 +2,16 @@ openapi: 3.0.0
 servers:
   - url: 'https://api.interzoid.com'
 info:
+  x-ballerina-display:
+      label: Interzoid Currencyexchange
+      iconPath: "resources/interzoid.currencyexchange.svg"
   version: 1.0.0
   title: Interzoid Get Currency Rate API
   description: >
     This is a generated connector for [Interzoid Get Currency Rate API v1.0.0](https://www.interzoid.com/services/getcurrencyrate) OpenAPI specification.
     
     This API retrieves the latest currency exchange rate, against the US Dollar, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
 
     Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
@@ -64,7 +67,7 @@ components:
       type: apiKey
       in: query
       name: license
-      x-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
+      x-ballerina-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
   schemas:
     ExchangeRate:
       description: Contains details about exchange rate of the currency

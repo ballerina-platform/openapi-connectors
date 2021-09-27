@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [WhatsApp Business v2.21.4](https://developers.facebook.com/docs/whatsapp/) OpenAPI Specification.
 # WhatsApp Business connector supports to communicate with customers all over the world via WhatsApp.
+@display {label: "Whatsapp Business", iconPath: "resources/whatsapp.business.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

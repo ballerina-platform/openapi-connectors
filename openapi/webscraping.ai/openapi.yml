@@ -1,5 +1,8 @@
 openapi: 3.0.2
 info:
+  x-ballerina-display:
+    label: Webscraping Ai
+    iconPath: "resources/webscraping.ai.svg"
   title: WebScraping.AI
   contact:
     name: WebScraping.AI Support
@@ -12,7 +15,7 @@ info:
     It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
 
     More information about the WebScraping.AI API can be found at https://webscraping.ai.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [WebScraping.AI account](https://webscraping.ai) and obtain tokens from the [dashboard](https://webscraping.ai/dashboard).
@@ -294,7 +297,7 @@ components:
       type: apiKey
       name: api_key
       in: query
-      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
   responses:
     400:
       description: Parameters validation error

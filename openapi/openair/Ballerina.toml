@@ -1,0 +1,12 @@
+[package]
+org = "ballerinax"
+name = "openair"
+version = "0.1.0-SNAPSHOT"
+distribution = "slbeta3"
+license = ["Apache-2.0"]
+keywords = ["openair", "paid", "business", "service", "automation"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

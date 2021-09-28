@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Ynab
+    label: YNAB
     iconPath: "resources/ynab.svg"
   title: YNAB API Endpoints
   description: |

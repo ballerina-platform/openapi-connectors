@@ -3,7 +3,7 @@ servers:
   - url: https://youtubereporting.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Youtube Reporting
+    label: Youtube Reporting
     iconPath: "resources/googleapis.youtube.reporting.svg"
   contact:
     name: Google

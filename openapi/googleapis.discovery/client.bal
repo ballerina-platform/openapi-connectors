@@ -20,7 +20,7 @@ import ballerina/lang.'string;
 
 # This is a generated connector for [Google Discovery REST API v1](https://developers.google.com/discovery/v1/reference) OpenAPI specification.
 # Provides information about other Google APIs, such as what APIs are available, the resource, and method details for each API.
-@display {label: "Googleapis Discovery", iconPath: "resources/googleapis.discovery.svg"}
+@display {label: "Google Discovery", iconPath: "resources/googleapis.discovery.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

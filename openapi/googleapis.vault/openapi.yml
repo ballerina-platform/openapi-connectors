@@ -3,7 +3,7 @@ servers:
   - url: https://vault.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Vault
+    label: Google Vault
     iconPath: "resources/googleapis.vault.svg"
   contact:
     name: Google

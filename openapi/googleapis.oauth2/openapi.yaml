@@ -3,7 +3,7 @@ servers:
   - url: https://www.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Oauth2
+    label: Google OAuth2
     iconPath: "resources/googleapis.oauth2.svg"
   contact:
     name: Google

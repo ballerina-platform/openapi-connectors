@@ -3,7 +3,7 @@ servers:
   - url: https://manufacturers.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Manufacturercenter
+    label: Google Manufacturer Center
     iconPath: "resources/googleapis.manufacturercenter.svg"
   contact:
     name: Google

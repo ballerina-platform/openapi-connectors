@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://datastore.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Google Cloud Datastore
+    iconPath: "resources/googleapis.clouddatastore.svg"
   contact:
     name: Google
     url: https://google.com
@@ -9,7 +12,7 @@ info:
   description: |
     This is a generated connector for [Google Cloud Datastore REST API v1](https://cloud.google.com/datastore/docs/reference/data/rest) OpenAPI specification.
     The Google Cloud Datastore API provides the capability to access the schemaless NoSQL database to provide fully managed, robust, scalable storage for your application.
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:

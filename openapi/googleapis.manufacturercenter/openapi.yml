@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://manufacturers.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Google Manufacturer Center
+    iconPath: "resources/googleapis.manufacturercenter.svg"
   contact:
     name: Google
     url: https://google.com
@@ -9,7 +12,7 @@ info:
   description: |
     This is a generated connector for [Google Manufacturer Center API v1](https://developers.google.com/manufacturers/) OpenAPI specification.
     Public API for managing Manufacturer Center related data.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

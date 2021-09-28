@@ -1,12 +1,15 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: GoDaddy Certificates
+    iconPath: "resources/godaddy.certificates.svg"
   title: GoDaddy Certificates API
   version: "1.0"
   description: >-
     This is a generated connector for [GoDaddy Certificates API v1](https://developer.godaddy.com/doc/endpoint/certificates) OpenAPI specification.
     
     The GoDaddy Certificates API provides capability to access GoDaddy operations related to certificates.
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials. 
     
     Create a [GoDaddy account](https://sg.godaddy.com/) and obtain tokens by following [this guide](https://developer.godaddy.com/getstarted).
@@ -1634,7 +1637,7 @@ components:
       type: apiKey
       in: header  
       name: Authorization
-      x-apikey-description: "Provide your API Key as `Authorization`. Eg: {Authorization : sso-key [<API_KEY>]:[<API_SECRET>]}"
+      x-ballerina-apikey-description: "Provide your API Key as `Authorization`. Eg: {Authorization : sso-key [<API_KEY>]:[<API_SECRET>]}"
 
   schemas:
     Certificate:

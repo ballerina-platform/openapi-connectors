@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: Elmah
+    iconPath: "resources/elmah.svg"
   contact:
     x-twitter: elmah_io
   description: 'This is a generated connector for [Elmah.io REST API v3](https://elmah.io) OpenAPI Specification.
@@ -9,7 +12,7 @@ info:
     For additional help getting started with the API, visit the following help articles:
 
     <ul><li>[Using the REST API](https://docs.elmah.io/using-the-rest-api/)</li><li>[Where is my API key?](https://docs.elmah.io/where-is-my-api-key/)</li><li>[Where is my log ID?](https://docs.elmah.io/where-is-my-log-id/)</li><li>[How to configure API key permissions](https://docs.elmah.io/how-to-configure-api-key-permissions/)</li></ul>'
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Elmah account](https://elmah.io) and obtain tokens following [this guide](https://docs.elmah.io/where-is-my-api-key/).
@@ -1342,6 +1345,6 @@ components:
     api_key:
       description: All requests on the elmah.io API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be <code>api_key</code>.<br/><br/>Additional resources:<br/><ul><li>[Where is my API key?](https://docs.elmah.io/where-is-my-api-key/)</li><li>[How to configure API key permissions](https://docs.elmah.io/how-to-configure-api-key-permissions/)</li></ul>
       in: query
-      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
       name: api_key
       type: apiKey

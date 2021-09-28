@@ -6,11 +6,11 @@ info:
 
     Symanto psycholinguistic text analytics API provides capability to access operations related to the deepest understanding of people through psychology &
     AI
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Symanto account](https://www.symanto.com/) and obtain OAuth tokens following [this guide](https://symanto-research.github.io/symanto-docs/#authentication)
-  x-display:
+  x-ballerina-display:
     label: Symanto Text Analytics
     iconPath: "resources/SymantoTextAnalytics.svg"
   termsOfService: https://developers.symanto.net/terms-of-service
@@ -529,4 +529,4 @@ components:
       type: apiKey
       name: x-api-key
       in: header
-      x-apikey-description: "Provide your API Key as `x-api-key`. Eg: {x-api-key : [<Personal API_KEY>]}"
+      x-ballerina-apikey-description: "Provide your API Key as `x-api-key`. Eg: {x-api-key : [<Personal API_KEY>]}"

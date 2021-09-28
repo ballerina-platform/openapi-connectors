@@ -26,6 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Files.com API v1.0](https://www.files.com/) OpenAPI specification.
 # Welcome to the Files.com API. Our REST API are designed for people who require the highest level of integration between Files.com and their own application, website, or database.
+@display {label: "files.com", iconPath: "resources/files.com.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

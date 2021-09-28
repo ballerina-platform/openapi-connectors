@@ -1,5 +1,8 @@
 openapi: 3.0.2
 info:
+  x-ballerina-display:
+    label: PagerDuty
+    iconPath: "resources/pagerduty.svg"
   description: >
     This is a generated connector for [Pagerduty REST API v2](https://developer.pagerduty.com/api-reference/) OpenAPI specification.
 
@@ -18,7 +21,7 @@ info:
     email: support@pagerduty.com
   title: PagerDuty API
   version: 2.0.0
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
 
     Create a [Pagerduty account](https://developer.pagerduty.com/sign-up/) and obtain tokens by following [this guide](https://support.pagerduty.com/docs/generating-api-keys#section-generating-a-general-access-rest-api-key).
@@ -2078,7 +2081,7 @@ components:
       type: apiKey
       name: Authorization
       in: header
-      x-apikey-description: "Provide your API keys as Authorization . Eg: {\"Authorization\" : \"<API key>\"}"
+      x-ballerina-apikey-description: "Provide your API keys as Authorization . Eg: {\"Authorization\" : \"<API key>\"}"
       description: The API Key with format `Token token=<API_KEY>`
   schemas:
     StatusUpdateNotificationRule:

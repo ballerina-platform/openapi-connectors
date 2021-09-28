@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [ServiceNow REST API Quebec version] (https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest) OpenAPI Specification.
 # ServiceNow provides extensive access to instances through a set of RESTful APIs.
+@display {label: "ServiceNow", iconPath: "resources/servicenow.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

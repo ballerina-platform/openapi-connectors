@@ -26,6 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
 # These APIs allow you to interact with HubSpot's Marketing Events Extension. 
+@display {label: "HubSpot Marketing", iconPath: "resources/hubspot.marketing.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

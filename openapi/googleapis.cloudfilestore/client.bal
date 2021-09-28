@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Filestore REST API v1](https://cloud.google.com/filestore/docs/reference/rest) OpenAPI specification.
 # The Google Cloud Filestore API provides the capability to create and manage cloud file servers.
+@display {label: "Google Cloud Filestore", iconPath: "resources/googleapis.cloudfilestore.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

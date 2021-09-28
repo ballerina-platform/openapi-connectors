@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Uber
+    iconPath: "resources/uber.svg"
   title: Uber API
   description: Move your app forward with the Uber API
   version: 1.0.0

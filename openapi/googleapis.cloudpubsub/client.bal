@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Pub/Sub API v1](https://cloud.google.com/pubsub/docs/reference/rest) OpenAPI specification.
 # The Google Cloud Pub/Sub API provides the capability to do the messaging and ingestion for event-driven systems and streaming analytics.
+@display {label: "Google Cloud Pub/Sub", iconPath: "resources/googleapis.cloudpubsub.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

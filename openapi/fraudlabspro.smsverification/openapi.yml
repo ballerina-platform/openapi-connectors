@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: FraudLabs Pro SMS Verification
+    iconPath: "resources/fraudlabspro.smsverification.svg"
   title: FraudLabs Pro SMS Verification
   description: >
     This is a generated connector for [FraudLabsPro SMS Verification API v1.0](https://www.fraudlabspro.com/developer/api/send-verification) OpenAPI specification.
@@ -9,7 +12,7 @@ info:
     It helps merchants to minimize chargebacks and fraud for various kinds of payment method, such as credit card, paypal, cod and so on. 
     
     Please visit https://www.fraudlabspro.com to learn more.'
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization doesn't require setting the API credentials. 
   
     Create a [FraudLabsPro account](https://www.fraudlabspro.com/checkout) and obtain tokens following [this guide](https://www.fraudlabspro.com/developer/api/send-verification).

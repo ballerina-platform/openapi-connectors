@@ -3,6 +3,9 @@ servers:
   - url: https://pubsub.googleapis.com/
 x-hasEquivalentPaths: true
 info:
+  x-ballerina-display:
+    label: Google Cloud Pub/Sub
+    iconPath: "resources/googleapis.cloudpubsub.svg"
   contact:
     name: Google
     url: https://google.com
@@ -33,7 +36,7 @@ info:
   description: |
     This is a generated connector for [Google Cloud Pub/Sub API v1](https://cloud.google.com/pubsub/docs/reference/rest) OpenAPI specification.
     The Google Cloud Pub/Sub API provides the capability to do the messaging and ingestion for event-driven systems and streaming analytics.
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
 externalDocs:

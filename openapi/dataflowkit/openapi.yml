@@ -3,6 +3,9 @@ servers:
   - description: Production server
     url: https://api.dataflowkit.com/v1
 info:
+  x-ballerina-display:
+    label: Dataflow Kit
+    iconPath: "resources/dataflowkit.svg"
   contact:
     url: https://dataflowkit.com/
   description: |
@@ -19,7 +22,7 @@ info:
     The API key can be found in the [DFK Dashboard](https://account.dataflowkit.com) after _free registration_.
 
     Pass a secret API Key to all API requests to the server as the `api_key` query parameter. 
-  x-init-description: | 
+  x-ballerina-init-description: | 
     The connector initialization requires setting the API credentials.
     Create a [Dataflow Kit account](https://account.dataflowkit.com/signup) and obtain tokens by following [this guide](https://dataflowkit.com/doc-api#section/Authentication).
   termsOfService: https://dataflowkit.com/terms
@@ -1382,4 +1385,4 @@ components:
       in: query
       name: api_key
       type: apiKey
-      x-apikey-description: "Provide your API Key as api_key. Eg: {api_key : <Your API Key>}"
+      x-ballerina-apikey-description: "Provide your API Key as api_key. Eg: {api_key : <Your API Key>}"

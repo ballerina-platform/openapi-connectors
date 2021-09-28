@@ -55,6 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Ably REST API v1.1.0](https://ably.com/documentation/rest-api) OpenAPI specification.
 # The [Ably REST API](https://www.ably.io/documentation/rest-api) provides a way for a wide range of server and client devices to communicate with the Ably service over REST.
 # The REST API does not provide a realtime long-lived connection to Ably, but in all other respects is a simple subset of the full [realtime messaging API](https://ably.com/documentation/realtime).
+@display {label: "Ably", iconPath: "resources/ably.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -3,6 +3,9 @@ servers:
   - description: Asana API endpoint.
     url: https://app.asana.com/api/1.0
 info:
+  x-ballerina-display:
+    label: Asana
+    iconPath: "resources/asana.svg"
   contact:
     name: Asana Support
     url: https://asana.com/support
@@ -12,7 +15,7 @@ info:
     This API enables you to help teams organize, track and manage their work.
 
     For additional help getting started with the API, visit [Asana API](https://developers.asana.com).
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Asana API Account](https://asana.com/create-account) and obtain tokens following [this guide](https://developers.asana.com/docs/authentication).

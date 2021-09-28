@@ -3,6 +3,9 @@ servers:
   - url: https://apirest.isendpro.com/cgi-bin
   - url: http://apirest.isendpro.com/cgi-bin
 info:
+  x-ballerina-display:
+      label: iSendPro
+      iconPath: "resources/isendpro.svg"
   contact:
     email: support@isendpro.com
     name: iSendPro Support Team
@@ -40,7 +43,7 @@ info:
       url: https://apirest.isendpro.com/isendpro.json
       version: "3.0"
   x-providerName: isendpro.com
-  x-init-description: | 
+  x-ballerina-init-description: | 
     The connector initialization doesn't require setting the API credentials.
     Create an [iSendPro account](https://en.isendpro.com/signup.php) and obtain tokens by following this [guide](https://www.isendpro.com/docs/?type=7#prerequis_english)
     Operations require passing the token as a parameter.

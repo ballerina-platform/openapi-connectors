@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Books API v1](https://developers.google.com/books) OpenAPI specification.
 # The Google Books API allows clients to access the Google Books repository.
+@display {label: "Google Books", iconPath: "resources/googleapis.books.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

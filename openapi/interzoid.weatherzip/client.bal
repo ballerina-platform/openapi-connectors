@@ -27,6 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Interzoid Weather by Zip Code API v1.0.0] (https://interzoid.com/services/getweatherzip) OpenAPI specification.
 # This API provides current weather information for US Cities, including temperatures,  wind speeds, wind direction, relative humidity, and visibility.
 # For additional help getting started with the API,  visit [Interzoid Weather by Zip Code API](https://interzoid.com/services/getweatherzip).
+@display {label: "Interzoid Weather by Zip Code", iconPath: "resources/interzoid.weatherzip.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

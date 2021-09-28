@@ -27,6 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Azure QnA Maker API v4](https://docs.microsoft.com/en-us/rest/api/cognitiveservices-qnamaker/QnAMaker4.0/) OpenAPI specification.
 # The Azure QnA Maker API is a cloud-based Natural Language Processing (NLP) service that allows you to create a natural conversational layer over your data.  It is used to find the most appropriate answer for any input from your custom knowledge base (KB) of information. QnA Maker is commonly used to build conversational client applications,  which include social media applications, chat bots, and speech-enabled desktop applications.
 # QnA Maker REST API V4.0
+@display {label: "Azure QnA Maker", iconPath: "resources/azure.qnamaker.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;
@@ -106,7 +107,8 @@ public isolated client class Client {
     # Update Knowledgebase
     #
     # + kbId - Knowledgebase id 
-    # + payload - Post body of the request. 
+    # + payload - Post body of the request.
+ 
     # + return - Details of the asynchronous operation. 
     remote isolated function updateKnowledgebase(string kbId, UpdateKbOperationDTO payload) returns Operation|error {
         string  path = string `/knowledgebases/${kbId}`;
@@ -216,7 +218,8 @@ public isolated client class Client {
     }
     # Create Knowledgebase
     #
-    # + payload - Post body of the request. 
+    # + payload - Post body of the request.
+ 
     # + return - Details of the asynchronous operation. 
     remote isolated function createKnowledgebase(CreateKbDTO payload) returns Operation|error {
         string  path = string `/knowledgebases/create`;

@@ -55,6 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Bitbucket API v2.0](https://developer.atlassian.com/bitbucket/api/2/reference/) OpenAPI Specification.
 # Code against the Bitbucket API to automate simple tasks, embed Bitbucket data into your own site, build mobile or desktop apps,  
 # or even add custom UI add-ons into Bitbucket itself using the Connect framework.
+@display {label: "Bitbucket", iconPath: "resources/bitbucket.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

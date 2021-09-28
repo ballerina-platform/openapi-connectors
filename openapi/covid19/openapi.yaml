@@ -11,10 +11,10 @@ info:
   license:
     name: GNU V3
     url: 'https://github.com/disease-sh/API/blob/master/LICENSE'
-  x-display:
+  x-ballerina-display:
     label: COVID-19
     iconPath: "resources/covid19.svg"
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization doesn't require setting the API credentials.
 tags:
   - name: 'COVID-19: Worldometers'

@@ -3,6 +3,9 @@ openapi: 3.0.0
 servers:
   - url: "https://api.nexmo.com/ni"
 info:
+  x-ballerina-display:
+    label: Vonage Number Insight
+    iconPath: "resources/vonage.numberinsight.svg"
   title: Number Insight API
   version: 1.0.10
   description: >
@@ -13,7 +16,7 @@ info:
     There are three levels of Number Insight API available: [Basic, Standard and Advanced](https://developer.nexmo.com/number-insight/overview#basic-standard-and-advanced-apis). The advanced API is available asynchronously as well as synchronously.
 
     More Number Insight API documentation is at https://developer.nexmo.com/number-insight/overview#number-insight-api-overview.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
@@ -1138,10 +1141,10 @@ components:
       name: api_key
       in: query
       description: "You can find your API key in your [account overview](https://dashboard.nexmo.com/account-overview)"
-      x-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
+      x-ballerina-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
     apiSecret:
       type: apiKey
       name: api_secret
       in: query
       description: "You can find your API secret in your [account overview](https://dashboard.nexmo.com/account-overview)"
-      x-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
+      x-ballerina-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"

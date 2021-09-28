@@ -53,6 +53,7 @@ public type ClientConfig record {|
 |};
 
 # The Inventory API is used to create and manage inventory, and then to publish and manage this inventory on an eBay marketplace. There are also methods in this API that will convert eligible, active eBay listings into the Inventory API model.
+@display {label: "eBay Inventory", iconPath: "resources/ebay.inventory.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

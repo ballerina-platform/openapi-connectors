@@ -7,11 +7,11 @@ info:
     Manipulate text, modify collections, format dates and times, convert currency, perform advanced mathematical calculations, shorten URL's, encode strings, convert text to speech, translate content into multiple languages, process images, and more. 
     PowerTools is the ultimate developer toolkit.'
     This connector provides the capability for weather conditions, forecasts and related operations.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [Apptigent account](https://portal.apptigent.com/user/register) and obtain tokens by following [this guide](https://portal.apptigent.com/start).
-  x-display:
+  x-ballerina-display:
     label: PowerTools Developer Weather
     iconPath: "resources/powertoolsdeveloperweather.svg"
   contact:
@@ -7016,7 +7016,7 @@ components:
       type: apiKey
       name: X-IBM-Client-Id
       in: header
-      x-apikey-description: "Provide your API key as `X-IBM-Client-Id`. Eg: `{\"X-IBM-Client-Id\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `X-IBM-Client-Id`. Eg: `{\"X-IBM-Client-Id\" : \"<API key>\"}`"
 x-ibm-configuration:
   enforced: true
   testable: true

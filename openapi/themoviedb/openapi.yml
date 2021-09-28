@@ -4,13 +4,14 @@ info:
   description: |-
     This is a generated connector for [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
     The Movie Database (TMDB) API provide data about movies and tv shows around the world.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Request a [TMDB Account](https://www.themoviedb.org/signup) and obtain tokens following [this guide](https://developers.themoviedb.org/3/getting-started/introduction).
   version: "3"
-  x-display:
-    label: The Movie Database (TMDB) Client
+  x-ballerina-display:
+    label: The Movie Database (TMDB)
+    iconPath: "resources/themoviedb.svg"
 servers:
 - url: https://api.themoviedb.org/3
 paths:
@@ -20,7 +21,7 @@ paths:
       description: Get a list of the current popular movies on TMDB. This list updates
         daily.
       operationId: GET_popular-movies
-      x-display: 
+      x-ballerina-display: 
         label: "Get Popular Movies"
       responses:
         200:
@@ -81,7 +82,7 @@ paths:
 
         You can optionally specify a `region` prameter which will narrow the search to only look for theatrical release dates within the specified country.
       operationId: GET_upcoming-movies
-      x-display: 
+      x-ballerina-display: 
         label: "Get Upcoming Movies"
       responses:
         200:
@@ -152,7 +153,7 @@ paths:
         | - | - |
         | November 20, 2020 | A `watch/providers` method has been added to show what providers (eg. streaming) are available and where.|
       operationId: GET_movie-by-movie_id
-      x-display: 
+      x-ballerina-display: 
         label: "Get Movie Details"
       parameters:
       - name: movie_id
@@ -161,7 +162,7 @@ paths:
         required: true
         schema:
           type: integer
-        x-display: 
+        x-ballerina-display: 
           label: "Movie ID"
       responses:
         200:
@@ -280,7 +281,7 @@ paths:
       summary: Get Top Rated
       description: Get a list of the top rated TV shows on TMDB
       operationId: GET_top_rated-tv-show
-      x-display: 
+      x-ballerina-display: 
         label: "Get Top Rated TV Shows"
       responses:
         200:
@@ -347,7 +348,7 @@ paths:
         | - | - |
         | June 1, 2018 | Added the [translations](#endpoint:5SFwZar3LkP99QMp7) method. |
       operationId: GET_tv-show-episode
-      x-display: 
+      x-ballerina-display: 
         label: "Get TV Show Episode"
       parameters:
       - name: tv_id
@@ -356,7 +357,7 @@ paths:
         required: true
         schema:
           type: integer
-        x-display: 
+        x-ballerina-display: 
           label: "TV Show ID"
       - name: season_number
         in: path
@@ -364,7 +365,7 @@ paths:
         required: true
         schema:
           type: integer
-        x-display: 
+        x-ballerina-display: 
           label: "Season Number"
       - name: episode_number
         in: path
@@ -372,7 +373,7 @@ paths:
         required: true
         schema:
           type: integer
-        x-display: 
+        x-ballerina-display: 
           label: "Episode Number"
       responses:
         200:
@@ -457,7 +458,7 @@ paths:
       summary: Search Movies
       description: Search for movies
       operationId: search-movie
-      x-display: 
+      x-ballerina-display: 
         label: "Search Movies"
       parameters:
       - name: query
@@ -466,14 +467,14 @@ paths:
         required: true
         schema:
           type: string
-        x-display: 
+        x-ballerina-display: 
           label: "Search Text Query"
       - name: year
         in: query
         description: Release year of movie
         schema:
           type: integer
-        x-display: 
+        x-ballerina-display: 
           label: "Movie Release Year"
       responses:
         200:
@@ -531,7 +532,7 @@ paths:
       summary: Search TV Shows
       description: Search for a TV show
       operationId: search-tv-show
-      x-display: 
+      x-ballerina-display: 
         label: "Search TV Shows"
       parameters:
       - name: query
@@ -540,14 +541,14 @@ paths:
         required: true
         schema:
           type: string
-        x-display: 
+        x-ballerina-display: 
           label: "Search Text Query"
       - name: firstAirDateYear
         in: query
         description: First air date
         schema:
           type: integer
-        x-display: 
+        x-ballerina-display: 
           label: "First Air Date"
       responses:
         200:
@@ -880,4 +881,4 @@ components:
       description: All requests on the TMDB API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `api_key`
       name: api_key
       in: query
-      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<your API key >\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<your API key >\"}`"

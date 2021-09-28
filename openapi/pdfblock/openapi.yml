@@ -5,12 +5,12 @@ info:
     This is a generated connector from [PDF Blocks API version 1.5.0](https://www.pdfblocks.com/docs/api/getting-started) OpenAPI Specification.
 
     PDF Blocks API provides capability to access operations related to work with PDF documents.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [PDF Blocks account](https://dashboard.pdfblocks.com/users/sign_in) and obtain OAuth tokens following [this guide](https://www.pdfblocks.com/docs/api/getting-started#authentication) or 
     [get a free API key](https://www.pdfblocks.com/try-free).
-  x-display:
+  x-ballerina-display:
     label: PDF Blocks
     iconPath: "resources/pdfblocks.svg"
   termsOfService: https://www.pdfblocks.com/terms
@@ -636,7 +636,7 @@ components:
         free API key](https://www.pdfblocks.com/try-free).
       name: X-Api-Key
       in: header
-      x-apikey-description: "Provide your API Key as `X-Api-Key`. Eg: {X-Api-Key : [<API_KEY>]}"
+      x-ballerina-apikey-description: "Provide your API Key as `X-Api-Key`. Eg: {X-Api-Key : [<API_KEY>]}"
 security:
   - apiKey: []
 externalDocs:

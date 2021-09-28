@@ -1,12 +1,15 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Pipedrive
+    iconPath: "resources/pipedrive.svg"
   title: Pipedrive API v1
   version: 1.0.0
   description: |
     This is a generated connector for [Pipedrive API v1](https://developers.pipedrive.com/docs/api/v1) OpenAPI specification.
     Pipedrive is a sales CRM and pipeline management solution that enables businesses to plan their sales activities and monitor deals. 
     Built using activity-based selling methodology, Pipedrive streamlines every action involved in converting a potential deal into a successful sale.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Pipedrive account](https://www.pipedrive.com) and obtain tokens by following [this guide](https://pipedrive.readme.io/docs/core-api-concepts-authentication).
@@ -39001,4 +39004,4 @@ components:
       type: apiKey
       name: api_token
       in: query
-      x-apikey-description: "Provide your API key as `api_token`. Eg: `{\"api_token\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api_token`. Eg: `{\"api_token\" : \"<API key>\"}`"

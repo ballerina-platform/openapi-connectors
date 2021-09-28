@@ -5,11 +5,11 @@ info:
     This is a generated connector for [NamSor API v2](https://v2.namsor.com/NamSorAPIv2/index.html) OpenAPI specification. 
 
     The NamSor API provides the capability to process personal names (gender, cultural origin or ethnicity) in all alphabets or languages.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create an [NamSor Account](https://v2.namsor.com/NamSorAPIv2/sign-in.html) and obtain tokens following [this guide](https://v2.namsor.com/NamSorAPIv2/apidoc.html).
-  x-display:
+  x-ballerina-display:
       label: NamSor
       iconPath: "resources/namsor.svg"
   contact:
@@ -3401,4 +3401,4 @@ components:
       description: All requests on the NamSor API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `X-API-KEY`
       name: X-API-KEY
       in: header
-      x-apikey-description: "Provide your API key as `X-API-KEY`. Eg: `{\"X-API-KEY\" : \"<your API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `X-API-KEY`. Eg: `{\"X-API-KEY\" : \"<your API key>\"}`"

@@ -1,10 +1,13 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: Neutrino
+    iconPath: "resources/neutrino.svg"
   title: Neutrino API
   description: |
     This is a generated connector for [Neutrino API v3.5.0](https://www.neutrinoapi.com/api/api-basics/) OpenAPI specification.
     The Neutrino API is a general-purpose API.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Neutrino API account](https://www.neutrinoapi.com/signup) and obtain tokens by following [this guide](https://www.neutrinoapi.com/api/api-basics/).
@@ -3935,13 +3938,13 @@ components:
       description: Your user ID
       name: user-id
       in: header
-      x-apikey-description: "Provide your API keys as `user-id` and `api-key`. Eg: `{\"user-id\" : \"<User ID>\", \"api-key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API keys as `user-id` and `api-key`. Eg: `{\"user-id\" : \"<User ID>\", \"api-key\" : \"<API key>\"}`"
     api-key:
       type: apiKey
       description: Your API key
       name: api-key
       in: header
-      x-apikey-description: "Provide your API keys as `user-id` and `api-key`. Eg: `{\"user-id\" : \"<User ID>\", \"api-key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API keys as `user-id` and `api-key`. Eg: `{\"user-id\" : \"<User ID>\", \"api-key\" : \"<API key>\"}`"
 security:
   - user-id: []
     api-key: []

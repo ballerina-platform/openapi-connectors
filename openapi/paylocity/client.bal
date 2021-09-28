@@ -66,6 +66,7 @@ public type ClientConfig record {|
 #     For details on API endpoint, please see Client Credentials section.
 #   - Both the current secret value and the new secret value will be recognized during the transition period. After the current secret expires, you must use the new secret. 
 #   - If you were unable to renew the secret via API endpoint, you can still contact Service and they will email you new secret via secure email.
+@display {label: "Paylocity", iconPath: "resources/paylocity.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

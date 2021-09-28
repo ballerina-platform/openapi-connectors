@@ -27,6 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [New York Times Newswire API v3.0.0](https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification.
 # With the Times Newswire API, you can get links and metadata for Times' articles as soon as they are published on NYTimes.com. 
 # The Times Newswire API provides an up-to-the-minute stream of published articles. You can filter results by source (all, nyt, inyt) and section (arts, business, ...).
+@display {label: "New York Times Newswire", iconPath: "resources/nytimes.newswire.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

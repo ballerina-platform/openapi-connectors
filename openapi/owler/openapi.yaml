@@ -1,9 +1,12 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Owler
+    iconPath: "resources/owler.svg"
   title: Owler
   description: >
     Search for information on companies using a website or company name and get access to Company Data, News, Blog Posts, Competitor Lists and much more.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Owler account](https://corp.owler.com/) and obtain the API key.
@@ -1174,4 +1177,4 @@ components:
       description: API Access Key
       name: user_key
       in: header
-      x-apikey-description: "Provide your API key as `user_key`. Eg: `{\"user_key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `user_key`. Eg: `{\"user_key\" : \"<API key>\"}`"

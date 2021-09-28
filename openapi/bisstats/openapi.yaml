@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: BIS Stats
+    iconPath: "resources/bisstats.svg"
   version: '1.4.0'
   title: 'SDMX RESTful API'
   description: >
@@ -10,7 +13,7 @@ info:
     This service offers programmatic access to the BIS statistical data and metadata published on the [BIS statistics pages](https://www.bis.org/statistics/index.htm) released to the public.
 
     For additional information about the SDMX RESTful API, check the [official sdmx-rest specification](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs) or the [dedicated Wiki](https://github.com/sdmx-twg/sdmx-rest/wiki), including [**useful tips for consumers**](https://github.com/sdmx-twg/sdmx-rest/wiki/Tips-for-consumers).
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization doesn't require setting the API credentials. 
     
     Please refer the [API documentation](https://stats.bis.org/api-doc/v1/) for more information.

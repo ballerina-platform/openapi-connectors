@@ -53,6 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Retail API v2](https://cloud.google.com/retail/docs/overview) OpenAPI specification.
 # The Google Retail API provides the capability to to build end-to-end personalized recommendation systems without requiring a high level of expertise in machine learning, recommendation system, or Google Cloud.
+@display {label: "Google Retail", iconPath: "resources/googleapis.retail.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

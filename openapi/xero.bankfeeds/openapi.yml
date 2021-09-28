@@ -7,13 +7,13 @@ info:
     The Bank Feeds API is a closed API that is only available to financial institutions that have an established financial services partnership with Xero.
     If you're an existing financial services partner that wants access, contact your local Partner Manager.
     If you're a financial institution who wants to provide bank feeds to your business customers, contact xero to become a financial services partner.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens by following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
-  x-display:
+  x-ballerina-display:
     label: Xero Bank Feeds
-    iconPath: "resources/xerobankfeeds.svg"
+    iconPath: "resources/xero.bankfeeds.svg"
   termsOfService: "https://developer.xero.com/xero-developer-platform-terms-conditions/"
   contact:
     name: "Xero Platform Team"

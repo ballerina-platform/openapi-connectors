@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://api.paylocity.com/api
 info:
+  x-ballerina-display:
+    label: Paylocity
+    iconPath: "resources/paylocity.svg"
   description: |
     This is a generated connector for [Paylocity API v2](https://www.paylocity.com/our-products/integrations/api-library/) OpenAPI Specification.
     Paylocity Web Services API is an externally facing RESTful Internet protocol. The Paylocity API uses HTTP verbs and a RESTful endpoint structure.
@@ -30,7 +33,7 @@ info:
       url: https://api.paylocity.com/api/v2/openapi
       version: "3.0"
   x-providerName: paylocity.com
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials.
     Create [Paylocity account](https://access.paylocity.com/Register) and obtain tokens by following [this guide](https://www.paylocity.com/our-products/integrations/api-library/).
 paths:

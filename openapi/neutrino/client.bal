@@ -24,6 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Neutrino API v3.5.0](https://www.neutrinoapi.com/api/api-basics/) OpenAPI specification.
 # The Neutrino API is a general-purpose API.
+@display {label: "Neutrino", iconPath: "resources/neutrino.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -4,13 +4,14 @@ info:
   description: |-
     This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification.
     News API used to fetch news(articles, headlines and sources) from news sources and blogs across the web.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
 
     Create an [News API Account](https://newsapi.org/register) and obtain tokens following [this guide](https://newsapi.org/docs/get-started).
   version: 2.0.0
-  x-display:
-    label: News API Client
+  x-ballerina-display:
+    label: News API
+    iconPath: "resources/newsapi.svg"
 servers:
 - url: https://newsapi.org/v2
 paths:
@@ -19,7 +20,7 @@ paths:
       summary: Returns a list of news sources or blogs
       description: This operation returns subset of news publishers that top headlines
       operationId: listSources
-      x-display:
+      x-ballerina-display:
         label: "List News Sources"
       parameters: 
         - in: query
@@ -29,7 +30,7 @@ paths:
           schema: 
             type: string
             enum: [ar,de,en,es,fr,he,it,nl,no,pt,ru,se,ud,zh]
-          x-display: 
+          x-ballerina-display: 
             label: "Language"
         - in: query
           name: country
@@ -37,7 +38,7 @@ paths:
           schema: 
             type: string
             enum: [ae, ar, at, au, be, bg, br, ca, ch, cn, co, cu, cz, de, eg, es, fr, gb, gr, hk, hu, id, ie, il, in, it, is, jp, kr, lt, lv, ma, mx, my, ng, nl, no, nz, ph, pk, pl, pt, ro, rs, ru, sa, se, sg, si, sk, th, tr, tw, ua, us, ve, za, zh]
-          x-display: 
+          x-ballerina-display: 
             label: "Country"
         - in: query
           name: category
@@ -52,7 +53,7 @@ paths:
               - science
               - sports
               - technology
-          x-display: 
+          x-ballerina-display: 
             label: "Category"
       responses:
         '200':
@@ -90,7 +91,7 @@ paths:
       summary: Returns a list of top headlines
       description: List of top headlines (articles)
       operationId: listTopHeadlines
-      x-display:
+      x-ballerina-display:
         label: "List Top Headlines"
       parameters:
         - in: query
@@ -99,7 +100,7 @@ paths:
           schema:
             type: string
             nullable: true
-          x-display: 
+          x-ballerina-display: 
             label: "Keyword"
         - in: query
           name: sources
@@ -107,7 +108,7 @@ paths:
           schema:
             type: string
             nullable: true
-          x-display: 
+          x-ballerina-display: 
             label: "Sources"
         - in: query
           name: country
@@ -115,7 +116,7 @@ paths:
           schema:
             type: string
             enum: [ae, ar, at, au, be, bg, br, ca, ch, cn, co, cu, cz, de, eg, es, fr, gb, gr, hk, hu, id, ie, il, in, it, is, jp, kr, lt, lv, ma, mx, my, ng, nl, no, nz, ph, pk, pl, pt, ro, rs, ru, sa, se, sg, si, sk, th, tr, tw, ua, us, ve, za, zh]
-          x-display: 
+          x-ballerina-display: 
             label: "Country"
         - in: query
           name: category
@@ -130,7 +131,7 @@ paths:
               - science
               - sports
               - technology
-          x-display: 
+          x-ballerina-display: 
             label: "Category"
         - in: query
           name: page
@@ -138,7 +139,7 @@ paths:
           schema:
             type: integer
             minimum: 0
-          x-display: 
+          x-ballerina-display: 
             label: "Page Number"
         - in: query
           name: pageSize
@@ -146,7 +147,7 @@ paths:
           schema:
             type: integer
             default: 20
-          x-display: 
+          x-ballerina-display: 
             label: "Page Size"
       responses:
         '200':
@@ -184,7 +185,7 @@ paths:
       summary: Returns list of articles
       description: List of articles
       operationId: listArticles
-      x-display:
+      x-ballerina-display:
         label: "List Articles"
       parameters:
         - in: query
@@ -193,7 +194,7 @@ paths:
           schema:
             type: string
             nullable: true
-          x-display: 
+          x-ballerina-display: 
             label: "Keyword"
         - in: query
           name: qInTitle
@@ -201,7 +202,7 @@ paths:
           schema:
             type: string
             nullable: true
-          x-display: 
+          x-ballerina-display: 
             label: "Title Keyword"
         - in: query
           name: sources
@@ -209,7 +210,7 @@ paths:
           schema:
             type: string
             nullable: true
-          x-display: 
+          x-ballerina-display: 
             label: "Sources"
         - in: query
           name: domains
@@ -217,7 +218,7 @@ paths:
           schema:
             type: string
             nullable: true
-          x-display: 
+          x-ballerina-display: 
             label: "Domains To Include"
         - in: query
           name: excludeDomains
@@ -225,7 +226,7 @@ paths:
           schema:
             type: string
             nullable: true
-          x-display: 
+          x-ballerina-display: 
             label: "Domains To Exclude"
         - in: query
           name: from
@@ -235,7 +236,7 @@ paths:
             format: date
             nullable: true
             example: "2021-01-30"
-          x-display: 
+          x-ballerina-display: 
             label: "From"
         - in: query
           name: to
@@ -245,7 +246,7 @@ paths:
             format: date
             nullable: true
             example: "2021-01-30"
-          x-display: 
+          x-ballerina-display: 
             label: "To"
         - in: query
           name: language
@@ -253,7 +254,7 @@ paths:
           schema:
             type: string
             enum: [ar,de,en,es,fr,he,it,nl,no,pt,ru,se,ud,zh]
-          x-display: 
+          x-ballerina-display: 
             label: "Language"
         - in: query
           name: sortBy
@@ -261,7 +262,7 @@ paths:
           schema:
             type: string
             enum: [relevancy, popularity, publishedAt]
-          x-display: 
+          x-ballerina-display: 
             label: "Sort By"
         - in: query
           name: page
@@ -271,7 +272,7 @@ paths:
             type: integer
             default: 0
             nullable: false
-          x-display: 
+          x-ballerina-display: 
             label: "Page Number"
         - in: query
           description: "Number of results to return per page. 20 is default, 100 is maximum"
@@ -281,7 +282,7 @@ paths:
             type: integer
             default: 20
             nullable: false
-          x-display: 
+          x-ballerina-display: 
             label: "Page Size"
       responses:
         '200':
@@ -322,7 +323,7 @@ components:
       name: apiKey
       type: apiKey
       in: query
-      x-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key>\"}`"
   schemas:
     WSNewsErrorResponse:
       description: 'News API error response'

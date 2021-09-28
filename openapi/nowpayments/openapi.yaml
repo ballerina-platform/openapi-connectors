@@ -2,6 +2,9 @@ openapi: 3.0.3
 servers:
   - url: https://api.nowpayments.io
 info:
+  x-ballerina-display:
+    label: NOWPayments
+    iconPath: "resources/nowpayments.svg"
   contact: {}
   description: >
     This is a generated connector from [NOWPayments API v1](https://nowpayments.io/) OpenAPI Specification. 
@@ -10,7 +13,7 @@ info:
     
     Accept payments in a wide range of cryptos and get them instantly converted into a coin of your choice and sent to your wallet. Keeping it simple – no excess.
 
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials
 
     Create an [NOWPayments Account](https://account.nowpayments.io/create-account) and obtain tokens by following [this guide](https://documenter.getpostman.com/view/7907941/S1a32n38?version=latest)
@@ -607,4 +610,4 @@ components:
       type: apiKey
       in: header
       name: x-api-key
-      x-apikey-description: "Provide your API Key as x-api-key. Eg: {\"x-api-key\" : \"<Your API Key>\"}"
+      x-ballerina-apikey-description: "Provide your API Key as x-api-key. Eg: {\"x-api-key\" : \"<Your API Key>\"}"

@@ -21,11 +21,11 @@ info:
 
     The public API is served from https://api.askspoke.com/api/v1 – note `api`
     in the host name, not your usual organization id.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [atSpoke account](https://www.atspoke.com) and obtain tokens by following [this guide](https://help.atspoke.com/article/uga6efxps2-api-authentication).
-  x-display:
+  x-ballerina-display:
     label: atSpoke
     iconPath: "resources/atspoke.svg"
 servers:
@@ -1559,7 +1559,7 @@ components:
       type: apiKey
       in: header
       name: Api-Key
-      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
       description: |-
         Users on atSpoke's Standard and Plus plans can
                    generate an API key by navigating to "My Profile" and then selecting

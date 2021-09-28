@@ -1,12 +1,15 @@
 openapi: 3.0.3
 info:
+  x-ballerina-display:
+    label: Apideck Lead
+    iconPath: "resources/apideck.lead.svg"
   version: 5.3.0
   title: Lead API
   description: 
     This is a generated connector from [Apideck Lead API v5.3.0](https://www.apideck.com/lead-api) OpenAPI specification.
 
     You can use this API to access all Lead API endpoints.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Unify API accounts have sandbox mode and live mode API keys. To change modes just use the appropriate key to get a live or test object. 
@@ -958,7 +961,7 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      x-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<API key>\"}`"
       description: |
         To use API you have to sign up and get your own API key. Unify API accounts have sandbox mode and live mode API keys. 
         To change modes just use the appropriate key to get a live or test object. You can find your API keys on the unify settings of your Apideck app.

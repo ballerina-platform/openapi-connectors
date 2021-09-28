@@ -25,6 +25,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [GoDaddy Domains API v1](https://developer.godaddy.com/doc/endpoint/domains) OpenAPI specification. 
 # The GoDaddy Domains API provides capability to access GoDaddy operations related to domains.
+@display {label: "GoDaddy Domains", iconPath: "resources/godaddy.domains.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

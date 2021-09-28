@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://api.clever.com/v1.2
 info:
+  x-ballerina-display:
+    label: Clever Data
+    iconPath: "resources/clever.data.svg"
   contact:
     x-twitter: clever
   description: | 
@@ -18,7 +21,7 @@ info:
       url: https://raw.githubusercontent.com/Clever/swagger-api/master/v1.2.yml
       version: "3.0"
   x-providerName: clever.com
-  x-init-description: | 
+  x-ballerina-init-description: | 
     The connector initialization requires setting the API credentials.
     Create a [Clever account](https://clever.com/signup) and obtain tokens by following this [guide](https://dev.clever.com/v1.2/docs/getting-started).
 security:

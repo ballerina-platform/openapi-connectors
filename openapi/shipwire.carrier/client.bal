@@ -55,6 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Shipwire Carrier API v3.0](https://www.shipwire.com/developers/carrier/) OpenAPI specification.
 # The Carriers API is used to manage supported carriers and their respective capabilities. 
 # Use it to view, add or remove carriers enabled to function with Shipwire and Shipwire Anywhere warehouses.
+@display {label: "Shipwire Carrier", iconPath: "resources/shipwire.carrier.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

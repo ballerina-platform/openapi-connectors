@@ -3,7 +3,7 @@ servers:
   - url: https://youtube.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Youtube Data
+    label: Youtube Data
     iconPath: "resources/googleapis.youtube.data.svg"
   contact:
     name: Google

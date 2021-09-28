@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
   x-ballerina-display:
-    label: Onepassword
+    label: 1Password
     iconPath: "resources/onepassword.svg"
   title: 1Password Connect
   description: >

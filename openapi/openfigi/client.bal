@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 # OpenFIGI API provides capability to access multiple tools for identifying, mapping and requesting a free and open symbology dataset.  
 # This user friendly platform provides the ultimate understanding for how a unique identifier combined with accurate,  
 # associated metadata can eliminate redundant mapping processes, streamline the trade workflow and reduce operational risk.
-@display {label: "Openfigi", iconPath: "resources/openfigi.svg"}
+@display {label: "OpenFIGI", iconPath: "resources/openfigi.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

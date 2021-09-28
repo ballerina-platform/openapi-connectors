@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   x-ballerina-display:
-    label: Pagerduty
+    label: PagerDuty
     iconPath: "resources/pagerduty.svg"
   description: >
     This is a generated connector for [Pagerduty REST API v2](https://developer.pagerduty.com/api-reference/) OpenAPI specification.

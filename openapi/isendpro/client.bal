@@ -38,7 +38,7 @@ import ballerina/lang.'string;
 #   - IP control can be configured in the my "account" section, "my API" sub-section
 #   - This is a whitelist system, you need to enter the IPs used to call the API
 #   - You can also completely disable IP control
-@display {label: "Isendpro", iconPath: "resources/isendpro.svg"}
+@display {label: "iSendPro", iconPath: "resources/isendpro.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

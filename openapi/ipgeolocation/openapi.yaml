@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-      label: Ipgeolocation
+      label: Abstract IP Geolocation
       iconPath: "resources/ipgeolocation.svg"
   title: IP geolocation API
   description: This is a generated connector for [Abstract IP geolocation API version 1](https://www.abstractapi.com/ip-geolocation-api#docs) OpenAPI Specification.

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   x-ballerina-display:
-      label: Journeyio
+      label: Journey.io
       iconPath: "resources/journeyio.svg"
   title: journy.io API docs
   description: "This is a generated connector for [Journey.io API v1.0.0](https://www.journey.io/) OpenAPI specification.

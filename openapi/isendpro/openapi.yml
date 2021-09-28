@@ -4,7 +4,7 @@ servers:
   - url: http://apirest.isendpro.com/cgi-bin
 info:
   x-ballerina-display:
-      label: Isendpro
+      label: iSendPro
       iconPath: "resources/isendpro.svg"
   contact:
     email: support@isendpro.com

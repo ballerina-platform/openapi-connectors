@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector from [NOWPayments API v1](https://nowpayments.io/) OpenAPI Specification. 
 # NOWPayments is a non-custodial cryptocurrency payment processing platform. 
 # Accept payments in a wide range of cryptos and get them instantly converted into a coin of your choice and sent to your wallet. Keeping it simple – no excess.
-@display {label: "Nowpayments", iconPath: "resources/nowpayments.svg"}
+@display {label: "NOWPayments", iconPath: "resources/nowpayments.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

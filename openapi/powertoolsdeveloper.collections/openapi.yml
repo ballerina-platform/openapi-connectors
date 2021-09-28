@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Powertoolsdeveloper Collections
+    label: PowerTools Developer Collections
     iconPath: "resources/powertoolsdeveloper.collections.svg"
   title: PowerTools Developer
   description: >

@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
 # The Books API provides information about book reviews and The New York Times bestsellers lists.
 # For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
-@display {label: "Nytimes Books", iconPath: "resources/nytimes.books.svg"}
+@display {label: "New York Times Books", iconPath: "resources/nytimes.books.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

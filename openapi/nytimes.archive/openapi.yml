@@ -4,7 +4,7 @@ servers:
   - url: https://api.nytimes.com/svc/archive/v1
 info:
   x-ballerina-display:
-    label: Nytimes Archive
+    label: New York Times Archive
     iconPath: "resources/nytimes.archive.svg"
   description: >
     This is a generated connector for [New York Times Archive API v1.0.0](https://developer.nytimes.com/docs/archive-product/1/overview) OpenAPI specification. 

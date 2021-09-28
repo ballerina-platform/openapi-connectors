@@ -4,7 +4,7 @@ servers:
   - url: https://api.nytimes.com/svc/search/v2
 info:
   x-ballerina-display:
-    label: Nytimes Articlesearch
+    label: New York Times Article Search
     iconPath: "resources/nytimes.articlesearch.svg"
   description: >
     This is a generated connector for [New York Times Article Search API v1.0.0](https://developer.nytimes.com/docs/articlesearch-product/1/overview) OpenAPI specification.

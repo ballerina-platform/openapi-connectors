@@ -3,7 +3,7 @@ servers:
   - url: https://api.ip2whois.com/v1
 info:
   x-ballerina-display:
-      label: Ip2whois
+      label: IP2WHOIS
       iconPath: "resources/ip2whois.svg"
   description: >
     This is a generated connector from [IP2WHOIS API v2](https://www.ip2whois.com/developers-api) OpenAPI Specification. 

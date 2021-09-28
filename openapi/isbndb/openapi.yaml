@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-      label: Isbndb
+      label: ISBNdb
       iconPath: "resources/isbndb.svg"
   title: ISBNdb API v2
   description: >

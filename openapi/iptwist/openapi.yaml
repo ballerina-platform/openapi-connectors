@@ -3,7 +3,7 @@ servers:
   - url: https://iptwist.com
 info:
   x-ballerina-display:
-      label: Iptwist
+      label: ipTwist
       iconPath: "resources/iptwist.svg"
   contact:
     email: support@iptwist.com

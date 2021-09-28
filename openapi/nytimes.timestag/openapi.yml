@@ -4,7 +4,7 @@ servers:
   - url: https://api.nytimes.com/svc/suggest/v1
 info:
   x-ballerina-display:
-    label: Nytimes Timestags
+    label: New York Times TimesTags
     iconPath: "resources/nytimes.timestags.svg"
   description: >
     This is a generated connector for [New York Times TimesTags API v1.0.0](https://developer.nytimes.com/docs/timestags-product/1/overview) OpenAPI specification.

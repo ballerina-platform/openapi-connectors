@@ -4,7 +4,7 @@ servers:
   - url: https://api.nytimes.com/svc/mostpopular/v2
 info:
   x-ballerina-display:
-    label: Nytimes Mostpopular
+    label: New York Times Most Popular
     iconPath: "resources/nytimes.mostpopular.svg"
   description: >
     This is a generated connector from [New York Times Most Popular API v2.0.0](https://developer.nytimes.com/docs/most-popular-product/1/overview) OpenAPI specification.

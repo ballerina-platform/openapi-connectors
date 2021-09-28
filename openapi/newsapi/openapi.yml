@@ -10,7 +10,7 @@ info:
     Create an [News API Account](https://newsapi.org/register) and obtain tokens following [this guide](https://newsapi.org/docs/get-started).
   version: 2.0.0
   x-ballerina-display:
-    label: News API Client
+    label: News API
     iconPath: "resources/newsapi.svg"
 servers:
 - url: https://newsapi.org/v2

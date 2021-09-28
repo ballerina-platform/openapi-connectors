@@ -3,7 +3,7 @@ servers:
   - url: https://api.nowpayments.io
 info:
   x-ballerina-display:
-    label: Nowpayments
+    label: NOWPayments
     iconPath: "resources/nowpayments.svg"
   contact: {}
   description: >

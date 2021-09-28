@@ -3,7 +3,7 @@ servers:
   - url: https://api.oceandrivers.com/
 info:
   x-ballerina-display:
-    label: Odweather
+    label: ODWeather
     iconPath: "resources/odweather.svg"
   contact:
     email: matiasbonet@oceandrivers.com

@@ -20,7 +20,7 @@ import ballerina/lang.'string;
 
 # This is a generated connector for [Google My Business API v4.9](https://developers.google.com/my-business/) OpenAPI specification.
 # The Google My Business API provides an interface for managing business location information on Google.
-@display {label: "Googleapis Mybusiness", iconPath: "resources/googleapis.mybusiness.svg"}
+@display {label: "Google My Business", iconPath: "resources/googleapis.mybusiness.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

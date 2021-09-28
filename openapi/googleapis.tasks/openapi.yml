@@ -3,7 +3,7 @@ servers:
   - url: https://tasks.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Tasks
+    label: Google Tasks
     iconPath: "resources/googleapis.tasks.svg"
   contact:
     name: Google

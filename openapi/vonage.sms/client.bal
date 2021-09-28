@@ -19,7 +19,7 @@ import ballerina/http;
 # This is a generated connector for [Vonage SMS API v1.0.10](https://nexmo-api-specification.herokuapp.com/sms) OpenAPI specification.
 # With the SMS API you can send SMS from your account and lookup messages both messages that you've sent as well as messages sent to your virtual numbers. 
 # Numbers are specified in E.164 format. More SMS API documentation is at https://developer.nexmo.com/messaging/sms/overview
-@display {label: "Vonage Sms", iconPath: "resources/vonage.sms.svg"}
+@display {label: "Vonage SMS", iconPath: "resources/vonage.sms.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

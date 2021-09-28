@@ -10,7 +10,7 @@ info:
     Request a [TMDB Account](https://www.themoviedb.org/signup) and obtain tokens following [this guide](https://developers.themoviedb.org/3/getting-started/introduction).
   version: "3"
   x-ballerina-display:
-    label: The Movie Database (TMDB) Client
+    label: The Movie Database (TMDB)
     iconPath: "resources/themoviedb.svg"
 servers:
 - url: https://api.themoviedb.org/3

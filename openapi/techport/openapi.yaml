@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Techport
+    label: TechPort
     iconPath: "resources/techport.svg"
   version: 3.7.1
   title: TechPort

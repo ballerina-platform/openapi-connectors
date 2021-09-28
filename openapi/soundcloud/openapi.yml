@@ -3,7 +3,7 @@ servers:
   - url: "https://api.soundcloud.com"
 info:
   x-ballerina-display:
-    label: Soundcloud
+    label: SoundCloud
     iconPath: "resources/soundcloud.svg"
   contact:
     name: API issue tracker

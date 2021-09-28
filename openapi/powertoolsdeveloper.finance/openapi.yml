@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Powertoolsdeveloper Finance
+    label: PowerTools Developer Finance
     iconPath: "resources/powertoolsdeveloper.finance.svg"
   title: PowerTools Developer
   description: >

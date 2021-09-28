@@ -4,7 +4,7 @@ servers:
   - url: "https://api.nexmo.com/ni"
 info:
   x-ballerina-display:
-    label: Vonage Numberinsight
+    label: Vonage Number Insight
     iconPath: "resources/vonage.numberinsight.svg"
   title: Number Insight API
   version: 1.0.10

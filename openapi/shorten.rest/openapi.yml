@@ -3,7 +3,7 @@ servers:
   - url: https://api.shorten.rest
 info:
   x-ballerina-display:
-    label: Shorten Rest
+    label: Shorten.REST
     iconPath: "resources/shorten.rest.svg"
   description: |
     This is a generated connector for [Shorten.REST v1.0](https://docs.shorten.rest/) OpenAPI Specification.

@@ -20,7 +20,7 @@ import ballerina/lang.'string;
 
 # This is a generated connector for [TechPort RESTful API v3.4.0](https://stats.bis.org/api-doc/v1/) OpenAPI specification.
 # All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
-@display {label: "Techport", iconPath: "resources/techport.svg"}
+@display {label: "TechPort", iconPath: "resources/techport.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

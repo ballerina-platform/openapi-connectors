@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [SamCart API v1.0.0](https://developer.samcart.com/) OpenAPI specification.
 # SamCart's Public API is used for accessing the data inside your SamCart marketplace.
-@display {label: "Samcart", iconPath: "resources/samcart.svg"}
+@display {label: "SamCart", iconPath: "resources/samcart.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification.
 # It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing.
 # More information about the WebScraping.AI API can be found at https://webscraping.ai.
-@display {label: "Webscraping Ai", iconPath: "resources/webscraping.ai.svg"}
+@display {label: "WebScraping.AI", iconPath: "resources/webscraping.ai.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Samcart
+    label: SamCart
     iconPath: "resources/samcart.svg"
   title: 'SamCart Public API'
   description: |

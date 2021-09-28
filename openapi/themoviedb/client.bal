@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
 # The Movie Database (TMDB) API provide data about movies and tv shows around the world.
-@display {label: "The Movie Database (TMDB) Client", iconPath: "resources/themoviedb.svg"}
+@display {label: "The Movie Database (TMDB)", iconPath: "resources/themoviedb.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

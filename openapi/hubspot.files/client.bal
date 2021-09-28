@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
 # These APIs allow to upload and manage files.
-@display {label: "Hubspot Files", iconPath: "resources/hubspot.files.svg"}
+@display {label: "HubSpot Files", iconPath: "resources/hubspot.files.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

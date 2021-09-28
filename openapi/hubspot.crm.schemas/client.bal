@@ -53,7 +53,7 @@ public type ClientConfig record {|
 |};
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
 # The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object's type, properties, and associations. The schema can be uniquely identified by its **object type ID**.
-@display {label: "Hubspot Crm Schema", iconPath: "resources/hubspot.crm.schema.svg"}
+@display {label: "HubSpot CRM Schema", iconPath: "resources/hubspot.crm.schema.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

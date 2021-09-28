@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Hubspot Crm Property
+    label: HubSpot CRM Property
     iconPath: "resources/hubspot.crm.property.svg"
   title: Properties
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 

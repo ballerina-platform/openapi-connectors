@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Hubspot Crm Ticket
+    label: HubSpot CRM Ticket
     iconPath: "resources/hubspot.crm.ticket.svg"
   title: Tickets
   version: v3

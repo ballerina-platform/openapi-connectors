@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Hubspot Crm Product
+    label: HubSpot CRM Product
     iconPath: "resources/hubspot.crm.product.svg"
   title: Products
   version: v3

@@ -3,7 +3,7 @@ servers:
   - url: https://api.interzoid.com
 info:
   x-ballerina-display:
-      label: Interzoid Weatherzip
+      label: Interzoid Weather by Zip Code
       iconPath: "resources/interzoid.weatherzip.svg"
   contact:
     email: support@interzoid.com

@@ -3,7 +3,7 @@ servers:
   - url: https://api.interzoid.com
 info:
   x-ballerina-display:
-      label: Interzoid Globaltime
+      label: Interzoid Global Time
       iconPath: "resources/interzoid.globaltime.svg"
   version: "1.0.0"
   title: Interzoid Get Global Time API

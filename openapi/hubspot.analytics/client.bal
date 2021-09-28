@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
 # These APIs allow triggering instances of custom behavioral events
-@display {label: "Hubspot Analytics", iconPath: "resources/hubspot.analytics.svg"}
+@display {label: "HubSpot Analytics", iconPath: "resources/hubspot.analytics.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

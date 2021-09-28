@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Interzoid Get Currency Rate API v1.0.0](https://www.interzoid.com/services/getcurrencyrate) OpenAPI specification.
 # This API retrieves the latest currency exchange rate, against the US Dollar, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
-@display {label: "Interzoid Currencyexchange", iconPath: "resources/interzoid.currencyexchange.svg"}
+@display {label: "Interzoid  Currency Exchange", iconPath: "resources/interzoid.currencyexchange.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

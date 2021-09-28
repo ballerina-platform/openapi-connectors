@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Interzoid Global Phone Number Information API v1.0.0](https://interzoid.com/services/getglobalnumberinfo) OpenAPI specification.
 # This API provides geographic information for a global telephone number, including city and country information, primary languages spoken, and mobile device identification.
 # For additional help getting started with the API,  visit [Interzoid Global Phone Number Information API](https://interzoid.com/services/getglobalnumberinfo)
-@display {label: "Interzoid Globalnumberinfo", iconPath: "resources/interzoid.globalnumberinfo.svg"}
+@display {label: "Interzoid Global Phone Number Info", iconPath: "resources/interzoid.globalnumberinfo.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

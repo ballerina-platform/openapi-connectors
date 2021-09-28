@@ -3,7 +3,7 @@ servers:
   - url: https://api.interzoid.com
 info:
   x-ballerina-display:
-      label: Interzoid Globalpageload
+      label: Interzoid Global Page Load Performance
       iconPath: "resources/interzoid.globalpageload.svg"
   version: "1.0.0"
   title: Interzoid Global Page Load Performance API

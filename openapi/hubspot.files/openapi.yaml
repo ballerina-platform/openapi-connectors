@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Hubspot Files
+    label: HubSpot Files
     iconPath: "resources/hubspot.files.svg"
   title: Files
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.

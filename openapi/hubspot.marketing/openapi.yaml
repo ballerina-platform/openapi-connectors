@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Hubspot Marketing
+    label: HubSpot Marketing
     iconPath: "resources/hubspot.marketing.svg"
   title: Marketing Events Extension
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.

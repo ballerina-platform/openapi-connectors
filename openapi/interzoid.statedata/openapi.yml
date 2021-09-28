@@ -3,7 +3,7 @@ servers:
   - url: https://api.interzoid.com
 info:
   x-ballerina-display:
-      label: Interzoid Statedata
+      label: Interzoid State Data
       iconPath: "resources/interzoid.statedata.svg"
   contact:
     email: support@interzoid.com

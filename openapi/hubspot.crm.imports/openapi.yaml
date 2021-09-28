@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Hubspot Crm Import
+    label: HubSpot CRM Import
     iconPath: "resources/hubspot.crm.import.svg"
   title: CRM Imports
   version: v3

@@ -3,7 +3,7 @@ servers:
   - url: https://retail.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Retail
+    label: Google Retail
     iconPath: "resources/googleapis.retail.svg"
   contact:
     name: Google

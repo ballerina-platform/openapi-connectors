@@ -3,7 +3,7 @@ servers:
   - url: https://www.googleapis.com/discovery/v1
 info:
   x-ballerina-display:
-    label: Googleapis Discovery
+    label: Google Discovery
     iconPath: "resources/googleapis.discovery.svg"
   contact:
     name: Google

@@ -3,7 +3,7 @@ servers:
   - url: https://youtubeanalytics.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Youtube Analytics
+    label: Youtube Analytics
     iconPath: "resources/googleapis.youtube.analytics.svg"
   contact:
     name: Google

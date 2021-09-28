@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://classroom.googleapis.com
 info:
+  x-ballerina-display:
+    label: Google Classroom
+    iconPath: "resources/googleapis.classroom.svg"
   contact:
     name: Google
     url: https://google.com
@@ -9,7 +12,7 @@ info:
   description: |
     This is a generated connector for [Google Classroom API v1](https://developers.google.com/classroom/guides/get-started) OpenAPI specification.
     Manages classes, rosters, and invitations in Google Classroom.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

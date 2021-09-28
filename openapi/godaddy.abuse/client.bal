@@ -52,6 +52,7 @@ public type ApiKeysConfig record {|
 # Support will not expedite the review process and may result in abuse reports being deprioritized, to be determined in 
 # our sole discretion.</p><p>Should you have any questions about GoDaddy’s Abuse API or any of the terms and conditions 
 # set forth above, please contact abuseapisupport@godaddy.com.</p>
+@display {label: "GoDaddy Abuse", iconPath: "resources/godaddy.abuse.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -3,6 +3,9 @@ servers:
   - description: Vimeo.com
     url: https://api.vimeo.com
 info:
+  x-ballerina-display:
+    label: Vimeo
+    iconPath: "resources/vimeo.svg"
   contact:
     url: https://developer.vimeo.com/help
     x-twitter: vimeo

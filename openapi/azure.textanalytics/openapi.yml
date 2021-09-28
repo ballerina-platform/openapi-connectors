@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Azure Text Analytics
+    iconPath: "resources/azure.textanalytics.svg"
   title: Text Analytics API (v3.1)
   description: >
     This is a generated connector for [Azure Text Analytics API v1](https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/) OpenAPI specification.
@@ -10,7 +13,7 @@ info:
     key phrase extraction and language detection. Functionality for analysis of text
     specific to the healthcare domain and personal information are also available
     in the API. Further documentation can be found in <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview">https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview</a>
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
     
     Create a [Azure Text Analytics account](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) and obtain API key following [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal).
@@ -3149,12 +3152,12 @@ components:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header
-      x-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
     apiKeyQuery:
       type: apiKey
       name: subscription-key
       in: query
-      x-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
 x-servers:
 - url: https://southcentralus.api.cognitive.microsoft.com
 - url: https://cognitivescuprod.cognitiveservices.azure.com

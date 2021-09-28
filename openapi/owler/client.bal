@@ -25,6 +25,7 @@ public type ApiKeysConfig record {|
 |};
 
 # Search for information on companies using a website or company name and get access to Company Data, News, Blog Posts, Competitor Lists and much more.
+@display {label: "Owler", iconPath: "resources/owler.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

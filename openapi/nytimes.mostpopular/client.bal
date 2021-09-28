@@ -27,6 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector from [New York Times Most Popular API v2.0.0](https://developer.nytimes.com/docs/most-popular-product/1/overview) OpenAPI specification.
 # With the New York Times Most Popular API you can get popular articles on NYTimes.com. 
 # The Most Popular API provides services for getting the most popular articles on NYTimes.com based on emails, shares, or views.
+@display {label: "New York Times Most Popular", iconPath: "resources/nytimes.mostpopular.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

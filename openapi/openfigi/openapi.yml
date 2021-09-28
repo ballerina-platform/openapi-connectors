@@ -1,5 +1,8 @@
 openapi: 3.0.0
 info:
+  x-ballerina-display:
+    label: OpenFIGI
+    iconPath: "resources/openfigi.svg"
   version: 1.4.0
   title: OpenFIGI API
   description: >- 
@@ -9,7 +12,7 @@ info:
     This user friendly platform provides the ultimate understanding for how a unique identifier combined with accurate, 
     associated metadata can eliminate redundant mapping processes, streamline the trade workflow and reduce operational risk.
   termsOfService: 'https://openfigi.com/docs/terms-of-service'
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials. 
     
     Create an [OpenFIGI account](https://www.openfigi.com/) 
@@ -420,7 +423,7 @@ paths:
         - name: key
           in: path
           description: Key of MappingJob for which to get possible values.
-          x-apikey-description: "Provide your API Key as `X-OPENFIGI-APIKEY`. Eg: {X-OPENFIGI-APIKEY : <Your API Key>}"
+          x-ballerina-apikey-description: "Provide your API Key as `X-OPENFIGI-APIKEY`. Eg: {X-OPENFIGI-APIKEY : <Your API Key>}"
           required: true
           schema:
             type: string

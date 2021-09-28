@@ -6,13 +6,13 @@ info:
     This is a generated connector for [Xero Projects API v2.16.0](https://developer.xero.com/documentation/api/projects/overview) OpenAPI specification.
     
     The Xero Projects API is a collection of endpoints which businesses to track time and costs on projects/jobs and report on profitability.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens by following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
-  x-display:
+  x-ballerina-display:
     label: Xero Projects
-    iconPath: "resources/xeroprojects.svg"
+    iconPath: "resources/xero.projects.svg"
   termsOfService: "https://developer.xero.com/xero-developer-platform-terms-conditions/"
   contact:
     name: "Xero Platform Team"

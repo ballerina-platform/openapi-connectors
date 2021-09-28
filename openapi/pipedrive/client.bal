@@ -27,6 +27,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Pipedrive API v1](https://developers.pipedrive.com/docs/api/v1) OpenAPI specification.
 # Pipedrive is a sales CRM and pipeline management solution that enables businesses to plan their sales activities and monitor deals. 
 # Built using activity-based selling methodology, Pipedrive streamlines every action involved in converting a potential deal into a successful sale.
+@display {label: "Pipedrive", iconPath: "resources/pipedrive.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

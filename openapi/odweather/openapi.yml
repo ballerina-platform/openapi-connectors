@@ -2,12 +2,15 @@ openapi: 3.0.0
 servers:
   - url: https://api.oceandrivers.com/
 info:
+  x-ballerina-display:
+    label: ODWeather
+    iconPath: "resources/odweather.svg"
   contact:
     email: matiasbonet@oceandrivers.com
   description: |
     This is a generated connector for [ODWeather API v1.0](https://api.oceandrivers.com/) OpenAPI specification.
     The ODWeather API provides the capability to access the real time and forecast ocean information.
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization does not require setting the API credentials. 
   title: ODWeather
   version: "1.0"

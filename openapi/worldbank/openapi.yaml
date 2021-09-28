@@ -6,10 +6,10 @@ info:
     This is a generated connector from [World Bank API v2](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation) OpenAPI Specification. 
 
     The World Bank Indicators API provides access to nearly 16,000 time series indicators. Most of these indicators are available online through tools such as `Databank` and the `Open Data` website. The API provides programmatic access to this same data. Many data series date back over 50 years, and can be used to create interesting applications.
-  x-display:
+  x-ballerina-display:
     label: World Bank
     iconPath: "resources/worldbank.svg"
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization doesn't require setting the API credentials.
 servers:
   - description: Indicators represent data like total population, gross domestic product, energy use, and many more
@@ -20,7 +20,7 @@ paths:
       tags: ["Population", "Total", "World"]
       description: "Get population of each country"
       operationId: getPopulation
-      x-display:
+      x-ballerina-display:
         label: "Get Population"
       parameters:
         - name: date
@@ -29,7 +29,7 @@ paths:
           required: false
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Date"
         - name: format
           in: query
@@ -38,7 +38,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -47,7 +47,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -56,7 +56,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -75,7 +75,7 @@ paths:
       tags: ["Population", "Total", "Country"]
       description: "Get population of a country"
       operationId: getPopulationByCountry
-      x-display:
+      x-ballerina-display:
         label: "Get Country Population"
       parameters:
         - name: country_code
@@ -84,7 +84,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Country Code"
         - name: date
           in: query
@@ -92,7 +92,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Date"
         - name: format
           in: query
@@ -101,7 +101,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -110,7 +110,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -119,7 +119,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -138,7 +138,7 @@ paths:
       tags: ["GDP", "All Countries"]
       description: "Get GDP of each country."
       operationId: getGDP
-      x-display:
+      x-ballerina-display:
         label: "Get GDP"
       parameters:
         - name: date
@@ -156,7 +156,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -165,7 +165,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -174,7 +174,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -193,7 +193,7 @@ paths:
       tags: ["GDP data of a given country"]
       description: "Get GDP of a country."
       operationId: getGDPByCountry
-      x-display:
+      x-ballerina-display:
         label: "Get GDP By Country"
       parameters:
         - name: country_code
@@ -202,7 +202,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Country Code
         - name: date
           in: query
@@ -219,7 +219,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -228,7 +228,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -237,7 +237,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -256,7 +256,7 @@ paths:
       tags: ["Access to electricity (% of total population) of countries"]
       description: "Get percentage of population with access to electricity of countries in the world."
       operationId: getAccessToElectricityPercentage
-      x-display:
+      x-ballerina-display:
         label: "Get Population% Having Electricity"
       parameters:
         - name: date
@@ -274,7 +274,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format "
         - name: page
           in: query
@@ -283,7 +283,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -292,7 +292,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -311,7 +311,7 @@ paths:
       tags: ["Access to electricity (% of total population) of the given country"]
       description: "Get percentage of population with access to electricity of a given country."
       operationId: getAccessToElectricityPercentageByCountry
-      x-display:
+      x-ballerina-display:
         label: "Get Population% Having Electricity By Country"
       parameters:
         - name: country_code
@@ -320,7 +320,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Country Code"
         - name: date
           in: query
@@ -337,7 +337,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -346,7 +346,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -355,7 +355,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -374,7 +374,7 @@ paths:
       tags: ["Literacy rate, youth total (% of people ages 15-24)"]
       description: "Get literacy rate of youth (% of people ages 15-24) of countries in the world."
       operationId: getYouthLiteracyRate
-      x-display:
+      x-ballerina-display:
         label: "Get Youth Literacy Rate"
       parameters:
         - name: date
@@ -383,7 +383,7 @@ paths:
           required: false
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Date"
         - name: format
           in: query
@@ -392,7 +392,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -401,7 +401,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -410,7 +410,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -430,7 +430,7 @@ paths:
       tags: ["Literacy rate, youth total (% of people ages 15-24)"]
       description: "Get literacy rate of youth (% of people ages 15-24) of a country."
       operationId: getYouthLiteracyRateByCountry
-      x-display:
+      x-ballerina-display:
         label: "Get Youth Literacy Rate By Country"
       parameters:
         - name: country_code
@@ -439,7 +439,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Country Code"
         - name: date
           in: query
@@ -447,7 +447,7 @@ paths:
           required: false
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Date"
         - name: format
           in: query
@@ -456,7 +456,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -465,7 +465,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -474,7 +474,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -493,7 +493,7 @@ paths:
       tags: ["Government expenditure on primary education, PPP$ (millions)"]
       description: "Get government expenditure on primary education of each country"
       operationId: getGovernmentExpenditureOnPrimaryEducation
-      x-display:
+      x-ballerina-display:
         label: "Get Government Expenditure On Education"
       parameters:
         - name: date
@@ -502,7 +502,7 @@ paths:
           required: false
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Date"
         - name: format
           in: query
@@ -511,7 +511,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format "
         - name: page
           in: query
@@ -520,7 +520,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -529,7 +529,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':
@@ -548,7 +548,7 @@ paths:
       tags: ["Government expenditure on primary education, PPP$ (millions)"]
       description: "Get government expenditure on primary education of a country."
       operationId: getGovernmentExpenditureOnPrimaryEducationByCountry
-      x-display:
+      x-ballerina-display:
         label: "Get Government Expenditure On Education By Country"
       parameters:
         - name: country_code
@@ -557,7 +557,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Country Code"
         - name: date
           in: query
@@ -565,7 +565,7 @@ paths:
           required: false
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: "Date"
         - name: format
           in: query
@@ -574,7 +574,7 @@ paths:
           schema:
             type: string
             default: json
-          x-display:
+          x-ballerina-display:
             label: "Response Format"
         - name: page
           in: query
@@ -583,7 +583,7 @@ paths:
           schema:
             type: integer
             default: 1
-          x-display:
+          x-ballerina-display:
             label: "Page Number"
         - name: per_page
           in: query
@@ -592,7 +592,7 @@ paths:
           schema:
             type: integer
             default: 50
-          x-display:
+          x-ballerina-display:
             label: "Per Page Record Count"
       responses:
         '200':

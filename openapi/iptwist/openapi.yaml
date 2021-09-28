@@ -2,13 +2,16 @@ openapi: 3.0.0
 servers:
   - url: https://iptwist.com
 info:
+  x-ballerina-display:
+      label: ipTwist
+      iconPath: "resources/iptwist.svg"
   contact:
     email: support@iptwist.com
   description: >
     This is a generated connector from [ipTwist API v1](https://iptwist.com/) OpenAPI Specification. 
 
     The reliable, secure, and simple IP geolocation API.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create a [ipTwist Account](https://iptwist.com/register) and obtain the API token.
@@ -94,4 +97,4 @@ components:
       in: header
       name: X-IPTWIST-TOKEN
       type: apiKey
-      x-apikey-description: "Provide your API Key as X-IPTWIST-TOKEN. Eg: {\"X-IPTWIST-TOKEN\" : \"<Your API Key>\"}"
+      x-ballerina-apikey-description: "Provide your API Key as X-IPTWIST-TOKEN. Eg: {\"X-IPTWIST-TOKEN\" : \"<Your API Key>\"}"

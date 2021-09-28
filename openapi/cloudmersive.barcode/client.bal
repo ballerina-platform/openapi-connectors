@@ -24,6 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. 
 # The  Cloudmersive Barcode APIs let you generate barcode images, and recognize values from images of barcodes.
+@display {label: "Cloudmersive Barcode", iconPath: "resources/cloudmersive.barcode.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -1,10 +1,13 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: HubSpot Marketing
+    iconPath: "resources/hubspot.marketing.svg"
   title: Marketing Events Extension
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
   
     These APIs allow you to interact with HubSpot's Marketing Events Extension. 
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
    
     Create a [HubSpot account](https://www.hubspot.com/) and obtain the API Key following [this guide](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.162640933).
@@ -1215,7 +1218,7 @@ components:
   securitySchemes:
     hapikey:
       type: apiKey
-      x-apikey-description: "Provide your API key as `hapikey`. Eg: `{\"hapikey\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `hapikey`. Eg: `{\"hapikey\" : \"<API key>\"}`"
       name: hapikey
       in: query
     # developer_hapikey:

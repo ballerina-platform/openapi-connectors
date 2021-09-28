@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
 # Orbit API used to track activities of users and manage users.
+@display {label: "Orbit", iconPath: "resources/orbitcrm.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

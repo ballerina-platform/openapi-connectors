@@ -26,6 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime) OpenAPI specification.
 # This API retrieves the current time for a city or geographic location around the globe.
+@display {label: "Interzoid Global Time", iconPath: "resources/interzoid.globaltime.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

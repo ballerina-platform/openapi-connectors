@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://unify.apideck.com
 info:
+  x-ballerina-display:
+    label: Apideck Accounting
+    iconPath: "resources/apideck.accounting.svg"
   contact:
     email: hello@apideck.com
     url: https://developers.apideck.com
@@ -9,7 +12,7 @@ info:
     This is a generated connector from [Apideck Accounting API v5.3.0](https://docs.apideck.com/apis/accounting/reference) OpenAPI specification.
     
     You can use this API to access all Accounting API endpoints.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Unify API accounts have sandbox mode and live mode API keys. To change modes just use the appropriate key to get a live or test object. 
@@ -5234,5 +5237,5 @@ components:
         Go to Unify to grab your API KEY https://app.apideck.com/unify/api-keys
       in: header
       name: Authorization
-      x-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<API key>\"}`"
       type: apiKey

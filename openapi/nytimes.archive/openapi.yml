@@ -3,6 +3,9 @@ servers:
   - url: http://api.nytimes.com/svc/archive/v1
   - url: https://api.nytimes.com/svc/archive/v1
 info:
+  x-ballerina-display:
+    label: New York Times Archive
+    iconPath: "resources/nytimes.archive.svg"
   description: >
     This is a generated connector for [New York Times Archive API v1.0.0](https://developer.nytimes.com/docs/archive-product/1/overview) OpenAPI specification. 
   
@@ -12,7 +15,7 @@ info:
   termsOfService: http://developer.nytimes.com/tou
   title: Archive API
   version: 1.0.0
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
@@ -212,4 +215,4 @@ components:
       in: query
       name: api-key
       type: apiKey
-      x-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"

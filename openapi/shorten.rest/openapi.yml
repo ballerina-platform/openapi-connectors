@@ -2,12 +2,15 @@ openapi: 3.0.0
 servers:
   - url: https://api.shorten.rest
 info:
+  x-ballerina-display:
+    label: Shorten.REST
+    iconPath: "resources/shorten.rest.svg"
   description: |
     This is a generated connector for [Shorten.REST v1.0](https://docs.shorten.rest/) OpenAPI Specification.
     The Shorten.REST API allows you to programmatically create short URLs for longer URL.
     Each alias you create can be used to redirect the end user (person clicking on the link) to one or more destination URLs
     A default destination is always set and specific destinations can be set to redirect the end user to preferred destinations based on the user's geographical location (country) and device Operating System.
-  x-init-description: | 
+  x-ballerina-init-description: | 
     The connector initialization requires setting the API credentials.
     Create a [Shorten.REST account](https://app.shorten.rest/auth) and obtain tokens by following [this guide](https://docs.shorten.rest/#section/Authentication).
   title: Shorten.REST API Documentation
@@ -416,4 +419,4 @@ components:
       in: header
       name: x-api-key
       type: apiKey
-      x-apikey-description: "Provide your API Key as x-api-key. Eg: {x-api-key : <Your API Key>}"
+      x-ballerina-apikey-description: "Provide your API Key as x-api-key. Eg: {x-api-key : <Your API Key>}"

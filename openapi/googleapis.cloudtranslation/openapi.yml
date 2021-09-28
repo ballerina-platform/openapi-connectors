@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://translation.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Google Cloud Translation
+    iconPath: "resources/googleapis.cloudtranslation.svg"
   contact:
     name: Google
     url: https://google.com
@@ -9,7 +12,7 @@ info:
   description: |
     This is a generated connector for [Google Cloud Translation API v3](https://cloud.google.com/translate/docs/quickstarts) OpenAPI specification.
     Integrates text translation into your website or application.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).

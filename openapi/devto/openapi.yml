@@ -3,6 +3,9 @@ servers:
   - description: Production server
     url: https://dev.to/api
 info:
+  x-ballerina-display:
+    label: dev.to
+    iconPath: "resources/devto.svg"
   contact:
     email: yo@dev.to
     name: DEV Team

@@ -3,6 +3,9 @@ servers:
   - url: https://trello.com/1
 x-hasEquivalentPaths: true
 info:
+  x-ballerina-display:
+    label: Trello
+    iconPath: "resources/trello.svg"
   contact:
     name: Trello
     url: https://trello.com/home
@@ -10,7 +13,7 @@ info:
     This is a generated connector for [Trello API v1](https://trello.com) OpenAPI specification.
 
     Client endpoint of Trello API provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resources in a Trello account.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
     
     Create a [Trello account](https://trello.com) and obtain tokens following [this guide](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#authentication-and-authorization).

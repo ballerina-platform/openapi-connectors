@@ -24,6 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. 
 # The Cloudmersive Currency APIs help you retrieve exchange rates and convert prices between currencies.
+@display {label: "Cloudmersive Currency", iconPath: "resources/cloudmersive.currency.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys; 

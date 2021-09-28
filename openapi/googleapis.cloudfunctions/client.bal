@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Functions REST API v1](https://cloud.google.com/functions/docs/reference/rest) OpenAPI specification.
 # The Google Cloud Functions API provides the capability to  manage lightweight user-provided functions executed in response to events.
+@display {label: "Google Cloud Functions", iconPath: "resources/googleapis.cloudfunctions.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

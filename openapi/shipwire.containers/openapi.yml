@@ -1,11 +1,14 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: Shipwire Containers
+    iconPath: "resources/shipwire.containers.svg"
   title: Shipwire Containers API
   description: |
     This is a generated connector for [Shipwire Containers API v3.0](https://www.shipwire.com/developers/container/) OpenAPI specification.
     The Container API is used to manage shipping containers and boxes within Shipwire Anywhere warehouses and dropship locations. 
     Use it to create a new container, to update an existing container, or to get information about already created containers.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Shipwire account](https://www.shipwire.com) and obtain tokens by following [this guide](https://www.shipwire.com/developers/getting-started).

@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Storcove API v2](https://app.storecove.com/docs) OpenAPI Specification.
 # Storecove API  provides the capability to do e-invoice management operations.
+@display {label: "Storecove", iconPath: "resources/storecove.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
   title: GraphHopper Directions API
-  x-display:
+  x-ballerina-display:
     label: GraphHopper Directions
     iconPath: "resources/GraphHopperDirections.svg"
-  x-init-description: >- 
+  x-ballerina-init-description: >- 
     The connector initialization requires setting the API credentials.
     
     Create an [GraphHopper account](https://support.graphhopper.com/a/solutions/articles/44001976025) and obtain tokens following 
@@ -1960,7 +1960,7 @@ components:
       type: apiKey
       name: key
       in: query
-      x-apikey-description: "Provide your API key as `key`. Eg: `{\"key\" : \"<your API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `key`. Eg: `{\"key\" : \"<your API key>\"}`"
   schemas:
     ClusterResponse:
       type: object

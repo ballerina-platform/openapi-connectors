@@ -5,6 +5,9 @@ servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/fraudlabspro/fraudlabspro/1.0
 info:
+  x-ballerina-display:
+    label: FraudLabs Pro Fraud Detection
+    iconPath: "resources/fraudlabspro.frauddetection.svg"
   contact:
     x-twitter: fraudlabspro
   title: FraudLabs Pro Fraud Detection
@@ -17,7 +20,7 @@ info:
     It can be used to detect fraud for various kinds of payment method, such as credit card, paypal, cod and so on. 
     
     Please visit https://www.fraudlabspro.com to learn more.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization doesn't require setting the API credentials. 
   
     Create a [FraudLabsPro account](https://www.fraudlabspro.com/checkout) and obtain tokens following [this guide](https://www.fraudlabspro.com/developer/api/screen-order).

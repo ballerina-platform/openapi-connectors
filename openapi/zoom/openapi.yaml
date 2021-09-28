@@ -18,10 +18,10 @@ info:
   termsOfService: https://zoom.us/docs/en-us/zoom_api_license_and_tou.html
   title: Zoom API
   version: 2.0.0
-  x-display:
+  x-ballerina-display:
     label: Zoom
     iconPath: "resources/zoom.svg"
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
     
     Please create a [Zoom account](https://marketplace.zoom.us/) and obtain tokens following [this guide](https://marketplace.zoom.us/docs/guides/auth/oauth). Configure required scopes when obtaining the tokens. 
@@ -45,7 +45,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium`
       summary: List meetings
       operationId: listMeetings
-      x-display:
+      x-ballerina-display:
         label: List Meetings
       parameters:
         - description: The user ID or email address of the user. For user-level apps, pass
@@ -55,7 +55,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: User Id
         - description: "The meeting types. Scheduled, live or upcoming"
           in: query
@@ -67,7 +67,7 @@ paths:
               - live
               - upcoming
             type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting Type
           x-enum-descriptions:
             - all the scheduled meetings
@@ -80,21 +80,21 @@ paths:
             default: 30
             maximum: 300
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Size
         - description: "The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes."
           in: query
           name: next_page_token
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Next Page Token
         - description: "The page number of the current page in the returned records."
           in: query
           name: page_number
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Page Number
       responses:
         "200":
@@ -177,7 +177,7 @@ paths:
          
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium`
       operationId: createMeeting
-      x-display:
+      x-ballerina-display:
         label: Create Meeting
       parameters:
         - description: "The user ID or email address of the user. For user-level apps, pass me as the value for userId."
@@ -186,7 +186,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: User Id
       requestBody:
         content:
@@ -194,7 +194,7 @@ paths:
             schema:
               $ref: '#/components/schemas/MeetingDetails'
         description: Meeting detailed.
-        x-display:
+        x-ballerina-display:
           label: Meeting Details
         required: true
         x-examples:
@@ -332,7 +332,7 @@ paths:
       description: A host or a user with admin permission can require [registration
         for a Zoom meeting
       operationId: listMeetingRegistrants
-      x-display:
+      x-ballerina-display:
         label: List Meeting Registrants
       parameters:
         - description: MThe meeting ID in **long** format. The data type of this field is
@@ -343,14 +343,14 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label:  Meeting Id
         - description: The meeting occurrence ID.
           in: query
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Occurence Id
         - description: The registrant status
           in: query
@@ -362,7 +362,7 @@ paths:
               - approved
               - denied
             type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant Status
           x-enum-descriptions:
             - registrants status is pending
@@ -375,7 +375,7 @@ paths:
             default: 30
             maximum: 300
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Size
         - description: "Deprecated - The page number of the current page in the returned records."
           in: query
@@ -383,14 +383,14 @@ paths:
           schema:
             default: 1
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Number
         - description: The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
           in: query
           name: next_page_token
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Next Page Token
       responses:
         "200":
@@ -452,7 +452,7 @@ paths:
         **Scopes:** `meeting:write:admin` `meeting:write`
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
       operationId: addMeetingRegistrant
-      x-display:
+      x-ballerina-display:
         label: Add Meeting Registrant
       parameters:
         - description: The meeting ID in **long** format. The data type of this field is
@@ -463,7 +463,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: "Occurrence IDs. You can find these with the meeting get API. Multiple values separated by comma."
           in: query
@@ -471,7 +471,7 @@ paths:
           schema:
             type: string
           required: false
-          x-display:
+          x-ballerina-display:
             label: Occurence Id
       requestBody:
         content:
@@ -534,7 +534,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
 
       operationId: getMeetingRegistrantsQuestions
-      x-display:
+      x-ballerina-display:
         label: List Registrant Questions
       parameters:
         - description: >-
@@ -546,7 +546,7 @@ paths:
           in: path
           name: meetingId
           required: true
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
           schema:
             format: int64
@@ -589,7 +589,7 @@ paths:
          
 
       operationId: updateMeetingRegistrantQuestions
-      x-display:
+      x-ballerina-display:
         label: Update Registration Questions
       parameters:
         - description: >-
@@ -603,7 +603,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       requestBody:
         content:
@@ -643,7 +643,7 @@ paths:
         **Scopes:** `meeting:write:admin` `meeting:write`
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium`
       operationId: updateMeetingRegistrantStatus
-      x-display:
+      x-ballerina-display:
         label: Update Meeting Registrant's Status
       parameters:
         - description: >-
@@ -658,14 +658,14 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meting Id
         - description: The meeting occurrence ID.
           in: query
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Occurrence Id
       requestBody:
         content:
@@ -720,7 +720,7 @@ paths:
          <br>
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
       operationId: deleteMeetingregistrant
-      x-display:
+      x-ballerina-display:
         label: Delete Meeting Registrant
       parameters:
         - description: The meeting occurence ID.
@@ -728,7 +728,7 @@ paths:
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: occurence Id
         - description: The meeting ID.
           in: path
@@ -736,7 +736,7 @@ paths:
           required: true
           schema:
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: The meeting registrant ID.
           in: path
@@ -744,7 +744,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant Id
       responses:
         "204":
@@ -800,7 +800,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light` 
 
       operationId: deleteMeeting
-      x-display:
+      x-ballerina-display:
         label: Delete Meeting
       parameters:
         - description: >-
@@ -815,14 +815,14 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: The meeting occurrence ID.
           in: query
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Occurence Id
         - description: >-
             `true`: Notify host and alternative host about the meeting
@@ -833,7 +833,7 @@ paths:
           name: schedule_for_reminder
           schema:
             type: boolean
-          x-display:
+          x-ballerina-display:
             label: Schedule for Reminder 
         - description: >-
             `true`: Notify registrants about the meeting cancellation via
@@ -848,7 +848,7 @@ paths:
           name: cancel_meeting_reminder
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting Cancellation Reminder
       responses:
         "204":
@@ -892,7 +892,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light` 
 
       operationId: getMeetingById
-      x-display:
+      x-ballerina-display:
         label: Get Meeting Details
       parameters:
         - description: >-
@@ -907,7 +907,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: Meeting Occurrence ID. Provide this field to view meeting details
             of a particular occurrence of the [recurring
@@ -916,7 +916,7 @@ paths:
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Occurence Id
         - description: "Set the value of this field to `true` if you would like to view
             meeting details of all previous occurrences of a [recurring
@@ -926,7 +926,7 @@ paths:
           name: show_previous_occurrences
           schema:
             type: boolean
-          x-display:
+          x-ballerina-display:
             label: Show Previous Occurrences
       responses:
         "200":
@@ -1020,7 +1020,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
 
       operationId: updateMeeting
-      x-display:
+      x-ballerina-display:
         label: Update Meeting
       parameters:
         - description: >-
@@ -1035,7 +1035,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: "Meeting occurrence id. Support change of agenda, start_time,
             duration, settings: {host_video, participant_video,
@@ -1045,7 +1045,7 @@ paths:
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Occurrence Id
       requestBody:
         content:
@@ -1121,7 +1121,7 @@ paths:
         **Scopes:** `meeting:write:admin` `meeting:write`
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
       operationId: updateMeetingStatus
-      x-display:
+      x-ballerina-display:
         label: Update Meeting Status
       parameters:
         - description: >-
@@ -1136,7 +1136,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       requestBody:
         description: Meeting status update details
@@ -1184,7 +1184,7 @@ paths:
 
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium` 
       operationId: listPastMeetings
-      x-display:
+      x-ballerina-display:
         label: List Past Meetings
       parameters:
         - description: >-
@@ -1199,7 +1199,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       responses:
         "200":
@@ -1234,7 +1234,7 @@ paths:
 
         * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
       operationId: listPastMeetingPolls
-      x-display:
+      x-ballerina-display:
         label: List Meeting Polls
       parameters:
         - description: >-
@@ -1249,7 +1249,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       responses:
         "200":
@@ -1293,7 +1293,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
         > **Note**: Please double encode your UUID when using this API if the UUID begins with a '/'or contains '//' in it.
       operationId: getPastMeetingDetails
-      x-display:
+      x-ballerina-display:
         label: Get Past Meeting Details
       parameters:
         - description: The meeting UUID. Each meeting instance will generate its own
@@ -1306,7 +1306,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting UUID
       responses:
         "200":
@@ -1369,7 +1369,7 @@ paths:
 
         <br> <br>  **Note**: Please double encode your UUID when using this API if the UUID begins with a '/'or contains '//' in it.
       operationId: listPastMeetingParticipants
-      x-display:
+      x-ballerina-display:
         label: List Past Meeting Participants
       parameters:
         - description: The meeting UUID. Each meeting instance will generate its own
@@ -1382,7 +1382,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting UUID
         - description: The number of records returned within a single API call.
           in: query
@@ -1391,7 +1391,7 @@ paths:
             default: 30
             maximum: 300
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Size
         - description: The next page token is used to paginate through large result sets.
             A next page token will be returned whenever the set of available
@@ -1401,7 +1401,7 @@ paths:
           name: next_page_token
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Next Page Token
       responses:
         "200":
@@ -1464,7 +1464,7 @@ paths:
 
         * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
       operationId: getMeetingPolls
-      x-display:
+      x-ballerina-display:
         label: Get Meeting Polls
       parameters:
         - description: >-
@@ -1479,7 +1479,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       responses:
         "200":
@@ -1531,7 +1531,7 @@ paths:
 
         * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
       operationId: createMeetingPoll
-      x-display:
+      x-ballerina-display:
         label: Create Meeting Poll
       parameters:
         - description: >-
@@ -1546,7 +1546,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       requestBody:
         content:
@@ -1617,7 +1617,7 @@ paths:
 
         * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
       operationId: deleteMeetingPoll
-      x-display:
+      x-ballerina-display:
         label: Delete Meeting Poll
       parameters:
         - description: >-
@@ -1632,7 +1632,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: The poll ID
           in: path
@@ -1640,7 +1640,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Poll Id
       responses:
         "204":
@@ -1667,7 +1667,7 @@ paths:
 
 
       operationId: getMeetingPoll
-      x-display:
+      x-ballerina-display:
         label: Get Meeting Poll
       parameters:
         - description: >-
@@ -1682,7 +1682,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: The poll ID
           in: path
@@ -1690,7 +1690,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Poll Id
       responses:
         "200":
@@ -1733,7 +1733,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light` 
 
       operationId: updateMeetingPoll
-      x-display:
+      x-ballerina-display:
         label: Update Meeting Poll
       parameters:
         - description: >-
@@ -1748,7 +1748,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
         - description: The poll ID
           in: path
@@ -1756,7 +1756,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Poll Id
       requestBody:
         content:
@@ -1807,7 +1807,7 @@ paths:
 
         * Meeting must be a scheduled meeting. Instant meetings do not have polling features enabled.
       operationId: createBatchPolls
-      x-display:
+      x-ballerina-display:
         label: Create Batch Polls
       parameters:
         - in: path
@@ -1816,7 +1816,7 @@ paths:
           schema:
             type: string
           description: Meeting Id
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       requestBody:
         content:
@@ -1953,7 +1953,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Light`
 
       operationId: getMeetingInvitation
-      x-display:
+      x-ballerina-display:
         label: Get Meeting Invitation
       parameters:
         - description: >-
@@ -1968,7 +1968,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       responses:
         "200":
@@ -2028,7 +2028,7 @@ paths:
 
 
       operationId: getLiveStreamDetails
-      x-display:
+      x-ballerina-display:
         label: Get Live Stream Details
       parameters:
         - description: Unique identifier of the meeting.
@@ -2037,7 +2037,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       responses:
         "200":
@@ -2089,7 +2089,7 @@ paths:
 
 
       operationId: updateMeetingLiveStream
-      x-display:
+      x-ballerina-display:
         label: Update Meeting Live Stream
       parameters:
         - description: >-
@@ -2104,7 +2104,7 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Id
       requestBody:
         content:
@@ -2159,7 +2159,7 @@ paths:
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium` 
 
       operationId: listWebinarRegistrants
-      x-display:
+      x-ballerina-display:
         label: List Webinar Meeting Registrants
       parameters:
         - description: 'The webinar ID in "**long**" format(represented as int64 data type
@@ -2170,14 +2170,14 @@ paths:
           schema:
             format: int64
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Webinar Id
         - description: The meeting occurrence ID.
           in: query
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting Occurence Id
         - description: "The registrant status: `pending` - Registrant's status is pending. `approved` - Registrant's status is approved.`denied` - Registrant's status is denied."
           in: query
@@ -2189,7 +2189,7 @@ paths:
               - approved
               - denied
             type: string
-          x-display:
+          x-ballerina-display:
             label: Status
           x-enum-descriptions:
             - registrants status is pending
@@ -2204,7 +2204,7 @@ paths:
           name: tracking_source_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Tracking Source Id
         - description: The number of records returned within a single API call.
           in: query
@@ -2213,7 +2213,7 @@ paths:
             default: 30
             maximum: 300
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Size
         - description: The page number of the current page in the returned records.
           in: query
@@ -2221,7 +2221,7 @@ paths:
           schema:
             default: 1
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Number
         - description: The next page token is used to paginate through large result sets.
             A next page token will be returned whenever the set of available
@@ -2231,7 +2231,7 @@ paths:
           name: next_page_token
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Next Page Token
       responses:
         "200":
@@ -2299,7 +2299,7 @@ paths:
         required: true
         schema:
           type: string
-        x-display:
+        x-ballerina-display:
           label: Webinar Id
   "/past_webinars/{webinarId}/participants":
     get:
@@ -2321,7 +2321,7 @@ paths:
 
 
       operationId: listWebinarParticipants
-      x-display:
+      x-ballerina-display:
         label: List Webinar Participants
       parameters:
         - description: Unique identifier of the webinar. You can retrieve the value of
@@ -2333,7 +2333,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Webinar Id
         - description: The number of records returned within a single API call.
           in: query
@@ -2342,7 +2342,7 @@ paths:
             default: 30
             maximum: 300
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Size
         - description: The next page token is used to paginate through large result sets.
             A next page token will be returned whenever the set of available
@@ -2352,7 +2352,7 @@ paths:
           name: next_page_token
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Next Page Token
       responses:
         "200":
@@ -2395,7 +2395,7 @@ paths:
         required: true
         schema:
           type: string
-        x-display:
+        x-ballerina-display:
           label: Webinar Id
   "/past_webinars/{WebinarUUID}/absentees":
     get:
@@ -2405,7 +2405,7 @@ paths:
         **Scopes:** `webinar:read:admin` `webinar:read` 
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy`
       operationId: listWebinarAbsentees
-      x-display:
+      x-ballerina-display:
         label: List Webinar Absentees
       parameters:
         - description: The meeting occurrence ID.
@@ -2413,7 +2413,7 @@ paths:
           name: occurrence_id
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Occurence Id
         - description: The number of records returned within a single API call.
           in: query
@@ -2422,7 +2422,7 @@ paths:
             default: 30
             maximum: 300
             type: integer
-          x-display:
+          x-ballerina-display:
             label: Page Size
         - description: The next page token is used to paginate through large result sets.
             A next page token will be returned whenever the set of available
@@ -2432,7 +2432,7 @@ paths:
           name: next_page_token
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Next Page Token
         - description: The Webinar UUID. Each Webinar instance will generate its own
             Webinar UUID (i.e., after a Webinar ends, a new UUID will be
@@ -2444,7 +2444,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Webinar UUID
       responses:
         "200":
@@ -2531,7 +2531,7 @@ paths:
 
          **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium`
       operationId: listMeetingTemplates
-      x-display:
+      x-ballerina-display:
         label: List Meeting Templates
       parameters:
         - description: Unique identifier of the user. Retrieve the value of this field by
@@ -2543,7 +2543,7 @@ paths:
           required: true
           schema:
             type: string
-          x-display:
+          x-ballerina-display:
             label: User Id
       responses:
         "200":
@@ -3031,33 +3031,33 @@ components:
       type: object
     AddMeetingRegistrantRequest:
       description: Registrant base object
-      x-display:
+      x-ballerina-display:
         label: Registrant Details
       properties:
         language:
           description: "Registrant's language preference for confirmation  emails. The value can be one of the following: `en-US`,`de-DE`,`es-ES`,`fr-FR`,`jp-JP`,`pt-PT`,`ru-RU`,`zh-CN`, `zh-TW`, `ko-KO`, `it-IT`, `vi-VN`."
           type: string
-          x-display:
+          x-ballerina-display:
             label: Language
         auto_approve:
           type: boolean
-          x-display:
+          x-ballerina-display:
             label:  Enable Auto Approve
         address:
           description: Registrant's address.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant's Address
         city:
           description: Registrant's city.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant's City
         comments:
           description: A field that allows registrants to provide any questions or
             comments that they might have.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Comments
         country:
           description: Registrant's country. The value of this field must be in two-letter
@@ -3066,11 +3066,11 @@ components:
             [Countries](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries)
             table.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant's Country
         custom_questions:
           description: Custom questions.
-          x-display:
+          x-ballerina-display:
             label: Custom Questions
           items:
             $ref: '#/components/schemas/RegistrantCustomQuestion'
@@ -3079,44 +3079,44 @@ components:
           description: A valid email address of the registrant.
           maxLength: 128
           type: string
-          x-display:
+          x-ballerina-display:
             label: Email
         first_name:
           description: Registrant's first name.
           maxLength: 64
           type: string
-          x-display:
+          x-ballerina-display:
             label: First Name
         industry:
           description: Registrant's Industry.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Industry
         job_title:
           description: Registrant's job title.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Job Title
         last_name:
           description: Registrant's last name.
           maxLength: 64
           type: string
-          x-display:
+          x-ballerina-display:
             label: Last Name
         no_of_employees:
           description: "Number of Employees: `1-20`, `21-50`, `51-100`, `101-500`, `500-1,000`, `1,001-5,000`, `5,001-10,000`, `More than 10,000`"
           type: string
-          x-display:
+          x-ballerina-display:
             label: No of Employees
         org:
           description: Registrant's Organization.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant's Organization.
         phone:
           description: Registrant's Phone number.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant's Phone Number
         purchasing_time_frame:
           description: >-
@@ -3126,22 +3126,22 @@ components:
 
             Purchasing Time Frame:`Within a month``1-3 months``4-6 months``More than 6 months``No timeframe`
           type: string
-          x-display:
+          x-ballerina-display:
             label: Purchasing Time Frame
         role_in_purchase_process:
           description: "Role in Purchase Process: `Decision Maker`, `Evaluator/Recommender`, `Influencer`, `Not involved` "
           type: string
-          x-display:
+          x-ballerina-display:
             label: Role in Purchase Process
         state:
           description: Registrant's State/Province.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant's State/Province
         zip:
           description: Registrant's Zip/Postal Code.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Registrant's Zip/Postal Code
       required:
         - email
@@ -3402,44 +3402,44 @@ components:
         field:
           description: Label of the tracking field.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Label
         value:
           description: Tracking fields value
           type: string
-          x-display:
+          x-ballerina-display:
             label: Value
       required:
         - field
       type: object
     MeetingDetails:
       description: Base object for meeting
-      x-display:
+      x-ballerina-display:
         label: Meeting Details
       properties:
         agenda:
           description: Meeting description.
           maxLength: 2000
           type: string
-          x-display:
+          x-ballerina-display:
             label: Description
         duration:
           description: "Meeting duration (minutes). Used for scheduled meetings only."
           type: integer
-          x-display:
+          x-ballerina-display:
             label: Duration
         password:
           description: "Passcode to join the meeting."
           maxLength: 10
           type: string
-          x-display:
+          x-ballerina-display:
             label: Password
         recurrence:
           $ref: '#/components/schemas/ReccurenceDetails'
         schedule_for:
           description: "If you would like to schedule this meeting for someone else in your account, provide the Zoom user id or email address of the user here."
           type: string
-          x-display:
+          x-ballerina-display:
             label: Scheduled For
         settings:
           $ref: '#/components/schemas/MeetingSettingsInRequest'
@@ -3447,12 +3447,12 @@ components:
           description: "Meeting start time. We support two formats for `start_time` - local time and GMT.To set time as GMT the format should be `yyyy-MM-dd`T`HH:mm:ssZ`. To set time using a specific timezone, use `yyyy-MM-dd`T`HH:mm:ss` format and specify the timezone id in the `timezone` field OR leave it blank and the timezone set on your Zoom account will be used. You can also set the time as UTC as the timezone field"
           type: string
           format: date-time
-          x-display:
+          x-ballerina-display:
             label: Meeting Start Time
         template_id:
           description: "Unique identifier of the admin meeting template. To create  admin meeting templates, contact the Zoom support team."
           type: string
-          x-display:
+          x-ballerina-display:
             label: Template Id
         timezone:
           description: Time zone to format start_time. For example, "America/Los_Angeles".
@@ -3460,16 +3460,16 @@ components:
             zone](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#timezones)
             list for supported time zones and their formats.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Timezone
         topic:
           description: Meeting topic.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Meeting Topic
         tracking_fields:
           description: Tracking fields
-          x-display:
+          x-ballerina-display:
             label: Tracking Fields
           items:
             $ref: '#/components/schemas/MeetingTrackingDetails'
@@ -3483,7 +3483,7 @@ components:
             - 3
             - 8
           type: integer
-          x-display:
+          x-ballerina-display:
             label: Meeting Type
           x-enum-descriptions:
             - Instant Meeting
@@ -3531,7 +3531,7 @@ components:
       description: Detailed Meeting Metadata
     ApprovalAndDenialInfo:
       description: "Approve or block users from specific regions/countries from joining this meeting."
-      x-display:
+      x-ballerina-display:
         label: Approval or Denial Info
       properties:
         approved_list:
@@ -3539,19 +3539,19 @@ components:
           items:
             type: string
           type: array
-          x-display:
+          x-ballerina-display:
             label: Approved Regions List
         denied_list:
           description: "List of countries/regions from where participants can not join this meeting. "
           items:
             type: string
           type: array
-          x-display:
+          x-ballerina-display:
             label: Denied Regions List
         enable:
           description: "`true`: Setting enabled to either allow users or block users from specific regions to join your meetings.  `false`: Setting disabled."
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable 
         method:
           description: "Specify whether to allow users from specific regions to join thismeeting; or block users from specific regions from oining this meeting. Values: approve or deny"
@@ -3559,22 +3559,22 @@ components:
             - approve
             - deny
           type: string
-          x-display:
+          x-ballerina-display:
             label: Method
       type: object
     BreakoutRoomSettings:
       description: "Setting to pre-assign breakout rooms"
-      x-display:
+      x-ballerina-display:
         label: Breakout Room Settings
       properties:
         enable:
           description: "Set the value of this field to `true` if you would like to enable the pre-assigned breakout rooms. "
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Pre-Assigned Breakout Rooms
         rooms:
           description: Create room(s).
-          x-display:
+          x-ballerina-display:
             label: Breakout Room Details
           items:
             $ref: '#/components/schemas/BreakoutRoomsDetails'
@@ -3585,29 +3585,29 @@ components:
         name:
           description: Name of the breakout room.
           type: string
-          x-display:
+          x-ballerina-display:
             label: Name
         participants:
           description: "Email addresses of the participants who are to be assigned to the breakout room."
           items:
             type: string
-          x-display:
+          x-ballerina-display:
             label: Participant List
           type: array
       type: object
     LanguageInterpretationDetails:
       description: "Language interpretation for meetings. "
-      x-display:
+      x-ballerina-display:
         label: Language Interpretation
       properties:
         enable:
           description: "Indicate whether or not you would like to enable language interpretation or this meeting."
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable
         interpreters:
           description: Information associated with the interpreter.
-          x-display:
+          x-ballerina-display:
             label: interpreter Information
           items:
             $ref: '#/components/schemas/InterpreterDetails'
@@ -3619,17 +3619,17 @@ components:
           description: Email address of the interpreter.
           format: email
           type: string
-          x-display:
+          x-ballerina-display:
             label: Email
         languages:
           description: "Languages for interpretation. The string must contain two separated by a comma. For example, if the language is to be interpreted from English to Chinese, the value of this field should be US,CN."
           type: string
-          x-display:
+          x-ballerina-display:
             label: Languages
       type: object
     MeetingSettingsInRequest:
       description: Meeting settings
-      x-display:
+      x-ballerina-display:
         label: Meeting Settings
       properties:
         additional_data_center_regions:
@@ -3637,23 +3637,23 @@ components:
           items:
             type: string
           type: array
-          x-display:
+          x-ballerina-display:
             label: Additiona Data Center Regions
         allow_multiple_devices:
           description: "If set to `true`, attendees will be allowed to join a meeting from multiple devices."
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Allow Multiple Devices
         alternative_hosts:
           description: "Alternative host's emails or IDs: multiple values separated by a comma."
           type: string
-          x-display:
+          x-ballerina-display:
             label: Allternative Hosts
         alternative_hosts_email_notification:
           default: true
           description: "Flag to determine whether to send email notifications to alternative hosts, default value is true."
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Email Notifications for Alternative Hosts
         approval_type:
           default: 2
@@ -3663,7 +3663,7 @@ components:
             - 1
             - 2
           type: integer
-          x-display:
+          x-ballerina-display:
             label: Approval Type
           x-enum-descriptions:
             - Automatically Approve
@@ -3683,17 +3683,17 @@ components:
             - Both Telephony and VoIP
             - Telephony only
             - VoIP only
-          x-display:
+          x-ballerina-display:
             label: Audio Type
         authentication_domains:
           description: "Meeting authentication domains. This option, allows you to specify the rule so that Zoom users, whose email address contains a certain domain, can join the meeting."
           type: string
-          x-display:
+          x-ballerina-display:
             label: Authentication Domains
         authentication_option:
           description: "Specify the authentication type for users to join a meeting with `meeting_authentication` setting set to `true`. "
           type: string
-          x-display:
+          x-ballerina-display:
             label: Authentication Option
         auto_recording:
           default: none
@@ -3707,7 +3707,7 @@ components:
             - Record to local device
             - Record to cloud
             - No Recording
-          x-display:
+          x-ballerina-display:
             label: Auto Recording
         breakout_room:
           $ref: '#/components/schemas/BreakoutRoomSettings'
@@ -3715,23 +3715,23 @@ components:
           default: false
           description: Close registration after event date
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Close Registration
         cn_meeting:
           default: false
           description: Host meeting in China.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Host Meeting in China
         contact_email:
           description: Contact email for registration
           type: string
-          x-display:
+          x-ballerina-display:
             label: Contact Email
         contact_name:
           description: Contact name for registration
           type: string
-          x-display:
+          x-ballerina-display:
             label: Contact Name
         encryption_type:
           description: "Choose between enhanced encryption and end-to-end encryption. Values: enhanced_encryption, e2ee"
@@ -3739,25 +3739,25 @@ components:
             - enhanced_encryption
             - e2ee
           type: string
-          x-display:
+          x-ballerina-display:
             label: Encryption Type
         global_dial_in_countries:
           description: List of global dial-in countries
           items:
             type: string
           type: array
-          x-display:
+          x-ballerina-display:
             label: Global Dial-In Countries
         host_video:
           description: Start video when the host joins the meeting.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Host Video
         in_meeting:
           default: false
           description: Host meeting in India.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Host Meeting in India
         jbh_time:
           description: " If the value of join_before_host field is set to true, this field can be used to indicate time limits within which a participant may join a meeting before a host. The value of this field can be one of the following: 0: Allow participant to join anytime. 5: Allow participant to join 5 minutes before meeting start time. 10: Allow participant to join 10 minutes before meeting start time."
@@ -3766,36 +3766,36 @@ components:
             - 5
             - 10
           type: integer
-          x-display:
+          x-ballerina-display:
             label: Join Before Host Time
         join_before_host:
           default: false
           description: "Allow participants to join the meeting before the host starts the meeting. This field can only used for scheduled or recurring meetings."
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Join Before Host
         language_interpretation:
           $ref: '#/components/schemas/LanguageInterpretationDetails'
         meeting_authentication:
           description: "Only authenticated users can join meeting if the value of this field is set to `true`."
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Meeting Authentication
         mute_upon_entry:
           default: false
           description: Mute participants upon entry.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Mute Upon Entry
         participant_video:
           description: Start video when participants join the meeting.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Start Participant Video On Entry
         registrants_email_notification:
           description: "Send email notifications to registrants about approval,  cancellation, denial of the registration. The value of this field must be set to true in order to use the `registrants_confirmation_email` field."
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Email Notifications for Registrants
         registration_type:
           default: 1
@@ -3805,7 +3805,7 @@ components:
             - 2
             - 3
           type: integer
-          x-display:
+          x-ballerina-display:
             label: Registration Type
           x-enum-descriptions:
             - Attendees register once and can attend any of the
@@ -3818,7 +3818,7 @@ components:
           description: "If set to `true`, the registration page for the meeting will
             include social share buttons. "
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Social Share
         use_pmi:
           default: false
@@ -3827,20 +3827,20 @@ components:
             instant meetings and recurring meetings with no fixed
             time.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: User Personal Meeting Id
         waiting_room:
           description: Enable waiting room. Note that if the value of this field is set to
             `true`, it will override and disable the
             `join_before_host` setting.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Waiting Room
         watermark:
           default: false
           description: Add watermark when viewing a shared screen.
           type: boolean
-          x-display:
+          x-ballerina-display:
             label: Enable Watermark
       type: object
     RegistrantsList:

@@ -1,10 +1,13 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: HubSpot Events
+    iconPath: "resources/hubspot.events.svg"
   title: HubSpot Events API
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
 
     These APIs allow accessing CRM object events.
-  x-init-description: "This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. The connector initialization requires setting the API credentials.
+  x-ballerina-init-description: "This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. The connector initialization requires setting the API credentials.
 
   Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
   

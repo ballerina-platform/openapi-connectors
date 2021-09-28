@@ -24,6 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Apideck Proxy API v5.3.0](https://developers.apideck.com/apis/proxy/reference) OpenAPI specification.
 # You can use this API to access all Proxy API endpoints.
+@display {label: "Apideck Proxy", iconPath: "resources/apideck.proxy.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

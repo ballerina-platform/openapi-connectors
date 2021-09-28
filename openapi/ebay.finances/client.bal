@@ -59,6 +59,7 @@ public type ClientConfig record {|
 # The data provided through this public API is similar to the data that the seller will see under the Payments tab of Seller 
 # Hub in My eBay. With eBay's managed payments program, eBay manages the entire payments process, including the  available 
 # payment methods, and shortly after a buyer's payment clears, eBay distributes payouts directly to the  seller's preferred bank account. 
+@display {label: "eBay Finances", iconPath: "resources/ebay.finances.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

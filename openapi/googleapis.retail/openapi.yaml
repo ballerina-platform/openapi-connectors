@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://retail.googleapis.com/
 info:
+  x-ballerina-display:
+    label: Google Retail
+    iconPath: "resources/googleapis.retail.svg"
   contact:
     name: Google
     url: https://google.com

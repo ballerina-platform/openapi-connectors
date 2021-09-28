@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
 # The public PocketSmith API. It's a powerful interface for online money management with cash flow forecasts as well as superb historical tracking.
+@display {label: "PocketSmith", iconPath: "resources/pocketSmith.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

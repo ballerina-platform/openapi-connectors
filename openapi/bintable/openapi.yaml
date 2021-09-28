@@ -2,6 +2,9 @@ openapi: 3.0.0
 servers:
   - url: https://api.bintable.com/v1
 info:
+  x-ballerina-display:
+    label: BINTable
+    iconPath: "resources/bintable.svg"
   contact:
     email: hello@bintable.com
   description: >
@@ -10,7 +13,7 @@ info:
     BIN lookup API, the free api service from bintable.com to lookup card information using it's BIN. 
     
     The service maintains updated database based on the comunity and other third party services to make sure all BINs in the database are accurate and up to date.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization doesn't require setting the API credentials.
 
     Create a [BINTable Account](https://bintable.com/get-api) and obtain the API key.

@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+    label: PowerTools Developer Collections
+    iconPath: "resources/powertoolsdeveloper.collections.svg"
   title: PowerTools Developer
   description: >
     This is a generated connector for [Apptigent PowerTools Developer API v2021.1.01](https://portal.apptigent.com/node/612) OpenAPI specification.
@@ -17,7 +20,7 @@ info:
     email: support@apptigent.com
   version: 2021.1.01
   x-ibm-name: powertools-developer
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create an [Apptigent account](https://portal.apptigent.com/user/register) and obtain tokens following [this guide](https://portal.apptigent.com/start).
@@ -4427,7 +4430,7 @@ components:
       type: apiKey
       name: X-IBM-Client-Id
       in: header
-      x-apikey-description: "Provide your API key as `X-IBM-Client-Id`. Eg: `{\"X-IBM-Client-Id\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `X-IBM-Client-Id`. Eg: `{\"X-IBM-Client-Id\" : \"<API key>\"}`"
 x-ibm-configuration:
   enforced: true
   testable: true

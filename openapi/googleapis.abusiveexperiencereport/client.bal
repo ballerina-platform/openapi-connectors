@@ -20,6 +20,7 @@ import ballerina/lang.'string;
 
 # This is a generated connector for [Google Abusive Experience Report API v1](https://developers.google.com/abusive-experience-report/) OpenAPI specification.
 # Views Abusive Experience Report data, and gets a list of sites that have a significant number of abusive experiences.
+@display {label: "Google Abusive Experience", iconPath: "resources/googleapis.abusiveexperiencereport.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -16,11 +16,11 @@ info:
     The credentials are the username and password of an active EarthRef.org user account and provide access to that user's 
     private workspace in any of EarthRef.org FIESTA repositories.
   
-  x-init-description: |
+  x-ballerina-init-description: |
     The connector initialization requires setting the API credentials.
     Create [an EarthRef.org user account](https://earthref.org/) and obtain tokens following [this guide](https://www2.earthref.org/log-in).
 
-  x-display:
+  x-ballerina-display:
     label: EarthRef FIESTA
     iconPath: "resources/earthreffiesta.svg"
     

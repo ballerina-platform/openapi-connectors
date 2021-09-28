@@ -2,6 +2,9 @@ openapi: 3.0.3
 servers:
   - url: "https://api.nexmo.com/verify"
 info:
+  x-ballerina-display:
+    label: Vonage Verify
+    iconPath: "resources/vonage.verify.svg"
   title: Verify API
   version: 1.1.7
   description: >
@@ -10,7 +13,7 @@ info:
     The Verify API helps you to implement 2FA (two-factor authentication) in your applications.
 
     More information is available at https://developer.nexmo.com/verify/overview
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization doesn't require setting the API credentials. 
 
     Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication). 

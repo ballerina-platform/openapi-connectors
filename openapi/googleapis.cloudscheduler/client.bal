@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Scheduler REST API v1](https://cloud.google.com/scheduler/docs/reference/rest) OpenAPI specification.
 # The Google Cloud Scheduler API provides the capability to  manage jobs run on a regular recurring schedule.
+@display {label: "Google Cloud Scheduler", iconPath: "resources/googleapis.cloudscheduler.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

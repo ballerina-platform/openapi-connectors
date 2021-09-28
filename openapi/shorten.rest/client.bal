@@ -28,6 +28,7 @@ public type ApiKeysConfig record {|
 # The Shorten.REST API allows you to programmatically create short URLs for longer URL.
 # Each alias you create can be used to redirect the end user (person clicking on the link) to one or more destination URLs
 # A default destination is always set and specific destinations can be set to redirect the end user to preferred destinations based on the user's geographical location (country) and device Operating System.
+@display {label: "Shorten.REST", iconPath: "resources/shorten.rest.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Translation API v3](https://cloud.google.com/translate/docs/quickstarts) OpenAPI specification.
 # Integrates text translation into your website or application.
+@display {label: "Google Cloud Translation", iconPath: "resources/googleapis.cloudtranslation.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

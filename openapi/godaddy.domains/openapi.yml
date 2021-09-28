@@ -2,6 +2,9 @@ openapi: 3.0.1
 servers:
   - url: //api.ote-godaddy.com/
 info:
+  x-ballerina-display:
+    label: GoDaddy Domains
+    iconPath: "resources/godaddy.domains.svg"
   version: v1
   title: Godaddy Domains API
   description: >-
@@ -9,7 +12,7 @@ info:
     v1](https://developer.godaddy.com/doc/endpoint/domains) OpenAPI
     specification. The GoDaddy Domains API provides capability to access GoDaddy
     operations related to domains.
-  x-init-description: >-
+  x-ballerina-init-description: >-
     The connector initialization requires setting the API credentials.  Create a
     [GoDaddy](https://sg.godaddy.com/) and obtain tokens by following [this
     guide](https://developer.godaddy.com/getstarted).  
@@ -5337,7 +5340,7 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      x-apikey-description: >-
+      x-ballerina-apikey-description: >-
         Provide your API Key as `Authorization`. Eg: {Authorization : sso-key
         [<API_KEY>]:[<API_SECRET>]}
   schemas:

@@ -1,5 +1,8 @@
 openapi: 3.0.1
 info:
+  x-ballerina-display:
+      label: Abstract IP Geolocation
+      iconPath: "resources/ipgeolocation.svg"
   title: IP geolocation API
   description: This is a generated connector for [Abstract IP geolocation API version 1](https://www.abstractapi.com/ip-geolocation-api#docs) OpenAPI Specification.
   
@@ -9,7 +12,7 @@ info:
                
                Extra information can be retrieved like the currency, flag or language associated to an IP.
   version: 1.0.0
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
 
     Create an [Abstract API account for IP Geolocation API](https://www.abstractapi.com/ip-geolocation-api)and obtain
@@ -65,7 +68,7 @@ components:
       type: apiKey
       in: query
       name: api_key
-      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
   schemas:
     geolocation:
       type: object

@@ -2,11 +2,14 @@ openapi: 3.0.0
 servers:
   - url: https://api.wordnik.com/v4
 info:
+  x-ballerina-display:
+    label: Wordnik
+    iconPath: "resources/wordnik.svg"
   description: 
     This is a generated connector for [Wordnik API v4.0](https://developer.wordnik.com/docs) OpenAPI specification.
 
     Wordnik is the worlds biggest online English dictionary, by number of words.
-  x-init-description: >
+  x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
   
     Create a [Wordnik account](https://developer.wordnik.com/#wordnikUsername) and obtain tokens by following [this guide](https://developer.wordnik.com/gettingstarted).
@@ -2213,4 +2216,4 @@ components:
       in: query
       name: api_key
       type: apiKey
-      x-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<your API key>\"}`" 
+      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<your API key>\"}`" 

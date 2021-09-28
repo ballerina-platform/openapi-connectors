@@ -54,6 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google OAuth2 API v2.0](https://developers.google.com/identity/protocols/oauth2/) OpenAPI specification.
 # Obtains end-user authorization grants for use with other Google APIs.
+@display {label: "Google OAuth2", iconPath: "resources/googleapis.oauth2.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

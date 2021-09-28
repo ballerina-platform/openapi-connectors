@@ -26,6 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Trello API v1](https://trello.com) OpenAPI specification.
 # Client endpoint for Trello API provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resources in a Trello account.
+@display {label: "Trello", iconPath: "resources/trello.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

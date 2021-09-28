@@ -3,7 +3,7 @@ servers:
   - url: https://docs.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Docs
+    label: Google Docs
     iconPath: "resources/googleapis.docs.svg"
   contact:
     name: Google

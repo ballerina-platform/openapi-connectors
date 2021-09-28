@@ -3,7 +3,7 @@ servers:
   - url: https://slides.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Slides
+    label: Google Slides
     iconPath: "resources/googleapis.slides.svg"
   contact:
     name: Google

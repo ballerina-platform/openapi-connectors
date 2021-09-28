@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Classroom API v1](https://developers.google.com/classroom/guides/get-started) OpenAPI specification.
 # Manages classes, rosters, and invitations in Google Classroom.
-@display {label: "Googleapis Classroom", iconPath: "resources/googleapis.classroom.svg"}
+@display {label: "Google Classroom", iconPath: "resources/googleapis.classroom.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -3,7 +3,7 @@ servers:
   - url: https://classroom.googleapis.com
 info:
   x-ballerina-display:
-    label: Googleapis Classroom
+    label: Google Classroom
     iconPath: "resources/googleapis.classroom.svg"
   contact:
     name: Google

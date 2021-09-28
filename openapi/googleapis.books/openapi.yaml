@@ -3,7 +3,7 @@ servers:
   - url: https://books.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Books
+    label: Google Books
     iconPath: "resources/googleapis.books.svg"
   contact:
     name: Google

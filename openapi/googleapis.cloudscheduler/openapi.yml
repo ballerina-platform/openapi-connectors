@@ -3,7 +3,7 @@ servers:
   - url: https://cloudscheduler.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Cloudscheduler
+    label: Google Cloud Scheduler
     iconPath: "resources/googleapis.cloudscheduler.svg"
   contact:
     name: Google

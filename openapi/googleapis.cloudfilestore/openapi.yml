@@ -3,7 +3,7 @@ servers:
   - url: https://file.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Cloudfilestore
+    label: Google Cloud Filestore
     iconPath: "resources/googleapis.cloudfilestore.svg"
   contact:
     name: Google

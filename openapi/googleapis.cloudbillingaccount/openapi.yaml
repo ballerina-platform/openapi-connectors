@@ -3,7 +3,7 @@ servers:
   - url: https://cloudbilling.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Cloudbillingaccount
+    label: Google Cloud Billing Account
     iconPath: "resources/googleapis.cloudbillingaccount.svg"
   contact:
     name: Google

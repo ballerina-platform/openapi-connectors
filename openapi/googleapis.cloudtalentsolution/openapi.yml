@@ -3,7 +3,7 @@ servers:
   - url: https://jobs.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Cloudtalentsolution
+    label: Google Cloud Talent Solution
     iconPath: "resources/googleapis.cloudtalentsolution.svg"
   contact:
     name: Google

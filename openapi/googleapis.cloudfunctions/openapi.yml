@@ -4,7 +4,7 @@ servers:
 x-hasEquivalentPaths: true
 info:
   x-ballerina-display:
-    label: Googleapis Cloudfunctions
+    label: Google Cloud Functions
     iconPath: "resources/googleapis.cloudfunctions.svg"
   contact:
     name: Google

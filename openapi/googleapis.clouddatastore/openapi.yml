@@ -3,7 +3,7 @@ servers:
   - url: https://datastore.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Clouddatastore
+    label: Google Cloud Datastore
     iconPath: "resources/googleapis.clouddatastore.svg"
   contact:
     name: Google

@@ -4,7 +4,7 @@ servers:
 x-hasEquivalentPaths: true
 info:
   x-ballerina-display:
-    label: Googleapis Cloudpubsub
+    label: Google Cloud Pub/Sub
     iconPath: "resources/googleapis.cloudpubsub.svg"
   contact:
     name: Google

@@ -4,7 +4,7 @@ servers:
 x-hasEquivalentPaths: true
 info:
   x-ballerina-display:
-    label: Googleapis Cloudbuild
+    label: Google Cloud Build
     iconPath: "resources/googleapis.cloudbuild.svg"
   contact:
     name: Google

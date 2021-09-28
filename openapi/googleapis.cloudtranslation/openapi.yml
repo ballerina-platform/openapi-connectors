@@ -3,7 +3,7 @@ servers:
   - url: https://translation.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Cloudtranslation
+    label: Google Cloud Translation
     iconPath: "resources/googleapis.cloudtranslation.svg"
   contact:
     name: Google

@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Manufacturer Center API v1](https://developers.google.com/manufacturers/) OpenAPI specification.
 # Public API for managing Manufacturer Center related data.
-@display {label: "Googleapis Manufacturercenter", iconPath: "resources/googleapis.manufacturercenter.svg"}
+@display {label: "Google Manufacturer Center", iconPath: "resources/googleapis.manufacturercenter.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

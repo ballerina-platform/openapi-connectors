@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Docs API v1.0](https://developers.google.com/docs/api) OpenAPI specification.
 # The Docs API provides access to reads and writes Google Docs documents.
-@display {label: "Googleapis Docs", iconPath: "resources/googleapis.docs.svg"}
+@display {label: "Google Docs", iconPath: "resources/googleapis.docs.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

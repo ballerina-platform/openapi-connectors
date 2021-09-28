@@ -3,7 +3,7 @@ servers:
   - url: https://language.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Cloudnaturallanguage
+    label: Google Cloud Natural Language
     iconPath: "resources/googleapis.cloudnaturallanguage.svg"
   contact:
     name: Google

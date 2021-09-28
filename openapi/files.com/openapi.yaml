@@ -1,7 +1,9 @@
 # There is a problem in responses of type double. From the API responses it sometimes maps to type string. 
 openapi: 3.0.1
 info:
-@display {label: "Files Com", iconPath: "resources/files.com.svg"} 
+  x-ballerina-display:
+    label: files.com
+    iconPath: "resources/files.com.svg"
   title: Files.com API
   contact:
     name: Files.com Customer Success Team

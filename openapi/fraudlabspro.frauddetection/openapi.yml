@@ -6,7 +6,7 @@ servers:
     url: https://virtserver.swaggerhub.com/fraudlabspro/fraudlabspro/1.0
 info:
   x-ballerina-display:
-    label: Fraudlabspro Frauddetection
+    label: FraudLabs Pro Fraud Detection
     iconPath: "resources/fraudlabspro.frauddetection.svg"
   contact:
     x-twitter: fraudlabspro

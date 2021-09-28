@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [Microsoft Dynamics 365 Business Central API v1.0](https://dynamics.microsoft.com/en-us/business-central/overview/) OpenAPI specification.
 # (v1.0) Business Central Standard APIs
-@display {label: "Dynamics365 Bussiness_central", iconPath: "resources/dynamics365.bussiness_central.svg"}
+@display {label: "Microsoft Dynamics 365 Business Central", iconPath: "resources/dynamics365.bussiness_central.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

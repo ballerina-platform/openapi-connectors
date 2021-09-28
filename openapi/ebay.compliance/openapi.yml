@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Ebay Compliance
+    label: eBay Compliance
     iconPath: "resources/ebay.compliance.svg"
   title: Compliance API
   description: >

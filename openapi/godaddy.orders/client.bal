@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [GoDaddy Orders API v1](https://developer.godaddy.com/doc/endpoint/orders) OpenAPI specification.
 # The GoDaddy Orders API provides capability to access GoDaddy operations related to orders.
-@display {label: "Godaddy Orders", iconPath: "resources/godaddy.orders.svg"}
+@display {label: "GoDaddy Orders", iconPath: "resources/godaddy.orders.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

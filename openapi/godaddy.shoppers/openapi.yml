@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Shopper
+    label: GoDaddy Shopper
     iconPath: "resources/godaddy.shopper.svg"
   title: GoDaddy Shopper API
   version: v1

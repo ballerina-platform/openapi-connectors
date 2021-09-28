@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Abuse
+    label: GoDaddy Abuse
     iconPath: "resources/godaddy.abuse.svg"
   title: GoDaddy Abuse API
   version: v1

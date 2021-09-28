@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Azure Textanalytics
+    label: Azure Text Analytics
     iconPath: "resources/azure.textanalytics.svg"
   title: Text Analytics API (v3.1)
   description: >

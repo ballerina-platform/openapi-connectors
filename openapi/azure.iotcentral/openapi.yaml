@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Azure Iotcentral
+    label: Azure IoT Central
     iconPath: "resources/azure.iotcentral.svg"
   title: Azure IoT Central
   description: >

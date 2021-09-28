@@ -3,7 +3,7 @@ servers:
   - url: https://extpose.com/api/v1
 info:
   x-ballerina-display:
-    label: Extpose
+    label: ExtPose
     iconPath: "resources/extpose.svg"
   contact:
     email: info@extpose.com

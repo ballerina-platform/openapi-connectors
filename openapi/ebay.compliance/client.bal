@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [eBay Compliance API v1.4.1](https://developer.ebay.com) OpenAPI specification.
 # 'Service for providing information to sellers about their listings being non-compliant, or at risk for becoming non-compliant, against eBay listing policies.'
-@display {label: "Ebay Compliance", iconPath: "resources/ebay.compliance.svg"} 
+@display {label: "eBay Compliance", iconPath: "resources/ebay.compliance.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

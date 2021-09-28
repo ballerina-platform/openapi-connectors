@@ -3,7 +3,7 @@ servers:
   - url: //api.ote-godaddy.com/
 info:
   x-ballerina-display:
-    label: Godaddy Domains
+    label: GoDaddy Domains
     iconPath: "resources/godaddy.domains.svg"
   version: v1
   title: Godaddy Domains API

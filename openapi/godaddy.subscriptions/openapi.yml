@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Subscriptions
+    label: GoDaddy Subscriptions
     iconPath: "resources/godaddy.subscriptions.svg"
   title: GoDaddy  API
   description: >-

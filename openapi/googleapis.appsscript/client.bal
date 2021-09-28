@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Apps Script API v1](https://developers.google.com/apps-script/api/) OpenAPI specification.
 # Manages and executes Google Apps Script projects.
-@display {label: "Googleapis Appsscript", iconPath: "resources/googleapis.appsscript.svg"}
+@display {label: "Google Apps Script", iconPath: "resources/googleapis.appsscript.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

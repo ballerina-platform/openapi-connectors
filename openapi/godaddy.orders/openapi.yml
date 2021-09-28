@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Orders
+    label: GoDaddy Orders
     iconPath: "resources/godaddy.orders.svg"
   title: GoDaddy Orders API
   description: >-

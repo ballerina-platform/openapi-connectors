@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Fungenerators Barcode
+    label: Fun Generators Barcode
     iconPath: "resources/fungenerators.barcode.svg"
   termsOfService: https://fungenerators.com/terms
   description: >

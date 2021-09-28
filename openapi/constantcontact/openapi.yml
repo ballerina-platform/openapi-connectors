@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Constantcontact
+    label: Constant Contact
     iconPath: "resources/constantcontact.svg"
   title: AppConnect V3
   description: |

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Ebay Logistics
+    label: eBay Logistics
     iconPath: "resources/ebay.logistics.svg"
   title: Logistics API
   description: >-

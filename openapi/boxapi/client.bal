@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification.
 # [Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
-@display {label: "Boxapi", iconPath: "resources/boxapi.svg"}
+@display {label: "Box", iconPath: "resources/boxapi.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

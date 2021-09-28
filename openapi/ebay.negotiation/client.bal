@@ -62,7 +62,7 @@ public type ClientConfig record {|
 # listings by either a percentage off the listing price, or they can set a  new discounted price that is lower than the
 #  original listing price.  For details about how seller offers work,  see "/api-docs/sell/static/marketing/offers-to-buyers.html" 
 # title="Selling Integration Guide">Sending offers to buyers.
-@display {label: "Ebay Negotiation", iconPath: "resources/ebay.negotiation.svg"} 
+@display {label: "eBay Negotiation", iconPath: "resources/ebay.negotiation.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

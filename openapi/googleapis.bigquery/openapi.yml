@@ -3,7 +3,7 @@ servers:
   - url: https://bigquery.googleapis.com/bigquery/v2
 info:
   x-ballerina-display:
-    label: Googleapis Bigquery
+    label: Google BigQuery
     iconPath: "resources/googleapis.bigquery.svg"
   contact:
     name: Google

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Ebay Negotiation
+    label: eBay Negotiation
     iconPath: "resources/ebay.negotiation.svg"
   title: Negotiation API
   description: >- 

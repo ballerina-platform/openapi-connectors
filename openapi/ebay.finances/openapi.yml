@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Ebay Finances
+    label: eBay Finances
     iconPath: "resources/ebay.finances.svg"
   title: eBay Finances API
   description: >-

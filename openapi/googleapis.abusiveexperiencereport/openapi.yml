@@ -3,7 +3,7 @@ servers:
   - url: https://abusiveexperiencereport.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Abusiveexperiencereport
+    label: Google Abusive Experience
     iconPath: "resources/googleapis.abusiveexperiencereport.svg"
   contact:
     name: Google

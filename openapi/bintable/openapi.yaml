@@ -3,7 +3,7 @@ servers:
   - url: https://api.bintable.com/v1
 info:
   x-ballerina-display:
-    label: Bintable
+    label: BINTable
     iconPath: "resources/bintable.svg"
   contact:
     email: hello@bintable.com

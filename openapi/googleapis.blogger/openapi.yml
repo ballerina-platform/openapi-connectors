@@ -3,7 +3,7 @@ servers:
   - url: https://blogger.googleapis.com
 info:
   x-ballerina-display:
-    label: Googleapis Blogger
+    label: Google Blogger
     iconPath: "resources/googleapis.blogger.svg"
   contact:
     name: Google

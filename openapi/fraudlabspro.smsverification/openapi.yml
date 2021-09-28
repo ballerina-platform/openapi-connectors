@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Fraudlabspro Smsverification
+    label: FraudLabs Pro SMS Verification
     iconPath: "resources/fraudlabspro.smsverification.svg"
   title: FraudLabs Pro SMS Verification
   description: >

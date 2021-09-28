@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Azure Anomalydetector
+    label: Azure Anomaly Detector
     iconPath: "resources/azure.anomalydetector.svg"
   title: Anomaly Detector
   description: >

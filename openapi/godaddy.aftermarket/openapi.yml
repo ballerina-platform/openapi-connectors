@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Aftermarket
+    label: GoDaddy Aftermarket
     iconPath: "resources/godaddy.aftermarket.svg"
   title: GoDaddy Aftermarket API
   description: >-

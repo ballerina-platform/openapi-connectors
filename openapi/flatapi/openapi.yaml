@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   x-ballerina-display:
-    label: Flatapi
+    label: Flat API
     iconPath: "resources/flatapi.svg"
   title: Flat API
   description: |-

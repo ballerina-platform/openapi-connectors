@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
 # The Cloudmersive Virus Scan API lets you scan files and content for viruses and identify security issues with content.
-@display {label: "Cloudmersive Virusscan", iconPath: "resources/cloudmersive.virusscan.svg"}
+@display {label: "Cloudmersive Virus Scan", iconPath: "resources/cloudmersive.virusscan.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

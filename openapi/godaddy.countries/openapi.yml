@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Countries
+    label: GoDaddy Countries
     iconPath: "resources/godaddy.countries.svg"
   title: GoDaddy Countries API
   description: >-

@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
   x-ballerina-display:
-    label: Boxapi
+    label: Box
     iconPath: "resources/boxapi.svg"
   title: Box Platform API
   description: >

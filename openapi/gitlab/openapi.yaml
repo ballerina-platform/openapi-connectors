@@ -8,7 +8,7 @@ tags:
     description: Access tokens for projects
 info:
   x-ballerina-display:
-    label: Gitlab
+    label: GitLab
     iconPath: "resources/gitlab.svg"
   description: |
     This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.

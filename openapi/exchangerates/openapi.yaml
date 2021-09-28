@@ -4,7 +4,7 @@ servers:
     url: https://v6.exchangerate-api.com/v6/
 info:
   x-ballerina-display:
-    label: Exchangerates
+    label: Exchange Rates
     iconPath: "resources/exchangerates.svg"
   description: >
     This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification.

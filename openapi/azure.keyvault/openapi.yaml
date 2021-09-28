@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Azure Keyvault
+    label: Azure Key Vault
     iconPath: "resources/azure.keyvault.svg"
   title: KeyVaultClient
   description: > 

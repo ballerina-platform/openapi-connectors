@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Azure Anomaly Detector API v1](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) OpenAPI specification.
 # "The Anomaly Detection service detects anomalies automatically in time\ \ series data. It supports several functionalities, \r\none is for detecting the\ \ whole series with model trained by the time series, another is detecting the\ \ last point \r\nwith model trained by points before. With this service, business\ \ customers can discover incidents and establish \r\na logic flow for root cause\ \ analysis. We also provide change point detection, which is another common scenario\ \ on \r\ntime series analysis and service monitoring. Change point detection targets\ \ to discover tend changes in the time series.\r\nTo ensure online service quality\ \ is one of the main reasons we developed this service. Our team is dedicated\ \ to \r\ncontinuing to improve the anomaly detection service to provide precise\ \ results."
-@display {label: "Azure Anomalydetector", iconPath: "resources/azure.anomalydetector.svg"}
+@display {label: "Azure Anomaly Detector", iconPath: "resources/azure.anomalydetector.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

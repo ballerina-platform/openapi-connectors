@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Azure Iothub
+    label: Azure IoT Hub
     iconPath: "resources/azure.iothub.svg"
   title: Azure IoT Hub
   description: >

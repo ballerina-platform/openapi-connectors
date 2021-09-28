@@ -3,7 +3,7 @@ servers:
   - url: https://script.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Appsscript
+    label: Google Apps Script
     iconPath: "resources/googleapis.appsscript.svg"
   contact:
     name: Google

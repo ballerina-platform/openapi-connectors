@@ -3,7 +3,7 @@ servers:
   - url: https://bigquerydatatransfer.googleapis.com/
 info:
   x-ballerina-display:
-    label: Googleapis Bigquery Datatransfer
+    label: Google BigQuery Data Transfer
     iconPath: "resources/googleapis.bigquery.datatransfer.svg"
   contact:
     name: Google

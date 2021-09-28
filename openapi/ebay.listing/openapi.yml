@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   x-ballerina-display:
-    label: Ebay Listing
+    label: eBay Listing
     iconPath: "resources/ebay.listing.svg"
   title: Listing API
   description: >

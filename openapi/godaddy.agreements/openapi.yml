@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Agreements
+    label: GoDaddy Agreements
     iconPath: "resources/godaddy.agreements.svg"
   title: GoDaddy Agreements API
   description: >-

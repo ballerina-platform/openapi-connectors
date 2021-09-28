@@ -5,7 +5,7 @@ externalDocs:
   url: 'https://developer.apple.com/documentation/appstoreconnectapi'
 info:
   x-ballerina-display:
-    label: Apple Appstore
+    label: Apple App Store
     iconPath: "resources/apple.appstore.svg"
   title: App Store Connect API
   version: 1.4.1

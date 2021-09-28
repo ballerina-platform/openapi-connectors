@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [Azure Key Vault API v7.0](https://azure.microsoft.com/en-us/services/key-vault/) OpenAPI specification.
 # The Key Vault client performs cryptographic key operations and vault operations against the Key Vault service.
-@display {label: "Azure Keyvault", iconPath: "resources/azure.keyvault.svg"}
+@display {label: "Azure Key Vault", iconPath: "resources/azure.keyvault.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [Azure Time Series Insights API 2020-07-31 version](https://azure.microsoft.com/en-us/services/time-series-insights/) OpenAPI specification.
 # Time Series Insights environment data plane client for Gen2 (GA L1 SKU) environments.
-@display {label: "Azure Timeseries", iconPath: "resources/azure.timeseries.svg"}
+@display {label: "Azure Time Series", iconPath: "resources/azure.timeseries.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

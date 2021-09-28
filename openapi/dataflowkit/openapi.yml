@@ -4,7 +4,7 @@ servers:
     url: https://api.dataflowkit.com/v1
 info:
   x-ballerina-display:
-    label: Dataflowkit
+    label: Dataflow Kit
     iconPath: "resources/dataflowkit.svg"
   contact:
     url: https://dataflowkit.com/

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Azure Timeseries
+    label: Azure Time Series
     iconPath: "resources/azure.timeseries.svg"
   title: TimeSeriesInsightsClient
   description: >

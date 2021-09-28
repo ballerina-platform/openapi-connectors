@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Extpose API v1](https://extpose.com/) OpenAPI Specification. 
 # Extpose — in‑store performance analytics and optimization tool for Chrome extensions. [https://extpose.com](https://extpose.com)
-@display {label: "Extpose", iconPath: "resources/extpose.svg"} 
+@display {label: "ExtPose", iconPath: "resources/extpose.svg"} 
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & map<string> apiKeys;

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   x-ballerina-display:
-    label: Godaddy Certificates
+    label: GoDaddy Certificates
     iconPath: "resources/godaddy.certificates.svg"
   title: GoDaddy Certificates API
   version: "1.0"

@@ -1,0 +1,1560 @@
+openapi: 3.0.1
+info:
+  title: NetSuite OpenAir REST API
+  description: > 
+    This is a generated connector for [OpenAir API v1.0](https://www.openair.com/download/OpenAirRESTAPIGuide.pdf) OpenAPI specification.
+
+    The OpenAir REST API provides an interface for integration applications to exchange information with [OpenAir](https://docs.oracle.com/cloud/openair/index.html).
+    OpenAir REST API currently supports the following resources: Expense reports, Receipts, Attachments, Job codes, Contacts 
+  version: 1.0.0
+
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [OpenAir account](https://www.openair.com/) and obtain tokens by following [this guide](https://www.openair.com/download/OpenAirRESTAPIGuide.pdf).
+
+  x-ballerina-display:
+    label: openair
+    iconPath: "resources/openair.svg"
+
+tags:
+- name: Attachments
+  description: >
+    Attachments are files uploaded and stored in OpenAir and associated with records Each attachment include the attachment file as well as file metadata.
+- name: Contacts
+  description: >
+    Contact records contain information about individuals working for, or associated with customers
+- name: Expense reports
+  description: >
+    Expense reports are collections of expense items (receipts) that employees can use in OpenAir to claim reimbursement
+- name: Job codes
+  description: >
+    A job code is a general job category with a generic cost that can be used for estimation and billing reimbursement
+- name: Receipts
+  description: >
+   Receipts are expense items that contain information about costs incurred by employees and collected in expense report
+paths:
+  /contacts/:
+    post:
+      tags:
+      - Contacts
+      summary: Creates a new contact record
+      operationId: addContact
+      parameters:
+      - name: fields
+        in: query
+        required: false
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the contact returned
+        schema: 
+          type: string
+      - name: return_object
+        in: query
+        required: false
+        description: >
+          If set to 1, the response will return the contact created. Otherwise, the response will include only the internal ID of the contact created
+        schema:
+          type: boolean
+      requestBody:
+        description: A contact is a person working for, or associated with a customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenAirResponse'
+        '405':
+          description: Invalid input
+          content: {}
+    get:
+      tags:
+        - "Contacts"
+      summary: Retrieves the list of contacts.
+      operationId: getContacts
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    options:
+      tags:
+        - "Contacts"
+      summary:  Discover the methods available
+      operationId: discoverMethods
+      responses:
+        '200':
+          description:  Includes the OpenAPI 3.0 endpoint reference for the resource endpoint
+          headers:
+            Access-Control-Allow-Methods: 
+              schema:
+                type: string
+              description: Available methods            
+  /contacts/{id}:
+    get:
+      tags:
+        - "Contacts"
+      summary: Retrieves the contact record with the specified internal ID
+      operationId: getContactByID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          description: The internal id of the contact
+        - name: fields
+          in: query
+          schema:
+            type: string
+          required: false
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the contact returned
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenAirResponse'
+    put:
+      tags:
+        - "Contacts"
+      summary: Updates the contact record with the specified internal ID
+      operationId: updateContact
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The internal id of the contact
+      - name: fields
+        in: query
+        schema:
+          type: string
+        required: false
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the contact returned
+      - name: return_object
+        in: query
+        schema:
+          type: boolean
+        required: false
+        description: If set to any value other than 0 (zero), the response will include the contact updated. Otherwise, the response will include only the internal ID of the contact updated
+      requestBody:  
+        description: >
+          If set to any value other than 0 (zero), the response will include the contact updated. Otherwise, the response will include only the internal ID of the contact updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenAirResponse'
+    delete:
+      tags:
+        - "Contacts"
+      summary: Deletes the contact record with the specified internal ID
+      operationId: deleteContact
+      parameters:
+      - name: id
+        in: path
+        schema: 
+          type: integer
+        required: true
+        description: The internal id of the contact
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenAirResponse'
+  /expense-reports/:
+    get:
+      summary: Get the list of Expense Report
+      operationId: getListOfExpenseReports
+      tags:
+        - "Expense reports"
+      parameters:
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
+      - name: limit
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A limit on the length of the page
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A cursor for use in pagination
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: >
+          A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref : "#/components/schemas/OpenAirResponse"
+  /expense-reports/{id}:  
+    put:
+      summary: Updates an Expense Report
+      operationId: updateExpneseReport
+      tags:
+        - "Expense reports"
+      parameters:
+        - name: id
+          in: path
+          description: The internal id of the expense report
+          schema:
+            type: integer
+          required: true
+        - name: expand
+          in: query
+          description: >
+           A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)     
+          schema:
+            type: string
+          required: false
+        - name: fields
+          in: path
+          required: true
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned
+          schema:
+            type: string
+        - name: return_object
+          required: true
+          in: path
+          description: >
+            If set to any value other than 0 (zero), the response will include the expense report updated. Otherwise, the response will include only the internal ID of the expense report updated
+          schema:
+            type: boolean
+      requestBody:
+        description: An object including valid key-value pairs for the fields to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpenseReport'
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    get:
+      summary: Retrieves the expense report with the specified internal
+      operationId: getExpenseReport
+      parameters:
+      - name: id
+        in: path
+        description: The internal id of the expense report
+        schema:
+          type: integer
+        required: true
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    delete: 
+      tags:
+        - "Expense reports"
+      summary: Deletes e the expense report record with the specified internal ID
+      operationId: deleteExpenseReports
+      parameters:
+      - name: id
+        in: path
+        schema: 
+          type: integer
+        required: true
+        description: The internal id of the contact
+      responses:
+        '200':
+          description: An OpenAir type record or an error with ID and a message
+          content:
+            application/json:
+              schema:
+               properties:
+                 message:
+                  type: string
+                  description: "A string containing a brief message about the status of your request"
+  /expense-reports/overlapping/:
+    post:
+      summary: Inserts an Overlapping Expense Report
+      operationId: insertOverlappingExpenseReport
+      tags:
+        - "Expense reports"
+      parameters:
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned        
+      - name: return_object
+        in: query
+        required: false
+        description: >
+          If set to any value other than 0 (zero), the response will return the expense report created. Otherwise, the response will include only the internal ID of the expense report created
+        schema:
+          type: boolean
+      requestBody:
+        description: An expense report is a collection of expense items (receipts) that employees can use in OpenAir to claim reimbursement
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpenseReport"
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"                         
+  /expense-reports/{id}/receipts/:
+    get:
+      tags:
+        - "Expense reports"
+      summary: "retrieve the collection of receipts in the expense report with the specified internal ID"
+      operationId: getListOfReceiptsInExpenseReport
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the expense report"
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
+      - name: limit
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A limit on the length of the page
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A cursor for use in pagination
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: >
+          A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria
+      responses: 
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+  /expense-reports/{id}/receipts/{ticket_id}:
+    get:
+      tags:
+        - "Expense reports"
+      summary: Gets a Receipt associated with an Expense Report
+      operationId: getReceiptForExpenseReport
+      parameters:
+        - name: id
+          in: path
+          description: The internal id of the expense report
+          required: true
+          schema:
+            type: integer
+        - name: ticket_id
+          in: path
+          description: The internal id of the receipt
+          required: true
+          schema:
+            type: integer
+        - name: expand
+          in: query
+          required: false
+          description: > 
+            A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+          schema:
+            type: string
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
+      responses: 
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"                      
+  /expense-reports/{id}/attachments:
+    post:
+      tags:
+        - "Expense reports"
+      summary: Add an Attachment to an Expense Report
+      operationId: addAttachmentToExpenseReport
+      parameters:
+        - name: id
+          in: path
+          description: "The internal id of the expense report"
+          required: true
+          schema:
+            type: integer
+        - name: expand
+          in: query
+          required: false
+          description: > 
+            A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+          schema:
+            type: string
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned
+      requestBody:
+        description: This method accepts application/json content types
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttachmentTypeJson"
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    get:
+      summary: Get the List of Attachments Associated with an Expense Report
+      operationId: getAttachmentListWithExpenseReport
+      tags:
+        - "Expense reports"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the expense report"
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
+      - name: limit
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A limit on the length of the page
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A cursor for use in pagination
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: >
+          A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria
+      responses: 
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+  /expense-reports/{id}/attachments/{attachment_id}:
+    get:
+      summary: Retrieves the attachment record with the specified attachment ID associated with the expense report with the specified internal ID
+      tags:
+          - "Expense reports"
+      operationId: getAttachmentByIDWithExpenseReport
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the expense report"
+      - name: attachment_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the attachment"
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
+      responses: 
+        '200':
+          description:  An OpenAir type record or an error
+          content:
+            application/json:
+              schema: 
+                $ref:  "#/components/schemas/OpenAirResponse"
+    delete:
+      summary: delete the attachment with the specified attachment ID associated with the expense report with the specified internal ID, or clear the association between the workspace document with the specified attachment ID and the expense report with the specified internal ID
+      tags:
+        - "Expense reports"
+      operationId: deleteAttachmentOfExpenseReport
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the expense report"
+      - name: attachment_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the attachment"
+      responses:
+        '200':
+          description: A successful or failed request returns a JSON object 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: "A string containing a brief message about the status of your request — e.g. \"Success\" or \"Attachment #4985 not found\""
+  /job-codes/:
+    post:
+      tags:
+        - "Job codes"
+      summary:  Creates a new job code record
+      operationId: addJob
+      parameters: 
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all 
+          attributes for the expense report returned
+      - name: return_object
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: >
+          If set to any value other than 0 (zero), the response will return the job code created. Otherwise, the response 
+          will include only the internal ID of the job code created
+      requestBody:
+        description: The JobCode object to be created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobCode"
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    get:
+      tags:
+        - "Job codes"
+      summary:  Retrieves the list of job codes
+      operationId: getJobs
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse" 
+  /job-codes/{id}:
+    get:
+      tags:
+        - "Job codes"
+      summary: Retrieves the job code record with the specified internal ID
+      operationId: getJobById
+      parameters:
+        - name: id
+          in: path
+          description: "The internal id of the contact"
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the job code returned
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+           application/json:
+            schema:
+              $ref: "#/components/schemas/OpenAirResponse"
+    put:
+      summary: Update the job code record with the specified internal ID
+      operationId: updateJobCodeById
+      tags:
+        - "Job codes"
+      parameters:
+        - name: id
+          in: path
+          description: "The internal id of the contact"
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the job code returned
+        - name: return_object
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: > 
+            If set to any value other than 0 (zero), the response will include the job code updated. Otherwise, the response will include only the internal ID of the job code updated.
+      requestBody:
+        description: An object including valid key-value pairs for the fields to be updated
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobCode"
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    delete:
+      summary:  Deletes the job code record with the specified internal ID
+      operationId: deleteJob
+      tags:
+        - "Job codes"
+      parameters:
+        - name: id
+          in: path
+          description: "The internal id of the job code"
+          required: true
+          schema:
+            type: integer          
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+           application/json:
+            schema:
+              $ref: "#/components/schemas/OpenAirResponse"
+  /receipts/:
+    post:  
+      tags:
+        - "Receipts"
+      summary: Create a new receipt    
+      operationId: insertReceipt
+      parameters:
+        - name: expand
+          in: query
+          required: false
+          description: > 
+            A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+          schema:
+            type: string
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned        
+        - name: return_object
+          in: query
+          required: false
+          description: >
+            If set to any value other than 0 (zero), the response will return the expense report created. Otherwise, the response will include only the internal ID of the expense report created
+          schema:
+            type: boolean
+      requestBody:
+        description: An expense report is a collection of expense items (receipts) that employees can use in OpenAir to claim reimbursement
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Receipts"              
+      responses:
+        '200':
+          description: An OpenAir type record or an error with ID and a message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    get:
+      tags:
+        - "Receipts"
+      summary: Retrieves a list of receipts
+      operationId: getReceipts
+      parameters:
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
+      - name: limit
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A limit on the length of the page
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A cursor for use in pagination
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: >
+          A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref : "#/components/schemas/OpenAirResponse"
+  /receipts/{id}:
+    get:
+      tags:
+        - "Receipts"
+      summary: Retrieves a receipt with the specified internal ID.
+      operationId: getReceiptById
+      parameters:
+        - name: id
+          in: path
+          description: The internal id of the receipt
+          schema:
+            type: integer
+          required: true
+        - name: expand
+          in: query
+          description: >
+           A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)     
+          schema:
+            type: string
+          required: false
+        - name: fields
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned  
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref : "#/components/schemas/OpenAirResponse"            
+    put:
+      tags:
+        - "Receipts"
+      summary: Updates the receipt with the specified internal ID
+      operationId: updateReceipt
+      parameters:
+        - name: expand
+          in: query
+          schema:
+            type: string
+          description: >
+           A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string) 
+        - name: id
+          in: path
+          description: "The internal id of the receipt"
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the job code returned
+        - name: return_object
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: > 
+            If set to any value other than 0 (zero), the response will include the job code updated. Otherwise, the response will include only the internal ID of the job code updated.
+      requestBody:
+        description: An object including valid key-value pairs for the fields to be updated
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Receipts"
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref : "#/components/schemas/OpenAirResponse" 
+  /receipts/{id}/attachments:
+    post:
+      tags:
+        - "Receipts"
+      summary: Add an attachment to the receipt with the specified internal ID
+      operationId: addAttachmentReceipt
+      parameters:
+        - name: expand
+          in: query
+          schema:
+            type: string
+          description: >
+           A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string) 
+        - name: id
+          in: path
+          description: "The internal id of the receipt"
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >
+            A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the job code returned
+        - name: return_object
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: > 
+            If set to any value other than 0 (zero), the response will include the job code updated. Otherwise, the response will include only the internal ID of the job code updated.
+      requestBody:
+        description: This method accepts application/json content types
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttachmentTypeJson"
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    get:
+      tags:
+        - "Receipts"
+      summary: Gets the List of Attachments Associated with a Receipt
+      operationId: getListOfAttachmentsOfReceipt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the expense receipts"
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
+      - name: limit
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A limit on the length of the page
+      - name: offset
+        in: query
+        schema:
+          type: integer
+        required: false
+        description: A cursor for use in pagination
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: false
+        description: >
+          A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria                  
+      responses: 
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+  /receipts/{id}/attachments/{attachment_id}:
+    get:
+      tags:
+        - "Receipts"
+      summary: Gets an Attachment Associated with a Receipt
+      operationId: getAttachmentOfReceipt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the expense receipts"
+      - name: attachment_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the attachment"
+      - name: expand
+        in: query
+        required: false
+        description: > 
+          A comma-separated list of attributes available for expansion. The comma-separated list may include spaces (or %20 in the URL encoded string)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: string
+        description: >
+          A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned                      
+      responses: 
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"
+    delete:
+      tags:
+        - "Receipt"
+      summary: Deletes an Attachment Associated with a Receipt
+      operationId: deleteAttachmentOfReceipt
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the expense receipts"
+      - name: attachment_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: "The internal id of the attachment"
+      responses:
+        '200':
+          description: An OpenAir type record or an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAirResponse"           
+security:
+- openAir_auth:
+  - write:rest
+  - read:rest
+
+components:
+  schemas:
+    Receipts:
+      type: object
+      properties:
+        accountingDate:
+          type: string
+          description: The accounting period date of the receipt
+        attachments:
+          type: array
+          description: The attachments associated with the receipt. Array of internal IDs for attachment objects.
+          items:
+            $ref: "#/components/schemas/IDs"
+        costCenterId:
+          type: integer
+          description: The internal ID of the cost center associated with the receipt
+        costPerUnit:
+          type: number
+          description: The cost per unit of measure
+        created:
+          type: string
+          description: The date the receipt was created
+        currency: 
+          type: string
+          description: The currency for monetary values in the receipt record. Three-letter currency code
+        customerId:
+          type: integer
+          description: The internal ID of the customer associated with the receipt
+        date:
+          type: string
+          description: The date of the receipt
+        description:
+          type: string
+          description: The description of the receipt
+        expenseReportId:
+          type: integer
+          description: The internal ID of the expense report associated with the receipt
+        externalId:
+          type: string
+          description: The unique external ID of the receipt, if the record was imported from an external system
+        federalTax:
+          type: number
+          description: The total federal tax for the receipt
+        federalTaxRate:
+          type: number
+          description: The federal tax rate for the receipt
+        foreignCurrencyCost:
+          type: number
+          description: The cost per unit of measure in the selected foreign currency, if this is a foreign currency receipt
+        foreignCurrencyRate:
+          type: number
+          description: The cost per unit of measure in the selected foreign currency, if this is a foreign currency receipt.
+        foreignCurrencySymbol:
+          type: string
+          description: The foreign currency, if this is a foreign currency receipt. Three-letter currency code 
+        foreignCurrencyTotalTaxPaid:
+          type: number
+          description: The tax paid in the foreign currency, if this is a foreign currency receipt
+        gst:
+          type: number
+          description: The total GST tax for the receipt
+        gstRate:
+          type: number
+          description: The total GST tax for the receipt
+        hst:
+          type: number
+          description: The total GST tax for the receipt
+        hstRate:
+          type: number
+          description: The total GST tax for the receipt
+        id:
+          type: integer
+          description: The total GST tax for the receipt
+        isForeignCurrencyExchangeIntolerance:
+          type: boolean
+          description: A 1/0 field indicating if the record is within the specified foreign currency tolerance
+        isMissingPaperReceipt:
+          type: boolean
+          description: A 1/0 field indicating if the paper receipt is missing for this receipt
+        isNonBillable:
+          type: boolean
+          description: A 1/0 field indicating if the receipt is not billable
+        isReimbursable:
+          type: boolean
+          description: A 1/0 field indicating if the receipt is reimbursable
+        isTaxIncludedInCost:
+          type: boolean
+          description: A 1/0 field indicating if the cost includes the tax
+        itemId:
+          type: integer
+          description: The internal ID of the item associated with the receipt. The type of item can be used to determine the receipt subtype
+        notes:
+          type: string
+          description: Notes about the receipt
+        paymentTypeId:
+          type: integer
+          description: The internal ID of the payment type associated with the receipt. The payment type indicates how the payment was made and may determine if the receipt is reimbursable
+        projectId:
+          type: integer
+          description: The internal ID of the project associated with the receipt
+        projectTaskId:
+          type: integer
+          description: The internal ID of the project task associated with the receipt. Requires an option to be enabled in OpenAir (Administration > Application settings > Expenses > Other settings)
+        pst:
+          type: number
+          description: The total PST tax for the receipt
+        pstRate:
+          type: number
+          description: The total PST tax for the receipt
+        receiptLocation:
+          type: string
+          description: The city or location where the cost was incurred
+        slipId:
+          type: integer
+          description: The internal ID of the slip associated with the receipt, if the expense was billed
+        stateTax:
+          type: number
+          description: The total state tax for the receipt
+        quantity:
+          type: integer
+          description: The quantity (number of units of measure)
+        taxLocationId:
+          type: integer
+          description: The internal ID of the tax location associated with the receipt
+        total:
+          type: number
+          description: The internal ID of the tax location associated with the receipt
+        totalNoTax:
+          type: number
+          description: The total value of the receipt excluding tax
+        totalTaxPaid:
+          type: number
+          description: The total tax paid
+        trackingNumber:
+          type: string
+          description: The unique reference number of the receipt within the associated expense report. This attribute is used to cross reference digital receipts with paper receipts
+        updated:
+          type: string
+          description: The date the receipt was last updated or modified
+        userId:
+          type: integer
+          description: The internal ID of the employee associated with the receipt
+        userLocationId: 
+          type: integer
+          description: The internal ID of the employee location associated with the receipt
+        vehicleId:
+          type: integer
+          description: The internal ID of the vehicle associated with the receipt
+        vendorId:
+          type: integer
+          description: The internal ID of the vendor associated with the receipt.
+    JobCode:
+      type: object
+      description: Job Code
+      properties:
+        accountingCode:
+          type: string
+          description: Optional accounting code that can be used for integration with external accounting systems
+        created:
+          type: string
+          description: The date the job code was created
+        currency:
+          type: string
+          description: The currency for monetary values in the job code record. Three-letter currency code
+        externalId:
+          type: string
+          description: The unique external record ID, if the record was imported from an external system
+        genericResourceId:
+          type: integer
+          description: The internal ID of the generic resource used in full-time equivalent (FTE) forecasting
+        id:
+          type: integer
+          description: The unique internal identifier of the job code
+        isActive:
+          type: boolean
+          description: A 1/0 field indicating if the job code is active
+        loadedCost:
+          type: number
+          description: The cost per hour
+        name:
+          type: string
+          description: The display name of the job code
+        notes: 
+          type: boolean
+          description: Notes about the job code
+        updated:
+           type: string
+           description: The date the job code was last updated or modified
+    AttachmentTypeJson:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The internal ID of the workspace document to be associated with the expense report.
+    Contact:
+      type: object
+      description: Contacts details
+      properties:
+        accountingCode:
+          type: integer
+          description: Optional accounting code that can be used for integration with external accounting systems.
+        address1:
+          type: string
+          description: First line of the contact's address
+        address2:
+          type: string
+          description: Second line of the contact's address
+        address3:
+          type: string
+          description: Third line of the contact's address
+        address4: 
+          type: string
+          description: Forth line of the contact's address
+        canBill:
+          type: boolean
+          description: A 1/0 field indicating if the contact can be used for billing
+        canSell:
+          type: boolean
+          description: A 1/0 field indicating if the contact an be used for selling
+        canShip:
+          type: boolean
+          description: A 1/0 field indicating if the contact can be used for shipping
+        city:
+          type: string
+          description: The contact's city
+        country:
+          type: string
+          description: The contact's country
+        created:
+          type: string
+          description: The date the contact record was created
+        customerId:
+          type: integer
+          description: The internal ID of the associated customer
+        email:
+          type: string
+          description: The contact's Email address
+        externalId:
+          type: string
+          description: The unique external ID of the contact, if the record was imported from an external system
+        fax:
+          type: string
+          description: The contact's fax number
+        firstName:
+          type: string
+          description: The contact's first name
+        id:
+          type: integer
+          description: The unique internal identifier of the contact
+        isActive:
+          type: boolean
+          description: A 1/0 field indicating if the contact is active
+        jobTitle:
+          type: string
+          description: The contact's job title
+        lastName:
+          type: string
+          description: The contact's last name
+        mobile:
+          type: string
+          description: The contact's mobile phone number
+        nickname: 
+          type: string
+          description: The nickname used to identify the contact
+        notes:
+          type: string
+          description: Notes about the contact
+        phone:
+          type: string
+          description: The contact's phone number
+        state:
+          type: string
+          description: The contact's state
+        title:
+          type: string
+          description: The contact's title
+        updated:
+          type: string
+          description: The date the contact record was last updated or modified
+        zip:
+          type: string 
+          description: The contact's ZIP code or postal code
+    ExpenseReport:
+      description: collections of expense items (receipts) that employees can use in OpenAir to claim reimbursement
+      type: object
+      properties:
+        accountingDate:
+          type: string
+          description: "The accounting period date of the expense report"
+        advance:
+          type: string
+          description: "The amount of any cash advance on the expense report"
+        approveDate:
+          type: string
+          description: "The date the expense report was approved"
+        attachments:
+          type: array
+          items:
+            $ref: "#/components/schemas/IDs"
+          description: "The attachments associated with this expense report. Array of internal IDs for attachment objects"
+        balance:
+          type: number
+          description: "The outstanding balance on the expense report"
+        created:
+          type: string
+          description: "The date the expense report was created"
+        currency:
+          type: string
+          description: "The currency for monetary values in the expense report. Three-letter currency code"
+        customerId:
+          type: integer
+          description: "The internal ID of the associated customer"
+        date:
+          type: string
+          description: "The date of the expense report"
+        description:
+          type: string
+          description: "The description of the expense report (e.g. reason for the trip)"
+        endDate:
+          type: string
+          description: "The ending date of the expense report (only used with auto-naming)"
+        exported:
+          type: string
+          description: "The date and time the record was marked as \"exported\""
+        externalId:
+          type: string
+          description: "The unique external ID of the expense report, if the record was imported from an external \"system\""
+        id:
+          type: integer
+          description: "The unique internal identifier of the expense report"
+        isAccounting:
+          type: boolean
+          description: "A 1/0 field indicating if an envelope was submitted to an accounting partner"
+        isAdjusting:
+          type: boolean
+          description: "A 1/0 field indicating if the expense report is an adjusting expense report"
+        isForeignCurrencyExchangeIntolerance:
+          type: boolean
+          description: "A 1/0 field indicating if the record is within the specified foreign currency tolerance as defined in database data definitions"
+        name:
+          type: string
+          description: "A 1/0 field indicating if the record is within the specified foreign currency tolerance as defined in database data definitions"
+        notes:
+          type: string
+          description: "Notes about the expense report"
+        projectId:
+          type: integer
+          description: "The internal ID of the associated project"
+        startDate:
+          type: string
+          description: "The starting date of the expense report (only used with auto-naming)"
+        status:
+          type: string
+          description: "The status of the expense report. Possible values: O — open, S — submitted, A — approved, R — rejected"
+        submitDate:
+          type: string
+          description: "The date the expense report was submitted"
+        taxLocationId:
+          type: integer
+          description: "Default tax location for this expense report"
+        total:
+          type: number
+          description: "The total value of all the receipts in the expense report"
+        totalReceipts:
+          type: integer
+          description: "The total number of receipts in the expense report"
+        totalReimburse:
+          type: number
+          description: "The total amount of reimbursable expenses in the expense report"
+        trackingNumber:
+          type: string
+          description: "The expense report tracking number"
+        updated:
+          type: string
+          description: "The date the expense report was last updated or modified"
+        userId:
+          type: integer
+          description: "The internal ID of the associated employee"
+    OpenAirResponse:
+      type: object
+      description: An OpenAir type record or an error
+      properties: 
+        data:
+          description: An array containing the relevant objects requested or an IDs
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/IDs"
+              - $ref: "#/components/schemas/ExpenseReport"
+              - $ref: "#/components/schemas/Attachment"
+              - $ref: "#/components/schemas/JobCode"
+        included:
+          description: An array of expanded objects, if the expand parameter was set in the request
+          type: object
+        meta:
+          description: >
+            An object containing information about objects referenced by internal ID in the data array (object type and internal ID). Only returned if the return_object parameter was set to any value other than 0 (zero) in the request
+          type: object
+        message:
+          description: A string containing a brief message about the status of your request
+          type: string
+    IDs:
+      type: object
+      description: IDs of the objects
+      properties:
+        id:
+          description: ID of the object
+          type: string
+    Attachment:
+      type: object
+      description: Attachments are files uploaded and stored in OpenAir and associated with records
+      properties:
+        attachmentCategoryId:
+          type: integer
+          description: The internal ID of the attachment category
+        created:
+          type: string
+          description: The date the attachment was created
+        fileName:
+          type: string
+          description: The filename of the attached file
+        fileType:
+          type: string
+          description: The file type. This is used for tracking purposes
+        id:
+          type: integer
+          description: The unique internal identifier of the attachment
+        isExcludedFromAlert:
+          type: boolean
+          description: A 1/0 field indicating if the attachment is excluded from the alert system
+        isFolder:
+          type: boolean
+          description: A 1/0 field indicating if other attachment records have this attachment record as a parent
+        isLocked:
+          type: boolean
+          description: A 1/0 field indicating if the attachment is locked for editing
+        lockedBy:
+          type: integer
+          description: The internal ID of the employee who uploaded the file. The value is 0 (zero) if unlocked.
+        name:
+          type: string
+          description: The display name of the attachment
+        notes:
+          type: string
+          description: Notes about the attachment. This attribute is used for keyword search.
+        size:
+          type: number
+          description: The file size in bytes
+        updated:
+          type: string
+          description: The date the attachment was last updated or modified
+        uploadedBy:
+          type: integer
+          description: "The internal ID of the employee who uploaded the file."
+        workspaceId:
+          type: integer
+          description: The internal ID of the workspace associated with the attachment. The value is 0 (zero) if the attachment is not associated with a workspace.
+  securitySchemes:
+    openAir_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://<account-domain>/login/oauth2/v1/authorize?<query-string>
+          scopes:
+            write:rest: modify pets in your account
+            read:rest: read your pets

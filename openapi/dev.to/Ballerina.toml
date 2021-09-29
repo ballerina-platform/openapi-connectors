@@ -1,10 +1,11 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["journeyio.io", "developer tools"]
+keywords = ["community", "freemium"]
 org = "ballerinax"
-name = "journeyio"
+name = "dev.to"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "0.1.0-SNAPSHOT"
 authors = ["Ballerina"]
+
 [build-options]
 observabilityIncluded = true

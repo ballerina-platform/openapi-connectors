@@ -15,24 +15,24 @@ Before using this connector in your Ballerina application, complete the followin
 ## Quickstart
 
 ### Step 1: Import connector
-Import the ballerinax/boxapi module into the Ballerina project.
+Import the ballerinax/box module into the Ballerina project.
 
 ```ballerina
-import ballerinax/boxapi;
+import ballerinax/box;
 ```
 
 ### Step 2: Create a new connector instance
 ```ballerina
 configurable http:BearerTokenConfig & readonly auth = ?;
-boxapi:ClientConfig clientConfig = {
+box:ClientConfig clientConfig = {
     auth : auth
 };
 
-boxapi:Client baseClient = check new Client(clientConfig, serviceUrl = "https://api.box.com/2.0");
+box:Client baseClient = check new Client(clientConfig, serviceUrl = "https://api.box.com/2.0");
 ```
 ### Step 3: Invoke connector operation
 1. You can get a existing file by using `getFilesId` method.
     ```ballerina
-    boxapi:File file = check baseClient->getFilesId("833080141230", "bal");
+    box:File file = check baseClient->getFilesId("833080141230", "bal");
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 

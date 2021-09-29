@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>9D2094F0-84F0-4D5C-858D-E400BDB3CA3F</title>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-720.000000, -2472.000000)">
+            <g id="Connector/opendesign" transform="translate(720.000000, 2472.000000)">
+                <path d="M15,39 C23.28425,39 30,32.28425 30,24 C30,15.7157375 23.28425,9 15,9 C6.7157375,9 0,15.7157375 0,24 C0,32.28425 6.7157375,39 15,39 Z M15.000125,29.92125 C18.27025,29.92125 20.92125,27.27025 20.92125,24.000125 C20.92125,20.73005 18.27025,18.0791 15.000125,18.0791 C11.73005,18.0791 9.0791,20.73005 9.0791,24.000125 C9.0791,27.27025 11.73005,29.92125 15.000125,29.92125 Z" id="Shape" fill="#1A66FF"></path>
+                <path d="M48,24 C48,32.28425 41.2842396,39 33,39 L33,9 C41.2842396,9 48,15.7157375 48,24 Z" id="Path" fill="#0D3380" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -2,7 +2,7 @@ openapi: '3.0.0'
 info:
  x-ballerina-display:
     label: Microsoft Dynamics 365 Business Central
-    iconPath: "resources/dynamics365.bussiness_central.svg"
+    iconPath: "resources/microsoft.dynamics365businesscentral.svg"
  version: 1.0.0
  title: (v1.0) Dynamics 365 Business Central
  description: >-

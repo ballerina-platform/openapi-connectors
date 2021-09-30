@@ -3,7 +3,7 @@ Connects to [Dynamics 365 Business Central API](https://dynamics.microsoft.com/e
 
 ### Package overview
 
-The `dynamics365.bussiness_central` is a [Ballerina](https://ballerina.io/) connector for connecting to Dynamics 365 Business Central API .
+The `microsoft.dynamics365businesscentral` is a [Ballerina](https://ballerina.io/) connector for connecting to Dynamics 365 Business Central API .
 
 #### Compatibility
 |                                   | Version                  |

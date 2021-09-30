@@ -52,10 +52,14 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# This is a generated connector for [Mailchimp Marketing API v3.0.52](https://mailchimp.com/developer/marketing/) OpenAPI Specification. 
+# The Mailchimp Marketing API allow to manage audiences, control automation workflows, sync email activity with your database and more.
 @display {label: "Mailchimp", iconPath: "resources/mailchimp.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [Mailchimp account](https://login.mailchimp.com/signup/) and navigate to the [API Keys section](https://us1.admin.mailchimp.com/account/api/).
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 

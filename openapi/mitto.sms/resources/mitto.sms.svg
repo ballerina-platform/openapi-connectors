@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>C7BD1A64-B709-4F08-A64D-79310130509B</title>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-1020.000000, -2168.000000)">
+            <g id="Connector/Ably-Copy-139" transform="translate(1020.000000, 2168.000000)">
+                <g id="Group-2" transform="translate(0.000000, 3.000000)">
+                    <path d="M46.4238286,17.1059434 L32.3250559,1.87564382 C31.2176317,0.679932098 29.6658157,0 28.0446746,0 C26.556851,0 25.124132,0.571394124 24.0389274,1.59757133 C21.6898726,3.81856325 21.5663317,7.59586412 23.7642932,9.9684504 L34.1879461,21.2259014 L24.4335472,32.1442833 C22.2978005,34.5590289 22.4977768,38.3165956 24.877939,40.4864581 C27.2572124,42.6554235 30.9812153,42.4706399 33.1382928,40.0774224 L46.4975976,25.1198133 C48.5284679,22.8467949 48.4964717,19.3403904 46.4256062,17.1041494 L46.4238286,17.1059434 Z" id="Path" fill="#E72679" fill-rule="nonzero"></path>
+                    <g id="Group" transform="translate(0.000000, 11.447617)" fill="#652580">
+                        <ellipse id="Oval" cx="9.51353859" cy="9.60964718" rx="9.51353859" ry="9.60964718"></ellipse>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

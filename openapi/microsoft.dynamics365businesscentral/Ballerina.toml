@@ -2,7 +2,7 @@
 license = ["Apache-2.0"]
 keywords = ["small-bussiness", "financial", "marketing"]
 org = "ballerinax"
-name = "dynamics365.bussiness_central"
+name = "microsoft.dynamics365businesscentral"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "0.1.0-SNAPSHOT"
 authors = ["Ballerina"]

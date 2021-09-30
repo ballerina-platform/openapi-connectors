@@ -15,21 +15,21 @@ Before using this connector in your Ballerina application, complete the followin
 To use the Dynamics 365 Business Central connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-First, import the `ballerinax/dynamics365.bussiness_central` module into the Ballerina project.
+First, import the `ballerinax/microsoft.dynamics365businesscentral` module into the Ballerina project.
 ```ballerina
-import ballerinax/filesdotcom;
+import ballerinax/microsoft.dynamics365businesscentral;
 ```
 
 ### Step 2: Create a new connector instance
-Create a `bussiness_central:ClientConfig` with the `OAuth Token` obtained, and initialize the connector with it.
+Create a `dynamics365businesscentral:ClientConfig` with the `OAuth Token` obtained, and initialize the connector with it.
 ```ballerina
-bussiness_central:ClientConfig clientConfig = {
+dynamics365businesscentral:ClientConfig clientConfig = {
     auth : {
         token: token
     }
 };
 
-bussiness_central:Client baseClient = check new Client(clientConfig);
+dynamics365businesscentral:Client baseClient = check new Client(clientConfig);
 ```
 
 ### Step 3: Invoke connector operation
@@ -39,8 +39,8 @@ bussiness_central:Client baseClient = check new Client(clientConfig);
 
     ```ballerina
     public function main() {
-        bussiness_central:InlineResponse200|error response = baseClient->listCompanies();
-        if (response is bussiness_central:InlineResponse200) {
+        dynamics365businesscentral:InlineResponse200|error response = baseClient->listCompanies();
+        if (response is dynamics365businesscentral:InlineResponse200) {
             log:printInfo(response.toString());
         } else {
             log:printError(response.message());

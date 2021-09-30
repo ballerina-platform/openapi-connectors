@@ -244,5 +244,5 @@ components:
       type: apiKey
       name: X-Fungenerators-Api-Secret
       in: header
-      x-ballerina-apikey-description: "Provide your API Key as `X-Fungenerators-Api-Secret`. Eg: {X-Fungenerators-Api-Secret : <Your API_Key>}"
+      description: Represents API Key `X-Fungenerators-Api-Secret`
 

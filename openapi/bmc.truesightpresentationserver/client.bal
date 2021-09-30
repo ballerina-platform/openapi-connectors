@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -15,12 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `Authorization`
+    string authorization;
 |};
 
 # This is a generated connector for [BMC Hardware Sentry TrueSight Presentation Server REST API v1.0](https://docs.bmc.com/docs/display/tsps107/Getting+started) OpenAPI specification.  
@@ -28,19 +27,19 @@ public type ApiKeysConfig record {|
 @display {label: "Bmc TrueSight Presentation Server", iconPath: "resources/bmc.truesightpresentationserver.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [user account](https://docs.bmc.com/docs/sso90/managing-users-474056900.html#Managingusers-Toaddanewuser) in BMC Hardware Sentry TrueSight Presentation Server and obtain tokens following [this guide](https://docs.bmc.com/docs/display/tsps107/TSWS+authentication).
     #
-    # + apiKeyConfig - Provide your API Key as `Authorization`. Eg: {Authorization: authToken [<API_KEY>]} 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, string serviceUrl, http:ClientConfiguration clientConfig =  {}) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Triggers a new collect on a specific device.
     #
@@ -51,7 +50,7 @@ public isolated client class Client {
         string  path = string `/hardware/actions/${deviceId}/collect-now`;
         map<anydata> queryParam = {"monitorClass": monitorClass};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -64,7 +63,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function rediscover(int deviceId) returns ActionResponse|error {
         string  path = string `/hardware/actions/${deviceId}/rediscover`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -78,7 +77,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function reinitialize(int deviceId, ReinitializeActionConfiguration payload) returns ActionResponse|error {
         string  path = string `/hardware/actions/${deviceId}/reinitialize`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -96,7 +95,7 @@ public isolated client class Client {
         string  path = string `/hardware/actions/${deviceId}/remove`;
         map<anydata> queryParam = {"monitorClass": monitorClass, "monitorSid": monitorSid};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -113,7 +112,7 @@ public isolated client class Client {
         string  path = string `/hardware/actions/${deviceId}/reset-error-count`;
         map<anydata> queryParam = {"monitorClass": monitorClass, "monitorSid": monitorSid};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -131,7 +130,7 @@ public isolated client class Client {
         string  path = string `/hardware/applications`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -142,7 +141,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getOneApplication(string applicationId) returns ApplicationSummary|error {
         string  path = string `/hardware/applications/${applicationId}`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ApplicationSummary response = check self.clientEp-> get(path, accHeaders, targetType = ApplicationSummary);
         return response;
@@ -153,7 +152,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getDeviceMonitors(int deviceId) returns http:Response|error {
         string  path = string `/hardware/device-monitors/${deviceId}`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -172,7 +171,7 @@ public isolated client class Client {
         string  path = string `/hardware/devices`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort, "groupId": groupId, "applicationId": applicationId, "serviceId": serviceId};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -182,7 +181,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getDevicesSummary() returns GlobalSummary|error {
         string  path = string `/hardware/devices-summary`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GlobalSummary response = check self.clientEp-> get(path, accHeaders, targetType = GlobalSummary);
         return response;
@@ -193,7 +192,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getDevice(int deviceId) returns DeviceSummary|error {
         string  path = string `/hardware/devices/${deviceId}`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         DeviceSummary response = check self.clientEp-> get(path, accHeaders, targetType = DeviceSummary);
         return response;
@@ -204,7 +203,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getDeviceAgent(int deviceId) returns DeviceAgent|error {
         string  path = string `/hardware/devices/${deviceId}/agent`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         DeviceAgent response = check self.clientEp-> get(path, accHeaders, targetType = DeviceAgent);
         return response;
@@ -215,7 +214,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getAgentDevices(int deviceId) returns ResultPage|error {
         string  path = string `/hardware/devices/${deviceId}/agent-devices`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -233,7 +232,7 @@ public isolated client class Client {
         string  path = string `/hardware/devices/${deviceId}/parameter-history`;
         map<anydata> queryParam = {"parameterName": parameterName, "monitorType": monitorType, "from": 'from, "to": to, "monitorSid": monitorSid};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -248,7 +247,7 @@ public isolated client class Client {
         string  path = string `/hardware/energy-usage/${deviceId}`;
         map<anydata> queryParam = {"rollPeriod": rollPeriod, "basis": basis};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -264,7 +263,7 @@ public isolated client class Client {
         string  path = string `/hardware/groups`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -275,7 +274,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getOneGroup(string groupId) returns GroupSummary|error {
         string  path = string `/hardware/groups/${groupId}`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GroupSummary response = check self.clientEp-> get(path, accHeaders, targetType = GroupSummary);
         return response;
@@ -287,7 +286,7 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function updateEnergyCost(string groupId, GroupConfiguration payload) returns GlobalSummary|error {
         string  path = string `/hardware/groups/${groupId}`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -310,7 +309,7 @@ public isolated client class Client {
         string  path = string `/hardware/heating-margin-devices`;
         map<anydata> queryParam = {"covered": covered, "page": page, "limit": 'limit, "direction": direction, "sort": sort, "groupId": groupId, "applicationId": applicationId, "serviceId": serviceId};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -327,7 +326,7 @@ public isolated client class Client {
         string  path = string `/hardware/history`;
         map<anydata> queryParam = {"groupId": groupId, "applicationId": applicationId, "serviceId": serviceId, "from": 'from, "to": to};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -345,7 +344,7 @@ public isolated client class Client {
         string  path = string `/hardware/search-devices`;
         map<anydata> queryParam = {"searchTerms": searchTerms, "groupId": groupId, "applicationId": applicationId, "serviceId": serviceId, "page": page, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -361,7 +360,7 @@ public isolated client class Client {
         string  path = string `/hardware/services`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
         return response;
@@ -372,57 +371,9 @@ public isolated client class Client {
     # + return - Successful operation 
     remote isolated function getOneService(string serviceId) returns ServiceSummary|error {
         string  path = string `/hardware/services/${serviceId}`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ServiceSummary response = check self.clientEp-> get(path, accHeaders, targetType = ServiceSummary);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

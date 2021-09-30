@@ -15,13 +15,23 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Users on atSpoke's Standard and Plus plans can
+    #            generate an API key by navigating to "My Profile" and then selecting
+    #            the API tab. All API actions are taken by the API user. If a
+    #            new key is generated or the user is deactivated, the old API key is
+    #            deactivated automatically.<br/><br/>
+    #            Requests made to atSpoke's public API are rate-limited to no more
+    #            than 6000 requests per minute per API key.<br/><br/>
+    #            <b> Warning:</b> _All_ private items viewable by the user whose
+    #         API key is being used will be viewable via the API. This means that if
+    #         an admin uses their key to connect atSpoke to an external system,
+    #         requests and resources that are private to a team in atSpoke will
+    #         accessible in the external system. Keep this in mind when building with
+    #         the API so that private data does not become public.
+    string apiKey;
 |};
 
 # This is a generated connector for [atSpoke API v0.1.0](https://askspoke.com/api/reference) OpenAPI specification.
@@ -33,19 +43,19 @@ public type ApiKeysConfig record {|
 @display {label: "atSpoke", iconPath: "resources/atspoke.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [atSpoke account](https://www.atspoke.com) and obtain tokens by following [this guide](https://help.atspoke.com/article/uga6efxps2-api-authentication).
     #
-    # + apiKeyConfig - Provide your API key as `api_key`. Eg: `{"api_key" : "<API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.askspoke.com/api/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # List requests
     #
@@ -62,7 +72,7 @@ public isolated client class Client {
         string  path = string `/requests`;
         map<anydata> queryParam = {"filter": filter, "status": status, "team": team, "tag": tag, "q": q, "start": 'start, "limit": 'limit, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
         return response;
@@ -71,9 +81,9 @@ public isolated client class Client {
     #
     # + payload - AddRequest payload 
     # + return - Request detail. 
-    remote isolated function addRequest(Body payload) returns Request|error {
+    remote isolated function addRequest(RequestsBody payload) returns Request|error {
         string  path = string `/requests`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -91,7 +101,7 @@ public isolated client class Client {
         string  path = string `/requests/tasks`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "byDueDate": byDueDate};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
         return response;
@@ -102,7 +112,7 @@ public isolated client class Client {
     # + return - Request object. 
     remote isolated function getRequest(string requestId) returns Request|error {
         string  path = string `/requests/${requestId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Request response = check self.clientEp-> get(path, accHeaders, targetType = Request);
         return response;
@@ -113,11 +123,9 @@ public isolated client class Client {
     # + return - No Content. 
     remote isolated function deleteRequest(string requestId) returns http:Response|error {
         string  path = string `/requests/${requestId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
         return response;
     }
     # Update a request
@@ -127,7 +135,7 @@ public isolated client class Client {
     # + return - Updated request object. 
     remote isolated function updateRequest(string requestId, RequestPatchBody payload) returns Request|error {
         string  path = string `/requests/${requestId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -139,9 +147,9 @@ public isolated client class Client {
     #
     # + payload - A payload containing the tag id of the tag to be added and a list of request ids that the tag will be added to. 
     # + return - No content 
-    remote isolated function bulkAddTags(Body1 payload) returns Request|error {
+    remote isolated function bulkAddTags(RequestsBulkAddTagBody payload) returns Request|error {
         string  path = string `/requests/bulk_add_tag`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -159,7 +167,7 @@ public isolated client class Client {
         string  path = string `/requests/${requestId}/secondary`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2002 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2002);
         return response;
@@ -169,9 +177,9 @@ public isolated client class Client {
     # + requestId - ID of the request. 
     # + payload - PostRequestMessage payload 
     # + return - Update object. 
-    remote isolated function postRequestMessage(string requestId, Body2 payload) returns Update|error {
+    remote isolated function postRequestMessage(string requestId, RequestidMessagesBody payload) returns Update|error {
         string  path = string `/requests/${requestId}/messages`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -184,9 +192,9 @@ public isolated client class Client {
     # + requestId - the request id of the request you wish to merge in to 
     # + payload - MergeRequest payload 
     # + return - No Content. 
-    remote isolated function mergeRequest(string requestId, Body3 payload) returns http:Response|error {
+    remote isolated function mergeRequest(string requestId, RequestidMergeBody payload) returns http:Response|error {
         string  path = string `/requests/${requestId}/merge`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -199,9 +207,9 @@ public isolated client class Client {
     # + requestId - ID of the request that needs to be updated. 
     # + payload - AddTagsToRequest payload 
     # + return - No Content. 
-    remote isolated function addTagsToRequest(string requestId, Body4 payload) returns http:Response|error {
+    remote isolated function addTagsToRequest(string requestId, RequestidTagsBody payload) returns http:Response|error {
         string  path = string `/requests/${requestId}/tags`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -216,11 +224,9 @@ public isolated client class Client {
     # + return - No Content. 
     remote isolated function deleteTagFromRequest(string requestId, string tagId) returns http:Response|error {
         string  path = string `/requests/${requestId}/tags/${tagId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
         return response;
     }
     # Add a subscriber
@@ -230,11 +236,9 @@ public isolated client class Client {
     # + return - All request subscribers 
     remote isolated function addSubscriberToRequest(string requestId, string userId) returns SubscriberList|error {
         string  path = string `/requests/${requestId}/subscribers/${userId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        SubscriberList response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = SubscriberList);
+        SubscriberList response = check self.clientEp-> post(path, request, targetType = SubscriberList);
         return response;
     }
     # Remove a subscriber
@@ -244,11 +248,7 @@ public isolated client class Client {
     # + return - All request subscribers 
     remote isolated function removeSubscriberFromRequest(string requestId, string userId) returns SubscriberList|error {
         string  path = string `/requests/${requestId}/subscribers/${userId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        SubscriberList response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = SubscriberList);
+        SubscriberList response = check self.clientEp-> delete(path, targetType = SubscriberList);
         return response;
     }
     # List request types
@@ -263,7 +263,7 @@ public isolated client class Client {
         string  path = string `/request_types`;
         map<anydata> queryParam = {"q": q, "team": team, "start": 'start, "limit": 'limit, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2003 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2003);
         return response;
@@ -274,7 +274,7 @@ public isolated client class Client {
     # + return - A request type object. 
     remote isolated function getRequestType(string requestTypeId) returns RequestType|error {
         string  path = string `/request_types/${requestTypeId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         RequestType response = check self.clientEp-> get(path, accHeaders, targetType = RequestType);
         return response;
@@ -294,7 +294,7 @@ public isolated client class Client {
         string  path = string `/resources`;
         map<anydata> queryParam = {"q": q, "ai": ai, "status": status, "team": team, "author": author, "reviewBy": reviewBy, "start": 'start, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2004 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2004);
         return response;
@@ -305,7 +305,7 @@ public isolated client class Client {
     # + return - Updated resource object. 
     remote isolated function addResource(ResourcePostBody payload) returns Resource|error {
         string  path = string `/resources`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -319,7 +319,7 @@ public isolated client class Client {
     # + return - Resource object. 
     remote isolated function getResource(string resourceId) returns Resource|error {
         string  path = string `/resources/${resourceId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Resource response = check self.clientEp-> get(path, accHeaders, targetType = Resource);
         return response;
@@ -330,11 +330,9 @@ public isolated client class Client {
     # + return - No Content. 
     remote isolated function deleteResource(string resourceId) returns http:Response|error {
         string  path = string `/resources/${resourceId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
         return response;
     }
     # Update a resource
@@ -344,7 +342,7 @@ public isolated client class Client {
     # + return - Updated resource object. 
     remote isolated function updateResource(string resourceId, ResourcePostBody payload) returns Resource|error {
         string  path = string `/resources/${resourceId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -363,7 +361,7 @@ public isolated client class Client {
         string  path = string `/tags`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "q": q, "tagId": tagId};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2005 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2005);
         return response;
@@ -380,7 +378,7 @@ public isolated client class Client {
         string  path = string `/teams`;
         map<anydata> queryParam = {"q": q, "ai": ai, "slug": slug, "start": 'start, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2006 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2006);
         return response;
@@ -391,7 +389,7 @@ public isolated client class Client {
     # + return - Team object. 
     remote isolated function getTeam(string teamId) returns Team|error {
         string  path = string `/teams/${teamId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Team response = check self.clientEp-> get(path, accHeaders, targetType = Team);
         return response;
@@ -403,7 +401,7 @@ public isolated client class Client {
     # + return - Team object. 
     remote isolated function updateTeam(string teamId, TeamPatchBody payload) returns Team|error {
         string  path = string `/teams/${teamId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -423,7 +421,7 @@ public isolated client class Client {
         string  path = string `/users`;
         map<anydata> queryParam = {"q": q, "status": status, "team": team, "start": 'start, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2007 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2007);
         return response;
@@ -434,7 +432,7 @@ public isolated client class Client {
     # + return - User object. 
     remote isolated function getUser(string userId) returns User|error {
         string  path = string `/users/${userId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         User response = check self.clientEp-> get(path, accHeaders, targetType = User);
         return response;
@@ -444,9 +442,9 @@ public isolated client class Client {
     # + userId - ID of user that needs to be updated. 
     # + payload - UpdateUser payload 
     # + return - User detail. 
-    remote isolated function updateUser(string userId, Body5 payload) returns User|error {
+    remote isolated function updateUser(string userId, UsersUseridBody payload) returns User|error {
         string  path = string `/users/${userId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -460,7 +458,7 @@ public isolated client class Client {
     # + return - User object. 
     remote isolated function getUserByEmail(string address) returns User|error {
         string  path = string `/users/email/${address}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         User response = check self.clientEp-> get(path, accHeaders, targetType = User);
         return response;
@@ -470,9 +468,7 @@ public isolated client class Client {
     # + return - User and Org details 
     remote isolated function whoami() returns InlineResponse2008|error {
         string  path = string `/whoami`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2008 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2008);
+        InlineResponse2008 response = check self.clientEp-> get(path, targetType = InlineResponse2008);
         return response;
     }
     # List config lists
@@ -487,7 +483,7 @@ public isolated client class Client {
         string  path = string `/configlists`;
         map<anydata> queryParam = {"q": q, "start": 'start, "limit": 'limit, "listId": listId, "withItem": withItem};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse2009 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2009);
         return response;
@@ -499,7 +495,7 @@ public isolated client class Client {
     # + return - A config list object. 
     remote isolated function addConfigList(string listId, ConfigList payload) returns ConfigList|error {
         string  path = string `/configlists/${listId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -513,11 +509,9 @@ public isolated client class Client {
     # + return - No Content. 
     remote isolated function deleteConfigList(string listId) returns http:Response|error {
         string  path = string `/configlists/${listId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
         return response;
     }
     # Update a config list.
@@ -527,7 +521,7 @@ public isolated client class Client {
     # + return - A config list object. 
     remote isolated function updateConfigList(string listId, ConfigList payload) returns ConfigList|error {
         string  path = string `/configlists/${listId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -540,7 +534,7 @@ public isolated client class Client {
     # + return - Lists all the webhook subscriptions for this user on this org. 
     remote isolated function getWebhooks() returns InlineResponse20010|error {
         string  path = string `/webhooks`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         InlineResponse20010 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20010);
         return response;
@@ -551,7 +545,7 @@ public isolated client class Client {
     # + return - Webhook subscription detail. 
     remote isolated function addWebhook(WebhookSubscriptionPostBody payload) returns WebhookSubscription|error {
         string  path = string `/webhooks`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -565,7 +559,7 @@ public isolated client class Client {
     # + return - Webhook Subscription object. 
     remote isolated function getWebhook(string webhookId) returns WebhookSubscription|error {
         string  path = string `/webhooks/${webhookId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         WebhookSubscription response = check self.clientEp-> get(path, accHeaders, targetType = WebhookSubscription);
         return response;
@@ -576,11 +570,9 @@ public isolated client class Client {
     # + return - No Content. 
     remote isolated function deleteWebhook(string webhookId) returns http:Response|error {
         string  path = string `/webhooks/${webhookId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
         return response;
     }
     # Update a webhook subscription
@@ -590,7 +582,7 @@ public isolated client class Client {
     # + return - Updated webhook subscription object. 
     remote isolated function updateWebhook(string webhookId, WebhookSubscriptionPostBody payload) returns WebhookSubscription|error {
         string  path = string `/webhooks/${webhookId}`;
-        map<any> headerValues = {"Api-Key": self.apiKeys["Api-Key"]};
+        map<any> headerValues = {"Api-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -598,52 +590,4 @@ public isolated client class Client {
         WebhookSubscription response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=WebhookSubscription);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

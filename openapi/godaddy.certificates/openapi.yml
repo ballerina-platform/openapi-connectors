@@ -1631,14 +1631,15 @@ paths:
           - INTERNAL_SERVER_ERROR
       security:
         - ApiKeyAuth: []
+security:
+  - ApiKeyAuth: []
 components:
   securitySchemes:
     ApiKeyAuth:       
       type: apiKey
       in: header  
       name: Authorization
-      x-ballerina-apikey-description: "Provide your API Key as `Authorization`. Eg: {Authorization : sso-key [<API_KEY>]:[<API_SECRET>]}"
-
+      description: Represents API Key 'Authorization'
   schemas:
     Certificate:
       required:

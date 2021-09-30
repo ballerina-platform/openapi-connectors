@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `api_key`
+    string apiKey;
 |};
 
 # This is a generated connector for [Dataflow Kit API v1.3](https://dataflowkit.com/doc-api) OpenAPI Specification.
@@ -40,19 +38,19 @@ public type ApiKeysConfig record {|
 @display {label: "Dataflow Kit", iconPath: "resources/dataflowkit.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [Dataflow Kit account](https://account.dataflowkit.com/signup) and obtain tokens by following [this guide](https://dataflowkit.com/doc-api#section/Authentication).
     #
-    # + apiKeyConfig - Provide your API Key as api_key. Eg: {api_key : <Your API Key>} 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.dataflowkit.com/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Save web page as PDF
     #
@@ -60,7 +58,7 @@ public isolated client class Client {
     # + return - A PDF file. 
     remote isolated function urlToPdf(Url2pdfrequest payload) returns string|error {
         string  path = string `/convert/url/pdf`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -74,7 +72,7 @@ public isolated client class Client {
     # + return - Returns jpg or png file. 
     remote isolated function urlToScreenshot(Url2screenshotrequest payload) returns string|error {
         string  path = string `/convert/url/screenshot`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -88,7 +86,7 @@ public isolated client class Client {
     # + return - Returns utf8 encoded web page content. 
     remote isolated function fetch(Fetchrequest payload) returns json|error {
         string  path = string `/fetch`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -102,7 +100,7 @@ public isolated client class Client {
     # + return - Returns data in the one of the follwing formats - JSON, JSON Lines, CSV, MS Excel, XML 
     remote isolated function parse(Parserequest payload) returns json|error {
         string  path = string `/parse`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -116,7 +114,7 @@ public isolated client class Client {
     # + return - Returns data in the one of the follwing formats - JSON, JSON Lines, CSV, MS Excel, XML 
     remote isolated function serp(Serprequest payload) returns json|error {
         string  path = string `/serp`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -124,38 +122,4 @@ public isolated client class Client {
         json response = check self.clientEp->post(path, request, targetType=json);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

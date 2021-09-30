@@ -33,7 +33,6 @@ components:
       type: apiKey
       in: query
       name: license
-      x-ballerina-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
   schemas:
     CurrencyInfo:
       properties:
@@ -49,6 +48,8 @@ components:
           type: string
         Credits:
           type: string
+security:
+  - ApiKeyAuth : []
 paths:
   /getcurrencyrate:
     get:

@@ -42,7 +42,6 @@ public type StringInsecureDeserializationJsonDetection record {
 public type StringAutomaticThreatDetection record {
     # True if the operation was successful, false otherwise
     boolean Successful?;
-    # True if the operation is safe, false otherwise
     boolean CleanResult?;
     # True if the input contained Insecure Deserialization JSON, false otherwise
     boolean ContainedJsonInsecureDeserializationAttack?;

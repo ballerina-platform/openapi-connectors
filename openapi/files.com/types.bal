@@ -108,6 +108,72 @@ public type UsageDailySnapshotEntityArr UsageDailySnapshotEntity[];
 
 public type UserRequestEntityArr UserRequestEntity[];
 
+public type BundleRecipientsBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Bundle to share.
+    int bundle_id;
+    # Email addresses to share this bundle with.
+    string recipient;
+    # Name of recipient.
+    string name?;
+    # Company of recipient.
+    string company?;
+    # Note to include in email.
+    string note?;
+    # Set to true to share the link with the recipient upon creation.
+    boolean share_after_create?;
+};
+
+public type UserIdAs2KeysBody1 record {
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
+};
+
+public type UserIdAs2KeysBody2 record {
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
+};
+
+public type BundleRecipientsBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Bundle to share.
+    int bundle_id;
+    # Email addresses to share this bundle with.
+    string recipient;
+    # Name of recipient.
+    string name?;
+    # Company of recipient.
+    string company?;
+    # Note to include in email.
+    string note?;
+    # Set to true to share the link with the recipient upon creation.
+    boolean share_after_create?;
+};
+
+public type UserPublicKeysBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Internal reference for key.
+    string title;
+    # Actual contents of SSH key.
+    string public_key;
+};
+
+public type GroupUsersBody record {
+    # Group ID to add user to.
+    int group_id;
+    # User ID to add to group.
+    int user_id;
+    # Is the user a group administrator?
+    boolean admin?;
+};
+
 # Create Form Field Set
 public type PostFormFieldSets record {
     # User ID.  Provide a value of `0` to operate the current session's user.
@@ -124,12 +190,215 @@ public type PostFormFieldSets record {
     PatchformfieldsetsFormFields[] form_fields?;
 };
 
+public type RemoteServersBody1 record {
+    # AWS Access Key.
+    string aws_access_key?;
+    # AWS secret key.
+    string aws_secret_key?;
+    # Password if needed.
+    string password?;
+    # Private key if needed.
+    string private_key?;
+    # SSL client certificate.
+    string ssl_certificate?;
+    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    string google_cloud_storage_credentials_json?;
+    # Wasabi access key.
+    string wasabi_access_key?;
+    # Wasabi secret key.
+    string wasabi_secret_key?;
+    # Backblaze B2 Cloud Storage keyID.
+    string backblaze_b2_key_id?;
+    # Backblaze B2 Cloud Storage applicationKey.
+    string backblaze_b2_application_key?;
+    # Rackspace API key from the Rackspace Cloud Control Panel.
+    string rackspace_api_key?;
+    # Reset authenticated account
+    boolean reset_authentication?;
+    # Azure Blob Storage secret key.
+    string azure_blob_storage_access_key?;
+    # Hostname or IP address
+    string hostname?;
+    # Internal name for your reference
+    string name?;
+    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    int max_connections?;
+    # Port for remote server.  Not needed for S3.
+    int port?;
+    # S3 bucket name
+    string s3_bucket?;
+    # S3 region
+    string s3_region?;
+    # Remote server certificate
+    string server_certificate?;
+    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
+    string server_host_key?;
+    # Remote server type.
+    string server_type?;
+    # Should we require SSL?
+    string ssl?;
+    # Remote server username.  Not needed for S3 buckets.
+    string username?;
+    # Google Cloud Storage bucket name
+    string google_cloud_storage_bucket?;
+    # Google Cloud Project ID
+    string google_cloud_storage_project_id?;
+    # Backblaze B2 Cloud Storage Bucket name
+    string backblaze_b2_bucket?;
+    # Backblaze B2 Cloud Storage S3 Endpoint
+    string backblaze_b2_s3_endpoint?;
+    # Wasabi Bucket name
+    string wasabi_bucket?;
+    # Wasabi region
+    string wasabi_region?;
+    # Rackspace username used to login to the Rackspace Cloud Control Panel.
+    string rackspace_username?;
+    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    string rackspace_region?;
+    # The name of the container (top level directory) where files will sync.
+    string rackspace_container?;
+    # Either personal or business_other account types
+    string one_drive_account_type?;
+    # Azure Blob Storage Account name
+    string azure_blob_storage_account?;
+    # Azure Blob Storage Container name
+    string azure_blob_storage_container?;
+    # S3-compatible Bucket name
+    string s3_compatible_bucket?;
+    # S3-compatible Bucket name
+    string s3_compatible_region?;
+    # S3-compatible endpoint
+    string s3_compatible_endpoint?;
+    # `true` if remote server only accepts connections from dedicated IPs
+    boolean enable_dedicated_ips?;
+    # S3-compatible access key
+    string s3_compatible_access_key?;
+    # S3-compatible secret key
+    string s3_compatible_secret_key?;
+};
+
+public type RemoteServersBody2 record {
+    # AWS Access Key.
+    string aws_access_key?;
+    # AWS secret key.
+    string aws_secret_key?;
+    # Password if needed.
+    string password?;
+    # Private key if needed.
+    string private_key?;
+    # SSL client certificate.
+    string ssl_certificate?;
+    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    string google_cloud_storage_credentials_json?;
+    # Wasabi access key.
+    string wasabi_access_key?;
+    # Wasabi secret key.
+    string wasabi_secret_key?;
+    # Backblaze B2 Cloud Storage keyID.
+    string backblaze_b2_key_id?;
+    # Backblaze B2 Cloud Storage applicationKey.
+    string backblaze_b2_application_key?;
+    # Rackspace API key from the Rackspace Cloud Control Panel.
+    string rackspace_api_key?;
+    # Reset authenticated account
+    boolean reset_authentication?;
+    # Azure Blob Storage secret key.
+    string azure_blob_storage_access_key?;
+    # Hostname or IP address
+    string hostname?;
+    # Internal name for your reference
+    string name?;
+    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    int max_connections?;
+    # Port for remote server.  Not needed for S3.
+    int port?;
+    # S3 bucket name
+    string s3_bucket?;
+    # S3 region
+    string s3_region?;
+    # Remote server certificate
+    string server_certificate?;
+    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
+    string server_host_key?;
+    # Remote server type.
+    string server_type?;
+    # Should we require SSL?
+    string ssl?;
+    # Remote server username.  Not needed for S3 buckets.
+    string username?;
+    # Google Cloud Storage bucket name
+    string google_cloud_storage_bucket?;
+    # Google Cloud Project ID
+    string google_cloud_storage_project_id?;
+    # Backblaze B2 Cloud Storage Bucket name
+    string backblaze_b2_bucket?;
+    # Backblaze B2 Cloud Storage S3 Endpoint
+    string backblaze_b2_s3_endpoint?;
+    # Wasabi Bucket name
+    string wasabi_bucket?;
+    # Wasabi region
+    string wasabi_region?;
+    # Rackspace username used to login to the Rackspace Cloud Control Panel.
+    string rackspace_username?;
+    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    string rackspace_region?;
+    # The name of the container (top level directory) where files will sync.
+    string rackspace_container?;
+    # Either personal or business_other account types
+    string one_drive_account_type?;
+    # Azure Blob Storage Account name
+    string azure_blob_storage_account?;
+    # Azure Blob Storage Container name
+    string azure_blob_storage_container?;
+    # S3-compatible Bucket name
+    string s3_compatible_bucket?;
+    # S3-compatible Bucket name
+    string s3_compatible_region?;
+    # S3-compatible endpoint
+    string s3_compatible_endpoint?;
+    # `true` if remote server only accepts connections from dedicated IPs
+    boolean enable_dedicated_ips?;
+    # S3-compatible access key
+    string s3_compatible_access_key?;
+    # S3-compatible secret key
+    string s3_compatible_secret_key?;
+};
+
+public type SessionsBody record {
+    # Username to sign in as
+    string username?;
+    # Password for sign in
+    string password?;
+    # If this user has a 2FA device, provide its OTP or code here.
+    string otp?;
+    # Identifier for a partially-completed login
+    string partial_session_id?;
+};
+
+public type IdShareBody record {
+    # A list of email addresses to share this bundle with. Required unless `recipients` is used.
+    string[] to?;
+    # Note to include in email.
+    string note?;
+    # A list of recipients to share this bundle with. Required unless `to` is used.
+    record  { } [] recipients?;
+};
+
 # Image entity
 public type ImageEntity record {
     # Image name
     string name?;
     # Image URI
     string uri?;
+};
+
+public type MessagesIdBody record {
+    # Project to which the message should be attached.
+    int project_id;
+    # Message subject.
+    string subject;
+    # Message body.
+    string body;
 };
 
 # Create Remote Server
@@ -300,6 +569,21 @@ public type UserEntity record {
     string user_root?;
 };
 
+public type SiteTestwebhookBody2 record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # action for test body
+    string action?;
+};
+
 # List Messages
 public type MessageEntity record {
     # Message ID
@@ -310,6 +594,21 @@ public type MessageEntity record {
     string body?;
     # List Message Comments
     MessageCommentEntity comments?;
+};
+
+public type SiteTestwebhookBody1 record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # action for test body
+    string action?;
 };
 
 # List External Events
@@ -336,6 +635,45 @@ public type ExternalEventEntity record {
     int bytes_synced?;
     # Associated Remote Server type, if any
     string remote_server_type?;
+};
+
+public type PermissionsBody2 record {
+    # Group ID
+    int group_id?;
+    # Folder path
+    string path?;
+    #  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
+    string permission?;
+    # Apply to subfolders recursively?
+    boolean recursive?;
+    # User ID.  Provide `username` or `user_id`
+    int user_id?;
+    # User username.  Provide `username` or `user_id`
+    string username?;
+};
+
+public type PermissionsBody1 record {
+    # Group ID
+    int group_id?;
+    # Folder path
+    string path?;
+    #  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
+    string permission?;
+    # Apply to subfolders recursively?
+    boolean recursive?;
+    # User ID.  Provide `username` or `user_id`
+    int user_id?;
+    # User username.  Provide `username` or `user_id`
+    string username?;
+};
+
+public type FileCommentReactionsBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # ID of file comment to attach reaction to.
+    int file_comment_id;
+    # Emoji to react with.
+    string emoji;
 };
 
 # Show History Export
@@ -436,6 +774,297 @@ public type BundleRecipientEntity record {
     string sent_at?;
 };
 
+public type NotificationsBody1 record {
+    # The id of the user to notify. Provide `user_id`, `username` or `group_id`.
+    int user_id?;
+    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
+    boolean notify_on_copy?;
+    # If `true` actions initiated by the user will still result in a notification
+    boolean notify_user_actions?;
+    # If `true`, enable notifications for each subfolder in this path
+    boolean recursive?;
+    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    string send_interval?;
+    # The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
+    int group_id?;
+    # Path
+    string path?;
+    # The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
+    string username?;
+};
+
+public type ActionNotificationExportsBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Start date/time of export range.
+    string start_at?;
+    # End date/time of export range.
+    string end_at?;
+    # Error message associated with the request, if any.
+    string query_message?;
+    # The HTTP request method used by the webhook.
+    string query_request_method?;
+    # The target webhook URL.
+    string query_request_url?;
+    # The HTTP status returned from the server in response to the webhook request.
+    string query_status?;
+    # true if the webhook request succeeded (i.e. returned a 200 or 204 response status). false otherwise.
+    boolean query_success?;
+    # Return notifications that were triggered by actions on this specific path.
+    string query_path?;
+    # Return notifications that were triggered by actions in this folder.
+    string query_folder?;
+};
+
+public type NotificationsBody2 record {
+    # The id of the user to notify. Provide `user_id`, `username` or `group_id`.
+    int user_id?;
+    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
+    boolean notify_on_copy?;
+    # If `true` actions initiated by the user will still result in a notification
+    boolean notify_user_actions?;
+    # If `true`, enable notifications for each subfolder in this path
+    boolean recursive?;
+    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    string send_interval?;
+    # The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
+    int group_id?;
+    # Path
+    string path?;
+    # The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
+    string username?;
+};
+
+public type ApiKeysIdBody record {
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+};
+
+public type MembershipsUserIdBody1 record {
+    # Is the user a group administrator?
+    boolean admin?;
+};
+
+public type MembershipsUserIdBody2 record {
+    # Is the user a group administrator?
+    boolean admin?;
+};
+
+public type RequestsBody2 record {
+    # Folder path on which to request the file.
+    string path;
+    # Destination filename (without extension) to request.
+    string destination;
+    # A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+};
+
+public type RequestsBody1 record {
+    # Folder path on which to request the file.
+    string path;
+    # Destination filename (without extension) to request.
+    string destination;
+    # A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+};
+
+public type UsersBody1 record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type UsersBody2 record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type ExternalEventsBody1 record {
+    # Status of event.
+    string status;
+    # Event body
+    string body;
+};
+
 # List Usage Daily Snapshots
 public type UsageDailySnapshotEntity record {
     # ID of the usage record
@@ -446,6 +1075,24 @@ public type UsageDailySnapshotEntity record {
     int current_storage?;
     # Usage broken down by each top-level folder
     anydata[] usage_by_top_level_dir?;
+};
+
+public type GroupUsersBody2 record {
+    # Group ID to add user to.
+    int group_id;
+    # User ID to add to group.
+    int user_id;
+    # Is the user a group administrator?
+    boolean admin?;
+};
+
+public type GroupUsersBody1 record {
+    # Group ID to add user to.
+    int group_id;
+    # User ID to add to group.
+    int user_id;
+    # Is the user a group administrator?
+    boolean admin?;
 };
 
 # List Permissions
@@ -498,6 +1145,29 @@ public type NotificationEntity record {
     boolean suppressed_email?;
 };
 
+public type ExternalEventsBody record {
+    # Status of event.
+    string status;
+    # Event body
+    string body;
+};
+
+public type ExternalEventsBody2 record {
+    # Status of event.
+    string status;
+    # Event body
+    string body;
+};
+
+public type PublicKeysBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Internal reference for key.
+    string title;
+    # Actual contents of SSH key.
+    string public_key;
+};
+
 # Create Group User
 public type GroupUserEntity record {
     # Group name
@@ -510,6 +1180,35 @@ public type GroupUserEntity record {
     boolean admin?;
     # A list of usernames for users in this group
     string[] usernames?;
+};
+
+public type GroupUsersIdBody record {
+    # Group ID to add user to.
+    int group_id;
+    # User ID to add to group.
+    int user_id;
+    # Is the user a group administrator?
+    boolean admin?;
+};
+
+public type IdShareBody1 record {
+    # A list of email addresses to share this bundle with. Required unless `recipients` is used.
+    string[] to?;
+    # Note to include in email.
+    string note?;
+    # A list of recipients to share this bundle with. Required unless `to` is used.
+    record  { } [] recipients?;
+};
+
+public type MessagesBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Project to which the message should be attached.
+    int project_id;
+    # Message subject.
+    string subject;
+    # Message body.
+    string body;
 };
 
 # List Public Keys
@@ -534,110 +1233,107 @@ public type InboxUploadEntity record {
     string created_at?;
 };
 
-public type Body198 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # raw body text
-    string raw_body?;
-    # Send the file data as the request body?
-    boolean file_as_body?;
-    # Send the file data as a named parameter in the request POST body
-    string file_form_field?;
-    # action for test body
-    string action?;
+public type MessagesBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Project to which the message should be attached.
+    int project_id;
+    # Message subject.
+    string subject;
+    # Message body.
+    string body;
 };
 
-public type Body199 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # raw body text
-    string raw_body?;
-    # Send the file data as the request body?
-    boolean file_as_body?;
-    # Send the file data as a named parameter in the request POST body
-    string file_form_field?;
-    # action for test body
-    string action?;
+public type IdShareBody2 record {
+    # A list of email addresses to share this bundle with. Required unless `recipients` is used.
+    string[] to?;
+    # Note to include in email.
+    string note?;
+    # A list of recipients to share this bundle with. Required unless `to` is used.
+    record  { } [] recipients?;
 };
 
-public type Body196 record {
-    # Name of user requested
-    string name;
-    # Email of user requested
-    string email;
-    # Details of the user request
-    string details;
+public type ClickwrapsBody record {
+    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
+    string name?;
+    # Body text of Clickwrap (supports Markdown formatting).
+    string body?;
+    # Use this Clickwrap for Bundles?
+    string use_with_bundles?;
+    # Use this Clickwrap for Inboxes?
+    string use_with_inboxes?;
+    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    string use_with_users?;
 };
 
-public type Body197 record {
-    # Name of user requested
-    string name;
-    # Email of user requested
-    string email;
-    # Details of the user request
-    string details;
+public type FileCommentReactionsBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # ID of file comment to attach reaction to.
+    int file_comment_id;
+    # Emoji to react with.
+    string emoji;
 };
 
-public type Body194 record {
-    # Logo for custom branding.
-    string file;
+public type FileCommentReactionsBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # ID of file comment to attach reaction to.
+    int file_comment_id;
+    # Emoji to react with.
+    string emoji;
 };
 
-public type Body195 record {
-    # Name of user requested
-    string name;
-    # Email of user requested
-    string email;
-    # Details of the user request
-    string details;
+public type FileCommentsBody2 record {
+    # Comment body.
+    string body;
+    # File path.
+    string path;
 };
 
-public type Body192 record {
-    # Logo for custom branding.
-    string file;
+public type MessageCommentsBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Comment body.
+    string body;
 };
 
-public type Body193 record {
-    # Logo for custom branding.
-    string file;
+public type MessageCommentsBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Comment body.
+    string body;
 };
 
-public type Body190 record {
-    # Username to sign in as
-    string username?;
-    # Password for sign in
+public type BundlesBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # A list of paths to include in this bundle.
+    string[] paths;
+    # Password for this bundle.
     string password?;
-    # If this user has a 2FA device, provide its OTP or code here.
-    string otp?;
-    # Identifier for a partially-completed login
-    string partial_session_id?;
-};
-
-public type Body191 record {
-    # Username to sign in as
-    string username?;
-    # Password for sign in
-    string password?;
-    # If this user has a 2FA device, provide its OTP or code here.
-    string otp?;
-    # Identifier for a partially-completed login
-    string partial_session_id?;
+    # Id of Form Field Set to use with this bundle
+    int form_field_set_id?;
+    # Bundle expiration date/time
+    string expires_at?;
+    # Maximum number of times bundle can be accessed
+    int max_uses?;
+    # Public description
+    string description?;
+    # Bundle internal note
+    string note?;
+    # Bundle code.  This code forms the end part of the Public URL.
+    string code?;
+    # Restrict users to previewing files only?
+    boolean preview_only?;
+    # Show a registration page that captures the downloader's name and email address?
+    boolean require_registration?;
+    # ID of the clickwrap to use with this bundle.
+    int clickwrap_id?;
+    # ID of the associated inbox, if available.
+    int inbox_id?;
+    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    boolean require_share_recipient?;
 };
 
 # Create File Comment Reaction
@@ -664,28 +1360,25 @@ public type ClickwrapEntity record {
     string use_with_inboxes?;
 };
 
-public type Body109 record {
-    # Comment body.
-    string body;
-    # File path.
-    string path;
-};
-
-public type Body107 record {
-    # Comment body.
-    string body;
-};
-
-public type Body99 record {
-    # Move destination path.
-    string destination;
-};
-
-public type Body108 record {
-    # Comment body.
-    string body;
-    # File path.
-    string path;
+public type WebhookTestsBody record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # raw body text
+    string raw_body?;
+    # Send the file data as the request body?
+    boolean file_as_body?;
+    # Send the file data as a named parameter in the request POST body
+    string file_form_field?;
+    # action for test body
+    string action?;
 };
 
 # Show Action Notification Export
@@ -734,80 +1427,399 @@ public type UserCipherUseEntity record {
     int user_id?;
 };
 
-public type Body98 record {
-    # Copy destination path.
-    string destination;
-    # Copy structure only?
-    boolean structure?;
+public type ClickwrapsBody2 record {
+    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
+    string name?;
+    # Body text of Clickwrap (supports Markdown formatting).
+    string body?;
+    # Use this Clickwrap for Bundles?
+    string use_with_bundles?;
+    # Use this Clickwrap for Inboxes?
+    string use_with_inboxes?;
+    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    string use_with_users?;
 };
 
-public type Body105 record {
-    # Comment body.
-    string body;
+public type RemoteServersIdBody record {
+    # AWS Access Key.
+    string aws_access_key?;
+    # AWS secret key.
+    string aws_secret_key?;
+    # Password if needed.
+    string password?;
+    # Private key if needed.
+    string private_key?;
+    # SSL client certificate.
+    string ssl_certificate?;
+    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    string google_cloud_storage_credentials_json?;
+    # Wasabi access key.
+    string wasabi_access_key?;
+    # Wasabi secret key.
+    string wasabi_secret_key?;
+    # Backblaze B2 Cloud Storage keyID.
+    string backblaze_b2_key_id?;
+    # Backblaze B2 Cloud Storage applicationKey.
+    string backblaze_b2_application_key?;
+    # Rackspace API key from the Rackspace Cloud Control Panel.
+    string rackspace_api_key?;
+    # Reset authenticated account
+    boolean reset_authentication?;
+    # Azure Blob Storage secret key.
+    string azure_blob_storage_access_key?;
+    # Hostname or IP address
+    string hostname?;
+    # Internal name for your reference
+    string name?;
+    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    int max_connections?;
+    # Port for remote server.  Not needed for S3.
+    int port?;
+    # S3 bucket name
+    string s3_bucket?;
+    # S3 region
+    string s3_region?;
+    # Remote server certificate
+    string server_certificate?;
+    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
+    string server_host_key?;
+    # Remote server type.
+    string server_type?;
+    # Should we require SSL?
+    string ssl?;
+    # Remote server username.  Not needed for S3 buckets.
+    string username?;
+    # Google Cloud Storage bucket name
+    string google_cloud_storage_bucket?;
+    # Google Cloud Project ID
+    string google_cloud_storage_project_id?;
+    # Backblaze B2 Cloud Storage Bucket name
+    string backblaze_b2_bucket?;
+    # Backblaze B2 Cloud Storage S3 Endpoint
+    string backblaze_b2_s3_endpoint?;
+    # Wasabi Bucket name
+    string wasabi_bucket?;
+    # Wasabi region
+    string wasabi_region?;
+    # Rackspace username used to login to the Rackspace Cloud Control Panel.
+    string rackspace_username?;
+    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    string rackspace_region?;
+    # The name of the container (top level directory) where files will sync.
+    string rackspace_container?;
+    # Either personal or business_other account types
+    string one_drive_account_type?;
+    # Azure Blob Storage Account name
+    string azure_blob_storage_account?;
+    # Azure Blob Storage Container name
+    string azure_blob_storage_container?;
+    # S3-compatible Bucket name
+    string s3_compatible_bucket?;
+    # S3-compatible Bucket name
+    string s3_compatible_region?;
+    # S3-compatible endpoint
+    string s3_compatible_endpoint?;
+    # `true` if remote server only accepts connections from dedicated IPs
+    boolean enable_dedicated_ips?;
+    # S3-compatible access key
+    string s3_compatible_access_key?;
+    # S3-compatible secret key
+    string s3_compatible_secret_key?;
 };
 
-public type Body97 record {
-    # Copy destination path.
-    string destination;
-    # Copy structure only?
-    boolean structure?;
+public type ClickwrapsBody1 record {
+    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
+    string name?;
+    # Body text of Clickwrap (supports Markdown formatting).
+    string body?;
+    # Use this Clickwrap for Bundles?
+    string use_with_bundles?;
+    # Use this Clickwrap for Inboxes?
+    string use_with_inboxes?;
+    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    string use_with_users?;
 };
 
-public type Body106 record {
-    # Comment body.
-    string body;
+public type ActionNotificationExportsBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Start date/time of export range.
+    string start_at?;
+    # End date/time of export range.
+    string end_at?;
+    # Error message associated with the request, if any.
+    string query_message?;
+    # The HTTP request method used by the webhook.
+    string query_request_method?;
+    # The target webhook URL.
+    string query_request_url?;
+    # The HTTP status returned from the server in response to the webhook request.
+    string query_status?;
+    # true if the webhook request succeeded (i.e. returned a 200 or 204 response status). false otherwise.
+    boolean query_success?;
+    # Return notifications that were triggered by actions on this specific path.
+    string query_path?;
+    # Return notifications that were triggered by actions in this folder.
+    string query_folder?;
 };
 
-public type Body103 record {
-    # Create parent directories if they do not exist?
-    boolean mkdir_parents?;
-    # Part if uploading a part.
-    int part?;
-    # How many parts to fetch?
-    int parts?;
-    string ref?;
-    # File byte offset to restart from.
-    int restart?;
-    # Allow file rename instead of overwrite?
-    boolean with_rename?;
+public type LocksLockpathBody2 record {
+    # Allow lock to be updated by any user?
+    boolean allow_access_by_any_user?;
+    # Is lock exclusive?
+    boolean exclusive?;
+    # Does lock apply to subfolders?
+    string recursive?;
+    # Lock timeout length
+    int timeout?;
 };
 
-public type Body104 record {
-    # Create parent directories if they do not exist?
-    boolean mkdir_parents?;
-    # Part if uploading a part.
-    int part?;
-    # How many parts to fetch?
-    int parts?;
-    string ref?;
-    # File byte offset to restart from.
-    int restart?;
-    # Allow file rename instead of overwrite?
-    boolean with_rename?;
+public type ActionNotificationExportsBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Start date/time of export range.
+    string start_at?;
+    # End date/time of export range.
+    string end_at?;
+    # Error message associated with the request, if any.
+    string query_message?;
+    # The HTTP request method used by the webhook.
+    string query_request_method?;
+    # The target webhook URL.
+    string query_request_url?;
+    # The HTTP status returned from the server in response to the webhook request.
+    string query_status?;
+    # true if the webhook request succeeded (i.e. returned a 200 or 204 response status). false otherwise.
+    boolean query_success?;
+    # Return notifications that were triggered by actions on this specific path.
+    string query_path?;
+    # Return notifications that were triggered by actions in this folder.
+    string query_folder?;
 };
 
-public type Body101 record {
-    # Move destination path.
-    string destination;
+public type RemoteServersIdBody1 record {
+    # AWS Access Key.
+    string aws_access_key?;
+    # AWS secret key.
+    string aws_secret_key?;
+    # Password if needed.
+    string password?;
+    # Private key if needed.
+    string private_key?;
+    # SSL client certificate.
+    string ssl_certificate?;
+    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    string google_cloud_storage_credentials_json?;
+    # Wasabi access key.
+    string wasabi_access_key?;
+    # Wasabi secret key.
+    string wasabi_secret_key?;
+    # Backblaze B2 Cloud Storage keyID.
+    string backblaze_b2_key_id?;
+    # Backblaze B2 Cloud Storage applicationKey.
+    string backblaze_b2_application_key?;
+    # Rackspace API key from the Rackspace Cloud Control Panel.
+    string rackspace_api_key?;
+    # Reset authenticated account
+    boolean reset_authentication?;
+    # Azure Blob Storage secret key.
+    string azure_blob_storage_access_key?;
+    # Hostname or IP address
+    string hostname?;
+    # Internal name for your reference
+    string name?;
+    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    int max_connections?;
+    # Port for remote server.  Not needed for S3.
+    int port?;
+    # S3 bucket name
+    string s3_bucket?;
+    # S3 region
+    string s3_region?;
+    # Remote server certificate
+    string server_certificate?;
+    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
+    string server_host_key?;
+    # Remote server type.
+    string server_type?;
+    # Should we require SSL?
+    string ssl?;
+    # Remote server username.  Not needed for S3 buckets.
+    string username?;
+    # Google Cloud Storage bucket name
+    string google_cloud_storage_bucket?;
+    # Google Cloud Project ID
+    string google_cloud_storage_project_id?;
+    # Backblaze B2 Cloud Storage Bucket name
+    string backblaze_b2_bucket?;
+    # Backblaze B2 Cloud Storage S3 Endpoint
+    string backblaze_b2_s3_endpoint?;
+    # Wasabi Bucket name
+    string wasabi_bucket?;
+    # Wasabi region
+    string wasabi_region?;
+    # Rackspace username used to login to the Rackspace Cloud Control Panel.
+    string rackspace_username?;
+    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    string rackspace_region?;
+    # The name of the container (top level directory) where files will sync.
+    string rackspace_container?;
+    # Either personal or business_other account types
+    string one_drive_account_type?;
+    # Azure Blob Storage Account name
+    string azure_blob_storage_account?;
+    # Azure Blob Storage Container name
+    string azure_blob_storage_container?;
+    # S3-compatible Bucket name
+    string s3_compatible_bucket?;
+    # S3-compatible Bucket name
+    string s3_compatible_region?;
+    # S3-compatible endpoint
+    string s3_compatible_endpoint?;
+    # `true` if remote server only accepts connections from dedicated IPs
+    boolean enable_dedicated_ips?;
+    # S3-compatible access key
+    string s3_compatible_access_key?;
+    # S3-compatible secret key
+    string s3_compatible_secret_key?;
 };
 
-public type Body102 record {
-    # Create parent directories if they do not exist?
-    boolean mkdir_parents?;
-    # Part if uploading a part.
-    int part?;
-    # How many parts to fetch?
-    int parts?;
-    string ref?;
-    # File byte offset to restart from.
-    int restart?;
-    # Allow file rename instead of overwrite?
-    boolean with_rename?;
+public type RemoteServersIdBody2 record {
+    # AWS Access Key.
+    string aws_access_key?;
+    # AWS secret key.
+    string aws_secret_key?;
+    # Password if needed.
+    string password?;
+    # Private key if needed.
+    string private_key?;
+    # SSL client certificate.
+    string ssl_certificate?;
+    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    string google_cloud_storage_credentials_json?;
+    # Wasabi access key.
+    string wasabi_access_key?;
+    # Wasabi secret key.
+    string wasabi_secret_key?;
+    # Backblaze B2 Cloud Storage keyID.
+    string backblaze_b2_key_id?;
+    # Backblaze B2 Cloud Storage applicationKey.
+    string backblaze_b2_application_key?;
+    # Rackspace API key from the Rackspace Cloud Control Panel.
+    string rackspace_api_key?;
+    # Reset authenticated account
+    boolean reset_authentication?;
+    # Azure Blob Storage secret key.
+    string azure_blob_storage_access_key?;
+    # Hostname or IP address
+    string hostname?;
+    # Internal name for your reference
+    string name?;
+    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    int max_connections?;
+    # Port for remote server.  Not needed for S3.
+    int port?;
+    # S3 bucket name
+    string s3_bucket?;
+    # S3 region
+    string s3_region?;
+    # Remote server certificate
+    string server_certificate?;
+    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
+    string server_host_key?;
+    # Remote server type.
+    string server_type?;
+    # Should we require SSL?
+    string ssl?;
+    # Remote server username.  Not needed for S3 buckets.
+    string username?;
+    # Google Cloud Storage bucket name
+    string google_cloud_storage_bucket?;
+    # Google Cloud Project ID
+    string google_cloud_storage_project_id?;
+    # Backblaze B2 Cloud Storage Bucket name
+    string backblaze_b2_bucket?;
+    # Backblaze B2 Cloud Storage S3 Endpoint
+    string backblaze_b2_s3_endpoint?;
+    # Wasabi Bucket name
+    string wasabi_bucket?;
+    # Wasabi region
+    string wasabi_region?;
+    # Rackspace username used to login to the Rackspace Cloud Control Panel.
+    string rackspace_username?;
+    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    string rackspace_region?;
+    # The name of the container (top level directory) where files will sync.
+    string rackspace_container?;
+    # Either personal or business_other account types
+    string one_drive_account_type?;
+    # Azure Blob Storage Account name
+    string azure_blob_storage_account?;
+    # Azure Blob Storage Container name
+    string azure_blob_storage_container?;
+    # S3-compatible Bucket name
+    string s3_compatible_bucket?;
+    # S3-compatible Bucket name
+    string s3_compatible_region?;
+    # S3-compatible endpoint
+    string s3_compatible_endpoint?;
+    # `true` if remote server only accepts connections from dedicated IPs
+    boolean enable_dedicated_ips?;
+    # S3-compatible access key
+    string s3_compatible_access_key?;
+    # S3-compatible secret key
+    string s3_compatible_secret_key?;
 };
 
-public type Body100 record {
-    # Move destination path.
-    string destination;
+public type WebhookTestsBody2 record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # raw body text
+    string raw_body?;
+    # Send the file data as the request body?
+    boolean file_as_body?;
+    # Send the file data as a named parameter in the request POST body
+    string file_form_field?;
+    # action for test body
+    string action?;
+};
+
+public type WebhookTestsBody1 record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # raw body text
+    string raw_body?;
+    # Send the file data as the request body?
+    boolean file_as_body?;
+    # Send the file data as a named parameter in the request POST body
+    string file_form_field?;
+    # action for test body
+    string action?;
+};
+
+public type ApiKeysIdBody2 record {
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
 };
 
 # List Settings Changes
@@ -818,6 +1830,45 @@ public type SettingsChangeEntity record {
     string created_at?;
     # The user id responsible for this change
     int user_id?;
+};
+
+public type ApiKeysIdBody1 record {
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+};
+
+public type LocksLockpathBody1 record {
+    # Allow lock to be updated by any user?
+    boolean allow_access_by_any_user?;
+    # Is lock exclusive?
+    boolean exclusive?;
+    # Does lock apply to subfolders?
+    string recursive?;
+    # Lock timeout length
+    int timeout?;
+};
+
+public type NotificationsBody record {
+    # The id of the user to notify. Provide `user_id`, `username` or `group_id`.
+    int user_id?;
+    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
+    boolean notify_on_copy?;
+    # If `true` actions initiated by the user will still result in a notification
+    boolean notify_user_actions?;
+    # If `true`, enable notifications for each subfolder in this path
+    boolean recursive?;
+    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    string send_interval?;
+    # The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
+    int group_id?;
+    # Path
+    string path?;
+    # The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
+    string username?;
 };
 
 # List Message Comments
@@ -860,40 +1911,6 @@ public type UsageSnapshotEntity record {
     float deleted_files_counted_in_minimum?;
     # Usage for files that are deleted but retained as backups
     float deleted_files_storage?;
-};
-
-public type Body89 record {
-    # Status of event.
-    string status;
-    # Event body
-    string body;
-};
-
-public type Body88 record {
-    # Status of event.
-    string status;
-    # Event body
-    string body;
-};
-
-public type Body87 record {
-    # Status of event.
-    string status;
-    # Event body
-    string body;
-};
-
-public type Body86 record {
-    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
-    string name?;
-    # Body text of Clickwrap (supports Markdown formatting).
-    string body?;
-    # Use this Clickwrap for Bundles?
-    string use_with_bundles?;
-    # Use this Clickwrap for Inboxes?
-    string use_with_inboxes?;
-    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
-    string use_with_users?;
 };
 
 # List site full action history.
@@ -940,116 +1957,117 @@ public type WebhookTestEntity record {
     boolean success?;
 };
 
-public type Body92 record {
-    # The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
-    string action?;
-    # etag identifier.
-    string[] 'etags\[etag\];
-    # Part number.
-    int[] 'etags\[part\];
-    # Length of file.
-    int length?;
-    # Create parent directories if they do not exist?
-    boolean mkdir_parents?;
-    # Part if uploading a part.
-    int part?;
-    # How many parts to fetch?
-    int parts?;
-    # User provided modification time.
-    string provided_mtime?;
-    string ref?;
-    # File byte offset to restart from.
-    int restart?;
-    # Size of file.
-    int size?;
-    # If copying folder, copy just the structure?
-    string structure?;
-    # Allow file rename instead of overwrite?
-    boolean with_rename?;
+public type UserIdApiKeysBody record {
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
 };
 
-public type Body91 record {
-    # The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
-    string action?;
-    # etag identifier.
-    string[] 'etags\[etag\];
-    # Part number.
-    int[] 'etags\[part\];
-    # Length of file.
-    int length?;
-    # Create parent directories if they do not exist?
-    boolean mkdir_parents?;
-    # Part if uploading a part.
-    int part?;
-    # How many parts to fetch?
-    int parts?;
-    # User provided modification time.
-    string provided_mtime?;
-    string ref?;
-    # File byte offset to restart from.
-    int restart?;
-    # Size of file.
-    int size?;
-    # If copying folder, copy just the structure?
-    string structure?;
-    # Allow file rename instead of overwrite?
-    boolean with_rename?;
+public type UserIdApiKeysBody2 record {
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
 };
 
-public type Body90 record {
-    # The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
-    string action?;
-    # etag identifier.
-    string[] 'etags\[etag\];
-    # Part number.
-    int[] 'etags\[part\];
-    # Length of file.
-    int length?;
-    # Create parent directories if they do not exist?
-    boolean mkdir_parents?;
-    # Part if uploading a part.
-    int part?;
-    # How many parts to fetch?
-    int parts?;
-    # User provided modification time.
-    string provided_mtime?;
-    string ref?;
-    # File byte offset to restart from.
-    int restart?;
-    # Size of file.
-    int size?;
-    # If copying folder, copy just the structure?
-    string structure?;
-    # Allow file rename instead of overwrite?
-    boolean with_rename?;
-};
-
-public type Body96 record {
-    # Copy destination path.
-    string destination;
-    # Copy structure only?
-    boolean structure?;
-};
-
-public type Body95 record {
-    # Modified time of file.
-    string provided_mtime?;
-    # Priority/Bookmark color of file.
-    string priority_color?;
-};
-
-public type Body94 record {
-    # Modified time of file.
-    string provided_mtime?;
-    # Priority/Bookmark color of file.
-    string priority_color?;
-};
-
-public type Body93 record {
-    # Modified time of file.
-    string provided_mtime?;
-    # Priority/Bookmark color of file.
-    string priority_color?;
+public type UsersIdBody record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
 };
 
 # File preview
@@ -1064,6 +2082,50 @@ public type PreviewEntity record {
     string 'type?;
     # Preview size
     int size?;
+};
+
+public type UserIdApiKeysBody1 record {
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
+};
+
+public type StylesStylepathBody record {
+    # Logo for custom branding.
+    string file;
+};
+
+public type FilesFilepathBody1 record {
+    # The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
+    string action?;
+    # etag identifier.
+    string[] 'etags\[etag\];
+    # Part number.
+    int[] 'etags\[part\];
+    # Length of file.
+    int length?;
+    # Create parent directories if they do not exist?
+    boolean mkdir_parents?;
+    # Part if uploading a part.
+    int part?;
+    # How many parts to fetch?
+    int parts?;
+    # User provided modification time.
+    string provided_mtime?;
+    string ref?;
+    # File byte offset to restart from.
+    int restart?;
+    # Size of file.
+    int size?;
+    # If copying folder, copy just the structure?
+    string structure?;
+    # Allow file rename instead of overwrite?
+    boolean with_rename?;
 };
 
 # List Locks by path
@@ -1102,168 +2164,186 @@ public type MessageReactionEntity record {
     string emoji?;
 };
 
-public type Body78 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
+public type PermissionsBody record {
+    # Group ID
+    int group_id?;
+    # Folder path
+    string path?;
+    #  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
+    string permission?;
+    # Apply to subfolders recursively?
+    boolean recursive?;
+    # User ID.  Provide `username` or `user_id`
     int user_id?;
-    # Bundle to share.
-    int bundle_id;
-    # Email addresses to share this bundle with.
-    string recipient;
-    # Name of recipient.
-    string name?;
-    # Company of recipient.
-    string company?;
-    # Note to include in email.
-    string note?;
-    # Set to true to share the link with the recipient upon creation.
-    boolean share_after_create?;
+    # User username.  Provide `username` or `user_id`
+    string username?;
 };
 
-public type Body77 record {
-    # A list of email addresses to share this bundle with. Required unless `recipients` is used.
-    string[] to?;
-    # Note to include in email.
-    string note?;
-    # A list of recipients to share this bundle with. Required unless `to` is used.
-    record  { } [] recipients?;
+public type FilesFilepathBody3 record {
+    # Modified time of file.
+    string provided_mtime?;
+    # Priority/Bookmark color of file.
+    string priority_color?;
 };
 
-public type Body76 record {
-    # A list of email addresses to share this bundle with. Required unless `recipients` is used.
-    string[] to?;
-    # Note to include in email.
-    string note?;
-    # A list of recipients to share this bundle with. Required unless `to` is used.
-    record  { } [] recipients?;
-};
-
-public type Body75 record {
-    # A list of email addresses to share this bundle with. Required unless `recipients` is used.
-    string[] to?;
-    # Note to include in email.
-    string note?;
-    # A list of recipients to share this bundle with. Required unless `to` is used.
-    record  { } [] recipients?;
-};
-
-public type Body200 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # raw body text
-    string raw_body?;
-    # Send the file data as the request body?
-    boolean file_as_body?;
-    # Send the file data as a named parameter in the request POST body
-    string file_form_field?;
-    # action for test body
+public type FilesFilepathBody2 record {
+    # The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
     string action?;
+    # etag identifier.
+    string[] 'etags\[etag\];
+    # Part number.
+    int[] 'etags\[part\];
+    # Length of file.
+    int length?;
+    # Create parent directories if they do not exist?
+    boolean mkdir_parents?;
+    # Part if uploading a part.
+    int part?;
+    # How many parts to fetch?
+    int parts?;
+    # User provided modification time.
+    string provided_mtime?;
+    string ref?;
+    # File byte offset to restart from.
+    int restart?;
+    # Size of file.
+    int size?;
+    # If copying folder, copy just the structure?
+    string structure?;
+    # Allow file rename instead of overwrite?
+    boolean with_rename?;
 };
 
-public type Body79 record {
+public type FilesFilepathBody5 record {
+    # Modified time of file.
+    string provided_mtime?;
+    # Priority/Bookmark color of file.
+    string priority_color?;
+};
+
+public type BeginUploadFilepathBody1 record {
+    # Create parent directories if they do not exist?
+    boolean mkdir_parents?;
+    # Part if uploading a part.
+    int part?;
+    # How many parts to fetch?
+    int parts?;
+    string ref?;
+    # File byte offset to restart from.
+    int restart?;
+    # Allow file rename instead of overwrite?
+    boolean with_rename?;
+};
+
+public type FilesFilepathBody4 record {
+    # Modified time of file.
+    string provided_mtime?;
+    # Priority/Bookmark color of file.
+    string priority_color?;
+};
+
+public type BeginUploadFilepathBody2 record {
+    # Create parent directories if they do not exist?
+    boolean mkdir_parents?;
+    # Part if uploading a part.
+    int part?;
+    # How many parts to fetch?
+    int parts?;
+    string ref?;
+    # File byte offset to restart from.
+    int restart?;
+    # Allow file rename instead of overwrite?
+    boolean with_rename?;
+};
+
+public type ApiKeysBody record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # Bundle to share.
-    int bundle_id;
-    # Email addresses to share this bundle with.
-    string recipient;
-    # Name of recipient.
+    # Internal name for the API Key.  For your use.
     string name?;
-    # Company of recipient.
-    string company?;
-    # Note to include in email.
-    string note?;
-    # Set to true to share the link with the recipient upon creation.
-    boolean share_after_create?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
 };
 
-public type Body81 record {
-    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
-    string name?;
-    # Body text of Clickwrap (supports Markdown formatting).
-    string body?;
-    # Use this Clickwrap for Bundles?
-    string use_with_bundles?;
-    # Use this Clickwrap for Inboxes?
-    string use_with_inboxes?;
-    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
-    string use_with_users?;
+public type BehaviorsBody record {
+    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
+    string value?;
+    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    string attachment_file?;
+    # Folder behaviors path.
+    string path;
+    # Behavior type.
+    string behavior;
 };
 
-public type Body80 record {
+public type As2KeysIdBody2 record {
+    # AS2 Partnership Name
+    string as2_partnership_name;
+};
+
+public type As2KeysIdBody1 record {
+    # AS2 Partnership Name
+    string as2_partnership_name;
+};
+
+public type HistoryExportsBody record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # Bundle to share.
-    int bundle_id;
-    # Email addresses to share this bundle with.
-    string recipient;
-    # Name of recipient.
-    string name?;
-    # Company of recipient.
-    string company?;
-    # Note to include in email.
-    string note?;
-    # Set to true to share the link with the recipient upon creation.
-    boolean share_after_create?;
+    # Start date/time of export range.
+    string start_at?;
+    # End date/time of export range.
+    string end_at?;
+    # Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
+    string query_action?;
+    # Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`, `office`, `mobile`
+    string query_interface?;
+    # Return results that are actions performed by the user indiciated by this User ID
+    string query_user_id?;
+    # Return results that are file actions related to the file indicated by this File ID
+    string query_file_id?;
+    # Return results that are file actions inside the parent folder specified by this folder ID
+    string query_parent_id?;
+    # Return results that are file actions related to this path.
+    string query_path?;
+    # Return results that are file actions related to files or folders inside this folder path.
+    string query_folder?;
+    # Return results that are file moves originating from this path.
+    string query_src?;
+    # Return results that are file moves with this path as destination.
+    string query_destination?;
+    # Filter results by this IP address.
+    string query_ip?;
+    # Filter results by this username.
+    string query_username?;
+    # If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`, `country_mismatch`
+    string query_failure_type?;
+    # If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
+    string query_target_id?;
+    # If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
+    string query_target_name?;
+    # If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
+    string query_target_permission?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
+    string query_target_user_id?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
+    string query_target_username?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
+    string query_target_platform?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
+    string query_target_permission_set?;
 };
 
-public type Body85 record {
-    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
-    string name?;
-    # Body text of Clickwrap (supports Markdown formatting).
-    string body?;
-    # Use this Clickwrap for Bundles?
-    string use_with_bundles?;
-    # Use this Clickwrap for Inboxes?
-    string use_with_inboxes?;
-    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
-    string use_with_users?;
-};
-
-public type Body84 record {
-    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
-    string name?;
-    # Body text of Clickwrap (supports Markdown formatting).
-    string body?;
-    # Use this Clickwrap for Bundles?
-    string use_with_bundles?;
-    # Use this Clickwrap for Inboxes?
-    string use_with_inboxes?;
-    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
-    string use_with_users?;
-};
-
-public type Body83 record {
-    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
-    string name?;
-    # Body text of Clickwrap (supports Markdown formatting).
-    string body?;
-    # Use this Clickwrap for Bundles?
-    string use_with_bundles?;
-    # Use this Clickwrap for Inboxes?
-    string use_with_inboxes?;
-    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
-    string use_with_users?;
-};
-
-public type Body82 record {
-    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
-    string name?;
-    # Body text of Clickwrap (supports Markdown formatting).
-    string body?;
-    # Use this Clickwrap for Bundles?
-    string use_with_bundles?;
-    # Use this Clickwrap for Inboxes?
-    string use_with_inboxes?;
-    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
-    string use_with_users?;
+public type As2KeysBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
 };
 
 # Show site DNS configuration.
@@ -1322,26 +2402,98 @@ public type BandwidthSnapshotEntity record {
     string updated_at?;
 };
 
-public type Body67 record {
-    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    string value?;
-    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    string attachment_file?;
-    # Folder behaviors path.
-    string path;
-    # Behavior type.
-    string behavior;
+public type HistoryExportsBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Start date/time of export range.
+    string start_at?;
+    # End date/time of export range.
+    string end_at?;
+    # Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
+    string query_action?;
+    # Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`, `office`, `mobile`
+    string query_interface?;
+    # Return results that are actions performed by the user indiciated by this User ID
+    string query_user_id?;
+    # Return results that are file actions related to the file indicated by this File ID
+    string query_file_id?;
+    # Return results that are file actions inside the parent folder specified by this folder ID
+    string query_parent_id?;
+    # Return results that are file actions related to this path.
+    string query_path?;
+    # Return results that are file actions related to files or folders inside this folder path.
+    string query_folder?;
+    # Return results that are file moves originating from this path.
+    string query_src?;
+    # Return results that are file moves with this path as destination.
+    string query_destination?;
+    # Filter results by this IP address.
+    string query_ip?;
+    # Filter results by this username.
+    string query_username?;
+    # If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`, `country_mismatch`
+    string query_failure_type?;
+    # If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
+    string query_target_id?;
+    # If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
+    string query_target_name?;
+    # If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
+    string query_target_permission?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
+    string query_target_user_id?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
+    string query_target_username?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
+    string query_target_platform?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
+    string query_target_permission_set?;
 };
 
-public type Body66 record {
-    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    string value?;
-    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    string attachment_file?;
-    # Folder behaviors path.
-    string path;
-    # Behavior type.
-    string behavior;
+public type HistoryExportsBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Start date/time of export range.
+    string start_at?;
+    # End date/time of export range.
+    string end_at?;
+    # Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
+    string query_action?;
+    # Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`, `office`, `mobile`
+    string query_interface?;
+    # Return results that are actions performed by the user indiciated by this User ID
+    string query_user_id?;
+    # Return results that are file actions related to the file indicated by this File ID
+    string query_file_id?;
+    # Return results that are file actions inside the parent folder specified by this folder ID
+    string query_parent_id?;
+    # Return results that are file actions related to this path.
+    string query_path?;
+    # Return results that are file actions related to files or folders inside this folder path.
+    string query_folder?;
+    # Return results that are file moves originating from this path.
+    string query_src?;
+    # Return results that are file moves with this path as destination.
+    string query_destination?;
+    # Filter results by this IP address.
+    string query_ip?;
+    # Filter results by this username.
+    string query_username?;
+    # If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`, `country_mismatch`
+    string query_failure_type?;
+    # If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
+    string query_target_id?;
+    # If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
+    string query_target_name?;
+    # If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
+    string query_target_permission?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
+    string query_target_user_id?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
+    string query_target_username?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
+    string query_target_platform?;
+    # If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
+    string query_target_permission_set?;
 };
 
 # Show File Migration
@@ -1364,17 +2516,6 @@ public type FileMigrationEntity record {
     string status?;
     # Link to download the log file for this migration.
     string log_url?;
-};
-
-public type Body65 record {
-    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    string value?;
-    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    string attachment_file?;
-    # Behavior type.
-    string behavior?;
-    # Folder behaviors path.
-    string path?;
 };
 
 # Show site settings
@@ -1619,63 +2760,12 @@ public type SiteEntity record {
     int disable_users_from_inactivity_period_days?;
 };
 
-public type Body64 record {
-    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    string value?;
-    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    string attachment_file?;
-    # Behavior type.
-    string behavior?;
-    # Folder behaviors path.
-    string path?;
-};
-
 # Move file/folder
 public type FileActionEntity record {
     # Status of file operation. Possible values: completed, enqueued.
     string status?;
     # If status is enqueued, this is the id of the FileMigration to check for status updates.
     int file_migration_id?;
-};
-
-public type Body69 record {
-    # A list of paths to include in this bundle.
-    string[] paths?;
-    # Password for this bundle.
-    string password?;
-    # Id of Form Field Set to use with this bundle
-    int form_field_set_id?;
-    # ID of the clickwrap to use with this bundle.
-    int clickwrap_id?;
-    # Bundle code.  This code forms the end part of the Public URL.
-    string code?;
-    # Public description
-    string description?;
-    # Bundle expiration date/time
-    string expires_at?;
-    # ID of the associated inbox, if available.
-    int inbox_id?;
-    # Maximum number of times bundle can be accessed
-    int max_uses?;
-    # Bundle internal note
-    string note?;
-    # Restrict users to previewing files only?
-    boolean preview_only?;
-    # Show a registration page that captures the downloader's name and email address?
-    boolean require_registration?;
-    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
-    boolean require_share_recipient?;
-};
-
-public type Body68 record {
-    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    string value?;
-    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    string attachment_file?;
-    # Folder behaviors path.
-    string path;
-    # Behavior type.
-    string behavior;
 };
 
 # Begin file upload
@@ -1712,126 +2802,70 @@ public type FileUploadPartEntity record {
     string upload_uri?;
 };
 
-public type Body70 record {
-    # A list of paths to include in this bundle.
-    string[] paths?;
-    # Password for this bundle.
-    string password?;
-    # Id of Form Field Set to use with this bundle
-    int form_field_set_id?;
-    # ID of the clickwrap to use with this bundle.
-    int clickwrap_id?;
-    # Bundle code.  This code forms the end part of the Public URL.
-    string code?;
-    # Public description
-    string description?;
-    # Bundle expiration date/time
-    string expires_at?;
-    # ID of the associated inbox, if available.
-    int inbox_id?;
-    # Maximum number of times bundle can be accessed
-    int max_uses?;
-    # Bundle internal note
-    string note?;
-    # Restrict users to previewing files only?
-    boolean preview_only?;
-    # Show a registration page that captures the downloader's name and email address?
-    boolean require_registration?;
-    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
-    boolean require_share_recipient?;
+public type AutomationsBody2 record {
+    # Automation type
+    string automation;
+    # Source Path
+    string 'source?;
+    # DEPRECATED: Destination Path. Use `destinations` instead.
+    string destination?;
+    # A list of String destination paths or Hash of folder_path and optional file_path.
+    string[] destinations?;
+    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
+    string destination_replace_from?;
+    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
+    string destination_replace_to?;
+    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    string interval?;
+    # Path on which this Automation runs.  Supports globs.
+    string path?;
+    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+    # Custom schedule for running this automation.
+    record {} schedule?;
+    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
+    string trigger?;
+    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    string[] trigger_actions?;
+    # If trigger is `action`, this is the path to watch for the specified trigger actions.
+    string trigger_action_path?;
+    # A Hash of attributes specific to the automation type.
+    record {} value?;
 };
 
-public type Body74 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # A list of paths to include in this bundle.
-    string[] paths;
-    # Password for this bundle.
-    string password?;
-    # Id of Form Field Set to use with this bundle
-    int form_field_set_id?;
-    # Bundle expiration date/time
-    string expires_at?;
-    # Maximum number of times bundle can be accessed
-    int max_uses?;
-    # Public description
-    string description?;
-    # Bundle internal note
-    string note?;
-    # Bundle code.  This code forms the end part of the Public URL.
-    string code?;
-    # Restrict users to previewing files only?
-    boolean preview_only?;
-    # Show a registration page that captures the downloader's name and email address?
-    boolean require_registration?;
-    # ID of the clickwrap to use with this bundle.
-    int clickwrap_id?;
-    # ID of the associated inbox, if available.
-    int inbox_id?;
-    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
-    boolean require_share_recipient?;
-};
-
-public type Body73 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # A list of paths to include in this bundle.
-    string[] paths;
-    # Password for this bundle.
-    string password?;
-    # Id of Form Field Set to use with this bundle
-    int form_field_set_id?;
-    # Bundle expiration date/time
-    string expires_at?;
-    # Maximum number of times bundle can be accessed
-    int max_uses?;
-    # Public description
-    string description?;
-    # Bundle internal note
-    string note?;
-    # Bundle code.  This code forms the end part of the Public URL.
-    string code?;
-    # Restrict users to previewing files only?
-    boolean preview_only?;
-    # Show a registration page that captures the downloader's name and email address?
-    boolean require_registration?;
-    # ID of the clickwrap to use with this bundle.
-    int clickwrap_id?;
-    # ID of the associated inbox, if available.
-    int inbox_id?;
-    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
-    boolean require_share_recipient?;
-};
-
-public type Body72 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # A list of paths to include in this bundle.
-    string[] paths;
-    # Password for this bundle.
-    string password?;
-    # Id of Form Field Set to use with this bundle
-    int form_field_set_id?;
-    # Bundle expiration date/time
-    string expires_at?;
-    # Maximum number of times bundle can be accessed
-    int max_uses?;
-    # Public description
-    string description?;
-    # Bundle internal note
-    string note?;
-    # Bundle code.  This code forms the end part of the Public URL.
-    string code?;
-    # Restrict users to previewing files only?
-    boolean preview_only?;
-    # Show a registration page that captures the downloader's name and email address?
-    boolean require_registration?;
-    # ID of the clickwrap to use with this bundle.
-    int clickwrap_id?;
-    # ID of the associated inbox, if available.
-    int inbox_id?;
-    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
-    boolean require_share_recipient?;
+public type AutomationsBody1 record {
+    # Automation type
+    string automation;
+    # Source Path
+    string 'source?;
+    # DEPRECATED: Destination Path. Use `destinations` instead.
+    string destination?;
+    # A list of String destination paths or Hash of folder_path and optional file_path.
+    string[] destinations?;
+    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
+    string destination_replace_from?;
+    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
+    string destination_replace_to?;
+    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    string interval?;
+    # Path on which this Automation runs.  Supports globs.
+    string path?;
+    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+    # Custom schedule for running this automation.
+    record {} schedule?;
+    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
+    string trigger?;
+    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    string[] trigger_actions?;
+    # If trigger is `action`, this is the path to watch for the specified trigger actions.
+    string trigger_action_path?;
+    # A Hash of attributes specific to the automation type.
+    record {} value?;
 };
 
 # List Bundle Downloads
@@ -1846,33 +2880,11 @@ public type BundleDownloadEntity record {
     string created_at?;
 };
 
-public type Body71 record {
-    # A list of paths to include in this bundle.
-    string[] paths?;
-    # Password for this bundle.
-    string password?;
-    # Id of Form Field Set to use with this bundle
-    int form_field_set_id?;
-    # ID of the clickwrap to use with this bundle.
-    int clickwrap_id?;
-    # Bundle code.  This code forms the end part of the Public URL.
-    string code?;
-    # Public description
-    string description?;
-    # Bundle expiration date/time
-    string expires_at?;
-    # ID of the associated inbox, if available.
-    int inbox_id?;
-    # Maximum number of times bundle can be accessed
-    int max_uses?;
-    # Bundle internal note
-    string note?;
-    # Restrict users to previewing files only?
-    boolean preview_only?;
-    # Show a registration page that captures the downloader's name and email address?
-    boolean require_registration?;
-    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
-    boolean require_share_recipient?;
+public type UserIdAs2KeysBody record {
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
 };
 
 # Test webhook.
@@ -1891,6 +2903,11 @@ public type StatusEntity record {
     int clickwrap_id?;
     # Required Clickwrap body
     string clickwrap_body?;
+};
+
+public type As2KeysIdBody record {
+    # AS2 Partnership Name
+    string as2_partnership_name;
 };
 
 # List History Export Results
@@ -1955,111 +2972,18 @@ public type As2KeyEntity record {
     string fingerprint?;
 };
 
-public type Body56 record {
-    # Automation type
-    string automation;
-    # Source Path
-    string 'source?;
-    # DEPRECATED: Destination Path. Use `destinations` instead.
-    string destination?;
-    # A list of String destination paths or Hash of folder_path and optional file_path.
-    string[] destinations?;
-    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
-    string destination_replace_from?;
-    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
-    string destination_replace_to?;
-    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    string interval?;
-    # Path on which this Automation runs.  Supports globs.
-    string path?;
-    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-    # Custom schedule for running this automation.
-    record {} schedule?;
-    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
-    string trigger?;
-    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    string[] trigger_actions?;
-    # If trigger is `action`, this is the path to watch for the specified trigger actions.
-    string trigger_action_path?;
-    # A Hash of attributes specific to the automation type.
-    record {} value?;
-};
-
-public type Body55 record {
-    # Automation type
-    string automation;
-    # Source Path
-    string 'source?;
-    # DEPRECATED: Destination Path. Use `destinations` instead.
-    string destination?;
-    # A list of String destination paths or Hash of folder_path and optional file_path.
-    string[] destinations?;
-    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
-    string destination_replace_from?;
-    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
-    string destination_replace_to?;
-    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    string interval?;
-    # Path on which this Automation runs.  Supports globs.
-    string path?;
-    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-    # Custom schedule for running this automation.
-    record {} schedule?;
-    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
-    string trigger?;
-    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    string[] trigger_actions?;
-    # If trigger is `action`, this is the path to watch for the specified trigger actions.
-    string trigger_action_path?;
-    # A Hash of attributes specific to the automation type.
-    record {} value?;
-};
-
-public type Body54 record {
-    # Automation type
-    string automation;
-    # Source Path
-    string 'source?;
-    # DEPRECATED: Destination Path. Use `destinations` instead.
-    string destination?;
-    # A list of String destination paths or Hash of folder_path and optional file_path.
-    string[] destinations?;
-    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
-    string destination_replace_from?;
-    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
-    string destination_replace_to?;
-    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    string interval?;
-    # Path on which this Automation runs.  Supports globs.
-    string path?;
-    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-    # Custom schedule for running this automation.
-    record {} schedule?;
-    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
-    string trigger?;
-    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    string[] trigger_actions?;
-    # If trigger is `action`, this is the path to watch for the specified trigger actions.
-    string trigger_action_path?;
-    # A Hash of attributes specific to the automation type.
-    record {} value?;
-};
-
-public type Body149 record {
-    # Comment body.
+public type MessagesBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Project to which the message should be attached.
+    int project_id;
+    # Message subject.
+    string subject;
+    # Message body.
     string body;
 };
 
-public type Body53 record {
+public type As2KeysBody2 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # AS2 Partnership Name
@@ -2068,144 +2992,26 @@ public type Body53 record {
     string public_key;
 };
 
-public type Body147 record {
-    # Comment body.
-    string body;
+public type ClickwrapsIdBody record {
+    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
+    string name?;
+    # Body text of Clickwrap (supports Markdown formatting).
+    string body?;
+    # Use this Clickwrap for Bundles?
+    string use_with_bundles?;
+    # Use this Clickwrap for Inboxes?
+    string use_with_inboxes?;
+    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    string use_with_users?;
 };
 
-public type Body59 record {
-    # Automation type
-    string automation;
-    # Source Path
-    string 'source?;
-    # DEPRECATED: Destination Path. Use `destinations` instead.
-    string destination?;
-    # A list of String destination paths or Hash of folder_path and optional file_path.
-    string[] destinations?;
-    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
-    string destination_replace_from?;
-    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
-    string destination_replace_to?;
-    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    string interval?;
-    # Path on which this Automation runs.  Supports globs.
-    string path?;
-    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-    # Custom schedule for running this automation.
-    record {} schedule?;
-    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
-    string trigger?;
-    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    string[] trigger_actions?;
-    # If trigger is `action`, this is the path to watch for the specified trigger actions.
-    string trigger_action_path?;
-    # A Hash of attributes specific to the automation type.
-    record {} value?;
-};
-
-public type Body148 record {
-    # Comment body.
-    string body;
-};
-
-public type Body58 record {
-    # Automation type
-    string automation;
-    # Source Path
-    string 'source?;
-    # DEPRECATED: Destination Path. Use `destinations` instead.
-    string destination?;
-    # A list of String destination paths or Hash of folder_path and optional file_path.
-    string[] destinations?;
-    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
-    string destination_replace_from?;
-    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
-    string destination_replace_to?;
-    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    string interval?;
-    # Path on which this Automation runs.  Supports globs.
-    string path?;
-    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-    # Custom schedule for running this automation.
-    record {} schedule?;
-    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
-    string trigger?;
-    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    string[] trigger_actions?;
-    # If trigger is `action`, this is the path to watch for the specified trigger actions.
-    string trigger_action_path?;
-    # A Hash of attributes specific to the automation type.
-    record {} value?;
-};
-
-public type Body145 record {
+public type As2KeysBody1 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # Project to which the message should be attached.
-    int project_id;
-    # Message subject.
-    string subject;
-    # Message body.
-    string body;
-};
-
-public type Body57 record {
-    # Automation type
-    string automation;
-    # Source Path
-    string 'source?;
-    # DEPRECATED: Destination Path. Use `destinations` instead.
-    string destination?;
-    # A list of String destination paths or Hash of folder_path and optional file_path.
-    string[] destinations?;
-    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
-    string destination_replace_from?;
-    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
-    string destination_replace_to?;
-    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    string interval?;
-    # Path on which this Automation runs.  Supports globs.
-    string path?;
-    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-    # Custom schedule for running this automation.
-    record {} schedule?;
-    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
-    string trigger?;
-    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    string[] trigger_actions?;
-    # If trigger is `action`, this is the path to watch for the specified trigger actions.
-    string trigger_action_path?;
-    # A Hash of attributes specific to the automation type.
-    record {} value?;
-};
-
-public type Body146 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Project to which the message should be attached.
-    int project_id;
-    # Message subject.
-    string subject;
-    # Message body.
-    string body;
-};
-
-public type Body143 record {
-    # Project to which the message should be attached.
-    int project_id;
-    # Message subject.
-    string subject;
-    # Message body.
-    string body;
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
 };
 
 # List Payments
@@ -2240,24 +3046,15 @@ public type AccountLineItemEntity record {
     string updated_at?;
 };
 
-public type Body144 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Project to which the message should be attached.
-    int project_id;
-    # Message subject.
-    string subject;
-    # Message body.
-    string body;
-};
-
-public type Body141 record {
-    # Project to which the message should be attached.
-    int project_id;
-    # Message subject.
-    string subject;
-    # Message body.
-    string body;
+public type SessionsBody1 record {
+    # Username to sign in as
+    string username?;
+    # Password for sign in
+    string password?;
+    # If this user has a 2FA device, provide its OTP or code here.
+    string otp?;
+    # Identifier for a partially-completed login
+    string partial_session_id?;
 };
 
 # List IP Addresses associated with the current site
@@ -2272,50 +3069,33 @@ public type IpAddressEntity record {
     string[] ip_addresses?;
 };
 
-public type Body142 record {
-    # Project to which the message should be attached.
-    int project_id;
-    # Message subject.
-    string subject;
-    # Message body.
-    string body;
+public type GroupUsersIdBody1 record {
+    # Group ID to add user to.
+    int group_id;
+    # User ID to add to group.
+    int user_id;
+    # Is the user a group administrator?
+    boolean admin?;
 };
 
-public type Body63 record {
-    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    string value?;
-    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    string attachment_file?;
-    # Behavior type.
-    string behavior?;
-    # Folder behaviors path.
-    string path?;
+public type SessionsBody2 record {
+    # Username to sign in as
+    string username?;
+    # Password for sign in
+    string password?;
+    # If this user has a 2FA device, provide its OTP or code here.
+    string otp?;
+    # Identifier for a partially-completed login
+    string partial_session_id?;
 };
 
-public type Body62 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # action for test body
-    string action?;
-};
-
-public type Body140 record {
-    # Allow lock to be updated by any user?
-    boolean allow_access_by_any_user?;
-    # Is lock exclusive?
-    boolean exclusive?;
-    # Does lock apply to subfolders?
-    string recursive?;
-    # Lock timeout length
-    int timeout?;
+public type GroupUsersIdBody2 record {
+    # Group ID to add user to.
+    int group_id;
+    # User ID to add to group.
+    int user_id;
+    # Is the user a group administrator?
+    boolean admin?;
 };
 
 # Create user session (log in)
@@ -2358,34 +3138,331 @@ public type SessionEntity record {
     boolean windows_mode_ftp?;
 };
 
-public type Body61 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # action for test body
-    string action?;
+public type UsersBody record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
 };
 
-public type Body60 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # action for test body
-    string action?;
+public type UsersIdBody2 record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type FileCommentsIdBody2 record {
+    # Comment body.
+    string body;
+};
+
+public type UsersIdBody1 record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type FileCommentsIdBody1 record {
+    # Comment body.
+    string body;
+};
+
+public type UserRequestsBody2 record {
+    # Name of user requested
+    string name;
+    # Email of user requested
+    string email;
+    # Details of the user request
+    string details;
+};
+
+public type UserRequestsBody1 record {
+    # Name of user requested
+    string name;
+    # Email of user requested
+    string email;
+    # Details of the user request
+    string details;
+};
+
+public type UserApiKeysBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
+};
+
+public type UserApiKeysBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
 };
 
 # List Sync Jobs
@@ -2404,58 +3481,36 @@ public type SyncJobEntity record {
     int folder_behavior_id?;
 };
 
-public type Body45 record {
-    # Internal name for the API Key.  For your use.
+public type BundleRecipientsBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Bundle to share.
+    int bundle_id;
+    # Email addresses to share this bundle with.
+    string recipient;
+    # Name of recipient.
     string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
+    # Company of recipient.
+    string company?;
+    # Note to include in email.
+    string note?;
+    # Set to true to share the link with the recipient upon creation.
+    boolean share_after_create?;
 };
 
-public type Body44 record {
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
-};
-
-public type Body43 record {
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
-};
-
-public type Body138 record {
-    # Allow lock to be updated by any user?
-    boolean allow_access_by_any_user?;
-    # Is lock exclusive?
-    boolean exclusive?;
-    # Does lock apply to subfolders?
-    string recursive?;
-    # Lock timeout length
-    int timeout?;
-};
-
-public type Body42 record {
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
-};
-
-public type Body139 record {
-    # Allow lock to be updated by any user?
-    boolean allow_access_by_any_user?;
-    # Is lock exclusive?
-    boolean exclusive?;
-    # Does lock apply to subfolders?
-    string recursive?;
-    # Lock timeout length
-    int timeout?;
+public type SiteTestwebhookBody record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # action for test body
+    string action?;
 };
 
 # List Automations
@@ -2496,255 +3551,27 @@ public type AutomationEntity record {
     record  { }  value?;
 };
 
-public type Body49 record {
-    # AS2 Partnership Name
-    string as2_partnership_name;
+public type FileCommentsBody record {
+    # Comment body.
+    string body;
+    # File path.
+    string path;
 };
 
-public type Body136 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Inbox to share.
-    int inbox_id;
-    # Email address to share this inbox with.
-    string recipient;
-    # Name of recipient.
+public type GroupsIdBody record {
+    # Group name.
     string name?;
-    # Company of recipient.
-    string company?;
-    # Note to include in email.
-    string note?;
-    # Set to true to share the link with the recipient upon creation.
-    boolean share_after_create?;
+    # Group notes.
+    string notes?;
+    # A list of user ids. If sent as a string, should be comma-delimited.
+    string user_ids?;
+    # A list of group admin user ids. If sent as a string, should be comma-delimited.
+    string admin_ids?;
 };
 
-public type Body48 record {
-    # AS2 Partnership Name
-    string as2_partnership_name;
-};
-
-public type Body137 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Inbox to share.
-    int inbox_id;
-    # Email address to share this inbox with.
-    string recipient;
-    # Name of recipient.
-    string name?;
-    # Company of recipient.
-    string company?;
-    # Note to include in email.
-    string note?;
-    # Set to true to share the link with the recipient upon creation.
-    boolean share_after_create?;
-};
-
-public type Body47 record {
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
-};
-
-public type Body134 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Start date/time of export range.
-    string start_at?;
-    # End date/time of export range.
-    string end_at?;
-    # Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
-    string query_action?;
-    # Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`, `office`, `mobile`
-    string query_interface?;
-    # Return results that are actions performed by the user indiciated by this User ID
-    string query_user_id?;
-    # Return results that are file actions related to the file indicated by this File ID
-    string query_file_id?;
-    # Return results that are file actions inside the parent folder specified by this folder ID
-    string query_parent_id?;
-    # Return results that are file actions related to this path.
-    string query_path?;
-    # Return results that are file actions related to files or folders inside this folder path.
-    string query_folder?;
-    # Return results that are file moves originating from this path.
-    string query_src?;
-    # Return results that are file moves with this path as destination.
-    string query_destination?;
-    # Filter results by this IP address.
-    string query_ip?;
-    # Filter results by this username.
-    string query_username?;
-    # If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`, `country_mismatch`
-    string query_failure_type?;
-    # If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
-    string query_target_id?;
-    # If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
-    string query_target_name?;
-    # If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
-    string query_target_permission?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
-    string query_target_user_id?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
-    string query_target_username?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
-    string query_target_platform?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
-    string query_target_permission_set?;
-};
-
-public type Body46 record {
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
-};
-
-public type Body135 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Inbox to share.
-    int inbox_id;
-    # Email address to share this inbox with.
-    string recipient;
-    # Name of recipient.
-    string name?;
-    # Company of recipient.
-    string company?;
-    # Note to include in email.
-    string note?;
-    # Set to true to share the link with the recipient upon creation.
-    boolean share_after_create?;
-};
-
-public type Body132 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Start date/time of export range.
-    string start_at?;
-    # End date/time of export range.
-    string end_at?;
-    # Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
-    string query_action?;
-    # Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`, `office`, `mobile`
-    string query_interface?;
-    # Return results that are actions performed by the user indiciated by this User ID
-    string query_user_id?;
-    # Return results that are file actions related to the file indicated by this File ID
-    string query_file_id?;
-    # Return results that are file actions inside the parent folder specified by this folder ID
-    string query_parent_id?;
-    # Return results that are file actions related to this path.
-    string query_path?;
-    # Return results that are file actions related to files or folders inside this folder path.
-    string query_folder?;
-    # Return results that are file moves originating from this path.
-    string query_src?;
-    # Return results that are file moves with this path as destination.
-    string query_destination?;
-    # Filter results by this IP address.
-    string query_ip?;
-    # Filter results by this username.
-    string query_username?;
-    # If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`, `country_mismatch`
-    string query_failure_type?;
-    # If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
-    string query_target_id?;
-    # If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
-    string query_target_name?;
-    # If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
-    string query_target_permission?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
-    string query_target_user_id?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
-    string query_target_username?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
-    string query_target_platform?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
-    string query_target_permission_set?;
-};
-
-public type Body133 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Start date/time of export range.
-    string start_at?;
-    # End date/time of export range.
-    string end_at?;
-    # Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
-    string query_action?;
-    # Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`, `office`, `mobile`
-    string query_interface?;
-    # Return results that are actions performed by the user indiciated by this User ID
-    string query_user_id?;
-    # Return results that are file actions related to the file indicated by this File ID
-    string query_file_id?;
-    # Return results that are file actions inside the parent folder specified by this folder ID
-    string query_parent_id?;
-    # Return results that are file actions related to this path.
-    string query_path?;
-    # Return results that are file actions related to files or folders inside this folder path.
-    string query_folder?;
-    # Return results that are file moves originating from this path.
-    string query_src?;
-    # Return results that are file moves with this path as destination.
-    string query_destination?;
-    # Filter results by this IP address.
-    string query_ip?;
-    # Filter results by this username.
-    string query_username?;
-    # If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`, `country_mismatch`
-    string query_failure_type?;
-    # If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
-    string query_target_id?;
-    # If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
-    string query_target_name?;
-    # If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
-    string query_target_permission?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
-    string query_target_user_id?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
-    string query_target_username?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
-    string query_target_platform?;
-    # If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
-    string query_target_permission_set?;
-};
-
-public type Body130 record {
-    # Group ID to add user to.
-    int group_id;
-    # User ID to add to group.
-    int user_id;
-    # Is the user a group administrator?
-    boolean admin?;
-};
-
-public type Body131 record {
-    # Group ID to add user to.
-    int group_id;
-    # User ID to add to group.
-    int user_id;
-    # Is the user a group administrator?
-    boolean admin?;
-};
-
-public type Body52 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
+public type PublicKeysIdBody record {
+    # Internal reference for key.
+    string title;
 };
 
 # List Projects
@@ -2755,25 +3582,122 @@ public type ProjectEntity record {
     string global_access?;
 };
 
-public type Body51 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
+public type CopyFilepathBody record {
+    # Copy destination path.
+    string destination;
+    # Copy structure only?
+    boolean structure?;
 };
 
-public type Body50 record {
-    # AS2 Partnership Name
-    string as2_partnership_name;
+public type RemoteServersBody record {
+    # AWS Access Key.
+    string aws_access_key?;
+    # AWS secret key.
+    string aws_secret_key?;
+    # Password if needed.
+    string password?;
+    # Private key if needed.
+    string private_key?;
+    # SSL client certificate.
+    string ssl_certificate?;
+    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    string google_cloud_storage_credentials_json?;
+    # Wasabi access key.
+    string wasabi_access_key?;
+    # Wasabi secret key.
+    string wasabi_secret_key?;
+    # Backblaze B2 Cloud Storage keyID.
+    string backblaze_b2_key_id?;
+    # Backblaze B2 Cloud Storage applicationKey.
+    string backblaze_b2_application_key?;
+    # Rackspace API key from the Rackspace Cloud Control Panel.
+    string rackspace_api_key?;
+    # Reset authenticated account
+    boolean reset_authentication?;
+    # Azure Blob Storage secret key.
+    string azure_blob_storage_access_key?;
+    # Hostname or IP address
+    string hostname?;
+    # Internal name for your reference
+    string name?;
+    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    int max_connections?;
+    # Port for remote server.  Not needed for S3.
+    int port?;
+    # S3 bucket name
+    string s3_bucket?;
+    # S3 region
+    string s3_region?;
+    # Remote server certificate
+    string server_certificate?;
+    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
+    string server_host_key?;
+    # Remote server type.
+    string server_type?;
+    # Should we require SSL?
+    string ssl?;
+    # Remote server username.  Not needed for S3 buckets.
+    string username?;
+    # Google Cloud Storage bucket name
+    string google_cloud_storage_bucket?;
+    # Google Cloud Project ID
+    string google_cloud_storage_project_id?;
+    # Backblaze B2 Cloud Storage Bucket name
+    string backblaze_b2_bucket?;
+    # Backblaze B2 Cloud Storage S3 Endpoint
+    string backblaze_b2_s3_endpoint?;
+    # Wasabi Bucket name
+    string wasabi_bucket?;
+    # Wasabi region
+    string wasabi_region?;
+    # Rackspace username used to login to the Rackspace Cloud Control Panel.
+    string rackspace_username?;
+    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    string rackspace_region?;
+    # The name of the container (top level directory) where files will sync.
+    string rackspace_container?;
+    # Either personal or business_other account types
+    string one_drive_account_type?;
+    # Azure Blob Storage Account name
+    string azure_blob_storage_account?;
+    # Azure Blob Storage Container name
+    string azure_blob_storage_container?;
+    # S3-compatible Bucket name
+    string s3_compatible_bucket?;
+    # S3-compatible Bucket name
+    string s3_compatible_region?;
+    # S3-compatible endpoint
+    string s3_compatible_endpoint?;
+    # `true` if remote server only accepts connections from dedicated IPs
+    boolean enable_dedicated_ips?;
+    # S3-compatible access key
+    string s3_compatible_access_key?;
+    # S3-compatible secret key
+    string s3_compatible_secret_key?;
 };
 
-public type Body39 record {
-    # Internal reference for key.
-    string title;
-    # Actual contents of SSH key.
-    string public_key;
+public type MoveFilepathBody2 record {
+    # Move destination path.
+    string destination;
+};
+
+public type MoveFilepathBody1 record {
+    # Move destination path.
+    string destination;
+};
+
+public type StylesStylepathBody2 record {
+    # Logo for custom branding.
+    string file;
+};
+
+public type UserRequestsBody record {
+    # Name of user requested
+    string name;
+    # Email of user requested
+    string email;
+    # Details of the user request
+    string details;
 };
 
 # List Action Notification Export Results
@@ -2798,6 +3722,11 @@ public type ActionNotificationExportResultEntity record {
     string path?;
     # The folder associated with the triggering action for this notification.
     string folder?;
+};
+
+public type StylesStylepathBody1 record {
+    # Logo for custom branding.
+    string file;
 };
 
 # Form fields
@@ -2875,198 +3804,32 @@ public type StyleEntity record {
     ImageEntity thumbnail?;
 };
 
-public type Body34 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
+public type MessageReactionsBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Emoji to react with.
+    string emoji;
 };
 
-public type Body129 record {
-    # Group ID to add user to.
-    int group_id;
-    # User ID to add to group.
-    int user_id;
-    # Is the user a group administrator?
-    boolean admin?;
+public type BehaviorsIdBody record {
+    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
+    string value?;
+    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    string attachment_file?;
+    # Behavior type.
+    string behavior?;
+    # Folder behaviors path.
+    string path?;
 };
 
-public type Body33 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
+public type MessageReactionsBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Emoji to react with.
+    string emoji;
 };
 
-public type Body32 record {
+public type UserApiKeysBody record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # Internal name for the API Key.  For your use.
@@ -3079,137 +3842,14 @@ public type Body32 record {
     string path?;
 };
 
-public type Body127 record {
-    # Group ID to add user to.
-    int group_id;
-    # User ID to add to group.
-    int user_id;
-    # Is the user a group administrator?
-    boolean admin?;
+public type MessageCommentsIdBody record {
+    # Comment body.
+    string body;
 };
 
-public type Body31 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
-};
-
-public type Body128 record {
-    # Group ID to add user to.
-    int group_id;
-    # User ID to add to group.
-    int user_id;
-    # Is the user a group administrator?
-    boolean admin?;
-};
-
-public type Body38 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
-};
-
-public type Body125 record {
-    # Group name.
-    string name?;
-    # Group notes.
-    string notes?;
-    # A list of user ids. If sent as a string, should be comma-delimited.
-    string user_ids?;
-    # A list of group admin user ids. If sent as a string, should be comma-delimited.
-    string admin_ids?;
+public type ProjectsBody2 record {
+    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
+    string global_access;
 };
 
 # List Inbox Registrations
@@ -3230,7 +3870,12 @@ public type InboxRegistrationEntity record {
     string form_field_data?;
 };
 
-public type Body37 record {
+public type ProjectsBody1 record {
+    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
+    string global_access;
+};
+
+public type GroupIdUsersBody2 record {
     # An image file for your user avatar.
     string avatar_file?;
     # If true, the avatar will be deleted.
@@ -3243,8 +3888,6 @@ public type Body37 record {
     string email?;
     # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
     string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
     # A list of group ids to associate this user with.  Comma delimited.
     string group_ids?;
     # Pre-calculated hash of the user's password.
@@ -3321,16 +3964,7 @@ public type Body37 record {
     string username?;
 };
 
-public type Body126 record {
-    # Group ID to add user to.
-    int group_id;
-    # User ID to add to group.
-    int user_id;
-    # Is the user a group administrator?
-    boolean admin?;
-};
-
-public type Body36 record {
+public type GroupIdUsersBody1 record {
     # An image file for your user avatar.
     string avatar_file?;
     # If true, the avatar will be deleted.
@@ -3343,8 +3977,6 @@ public type Body36 record {
     string email?;
     # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
     string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
     # A list of group ids to associate this user with.  Comma delimited.
     string group_ids?;
     # Pre-calculated hash of the user's password.
@@ -3419,166 +4051,6 @@ public type Body36 record {
     string user_root?;
     # User's username
     string username?;
-};
-
-public type Body123 record {
-    # Group name.
-    string name?;
-    # Group notes.
-    string notes?;
-    # A list of user ids. If sent as a string, should be comma-delimited.
-    string user_ids?;
-    # A list of group admin user ids. If sent as a string, should be comma-delimited.
-    string admin_ids?;
-};
-
-public type Body35 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
-};
-
-public type Body124 record {
-    # Group name.
-    string name?;
-    # Group notes.
-    string notes?;
-    # A list of user ids. If sent as a string, should be comma-delimited.
-    string user_ids?;
-    # A list of group admin user ids. If sent as a string, should be comma-delimited.
-    string admin_ids?;
-};
-
-public type Body121 record {
-    # Group name.
-    string name?;
-    # Group notes.
-    string notes?;
-    # A list of user ids. If sent as a string, should be comma-delimited.
-    string user_ids?;
-    # A list of group admin user ids. If sent as a string, should be comma-delimited.
-    string admin_ids?;
-};
-
-public type Body122 record {
-    # Group name.
-    string name?;
-    # Group notes.
-    string notes?;
-    # A list of user ids. If sent as a string, should be comma-delimited.
-    string user_ids?;
-    # A list of group admin user ids. If sent as a string, should be comma-delimited.
-    string admin_ids?;
-};
-
-public type Body120 record {
-    # Group name.
-    string name?;
-    # Group notes.
-    string notes?;
-    # A list of user ids. If sent as a string, should be comma-delimited.
-    string user_ids?;
-    # A list of group admin user ids. If sent as a string, should be comma-delimited.
-    string admin_ids?;
-};
-
-public type Body41 record {
-    # Internal reference for key.
-    string title;
-    # Actual contents of SSH key.
-    string public_key;
-};
-
-public type Body40 record {
-    # Internal reference for key.
-    string title;
-    # Actual contents of SSH key.
-    string public_key;
 };
 
 # Create Bundle
@@ -3647,26 +4119,43 @@ public type AutoEntity record {
     record  { }  dynamic?;
 };
 
-public type Body8 record {
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-};
-
-public type Body9 record {
+public type UserAs2KeysBody record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
+};
+
+public type WebhookTestBody2 record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # action for test body
+    string action?;
+};
+
+public type WebhookTestBody1 record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # action for test body
+    string action?;
 };
 
 # List Folders by path
@@ -3705,578 +4194,81 @@ public type FileEntity record {
     PreviewEntity preview?;
 };
 
-public type Body6 record {
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
+public type NotificationsIdBody record {
+    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
+    boolean notify_on_copy?;
+    # If `true` actions initiated by the user will still result in a notification
+    boolean notify_user_actions?;
+    # If `true`, enable notifications for each subfolder in this path
+    boolean recursive?;
+    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    string send_interval?;
 };
 
-public type Body29 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
-};
-
-public type Body7 record {
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-};
-
-public type Body28 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
-};
-
-public type Body4 record {
-    # API Key expiration date
-    string expires_at?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-};
-
-public type Body5 record {
-    # API Key expiration date
-    string expires_at?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-};
-
-public type Body2 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Start date/time of export range.
-    string start_at?;
-    # End date/time of export range.
-    string end_at?;
-    # Error message associated with the request, if any.
-    string query_message?;
-    # The HTTP request method used by the webhook.
-    string query_request_method?;
-    # The target webhook URL.
-    string query_request_url?;
-    # The HTTP status returned from the server in response to the webhook request.
-    string query_status?;
-    # true if the webhook request succeeded (i.e. returned a 200 or 204 response status). false otherwise.
-    boolean query_success?;
-    # Return notifications that were triggered by actions on this specific path.
-    string query_path?;
-    # Return notifications that were triggered by actions in this folder.
-    string query_folder?;
-};
-
-public type Body3 record {
-    # API Key expiration date
-    string expires_at?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-};
-
-public type Body23 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
-};
-
-public type Body118 record {
-    # Is the user a group administrator?
-    boolean admin?;
-};
-
-public type Body22 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
-};
-
-public type Body119 record {
-    # Is the user a group administrator?
-    boolean admin?;
-};
-
-public type Body21 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # Group ID to associate this user with.
-    int group_id?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
-};
-
-public type Body116 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
-};
-
-public type Body20 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
+public type AutomationsIdBody2 record {
+    # Automation type
+    string automation;
+    # Source Path
+    string 'source?;
+    # DEPRECATED: Destination Path. Use `destinations` instead.
+    string destination?;
+    # A list of String destination paths or Hash of folder_path and optional file_path.
+    string[] destinations?;
+    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
+    string destination_replace_from?;
+    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
+    string destination_replace_to?;
+    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    string interval?;
+    # Path on which this Automation runs.  Supports globs.
     string path?;
-};
-
-public type Body117 record {
-    # Is the user a group administrator?
-    boolean admin?;
-};
-
-public type Body27 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # AS2 Partnership Name
-    string as2_partnership_name;
-    # Actual contents of Public key.
-    string public_key;
-};
-
-public type Body114 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # A list of group ids to associate this user with.  Comma delimited.
+    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
-    string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
+    # Custom schedule for running this automation.
+    record {} schedule?;
+    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
+    string trigger?;
+    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    string[] trigger_actions?;
+    # If trigger is `action`, this is the path to watch for the specified trigger actions.
+    string trigger_action_path?;
+    # A Hash of attributes specific to the automation type.
+    record {} value?;
+};
+
+public type AutomationsIdBody1 record {
+    # Automation type
+    string automation;
+    # Source Path
+    string 'source?;
+    # DEPRECATED: Destination Path. Use `destinations` instead.
+    string destination?;
+    # A list of String destination paths or Hash of folder_path and optional file_path.
+    string[] destinations?;
+    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
+    string destination_replace_from?;
+    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
+    string destination_replace_to?;
+    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    string interval?;
+    # Path on which this Automation runs.  Supports globs.
+    string path?;
+    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+    # Custom schedule for running this automation.
+    record {} schedule?;
+    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
+    string trigger?;
+    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    string[] trigger_actions?;
+    # If trigger is `action`, this is the path to watch for the specified trigger actions.
+    string trigger_action_path?;
+    # A Hash of attributes specific to the automation type.
+    record {} value?;
 };
 
 # Update Form Field Set
@@ -4293,105 +4285,20 @@ public type PatchFormFieldSets record {
     PatchformfieldsetsFormFields[] form_fields?;
 };
 
-public type Body26 record {
+public type ApiKeysBody1 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # Internal reference for key.
-    string title;
-    # Actual contents of SSH key.
-    string public_key;
-};
-
-public type Body115 record {
-    # An image file for your user avatar.
-    string avatar_file?;
-    # If true, the avatar will be deleted.
-    boolean avatar_delete?;
-    # Used for changing a password on an existing user.
-    string change_password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    string change_password_confirmation?;
-    # User's email.
-    string email?;
-    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
-    string grant_permission?;
-    # A list of group ids to associate this user with.  Comma delimited.
-    string group_ids?;
-    # Pre-calculated hash of the user's password.
-    string imported_password_hash?;
-    # User password.
-    string password?;
-    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    string password_confirmation?;
-    # Signifies that the user has read all the announcements in the UI.
-    boolean announcements_read?;
-    # A list of allowed IPs if applicable.  Newline delimited
-    string allowed_ips?;
-    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
-    boolean attachments_permission?;
-    # Scheduled Date/Time at which user will be deactivated
-    string authenticate_until?;
-    # How is this user authenticated?
-    string authentication_method?;
-    # Allow this user to perform operations on the account, payments, and invoices?
-    boolean billing_permission?;
-    # Exempt this user from being disabled based on inactivity?
-    boolean bypass_inactive_disable?;
-    # Allow this user to skip site-wide IP blacklists?
-    boolean bypass_site_allowed_ips?;
-    # Can the user connect with WebDAV?
-    boolean dav_permission?;
-    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
-    boolean disabled?;
-    # Can the user access with FTP/FTPS?
-    boolean ftp_permission?;
-    # Text to display to the user in the header of the UI
-    string header_text?;
-    # Preferred language
-    string language?;
-    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    int notification_daily_send_time?;
-    # User's full name
+    # Internal name for the API Key.  For your use.
     string name?;
-    # User's company
-    string company?;
-    # Any internal notes on the user
-    string notes?;
-    # Enable integration with Office for the web?
-    boolean office_integration_enabled?;
-    # Number of days to allow user to use the same password
-    int password_validity_days?;
-    # Should the user receive admin alerts such a certificate expiration notifications and overages?
-    boolean receive_admin_alerts?;
-    # Is a password change required upon next user login?
-    boolean require_password_change?;
-    # Can this user access the REST API?
-    boolean restapi_permission?;
-    # Does this user manage it's own credentials or is it a shared/bot user?
-    boolean self_managed?;
-    # Can the user access with SFTP?
-    boolean sftp_permission?;
-    # Is the user an administrator for this site?
-    boolean site_admin?;
-    # Skip Welcome page in the UI?
-    boolean skip_welcome_screen?;
-    # SSL required setting
-    string ssl_required?;
-    # SSO (Single Sign On) strategy ID for the user, if applicable.
-    int sso_strategy_id?;
-    # Is the user subscribed to the newsletter?
-    boolean subscribe_to_newsletter?;
-    # 2FA required setting
-    string require_2fa?;
-    # User time zone
-    string time_zone?;
-    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    string user_root?;
-    # User's username
-    string username?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
 };
 
-public type Body25 record {
+public type UserPublicKeysBody2 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # Internal reference for key.
@@ -4400,50 +4307,7 @@ public type Body25 record {
     string public_key;
 };
 
-public type Body112 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # ID of file comment to attach reaction to.
-    int file_comment_id;
-    # Emoji to react with.
-    string emoji;
-};
-
-public type Body24 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Internal reference for key.
-    string title;
-    # Actual contents of SSH key.
-    string public_key;
-};
-
-public type Body113 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # ID of file comment to attach reaction to.
-    int file_comment_id;
-    # Emoji to react with.
-    string emoji;
-};
-
-public type Body110 record {
-    # Comment body.
-    string body;
-    # File path.
-    string path;
-};
-
-public type Body111 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # ID of file comment to attach reaction to.
-    int file_comment_id;
-    # Emoji to react with.
-    string emoji;
-};
-
-public type Body30 record {
+public type ApiKeysBody2 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # Internal name for the API Key.  For your use.
@@ -4558,27 +4422,20 @@ public type SsoStrategyEntity record {
     string ldap_username_field?;
 };
 
-public type Body1 record {
+public type MessageCommentReactionsBody record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # Start date/time of export range.
-    string start_at?;
-    # End date/time of export range.
-    string end_at?;
-    # Error message associated with the request, if any.
-    string query_message?;
-    # The HTTP request method used by the webhook.
-    string query_request_method?;
-    # The target webhook URL.
-    string query_request_url?;
-    # The HTTP status returned from the server in response to the webhook request.
-    string query_status?;
-    # true if the webhook request succeeded (i.e. returned a 200 or 204 response status). false otherwise.
-    boolean query_success?;
-    # Return notifications that were triggered by actions on this specific path.
-    string query_path?;
-    # Return notifications that were triggered by actions in this folder.
-    string query_folder?;
+    # Emoji to react with.
+    string emoji;
+};
+
+public type UserPublicKeysBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Internal reference for key.
+    string title;
+    # Actual contents of SSH key.
+    string public_key;
 };
 
 # Error fields.
@@ -4589,30 +4446,11 @@ public type ErrorsEntity record {
     string[] messages?;
 };
 
-public type Body19 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
-};
-
-public type Body18 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Internal name for the API Key.  For your use.
-    string name?;
-    # API Key expiration date
-    string expires_at?;
-    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
-    string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
+public type UserIdPublicKeysBody record {
+    # Internal reference for key.
+    string title;
+    # Actual contents of SSH key.
+    string public_key;
 };
 
 # List File Comments by path
@@ -4625,238 +4463,187 @@ public type FileCommentEntity record {
     FileCommentReactionEntity reactions?;
 };
 
-public type Body17 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # action for test body
-    string action?;
-};
-
-public type Body12 record {
-    # Site name
+public type GroupsIdBody2 record {
+    # Group name.
     string name?;
-    # Site subdomain
-    string subdomain?;
-    # Custom domain
-    string domain?;
-    # Main email for this site
-    string email?;
-    # Reply-to email for this site
-    string reply_to_email?;
-    # Are manual Bundle names allowed?
-    boolean allow_bundle_names?;
-    # Site-wide Bundle expiration in days
-    int bundle_expiration?;
-    # Notify site email of overages?
-    boolean overage_notify?;
-    # Will the welcome email be sent to new users?
-    boolean welcome_email_enabled?;
-    # If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
-    boolean ask_about_overwrites?;
-    # Show request access link for users without access?  Currently unused.
-    boolean show_request_access_link?;
-    # Include this email in welcome emails if enabled
-    string welcome_email_cc?;
-    # Custom text send in user welcome email
-    string welcome_custom_text?;
-    # Site default language
-    string language?;
-    # Does FTP user Windows emulation mode?
-    boolean windows_mode_ftp?;
-    # Site default time zone
-    string default_time_zone?;
-    # Is the desktop app enabled?
-    boolean desktop_app?;
-    # Is desktop app session IP pinning enabled?
-    boolean desktop_app_session_ip_pinning?;
-    # Desktop app session lifetime (in hours)
-    int desktop_app_session_lifetime?;
-    # Is the mobile app enabled?
-    boolean mobile_app?;
-    # Is mobile app session IP pinning enabled?
-    boolean mobile_app_session_ip_pinning?;
-    # Mobile app session lifetime (in hours)
-    int mobile_app_session_lifetime?;
-    # If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
-    boolean folder_permissions_groups_only?;
-    # Does the welcome screen appear?
-    string welcome_screen?;
-    # Allow users to use Office for the web?
-    boolean office_integration_available?;
-    # Session expiry in hours
-    float session_expiry?;
-    # Is SSL required?  Disabling this is insecure.
-    boolean ssl_required?;
-    # Is TLS disabled(site setting)?
-    boolean tls_disabled?;
-    # Will users be locked out after incorrect login attempts?
-    boolean user_lockout?;
-    # Number of login tries within `user_lockout_within` hours before users are locked out
-    int user_lockout_tries?;
-    # Number of hours for user lockout window
-    int user_lockout_within?;
-    # How many hours to lock user out for failed password?
-    int user_lockout_lock_period?;
-    # Include password in emails to new users?
-    boolean include_password_in_welcome_email?;
-    # Comma seperated list of allowed Country codes
-    string allowed_countries?;
-    # List of allowed IP addresses
-    string allowed_ips?;
-    # Comma seperated list of disallowed Country codes
-    string disallowed_countries?;
-    # Number of days to keep deleted files
-    int days_to_retain_backups?;
-    # Number of prior passwords to disallow
-    int max_prior_passwords?;
-    # Number of days password is valid
-    int password_validity_days?;
-    # Shortest password length for users
-    int password_min_length?;
-    # Require a letter in passwords?
-    boolean password_require_letter?;
-    # Require lower and upper case letters in passwords?
-    boolean password_require_mixed?;
-    # Require special characters in password?
-    boolean password_require_special?;
-    # Require a number in passwords?
-    boolean password_require_number?;
-    # Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
-    boolean password_require_unbreached?;
-    # Use user FTP roots also for SFTP?
-    boolean sftp_user_root_enabled?;
-    # Is password reset disabled?
-    boolean disable_password_reset?;
-    # Are files protected from modification?
-    boolean immutable_files?;
-    # Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
-    boolean session_pinned_by_ip?;
-    # Do Bundles require password protection?
-    boolean bundle_password_required?;
-    # Do Bundles require recipients for sharing?
-    boolean bundle_require_share_recipient?;
-    # Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
-    boolean password_requirements_apply_to_bundles?;
-    # Use servers in the USA only?
-    boolean opt_out_global?;
-    # Allow uploaders to set `provided_modified_at` for uploaded files?
-    boolean use_provided_modified_at?;
-    # Is this site using a custom namespace for users?
-    boolean custom_namespace?;
-    # If greater than zero, users will unable to login if they do not show activity within this number of days.
-    int disable_users_from_inactivity_period_days?;
-    # If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
-    boolean non_sso_groups_allowed?;
-    # If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
-    boolean non_sso_users_allowed?;
-    # Allow bundle creation
-    boolean sharing_enabled?;
-    # Enable User Requests feature
-    boolean user_requests_enabled?;
-    # Is SMS two factor authentication allowed?
-    boolean allowed_2fa_method_sms?;
-    # Is U2F two factor authentication allowed?
-    boolean allowed_2fa_method_u2f?;
-    # Is TOTP two factor authentication allowed?
-    boolean allowed_2fa_method_totp?;
-    # Is yubikey two factor authentication allowed?
-    boolean allowed_2fa_method_yubi?;
-    # Require two-factor authentication for all users?
-    boolean require_2fa?;
-    # What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
-    string require_2fa_user_type?;
-    # Top bar background color
-    string color2_top?;
-    # Page link and button color
-    string color2_left?;
-    # Top bar link color
-    string color2_link?;
-    # Page link and button color
-    string color2_text?;
-    # Top bar text color
-    string color2_top_text?;
-    # Custom site header text
-    string site_header?;
-    # Custom site footer text
-    string site_footer?;
-    # Login help text
-    string login_help_text?;
-    # SMTP server hostname or IP
-    string smtp_address?;
-    # SMTP server authentication type
-    string smtp_authentication?;
-    # From address to use when mailing through custom SMTP
-    string smtp_from?;
-    # SMTP server username
-    string smtp_username?;
-    # SMTP server port
-    int smtp_port?;
-    # Main LDAP setting: is LDAP enabled?
-    boolean ldap_enabled?;
-    # LDAP type
-    string ldap_type?;
-    # LDAP host
-    string ldap_host?;
-    # LDAP backup host
-    string ldap_host_2?;
-    # LDAP backup host
-    string ldap_host_3?;
-    # LDAP port
-    int ldap_port?;
-    # Use secure LDAP?
-    boolean ldap_secure?;
-    # Username for signing in to LDAP server.
-    string ldap_username?;
-    # LDAP username field
-    string ldap_username_field?;
-    # Domain name that will be appended to usernames
-    string ldap_domain?;
-    # Should we sync users from LDAP server?
-    string ldap_user_action?;
-    # Should we sync groups from LDAP server?
-    string ldap_group_action?;
-    # Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-    string ldap_user_include_groups?;
-    # Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
-    string ldap_group_exclusion?;
-    # Comma or newline separated list of group names (with optional wildcards) to include when syncing.
-    string ldap_group_inclusion?;
-    # Base DN for looking up users in LDAP server
-    string ldap_base_dn?;
-    string icon16_file?;
-    # If true, will delete the file stored in icon16
-    boolean icon16_delete?;
-    string icon32_file?;
-    # If true, will delete the file stored in icon32
-    boolean icon32_delete?;
-    string icon48_file?;
-    # If true, will delete the file stored in icon48
-    boolean icon48_delete?;
-    string icon128_file?;
-    # If true, will delete the file stored in icon128
-    boolean icon128_delete?;
-    string logo_file?;
-    # If true, will delete the file stored in logo
-    boolean logo_delete?;
-    # If set to true, we will begin the process of disabling 2FA on this site.
-    boolean disable_2fa_with_delay?;
-    # New LDAP password.
-    string ldap_password_change?;
-    # Confirm new LDAP password.
-    string ldap_password_change_confirmation?;
-    # Password for SMTP server.
-    string smtp_password?;
+    # Group notes.
+    string notes?;
+    # A list of user ids. If sent as a string, should be comma-delimited.
+    string user_ids?;
+    # A list of group admin user ids. If sent as a string, should be comma-delimited.
+    string admin_ids?;
 };
 
-public type Body11 record {
+public type GroupsIdBody1 record {
+    # Group name.
+    string name?;
+    # Group notes.
+    string notes?;
+    # A list of user ids. If sent as a string, should be comma-delimited.
+    string user_ids?;
+    # A list of group admin user ids. If sent as a string, should be comma-delimited.
+    string admin_ids?;
+};
+
+public type CopyFilepathBody1 record {
+    # Copy destination path.
+    string destination;
+    # Copy structure only?
+    boolean structure?;
+};
+
+public type FileCommentsBody1 record {
+    # Comment body.
+    string body;
+    # File path.
+    string path;
+};
+
+public type CopyFilepathBody2 record {
+    # Copy destination path.
+    string destination;
+    # Copy structure only?
+    boolean structure?;
+};
+
+public type BundlesIdBody record {
+    # A list of paths to include in this bundle.
+    string[] paths?;
+    # Password for this bundle.
+    string password?;
+    # Id of Form Field Set to use with this bundle
+    int form_field_set_id?;
+    # ID of the clickwrap to use with this bundle.
+    int clickwrap_id?;
+    # Bundle code.  This code forms the end part of the Public URL.
+    string code?;
+    # Public description
+    string description?;
+    # Bundle expiration date/time
+    string expires_at?;
+    # ID of the associated inbox, if available.
+    int inbox_id?;
+    # Maximum number of times bundle can be accessed
+    int max_uses?;
+    # Bundle internal note
+    string note?;
+    # Restrict users to previewing files only?
+    boolean preview_only?;
+    # Show a registration page that captures the downloader's name and email address?
+    boolean require_registration?;
+    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    boolean require_share_recipient?;
+};
+
+public type UserIdPublicKeysBody1 record {
+    # Internal reference for key.
+    string title;
+    # Actual contents of SSH key.
+    string public_key;
+};
+
+public type UserIdPublicKeysBody2 record {
+    # Internal reference for key.
+    string title;
+    # Actual contents of SSH key.
+    string public_key;
+};
+
+public type ProjectsBody record {
+    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
+    string global_access;
+};
+
+public type GroupIdUsersBody record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type SiteApiKeysBody record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # Internal name for the API Key.  For your use.
@@ -4869,1045 +4656,459 @@ public type Body11 record {
     string path?;
 };
 
-public type Body10 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Internal name for the API Key.  For your use.
+public type MoveFilepathBody record {
+    # Move destination path.
+    string destination;
+};
+
+public type SiteBody2 record {
+    # Site name
     string name?;
+    # Site subdomain
+    string subdomain?;
+    # Custom domain
+    string domain?;
+    # Main email for this site
+    string email?;
+    # Reply-to email for this site
+    string reply_to_email?;
+    # Are manual Bundle names allowed?
+    boolean allow_bundle_names?;
+    # Site-wide Bundle expiration in days
+    int bundle_expiration?;
+    # Notify site email of overages?
+    boolean overage_notify?;
+    # Will the welcome email be sent to new users?
+    boolean welcome_email_enabled?;
+    # If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
+    boolean ask_about_overwrites?;
+    # Show request access link for users without access?  Currently unused.
+    boolean show_request_access_link?;
+    # Include this email in welcome emails if enabled
+    string welcome_email_cc?;
+    # Custom text send in user welcome email
+    string welcome_custom_text?;
+    # Site default language
+    string language?;
+    # Does FTP user Windows emulation mode?
+    boolean windows_mode_ftp?;
+    # Site default time zone
+    string default_time_zone?;
+    # Is the desktop app enabled?
+    boolean desktop_app?;
+    # Is desktop app session IP pinning enabled?
+    boolean desktop_app_session_ip_pinning?;
+    # Desktop app session lifetime (in hours)
+    int desktop_app_session_lifetime?;
+    # Is the mobile app enabled?
+    boolean mobile_app?;
+    # Is mobile app session IP pinning enabled?
+    boolean mobile_app_session_ip_pinning?;
+    # Mobile app session lifetime (in hours)
+    int mobile_app_session_lifetime?;
+    # If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
+    boolean folder_permissions_groups_only?;
+    # Does the welcome screen appear?
+    string welcome_screen?;
+    # Allow users to use Office for the web?
+    boolean office_integration_available?;
+    # Session expiry in hours
+    float session_expiry?;
+    # Is SSL required?  Disabling this is insecure.
+    boolean ssl_required?;
+    # Is TLS disabled(site setting)?
+    boolean tls_disabled?;
+    # Will users be locked out after incorrect login attempts?
+    boolean user_lockout?;
+    # Number of login tries within `user_lockout_within` hours before users are locked out
+    int user_lockout_tries?;
+    # Number of hours for user lockout window
+    int user_lockout_within?;
+    # How many hours to lock user out for failed password?
+    int user_lockout_lock_period?;
+    # Include password in emails to new users?
+    boolean include_password_in_welcome_email?;
+    # Comma seperated list of allowed Country codes
+    string allowed_countries?;
+    # List of allowed IP addresses
+    string allowed_ips?;
+    # Comma seperated list of disallowed Country codes
+    string disallowed_countries?;
+    # Number of days to keep deleted files
+    int days_to_retain_backups?;
+    # Number of prior passwords to disallow
+    int max_prior_passwords?;
+    # Number of days password is valid
+    int password_validity_days?;
+    # Shortest password length for users
+    int password_min_length?;
+    # Require a letter in passwords?
+    boolean password_require_letter?;
+    # Require lower and upper case letters in passwords?
+    boolean password_require_mixed?;
+    # Require special characters in password?
+    boolean password_require_special?;
+    # Require a number in passwords?
+    boolean password_require_number?;
+    # Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
+    boolean password_require_unbreached?;
+    # Use user FTP roots also for SFTP?
+    boolean sftp_user_root_enabled?;
+    # Is password reset disabled?
+    boolean disable_password_reset?;
+    # Are files protected from modification?
+    boolean immutable_files?;
+    # Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
+    boolean session_pinned_by_ip?;
+    # Do Bundles require password protection?
+    boolean bundle_password_required?;
+    # Do Bundles require recipients for sharing?
+    boolean bundle_require_share_recipient?;
+    # Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
+    boolean password_requirements_apply_to_bundles?;
+    # Use servers in the USA only?
+    boolean opt_out_global?;
+    # Allow uploaders to set `provided_modified_at` for uploaded files?
+    boolean use_provided_modified_at?;
+    # Is this site using a custom namespace for users?
+    boolean custom_namespace?;
+    # If greater than zero, users will unable to login if they do not show activity within this number of days.
+    int disable_users_from_inactivity_period_days?;
+    # If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
+    boolean non_sso_groups_allowed?;
+    # If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
+    boolean non_sso_users_allowed?;
+    # Allow bundle creation
+    boolean sharing_enabled?;
+    # Enable User Requests feature
+    boolean user_requests_enabled?;
+    # Is SMS two factor authentication allowed?
+    boolean allowed_2fa_method_sms?;
+    # Is U2F two factor authentication allowed?
+    boolean allowed_2fa_method_u2f?;
+    # Is TOTP two factor authentication allowed?
+    boolean allowed_2fa_method_totp?;
+    # Is yubikey two factor authentication allowed?
+    boolean allowed_2fa_method_yubi?;
+    # Require two-factor authentication for all users?
+    boolean require_2fa?;
+    # What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
+    string require_2fa_user_type?;
+    # Top bar background color
+    string color2_top?;
+    # Page link and button color
+    string color2_left?;
+    # Top bar link color
+    string color2_link?;
+    # Page link and button color
+    string color2_text?;
+    # Top bar text color
+    string color2_top_text?;
+    # Custom site header text
+    string site_header?;
+    # Custom site footer text
+    string site_footer?;
+    # Login help text
+    string login_help_text?;
+    # SMTP server hostname or IP
+    string smtp_address?;
+    # SMTP server authentication type
+    string smtp_authentication?;
+    # From address to use when mailing through custom SMTP
+    string smtp_from?;
+    # SMTP server username
+    string smtp_username?;
+    # SMTP server port
+    int smtp_port?;
+    # Main LDAP setting: is LDAP enabled?
+    boolean ldap_enabled?;
+    # LDAP type
+    string ldap_type?;
+    # LDAP host
+    string ldap_host?;
+    # LDAP backup host
+    string ldap_host_2?;
+    # LDAP backup host
+    string ldap_host_3?;
+    # LDAP port
+    int ldap_port?;
+    # Use secure LDAP?
+    boolean ldap_secure?;
+    # Username for signing in to LDAP server.
+    string ldap_username?;
+    # LDAP username field
+    string ldap_username_field?;
+    # Domain name that will be appended to usernames
+    string ldap_domain?;
+    # Should we sync users from LDAP server?
+    string ldap_user_action?;
+    # Should we sync groups from LDAP server?
+    string ldap_group_action?;
+    # Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
+    string ldap_user_include_groups?;
+    # Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
+    string ldap_group_exclusion?;
+    # Comma or newline separated list of group names (with optional wildcards) to include when syncing.
+    string ldap_group_inclusion?;
+    # Base DN for looking up users in LDAP server
+    string ldap_base_dn?;
+    string icon16_file?;
+    # If true, will delete the file stored in icon16
+    boolean icon16_delete?;
+    string icon32_file?;
+    # If true, will delete the file stored in icon32
+    boolean icon32_delete?;
+    string icon48_file?;
+    # If true, will delete the file stored in icon48
+    boolean icon48_delete?;
+    string icon128_file?;
+    # If true, will delete the file stored in icon128
+    boolean icon128_delete?;
+    string logo_file?;
+    # If true, will delete the file stored in logo
+    boolean logo_delete?;
+    # If set to true, we will begin the process of disabling 2FA on this site.
+    boolean disable_2fa_with_delay?;
+    # New LDAP password.
+    string ldap_password_change?;
+    # Confirm new LDAP password.
+    string ldap_password_change_confirmation?;
+    # Password for SMTP server.
+    string smtp_password?;
+};
+
+public type SiteBody1 record {
+    # Site name
+    string name?;
+    # Site subdomain
+    string subdomain?;
+    # Custom domain
+    string domain?;
+    # Main email for this site
+    string email?;
+    # Reply-to email for this site
+    string reply_to_email?;
+    # Are manual Bundle names allowed?
+    boolean allow_bundle_names?;
+    # Site-wide Bundle expiration in days
+    int bundle_expiration?;
+    # Notify site email of overages?
+    boolean overage_notify?;
+    # Will the welcome email be sent to new users?
+    boolean welcome_email_enabled?;
+    # If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
+    boolean ask_about_overwrites?;
+    # Show request access link for users without access?  Currently unused.
+    boolean show_request_access_link?;
+    # Include this email in welcome emails if enabled
+    string welcome_email_cc?;
+    # Custom text send in user welcome email
+    string welcome_custom_text?;
+    # Site default language
+    string language?;
+    # Does FTP user Windows emulation mode?
+    boolean windows_mode_ftp?;
+    # Site default time zone
+    string default_time_zone?;
+    # Is the desktop app enabled?
+    boolean desktop_app?;
+    # Is desktop app session IP pinning enabled?
+    boolean desktop_app_session_ip_pinning?;
+    # Desktop app session lifetime (in hours)
+    int desktop_app_session_lifetime?;
+    # Is the mobile app enabled?
+    boolean mobile_app?;
+    # Is mobile app session IP pinning enabled?
+    boolean mobile_app_session_ip_pinning?;
+    # Mobile app session lifetime (in hours)
+    int mobile_app_session_lifetime?;
+    # If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
+    boolean folder_permissions_groups_only?;
+    # Does the welcome screen appear?
+    string welcome_screen?;
+    # Allow users to use Office for the web?
+    boolean office_integration_available?;
+    # Session expiry in hours
+    float session_expiry?;
+    # Is SSL required?  Disabling this is insecure.
+    boolean ssl_required?;
+    # Is TLS disabled(site setting)?
+    boolean tls_disabled?;
+    # Will users be locked out after incorrect login attempts?
+    boolean user_lockout?;
+    # Number of login tries within `user_lockout_within` hours before users are locked out
+    int user_lockout_tries?;
+    # Number of hours for user lockout window
+    int user_lockout_within?;
+    # How many hours to lock user out for failed password?
+    int user_lockout_lock_period?;
+    # Include password in emails to new users?
+    boolean include_password_in_welcome_email?;
+    # Comma seperated list of allowed Country codes
+    string allowed_countries?;
+    # List of allowed IP addresses
+    string allowed_ips?;
+    # Comma seperated list of disallowed Country codes
+    string disallowed_countries?;
+    # Number of days to keep deleted files
+    int days_to_retain_backups?;
+    # Number of prior passwords to disallow
+    int max_prior_passwords?;
+    # Number of days password is valid
+    int password_validity_days?;
+    # Shortest password length for users
+    int password_min_length?;
+    # Require a letter in passwords?
+    boolean password_require_letter?;
+    # Require lower and upper case letters in passwords?
+    boolean password_require_mixed?;
+    # Require special characters in password?
+    boolean password_require_special?;
+    # Require a number in passwords?
+    boolean password_require_number?;
+    # Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
+    boolean password_require_unbreached?;
+    # Use user FTP roots also for SFTP?
+    boolean sftp_user_root_enabled?;
+    # Is password reset disabled?
+    boolean disable_password_reset?;
+    # Are files protected from modification?
+    boolean immutable_files?;
+    # Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
+    boolean session_pinned_by_ip?;
+    # Do Bundles require password protection?
+    boolean bundle_password_required?;
+    # Do Bundles require recipients for sharing?
+    boolean bundle_require_share_recipient?;
+    # Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
+    boolean password_requirements_apply_to_bundles?;
+    # Use servers in the USA only?
+    boolean opt_out_global?;
+    # Allow uploaders to set `provided_modified_at` for uploaded files?
+    boolean use_provided_modified_at?;
+    # Is this site using a custom namespace for users?
+    boolean custom_namespace?;
+    # If greater than zero, users will unable to login if they do not show activity within this number of days.
+    int disable_users_from_inactivity_period_days?;
+    # If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
+    boolean non_sso_groups_allowed?;
+    # If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
+    boolean non_sso_users_allowed?;
+    # Allow bundle creation
+    boolean sharing_enabled?;
+    # Enable User Requests feature
+    boolean user_requests_enabled?;
+    # Is SMS two factor authentication allowed?
+    boolean allowed_2fa_method_sms?;
+    # Is U2F two factor authentication allowed?
+    boolean allowed_2fa_method_u2f?;
+    # Is TOTP two factor authentication allowed?
+    boolean allowed_2fa_method_totp?;
+    # Is yubikey two factor authentication allowed?
+    boolean allowed_2fa_method_yubi?;
+    # Require two-factor authentication for all users?
+    boolean require_2fa?;
+    # What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
+    string require_2fa_user_type?;
+    # Top bar background color
+    string color2_top?;
+    # Page link and button color
+    string color2_left?;
+    # Top bar link color
+    string color2_link?;
+    # Page link and button color
+    string color2_text?;
+    # Top bar text color
+    string color2_top_text?;
+    # Custom site header text
+    string site_header?;
+    # Custom site footer text
+    string site_footer?;
+    # Login help text
+    string login_help_text?;
+    # SMTP server hostname or IP
+    string smtp_address?;
+    # SMTP server authentication type
+    string smtp_authentication?;
+    # From address to use when mailing through custom SMTP
+    string smtp_from?;
+    # SMTP server username
+    string smtp_username?;
+    # SMTP server port
+    int smtp_port?;
+    # Main LDAP setting: is LDAP enabled?
+    boolean ldap_enabled?;
+    # LDAP type
+    string ldap_type?;
+    # LDAP host
+    string ldap_host?;
+    # LDAP backup host
+    string ldap_host_2?;
+    # LDAP backup host
+    string ldap_host_3?;
+    # LDAP port
+    int ldap_port?;
+    # Use secure LDAP?
+    boolean ldap_secure?;
+    # Username for signing in to LDAP server.
+    string ldap_username?;
+    # LDAP username field
+    string ldap_username_field?;
+    # Domain name that will be appended to usernames
+    string ldap_domain?;
+    # Should we sync users from LDAP server?
+    string ldap_user_action?;
+    # Should we sync groups from LDAP server?
+    string ldap_group_action?;
+    # Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
+    string ldap_user_include_groups?;
+    # Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
+    string ldap_group_exclusion?;
+    # Comma or newline separated list of group names (with optional wildcards) to include when syncing.
+    string ldap_group_inclusion?;
+    # Base DN for looking up users in LDAP server
+    string ldap_base_dn?;
+    string icon16_file?;
+    # If true, will delete the file stored in icon16
+    boolean icon16_delete?;
+    string icon32_file?;
+    # If true, will delete the file stored in icon32
+    boolean icon32_delete?;
+    string icon48_file?;
+    # If true, will delete the file stored in icon48
+    boolean icon48_delete?;
+    string icon128_file?;
+    # If true, will delete the file stored in icon128
+    boolean icon128_delete?;
+    string logo_file?;
+    # If true, will delete the file stored in logo
+    boolean logo_delete?;
+    # If set to true, we will begin the process of disabling 2FA on this site.
+    boolean disable_2fa_with_delay?;
+    # New LDAP password.
+    string ldap_password_change?;
+    # Confirm new LDAP password.
+    string ldap_password_change_confirmation?;
+    # Password for SMTP server.
+    string smtp_password?;
+};
+
+public type ApiKeyBody1 record {
     # API Key expiration date
     string expires_at?;
+    # Internal name for the API Key.  For your use.
+    string name?;
     # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
     string permission_set?;
-    # Folder path restriction for this api key.
-    string path?;
 };
 
-public type Body16 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # action for test body
-    string action?;
-};
-
-public type Body15 record {
-    # URL for testing the webhook.
-    string url;
-    # HTTP method(GET or POST).
-    string method?;
-    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    string encoding?;
-    # Additional request headers.
-    record {} headers?;
-    # Additional body parameters.
-    record {} body?;
-    # action for test body
-    string action?;
-};
-
-public type Body14 record {
-    # Site name
+public type ApiKeyBody2 record {
+    # API Key expiration date
+    string expires_at?;
+    # Internal name for the API Key.  For your use.
     string name?;
-    # Site subdomain
-    string subdomain?;
-    # Custom domain
-    string domain?;
-    # Main email for this site
-    string email?;
-    # Reply-to email for this site
-    string reply_to_email?;
-    # Are manual Bundle names allowed?
-    boolean allow_bundle_names?;
-    # Site-wide Bundle expiration in days
-    int bundle_expiration?;
-    # Notify site email of overages?
-    boolean overage_notify?;
-    # Will the welcome email be sent to new users?
-    boolean welcome_email_enabled?;
-    # If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
-    boolean ask_about_overwrites?;
-    # Show request access link for users without access?  Currently unused.
-    boolean show_request_access_link?;
-    # Include this email in welcome emails if enabled
-    string welcome_email_cc?;
-    # Custom text send in user welcome email
-    string welcome_custom_text?;
-    # Site default language
-    string language?;
-    # Does FTP user Windows emulation mode?
-    boolean windows_mode_ftp?;
-    # Site default time zone
-    string default_time_zone?;
-    # Is the desktop app enabled?
-    boolean desktop_app?;
-    # Is desktop app session IP pinning enabled?
-    boolean desktop_app_session_ip_pinning?;
-    # Desktop app session lifetime (in hours)
-    int desktop_app_session_lifetime?;
-    # Is the mobile app enabled?
-    boolean mobile_app?;
-    # Is mobile app session IP pinning enabled?
-    boolean mobile_app_session_ip_pinning?;
-    # Mobile app session lifetime (in hours)
-    int mobile_app_session_lifetime?;
-    # If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
-    boolean folder_permissions_groups_only?;
-    # Does the welcome screen appear?
-    string welcome_screen?;
-    # Allow users to use Office for the web?
-    boolean office_integration_available?;
-    # Session expiry in hours
-    float session_expiry?;
-    # Is SSL required?  Disabling this is insecure.
-    boolean ssl_required?;
-    # Is TLS disabled(site setting)?
-    boolean tls_disabled?;
-    # Will users be locked out after incorrect login attempts?
-    boolean user_lockout?;
-    # Number of login tries within `user_lockout_within` hours before users are locked out
-    int user_lockout_tries?;
-    # Number of hours for user lockout window
-    int user_lockout_within?;
-    # How many hours to lock user out for failed password?
-    int user_lockout_lock_period?;
-    # Include password in emails to new users?
-    boolean include_password_in_welcome_email?;
-    # Comma seperated list of allowed Country codes
-    string allowed_countries?;
-    # List of allowed IP addresses
-    string allowed_ips?;
-    # Comma seperated list of disallowed Country codes
-    string disallowed_countries?;
-    # Number of days to keep deleted files
-    int days_to_retain_backups?;
-    # Number of prior passwords to disallow
-    int max_prior_passwords?;
-    # Number of days password is valid
-    int password_validity_days?;
-    # Shortest password length for users
-    int password_min_length?;
-    # Require a letter in passwords?
-    boolean password_require_letter?;
-    # Require lower and upper case letters in passwords?
-    boolean password_require_mixed?;
-    # Require special characters in password?
-    boolean password_require_special?;
-    # Require a number in passwords?
-    boolean password_require_number?;
-    # Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
-    boolean password_require_unbreached?;
-    # Use user FTP roots also for SFTP?
-    boolean sftp_user_root_enabled?;
-    # Is password reset disabled?
-    boolean disable_password_reset?;
-    # Are files protected from modification?
-    boolean immutable_files?;
-    # Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
-    boolean session_pinned_by_ip?;
-    # Do Bundles require password protection?
-    boolean bundle_password_required?;
-    # Do Bundles require recipients for sharing?
-    boolean bundle_require_share_recipient?;
-    # Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
-    boolean password_requirements_apply_to_bundles?;
-    # Use servers in the USA only?
-    boolean opt_out_global?;
-    # Allow uploaders to set `provided_modified_at` for uploaded files?
-    boolean use_provided_modified_at?;
-    # Is this site using a custom namespace for users?
-    boolean custom_namespace?;
-    # If greater than zero, users will unable to login if they do not show activity within this number of days.
-    int disable_users_from_inactivity_period_days?;
-    # If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
-    boolean non_sso_groups_allowed?;
-    # If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
-    boolean non_sso_users_allowed?;
-    # Allow bundle creation
-    boolean sharing_enabled?;
-    # Enable User Requests feature
-    boolean user_requests_enabled?;
-    # Is SMS two factor authentication allowed?
-    boolean allowed_2fa_method_sms?;
-    # Is U2F two factor authentication allowed?
-    boolean allowed_2fa_method_u2f?;
-    # Is TOTP two factor authentication allowed?
-    boolean allowed_2fa_method_totp?;
-    # Is yubikey two factor authentication allowed?
-    boolean allowed_2fa_method_yubi?;
-    # Require two-factor authentication for all users?
-    boolean require_2fa?;
-    # What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
-    string require_2fa_user_type?;
-    # Top bar background color
-    string color2_top?;
-    # Page link and button color
-    string color2_left?;
-    # Top bar link color
-    string color2_link?;
-    # Page link and button color
-    string color2_text?;
-    # Top bar text color
-    string color2_top_text?;
-    # Custom site header text
-    string site_header?;
-    # Custom site footer text
-    string site_footer?;
-    # Login help text
-    string login_help_text?;
-    # SMTP server hostname or IP
-    string smtp_address?;
-    # SMTP server authentication type
-    string smtp_authentication?;
-    # From address to use when mailing through custom SMTP
-    string smtp_from?;
-    # SMTP server username
-    string smtp_username?;
-    # SMTP server port
-    int smtp_port?;
-    # Main LDAP setting: is LDAP enabled?
-    boolean ldap_enabled?;
-    # LDAP type
-    string ldap_type?;
-    # LDAP host
-    string ldap_host?;
-    # LDAP backup host
-    string ldap_host_2?;
-    # LDAP backup host
-    string ldap_host_3?;
-    # LDAP port
-    int ldap_port?;
-    # Use secure LDAP?
-    boolean ldap_secure?;
-    # Username for signing in to LDAP server.
-    string ldap_username?;
-    # LDAP username field
-    string ldap_username_field?;
-    # Domain name that will be appended to usernames
-    string ldap_domain?;
-    # Should we sync users from LDAP server?
-    string ldap_user_action?;
-    # Should we sync groups from LDAP server?
-    string ldap_group_action?;
-    # Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-    string ldap_user_include_groups?;
-    # Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
-    string ldap_group_exclusion?;
-    # Comma or newline separated list of group names (with optional wildcards) to include when syncing.
-    string ldap_group_inclusion?;
-    # Base DN for looking up users in LDAP server
-    string ldap_base_dn?;
-    string icon16_file?;
-    # If true, will delete the file stored in icon16
-    boolean icon16_delete?;
-    string icon32_file?;
-    # If true, will delete the file stored in icon32
-    boolean icon32_delete?;
-    string icon48_file?;
-    # If true, will delete the file stored in icon48
-    boolean icon48_delete?;
-    string icon128_file?;
-    # If true, will delete the file stored in icon128
-    boolean icon128_delete?;
-    string logo_file?;
-    # If true, will delete the file stored in logo
-    boolean logo_delete?;
-    # If set to true, we will begin the process of disabling 2FA on this site.
-    boolean disable_2fa_with_delay?;
-    # New LDAP password.
-    string ldap_password_change?;
-    # Confirm new LDAP password.
-    string ldap_password_change_confirmation?;
-    # Password for SMTP server.
-    string smtp_password?;
-};
-
-public type Body189 record {
-    # Username to sign in as
-    string username?;
-    # Password for sign in
-    string password?;
-    # If this user has a 2FA device, provide its OTP or code here.
-    string otp?;
-    # Identifier for a partially-completed login
-    string partial_session_id?;
-};
-
-public type Body13 record {
-    # Site name
-    string name?;
-    # Site subdomain
-    string subdomain?;
-    # Custom domain
-    string domain?;
-    # Main email for this site
-    string email?;
-    # Reply-to email for this site
-    string reply_to_email?;
-    # Are manual Bundle names allowed?
-    boolean allow_bundle_names?;
-    # Site-wide Bundle expiration in days
-    int bundle_expiration?;
-    # Notify site email of overages?
-    boolean overage_notify?;
-    # Will the welcome email be sent to new users?
-    boolean welcome_email_enabled?;
-    # If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
-    boolean ask_about_overwrites?;
-    # Show request access link for users without access?  Currently unused.
-    boolean show_request_access_link?;
-    # Include this email in welcome emails if enabled
-    string welcome_email_cc?;
-    # Custom text send in user welcome email
-    string welcome_custom_text?;
-    # Site default language
-    string language?;
-    # Does FTP user Windows emulation mode?
-    boolean windows_mode_ftp?;
-    # Site default time zone
-    string default_time_zone?;
-    # Is the desktop app enabled?
-    boolean desktop_app?;
-    # Is desktop app session IP pinning enabled?
-    boolean desktop_app_session_ip_pinning?;
-    # Desktop app session lifetime (in hours)
-    int desktop_app_session_lifetime?;
-    # Is the mobile app enabled?
-    boolean mobile_app?;
-    # Is mobile app session IP pinning enabled?
-    boolean mobile_app_session_ip_pinning?;
-    # Mobile app session lifetime (in hours)
-    int mobile_app_session_lifetime?;
-    # If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
-    boolean folder_permissions_groups_only?;
-    # Does the welcome screen appear?
-    string welcome_screen?;
-    # Allow users to use Office for the web?
-    boolean office_integration_available?;
-    # Session expiry in hours
-    float session_expiry?;
-    # Is SSL required?  Disabling this is insecure.
-    boolean ssl_required?;
-    # Is TLS disabled(site setting)?
-    boolean tls_disabled?;
-    # Will users be locked out after incorrect login attempts?
-    boolean user_lockout?;
-    # Number of login tries within `user_lockout_within` hours before users are locked out
-    int user_lockout_tries?;
-    # Number of hours for user lockout window
-    int user_lockout_within?;
-    # How many hours to lock user out for failed password?
-    int user_lockout_lock_period?;
-    # Include password in emails to new users?
-    boolean include_password_in_welcome_email?;
-    # Comma seperated list of allowed Country codes
-    string allowed_countries?;
-    # List of allowed IP addresses
-    string allowed_ips?;
-    # Comma seperated list of disallowed Country codes
-    string disallowed_countries?;
-    # Number of days to keep deleted files
-    int days_to_retain_backups?;
-    # Number of prior passwords to disallow
-    int max_prior_passwords?;
-    # Number of days password is valid
-    int password_validity_days?;
-    # Shortest password length for users
-    int password_min_length?;
-    # Require a letter in passwords?
-    boolean password_require_letter?;
-    # Require lower and upper case letters in passwords?
-    boolean password_require_mixed?;
-    # Require special characters in password?
-    boolean password_require_special?;
-    # Require a number in passwords?
-    boolean password_require_number?;
-    # Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
-    boolean password_require_unbreached?;
-    # Use user FTP roots also for SFTP?
-    boolean sftp_user_root_enabled?;
-    # Is password reset disabled?
-    boolean disable_password_reset?;
-    # Are files protected from modification?
-    boolean immutable_files?;
-    # Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
-    boolean session_pinned_by_ip?;
-    # Do Bundles require password protection?
-    boolean bundle_password_required?;
-    # Do Bundles require recipients for sharing?
-    boolean bundle_require_share_recipient?;
-    # Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
-    boolean password_requirements_apply_to_bundles?;
-    # Use servers in the USA only?
-    boolean opt_out_global?;
-    # Allow uploaders to set `provided_modified_at` for uploaded files?
-    boolean use_provided_modified_at?;
-    # Is this site using a custom namespace for users?
-    boolean custom_namespace?;
-    # If greater than zero, users will unable to login if they do not show activity within this number of days.
-    int disable_users_from_inactivity_period_days?;
-    # If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
-    boolean non_sso_groups_allowed?;
-    # If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
-    boolean non_sso_users_allowed?;
-    # Allow bundle creation
-    boolean sharing_enabled?;
-    # Enable User Requests feature
-    boolean user_requests_enabled?;
-    # Is SMS two factor authentication allowed?
-    boolean allowed_2fa_method_sms?;
-    # Is U2F two factor authentication allowed?
-    boolean allowed_2fa_method_u2f?;
-    # Is TOTP two factor authentication allowed?
-    boolean allowed_2fa_method_totp?;
-    # Is yubikey two factor authentication allowed?
-    boolean allowed_2fa_method_yubi?;
-    # Require two-factor authentication for all users?
-    boolean require_2fa?;
-    # What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
-    string require_2fa_user_type?;
-    # Top bar background color
-    string color2_top?;
-    # Page link and button color
-    string color2_left?;
-    # Top bar link color
-    string color2_link?;
-    # Page link and button color
-    string color2_text?;
-    # Top bar text color
-    string color2_top_text?;
-    # Custom site header text
-    string site_header?;
-    # Custom site footer text
-    string site_footer?;
-    # Login help text
-    string login_help_text?;
-    # SMTP server hostname or IP
-    string smtp_address?;
-    # SMTP server authentication type
-    string smtp_authentication?;
-    # From address to use when mailing through custom SMTP
-    string smtp_from?;
-    # SMTP server username
-    string smtp_username?;
-    # SMTP server port
-    int smtp_port?;
-    # Main LDAP setting: is LDAP enabled?
-    boolean ldap_enabled?;
-    # LDAP type
-    string ldap_type?;
-    # LDAP host
-    string ldap_host?;
-    # LDAP backup host
-    string ldap_host_2?;
-    # LDAP backup host
-    string ldap_host_3?;
-    # LDAP port
-    int ldap_port?;
-    # Use secure LDAP?
-    boolean ldap_secure?;
-    # Username for signing in to LDAP server.
-    string ldap_username?;
-    # LDAP username field
-    string ldap_username_field?;
-    # Domain name that will be appended to usernames
-    string ldap_domain?;
-    # Should we sync users from LDAP server?
-    string ldap_user_action?;
-    # Should we sync groups from LDAP server?
-    string ldap_group_action?;
-    # Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-    string ldap_user_include_groups?;
-    # Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
-    string ldap_group_exclusion?;
-    # Comma or newline separated list of group names (with optional wildcards) to include when syncing.
-    string ldap_group_inclusion?;
-    # Base DN for looking up users in LDAP server
-    string ldap_base_dn?;
-    string icon16_file?;
-    # If true, will delete the file stored in icon16
-    boolean icon16_delete?;
-    string icon32_file?;
-    # If true, will delete the file stored in icon32
-    boolean icon32_delete?;
-    string icon48_file?;
-    # If true, will delete the file stored in icon48
-    boolean icon48_delete?;
-    string icon128_file?;
-    # If true, will delete the file stored in icon128
-    boolean icon128_delete?;
-    string logo_file?;
-    # If true, will delete the file stored in logo
-    boolean logo_delete?;
-    # If set to true, we will begin the process of disabling 2FA on this site.
-    boolean disable_2fa_with_delay?;
-    # New LDAP password.
-    string ldap_password_change?;
-    # Confirm new LDAP password.
-    string ldap_password_change_confirmation?;
-    # Password for SMTP server.
-    string smtp_password?;
-};
-
-public type Body187 record {
-    # Folder path on which to request the file.
-    string path;
-    # Destination filename (without extension) to request.
-    string destination;
-    # A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-};
-
-public type Body188 record {
-    # Folder path on which to request the file.
-    string path;
-    # Destination filename (without extension) to request.
-    string destination;
-    # A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-};
-
-public type Body185 record {
-    # AWS Access Key.
-    string aws_access_key?;
-    # AWS secret key.
-    string aws_secret_key?;
-    # Password if needed.
-    string password?;
-    # Private key if needed.
-    string private_key?;
-    # SSL client certificate.
-    string ssl_certificate?;
-    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    string google_cloud_storage_credentials_json?;
-    # Wasabi access key.
-    string wasabi_access_key?;
-    # Wasabi secret key.
-    string wasabi_secret_key?;
-    # Backblaze B2 Cloud Storage keyID.
-    string backblaze_b2_key_id?;
-    # Backblaze B2 Cloud Storage applicationKey.
-    string backblaze_b2_application_key?;
-    # Rackspace API key from the Rackspace Cloud Control Panel.
-    string rackspace_api_key?;
-    # Reset authenticated account
-    boolean reset_authentication?;
-    # Azure Blob Storage secret key.
-    string azure_blob_storage_access_key?;
-    # Hostname or IP address
-    string hostname?;
-    # Internal name for your reference
-    string name?;
-    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    int max_connections?;
-    # Port for remote server.  Not needed for S3.
-    int port?;
-    # S3 bucket name
-    string s3_bucket?;
-    # S3 region
-    string s3_region?;
-    # Remote server certificate
-    string server_certificate?;
-    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
-    string server_host_key?;
-    # Remote server type.
-    string server_type?;
-    # Should we require SSL?
-    string ssl?;
-    # Remote server username.  Not needed for S3 buckets.
-    string username?;
-    # Google Cloud Storage bucket name
-    string google_cloud_storage_bucket?;
-    # Google Cloud Project ID
-    string google_cloud_storage_project_id?;
-    # Backblaze B2 Cloud Storage Bucket name
-    string backblaze_b2_bucket?;
-    # Backblaze B2 Cloud Storage S3 Endpoint
-    string backblaze_b2_s3_endpoint?;
-    # Wasabi Bucket name
-    string wasabi_bucket?;
-    # Wasabi region
-    string wasabi_region?;
-    # Rackspace username used to login to the Rackspace Cloud Control Panel.
-    string rackspace_username?;
-    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    string rackspace_region?;
-    # The name of the container (top level directory) where files will sync.
-    string rackspace_container?;
-    # Either personal or business_other account types
-    string one_drive_account_type?;
-    # Azure Blob Storage Account name
-    string azure_blob_storage_account?;
-    # Azure Blob Storage Container name
-    string azure_blob_storage_container?;
-    # S3-compatible Bucket name
-    string s3_compatible_bucket?;
-    # S3-compatible Bucket name
-    string s3_compatible_region?;
-    # S3-compatible endpoint
-    string s3_compatible_endpoint?;
-    # `true` if remote server only accepts connections from dedicated IPs
-    boolean enable_dedicated_ips?;
-    # S3-compatible access key
-    string s3_compatible_access_key?;
-    # S3-compatible secret key
-    string s3_compatible_secret_key?;
-};
-
-public type Body186 record {
-    # Folder path on which to request the file.
-    string path;
-    # Destination filename (without extension) to request.
-    string destination;
-    # A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
-    string user_ids?;
-    # A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
-    string group_ids?;
-};
-
-public type Body183 record {
-    # AWS Access Key.
-    string aws_access_key?;
-    # AWS secret key.
-    string aws_secret_key?;
-    # Password if needed.
-    string password?;
-    # Private key if needed.
-    string private_key?;
-    # SSL client certificate.
-    string ssl_certificate?;
-    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    string google_cloud_storage_credentials_json?;
-    # Wasabi access key.
-    string wasabi_access_key?;
-    # Wasabi secret key.
-    string wasabi_secret_key?;
-    # Backblaze B2 Cloud Storage keyID.
-    string backblaze_b2_key_id?;
-    # Backblaze B2 Cloud Storage applicationKey.
-    string backblaze_b2_application_key?;
-    # Rackspace API key from the Rackspace Cloud Control Panel.
-    string rackspace_api_key?;
-    # Reset authenticated account
-    boolean reset_authentication?;
-    # Azure Blob Storage secret key.
-    string azure_blob_storage_access_key?;
-    # Hostname or IP address
-    string hostname?;
-    # Internal name for your reference
-    string name?;
-    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    int max_connections?;
-    # Port for remote server.  Not needed for S3.
-    int port?;
-    # S3 bucket name
-    string s3_bucket?;
-    # S3 region
-    string s3_region?;
-    # Remote server certificate
-    string server_certificate?;
-    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
-    string server_host_key?;
-    # Remote server type.
-    string server_type?;
-    # Should we require SSL?
-    string ssl?;
-    # Remote server username.  Not needed for S3 buckets.
-    string username?;
-    # Google Cloud Storage bucket name
-    string google_cloud_storage_bucket?;
-    # Google Cloud Project ID
-    string google_cloud_storage_project_id?;
-    # Backblaze B2 Cloud Storage Bucket name
-    string backblaze_b2_bucket?;
-    # Backblaze B2 Cloud Storage S3 Endpoint
-    string backblaze_b2_s3_endpoint?;
-    # Wasabi Bucket name
-    string wasabi_bucket?;
-    # Wasabi region
-    string wasabi_region?;
-    # Rackspace username used to login to the Rackspace Cloud Control Panel.
-    string rackspace_username?;
-    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    string rackspace_region?;
-    # The name of the container (top level directory) where files will sync.
-    string rackspace_container?;
-    # Either personal or business_other account types
-    string one_drive_account_type?;
-    # Azure Blob Storage Account name
-    string azure_blob_storage_account?;
-    # Azure Blob Storage Container name
-    string azure_blob_storage_container?;
-    # S3-compatible Bucket name
-    string s3_compatible_bucket?;
-    # S3-compatible Bucket name
-    string s3_compatible_region?;
-    # S3-compatible endpoint
-    string s3_compatible_endpoint?;
-    # `true` if remote server only accepts connections from dedicated IPs
-    boolean enable_dedicated_ips?;
-    # S3-compatible access key
-    string s3_compatible_access_key?;
-    # S3-compatible secret key
-    string s3_compatible_secret_key?;
-};
-
-public type Body184 record {
-    # AWS Access Key.
-    string aws_access_key?;
-    # AWS secret key.
-    string aws_secret_key?;
-    # Password if needed.
-    string password?;
-    # Private key if needed.
-    string private_key?;
-    # SSL client certificate.
-    string ssl_certificate?;
-    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    string google_cloud_storage_credentials_json?;
-    # Wasabi access key.
-    string wasabi_access_key?;
-    # Wasabi secret key.
-    string wasabi_secret_key?;
-    # Backblaze B2 Cloud Storage keyID.
-    string backblaze_b2_key_id?;
-    # Backblaze B2 Cloud Storage applicationKey.
-    string backblaze_b2_application_key?;
-    # Rackspace API key from the Rackspace Cloud Control Panel.
-    string rackspace_api_key?;
-    # Reset authenticated account
-    boolean reset_authentication?;
-    # Azure Blob Storage secret key.
-    string azure_blob_storage_access_key?;
-    # Hostname or IP address
-    string hostname?;
-    # Internal name for your reference
-    string name?;
-    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    int max_connections?;
-    # Port for remote server.  Not needed for S3.
-    int port?;
-    # S3 bucket name
-    string s3_bucket?;
-    # S3 region
-    string s3_region?;
-    # Remote server certificate
-    string server_certificate?;
-    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
-    string server_host_key?;
-    # Remote server type.
-    string server_type?;
-    # Should we require SSL?
-    string ssl?;
-    # Remote server username.  Not needed for S3 buckets.
-    string username?;
-    # Google Cloud Storage bucket name
-    string google_cloud_storage_bucket?;
-    # Google Cloud Project ID
-    string google_cloud_storage_project_id?;
-    # Backblaze B2 Cloud Storage Bucket name
-    string backblaze_b2_bucket?;
-    # Backblaze B2 Cloud Storage S3 Endpoint
-    string backblaze_b2_s3_endpoint?;
-    # Wasabi Bucket name
-    string wasabi_bucket?;
-    # Wasabi region
-    string wasabi_region?;
-    # Rackspace username used to login to the Rackspace Cloud Control Panel.
-    string rackspace_username?;
-    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    string rackspace_region?;
-    # The name of the container (top level directory) where files will sync.
-    string rackspace_container?;
-    # Either personal or business_other account types
-    string one_drive_account_type?;
-    # Azure Blob Storage Account name
-    string azure_blob_storage_account?;
-    # Azure Blob Storage Container name
-    string azure_blob_storage_container?;
-    # S3-compatible Bucket name
-    string s3_compatible_bucket?;
-    # S3-compatible Bucket name
-    string s3_compatible_region?;
-    # S3-compatible endpoint
-    string s3_compatible_endpoint?;
-    # `true` if remote server only accepts connections from dedicated IPs
-    boolean enable_dedicated_ips?;
-    # S3-compatible access key
-    string s3_compatible_access_key?;
-    # S3-compatible secret key
-    string s3_compatible_secret_key?;
-};
-
-public type Body181 record {
-    # AWS Access Key.
-    string aws_access_key?;
-    # AWS secret key.
-    string aws_secret_key?;
-    # Password if needed.
-    string password?;
-    # Private key if needed.
-    string private_key?;
-    # SSL client certificate.
-    string ssl_certificate?;
-    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    string google_cloud_storage_credentials_json?;
-    # Wasabi access key.
-    string wasabi_access_key?;
-    # Wasabi secret key.
-    string wasabi_secret_key?;
-    # Backblaze B2 Cloud Storage keyID.
-    string backblaze_b2_key_id?;
-    # Backblaze B2 Cloud Storage applicationKey.
-    string backblaze_b2_application_key?;
-    # Rackspace API key from the Rackspace Cloud Control Panel.
-    string rackspace_api_key?;
-    # Reset authenticated account
-    boolean reset_authentication?;
-    # Azure Blob Storage secret key.
-    string azure_blob_storage_access_key?;
-    # Hostname or IP address
-    string hostname?;
-    # Internal name for your reference
-    string name?;
-    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    int max_connections?;
-    # Port for remote server.  Not needed for S3.
-    int port?;
-    # S3 bucket name
-    string s3_bucket?;
-    # S3 region
-    string s3_region?;
-    # Remote server certificate
-    string server_certificate?;
-    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
-    string server_host_key?;
-    # Remote server type.
-    string server_type?;
-    # Should we require SSL?
-    string ssl?;
-    # Remote server username.  Not needed for S3 buckets.
-    string username?;
-    # Google Cloud Storage bucket name
-    string google_cloud_storage_bucket?;
-    # Google Cloud Project ID
-    string google_cloud_storage_project_id?;
-    # Backblaze B2 Cloud Storage Bucket name
-    string backblaze_b2_bucket?;
-    # Backblaze B2 Cloud Storage S3 Endpoint
-    string backblaze_b2_s3_endpoint?;
-    # Wasabi Bucket name
-    string wasabi_bucket?;
-    # Wasabi region
-    string wasabi_region?;
-    # Rackspace username used to login to the Rackspace Cloud Control Panel.
-    string rackspace_username?;
-    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    string rackspace_region?;
-    # The name of the container (top level directory) where files will sync.
-    string rackspace_container?;
-    # Either personal or business_other account types
-    string one_drive_account_type?;
-    # Azure Blob Storage Account name
-    string azure_blob_storage_account?;
-    # Azure Blob Storage Container name
-    string azure_blob_storage_container?;
-    # S3-compatible Bucket name
-    string s3_compatible_bucket?;
-    # S3-compatible Bucket name
-    string s3_compatible_region?;
-    # S3-compatible endpoint
-    string s3_compatible_endpoint?;
-    # `true` if remote server only accepts connections from dedicated IPs
-    boolean enable_dedicated_ips?;
-    # S3-compatible access key
-    string s3_compatible_access_key?;
-    # S3-compatible secret key
-    string s3_compatible_secret_key?;
-};
-
-public type Body182 record {
-    # AWS Access Key.
-    string aws_access_key?;
-    # AWS secret key.
-    string aws_secret_key?;
-    # Password if needed.
-    string password?;
-    # Private key if needed.
-    string private_key?;
-    # SSL client certificate.
-    string ssl_certificate?;
-    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    string google_cloud_storage_credentials_json?;
-    # Wasabi access key.
-    string wasabi_access_key?;
-    # Wasabi secret key.
-    string wasabi_secret_key?;
-    # Backblaze B2 Cloud Storage keyID.
-    string backblaze_b2_key_id?;
-    # Backblaze B2 Cloud Storage applicationKey.
-    string backblaze_b2_application_key?;
-    # Rackspace API key from the Rackspace Cloud Control Panel.
-    string rackspace_api_key?;
-    # Reset authenticated account
-    boolean reset_authentication?;
-    # Azure Blob Storage secret key.
-    string azure_blob_storage_access_key?;
-    # Hostname or IP address
-    string hostname?;
-    # Internal name for your reference
-    string name?;
-    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    int max_connections?;
-    # Port for remote server.  Not needed for S3.
-    int port?;
-    # S3 bucket name
-    string s3_bucket?;
-    # S3 region
-    string s3_region?;
-    # Remote server certificate
-    string server_certificate?;
-    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
-    string server_host_key?;
-    # Remote server type.
-    string server_type?;
-    # Should we require SSL?
-    string ssl?;
-    # Remote server username.  Not needed for S3 buckets.
-    string username?;
-    # Google Cloud Storage bucket name
-    string google_cloud_storage_bucket?;
-    # Google Cloud Project ID
-    string google_cloud_storage_project_id?;
-    # Backblaze B2 Cloud Storage Bucket name
-    string backblaze_b2_bucket?;
-    # Backblaze B2 Cloud Storage S3 Endpoint
-    string backblaze_b2_s3_endpoint?;
-    # Wasabi Bucket name
-    string wasabi_bucket?;
-    # Wasabi region
-    string wasabi_region?;
-    # Rackspace username used to login to the Rackspace Cloud Control Panel.
-    string rackspace_username?;
-    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    string rackspace_region?;
-    # The name of the container (top level directory) where files will sync.
-    string rackspace_container?;
-    # Either personal or business_other account types
-    string one_drive_account_type?;
-    # Azure Blob Storage Account name
-    string azure_blob_storage_account?;
-    # Azure Blob Storage Container name
-    string azure_blob_storage_container?;
-    # S3-compatible Bucket name
-    string s3_compatible_bucket?;
-    # S3-compatible Bucket name
-    string s3_compatible_region?;
-    # S3-compatible endpoint
-    string s3_compatible_endpoint?;
-    # `true` if remote server only accepts connections from dedicated IPs
-    boolean enable_dedicated_ips?;
-    # S3-compatible access key
-    string s3_compatible_access_key?;
-    # S3-compatible secret key
-    string s3_compatible_secret_key?;
-};
-
-public type Body180 record {
-    # AWS Access Key.
-    string aws_access_key?;
-    # AWS secret key.
-    string aws_secret_key?;
-    # Password if needed.
-    string password?;
-    # Private key if needed.
-    string private_key?;
-    # SSL client certificate.
-    string ssl_certificate?;
-    # A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    string google_cloud_storage_credentials_json?;
-    # Wasabi access key.
-    string wasabi_access_key?;
-    # Wasabi secret key.
-    string wasabi_secret_key?;
-    # Backblaze B2 Cloud Storage keyID.
-    string backblaze_b2_key_id?;
-    # Backblaze B2 Cloud Storage applicationKey.
-    string backblaze_b2_application_key?;
-    # Rackspace API key from the Rackspace Cloud Control Panel.
-    string rackspace_api_key?;
-    # Reset authenticated account
-    boolean reset_authentication?;
-    # Azure Blob Storage secret key.
-    string azure_blob_storage_access_key?;
-    # Hostname or IP address
-    string hostname?;
-    # Internal name for your reference
-    string name?;
-    # Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    int max_connections?;
-    # Port for remote server.  Not needed for S3.
-    int port?;
-    # S3 bucket name
-    string s3_bucket?;
-    # S3 region
-    string s3_region?;
-    # Remote server certificate
-    string server_certificate?;
-    # Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
-    string server_host_key?;
-    # Remote server type.
-    string server_type?;
-    # Should we require SSL?
-    string ssl?;
-    # Remote server username.  Not needed for S3 buckets.
-    string username?;
-    # Google Cloud Storage bucket name
-    string google_cloud_storage_bucket?;
-    # Google Cloud Project ID
-    string google_cloud_storage_project_id?;
-    # Backblaze B2 Cloud Storage Bucket name
-    string backblaze_b2_bucket?;
-    # Backblaze B2 Cloud Storage S3 Endpoint
-    string backblaze_b2_s3_endpoint?;
-    # Wasabi Bucket name
-    string wasabi_bucket?;
-    # Wasabi region
-    string wasabi_region?;
-    # Rackspace username used to login to the Rackspace Cloud Control Panel.
-    string rackspace_username?;
-    # Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    string rackspace_region?;
-    # The name of the container (top level directory) where files will sync.
-    string rackspace_container?;
-    # Either personal or business_other account types
-    string one_drive_account_type?;
-    # Azure Blob Storage Account name
-    string azure_blob_storage_account?;
-    # Azure Blob Storage Container name
-    string azure_blob_storage_container?;
-    # S3-compatible Bucket name
-    string s3_compatible_bucket?;
-    # S3-compatible Bucket name
-    string s3_compatible_region?;
-    # S3-compatible endpoint
-    string s3_compatible_endpoint?;
-    # `true` if remote server only accepts connections from dedicated IPs
-    boolean enable_dedicated_ips?;
-    # S3-compatible access key
-    string s3_compatible_access_key?;
-    # S3-compatible secret key
-    string s3_compatible_secret_key?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
 };
 
 # Associated payment line items
@@ -5924,7 +5125,133 @@ public type PaymentLineItemEntity record {
     string updated_at?;
 };
 
-public type Body178 record {
+public type WebhookTestBody record {
+    # URL for testing the webhook.
+    string url;
+    # HTTP method(GET or POST).
+    string method?;
+    # HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+    string encoding?;
+    # Additional request headers.
+    record {} headers?;
+    # Additional body parameters.
+    record {} body?;
+    # action for test body
+    string action?;
+};
+
+public type LocksLockpathBody record {
+    # Allow lock to be updated by any user?
+    boolean allow_access_by_any_user?;
+    # Is lock exclusive?
+    boolean exclusive?;
+    # Does lock apply to subfolders?
+    string recursive?;
+    # Lock timeout length
+    int timeout?;
+};
+
+public type UserBody2 record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type UserAs2KeysBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
+};
+
+public type PublicKeysBody2 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # Internal reference for key.
@@ -5933,7 +5260,107 @@ public type Body178 record {
     string public_key;
 };
 
-public type Body179 record {
+public type UserBody1 record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type UserAs2KeysBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # AS2 Partnership Name
+    string as2_partnership_name;
+    # Actual contents of Public key.
+    string public_key;
+};
+
+public type PublicKeysBody1 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # Internal reference for key.
@@ -5942,48 +5369,405 @@ public type Body179 record {
     string public_key;
 };
 
-public type Body176 record {
-    # Internal reference for key.
-    string title;
+public type GroupsBody2 record {
+    # Group name.
+    string name?;
+    # Group notes.
+    string notes?;
+    # A list of user ids. If sent as a string, should be comma-delimited.
+    string user_ids?;
+    # A list of group admin user ids. If sent as a string, should be comma-delimited.
+    string admin_ids?;
 };
 
-public type Body177 record {
+public type SiteBody record {
+    # Site name
+    string name?;
+    # Site subdomain
+    string subdomain?;
+    # Custom domain
+    string domain?;
+    # Main email for this site
+    string email?;
+    # Reply-to email for this site
+    string reply_to_email?;
+    # Are manual Bundle names allowed?
+    boolean allow_bundle_names?;
+    # Site-wide Bundle expiration in days
+    int bundle_expiration?;
+    # Notify site email of overages?
+    boolean overage_notify?;
+    # Will the welcome email be sent to new users?
+    boolean welcome_email_enabled?;
+    # If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
+    boolean ask_about_overwrites?;
+    # Show request access link for users without access?  Currently unused.
+    boolean show_request_access_link?;
+    # Include this email in welcome emails if enabled
+    string welcome_email_cc?;
+    # Custom text send in user welcome email
+    string welcome_custom_text?;
+    # Site default language
+    string language?;
+    # Does FTP user Windows emulation mode?
+    boolean windows_mode_ftp?;
+    # Site default time zone
+    string default_time_zone?;
+    # Is the desktop app enabled?
+    boolean desktop_app?;
+    # Is desktop app session IP pinning enabled?
+    boolean desktop_app_session_ip_pinning?;
+    # Desktop app session lifetime (in hours)
+    int desktop_app_session_lifetime?;
+    # Is the mobile app enabled?
+    boolean mobile_app?;
+    # Is mobile app session IP pinning enabled?
+    boolean mobile_app_session_ip_pinning?;
+    # Mobile app session lifetime (in hours)
+    int mobile_app_session_lifetime?;
+    # If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
+    boolean folder_permissions_groups_only?;
+    # Does the welcome screen appear?
+    string welcome_screen?;
+    # Allow users to use Office for the web?
+    boolean office_integration_available?;
+    # Session expiry in hours
+    float session_expiry?;
+    # Is SSL required?  Disabling this is insecure.
+    boolean ssl_required?;
+    # Is TLS disabled(site setting)?
+    boolean tls_disabled?;
+    # Will users be locked out after incorrect login attempts?
+    boolean user_lockout?;
+    # Number of login tries within `user_lockout_within` hours before users are locked out
+    int user_lockout_tries?;
+    # Number of hours for user lockout window
+    int user_lockout_within?;
+    # How many hours to lock user out for failed password?
+    int user_lockout_lock_period?;
+    # Include password in emails to new users?
+    boolean include_password_in_welcome_email?;
+    # Comma seperated list of allowed Country codes
+    string allowed_countries?;
+    # List of allowed IP addresses
+    string allowed_ips?;
+    # Comma seperated list of disallowed Country codes
+    string disallowed_countries?;
+    # Number of days to keep deleted files
+    int days_to_retain_backups?;
+    # Number of prior passwords to disallow
+    int max_prior_passwords?;
+    # Number of days password is valid
+    int password_validity_days?;
+    # Shortest password length for users
+    int password_min_length?;
+    # Require a letter in passwords?
+    boolean password_require_letter?;
+    # Require lower and upper case letters in passwords?
+    boolean password_require_mixed?;
+    # Require special characters in password?
+    boolean password_require_special?;
+    # Require a number in passwords?
+    boolean password_require_number?;
+    # Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
+    boolean password_require_unbreached?;
+    # Use user FTP roots also for SFTP?
+    boolean sftp_user_root_enabled?;
+    # Is password reset disabled?
+    boolean disable_password_reset?;
+    # Are files protected from modification?
+    boolean immutable_files?;
+    # Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
+    boolean session_pinned_by_ip?;
+    # Do Bundles require password protection?
+    boolean bundle_password_required?;
+    # Do Bundles require recipients for sharing?
+    boolean bundle_require_share_recipient?;
+    # Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
+    boolean password_requirements_apply_to_bundles?;
+    # Use servers in the USA only?
+    boolean opt_out_global?;
+    # Allow uploaders to set `provided_modified_at` for uploaded files?
+    boolean use_provided_modified_at?;
+    # Is this site using a custom namespace for users?
+    boolean custom_namespace?;
+    # If greater than zero, users will unable to login if they do not show activity within this number of days.
+    int disable_users_from_inactivity_period_days?;
+    # If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
+    boolean non_sso_groups_allowed?;
+    # If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
+    boolean non_sso_users_allowed?;
+    # Allow bundle creation
+    boolean sharing_enabled?;
+    # Enable User Requests feature
+    boolean user_requests_enabled?;
+    # Is SMS two factor authentication allowed?
+    boolean allowed_2fa_method_sms?;
+    # Is U2F two factor authentication allowed?
+    boolean allowed_2fa_method_u2f?;
+    # Is TOTP two factor authentication allowed?
+    boolean allowed_2fa_method_totp?;
+    # Is yubikey two factor authentication allowed?
+    boolean allowed_2fa_method_yubi?;
+    # Require two-factor authentication for all users?
+    boolean require_2fa?;
+    # What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
+    string require_2fa_user_type?;
+    # Top bar background color
+    string color2_top?;
+    # Page link and button color
+    string color2_left?;
+    # Top bar link color
+    string color2_link?;
+    # Page link and button color
+    string color2_text?;
+    # Top bar text color
+    string color2_top_text?;
+    # Custom site header text
+    string site_header?;
+    # Custom site footer text
+    string site_footer?;
+    # Login help text
+    string login_help_text?;
+    # SMTP server hostname or IP
+    string smtp_address?;
+    # SMTP server authentication type
+    string smtp_authentication?;
+    # From address to use when mailing through custom SMTP
+    string smtp_from?;
+    # SMTP server username
+    string smtp_username?;
+    # SMTP server port
+    int smtp_port?;
+    # Main LDAP setting: is LDAP enabled?
+    boolean ldap_enabled?;
+    # LDAP type
+    string ldap_type?;
+    # LDAP host
+    string ldap_host?;
+    # LDAP backup host
+    string ldap_host_2?;
+    # LDAP backup host
+    string ldap_host_3?;
+    # LDAP port
+    int ldap_port?;
+    # Use secure LDAP?
+    boolean ldap_secure?;
+    # Username for signing in to LDAP server.
+    string ldap_username?;
+    # LDAP username field
+    string ldap_username_field?;
+    # Domain name that will be appended to usernames
+    string ldap_domain?;
+    # Should we sync users from LDAP server?
+    string ldap_user_action?;
+    # Should we sync groups from LDAP server?
+    string ldap_group_action?;
+    # Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
+    string ldap_user_include_groups?;
+    # Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
+    string ldap_group_exclusion?;
+    # Comma or newline separated list of group names (with optional wildcards) to include when syncing.
+    string ldap_group_inclusion?;
+    # Base DN for looking up users in LDAP server
+    string ldap_base_dn?;
+    string icon16_file?;
+    # If true, will delete the file stored in icon16
+    boolean icon16_delete?;
+    string icon32_file?;
+    # If true, will delete the file stored in icon32
+    boolean icon32_delete?;
+    string icon48_file?;
+    # If true, will delete the file stored in icon48
+    boolean icon48_delete?;
+    string icon128_file?;
+    # If true, will delete the file stored in icon128
+    boolean icon128_delete?;
+    string logo_file?;
+    # If true, will delete the file stored in logo
+    boolean logo_delete?;
+    # If set to true, we will begin the process of disabling 2FA on this site.
+    boolean disable_2fa_with_delay?;
+    # New LDAP password.
+    string ldap_password_change?;
+    # Confirm new LDAP password.
+    string ldap_password_change_confirmation?;
+    # Password for SMTP server.
+    string smtp_password?;
+};
+
+public type BundlesBody2 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
+    # A list of paths to include in this bundle.
+    string[] paths;
+    # Password for this bundle.
+    string password?;
+    # Id of Form Field Set to use with this bundle
+    int form_field_set_id?;
+    # Bundle expiration date/time
+    string expires_at?;
+    # Maximum number of times bundle can be accessed
+    int max_uses?;
+    # Public description
+    string description?;
+    # Bundle internal note
+    string note?;
+    # Bundle code.  This code forms the end part of the Public URL.
+    string code?;
+    # Restrict users to previewing files only?
+    boolean preview_only?;
+    # Show a registration page that captures the downloader's name and email address?
+    boolean require_registration?;
+    # ID of the clickwrap to use with this bundle.
+    int clickwrap_id?;
+    # ID of the associated inbox, if available.
+    int inbox_id?;
+    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    boolean require_share_recipient?;
+};
+
+public type BundlesBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # A list of paths to include in this bundle.
+    string[] paths;
+    # Password for this bundle.
+    string password?;
+    # Id of Form Field Set to use with this bundle
+    int form_field_set_id?;
+    # Bundle expiration date/time
+    string expires_at?;
+    # Maximum number of times bundle can be accessed
+    int max_uses?;
+    # Public description
+    string description?;
+    # Bundle internal note
+    string note?;
+    # Bundle code.  This code forms the end part of the Public URL.
+    string code?;
+    # Restrict users to previewing files only?
+    boolean preview_only?;
+    # Show a registration page that captures the downloader's name and email address?
+    boolean require_registration?;
+    # ID of the clickwrap to use with this bundle.
+    int clickwrap_id?;
+    # ID of the associated inbox, if available.
+    int inbox_id?;
+    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    boolean require_share_recipient?;
+};
+
+public type InboxRecipientsBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Inbox to share.
+    int inbox_id;
+    # Email address to share this inbox with.
+    string recipient;
+    # Name of recipient.
+    string name?;
+    # Company of recipient.
+    string company?;
+    # Note to include in email.
+    string note?;
+    # Set to true to share the link with the recipient upon creation.
+    boolean share_after_create?;
+};
+
+public type FileCommentsIdBody record {
+    # Comment body.
+    string body;
+};
+
+public type GroupsBody1 record {
+    # Group name.
+    string name?;
+    # Group notes.
+    string notes?;
+    # A list of user ids. If sent as a string, should be comma-delimited.
+    string user_ids?;
+    # A list of group admin user ids. If sent as a string, should be comma-delimited.
+    string admin_ids?;
+};
+
+public type ApiKeyBody record {
+    # API Key expiration date
+    string expires_at?;
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+};
+
+public type BehaviorsIdBody2 record {
+    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
+    string value?;
+    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    string attachment_file?;
+    # Behavior type.
+    string behavior?;
+    # Folder behaviors path.
+    string path?;
+};
+
+public type FilesFilepathBody record {
+    # The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
+    string action?;
+    # etag identifier.
+    string[] 'etags\[etag\];
+    # Part number.
+    int[] 'etags\[part\];
+    # Length of file.
+    int length?;
+    # Create parent directories if they do not exist?
+    boolean mkdir_parents?;
+    # Part if uploading a part.
+    int part?;
+    # How many parts to fetch?
+    int parts?;
+    # User provided modification time.
+    string provided_mtime?;
+    string ref?;
+    # File byte offset to restart from.
+    int restart?;
+    # Size of file.
+    int size?;
+    # If copying folder, copy just the structure?
+    string structure?;
+    # Allow file rename instead of overwrite?
+    boolean with_rename?;
+};
+
+public type SiteApiKeysBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
+};
+
+public type SiteApiKeysBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Internal name for the API Key.  For your use.
+    string name?;
+    # API Key expiration date
+    string expires_at?;
+    # Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    string permission_set?;
+    # Folder path restriction for this api key.
+    string path?;
+};
+
+public type PublicKeysIdBody2 record {
     # Internal reference for key.
     string title;
-    # Actual contents of SSH key.
-    string public_key;
-};
-
-public type Body174 record {
-    # Internal reference for key.
-    string title;
-};
-
-public type Body175 record {
-    # Internal reference for key.
-    string title;
-};
-
-public type Body172 record {
-    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
-    string global_access;
-};
-
-public type Body173 record {
-    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
-    string global_access;
-};
-
-public type Body170 record {
-    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
-    string global_access;
-};
-
-public type Body171 record {
-    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
-    string global_access;
 };
 
 # Associated invoice line items
@@ -6008,6 +5792,17 @@ public type InvoiceLineItemEntity record {
     string site?;
 };
 
+public type BehaviorsIdBody1 record {
+    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
+    string value?;
+    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    string attachment_file?;
+    # Behavior type.
+    string behavior?;
+    # Folder behaviors path.
+    string path?;
+};
+
 # List Inbox Recipients
 public type InboxRecipientEntity record {
     # The recipient's company.
@@ -6030,138 +5825,203 @@ public type PublicIpAddressEntity record {
     string server_name?;
 };
 
-public type Body169 record {
-    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
-    string global_access;
-};
-
-public type Body167 record {
-    # Group ID
-    int group_id?;
-    # Folder path
-    string path?;
-    #  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
-    string permission?;
-    # Apply to subfolders recursively?
-    boolean recursive?;
-    # User ID.  Provide `username` or `user_id`
+public type MessageReactionsBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # User username.  Provide `username` or `user_id`
-    string username?;
+    # Emoji to react with.
+    string emoji;
 };
 
-public type Body168 record {
-    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
-    string global_access;
+public type ClickwrapsIdBody2 record {
+    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
+    string name?;
+    # Body text of Clickwrap (supports Markdown formatting).
+    string body?;
+    # Use this Clickwrap for Bundles?
+    string use_with_bundles?;
+    # Use this Clickwrap for Inboxes?
+    string use_with_inboxes?;
+    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    string use_with_users?;
 };
 
-public type Body165 record {
-    # Group ID
-    int group_id?;
-    # Folder path
-    string path?;
-    #  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
-    string permission?;
-    # Apply to subfolders recursively?
-    boolean recursive?;
-    # User ID.  Provide `username` or `user_id`
+public type MessagesIdBody2 record {
+    # Project to which the message should be attached.
+    int project_id;
+    # Message subject.
+    string subject;
+    # Message body.
+    string body;
+};
+
+public type PublicKeysIdBody1 record {
+    # Internal reference for key.
+    string title;
+};
+
+public type ClickwrapsIdBody1 record {
+    # Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
+    string name?;
+    # Body text of Clickwrap (supports Markdown formatting).
+    string body?;
+    # Use this Clickwrap for Bundles?
+    string use_with_bundles?;
+    # Use this Clickwrap for Inboxes?
+    string use_with_inboxes?;
+    # Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    string use_with_users?;
+};
+
+public type MessagesIdBody1 record {
+    # Project to which the message should be attached.
+    int project_id;
+    # Message subject.
+    string subject;
+    # Message body.
+    string body;
+};
+
+public type InboxRecipientsBody1 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # User username.  Provide `username` or `user_id`
-    string username?;
+    # Inbox to share.
+    int inbox_id;
+    # Email address to share this inbox with.
+    string recipient;
+    # Name of recipient.
+    string name?;
+    # Company of recipient.
+    string company?;
+    # Note to include in email.
+    string note?;
+    # Set to true to share the link with the recipient upon creation.
+    boolean share_after_create?;
 };
 
-public type Body166 record {
-    # Group ID
-    int group_id?;
-    # Folder path
+public type AutomationsIdBody record {
+    # Automation type
+    string automation;
+    # Source Path
+    string 'source?;
+    # DEPRECATED: Destination Path. Use `destinations` instead.
+    string destination?;
+    # A list of String destination paths or Hash of folder_path and optional file_path.
+    string[] destinations?;
+    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
+    string destination_replace_from?;
+    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
+    string destination_replace_to?;
+    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    string interval?;
+    # Path on which this Automation runs.  Supports globs.
     string path?;
-    #  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
-    string permission?;
-    # Apply to subfolders recursively?
-    boolean recursive?;
-    # User ID.  Provide `username` or `user_id`
-    int user_id?;
-    # User username.  Provide `username` or `user_id`
-    string username?;
+    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+    # Custom schedule for running this automation.
+    record {} schedule?;
+    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
+    string trigger?;
+    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    string[] trigger_actions?;
+    # If trigger is `action`, this is the path to watch for the specified trigger actions.
+    string trigger_action_path?;
+    # A Hash of attributes specific to the automation type.
+    record {} value?;
 };
 
-public type Body163 record {
-    # The id of the user to notify. Provide `user_id`, `username` or `group_id`.
+public type InboxRecipientsBody2 record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    boolean notify_on_copy?;
-    # If `true` actions initiated by the user will still result in a notification
-    boolean notify_user_actions?;
-    # If `true`, enable notifications for each subfolder in this path
-    boolean recursive?;
-    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    string send_interval?;
-    # The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
-    int group_id?;
-    # Path
+    # Inbox to share.
+    int inbox_id;
+    # Email address to share this inbox with.
+    string recipient;
+    # Name of recipient.
+    string name?;
+    # Company of recipient.
+    string company?;
+    # Note to include in email.
+    string note?;
+    # Set to true to share the link with the recipient upon creation.
+    boolean share_after_create?;
+};
+
+public type MessageCommentsBody record {
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    int user_id?;
+    # Comment body.
+    string body;
+};
+
+public type BehaviorsBody1 record {
+    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
+    string value?;
+    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    string attachment_file?;
+    # Folder behaviors path.
+    string path;
+    # Behavior type.
+    string behavior;
+};
+
+public type BehaviorsBody2 record {
+    # The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
+    string value?;
+    # Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    string attachment_file?;
+    # Folder behaviors path.
+    string path;
+    # Behavior type.
+    string behavior;
+};
+
+public type BeginUploadFilepathBody record {
+    # Create parent directories if they do not exist?
+    boolean mkdir_parents?;
+    # Part if uploading a part.
+    int part?;
+    # How many parts to fetch?
+    int parts?;
+    string ref?;
+    # File byte offset to restart from.
+    int restart?;
+    # Allow file rename instead of overwrite?
+    boolean with_rename?;
+};
+
+public type AutomationsBody record {
+    # Automation type
+    string automation;
+    # Source Path
+    string 'source?;
+    # DEPRECATED: Destination Path. Use `destinations` instead.
+    string destination?;
+    # A list of String destination paths or Hash of folder_path and optional file_path.
+    string[] destinations?;
+    # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
+    string destination_replace_from?;
+    # If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
+    string destination_replace_to?;
+    # How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    string interval?;
+    # Path on which this Automation runs.  Supports globs.
     string path?;
-    # The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
-    string username?;
-};
-
-public type Body164 record {
-    # The id of the user to notify. Provide `user_id`, `username` or `group_id`.
-    int user_id?;
-    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    boolean notify_on_copy?;
-    # If `true` actions initiated by the user will still result in a notification
-    boolean notify_user_actions?;
-    # If `true`, enable notifications for each subfolder in this path
-    boolean recursive?;
-    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    string send_interval?;
-    # The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
-    int group_id?;
-    # Path
-    string path?;
-    # The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
-    string username?;
-};
-
-public type Body161 record {
-    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    boolean notify_on_copy?;
-    # If `true` actions initiated by the user will still result in a notification
-    boolean notify_user_actions?;
-    # If `true`, enable notifications for each subfolder in this path
-    boolean recursive?;
-    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    string send_interval?;
-};
-
-public type Body162 record {
-    # The id of the user to notify. Provide `user_id`, `username` or `group_id`.
-    int user_id?;
-    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    boolean notify_on_copy?;
-    # If `true` actions initiated by the user will still result in a notification
-    boolean notify_user_actions?;
-    # If `true`, enable notifications for each subfolder in this path
-    boolean recursive?;
-    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    string send_interval?;
-    # The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
-    int group_id?;
-    # Path
-    string path?;
-    # The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
-    string username?;
-};
-
-public type Body160 record {
-    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    boolean notify_on_copy?;
-    # If `true` actions initiated by the user will still result in a notification
-    boolean notify_user_actions?;
-    # If `true`, enable notifications for each subfolder in this path
-    boolean recursive?;
-    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    string send_interval?;
+    # A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+    # Custom schedule for running this automation.
+    record {} schedule?;
+    # How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
+    string trigger?;
+    # If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    string[] trigger_actions?;
+    # If trigger is `action`, this is the path to watch for the specified trigger actions.
+    string trigger_action_path?;
+    # A Hash of attributes specific to the automation type.
+    record {} value?;
 };
 
 # List Bundle Registrations
@@ -6186,6 +6046,17 @@ public type BundleRegistrationEntity record {
     string form_field_data?;
 };
 
+public type RequestsBody record {
+    # Folder path on which to request the file.
+    string path;
+    # Destination filename (without extension) to request.
+    string destination;
+    # A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
+    string user_ids?;
+    # A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
+    string group_ids?;
+};
+
 # List Message Comment Reactions
 public type MessageCommentReactionEntity record {
     # Reaction ID
@@ -6194,27 +6065,180 @@ public type MessageCommentReactionEntity record {
     string emoji?;
 };
 
-public type Body record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Start date/time of export range.
-    string start_at?;
-    # End date/time of export range.
-    string end_at?;
-    # Error message associated with the request, if any.
-    string query_message?;
-    # The HTTP request method used by the webhook.
-    string query_request_method?;
-    # The target webhook URL.
-    string query_request_url?;
-    # The HTTP status returned from the server in response to the webhook request.
-    string query_status?;
-    # true if the webhook request succeeded (i.e. returned a 200 or 204 response status). false otherwise.
-    boolean query_success?;
-    # Return notifications that were triggered by actions on this specific path.
-    string query_path?;
-    # Return notifications that were triggered by actions in this folder.
-    string query_folder?;
+public type BundlesIdBody2 record {
+    # A list of paths to include in this bundle.
+    string[] paths?;
+    # Password for this bundle.
+    string password?;
+    # Id of Form Field Set to use with this bundle
+    int form_field_set_id?;
+    # ID of the clickwrap to use with this bundle.
+    int clickwrap_id?;
+    # Bundle code.  This code forms the end part of the Public URL.
+    string code?;
+    # Public description
+    string description?;
+    # Bundle expiration date/time
+    string expires_at?;
+    # ID of the associated inbox, if available.
+    int inbox_id?;
+    # Maximum number of times bundle can be accessed
+    int max_uses?;
+    # Bundle internal note
+    string note?;
+    # Restrict users to previewing files only?
+    boolean preview_only?;
+    # Show a registration page that captures the downloader's name and email address?
+    boolean require_registration?;
+    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    boolean require_share_recipient?;
+};
+
+public type BundlesIdBody1 record {
+    # A list of paths to include in this bundle.
+    string[] paths?;
+    # Password for this bundle.
+    string password?;
+    # Id of Form Field Set to use with this bundle
+    int form_field_set_id?;
+    # ID of the clickwrap to use with this bundle.
+    int clickwrap_id?;
+    # Bundle code.  This code forms the end part of the Public URL.
+    string code?;
+    # Public description
+    string description?;
+    # Bundle expiration date/time
+    string expires_at?;
+    # ID of the associated inbox, if available.
+    int inbox_id?;
+    # Maximum number of times bundle can be accessed
+    int max_uses?;
+    # Bundle internal note
+    string note?;
+    # Restrict users to previewing files only?
+    boolean preview_only?;
+    # Show a registration page that captures the downloader's name and email address?
+    boolean require_registration?;
+    # Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    boolean require_share_recipient?;
+};
+
+public type UserBody record {
+    # An image file for your user avatar.
+    string avatar_file?;
+    # If true, the avatar will be deleted.
+    boolean avatar_delete?;
+    # Used for changing a password on an existing user.
+    string change_password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    string change_password_confirmation?;
+    # User's email.
+    string email?;
+    # Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
+    string grant_permission?;
+    # Group ID to associate this user with.
+    int group_id?;
+    # A list of group ids to associate this user with.  Comma delimited.
+    string group_ids?;
+    # Pre-calculated hash of the user's password.
+    string imported_password_hash?;
+    # User password.
+    string password?;
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    string password_confirmation?;
+    # Signifies that the user has read all the announcements in the UI.
+    boolean announcements_read?;
+    # A list of allowed IPs if applicable.  Newline delimited
+    string allowed_ips?;
+    # DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
+    boolean attachments_permission?;
+    # Scheduled Date/Time at which user will be deactivated
+    string authenticate_until?;
+    # How is this user authenticated?
+    string authentication_method?;
+    # Allow this user to perform operations on the account, payments, and invoices?
+    boolean billing_permission?;
+    # Exempt this user from being disabled based on inactivity?
+    boolean bypass_inactive_disable?;
+    # Allow this user to skip site-wide IP blacklists?
+    boolean bypass_site_allowed_ips?;
+    # Can the user connect with WebDAV?
+    boolean dav_permission?;
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
+    boolean disabled?;
+    # Can the user access with FTP/FTPS?
+    boolean ftp_permission?;
+    # Text to display to the user in the header of the UI
+    string header_text?;
+    # Preferred language
+    string language?;
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    int notification_daily_send_time?;
+    # User's full name
+    string name?;
+    # User's company
+    string company?;
+    # Any internal notes on the user
+    string notes?;
+    # Enable integration with Office for the web?
+    boolean office_integration_enabled?;
+    # Number of days to allow user to use the same password
+    int password_validity_days?;
+    # Should the user receive admin alerts such a certificate expiration notifications and overages?
+    boolean receive_admin_alerts?;
+    # Is a password change required upon next user login?
+    boolean require_password_change?;
+    # Can this user access the REST API?
+    boolean restapi_permission?;
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    boolean self_managed?;
+    # Can the user access with SFTP?
+    boolean sftp_permission?;
+    # Is the user an administrator for this site?
+    boolean site_admin?;
+    # Skip Welcome page in the UI?
+    boolean skip_welcome_screen?;
+    # SSL required setting
+    string ssl_required?;
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    int sso_strategy_id?;
+    # Is the user subscribed to the newsletter?
+    boolean subscribe_to_newsletter?;
+    # 2FA required setting
+    string require_2fa?;
+    # User time zone
+    string time_zone?;
+    # Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    string user_root?;
+    # User's username
+    string username?;
+};
+
+public type NotificationsIdBody1 record {
+    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
+    boolean notify_on_copy?;
+    # If `true` actions initiated by the user will still result in a notification
+    boolean notify_user_actions?;
+    # If `true`, enable notifications for each subfolder in this path
+    boolean recursive?;
+    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    string send_interval?;
+};
+
+public type NotificationsIdBody2 record {
+    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
+    boolean notify_on_copy?;
+    # If `true` actions initiated by the user will still result in a notification
+    boolean notify_user_actions?;
+    # If `true`, enable notifications for each subfolder in this path
+    boolean recursive?;
+    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    string send_interval?;
+};
+
+public type MembershipsUserIdBody record {
+    # Is the user a group administrator?
+    boolean admin?;
 };
 
 # List Apps
@@ -6253,76 +6277,52 @@ public type AppEntity record {
     boolean featured?;
 };
 
-public type Body158 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Emoji to react with.
-    string emoji;
+public type ProjectsIdBody2 record {
+    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
+    string global_access;
 };
 
-public type Body159 record {
-    # If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    boolean notify_on_copy?;
-    # If `true` actions initiated by the user will still result in a notification
-    boolean notify_user_actions?;
-    # If `true`, enable notifications for each subfolder in this path
-    boolean recursive?;
-    # The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    string send_interval?;
+public type ProjectsIdBody1 record {
+    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
+    string global_access;
 };
 
-public type Body156 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Emoji to react with.
-    string emoji;
-};
-
-public type Body157 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Emoji to react with.
-    string emoji;
-};
-
-public type Body154 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Emoji to react with.
-    string emoji;
-};
-
-public type Body155 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Emoji to react with.
-    string emoji;
-};
-
-public type Body152 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
+public type MessageCommentsIdBody2 record {
     # Comment body.
     string body;
 };
 
-public type Body153 record {
+public type MessageCommentsIdBody1 record {
+    # Comment body.
+    string body;
+};
+
+public type MessageCommentReactionsBody1 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
     # Emoji to react with.
     string emoji;
 };
 
-public type Body150 record {
+public type MessageCommentReactionsBody2 record {
     # User ID.  Provide a value of `0` to operate the current session's user.
     int user_id?;
-    # Comment body.
-    string body;
+    # Emoji to react with.
+    string emoji;
 };
 
-public type Body151 record {
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    int user_id?;
-    # Comment body.
-    string body;
+public type ProjectsIdBody record {
+    # Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
+    string global_access;
+};
+
+public type GroupsBody record {
+    # Group name.
+    string name?;
+    # Group notes.
+    string notes?;
+    # A list of user ids. If sent as a string, should be comma-delimited.
+    string user_ids?;
+    # A list of group admin user ids. If sent as a string, should be comma-delimited.
+    string admin_ids?;
 };

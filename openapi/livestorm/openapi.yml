@@ -32,7 +32,6 @@ components:
       type: apiKey
       name: Authorization
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 
   schemas:
     Event:
       type: object

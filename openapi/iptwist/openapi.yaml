@@ -97,4 +97,4 @@ components:
       in: header
       name: X-IPTWIST-TOKEN
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API Key as X-IPTWIST-TOKEN. Eg: {\"X-IPTWIST-TOKEN\" : \"<Your API Key>\"}"
+      description: Represents API Key `X-IPTWIST-TOKEN`

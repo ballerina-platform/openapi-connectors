@@ -3741,7 +3741,6 @@ components:
       in: header
       name: api-key
       type: apiKey
-      x-ballerina-apikey-description: "Provide your private apiKey as `api-key`. Eg: `{\"api-key\" : \"<private api-key>\"}`"
     # oauth2:
     #   description: |
     #     OAuth2 authentication.

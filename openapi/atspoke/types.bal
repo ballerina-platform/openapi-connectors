@@ -45,6 +45,13 @@ public type ConfigListItemExternalData record {
     string lastSyncedAt?;
 };
 
+public type RequestidMessagesBody record {
+    # Describes the actor that led to an update.
+    UpdateActor actor;
+    # The content of the update
+    MessageContent content;
+};
+
 # Team
 public type CustomnavlistFiltersTeam record {
     # Include no value
@@ -126,6 +133,19 @@ public type TaskTemplate record {
     string subject?;
     # Assignment rule
     TasktemplateAssignmentrule assignmentRule?;
+};
+
+public type UsersUseridBody record {
+    # New display name.
+    string displayName?;
+    # New phone number of the user.
+    string phoneNumber?;
+    # country of the users phone number.
+    string countryId?;
+    # New email of the user.
+    string email?;
+    # User profile object.
+    Profile profile?;
 };
 
 # Task instances
@@ -315,6 +335,11 @@ public type ConfigListExternalData record {
     string sourceIntegrationId?;
     # Most recent timestamp when this list was synced with the third-party system
     string lastSyncedAt?;
+};
+
+public type RequestidTagsBody record {
+    # Tag ids to add
+    RequestsrequestidtagsTags[] tags;
 };
 
 # Task assignee
@@ -612,21 +637,7 @@ public type Team record {
     TeamSettings settings?;
 };
 
-# Team PATCH object
-public type TeamPatchBody record {
-    # Team settings
-    TeamSettings settings?;
-};
-
-# A team field in a VisibleSegment
-public type SegmentTeamField record {
-    # Operator
-    string operator?;
-    # Team object.
-    Team value?;
-};
-
-public type Body record {
+public type RequestsBody record {
     # Request subject.
     string subject;
     # a longer description of the request
@@ -643,6 +654,20 @@ public type Body record {
     string requestType?;
     # Request type form values.
     RequestTypeInfo requestTypeInfo?;
+};
+
+# Team PATCH object
+public type TeamPatchBody record {
+    # Team settings
+    TeamSettings settings?;
+};
+
+# A team field in a VisibleSegment
+public type SegmentTeamField record {
+    # Operator
+    string operator?;
+    # Team object.
+    Team value?;
 };
 
 # Tag
@@ -667,11 +692,6 @@ public type RequestTask record {
     string sortField?;
 };
 
-public type Body4 record {
-    # Tag ids to add
-    RequestsrequestidtagsTags[] tags;
-};
-
 # Webhook Subscription object.
 public type WebhookSubscription record {
     # The ID of the webhook subscription.
@@ -694,31 +714,6 @@ public type WebhookSubscription record {
     string createdAt?;
     # Webhook authentication mechanism
     WebhooksubscriptionAuthentication authentication?;
-};
-
-public type Body5 record {
-    # New display name.
-    string displayName?;
-    # New phone number of the user.
-    string phoneNumber?;
-    # country of the users phone number.
-    string countryId?;
-    # New email of the user.
-    string email?;
-    # User profile object.
-    Profile profile?;
-};
-
-public type Body2 record {
-    # Describes the actor that led to an update.
-    UpdateActor actor;
-    # The content of the update
-    MessageContent content;
-};
-
-public type Body3 record {
-    # Request ids to be merged into the request in the path parameter
-    string[] requests;
 };
 
 # Status
@@ -827,6 +822,11 @@ public type TasktemplateAssignmentrule record {
     string user?;
 };
 
+public type RequestidMergeBody record {
+    # Request ids to be merged into the request in the path parameter
+    string[] requests;
+};
+
 public type RequesttypeinforesponseFieldAssignmentrule record {
     string 'type?;
     string team?;
@@ -841,13 +841,6 @@ public type InlineResponse2001 record {
     int 'start?;
     # The number of tasks returned.
     int 'limit?;
-};
-
-public type Body1 record {
-    # the IDs of the requests to be updated, 24 characters, hexadecimal
-    string[] requests;
-    # ID of the tag to add to the requests.
-    string tag;
 };
 
 public type InlineResponse2003 record {
@@ -967,6 +960,13 @@ public type NotFound record {
     int code?;
     # Error message.
     string message?;
+};
+
+public type RequestsBulkAddTagBody record {
+    # the IDs of the requests to be updated, 24 characters, hexadecimal
+    string[] requests;
+    # ID of the tag to add to the requests.
+    string tag;
 };
 
 public type InlineResponse2006 record {

@@ -537,6 +537,7 @@ public type PhoneNumberValidationResponse record {
     # True if the operation was successful, false if there was an error during validation.  See IsValid for validation result.
     boolean Successful?;
     # Type of phone number; possible values are: FixedLine, Mobile, FixedLineOrMobile, TollFree, PremiumRate, 
+    # SharedCost, Voip, PersonalNumber, Pager, Uan, Voicemail, Unknown
     string PhoneNumberType?;
     # E.164 format of the phone number
     string E164Format?;

@@ -18,8 +18,8 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `X-IPTWIST-TOKEN`
+    string xIptwistToken;
 |};
 
 # This is a generated connector from [ipTwist API v1](https://iptwist.com/) OpenAPI Specification. 
@@ -27,27 +27,27 @@ public type ApiKeysConfig record {|
 @display {label: "ipTwist", iconPath: "resources/iptwist.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [ipTwist Account](https://iptwist.com/register) and obtain the API token.
     #
-    # + apiKeyConfig - Provide your API Key as X-IPTWIST-TOKEN. Eg: {"X-IPTWIST-TOKEN" : "<Your API Key>"}
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + apiKeyConfig - API keys for authorization 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://iptwist.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Geolocate a given IP address
     #
-    # + payload - IP address
-    # + return - Successful IP geolocation
+    # + payload - IP address 
+    # + return - Successful IP geolocation 
     remote isolated function getGeoLocationInfo(Request payload) returns Response|error {
         string  path = string `/`;
-        map<any> headerValues = {"X-IPTWIST-TOKEN": self.apiKeys["X-IPTWIST-TOKEN"]};
+        map<any> headerValues = {"X-IPTWIST-TOKEN": self.apiKeyConfig.xIptwistToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -55,18 +55,4 @@ public isolated client class Client {
         Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Response);
         return response;
     }
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map
-# + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

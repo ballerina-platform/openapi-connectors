@@ -341,6 +341,9 @@ public type SnappedWaypoint record {
 };
 
 # Use `objectives` instead.
+# 
+# # Deprecated
+@deprecated
 public type Algorithm record {
     # Problem type
     string problem_type?;
@@ -624,6 +627,8 @@ public type JobRelation record {
     string vehicle_id?;
 };
 
+public type  MatrixCalculateBody MatrixRequest|SymmetricalMatrixRequest;
+
 public type InlineResponse404 record {
     # Error message
     string message?;
@@ -651,6 +656,8 @@ public type InternalErrorMessage record {
     # Details
     string message?;
 };
+
+public type  MatrixBody MatrixRequest|SymmetricalMatrixRequest;
 
 # Additional information for your request
 public type CostmatrixDataInfo record {
@@ -697,8 +704,6 @@ public type MatrixresponseHints record {
     # Optional. An array of two-element arrays representing the from/to_point indices of points for which no connection could be found. Will only be added if `fail_fast=false` and some connections were not found.
     decimal[][] point_pairs?;
 };
-
-public type  Body MatrixRequest|SymmetricalMatrixRequest;
 
 public type JobId record {
     # UUID. Unique id for your job/request with which you can fetch your solution
@@ -963,8 +968,6 @@ public type LineString record {
 
 # A polyline-encoded list of positions. You'll need to decode this string in client code. We provide open source code in [Java](https://github.com/graphhopper/graphhopper/blob/e649aaed8d3f4378bf2d8889bbbc2318261eabb2/web-api/src/main/java/com/graphhopper/http/WebHelper.java#L54) and [JavaScript](https://github.com/graphhopper/directions-api-js-client/blob/cf43d1a5bc93a3e8007a44fcfc551117e4fa49bc/src/GHUtil.js#L27).
 public type EncodedLineString string;
-
-public type  Body1 MatrixRequest|SymmetricalMatrixRequest;
 
 public type RouteResponsePath record {
     # The total distance, in meters. To get this information for one 'leg' please read [this blog post](https://www.graphhopper.com/blog/2019/11/28/routing-api-using-path-details/).

@@ -15,12 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `token`
+    string token;
 |};
 
 # This is a generated connector for [Icons8 API v3.0](https://developers.icons8.com/docs/getting-started) OpenAPI specification.  
@@ -28,19 +27,19 @@ public type ApiKeysConfig record {|
 @display {label: "Icons8", iconPath: "resources/icons8.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create an [Icons8 account](https://icons8.com/) and obtain tokens by following [this guide](https://developers.icons8.com/).
     #
-    # + apiKeyConfig - Provide your API Key as token. Eg: {token : <Your API Key>} 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.icons8.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Categories
     #
@@ -49,7 +48,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function getCategories(string platform, string language) returns Categories|error {
         string  path = string `/api/iconsets/v3/categories?platform=${platform}&language=${language}`;
-        map<anydata> queryParam = {"token": self.apiKeys["token"]};
+        map<anydata> queryParam = {"token": self.apiKeyConfig.token};
         path = path + check getPathForQueryParam(queryParam);
         Categories response = check self.clientEp-> get(path, targetType = Categories);
         return response;
@@ -65,7 +64,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function getByCategory(string category, string subcategory, decimal amount, decimal offset, string platform, string language) returns Icon|error {
         string  path = string `/api/iconsets/v3/category?category=${category}&subcategory=${subcategory}&amount=${amount}&offset=${offset}&platform=${platform}&language=${language}`;
-        map<anydata> queryParam = {"token": self.apiKeys["token"]};
+        map<anydata> queryParam = {"token": self.apiKeyConfig.token};
         path = path + check getPathForQueryParam(queryParam);
         Icon response = check self.clientEp-> get(path, targetType = Icon);
         return response;
@@ -80,7 +79,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function getLatest(decimal amount, decimal offset, string term, string platform, string language) returns LatestIcons|error {
         string  path = string `/api/iconsets/v3/latest?term=${term}&amount=${amount}&offset=${offset}&platform=${platform}&language=${language}`;
-        map<anydata> queryParam = {"token": self.apiKeys["token"]};
+        map<anydata> queryParam = {"token": self.apiKeyConfig.token};
         path = path + check getPathForQueryParam(queryParam);
         LatestIcons response = check self.clientEp-> get(path, targetType = LatestIcons);
         return response;
@@ -95,8 +94,8 @@ public isolated client class Client {
     # + language - the language code to get localized result 
     # + return - OK 
     remote isolated function getByKeyword(string term, decimal amount, boolean exactAmount, decimal offset, string platform, string language) returns Category|error {
-        string  path = string `/api/iconsets/v3/search?term=${term}&amount=${amount}&offset=${offset}&platform=${platform}&language=${language}&exactAmount=${exactAmount}`;
-        map<anydata> queryParam = {"token": self.apiKeys["token"]};
+        string  path = string `/api/iconsets/v3/search?term=${term}&amount=${amount}&offset=${offset}&platform=${platform}&language=${language}&exact_amount=${exactAmount}`;
+        map<anydata> queryParam = {"token": self.apiKeyConfig.token};
         path = path + check getPathForQueryParam(queryParam);
         Category response = check self.clientEp-> get(path, targetType = Category);
         return response;
@@ -107,7 +106,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function getTotals(string since) returns TotalsResponse|error {
         string  path = string `/api/iconsets/v3/total?since=${since}`;
-        map<anydata> queryParam = {"token": self.apiKeys["token"]};
+        map<anydata> queryParam = {"token": self.apiKeyConfig.token};
         path = path + check getPathForQueryParam(queryParam);
         TotalsResponse response = check self.clientEp-> get(path, targetType = TotalsResponse);
         return response;
@@ -118,7 +117,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function postCollection(PostCollectionRequest payload) returns CreatedItem|error {
         string  path = string `/api/task/web-font/collection`;
-        map<anydata> queryParam = {"token": self.apiKeys["token"]};
+        map<anydata> queryParam = {"token": self.apiKeyConfig.token};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -132,7 +131,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function postIcons(PostIconsRequest payload) returns CreatedItem|error {
         string  path = string `/api/task/web-font/icons`;
-        map<anydata> queryParam = {"token": self.apiKeys["token"]};
+        map<anydata> queryParam = {"token": self.apiKeyConfig.token};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -140,38 +139,4 @@ public isolated client class Client {
         CreatedItem response = check self.clientEp->post(path, request, targetType=CreatedItem);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

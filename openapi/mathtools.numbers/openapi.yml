@@ -22,7 +22,7 @@ components:
       type: apiKey
       name: X-Mathtools-Api-Secret
       in: header  
-      x-ballerina-apikey-description: "Provide your API Key as `X-MathTools-Api-Secret'`. Eg: {X-MathTools-Api-Secret': [<API_KEY>]}"
+      description: Represents API Key `X-Mathtools-Api-Secret`
 tags:
   - name: Number of the day
     description: Number of the day. This API is free (rate limited).

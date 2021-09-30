@@ -2,7 +2,7 @@ Connects to [Journey.io API](https://developers.journy.io/) from Ballerina
 
 ## Package overview
 
-The `ballerinax/journeyio` is a [Ballerina](https://ballerina.io/) connector for connecting to Dracoon platform.
+The `ballerinax/journey.io` is a [Ballerina](https://ballerina.io/) connector for connecting to Dracoon platform.
 
 ### Compatibility
 |                      | Version                    |

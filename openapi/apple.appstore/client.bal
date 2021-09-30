@@ -52,10 +52,14 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# This is a generated connector for [App Store Connect API v1.4.1](https://developer.apple.com/documentation/appstoreconnectapi) OpenAPI Specification.
+# The App Store Connect API enables the automation of actions you take in App Store Connect. 
 @display {label: "Apple App Store", iconPath: "resources/apple.appstore.svg"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create a [App Store Connect account](https://appstoreconnect.apple.com/)  and obtain tokens following [this guide](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api).
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 

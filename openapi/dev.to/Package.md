@@ -2,7 +2,7 @@ Connects to [DEV API v0.9.7](https://developers.forem.com/api/) from Ballerina.
 
 ## Package overview
 
-The `ballerinax/devto` is a [Ballerina](https://ballerina.io/) connector for DEV API. This API provides a access to forem articles, users and other resources. For a real-world example of Forem in action, check out [DEV](https://www.dev.to). All endpoints that don't require authentication are CORS enabled.
+The `ballerinax/dev.to` is a [Ballerina](https://ballerina.io/) connector for DEV API. This API provides a access to forem articles, users and other resources. For a real-world example of Forem in action, check out [DEV](https://www.dev.to). All endpoints that don't require authentication are CORS enabled.
 
 ### Compatibility
 |                           | Version                   |

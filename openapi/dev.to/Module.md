@@ -5,5 +5,5 @@ This API provides a access to forem articles, users and other resources. For a r
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
-* Create [DEVto Account](https://dev.to/settings/account)
+* Create [DEV.to Account](https://dev.to/settings/account)
 * Obtaining tokens by following [this link](https://dev.to/settings/account) and in the "DEV API Keys" section create a new key by adding a description and clicking on "Generate API Key".

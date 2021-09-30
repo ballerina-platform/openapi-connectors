@@ -77,7 +77,7 @@ public type Author record {
     Book[] books?;
 };
 
-public type Body1 record {
+public type BooksBody record {
     # a list of ISBN 10 or ISBN 13 in the Books database
     string[] isbns;
 };
@@ -90,15 +90,15 @@ public type Publisher record {
     PublisherBooks[] books?;
 };
 
-public type Body record {
-    # a list of ISBN 10 or ISBN 13 in the Books database
-    string[] isbns;
-};
-
 # Describes about what the book is about
 public type Subject record {
     string subject?;
     string parent?;
+};
+
+public type BooksBody1 record {
+    # a list of ISBN 10 or ISBN 13 in the Books database
+    string[] isbns;
 };
 
 public type MerchantMerchantLogoOffset record {
@@ -109,5 +109,4 @@ public type MerchantMerchantLogoOffset record {
 };
 
 # The link to the cover image
-#
 public type CoverLink string;

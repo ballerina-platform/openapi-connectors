@@ -48,6 +48,7 @@ public type MarketingEventCreateRequestParams record {
     # Indicates if the marketing event has been cancelled.  Defaults to `false`
     boolean eventCancelled?;
     # A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account's definition of the MarketingEvent Object. If they don't they will be filtered out and not set.
+    # In order to do this you'll need to create a new PropertyGroup on the HubSpot account's MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
     PropertyValue[] customProperties;
     # The accountId that is associated with this marketing event in the external event application.
     string externalAccountId;
@@ -123,6 +124,7 @@ public type MarketingEventPublicReadResponse record {
     # Indicates if the marketing event has been cancelled.
     boolean eventCancelled?;
     # A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account's definition of the MarketingEvent Object. If they don't they will be filtered out and not set.
+    # In order to do this you'll need to create a new PropertyGroup on the HubSpot account's MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
     PropertyValue[] customProperties;
     # The id of the marketing event in the external event application.
     string externalEventId;
@@ -161,6 +163,7 @@ public type MarketingEventUpdateRequestParams record {
     # Indicates if the marketing event has been cancelled. Defaults to `false`
     boolean eventCancelled?;
     # A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account's definition of the MarketingEvent Object. If they don't they will be filtered out and not set.
+    # In order to do this you'll need to create a new PropertyGroup on the HubSpot account's MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
     PropertyValue[] customProperties;
 };
 
@@ -229,6 +232,7 @@ public type MarketingEventPublicDefaultResponse record {
     # Indicates if the marketing event has been cancelled.
     boolean eventCancelled?;
     # A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account's definition of the MarketingEvent Object. If they don't they will be filtered out and not set.
+    # In order to do this you'll need to create a new PropertyGroup on the HubSpot account's MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
     PropertyValue[] customProperties;
     # ID
     string id;
@@ -257,6 +261,7 @@ public type MarketingEventDefaultResponse record {
     # Indicates if the marketing event has been cancelled.
     boolean eventCancelled?;
     # A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account's definition of the MarketingEvent Object. If they don't they will be filtered out and not set.
+    # In order to do this you'll need to create a new PropertyGroup on the HubSpot account's MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
     PropertyValue[] customProperties;
 };
 

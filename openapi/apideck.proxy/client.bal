@@ -18,8 +18,23 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # To use API you have to sign up and get your own API key. Unify API accounts have sandbox mode and live mode API keys. 
+    # To change modes just use the appropriate key to get a live or test object. You can find your API keys on the unify settings of your Apideck app.
+    # Your Apideck application_id can also be found on the same page.
+    # 
+    # Authenticate your API requests by including your test or live secret API key in the request header. 
+    # 
+    # - Bearer authorization header: `Authorization: Bearer <your-apideck-api-key>`
+    # - Application id header: `x-apideck-app-id: <your-apideck-app-id>`
+    # 
+    # You should use the public keys on the SDKs and the secret keys to authenticate API requests.
+    # 
+    # **Do not share or include your secret API keys on client side code.** Your API keys carry significant privileges. Please ensure to keep them 100% secure and be sure to not share your secret API keys in areas that are publicly accessible like GitHub.
+    # 
+    # Learn how to set the Authorization header inside Postman https://learning.postman.com/docs/postman/sending-api-requests/authorization/#api-key
+    # 
+    # Go to Unify to grab your API KEY https://app.apideck.com/unify/api-keys
+    string authorization;
 |};
 
 # This is a generated connector from [Apideck Proxy API v5.3.0](https://developers.apideck.com/apis/proxy/reference) OpenAPI specification.
@@ -27,21 +42,21 @@ public type ApiKeysConfig record {|
 @display {label: "Apideck Proxy", iconPath: "resources/apideck.proxy.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Unify API accounts have sandbox mode and live mode API keys. To change modes just use the appropriate key to get a live or test object. 
     # You can find your API keys on the unify settings of your Apideck app.Your Apideck application_id can also be found on the same page.
     # Obtain API keys following [this guide](https://developers.apideck.com/apis/proxy/reference#section/Authorization).
     #
-    # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://unify.apideck.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # GET
     #
@@ -53,7 +68,7 @@ public isolated client class Client {
     # + return - Ok 
     remote isolated function getProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, string? xApideckDownstreamAuthorization = ()) returns json|error {
         string  path = string `/proxy`;
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp-> get(path, accHeaders, targetType = json);
         return response;
@@ -64,12 +79,12 @@ public isolated client class Client {
     # + xApideckAppId - The ID of your Unify application 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + xApideckDownstreamUrl - Downstream URL 
-    # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
+    # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + return - Ok 
     remote isolated function putProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, PutProxyRequest payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
         string  path = string `/proxy`;
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -83,12 +98,12 @@ public isolated client class Client {
     # + xApideckAppId - The ID of your Unify application 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + xApideckDownstreamUrl - Downstream URL 
-    # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
+    # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + return - Ok 
     remote isolated function postProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, PostProxyRequest payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
         string  path = string `/proxy`;
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -106,11 +121,9 @@ public isolated client class Client {
     # + return - Ok 
     remote isolated function deleteProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, string? xApideckDownstreamAuthorization = ()) returns json|error {
         string  path = string `/proxy`;
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        json response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = json);
+        json response = check self.clientEp-> delete(path, accHeaders, targetType = json);
         return response;
     }
     # PATCH
@@ -119,12 +132,12 @@ public isolated client class Client {
     # + xApideckAppId - The ID of your Unify application 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + xApideckDownstreamUrl - Downstream URL 
-    # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
+    # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + return - Ok 
     remote isolated function patchProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, PatchProxyRequest payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
         string  path = string `/proxy`;
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -132,18 +145,4 @@ public isolated client class Client {
         json response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=json);
         return response;
     }
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

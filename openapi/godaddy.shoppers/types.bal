@@ -19,7 +19,11 @@ public type ErrorField record {
     string code;
     # Human-readable, English description of the problem with the contents of the field
     string message?;
-    # JSONPath referring to a field containing an error OR JSONPath referring to a field that refers to an object containing an error, with more detail in `pathRelated`
+    # <ul>
+    # <li style='margin-left: 12px;'>JSONPath referring to a field containing an error</li>
+    # <strong style='margin-left: 12px;'>OR</strong>
+    # <li style='margin-left: 12px;'>JSONPath referring to a field that refers to an object containing an error, with more detail in `pathRelated`</li>
+    # </ul>
     string path;
     # JSONPath referring to a field containing an error, which is referenced by `path`
     string pathRelated?;

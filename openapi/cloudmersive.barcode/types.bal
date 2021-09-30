@@ -39,9 +39,3 @@ public type BarcodeLookupResponse record {
     # Resulting product matches for the input barcode
     ProductMatch[] Matches?;
 };
-
-# The image file to scan
-public type Body record {
-    # Image file to perform the operation on.  Common file formats such as PNG, JPEG are supported.
-    string imageFile;
-};

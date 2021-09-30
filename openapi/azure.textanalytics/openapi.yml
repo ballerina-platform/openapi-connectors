@@ -3147,17 +3147,17 @@ components:
         x-ms-enum:
           name: PiiCategory
           modelAsString: true
-  securitySchemes:
+  securitySchemes:  
     apiKeyHeader:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header
-      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      description: Represents API Key `Ocp-Apim-Subscription-Key`
     apiKeyQuery:
       type: apiKey
       name: subscription-key
       in: query
-      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      description: Represents API Key `subscription-key`
 x-servers:
 - url: https://southcentralus.api.cognitive.microsoft.com
 - url: https://cognitivescuprod.cognitiveservices.azure.com

@@ -14,81 +14,20 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type CompoundLinkResponse record {
-    # The basic response containing the unique ID of the request and the response status
-    record  { string requestId; decimal status;}  meta?;
-    # The object was created
-    string message?;
-};
-
-public type CompoundTrackJourneyEventResponse record {
-    # The basic response containing the unique ID of the request and the response status
-    record  { string requestId; decimal status;}  meta?;
-    # The object was created
-    string message?;
-};
-
-public type CompoundUpsertUserResponse record {
-    # The basic response containing the unique ID of the request and the response status
-    record  { string requestId; decimal status;}  meta?;
-    # The object was created
-    string message?;
-};
-
-public type CompoundUpsertAccountResponse record {
-    # The basic response containing the unique ID of the request and the response status
-    record  { string requestId; decimal status;}  meta?;
-    # The object was created
-    string message?;
-};
-
-public type CompoundAddUserToAccountResponse record {
-    # The basic response containing the unique ID of the request and the response status
-    record  { string requestId; decimal status;}  meta?;
-    # The object was created
-    string message?;
-};
-
-public type CompoundRemoveUserFromAccountResponse record {
-    # The basic response containing the unique ID of the request and the response status
-    record  { string requestId; decimal status;}  meta?;
-    # The object was created
-    string message?;
-};
-
-public type CompoundGetValidityResponse record {
-    # The basic response containing the unique ID of the request and the response status
-    record  { string requestId; decimal status;}  meta?;
-    # Validation of API Key
-    record  { string[] permissions;}  data?;
-};
-
-public type CompoundGetTrackingSnippetResponse record {
-    record  { string requestId; decimal status;}  meta?;
-    # A snippet
-    record  { string domain; string snippet;}  data?;
-};
-
 # Identification requires an accountId, domain or both
 public type AccountsupsertMembers record {
     # User identification requires a userId, email or both
     LinkIdentification identification;
 };
 
-# The user being added/removed from the account
-public type Body4 record {
-    # Unique identifier for the user in your database
-    string userId;
-};
-
-# The user being added/removed from the account
-public type Body5 record {
-    # Unique identifier for the user in your database
-    string userId;
+# A snippet
+public type InlineResponse2001Data record {
+    string domain;
+    string snippet;
 };
 
 # Update properties of a user
-public type Body2 record {
+public type UsersUpsertBody record {
     # User identification requires a userId, email or both
     LinkIdentification identification;
     # The properties being set, possible values are strings, booleans, numbers and datetimes (ISO 8601)
@@ -103,14 +42,11 @@ public type EventsIdentification record {
     LinkIdentification user?;
 };
 
-# Update properties and/or members of an account
-public type Body3 record {
-    # Account identification requires an accountId, domain or both
-    EventsIdentificationAccount identification;
-    # The properties being set, possible values are strings, booleans, numbers and datetimes (ISO 8601)
-    record {} properties?;
-    # The users that are member of this account
-    AccountsupsertMembers[] members?;
+# The basic response containing the unique ID of the request and the response status
+# The object was created
+public type InlineResponse201 record {
+    InlineResponse201Meta meta?;
+    string message?;
 };
 
 # User identification requires a userId, email or both
@@ -121,6 +57,13 @@ public type LinkIdentification record {
     string userId?;
 };
 
+# The basic response containing the unique ID of the request and the response status
+public type InlineResponse200 record {
+    InlineResponse201Meta meta?;
+    # Validation of API Key
+    InlineResponse200Data data?;
+};
+
 # Account identification requires an accountId, domain or both
 public type EventsIdentificationAccount record {
     # The domain associated with the account (e.g. acme-inc.com)
@@ -129,11 +72,67 @@ public type EventsIdentificationAccount record {
     string accountId?;
 };
 
+# The basic response containing the unique ID of the request and the response status
+# The error message should specify what cause the error
+public type InlineResponse401 record {
+    InlineResponse201Meta meta?;
+    string message?;
+};
+
+# Specify the fields and/ or parameters that had errors
+public type InlineResponse400 record {
+    record  { string requestId; decimal status;}  meta;
+    string message;
+    # Map that sums up all received values that seemed incorrect
+    InlineResponse400Errors errors?;
+};
+
+# Map that sums up all received values that seemed incorrect
+public type InlineResponse400Errors record {
+    # All input fields that seemed incorrect
+    record {} fields?;
+    # All query-, header- and path- parameters that seemed incorrect
+    InlineResponse400ErrorsParameters parameters?;
+};
+
+# Update properties and/or members of an account
+public type AccountsUpsertBody record {
+    # Account identification requires an accountId, domain or both
+    EventsIdentificationAccount identification;
+    # The properties being set, possible values are strings, booleans, numbers and datetimes (ISO 8601)
+    record {} properties?;
+    # The users that are member of this account
+    AccountsupsertMembers[] members?;
+};
+
+# All query-, header- and path- parameters that seemed incorrect
+public type InlineResponse400ErrorsParameters record {
+    record {} query?;
+    record {} header?;
+    record {} path?;
+};
+
+# Validation of API Key
+public type InlineResponse200Data record {
+    string[] permissions;
+};
+
+public type InlineResponse201Meta record {
+    string requestId;
+    decimal status;
+};
+
+# The basic response containing the unique ID of the request and the response status
+public type InlineResponse2001 record {
+    InlineResponse201Meta meta?;
+    # A snippet
+    InlineResponse2001Data data?;
+};
+
 # Event for a user or an account
-public type Body1 record {
+public type EventsBody record {
     # Event identification requires a user, account or both
     EventsIdentification identification;
-    # Event name
     string name;
     # Event metadata, possible values are strings, booleans, numbers and datetimes (ISO 8601)
     record {} metadata?;
@@ -142,9 +141,20 @@ public type Body1 record {
 };
 
 # Link web activity to user
-public type Body record {
-    # Device ID
+public type LinkBody record {
     string deviceId;
     # User identification requires a userId, email or both
     LinkIdentification identification;
+};
+
+# The user being added/removed from the account
+public type AccountidUsersBody1 record {
+    # Unique identifier for the user in your database
+    string userId;
+};
+
+# The user being added/removed from the account
+public type AccountidUsersBody record {
+    # Unique identifier for the user in your database
+    string userId;
 };

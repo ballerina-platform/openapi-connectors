@@ -1218,7 +1218,7 @@ components:
   securitySchemes:
     hapikey:
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API key as `hapikey`. Eg: `{\"hapikey\" : \"<API key>\"}`"
+      description: Represents API Key `hapikey`
       name: hapikey
       in: query
     # developer_hapikey:

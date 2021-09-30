@@ -852,7 +852,7 @@ components:
       type: apiKey
       name: hapikey
       in: query
-      x-ballerina-apikey-description: "Provide your API key as `hapikey`. Eg: `{\"hapikey\" : \"<API key>\"}`"
+      description: Represents API Key `hapikey`
 x-hubspot-available-client-libraries:
   - PHP
   - Node

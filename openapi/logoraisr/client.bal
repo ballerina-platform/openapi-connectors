@@ -18,8 +18,8 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `Authorization`
+    string authorization;
 |};
 
 # This is a generated connector from [Logoraisr API v1](https://docs.logoraisr.com/) OpenAPI Specification.
@@ -27,19 +27,19 @@ public type ApiKeysConfig record {|
 @display {label: "Logoraisr", iconPath: "resources/logoraisr.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create an [Logoraisr account](https://logoraisr.com/) and obtain OAuth tokens following [this guide](https://docs.logoraisr.com/#section/Authentication).
     #
-    # + apiKeyConfig - Provide your API Key as `Authorization`. Eg: {Authorization:Token [<API_KEY>]} 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.logoraisr.com/rest-v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Gets preview image of uploaded file
     #
@@ -47,7 +47,7 @@ public isolated client class Client {
     # + return - Returns preview response or an error 
     remote isolated function readPreviews(string fileId) returns PreviewResponse|error {
         string  path = string `/previews/${fileId}/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PreviewResponse response = check self.clientEp-> get(path, accHeaders, targetType = PreviewResponse);
         return response;
@@ -57,7 +57,7 @@ public isolated client class Client {
     # + return - Returns process detail or an error 
     remote isolated function listProcesses() returns Process|error {
         string  path = string `/processes/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Process response = check self.clientEp-> get(path, accHeaders, targetType = Process);
         return response;
@@ -67,7 +67,7 @@ public isolated client class Client {
     # + return - Returns user project list or an error 
     remote isolated function listProjects() returns Project|error {
         string  path = string `/projects/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Project response = check self.clientEp-> get(path, accHeaders, targetType = Project);
         return response;
@@ -78,7 +78,7 @@ public isolated client class Client {
     # + return - Returns project response or an error 
     remote isolated function createProject(ProjectRequest payload) returns ProjectResponse|error {
         string  path = string `/projects/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -92,7 +92,7 @@ public isolated client class Client {
     # + return - Returns project details or an error 
     remote isolated function readProjects(string projectNumber) returns Project|error {
         string  path = string `/projects/${projectNumber}/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Project response = check self.clientEp-> get(path, accHeaders, targetType = Project);
         return response;
@@ -102,7 +102,7 @@ public isolated client class Client {
     # + return - Returns user report list or an error 
     remote isolated function getReports() returns Report|error {
         string  path = string `/reports/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Report response = check self.clientEp-> get(path, accHeaders, targetType = Report);
         return response;
@@ -113,7 +113,7 @@ public isolated client class Client {
     # + return - Returns report response or an error 
     remote isolated function createReport(ReportRequest payload) returns ReportResponse|error {
         string  path = string `/reports/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -127,7 +127,7 @@ public isolated client class Client {
     # + return - Returns report detail or an error 
     remote isolated function readReports(string reportNumber) returns Report|error {
         string  path = string `/reports/${reportNumber}/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Report response = check self.clientEp-> get(path, accHeaders, targetType = Report);
         return response;
@@ -138,35 +138,9 @@ public isolated client class Client {
     # + return - Returns result from image processing or an error 
     remote isolated function readResults(string resultFileId) returns ResultResponse|error {
         string  path = string `/results/${resultFileId}/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ResultResponse response = check self.clientEp-> get(path, accHeaders, targetType = ResultResponse);
         return response;
     }
-    # Uploads a new image
-    #
-    # + payload - Image details 
-    # + return - Returns file response or an error 
-    remote isolated function createUploads(Body payload) returns FileResponse|error {
-        string  path = string `/uploads/`;
-        map<any> headerValues = {"Authorization": self.apiKeys["Authorization"]};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        FileResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FileResponse);
-        return response;
-    }
-}
-
-# Generates header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

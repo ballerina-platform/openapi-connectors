@@ -728,91 +728,91 @@ paths:
             array(
 
             );
-  /uploads/:
-    post:
-      tags:
-      - uploads
-      summary: Uploads a new image
-      description: This POST-Method uploads a new file on the server.
-      operationId: createUploads
-      requestBody:
-        description: Image details
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              properties:
-                file:
-                  type: string
-                  description: 'File which should be uploaded. Supported file types
-                    are: JPEG and PNG'
-                  format: binary
-        required: true
-      responses:
-        201:
-          description: "Returns file response or an error"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FileResponse'
-        400:
-          description: BAD REQUEST
-          content: {}
-      x-code-samples:
-      - lang: cURL
-        source: |-
-          curl -X POST 'https://api.logoraisr.com/rest-v1/uploads/' \
-          -H "Authorization:Token your_api_key" \
-          -F '@/path/to/your/logo.png'  \
-      - lang: python
-        source: |-
-          import requests
+  # /uploads/:
+  #   post:
+  #     tags:
+  #     - uploads
+  #     summary: Uploads a new image
+  #     description: This POST-Method uploads a new file on the server.
+  #     operationId: createUploads
+  #     requestBody:
+  #       description: Image details
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - file
+  #             properties:
+  #               file:
+  #                 type: string
+  #                 description: 'File which should be uploaded. Supported file types
+  #                   are: JPEG and PNG'
+  #                 format: binary
+  #       required: true
+  #     responses:
+  #       201:
+  #         description: "Returns file response or an error"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FileResponse'
+  #       400:
+  #         description: BAD REQUEST
+  #         content: {}
+  #     x-code-samples:
+  #     - lang: cURL
+  #       source: |-
+  #         curl -X POST 'https://api.logoraisr.com/rest-v1/uploads/' \
+  #         -H "Authorization:Token your_api_key" \
+  #         -F '@/path/to/your/logo.png'  \
+  #     - lang: python
+  #       source: |-
+  #         import requests
 
-          files = '/path/to/your/logo.png'
+  #         files = '/path/to/your/logo.png'
 
-          # provide your API token here
-          headers = {'Authorization:Token your_api_key'}
+  #         # provide your API token here
+  #         headers = {'Authorization:Token your_api_key'}
 
 
-          resp = request.post('https://api.logoraisr.com/rest-v1/uploads/', files=files, headers=headers)
-          print(resp.json())
-      - lang: node.js
-        source: |
-          var request = require("request");
+  #         resp = request.post('https://api.logoraisr.com/rest-v1/uploads/', files=files, headers=headers)
+  #         print(resp.json())
+  #     - lang: node.js
+  #       source: |
+  #         var request = require("request");
 
-          var options = {
-            method: 'POST',
-            url: 'https://api.logoraisr.com/rest-v1/uploads/',
-            headers: {
-              'Authorization: Token your_api_key',
+  #         var options = {
+  #           method: 'POST',
+  #           url: 'https://api.logoraisr.com/rest-v1/uploads/',
+  #           headers: {
+  #             'Authorization: Token your_api_key',
 
-            },
-            formData: {file: {value: {'/path/to/your/logo.png'}}}
-          };
+  #           },
+  #           formData: {file: {value: {'/path/to/your/logo.png'}}}
+  #         };
 
-          request(options, function (error, response, body) {
-            if (error) throw new Error(error);
+  #         request(options, function (error, response, body) {
+  #           if (error) throw new Error(error);
 
-            console.log(body);
-          });
-      - lang: java
-        source: |-
-          HttpResponse<String> response = Unirest.POST("https://api.logoraisr.com/rest-v1/uploads/")
-          .header("Authorization", "Token your_api_key")
+  #           console.log(body);
+  #         });
+  #     - lang: java
+  #       source: |-
+  #         HttpResponse<String> response = Unirest.POST("https://api.logoraisr.com/rest-v1/uploads/")
+  #         .header("Authorization", "Token your_api_key")
 
-          .field("upload", new File("/path/to/your/logo.png"))
-          .asString();
-      - lang: php
-        source: |-
-          $response = Unirest\Request::POST("https://api.logoraisr.com/rest-v1/uploads/",
-            array(
-              "Authorization" => "Token your_api_key"
+  #         .field("upload", new File("/path/to/your/logo.png"))
+  #         .asString();
+  #     - lang: php
+  #       source: |-
+  #         $response = Unirest\Request::POST("https://api.logoraisr.com/rest-v1/uploads/",
+  #           array(
+  #             "Authorization" => "Token your_api_key"
 
-            ),
-            array(
-              "file" => Unirest\file::add("/path/to/your/logo.png")
-            );
+  #           ),
+  #           array(
+  #             "file" => Unirest\file::add("/path/to/your/logo.png")
+  #           );
 components:
   schemas:
     PreviewResponse:
@@ -1096,4 +1096,4 @@ components:
       type: apiKey
       name: Authorization
       in: header
-      x-ballerina-apikey-description: "Provide your API Key as `Authorization`. Eg: {Authorization:Token [<API_KEY>]}"
+      description: Represents API Key `Authorization`

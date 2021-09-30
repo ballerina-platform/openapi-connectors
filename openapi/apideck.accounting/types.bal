@@ -83,7 +83,7 @@ public type Invoice record {
     # Indicates the associated currency for an amount of money. Values correspond to [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217).
     Currency? currency?;
     # The customer this invoice is linked to.
-    Customer customer?;
+    Customer? customer?;
     string? customer_memo?;
     # Date invoice was issued - YYYY-MM-DD
     string date?;

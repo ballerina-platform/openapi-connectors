@@ -577,4 +577,4 @@ components:
       type: apiKey
       name: X-Mitto-API-Key
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `X-Mitto-API-Key`. Eg: `{\"X-Mitto-API-Key\" : \"<API key>\"}`"
+      description: Represents API Key `X-Mitto-API-Key`

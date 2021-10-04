@@ -2669,4 +2669,3 @@ components:
       in: header
       name: Authorization
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 

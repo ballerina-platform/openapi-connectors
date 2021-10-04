@@ -132,25 +132,25 @@ paths:
         '200':
           description: Success
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/AbuseTicketList'
         '401':
           description: Authentication info not sent or invalid
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Authenticated user is not allowed access
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '422':
           description: Error
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
@@ -161,7 +161,7 @@ paths:
       requestBody:
         description: The endpoint which allows the Reporter to create a new abuse ticket
         content:
-          '*/*':
+          application/json:
             schema:
               $ref: '#/components/schemas/AbuseTicketCreate'
         required: true
@@ -172,25 +172,25 @@ paths:
         '201':
           description: Success
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/AbuseTicketId'
         '401':
           description: Authentication info not sent or invalid
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Authenticated user is not allowed access
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '422':
           description: Error
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
       x-codegen-request-body-name: body
@@ -211,36 +211,36 @@ paths:
         '200':
           description: Success
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/AbuseTicket'
         '401':
           description: Authentication info not sent or invalid
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Authenticated user is not allowed access
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '404':
           description: Invalid ticket id provided
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+security:
+  - ApiKeyAuth: []
 components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: header
       name: Authorization
-      x-ballerina-apikey-description: >-
-        Provide your API Key as `Authorization`. Eg: {Authorization : sso-key
-        [<API_KEY>]:[<API_SECRET>]}
+      description: Represents API Key `Authorization`
   schemas:
     AbuseTicket:
       required:

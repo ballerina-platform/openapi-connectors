@@ -54,20 +54,10 @@ public type CloudStorageAdvancedVirusScanResult record {
     int FileSize?;
 };
 
-public type Body2 record {
-    # Service Account credential for Google Cloud stored in a JSON file.
-    string jsonCredentialFile;
-};
-
 # Request to scan a website for malicious content
 public type WebsiteScanRequest record {
     # URL of the website to scan; should begin with http:// or https://
     string Url?;
-};
-
-public type Body3 record {
-    # Service Account credential for Google Cloud stored in a JSON file.
-    string jsonCredentialFile;
 };
 
 # Result of running an advanced virus scan
@@ -102,11 +92,6 @@ public type CloudStorageVirusFound record {
     string VirusName?;
 };
 
-public type Body1 record {
-    # Input file to perform the operation on.
-    string inputFile;
-};
-
 # Result of running a virus scan on cloud storage
 public type CloudStorageVirusScanResult record {
     # True if the operation of retrieving the file, and scanning it were successfully completed, false if the file could not be downloaded from cloud storage, or if the file could not be scanned.  Note that successful completion does not mean the file is clean; for the output of the virus scanning operation itself, use the CleanResult and FoundViruses parameters.
@@ -135,9 +120,4 @@ public type VirusFound record {
     string FileName?;
     # Name of the virus that was found
     string VirusName?;
-};
-
-public type Body record {
-    # Input file to perform the operation on.
-    string inputFile;
 };

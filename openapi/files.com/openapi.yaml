@@ -138,6 +138,9 @@ tags:
   description: Operations about user_requests
 - name: webhook_tests
   description: Operations about webhook_tests
+security:
+  - api_key: []
+
 paths:
   /action_notification_exports:
     post:
@@ -8492,7 +8495,7 @@ paths:
       - name: group_id
         in: query
         description: 'DEPRECATED: Group ID.  If provided, will scope permissions to
-          this group. Use `filter[group_id]` instead.`'
+          this group. Use `filter[group_id]` instead.'
         schema:
           type: string
           x-ms-summary: 'DEPRECATED: Group ID.  If provided, will scope permissions
@@ -8502,7 +8505,7 @@ paths:
       - name: user_id
         in: path
         description: 'DEPRECATED: User ID.  If provided, will scope permissions to
-          this user. Use `filter[user_id]` instead.`'
+          this user. Use `filter[user_id]` instead.'
         required: true
         schema:
           type: string
@@ -18176,7 +18179,7 @@ paths:
       - name: group_id
         in: path
         description: 'DEPRECATED: Group ID.  If provided, will scope permissions to
-          this group. Use `filter[group_id]` instead.`'
+          this group. Use `filter[group_id]` instead.'
         required: true
         schema:
           type: string
@@ -18187,7 +18190,7 @@ paths:
       - name: user_id
         in: query
         description: 'DEPRECATED: User ID.  If provided, will scope permissions to
-          this user. Use `filter[user_id]` instead.`'
+          this user. Use `filter[user_id]` instead.'
         schema:
           type: string
           x-ms-summary: 'DEPRECATED: User ID.  If provided, will scope permissions
@@ -24771,7 +24774,7 @@ paths:
       - name: group_id
         in: query
         description: 'DEPRECATED: Group ID.  If provided, will scope permissions to
-          this group. Use `filter[group_id]` instead.`'
+          this group. Use `filter[group_id]` instead.'
         schema:
           type: string
           x-ms-summary: 'DEPRECATED: Group ID.  If provided, will scope permissions
@@ -24781,7 +24784,7 @@ paths:
       - name: user_id
         in: query
         description: 'DEPRECATED: User ID.  If provided, will scope permissions to
-          this user. Use `filter[user_id]` instead.`'
+          this user. Use `filter[user_id]` instead.'
         schema:
           type: string
           x-ms-summary: 'DEPRECATED: User ID.  If provided, will scope permissions
@@ -34079,7 +34082,6 @@ components:
     api_key:
       type: apiKey
       description: API Key - supports user-based or site-wide API keys
-      x-ballerina-apikey-description: "Provide your API key as `X-FilesAPI-Key`. Eg: `{\"X-FilesAPI-Key\" : \"<API key>\"}`"
       name: X-FilesAPI-Key
       in: header
 x-regions:

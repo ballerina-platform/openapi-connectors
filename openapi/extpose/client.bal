@@ -18,51 +18,37 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `X-API-Key`
+    string xApiKey;
 |};
 
 # This is a generated connector from [Extpose API v1](https://extpose.com/) OpenAPI Specification. 
 # Extpose — in‑store performance analytics and optimization tool for Chrome extensions. [https://extpose.com](https://extpose.com)
-@display {label: "ExtPose", iconPath: "resources/extpose.svg"} 
+@display {label: "ExtPose", iconPath: "resources/extpose.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials
     # Create an [Extpose Account](https://extpose.com/signup) and obtain tokens by following [this guide](https://docs.extpose.com/api-reference)
     #
-    # + apiKeyConfig - Provide your API Key as X-API-Key. Eg: {"X-API-Key" : "<Your API Key>"}
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + apiKeyConfig - API keys for authorization 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://extpose.com/api/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Get User Extensions
     #
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function getUserExtensions() returns Extension[]|error {
         string  path = string `/user-extensions`;
-        map<any> headerValues = {"X-API-Key": self.apiKeys["X-API-Key"]};
+        map<any> headerValues = {"X-API-Key": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Extension[] response = check self.clientEp-> get(path, accHeaders, targetType = ExtensionArr);
         return response;
     }
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map
-# + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

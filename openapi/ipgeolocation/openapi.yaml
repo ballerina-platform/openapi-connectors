@@ -23,6 +23,9 @@ externalDocs:
   url: 'https://www.abstractapi.com/ip-geolocation-api#docs'
 servers:
   - url: 'https://ipgeolocation.abstractapi.com'
+security:
+  - ApiKeyAuth: []
+
 paths:
   /v1/:
     get:
@@ -68,7 +71,7 @@ components:
       type: apiKey
       in: query
       name: api_key
-      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+      description: Represents API Key `api_key`
   schemas:
     geolocation:
       type: object

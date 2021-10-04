@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # All requests on the Browshot API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `key`.
+    string key;
 |};
 
 # This is a generated connector for [Browshot API v1.17.0](https://browshot.com/api/documentation) OpenAPI specification.
@@ -29,19 +27,19 @@ public type ApiKeysConfig record {|
 @display {label: "Browshot", iconPath: "resources/browshot.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create an [Browshot Account](https://browshot.com/login) and obtain token by navigating to `Settings` by following [this guide](https://browshot.com/api/documentation).
     #
-    # + apiKeyConfig - Provide your API key as `key`. Eg: `{"key" : "<your API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.browshot.com/api/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Request a screenshot
     #
@@ -74,7 +72,7 @@ public isolated client class Client {
     # + return - Request accepted 
     remote isolated function createScreenshot(string url, int instanceId, string size = "screen", int cache = 86400, int delay = 5, int flashDelay = 10, int screenWidth = 1024, int screenHeight = 768, int? priority = (), string? referer = (), string? postData = (), string? cookie = (), string? script = (), int details = 2, int html = 0, int maxWait = 0, string? headers = (), int shots = 1, int shotInterval = 5, string? hosting = (), int? hostingHeight = (), int? hostingWidth = (), float hostingScale = 1.0, string? hostingBucket = (), string? hostingFile = (), string? hostingHeaders = ()) returns Screenshot|error {
         string  path = string `/screenshot/create`;
-        map<anydata> queryParam = {"url": url, "instance_id": instanceId, "size": size, "cache": cache, "delay": delay, "flash_delay": flashDelay, "screen_width": screenWidth, "screen_height": screenHeight, "priority": priority, "referer": referer, "post_data": postData, "cookie": cookie, "script": script, "details": details, "html": html, "max_wait": maxWait, "headers": headers, "shots": shots, "shot_interval": shotInterval, "hosting": hosting, "hosting_height": hostingHeight, "hosting_width": hostingWidth, "hosting_scale": hostingScale, "hosting_bucket": hostingBucket, "hosting_file": hostingFile, "hosting_headers": hostingHeaders, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"url": url, "instance_id": instanceId, "size": size, "cache": cache, "delay": delay, "flash_delay": flashDelay, "screen_width": screenWidth, "screen_height": screenHeight, "priority": priority, "referer": referer, "post_data": postData, "cookie": cookie, "script": script, "details": details, "html": html, "max_wait": maxWait, "headers": headers, "shots": shots, "shot_interval": shotInterval, "hosting": hosting, "hosting_height": hostingHeight, "hosting_width": hostingWidth, "hosting_scale": hostingScale, "hosting_bucket": hostingBucket, "hosting_file": hostingFile, "hosting_headers": hostingHeaders, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         Screenshot response = check self.clientEp-> get(path, targetType = Screenshot);
         return response;
@@ -108,7 +106,7 @@ public isolated client class Client {
     # + return - Request accepted 
     remote isolated function createMultipleScreenshots(string url, int instanceId, string size = "screen", int cache = 86400, int delay = 5, int flashDelay = 10, int screenWidth = 1024, int screenHeight = 768, int? priority = (), string? referer = (), string? postData = (), string? cookie = (), string? script = (), int details = 2, int html = 0, int maxWait = 0, string? headers = (), string? hosting = (), int? hostingHeight = (), int? hostingWidth = (), float hostingScale = 1.0, string? hostingBucket = (), string? hostingFile = (), string? hostingHeaders = ()) returns ScreenshotList|error {
         string  path = string `/screenshot/multiple`;
-        map<anydata> queryParam = {"url": url, "instance_id": instanceId, "size": size, "cache": cache, "delay": delay, "flash_delay": flashDelay, "screen_width": screenWidth, "screen_height": screenHeight, "priority": priority, "referer": referer, "post_data": postData, "cookie": cookie, "script": script, "details": details, "html": html, "max_wait": maxWait, "headers": headers, "hosting": hosting, "hosting_height": hostingHeight, "hosting_width": hostingWidth, "hosting_scale": hostingScale, "hosting_bucket": hostingBucket, "hosting_file": hostingFile, "hosting_headers": hostingHeaders, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"url": url, "instance_id": instanceId, "size": size, "cache": cache, "delay": delay, "flash_delay": flashDelay, "screen_width": screenWidth, "screen_height": screenHeight, "priority": priority, "referer": referer, "post_data": postData, "cookie": cookie, "script": script, "details": details, "html": html, "max_wait": maxWait, "headers": headers, "hosting": hosting, "hosting_height": hostingHeight, "hosting_width": hostingWidth, "hosting_scale": hostingScale, "hosting_bucket": hostingBucket, "hosting_file": hostingFile, "hosting_headers": hostingHeaders, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         ScreenshotList response = check self.clientEp-> get(path, targetType = ScreenshotList);
         return response;
@@ -120,7 +118,7 @@ public isolated client class Client {
     # + return - Screenshot found 
     remote isolated function getScreenshotInfo(int id, int details = 2) returns Screenshot[]|error {
         string  path = string `/screenshot/info`;
-        map<anydata> queryParam = {"id": id, "details": details, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "details": details, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         Screenshot[] response = check self.clientEp-> get(path, targetType = ScreenshotArr);
         return response;
@@ -132,7 +130,7 @@ public isolated client class Client {
     # + return - list of screenshot information 
     remote isolated function getMultipleScreenshotsInfo(int 'limit = 100, string? status = ()) returns ScreenshotList[]|error {
         string  path = string `/screenshot/list`;
-        map<anydata> queryParam = {"limit": 'limit, "status": status, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"limit": 'limit, "status": status, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         ScreenshotList[] response = check self.clientEp-> get(path, targetType = ScreenshotListArr);
         return response;
@@ -145,7 +143,7 @@ public isolated client class Client {
     # + return - list of screenshot information 
     remote isolated function searchScreenshot(string url, int 'limit = 50, string? status = ()) returns ScreenshotList[]|error {
         string  path = string `/screenshot/search`;
-        map<anydata> queryParam = {"url": url, "limit": 'limit, "status": status, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"url": url, "limit": 'limit, "status": status, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         ScreenshotList[] response = check self.clientEp-> get(path, targetType = ScreenshotListArr);
         return response;
@@ -163,7 +161,7 @@ public isolated client class Client {
     # + return - list of screenshot information 
     remote isolated function hostScreenshot(int id, string hosting, int? width = (), int? height = (), float scale = 1.0, string? bucket = (), string? file = (), string? headers = ()) returns ScreenshotHost[]|error {
         string  path = string `/screenshot/host`;
-        map<anydata> queryParam = {"id": id, "hosting": hosting, "width": width, "height": height, "scale": scale, "bucket": bucket, "file": file, "headers": headers, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "hosting": hosting, "width": width, "height": height, "scale": scale, "bucket": bucket, "file": file, "headers": headers, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         ScreenshotHost[] response = check self.clientEp-> get(path, targetType = ScreenshotHostArr);
         return response;
@@ -186,7 +184,7 @@ public isolated client class Client {
     # + return - thumbnail 
     remote isolated function getThumbnail(int id, int? width = (), int? height = (), float scale = 1.0, int zoom = 100, string ratio = "fit", int left = 0, int right = 0, int top = 0, int? bottom = (), string format = "png", int shot = 1, int quality = 100) returns http:Response|error {
         string  path = string `/screenshot/thumbnail`;
-        map<anydata> queryParam = {"id": id, "width": width, "height": height, "scale": scale, "zoom": zoom, "ratio": ratio, "left": left, "right": right, "top": top, "bottom": bottom, "format": format, "shot": shot, "quality": quality, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "width": width, "height": height, "scale": scale, "zoom": zoom, "ratio": ratio, "left": left, "right": right, "top": top, "bottom": bottom, "format": format, "shot": shot, "quality": quality, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp-> get(path, targetType = http:Response);
         return response;
@@ -198,7 +196,7 @@ public isolated client class Client {
     # + return - list of screenshot information 
     remote isolated function shareScreenshot(int id, string? note = ()) returns ScreenshotHost[]|error {
         string  path = string `/screenshot/share`;
-        map<anydata> queryParam = {"id": id, "note": note, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "note": note, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         ScreenshotHost[] response = check self.clientEp-> get(path, targetType = ScreenshotHostArr);
         return response;
@@ -210,7 +208,7 @@ public isolated client class Client {
     # + return - list of screenshot information 
     remote isolated function deleteScreenshot(int id, string data = "image") returns ScreenshotShort[]|error {
         string  path = string `/screenshot/delete`;
-        map<anydata> queryParam = {"id": id, "data": data, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "data": data, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         ScreenshotShort[] response = check self.clientEp-> get(path, targetType = ScreenshotShortArr);
         return response;
@@ -221,28 +219,9 @@ public isolated client class Client {
     # + return - HTML code 
     remote isolated function getHTML(int id) returns http:Response|error {
         string  path = string `/screenshot/html`;
-        map<anydata> queryParam = {"id": id, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp-> get(path, targetType = http:Response);
-        return response;
-    }
-    # Requests thousands of screenshtos at once
-    #
-    # + payload - Request payload to create batch 
-    # + hosting - hosting option - s3 or browshot 
-    # + hostingHeight - maximum height of the thumbnail to host 
-    # + hostingWidth - maximum height of the thumbnail to host 
-    # + hostingScale - scale of the thumbnail to host 
-    # + hostingBucket - S3 bucket to upload the screenshot or thumbnail (required for S3) 
-    # + hostingFile - file name to use (for S3 only) 
-    # + hostingHeaders - list of headers to add to the S3 object (for S3 only) 
-    # + return - batch information 
-    remote isolated function createBatch(Body payload, string? hosting = (), int? hostingHeight = (), int? hostingWidth = (), float hostingScale = 1.0, string? hostingBucket = (), string? hostingFile = (), string? hostingHeaders = ()) returns Batch[]|error {
-        string  path = string `/batch/ceate`;
-        map<anydata> queryParam = {"hosting": hosting, "hosting_height": hostingHeight, "hosting_width": hostingWidth, "hosting_scale": hostingScale, "hosting_bucket": hostingBucket, "hosting_file": hostingFile, "hosting_headers": hostingHeaders, "key": self.apiKeys["key"]};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        Batch[] response = check self.clientEp->post(path, request, targetType=BatchArr);
         return response;
     }
     # Get the batch status
@@ -251,7 +230,7 @@ public isolated client class Client {
     # + return - batch information 
     remote isolated function getBatchInfo(int id) returns Batch|error {
         string  path = string `/batch/info`;
-        map<anydata> queryParam = {"id": id, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         Batch response = check self.clientEp-> get(path, targetType = Batch);
         return response;
@@ -262,7 +241,7 @@ public isolated client class Client {
     # + return - Account information 
     remote isolated function getAccountInfo(int details = 1) returns Account|error {
         string  path = string `/account/info`;
-        map<anydata> queryParam = {"details": details, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"details": details, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         Account response = check self.clientEp-> get(path, targetType = Account);
         return response;
@@ -273,7 +252,7 @@ public isolated client class Client {
     # + return - Instance information 
     remote isolated function getInstanceInfo(int id) returns Instance|error {
         string  path = string `/instance/info`;
-        map<anydata> queryParam = {"id": id, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         Instance response = check self.clientEp-> get(path, targetType = Instance);
         return response;
@@ -283,7 +262,7 @@ public isolated client class Client {
     # + return - Instance information 
     remote isolated function getInstancesInfo() returns InstanceList|error {
         string  path = string `/instance/list`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         InstanceList response = check self.clientEp-> get(path, targetType = InstanceList);
         return response;
@@ -294,7 +273,7 @@ public isolated client class Client {
     # + return - Browser information 
     remote isolated function getBrowserInfo(int id) returns Browser|error {
         string  path = string `/browser/info`;
-        map<anydata> queryParam = {"id": id, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"id": id, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         Browser response = check self.clientEp-> get(path, targetType = Browser);
         return response;
@@ -304,43 +283,9 @@ public isolated client class Client {
     # + return - Instance information 
     remote isolated function getBrowsersInfo() returns BrowserList|error {
         string  path = string `/browser/list`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         BrowserList response = check self.clientEp-> get(path, targetType = BrowserList);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

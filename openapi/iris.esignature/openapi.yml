@@ -46,8 +46,7 @@ components:
       type: apiKey
       in: header
       name: X-API-KEY
-      description: Authentication token
-      x-ballerina-apikey-description: "Provide your API key as `X-API-KEY`. Eg: `{\"X-API-KEY\" : \"<API key>\"}`"
+      description: Represents API Key `X-API-KEY`
   responses:
     UnauthorizedError:
       description: API key is missing or invalid
@@ -6015,50 +6014,50 @@ paths:
             } catch (Exception $e) {
                 echo 'Exception when calling MerchantsApi->merchantsMerchantNumberStatementsGet: ', $e->getMessage(), PHP_EOL;
             }
-  /api/v1/merchants/{merchantNumber}/statements/{statementId}:
-    get:
-      operationId: downloadStatement
-      tags:
-        - "Merchants"
-      summary: Download a statement
-      description: Download a statement
-      parameters:
-        - in: path
-          name: merchantNumber
-          schema:
-            type: integer
-          description: Merchant number
-          required: true
-        - in: path
-          name: statementId
-          schema:
-            type: integer
-          description: Statement Id
-          required: true
-      responses:
-        200:
-          description: Statement file
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-                description: "Statement file"
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
-      x-code-samples:
-        - lang: 'PHP'
-          source: |
-            try {
-                $result = $apiInstance->merchantsMerchantNumberStatementsStatementIdGet($merchant_number, $statement_id);
-                print_r($result);
-            } catch (Exception $e) {
-                echo 'Exception when calling MerchantsApi->merchantsMerchantNumberStatementsStatementIdGet: ', $e->getMessage(), PHP_EOL;
-            }
+  # /api/v1/merchants/{merchantNumber}/statements/{statementId}:
+  #   get:
+  #     operationId: downloadStatement
+  #     tags:
+  #       - "Merchants"
+  #     summary: Download a statement
+  #     description: Download a statement
+  #     parameters:
+  #       - in: path
+  #         name: merchantNumber
+  #         schema:
+  #           type: integer
+  #         description: Merchant number
+  #         required: true
+  #       - in: path
+  #         name: statementId
+  #         schema:
+  #           type: integer
+  #         description: Statement Id
+  #         required: true
+  #     responses:
+  #       200:
+  #         description: Statement file
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #               description: "Statement file"
+  #       401:
+  #         $ref: "#/components/responses/UnauthorizedError"
+  #       403:
+  #         $ref: "#/components/responses/ForbiddenError"
+  #       404:
+  #         $ref: "#/components/responses/NotFoundError"
+  #     x-code-samples:
+  #       - lang: 'PHP'
+  #         source: |
+  #           try {
+  #               $result = $apiInstance->merchantsMerchantNumberStatementsStatementIdGet($merchant_number, $statement_id);
+  #               print_r($result);
+  #           } catch (Exception $e) {
+  #               echo 'Exception when calling MerchantsApi->merchantsMerchantNumberStatementsStatementIdGet: ', $e->getMessage(), PHP_EOL;
+  #           }
   /api/v1/merchants/files:
     post:
       operationId: uploadAttachment
@@ -8499,74 +8498,74 @@ paths:
                 echo 'Exception when calling LeadsApi->leadsLeadIdUsersUserIdDelete: ', $e->getMessage(), PHP_EOL;
             }
   /leads/{leadId}/documents:
-    post:
-      operationId: uploadDocument
-      tags:
-      - "Leads"
-      summary: Upload a document
-      description: Upload a document
-      parameters:
-      - in: path
-        name: leadId
-        schema:
-          type: integer
-        description: Lead Id
-        required: true
-      - in: query
-        name: tab
-        schema:
-          type: integer
-        description: Tab Id
-        required: true
-      - in: query
-        name: label
-        schema:
-          type: integer
-        description: Label Id
-        required: true
-      - in: query
-        name: filename
-        schema:
-          type: string
-        description: File name
-        required: true
-      requestBody:
-        description: Payload data
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        200:
-          description: Document has been uploaded successfully
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: The document has been uploaded successfully
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
-        405:
-          $ref: "#/components/responses/ValidationError"
-      x-code-samples:
-        - lang: 'PHP'
-          source: |
-            $tab = 1; // int | Tab Id
-            $label = 2; // int | Label Id
-            $filename = "filename_example"; // string | File name
-            $body = 'file content';
+    # post:
+    #   operationId: uploadDocument
+    #   tags:
+    #   - "Leads"
+    #   summary: Upload a document
+    #   description: Upload a document
+    #   parameters:
+    #   - in: path
+    #     name: leadId
+    #     schema:
+    #       type: integer
+    #     description: Lead Id
+    #     required: true
+    #   - in: query
+    #     name: tab
+    #     schema:
+    #       type: integer
+    #     description: Tab Id
+    #     required: true
+    #   - in: query
+    #     name: label
+    #     schema:
+    #       type: integer
+    #     description: Label Id
+    #     required: true
+    #   - in: query
+    #     name: filename
+    #     schema:
+    #       type: string
+    #     description: File name
+    #     required: true
+    #   requestBody:
+    #     description: Payload data
+    #     content:
+    #       application/octet-stream:
+    #         schema:
+    #           type: string
+    #           format: binary
+    #   responses:
+    #     200:
+    #       description: Document has been uploaded successfully
+    #       content:
+    #         text/plain:
+    #           schema:
+    #             type: string
+    #             example: The document has been uploaded successfully
+    #     401:
+    #       $ref: "#/components/responses/UnauthorizedError"
+    #     403:
+    #       $ref: "#/components/responses/ForbiddenError"
+    #     404:
+    #       $ref: "#/components/responses/NotFoundError"
+    #     405:
+    #       $ref: "#/components/responses/ValidationError"
+    #   x-code-samples:
+    #     - lang: 'PHP'
+    #       source: |
+    #         $tab = 1; // int | Tab Id
+    #         $label = 2; // int | Label Id
+    #         $filename = "filename_example"; // string | File name
+    #         $body = 'file content';
 
-            try {
-                $result = $apiInstance->leadsLeadIdDocumentsPost($tab, $label, $filename, $lead_id, $body);
-                print_r($result);
-            } catch (Exception $e) {
-                echo 'Exception when calling LeadsApi->leadsLeadIdDocumentsPost: ', $e->getMessage(), PHP_EOL;
-            }
+    #         try {
+    #             $result = $apiInstance->leadsLeadIdDocumentsPost($tab, $label, $filename, $lead_id, $body);
+    #             print_r($result);
+    #         } catch (Exception $e) {
+    #             echo 'Exception when calling LeadsApi->leadsLeadIdDocumentsPost: ', $e->getMessage(), PHP_EOL;
+    #         }
     get:
       operationId: getAvailableDocuments
       tags:
@@ -8702,50 +8701,50 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         403:
           $ref: "#/components/responses/ForbiddenError"
-  /leads/{leadId}/documents/{documentId}:
-    get:
-      operationId: downoladDocument
-      tags:
-      - "Leads"
-      summary: Download a document
-      description: Download a document
-      parameters:
-      - in: path
-        name: leadId
-        schema:
-          type: integer
-        description: Lead Id
-        required: true
-      - in: path
-        name: documentId
-        schema:
-          type: integer
-        description: Document Id
-        required: true
-      responses:
-        200:
-          description: Document
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-                description: "Document"
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
-      x-code-samples:
-        - lang: 'PHP'
-          source: |
-            try {
-                $result = $apiInstance->leadsLeadIdDocumentsDocumentIdGet($lead_id, $document_id);
-                print_r($result);
-            } catch (Exception $e) {
-                echo 'Exception when calling LeadsApi->leadsLeadIdDocumentsDocumentIdGet: ', $e->getMessage(), PHP_EOL;
-            }
+  # /leads/{leadId}/documents/{documentId}:
+  #   get:
+  #     operationId: downoladDocument
+  #     tags:
+  #     - "Leads"
+  #     summary: Download a document
+  #     description: Download a document
+  #     parameters:
+  #     - in: path
+  #       name: leadId
+  #       schema:
+  #         type: integer
+  #       description: Lead Id
+  #       required: true
+  #     - in: path
+  #       name: documentId
+  #       schema:
+  #         type: integer
+  #       description: Document Id
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: Document
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #               description: "Document"
+  #       401:
+  #         $ref: "#/components/responses/UnauthorizedError"
+  #       403:
+  #         $ref: "#/components/responses/ForbiddenError"
+  #       404:
+  #         $ref: "#/components/responses/NotFoundError"
+  #     x-code-samples:
+  #       - lang: 'PHP'
+  #         source: |
+  #           try {
+  #               $result = $apiInstance->leadsLeadIdDocumentsDocumentIdGet($lead_id, $document_id);
+  #               print_r($result);
+  #           } catch (Exception $e) {
+  #               echo 'Exception when calling LeadsApi->leadsLeadIdDocumentsDocumentIdGet: ', $e->getMessage(), PHP_EOL;
+  #           }
   /api/v1/leads/{leadId}/signatures/{applicationId}/generate:
     post:
       operationId: generateEsignatureDocument
@@ -8912,47 +8911,47 @@ paths:
             } catch (Exception $e) {
                 echo 'Exception when calling LeadsApi->leadsLeadIdSignaturesApplicationIdSendPost: ', $e->getMessage(), PHP_EOL;
             }
-  /api/v1/leads/signatures/{applicationId}/download:
-    get:
-      operationId: DownloadEsignatureDocument
-      tags:
-        - "E-Signature"
-      summary: Download an e-signature document
-      description: Download an e-signature document.
-      parameters:
-        - in: path
-          name: applicationId
-          schema:
-            type: integer
-          description: Application Id
-          required: true
-      responses:
-        200:
-          description: E-Sign document
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
-        405:
-          $ref: "#/components/responses/ValidationError"
-        500:
-          $ref: "#/components/responses/ServerError"
-      x-code-samples:
-        - lang: 'PHP'
-          source: |
-            try {
-                $result = $apiInstance->leadsSignaturesApplicationIdDownloadGet($application_id);
-                print_r($result);
-            } catch (Exception $e) {
-                echo 'Exception when calling LeadsApi->leadsSignaturesApplicationIdDownloadGet: ', $e->getMessage(), PHP_EOL;
-            }
+  # /api/v1/leads/signatures/{applicationId}/download:
+  #   get:
+  #     operationId: DownloadEsignatureDocument
+  #     tags:
+  #       - "E-Signature"
+  #     summary: Download an e-signature document
+  #     description: Download an e-signature document.
+  #     parameters:
+  #       - in: path
+  #         name: applicationId
+  #         schema:
+  #           type: integer
+  #         description: Application Id
+  #         required: true
+  #     responses:
+  #       200:
+  #         description: E-Sign document
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       401:
+  #         $ref: "#/components/responses/UnauthorizedError"
+  #       403:
+  #         $ref: "#/components/responses/ForbiddenError"
+  #       404:
+  #         $ref: "#/components/responses/NotFoundError"
+  #       405:
+  #         $ref: "#/components/responses/ValidationError"
+  #       500:
+  #         $ref: "#/components/responses/ServerError"
+  #     x-code-samples:
+  #       - lang: 'PHP'
+  #         source: |
+  #           try {
+  #               $result = $apiInstance->leadsSignaturesApplicationIdDownloadGet($application_id);
+  #               print_r($result);
+  #           } catch (Exception $e) {
+  #               echo 'Exception when calling LeadsApi->leadsSignaturesApplicationIdDownloadGet: ', $e->getMessage(), PHP_EOL;
+  #           }
   /api/v1/leads/{leadId}/signatures:
     get:
       operationId: GetAllLeadEsignaturesDocuments
@@ -9149,56 +9148,56 @@ paths:
             } catch (Exception $e) {
                 echo 'Exception when calling LeadsApi->leadsEmailsTemplatesGet: ', $e->getMessage(), PHP_EOL;
             }
-  /leads/{leadId}/mailbox/{emailId}/attachment/{attachmentId}:
-    get:
-      operationId: downloadMailboxEmailAttachment
-      tags:
-        - "Leads"
-      summary: Download a mailbox email attachment
-      description: Download a mailbox email attachment
-      parameters:
-        - in: path
-          name: leadId
-          schema:
-            type: integer
-          description: Lead Id
-          required: true
-        - in: path
-          name: emailId
-          schema:
-            type: integer
-          description: Email Id
-          required: true
-        - in: path
-          name: attachmentId
-          schema:
-            type: integer
-          description: Attachment Id
-          required: true
-      responses:
-        200:
-          description: Document
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-                description: "Attachment"
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
-      x-code-samples:
-        - lang: 'PHP'
-          source: |
-            try {
-                $result = $apiInstance->leadsLeadIdMailboxEmailIdAttachmentAttachmentIdGet($lead_id, $email_id, $attachment_id);
-                print_r($result);
-            } catch (Exception $e) {
-                echo 'Exception when calling LeadsApi->leadsLeadIdMailboxEmailIdAttachmentAttachmentIdGet: ', $e->getMessage(), PHP_EOL;
-            }
+  # /leads/{leadId}/mailbox/{emailId}/attachment/{attachmentId}:
+  #   get:
+  #     operationId: downloadMailboxEmailAttachment
+  #     tags:
+  #       - "Leads"
+  #     summary: Download a mailbox email attachment
+  #     description: Download a mailbox email attachment
+  #     parameters:
+  #       - in: path
+  #         name: leadId
+  #         schema:
+  #           type: integer
+  #         description: Lead Id
+  #         required: true
+  #       - in: path
+  #         name: emailId
+  #         schema:
+  #           type: integer
+  #         description: Email Id
+  #         required: true
+  #       - in: path
+  #         name: attachmentId
+  #         schema:
+  #           type: integer
+  #         description: Attachment Id
+  #         required: true
+  #     responses:
+  #       200:
+  #         description: Document
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #               description: "Attachment"
+  #       401:
+  #         $ref: "#/components/responses/UnauthorizedError"
+  #       403:
+  #         $ref: "#/components/responses/ForbiddenError"
+  #       404:
+  #         $ref: "#/components/responses/NotFoundError"
+  #     x-code-samples:
+  #       - lang: 'PHP'
+  #         source: |
+  #           try {
+  #               $result = $apiInstance->leadsLeadIdMailboxEmailIdAttachmentAttachmentIdGet($lead_id, $email_id, $attachment_id);
+  #               print_r($result);
+  #           } catch (Exception $e) {
+  #               echo 'Exception when calling LeadsApi->leadsLeadIdMailboxEmailIdAttachmentAttachmentIdGet: ', $e->getMessage(), PHP_EOL;
+  #           }
   /leads/{leadId}/sms/{templateId}:
     post:
       operationId: sendSmsToLeadWithSelectedSmsTemplate
@@ -11742,91 +11741,91 @@ paths:
           $ref: "#/components/responses/ForbiddenError"
         404:
           $ref: "#/components/responses/NotFoundError"
-  /helpdesk/file:
-    post:
-      operationId: uploadAttachementToTicket
-      tags:
-        - "Helpdesk"
-      summary: Upload an attachment to a ticket, comment, checklist, or ticket type
-      description: Upload an attachment to a ticket, comment, checklist, or ticket type
-      parameters:
-        - in: query
-          name: extension
-          schema:
-            type: string
-            example: pdf
-          description: File extension for validation
-          required: true
-        - in: query
-          name: name
-          schema:
-            type: string
-            example: pdf
-          description: File name for validation
-          required: true
-      requestBody:
-        description: Payload data
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        200:
-          description: Document
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  fileId:
-                    type: string
-                    example: "15dfd5e51a10145.87303877_ticket_checklist_file.pdf"
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
-        405:
-          $ref: "#/components/responses/ValidationError"
-  /helpdesk/{ticketId}/download/{attachmentId}:
-    get:
-      operationId: downloadAttachmentFromTicket
-      tags:
-        - "Helpdesk"
-      summary: Download an attachment from a ticket
-      parameters:
-        - in: path
-          name: ticketId
-          schema:
-            type: integer
-          description: Ticket Id
-          required: true
-        - in: path
-          name: attachmentId
-          schema:
-            type: integer
-          description: Attachment Id
-          required: true
-      responses:
-        200:
-          description: Document
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-                description: "Document"
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
+  # /helpdesk/file:
+  #   post:
+  #     operationId: uploadAttachementToTicket
+  #     tags:
+  #       - "Helpdesk"
+  #     summary: Upload an attachment to a ticket, comment, checklist, or ticket type
+  #     description: Upload an attachment to a ticket, comment, checklist, or ticket type
+  #     parameters:
+  #       - in: query
+  #         name: extension
+  #         schema:
+  #           type: string
+  #           example: pdf
+  #         description: File extension for validation
+  #         required: true
+  #       - in: query
+  #         name: name
+  #         schema:
+  #           type: string
+  #           example: pdf
+  #         description: File name for validation
+  #         required: true
+  #     requestBody:
+  #       description: Payload data
+  #       content:
+  #         application/octet-stream:
+  #           schema:
+  #             type: string
+  #             format: binary
+  #     responses:
+  #       200:
+  #         description: Document
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 status:
+  #                   type: string
+  #                   example: success
+  #                 fileId:
+  #                   type: string
+  #                   example: "15dfd5e51a10145.87303877_ticket_checklist_file.pdf"
+  #       401:
+  #         $ref: "#/components/responses/UnauthorizedError"
+  #       403:
+  #         $ref: "#/components/responses/ForbiddenError"
+  #       404:
+  #         $ref: "#/components/responses/NotFoundError"
+  #       405:
+  #         $ref: "#/components/responses/ValidationError"
+  # /helpdesk/{ticketId}/download/{attachmentId}:
+  #   get:
+  #     operationId: downloadAttachmentFromTicket
+  #     tags:
+  #       - "Helpdesk"
+  #     summary: Download an attachment from a ticket
+  #     parameters:
+  #       - in: path
+  #         name: ticketId
+  #         schema:
+  #           type: integer
+  #         description: Ticket Id
+  #         required: true
+  #       - in: path
+  #         name: attachmentId
+  #         schema:
+  #           type: integer
+  #         description: Attachment Id
+  #         required: true
+  #     responses:
+  #       200:
+  #         description: Document
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #               description: "Document"
+  #       401:
+  #         $ref: "#/components/responses/UnauthorizedError"
+  #       403:
+  #         $ref: "#/components/responses/ForbiddenError"
+  #       404:
+  #         $ref: "#/components/responses/NotFoundError"
   /helpdesk/types:
     post:
       operationId: createHelpdeskTicketType
@@ -12113,40 +12112,40 @@ paths:
           $ref: "#/components/responses/NotFoundError"
         405:
           $ref: "#/components/responses/ValidationError"
-  /helpdesk/types/{typeId}/download/{attachmentId}:
-    get:
-      operationId: downloadAttachmentFromTicketType
-      tags:
-        - "Helpdesk"
-      summary: Download an attachment from a ticket type
-      parameters:
-        - in: path
-          name: typeId
-          schema:
-            type: integer
-          description: Ticket Type Id
-          required: true
-        - in: path
-          name: attachmentId
-          schema:
-            type: integer
-          description: Attachment Id
-          required: true
-      responses:
-        200:
-          description: Document
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-                description: "Document"
-        401:
-          $ref: "#/components/responses/UnauthorizedError"
-        403:
-          $ref: "#/components/responses/ForbiddenError"
-        404:
-          $ref: "#/components/responses/NotFoundError"
+  # /helpdesk/types/{typeId}/download/{attachmentId}:
+  #   get:
+  #     operationId: downloadAttachmentFromTicketType
+  #     tags:
+  #       - "Helpdesk"
+  #     summary: Download an attachment from a ticket type
+  #     parameters:
+  #       - in: path
+  #         name: typeId
+  #         schema:
+  #           type: integer
+  #         description: Ticket Type Id
+  #         required: true
+  #       - in: path
+  #         name: attachmentId
+  #         schema:
+  #           type: integer
+  #         description: Attachment Id
+  #         required: true
+  #     responses:
+  #       200:
+  #         description: Document
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #               description: "Document"
+  #       401:
+  #         $ref: "#/components/responses/UnauthorizedError"
+  #       403:
+  #         $ref: "#/components/responses/ForbiddenError"
+  #       404:
+  #         $ref: "#/components/responses/NotFoundError"
 
   /helpdesk/users:
     get:

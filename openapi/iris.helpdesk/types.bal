@@ -84,6 +84,11 @@ public type Ticket record {
     boolean merchantVisible?;
 };
 
+public type HelpdeskTypesBody record {
+    *TicketTypeRequest;
+    record {*BriefTicketChecklistInfo; string[] files?;}[] checklist?;
+};
+
 public type BriefTicketChecklistInfo record {
     # Checklist item Id
     int id?;
@@ -108,8 +113,9 @@ public type BriefTicketChecklistInfo record {
 };
 
 public type InlineResponse20061 record {
-    string status?;
-    string fileId?;
+    BriefTicketTypeInfo[] data?;
+    Links links?;
+    Meta meta?;
 };
 
 public type InlineResponse20060 record {
@@ -120,15 +126,9 @@ public type InlineResponse20060 record {
     decimal assigned_by?;
 };
 
-public type InlineResponse20063 record {
+public type InlineResponse20062 record {
     string message?;
     string movedTickets?;
-};
-
-public type InlineResponse20062 record {
-    BriefTicketTypeInfo[] data?;
-    Links links?;
-    Meta meta?;
 };
 
 public type TicketCreatedBlock record {
@@ -275,9 +275,15 @@ public type InlineResponse20059 record {
     string status?;
 };
 
-public type Body17 record {
-    *TicketTypeRequest;
-    record {*BriefTicketChecklistInfo; string[] files?; string[] new_files?;}[] checklist?;
+public type TicketidCommentBody record {
+    # Comment text
+    string comment?;
+    int[] notify?;
+    string[] files?;
+    int[] attached_files?;
+    string[] preview_images?;
+    # Indicates if the comment is visible to Merchant users
+    boolean merchantVisible?;
 };
 
 public type TicketDetail record {
@@ -285,12 +291,7 @@ public type TicketDetail record {
     ChecklistFullInfo[] checklist?;
 };
 
-public type Body16 record {
-    *TicketTypeRequest;
-    record {*BriefTicketChecklistInfo; string[] files?;}[] checklist?;
-};
-
-public type Body15 record {
+public type HelpdeskTicketidBody record {
     # Type id
     int 'type?;
     # Ticket subject
@@ -317,18 +318,33 @@ public type Body15 record {
     record {*CheckListRequest; string[] new_files?; int[] attached_files?;}[] checklist?;
 };
 
-public type Body14 record {
-    # Comment text
-    string comment?;
-    int[] notify?;
-    string[] files?;
-    int[] attached_files?;
-    string[] preview_images?;
-    # Indicates if the comment is visible to Merchant users
-    boolean merchantVisible?;
+public type File record {
+    int id?;
+    string name?;
+    int size?;
+    # File creation date (Y-m-d\TH:i:sP)
+    string created?;
+    int created_by?;
 };
 
-public type Body13 record {
+public type TypesTypeidBody record {
+    *TicketTypeRequest;
+    record {*BriefTicketChecklistInfo; string[] files?; string[] new_files?;}[] checklist?;
+};
+
+public type TypeDetail record {
+    BriefTicketTypeInfo general?;
+    ChecklistFullInfo[] checklist?;
+};
+
+public type TicketType record {
+    # Type id
+    int id?;
+    # Ticket type
+    string name?;
+};
+
+public type V1HelpdeskBody record {
     # Type id
     int 'type;
     # Ticket subject
@@ -353,27 +369,6 @@ public type Body13 record {
     # Indicates if the ticket is visible to Merchant users
     boolean merchantVisible?;
     CheckListRequest[] checklist?;
-};
-
-public type File record {
-    int id?;
-    string name?;
-    int size?;
-    # File creation date (Y-m-d\TH:i:sP)
-    string created?;
-    int created_by?;
-};
-
-public type TypeDetail record {
-    BriefTicketTypeInfo general?;
-    ChecklistFullInfo[] checklist?;
-};
-
-public type TicketType record {
-    # Type id
-    int id?;
-    # Ticket type
-    string name?;
 };
 
 public type Links record {

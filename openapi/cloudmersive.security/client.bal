@@ -14,12 +14,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
+import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `Apikey`
+    string apikey;
 |};
 
 # This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
@@ -27,27 +27,27 @@ public type ApiKeysConfig record {|
 @display {label: "Cloudmersive Security", iconPath: "resources/cloudmersive.security.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials.  
+    # The connector initialization requires setting the API credentials.
     # Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
     #
-    # + apiKeyConfig - Provide your API Key as `Apikey`. Eg: `{"Apikey" : "<API Key>}`"
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + apiKeyConfig - API keys for authorization 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://testapi.cloudmersive.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Automatically detect threats in an input string
     #
-    # + payload - User-facing text input.
-    # + return - OK
+    # + payload - User-facing text input. 
+    # + return - OK 
     remote isolated function contentThreatDetectionAutomaticThreatDetectionString(string payload) returns StringAutomaticThreatDetection|error {
         string  path = string `/security/threat-detection/content/automatic/detect/string`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -57,11 +57,11 @@ public isolated client class Client {
     }
     # Detect Insecure Deserialization JSON (JID) attacks in a string
     #
-    # + payload - User-facing text input.
-    # + return - OK
+    # + payload - User-facing text input. 
+    # + return - OK 
     remote isolated function contentThreatDetectionDetectInsecureDeserializationJsonString(string payload) returns StringInsecureDeserializationJsonDetection|error {
         string  path = string `/security/threat-detection/content/insecure-deserialization/json/detect/string`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -71,11 +71,11 @@ public isolated client class Client {
     }
     # Check text input for SQL Injection (SQLI) attacks
     #
-    # + payload - User-facing text input.
-    # + return - OK
+    # + payload - User-facing text input. 
+    # + return - OK 
     remote isolated function contentThreatDetectionCheckSqlInjectionString(string payload) returns StringSqlInjectionDetectionResult|error {
         string  path = string `/security/threat-detection/content/sql-injection/detect/string`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -85,11 +85,11 @@ public isolated client class Client {
     }
     # Protect text input from Cross-Site-Scripting (XSS) attacks through normalization
     #
-    # + payload - User-facing text input.
-    # + return - OK
+    # + payload - User-facing text input. 
+    # + return - OK 
     remote isolated function contentThreatDetectionProtectXss(string payload) returns StringXssProtectionResult|error {
         string  path = string `/security/threat-detection/content/xss/detect/string`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -99,11 +99,11 @@ public isolated client class Client {
     }
     # Protect text input from XML External Entity (XXE) attacks
     #
-    # + payload - User-facing text input.
-    # + return - OK
+    # + payload - User-facing text input. 
+    # + return - OK 
     remote isolated function contentThreatDetectionCheckXxe(string payload) returns StringXxeDetectionResult|error {
         string  path = string `/security/threat-detection/content/xxe/detect/xml/string`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -113,11 +113,11 @@ public isolated client class Client {
     }
     # Check a URL for Server-side Request Forgery (SSRF) threats
     #
-    # + payload - Input URL request
-    # + return - OK
+    # + payload - Input URL request 
+    # + return - OK 
     remote isolated function networkThreatDetectionDetectSsrfUrl(UrlSsrfThreatDetectionRequestFull payload) returns UrlSsrfThreatDetectionResponseFull|error {
         string  path = string `/security/threat-detection/network/url/ssrf/detect`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -127,11 +127,11 @@ public isolated client class Client {
     }
     # Check if IP address is a known threat
     #
-    # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes.
-    # + return - OK
+    # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes. 
+    # + return - OK 
     remote isolated function networkThreatDetectionIsThreat(string payload) returns IPThreatDetectionResponse|error {
         string  path = string `/security/threat-detection/network/ip/is-threat`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -141,11 +141,11 @@ public isolated client class Client {
     }
     # Check if IP address is a Bot client threat
     #
-    # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes.
-    # + return - OK
+    # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes. 
+    # + return - OK 
     remote isolated function networkThreatDetectionIsBot(string payload) returns ThreatDetectionBotCheckResponse|error {
         string  path = string `/security/threat-detection/network/ip/is-bot`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -155,11 +155,11 @@ public isolated client class Client {
     }
     # Check if IP address is a Tor node server
     #
-    # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes.
-    # + return - OK
+    # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes. 
+    # + return - OK 
     remote isolated function networkThreatDetectionIsTorNode(string payload) returns ThreatDetectionTorNodeResponse|error {
         string  path = string `/security/threat-detection/network/ip/is-tor-node`;
-        map<any> headerValues = {Apikey: self.apiKeys["Apikey"]};
+        map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -167,18 +167,4 @@ public isolated client class Client {
         ThreatDetectionTorNodeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ThreatDetectionTorNodeResponse);
         return response;
     }
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map
-# + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any>   headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

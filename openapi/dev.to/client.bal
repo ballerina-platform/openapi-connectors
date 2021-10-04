@@ -15,12 +15,22 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # All requests on this API needs to include an API key.  The API key can be provided as part of the query string or as a request header.  The name of the API key needs to be `api-key`
+    # Authentication for some endpoints, like write operations on the Articles API require a DEV API key.
+    # ### Getting an API key
+    # To obtain one, please follow these steps:
+    # 
+    #   - visit https://dev.to/settings/account
+    #   - in the "DEV API Keys" section create a new key by adding a
+    #     description and clicking on "Generate API Key"
+    # 
+    #     ![obtain a DEV API Key](https://user-images.githubusercontent.com/146201/64421366-af3f8b00-d0a1-11e9-8ff6-7cc0ca6e854e.png)
+    #   - You'll see the newly generated key in the same view
+    #     ![generated DEV API Key](https://user-images.githubusercontent.com/146201/64421367-af3f8b00-d0a1-11e9-9831-73d3bdfdff66.png)
+    string apiKey;
 |};
 
 # This is a generated connector for [DEV API v0.9.7](https://developers.forem.com/api/) OpenAPI specification.
@@ -31,19 +41,19 @@ public type ApiKeysConfig record {|
 @display {label: "dev.to", iconPath: "resources/dev.to.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create an [DEVto Account](https://dev.to/settings/account)  and obtain tokens by log into [DEV Account](https://www.interzoid.com/account).
     #
-    # + apiKeyConfig - Provide your private apiKey as `api-key`. Eg: `{"api-key" : "<private api-key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://dev.to/api") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Published articles
     #
@@ -70,7 +80,7 @@ public isolated client class Client {
     # + return - A newly created article 
     remote isolated function createArticle(ArticleCreate payload) returns ArticleShow|error {
         string  path = string `/articles`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -99,7 +109,7 @@ public isolated client class Client {
         string  path = string `/articles/me`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
         return response;
@@ -113,7 +123,7 @@ public isolated client class Client {
         string  path = string `/articles/me/all`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
         return response;
@@ -127,7 +137,7 @@ public isolated client class Client {
         string  path = string `/articles/me/published`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
         return response;
@@ -141,7 +151,7 @@ public isolated client class Client {
         string  path = string `/articles/me/unpublished`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
         return response;
@@ -162,7 +172,7 @@ public isolated client class Client {
     # + return - The updated article 
     remote isolated function updateArticle(int id, ArticleUpdate payload) returns ArticleShow|error {
         string  path = string `/articles/${id}`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -211,7 +221,7 @@ public isolated client class Client {
         string  path = string `/followers/users`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "sort": sort};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Follower[] response = check self.clientEp-> get(path, accHeaders, targetType = FollowerArr);
         return response;
@@ -221,7 +231,7 @@ public isolated client class Client {
     # + return - A list of followed tags 
     remote isolated function getFollowedTags() returns FollowedTag[]|error {
         string  path = string `/follows/tags`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FollowedTag[] response = check self.clientEp-> get(path, accHeaders, targetType = FollowedTagArr);
         return response;
@@ -245,7 +255,7 @@ public isolated client class Client {
     # + return - A newly created Listing 
     remote isolated function createListing(ListingCreate payload) returns Listing|error {
         string  path = string `/listings`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -272,7 +282,7 @@ public isolated client class Client {
     # + return - A listing 
     remote isolated function getListingById(int id) returns Listing|error {
         string  path = string `/listings/${id}`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Listing response = check self.clientEp-> get(path, accHeaders, targetType = Listing);
         return response;
@@ -284,7 +294,7 @@ public isolated client class Client {
     # + return - The updated article 
     remote isolated function updateListing(int id, ListingUpdate payload) returns ArticleShow|error {
         string  path = string `/listings/${id}`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -372,7 +382,7 @@ public isolated client class Client {
         string  path = string `/readinglist`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ReadingList[] response = check self.clientEp-> get(path, accHeaders, targetType = ReadingListArr);
         return response;
@@ -394,7 +404,7 @@ public isolated client class Client {
     # + return - A user 
     remote isolated function getUserMe() returns User|error {
         string  path = string `/users/me`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         User response = check self.clientEp-> get(path, accHeaders, targetType = User);
         return response;
@@ -428,7 +438,7 @@ public isolated client class Client {
     # + return - A list of webhooks 
     remote isolated function getWebhooks() returns WebhookIndex[]|error {
         string  path = string `/webhooks`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         WebhookIndex[] response = check self.clientEp-> get(path, accHeaders, targetType = WebhookIndexArr);
         return response;
@@ -439,7 +449,7 @@ public isolated client class Client {
     # + return - A newly created webhook 
     remote isolated function createWebhook(WebhookCreate payload) returns WebhookShow|error {
         string  path = string `/webhooks`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -453,7 +463,7 @@ public isolated client class Client {
     # + return - A webhook endpoint 
     remote isolated function getWebhookById(int id) returns WebhookShow|error {
         string  path = string `/webhooks/${id}`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         WebhookShow response = check self.clientEp-> get(path, accHeaders, targetType = WebhookShow);
         return response;
@@ -464,57 +474,9 @@ public isolated client class Client {
     # + return - A successful deletion 
     remote isolated function deleteWebhook(int id) returns http:Response|error {
         string  path = string `/webhooks/${id}`;
-        map<any> headerValues = {"api-key": self.apiKeys["api-key"]};
+        map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

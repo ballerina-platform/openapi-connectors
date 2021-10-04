@@ -902,7 +902,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       x-codegen-request-body-name: secret
+security:
+  - ApiKeyAuth: []
 components:
+  securitySchemes:
+    ApiKeyAuth:       
+      type: apiKey
+      in: header  
+      name: Authorization
+      description: Represents API Key 'Authorization'
   schemas:
     Error:
       required:

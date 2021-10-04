@@ -846,208 +846,208 @@ paths:
         default:
           description: HTML code
           content: {}
-  /batch/ceate:
-    post:
-      tags:
-      - Batch
-      summary: Requests thousands of screenshtos at once
-      description: |
-        Get hundreds or thousands of screenshots from a text file. You can use this API call or the dashboard. Unlike the other API calls, you must issue a POST request with the Content-Type "multipart/form-data" in order to upload the text file. The text file must contain the list of URLs to request, 1 URL per line. Failed screenshots will be tried up to 3 times before giving up.
-      operationId: CreateBatch
-      parameters:
-      - name: hosting
-        in: query
-        description: hosting option - s3 or browshot
-        schema:
-          type: string
-          enum:
-          - s3
-      - name: hosting_height
-        in: query
-        description: maximum height of the thumbnail to host
-        schema:
-          maximum: 15000
-          minimum: 1
-          type: integer
-      - name: hosting_width
-        in: query
-        description: maximum height of the thumbnail to host
-        schema:
-          maximum: 2000
-          minimum: 1
-          type: integer
-      - name: hosting_scale
-        in: query
-        description: scale of the thumbnail to host
-        schema:
-          type: number
-          format: float
-          default: 1.0
-      - name: hosting_bucket
-        in: query
-        description: S3 bucket to upload the screenshot or thumbnail (required for
-          S3)
-        schema:
-          type: string
-      - name: hosting_file
-        in: query
-        description: file name to use (for S3 only)
-        schema:
-          type: string
-      - name: hosting_headers
-        in: query
-        description: list of headers to add to the S3 object (for S3 only)
-        schema:
-          type: string
-      requestBody:
-        description: Request payload to create batch
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - instance_id
-              properties:
-                instance_id:
-                  type: integer
-                  description: instance ID to use
-                  format: int32
-                file:
-                  type: string
-                  description: text file to use
-                  format: binary
-                size:
-                  type: string
-                  description: screenshots size - "screen" (default) or "page"
-                  default: screen
-                  enum:
-                  - screen
-                  - page
-                name:
-                  type: string
-                  description: name of the batch
-                width:
-                  maximum: 2000
-                  minimum: 1
-                  type: integer
-                  description: thumbnail width.
-                  format: int32
-                  default: 1024
-                height:
-                  maximum: 15000
-                  minimum: 1
-                  type: integer
-                  description: thumbnail height
-                  format: int32
-                delay:
-                  maximum: 60
-                  minimum: 0
-                  type: integer
-                  description: number of seconds to wait after the page has loaded.
-                    This is used to let JavaScript run longer before taking the screenshot.
-                    Use delay=0 to take screenshots faster.
-                  format: int32
-                  default: 5
-                flash_delay:
-                  maximum: 30
-                  minimum: 0
-                  type: integer
-                  description: number of seconds to wait after the page has loaded
-                    if Flash elements are present. Use flash_delay=0 to take screenshots
-                    faster.
-                  format: int32
-                  default: 10
-                screen_width:
-                  maximum: 2000
-                  minimum: 1
-                  type: integer
-                  description: width of the browser window. For desktop browsers only.
-                  format: int32
-                  default: 1024
-                screen_height:
-                  maximum: 2000
-                  minimum: 1
-                  type: integer
-                  description: 'height of the browser window. For desktop browsers
-                    only. (Note: full-page screenshots can have a height of up to
-                    15,000px)'
-                  format: int32
-                  default: 768
-                priority:
-                  maximum: 3
-                  minimum: 1
-                  type: integer
-                  description: assign priority to the screenshot (for private instances
-                    only)
-                  format: int32
-                referer:
-                  type: string
-                  description: use a custom referrer header - paid screenshots only
-                post_data:
-                  type: string
-                  description: send a POST requests with post_data, useful for filling
-                    out forms - paid screenshots only
-                cookie:
-                  type: string
-                  description: set a cookie for the URL requested (see Custom POST
-                    Data, Referer and Cookie) Cookies should be separated by a ; -
-                    paid screenshots only
-                script:
-                  type: string
-                  description: URL of javascript file to execute after the page load
-                    event
-                details:
-                  maximum: 3
-                  minimum: 1
-                  type: integer
-                  description: level of information available with screenshot/info
-                  format: int32
-                  default: 2
-                html:
-                  maximum: 1
-                  minimum: 0
-                  type: integer
-                  description: saves the HTML of the rendered page which can be retrieved
-                    by the API call screenshot/html. This feature costs *1 credit*
-                    per screenshot.
-                  format: int32
-                  default: 0
-                max_wait:
-                  maximum: 60
-                  minimum: 0
-                  type: integer
-                  description: 'maximum number of seconds to wait before triggering
-                    the PageLoad event. Note that delay will still be used. (default:
-                    0 = disabled)'
-                  format: int32
-                  default: 0
-                headers:
-                  type: string
-                  description: any custom HTTP headers. (Not supported with Internet
-                    Explorer)
-                format:
-                  type: string
-                  description: image as PNG or JPEG
-                  default: png
-                  enum:
-                  - png
-                  - jpeg
-        required: true
-      responses:
-        200:
-          description: batch information
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Batch'
-        default:
-          description: Batch not created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BatchError'
-      x-ms-trigger: none
+  # /batch/ceate:
+  #   post:
+  #     tags:
+  #     - Batch
+  #     summary: Requests thousands of screenshtos at once
+  #     description: |
+  #       Get hundreds or thousands of screenshots from a text file. You can use this API call or the dashboard. Unlike the other API calls, you must issue a POST request with the Content-Type "multipart/form-data" in order to upload the text file. The text file must contain the list of URLs to request, 1 URL per line. Failed screenshots will be tried up to 3 times before giving up.
+  #     operationId: CreateBatch
+  #     parameters:
+  #     - name: hosting
+  #       in: query
+  #       description: hosting option - s3 or browshot
+  #       schema:
+  #         type: string
+  #         enum:
+  #         - s3
+  #     - name: hosting_height
+  #       in: query
+  #       description: maximum height of the thumbnail to host
+  #       schema:
+  #         maximum: 15000
+  #         minimum: 1
+  #         type: integer
+  #     - name: hosting_width
+  #       in: query
+  #       description: maximum height of the thumbnail to host
+  #       schema:
+  #         maximum: 2000
+  #         minimum: 1
+  #         type: integer
+  #     - name: hosting_scale
+  #       in: query
+  #       description: scale of the thumbnail to host
+  #       schema:
+  #         type: number
+  #         format: float
+  #         default: 1.0
+  #     - name: hosting_bucket
+  #       in: query
+  #       description: S3 bucket to upload the screenshot or thumbnail (required for
+  #         S3)
+  #       schema:
+  #         type: string
+  #     - name: hosting_file
+  #       in: query
+  #       description: file name to use (for S3 only)
+  #       schema:
+  #         type: string
+  #     - name: hosting_headers
+  #       in: query
+  #       description: list of headers to add to the S3 object (for S3 only)
+  #       schema:
+  #         type: string
+  #     requestBody:
+  #       description: Request payload to create batch
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - instance_id
+  #             properties:
+  #               instance_id:
+  #                 type: integer
+  #                 description: instance ID to use
+  #                 format: int32
+  #               file:
+  #                 type: string
+  #                 description: text file to use
+  #                 format: binary
+  #               size:
+  #                 type: string
+  #                 description: screenshots size - "screen" (default) or "page"
+  #                 default: screen
+  #                 enum:
+  #                 - screen
+  #                 - page
+  #               name:
+  #                 type: string
+  #                 description: name of the batch
+  #               width:
+  #                 maximum: 2000
+  #                 minimum: 1
+  #                 type: integer
+  #                 description: thumbnail width.
+  #                 format: int32
+  #                 default: 1024
+  #               height:
+  #                 maximum: 15000
+  #                 minimum: 1
+  #                 type: integer
+  #                 description: thumbnail height
+  #                 format: int32
+  #               delay:
+  #                 maximum: 60
+  #                 minimum: 0
+  #                 type: integer
+  #                 description: number of seconds to wait after the page has loaded.
+  #                   This is used to let JavaScript run longer before taking the screenshot.
+  #                   Use delay=0 to take screenshots faster.
+  #                 format: int32
+  #                 default: 5
+  #               flash_delay:
+  #                 maximum: 30
+  #                 minimum: 0
+  #                 type: integer
+  #                 description: number of seconds to wait after the page has loaded
+  #                   if Flash elements are present. Use flash_delay=0 to take screenshots
+  #                   faster.
+  #                 format: int32
+  #                 default: 10
+  #               screen_width:
+  #                 maximum: 2000
+  #                 minimum: 1
+  #                 type: integer
+  #                 description: width of the browser window. For desktop browsers only.
+  #                 format: int32
+  #                 default: 1024
+  #               screen_height:
+  #                 maximum: 2000
+  #                 minimum: 1
+  #                 type: integer
+  #                 description: 'height of the browser window. For desktop browsers
+  #                   only. (Note: full-page screenshots can have a height of up to
+  #                   15,000px)'
+  #                 format: int32
+  #                 default: 768
+  #               priority:
+  #                 maximum: 3
+  #                 minimum: 1
+  #                 type: integer
+  #                 description: assign priority to the screenshot (for private instances
+  #                   only)
+  #                 format: int32
+  #               referer:
+  #                 type: string
+  #                 description: use a custom referrer header - paid screenshots only
+  #               post_data:
+  #                 type: string
+  #                 description: send a POST requests with post_data, useful for filling
+  #                   out forms - paid screenshots only
+  #               cookie:
+  #                 type: string
+  #                 description: set a cookie for the URL requested (see Custom POST
+  #                   Data, Referer and Cookie) Cookies should be separated by a ; -
+  #                   paid screenshots only
+  #               script:
+  #                 type: string
+  #                 description: URL of javascript file to execute after the page load
+  #                   event
+  #               details:
+  #                 maximum: 3
+  #                 minimum: 1
+  #                 type: integer
+  #                 description: level of information available with screenshot/info
+  #                 format: int32
+  #                 default: 2
+  #               html:
+  #                 maximum: 1
+  #                 minimum: 0
+  #                 type: integer
+  #                 description: saves the HTML of the rendered page which can be retrieved
+  #                   by the API call screenshot/html. This feature costs *1 credit*
+  #                   per screenshot.
+  #                 format: int32
+  #                 default: 0
+  #               max_wait:
+  #                 maximum: 60
+  #                 minimum: 0
+  #                 type: integer
+  #                 description: 'maximum number of seconds to wait before triggering
+  #                   the PageLoad event. Note that delay will still be used. (default:
+  #                   0 = disabled)'
+  #                 format: int32
+  #                 default: 0
+  #               headers:
+  #                 type: string
+  #                 description: any custom HTTP headers. (Not supported with Internet
+  #                   Explorer)
+  #               format:
+  #                 type: string
+  #                 description: image as PNG or JPEG
+  #                 default: png
+  #                 enum:
+  #                 - png
+  #                 - jpeg
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: batch information
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Batch'
+  #       default:
+  #         description: Batch not created
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/BatchError'
+  #     x-ms-trigger: none
   /batch/info:
     get:
       tags:
@@ -1561,4 +1561,3 @@ components:
       description: All requests on the Browshot API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `key`.
       name: key
       in: query
-      x-ballerina-apikey-description: "Provide your API key as `key`. Eg: `{\"key\" : \"<your API key>\"}`" 

@@ -13,7 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-public type Body record {
+
+public type BarcodeDecodeBody record {
     # Barcode image to decode and get the content value
     string barimage;
 };

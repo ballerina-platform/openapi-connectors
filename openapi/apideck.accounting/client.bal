@@ -15,13 +15,26 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # To use API you have to sign up and get your own API key. Unify API accounts have sandbox mode and live mode API keys. 
+    # To change modes just use the appropriate key to get a live or test object. You can find your API keys on the unify settings of your Apideck app.
+    # Your Apideck application_id can also be found on the same page.
+    # 
+    # Authenticate your API requests by including your test or live secret API key in the request header. 
+    # 
+    # - Bearer authorization header: `Authorization: Bearer <your-apideck-api-key>`
+    # - Application id header: `x-apideck-app-id: <your-apideck-app-id>`
+    # 
+    # You should use the public keys on the SDKs and the secret keys to authenticate API requests.
+    # 
+    # **Do not share or include your secret API keys on client side code.** Your API keys carry significant privileges. Please ensure to keep them 100% secure and be sure to not share your secret API keys in areas that are publicly accessible like GitHub.
+    # 
+    # Learn how to set the Authorization header inside Postman https://learning.postman.com/docs/postman/sending-api-requests/authorization/#api-key
+    # 
+    # Go to Unify to grab your API KEY https://app.apideck.com/unify/api-keys
+    string authorization;
 |};
 
 # This is a generated connector from [Apideck Accounting API v5.3.0](https://docs.apideck.com/apis/accounting/reference) OpenAPI specification.
@@ -29,27 +42,27 @@ public type ApiKeysConfig record {|
 @display {label: "Apideck Accounting", iconPath: "resources/apideck.accounting.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Unify API accounts have sandbox mode and live mode API keys. To change modes just use the appropriate key to get a live or test object. 
     # You can find your API keys on the unify settings of your Apideck app.Your Apideck application_id can also be found on the same page.
     # Obtain API keys following [this guide](https://developers.apideck.com/apis/accounting/reference#section/Authorization).
     #
-    # + apiKeyConfig - Provide your API key as `Authorization`. Eg: `{"Authorization" : "<API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://unify.apideck.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # List Companies
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + cursor - Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response. 
     # + 'limit - Number of records to return 
@@ -58,24 +71,24 @@ public isolated client class Client {
         string  path = string `/accounting/companies`;
         map<anydata> queryParam = {"raw": raw, "cursor": cursor, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetCompaniesResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetCompaniesResponse);
         return response;
     }
     # Create Company
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `Company` which contains details to create company. 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
+    # + payload - A record of type `Company` which contains details to create company. 
     # + return - Companies 
     remote isolated function companiesAdd(string xApideckConsumerId, string xApideckAppId, Company payload, boolean raw = true, string? xApideckServiceId = ()) returns CreateCompanyResponse|error {
         string  path = string `/accounting/companies`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -95,7 +108,7 @@ public isolated client class Client {
         string  path = string `/accounting/companies/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetCompanyResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetCompanyResponse);
         return response;
@@ -112,11 +125,9 @@ public isolated client class Client {
         string  path = string `/accounting/companies/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        DeleteCompanyResponse response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = DeleteCompanyResponse);
+        DeleteCompanyResponse response = check self.clientEp-> delete(path, accHeaders, targetType = DeleteCompanyResponse);
         return response;
     }
     # Update Company
@@ -124,15 +135,15 @@ public isolated client class Client {
     # + id - ID of the record you are acting upon. 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `Company` which contains details to update company. 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + raw - Include raw response. Mostly used for debugging purposes 
+    # + payload - A record of type `Company` which contains details to update company. 
     # + return - Companies 
     remote isolated function companiesUpdate(string id, string xApideckConsumerId, string xApideckAppId, Company payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateCompanyResponse|error {
         string  path = string `/accounting/companies/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -142,9 +153,9 @@ public isolated client class Client {
     }
     # List Contacts
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + cursor - Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response. 
     # + 'limit - Number of records to return 
@@ -153,24 +164,24 @@ public isolated client class Client {
         string  path = string `/accounting/contacts`;
         map<anydata> queryParam = {"raw": raw, "cursor": cursor, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetContactsResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetContactsResponse);
         return response;
     }
     # Create Contact
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `Contact` which contains details to create contact. 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
+    # + payload - A record of type `Contact` which contains details to create contact. 
     # + return - Contacts 
     remote isolated function contactsAdd(string xApideckConsumerId, string xApideckAppId, Contact payload, boolean raw = true, string? xApideckServiceId = ()) returns CreateContactResponse|error {
         string  path = string `/accounting/contacts`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -190,7 +201,7 @@ public isolated client class Client {
         string  path = string `/accounting/contacts/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetContactResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetContactResponse);
         return response;
@@ -207,11 +218,9 @@ public isolated client class Client {
         string  path = string `/accounting/contacts/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        DeleteContactResponse response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = DeleteContactResponse);
+        DeleteContactResponse response = check self.clientEp-> delete(path, accHeaders, targetType = DeleteContactResponse);
         return response;
     }
     # Update Contact
@@ -219,15 +228,15 @@ public isolated client class Client {
     # + id - ID of the record you are acting upon. 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `Contact` which contains details to update contact. 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + raw - Include raw response. Mostly used for debugging purposes 
+    # + payload - A record of type `Contact` which contains details to update contact. 
     # + return - Contacts 
     remote isolated function contactsUpdate(string id, string xApideckConsumerId, string xApideckAppId, Contact payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateContactResponse|error {
         string  path = string `/accounting/contacts/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -237,9 +246,9 @@ public isolated client class Client {
     }
     # List Invoices
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + cursor - Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response. 
     # + 'limit - Number of records to return 
@@ -248,24 +257,24 @@ public isolated client class Client {
         string  path = string `/accounting/invoices`;
         map<anydata> queryParam = {"raw": raw, "cursor": cursor, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetInvoicesResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetInvoicesResponse);
         return response;
     }
     # Create Invoice
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `Invoice` which contains details to create invoice. 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
+    # + payload - A record of type `Invoice` which contains details to create invoice. 
     # + return - Invoices 
     remote isolated function invoicesAdd(string xApideckConsumerId, string xApideckAppId, Invoice payload, boolean raw = true, string? xApideckServiceId = ()) returns CreateInvoiceResponse|error {
         string  path = string `/accounting/invoices`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -285,7 +294,7 @@ public isolated client class Client {
         string  path = string `/accounting/invoices/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetInvoiceResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetInvoiceResponse);
         return response;
@@ -302,11 +311,9 @@ public isolated client class Client {
         string  path = string `/accounting/invoices/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        DeleteInvoiceResponse response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = DeleteInvoiceResponse);
+        DeleteInvoiceResponse response = check self.clientEp-> delete(path, accHeaders, targetType = DeleteInvoiceResponse);
         return response;
     }
     # Update Invoice
@@ -314,15 +321,15 @@ public isolated client class Client {
     # + id - ID of the record you are acting upon. 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `Invoice` which contains details to update invoice. 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + raw - Include raw response. Mostly used for debugging purposes 
+    # + payload - A record of type `Invoice` which contains details to update invoice. 
     # + return - Invoices 
     remote isolated function invoicesUpdate(string id, string xApideckConsumerId, string xApideckAppId, Invoice payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateInvoiceResponse|error {
         string  path = string `/accounting/invoices/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -332,9 +339,9 @@ public isolated client class Client {
     }
     # List Ledger Accounts
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + cursor - Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response. 
     # + 'limit - Number of records to return 
@@ -343,24 +350,24 @@ public isolated client class Client {
         string  path = string `/accounting/ledger-accounts`;
         map<anydata> queryParam = {"raw": raw, "cursor": cursor, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetLedgerAccountsResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetLedgerAccountsResponse);
         return response;
     }
     # Create Ledger Account
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `LedgerAccount` which contains details to create ledger account. 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
+    # + payload - A record of type `LedgerAccount` which contains details to create ledger account. 
     # + return - LedgerAccounts 
     remote isolated function ledgerAccountsAdd(string xApideckConsumerId, string xApideckAppId, LedgerAccount payload, boolean raw = true, string? xApideckServiceId = ()) returns CreateLedgerAccountResponse|error {
         string  path = string `/accounting/ledger-accounts`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -380,7 +387,7 @@ public isolated client class Client {
         string  path = string `/accounting/ledger-accounts/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetLedgerAccountResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetLedgerAccountResponse);
         return response;
@@ -397,11 +404,9 @@ public isolated client class Client {
         string  path = string `/accounting/ledger-accounts/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        DeleteLedgerAccountResponse response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = DeleteLedgerAccountResponse);
+        DeleteLedgerAccountResponse response = check self.clientEp-> delete(path, accHeaders, targetType = DeleteLedgerAccountResponse);
         return response;
     }
     # Update Ledger Account
@@ -409,15 +414,15 @@ public isolated client class Client {
     # + id - ID of the record you are acting upon. 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `LedgerAccount` which contains details to update ledger account. 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + raw - Include raw response. Mostly used for debugging purposes 
+    # + payload - A record of type `LedgerAccount` which contains details to update ledger account. 
     # + return - LedgerAccounts 
     remote isolated function ledgerAccountsUpdate(string id, string xApideckConsumerId, string xApideckAppId, LedgerAccount payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateLedgerAccountResponse|error {
         string  path = string `/accounting/ledger-accounts/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -427,9 +432,9 @@ public isolated client class Client {
     }
     # List Tax Rates
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + cursor - Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response. 
     # + 'limit - Number of records to return 
@@ -438,24 +443,24 @@ public isolated client class Client {
         string  path = string `/accounting/tax-rates`;
         map<anydata> queryParam = {"raw": raw, "cursor": cursor, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetTaxRatesResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetTaxRatesResponse);
         return response;
     }
     # Create Tax Rate
     #
+    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `TaxRate` which contains details to create tax rate. 
-    # + raw - Include raw response. Mostly used for debugging purposes 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
+    # + payload - A record of type `TaxRate` which contains details to create tax rate. 
     # + return - TaxRates 
     remote isolated function taxRatesAdd(string xApideckConsumerId, string xApideckAppId, TaxRate payload, boolean raw = true, string? xApideckServiceId = ()) returns CreateTaxRateResponse|error {
         string  path = string `/accounting/tax-rates`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -475,7 +480,7 @@ public isolated client class Client {
         string  path = string `/accounting/tax-rates/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetTaxRateResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetTaxRateResponse);
         return response;
@@ -492,11 +497,9 @@ public isolated client class Client {
         string  path = string `/accounting/tax-rates/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        DeleteTaxRateResponse response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = DeleteTaxRateResponse);
+        DeleteTaxRateResponse response = check self.clientEp-> delete(path, accHeaders, targetType = DeleteTaxRateResponse);
         return response;
     }
     # Update Tax Rate
@@ -504,15 +507,15 @@ public isolated client class Client {
     # + id - ID of the record you are acting upon. 
     # + xApideckConsumerId - ID of the consumer which you want to get or push data from 
     # + xApideckAppId - The ID of your Unify application 
-    # + payload - A record of type `TaxRate` which contains details to update tax rate. 
     # + xApideckServiceId - Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API. 
     # + raw - Include raw response. Mostly used for debugging purposes 
+    # + payload - A record of type `TaxRate` which contains details to update tax rate. 
     # + return - TaxRates 
     remote isolated function taxRatesUpdate(string id, string xApideckConsumerId, string xApideckAppId, TaxRate payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateTaxRateResponse|error {
         string  path = string `/accounting/tax-rates/${id}`;
         map<anydata> queryParam = {"raw": raw};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeys["Authorization"]};
+        map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -520,52 +523,4 @@ public isolated client class Client {
         UpdateTaxRateResponse response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=UpdateTaxRateResponse);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

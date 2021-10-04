@@ -175,15 +175,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+security:
+  - ApiKeyAuth: []
 components:
   securitySchemes:
-    ApiKeyAuth:
+    ApiKeyAuth:       
       type: apiKey
-      in: header
+      in: header  
       name: Authorization
-      x-ballerina-apikey-description: >-
-        Provide your API Key as `Authorization`. Eg: {Authorization : sso-key
-        [<API_KEY>]:[<API_SECRET>]}
+      description: Represents API Key 'Authorization'
   schemas:
     ArrayOfCountry:
       type: array

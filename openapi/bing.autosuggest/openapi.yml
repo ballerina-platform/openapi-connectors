@@ -89,17 +89,17 @@ paths:
                 \       \"message\": \"Rate limit is exceeded. Try again in 26 seconds.\"\
                 \ \r\n    }\r\n}\r\n"
 components:
-  securitySchemes:
+  securitySchemes:  
     apiKeyHeader:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header
-      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      description: Represents API Key `Ocp-Apim-Subscription-Key`
     apiKeyQuery:
       type: apiKey
       name: subscription-key
       in: query
-      x-ballerina-apikey-description: "Provide your API keys as Ocp-Apim-Subscription-Key & subscription-key . Eg: {\"Ocp-Apim-Subscription-Key\" : \"<API key>\", \"subscription-key\" : \"<API key>\"}"
+      description: Represents API Key `subscription-key`
 x-servers:
 - url: https://westus.api.cognitive.microsoft.com
 - url: https://cognitive-wu.cognitiveservices.azure.com

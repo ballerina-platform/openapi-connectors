@@ -1960,7 +1960,7 @@ components:
       type: apiKey
       name: key
       in: query
-      x-ballerina-apikey-description: "Provide your API key as `key`. Eg: `{\"key\" : \"<your API key>\"}`"
+      description: Represents API Key `key`
   schemas:
     ClusterResponse:
       type: object

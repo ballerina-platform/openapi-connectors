@@ -33,6 +33,17 @@ public type Meta record {
     int total?;
 };
 
+public type ApplicationidGenerateBody record {
+    # Expire the previously generated application
+    boolean expire?;
+};
+
+public type ApplicationidSendBody record {
+    Apiv1leadsleadidsignaturesapplicationidsendRecipients[] recipients?;
+    # Expire the previously generated application
+    boolean expire?;
+};
+
 public type Apiv1leadsleadidsignaturesapplicationidsendRecipients record {
     # Lead Field Id with email address
     int fieldId?;
@@ -135,11 +146,6 @@ public type InlineResponse20039 record {
     Meta meta?;
 };
 
-public type Body9 record {
-    # Expire the previously generated application
-    boolean expire?;
-};
-
 public type InlineResponse20050 record {
     ApplicationField[] data?;
     Links links?;
@@ -148,12 +154,6 @@ public type InlineResponse20050 record {
 
 public type InlineResponse20051 record {
     string message?;
-};
-
-public type Body10 record {
-    Apiv1leadsleadidsignaturesapplicationidsendRecipients[] recipients?;
-    # Expire the previously generated application
-    boolean expire?;
 };
 
 public type ApplicationField record {

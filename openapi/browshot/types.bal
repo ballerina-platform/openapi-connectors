@@ -22,8 +22,6 @@ public type ScreenshotHostArr ScreenshotHost[];
 
 public type ScreenshotShortArr ScreenshotShort[];
 
-public type BatchArr Batch[];
-
 public type Account record {
     # number of credits left on your account
     int balance;
@@ -204,49 +202,6 @@ public type InstanceList record {
     Instance[] shared?;
     Instance[] free?;
     Instance[] 'private?;
-};
-
-public type Body record {
-    # instance ID to use
-    int instance_id;
-    # text file to use
-    string file?;
-    # screenshots size - "screen" (default) or "page"
-    string size?;
-    # name of the batch
-    string name?;
-    # thumbnail width.
-    int width?;
-    # thumbnail height
-    int height?;
-    # number of seconds to wait after the page has loaded. This is used to let JavaScript run longer before taking the screenshot. Use delay=0 to take screenshots faster.
-    int delay?;
-    # number of seconds to wait after the page has loaded if Flash elements are present. Use flash_delay=0 to take screenshots faster.
-    int flash_delay?;
-    # width of the browser window. For desktop browsers only.
-    int screen_width?;
-    # height of the browser window. For desktop browsers only. (Note: full-page screenshots can have a height of up to 15,000px)
-    int screen_height?;
-    # assign priority to the screenshot (for private instances only)
-    int priority?;
-    # use a custom referrer header - paid screenshots only
-    string referer?;
-    # send a POST requests with post_data, useful for filling out forms - paid screenshots only
-    string post_data?;
-    # set a cookie for the URL requested (see Custom POST Data, Referer and Cookie) Cookies should be separated by a ; - paid screenshots only
-    string cookie?;
-    # URL of javascript file to execute after the page load event
-    string script?;
-    # level of information available with screenshot/info
-    int details?;
-    # saves the HTML of the rendered page which can be retrieved by the API call screenshot/html. This feature costs *1 credit* per screenshot.
-    int html?;
-    # maximum number of seconds to wait before triggering the PageLoad event. Note that delay will still be used. (default: 0 = disabled)
-    int max_wait?;
-    # any custom HTTP headers. (Not supported with Internet Explorer)
-    string headers?;
-    # image as PNG or JPEG
-    string format?;
 };
 
 public type Browser record {

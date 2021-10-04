@@ -22,6 +22,7 @@ paths:
       - Author
       summary: Gets author details
       description: Returns the name and a list of books by the author.
+      operationId: getAuthorDetails
       parameters:
       - name: name
         in: path
@@ -65,6 +66,7 @@ paths:
       - Author
       summary: Search authors
       description: This returns a list of authors whos name matches the given query
+      operationId: searchAuthors
       parameters:
       - name: pageSize
         in: query
@@ -107,6 +109,7 @@ paths:
       - Book
       summary: Gets book details
       description: Returns the book details
+      operationId: getBookDetails
       parameters:
       - name: isbn
         in: path
@@ -144,6 +147,7 @@ paths:
       tags:
       - Book
       summary: Search books
+      operationId: searchBooks
       description: 'This returns a list of books that match the query. Only with the
         Premium and Pro plans. This endpoint has no pagination but it has the following
         limits: You can only send up to 1,000 ISBN numbers per request. If you send
@@ -193,6 +197,7 @@ paths:
       - Book
       summary: Search books
       description: This returns a list of books that match the query
+      operationId: searchBooksByQuery
       parameters:
       - name: query
         in: path
@@ -252,6 +257,7 @@ paths:
       tags:
       - Publisher
       summary: Gets publisher details
+      operationId: getPublisherDetails
       description: Returns details and a list of books by the publisher.
       parameters:
       - name: name
@@ -295,6 +301,7 @@ paths:
       tags:
       - Publisher
       summary: Search publishers
+      operationId: searchPublishers
       description: This returns a list of publishers that match the given query
       parameters:
       - name: pageSize
@@ -333,6 +340,7 @@ paths:
       tags:
       - Search
       summary: Search all ISBNDB databases
+      operationId: searchISBNDB
       description: Uses a determined index and query string to search in any of the
         ISBNDB's databases
       parameters:
@@ -408,6 +416,7 @@ paths:
       tags:
       - Stats
       summary: Gets status on the ISBNDB Database
+      operationId: getISBNDBStatus
       description: Returns a status object about the ISBNDB database.
       responses:
         200:
@@ -425,6 +434,7 @@ paths:
       tags:
       - Subject
       summary: Gets subject details
+      operationId: getSubjectDetails
       description: Returns details and a list of books with subject.
       parameters:
       - name: name
@@ -455,6 +465,7 @@ paths:
       tags:
       - Subject
       summary: Search subjects
+      operationId: searchSubject
       description: This returns a list of subjects that match the given query
       parameters:
       - name: pageSize
@@ -637,4 +648,3 @@ components:
       name: Authorization
       in: header
       x-amazon-apigateway-authtype: custom
-      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<your API key>\"}`" 

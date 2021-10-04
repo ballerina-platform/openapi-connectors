@@ -501,7 +501,6 @@ components:
   securitySchemes:
     Apikey:
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
-      description: API Key Authentication
+      description: Represents API Key `Apikey`
       name: Apikey
       in: header

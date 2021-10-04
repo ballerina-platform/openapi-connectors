@@ -15,34 +15,33 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `key`
+    string key;
 |};
 
 # This is a generated connector for [GraphHopper Directions API v1.0.0](https://docs.graphhopper.com/) OpenAPI Specification. 
+# 
 # With the [GraphHopper Directions API](https://www.graphhopper.com/products/) you can integrate A-to-B route planning, turn-by-turn navigation,
 # route optimization, isochrone calculations and other tools in your application.
 @display {label: "GraphHopper Directions", iconPath: "resources/GraphHopperDirections.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials. 
-    # Create an [GraphHopper account](https://support.graphhopper.com/a/solutions/articles/44001976025) and obtain tokens following [this guide](https://docs.graphhopper.com/#section/Authentication).
+    # The connector initialization requires setting the API credentials.
+    # Create an [GraphHopper account](https://support.graphhopper.com/a/solutions/articles/44001976025) and obtain tokens following  [this guide](https://docs.graphhopper.com/#section/Authentication).
     #
-    # + apiKeyConfig - Provide your API key as `key`. Eg: `{"key" : "<your API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://graphhopper.com/api/1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # GET Route Endpoint
     #
@@ -76,8 +75,9 @@ public isolated client class Client {
     # + return - Routing Result 
     remote isolated function getRoute(string[] point, string[]? pointHint = (), string[]? snapPrevention = (), VehicleProfileId? vehicle = (), string[]? curbside = (), boolean turnCosts = false, string locale = "en", boolean elevation = false, string[]? details = (), string optimize = "false", boolean instructions = true, boolean calcPoints = true, boolean debug = false, boolean pointsEncoded = true, boolean chDisable = false, string weighting = "fastest", int[]? heading = (), int headingPenalty = 120, boolean passThrough = false, string? blockArea = (), string? avoid = (), string? algorithm = (), int roundTripDistance = 10000, int? roundTripSeed = (), int alternativeRouteMaxPaths = 2, decimal alternativeRouteMaxWeightFactor = 1.4, decimal alternativeRouteMaxShareFactor = 0.6) returns RouteResponse|error {
         string  path = string `/route`;
-        map<anydata> queryParam = {"point": point, "point_hint": pointHint, "snap_prevention": snapPrevention, "vehicle": vehicle, "curbside": curbside, "turn_costs": turnCosts, "locale": locale, "elevation": elevation, "details": details, "optimize": optimize, "instructions": instructions, "calc_points": calcPoints, "debug": debug, "points_encoded": pointsEncoded, "ch.disable": chDisable, "weighting": weighting, "heading": heading, "heading_penalty": headingPenalty, "pass_through": passThrough, "block_area": blockArea, "avoid": avoid, "algorithm": algorithm, "round_trip.distance": roundTripDistance, "round_trip.seed": roundTripSeed, "alternative_route.max_paths": alternativeRouteMaxPaths, "alternative_route.max_weight_factor": alternativeRouteMaxWeightFactor, "alternative_route.max_share_factor": alternativeRouteMaxShareFactor, "key": self.apiKeys["key"]};
-        path = path + check getPathForQueryParam(queryParam);
+        map<anydata> queryParam = {"point": point, "point_hint": pointHint, "snap_prevention": snapPrevention, "vehicle": vehicle, "curbside": curbside, "turn_costs": turnCosts, "locale": locale, "elevation": elevation, "details": details, "optimize": optimize, "instructions": instructions, "calc_points": calcPoints, "debug": debug, "points_encoded": pointsEncoded, "ch.disable": chDisable, "weighting": weighting, "heading": heading, "heading_penalty": headingPenalty, "pass_through": passThrough, "block_area": blockArea, "avoid": avoid, "algorithm": algorithm, "round_trip.distance": roundTripDistance, "round_trip.seed": roundTripSeed, "alternative_route.max_paths": alternativeRouteMaxPaths, "alternative_route.max_weight_factor": alternativeRouteMaxWeightFactor, "alternative_route.max_share_factor": alternativeRouteMaxShareFactor, "key": self.apiKeyConfig.key};
+        map<Encoding> queryParamEncoding = {"point": {style: FORM, explode: true}, "point_hint": {style: FORM, explode: true}, "snap_prevention": {style: FORM, explode: true}, "curbside": {style: FORM, explode: true}, "details": {style: FORM, explode: true}, "heading": {style: FORM, explode: true}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
         RouteResponse response = check self.clientEp-> get(path, targetType = RouteResponse);
         return response;
     }
@@ -87,7 +87,7 @@ public isolated client class Client {
     # + return - Routing Result 
     remote isolated function postRoute(RouteRequest payload) returns RouteResponse|error {
         string  path = string `/route`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -100,7 +100,7 @@ public isolated client class Client {
     # + return - Coverage Information 
     remote isolated function getCoverageInformation() returns InfoResponse|error {
         string  path = string `/route/info`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         InfoResponse response = check self.clientEp-> get(path, targetType = InfoResponse);
         return response;
@@ -117,7 +117,7 @@ public isolated client class Client {
     # + return - Isochrone Result 
     remote isolated function getIsochrone(string point, int timeLimit = 600, int? distanceLimit = (), VehicleProfileId? vehicle = (), int buckets = 1, boolean reverseFlow = false, string weighting = "fastest") returns IsochroneResponse|error {
         string  path = string `/isochrone`;
-        map<anydata> queryParam = {"point": point, "time_limit": timeLimit, "distance_limit": distanceLimit, "vehicle": vehicle, "buckets": buckets, "reverse_flow": reverseFlow, "weighting": weighting, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"point": point, "time_limit": timeLimit, "distance_limit": distanceLimit, "vehicle": vehicle, "buckets": buckets, "reverse_flow": reverseFlow, "weighting": weighting, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         IsochroneResponse response = check self.clientEp-> get(path, targetType = IsochroneResponse);
         return response;
@@ -141,8 +141,9 @@ public isolated client class Client {
     # + return - Matrix API response 
     remote isolated function getMatrix(string[]? point = (), string[]? fromPoint = (), string[]? toPoint = (), string[]? pointHint = (), string[]? fromPointHint = (), string[]? toPointHint = (), string[]? snapPrevention = (), string[]? curbside = (), string[]? fromCurbside = (), string[]? toCurbside = (), string[]? outArray = (), VehicleProfileId? vehicle = (), boolean failFast = true, boolean turnCosts = false) returns MatrixResponse|error {
         string  path = string `/matrix`;
-        map<anydata> queryParam = {"point": point, "from_point": fromPoint, "to_point": toPoint, "point_hint": pointHint, "from_point_hint": fromPointHint, "to_point_hint": toPointHint, "snap_prevention": snapPrevention, "curbside": curbside, "from_curbside": fromCurbside, "to_curbside": toCurbside, "out_array": outArray, "vehicle": vehicle, "fail_fast": failFast, "turn_costs": turnCosts, "key": self.apiKeys["key"]};
-        path = path + check getPathForQueryParam(queryParam);
+        map<anydata> queryParam = {"point": point, "from_point": fromPoint, "to_point": toPoint, "point_hint": pointHint, "from_point_hint": fromPointHint, "to_point_hint": toPointHint, "snap_prevention": snapPrevention, "curbside": curbside, "from_curbside": fromCurbside, "to_curbside": toCurbside, "out_array": outArray, "vehicle": vehicle, "fail_fast": failFast, "turn_costs": turnCosts, "key": self.apiKeyConfig.key};
+        map<Encoding> queryParamEncoding = {"point": {style: FORM, explode: true}, "from_point": {style: FORM, explode: true}, "to_point": {style: FORM, explode: true}, "point_hint": {style: FORM, explode: true}, "from_point_hint": {style: FORM, explode: true}, "to_point_hint": {style: FORM, explode: true}, "snap_prevention": {style: FORM, explode: true}, "curbside": {style: FORM, explode: true}, "from_curbside": {style: FORM, explode: true}, "to_curbside": {style: FORM, explode: true}, "out_array": {style: FORM, explode: true}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
         MatrixResponse response = check self.clientEp-> get(path, targetType = MatrixResponse);
         return response;
     }
@@ -150,9 +151,9 @@ public isolated client class Client {
     #
     # + payload - Matrix Request Detail 
     # + return - Matrix API response 
-    remote isolated function postMatrix(Body payload) returns MatrixResponse|error {
+    remote isolated function postMatrix(MatrixBody payload) returns MatrixResponse|error {
         string  path = string `/matrix`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -164,9 +165,9 @@ public isolated client class Client {
     #
     # + payload - Matrix request details 
     # + return - A jobId you can use to retrieve your solution from the server. 
-    remote isolated function calculateMatrix(Body1 payload) returns JobId|error {
+    remote isolated function calculateMatrix(MatrixCalculateBody payload) returns JobId|error {
         string  path = string `/matrix/calculate`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -180,7 +181,7 @@ public isolated client class Client {
     # + return - A response containing the matrix 
     remote isolated function getMatrixSolution(string jobId) returns MatrixResponse|error {
         string  path = string `/matrix/solution/${jobId}`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         MatrixResponse response = check self.clientEp-> get(path, targetType = MatrixResponse);
         return response;
@@ -192,7 +193,7 @@ public isolated client class Client {
     # + return - Routing Result 
     remote isolated function postGPX(int? gpsAccuracy = (), string? vehicle = ()) returns RouteResponse|error {
         string  path = string `/match`;
-        map<anydata> queryParam = {"gps_accuracy": gpsAccuracy, "vehicle": vehicle, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"gps_accuracy": gpsAccuracy, "vehicle": vehicle, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -211,7 +212,7 @@ public isolated client class Client {
     # + return - An array found locations 
     remote isolated function getGeocode(string? q = (), string locale = "en", int 'limit = 10, boolean reverse = false, boolean debug = false, string? point = (), string provider = "default") returns GeocodingResponse|error {
         string  path = string `/geocode`;
-        map<anydata> queryParam = {"q": q, "locale": locale, "limit": 'limit, "reverse": reverse, "debug": debug, "point": point, "provider": provider, "key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"q": q, "locale": locale, "limit": 'limit, "reverse": reverse, "debug": debug, "point": point, "provider": provider, "key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         GeocodingResponse response = check self.clientEp-> get(path, targetType = GeocodingResponse);
         return response;
@@ -222,7 +223,7 @@ public isolated client class Client {
     # + return - A response containing the solution 
     remote isolated function solveVRP(Request payload) returns Response|error {
         string  path = string `/vrp`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -236,7 +237,7 @@ public isolated client class Client {
     # + return - A jobId you can use to retrieve your solution from the server - see solution endpoint. 
     remote isolated function asyncVRP(Request payload) returns JobId|error {
         string  path = string `/vrp/optimize`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -250,7 +251,7 @@ public isolated client class Client {
     # + return - A response containing the solution 
     remote isolated function getSolution(string jobId) returns Response|error {
         string  path = string `/vrp/solution/${jobId}`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         Response response = check self.clientEp-> get(path, targetType = Response);
         return response;
@@ -261,7 +262,7 @@ public isolated client class Client {
     # + return - A response containing the solution 
     remote isolated function solveClusteringProblem(ClusterRequest payload) returns ClusterResponse|error {
         string  path = string `/cluster`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -275,7 +276,7 @@ public isolated client class Client {
     # + return - A jobId you can use to retrieve your solution from the server - see solution endpoint. 
     remote isolated function asyncClusteringProblem(ClusterRequest payload) returns JobId|error {
         string  path = string `/cluster/calculate`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -289,43 +290,9 @@ public isolated client class Client {
     # + return - A response containing the solution 
     remote isolated function getClusterSolution(string jobId) returns ClusterResponse|error {
         string  path = string `/cluster/solution/${jobId}`;
-        map<anydata> queryParam = {"key": self.apiKeys["key"]};
+        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
         path = path + check getPathForQueryParam(queryParam);
         ClusterResponse response = check self.clientEp-> get(path, targetType = ClusterResponse);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

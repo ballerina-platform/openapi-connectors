@@ -1194,4 +1194,4 @@ components:
         in: query
         name: token
         type: apiKey
-        x-ballerina-apikey-description: "Provide your API Key as token. Eg: {token : <Your API Key>}"
+        description: Represents API Key `token`

@@ -60,48 +60,48 @@ paths:
       security:
       - Apikey: []
       x-codegen-request-body-name: value
-  /barcode/scan/image:
-    post:
-      tags:
-      - BarcodeScan
-      summary: Scan and recognize an image of a barcode
-      description: Scan an image or photo of a barcode and return the result.  Supported
-        barcode types include AZTEC, CODABAR, CODE_39, CODE_93, CODE_128, DATA_MATRIX,
-        EAN_8, EAN_13, ITF, MAXICODE, PDF_417, QR_CODE, RSS_14, RSS_EXPANDED, UPC_A,
-        UPC_E, All_1D, UPC_EAN_EXTENSION, MSI, PLESSEY, IMB
-      operationId: Barcode Scan_Image
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              description: The image file to scan
-              required:
-              - imageFile
-              properties:
-                imageFile:
-                  type: string
-                  description: Image file to perform the operation on.  Common file
-                    formats such as PNG, JPEG are supported.
-                  format: binary
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BarcodeScanResult'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/BarcodeScanResult'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/BarcodeScanResult'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/BarcodeScanResult'
-      security:
-      - Apikey: []
+  # /barcode/scan/image:
+  #   post:
+  #     tags:
+  #     - BarcodeScan
+  #     summary: Scan and recognize an image of a barcode
+  #     description: Scan an image or photo of a barcode and return the result.  Supported
+  #       barcode types include AZTEC, CODABAR, CODE_39, CODE_93, CODE_128, DATA_MATRIX,
+  #       EAN_8, EAN_13, ITF, MAXICODE, PDF_417, QR_CODE, RSS_14, RSS_EXPANDED, UPC_A,
+  #       UPC_E, All_1D, UPC_EAN_EXTENSION, MSI, PLESSEY, IMB
+  #     operationId: Barcode Scan_Image
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             description: The image file to scan
+  #             required:
+  #             - imageFile
+  #             properties:
+  #               imageFile:
+  #                 type: string
+  #                 description: Image file to perform the operation on.  Common file
+  #                   formats such as PNG, JPEG are supported.
+  #                 format: binary
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/BarcodeScanResult'
+  #           text/json:
+  #             schema:
+  #               $ref: '#/components/schemas/BarcodeScanResult'
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/BarcodeScanResult'
+  #           text/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/BarcodeScanResult'
+  #     security:
+  #     - Apikey: []
   /barcode/generate/qrcode:
     post:
       tags:
@@ -345,7 +345,6 @@ components:
   securitySchemes:
     Apikey:
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
-      description: API Key Authentication
+      description: Represents API Key `Apikey`
       name: Apikey
       in: header

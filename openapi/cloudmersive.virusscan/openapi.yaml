@@ -15,151 +15,151 @@ info:
 servers:
 - url: https://testapi.cloudmersive.com/
 paths:
-  /virus/scan/file:
-    post:
-      tags:
-      - Scan
-      summary: Scan a file for viruses
-      description: Scan files and content for viruses. Leverage continuously updated
-        signatures for millions of threats, and advanced high-performance scanning
-        capabilities.  Over 17 million virus and malware signatures.  Continuous cloud-based
-        updates.  Wide file format support including Office, PDF, HTML, Flash.  Zip
-        support including .Zip, .Rar, .DMG, .Tar, and other archive formats.  Multi-threat
-        scanning across viruses, malware, trojans, ransomware, and spyware.  High-speed
-        in-memory scanning delivers subsecond typical response time.
-      operationId: Scan_File
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - inputFile
-              properties:
-                inputFile:
-                  type: string
-                  description: Input file to perform the operation on.
-                  format: binary
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VirusScanResult'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/VirusScanResult'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/VirusScanResult'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/VirusScanResult'
-      security:
-      - Apikey: []
-  /virus/scan/file/advanced:
-    post:
-      tags:
-      - Scan
-      summary: Advanced Scan a file for viruses
-      description: Advanced Scan files with 360-degree Content Protection across Viruses
-        and Malware, executables, invalid files, scripts, and even restrictions on
-        accepted file types with complete content verification. Customize threat rules
-        to your needs. Leverage continuously updated signatures for millions of threats,
-        and advanced high-performance scanning capabilities.  Over 17 million virus
-        and malware signatures.  Continuous cloud-based updates.  Block threats beyond
-        viruses including executables, scripts, invalid files, and more.  Optionally
-        limit input files to a specific set of file types (e.g. PDF and Word Documents
-        only).  Wide file format support including Office, PDF, HTML, Flash.  Zip
-        support including .Zip, .Rar, .DMG, .Tar, and other archive formats.  Multi-threat
-        scanning across viruses, malware, trojans, ransomware, and spyware.  High-speed
-        in-memory scanning delivers subsecond typical response time.
-      operationId: Scan_File Advanced
-      parameters:
-      - name: allowExecutables
-        in: header
-        description: Set to false to block executable files (program code) from being
-          allowed in the input file.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: allowInvalidFiles
-        in: header
-        description: Set to false to block invalid files, such as a PDF file that
-          is not really a valid PDF file, or a Word Document that is not a valid Word
-          Document.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: allowScripts
-        in: header
-        description: Set to false to block script files, such as a PHP files, Python
-          scripts, and other malicious content or security threats that can be embedded
-          in the file.  Set to true to allow these file types.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: allowPasswordProtectedFiles
-        in: header
-        description: Set to false to block password protected and encrypted files,
-          such as encrypted zip and rar files, and other files that seek to circumvent
-          scanning through passwords.  Set to true to allow these file types.  Default
-          is false (recommended).
-        schema:
-          type: boolean
-      - name: allowMacros
-        in: header
-        description: Set to false to block macros and other threats embedded in document
-          files, such as Word, Excel and PowerPoint embedded Macros, and other files
-          that contain embedded content threats.  Set to true to allow these file
-          types.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: allowXmlExternalEntities
-        in: header
-        description: Set to false to block XML External Entities and other threats
-          embedded in XML files, and other files that contain embedded content threats.  Set
-          to true to allow these file types.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: restrictFileTypes
-        in: header
-        description: Specify a restricted set of file formats to allow as clean as
-          a comma-separated list of file formats, such as .pdf,.docx,.png would allow
-          only PDF, PNG and Word document files.  All files must pass content verification
-          against this list of file formats, if they do not, then the result will
-          be returned as CleanResult=false.  Set restrictFileTypes parameter to null
-          or empty string to disable; default is disabled.
-        schema:
-          type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - inputFile
-              properties:
-                inputFile:
-                  type: string
-                  description: Input file to perform the operation on.
-                  format: binary
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VirusScanAdvancedResult'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/VirusScanAdvancedResult'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/VirusScanAdvancedResult'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/VirusScanAdvancedResult'
-      security:
-      - Apikey: []
+  # /virus/scan/file:
+  #   post:
+  #     tags:
+  #     - Scan
+  #     summary: Scan a file for viruses
+  #     description: Scan files and content for viruses. Leverage continuously updated
+  #       signatures for millions of threats, and advanced high-performance scanning
+  #       capabilities.  Over 17 million virus and malware signatures.  Continuous cloud-based
+  #       updates.  Wide file format support including Office, PDF, HTML, Flash.  Zip
+  #       support including .Zip, .Rar, .DMG, .Tar, and other archive formats.  Multi-threat
+  #       scanning across viruses, malware, trojans, ransomware, and spyware.  High-speed
+  #       in-memory scanning delivers subsecond typical response time.
+  #     operationId: Scan_File
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - inputFile
+  #             properties:
+  #               inputFile:
+  #                 type: string
+  #                 description: Input file to perform the operation on.
+  #                 format: binary
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanResult'
+  #           text/json:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanResult'
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanResult'
+  #           text/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanResult'
+  #     security:
+  #     - Apikey: []
+  # /virus/scan/file/advanced:
+  #   post:
+  #     tags:
+  #     - Scan
+  #     summary: Advanced Scan a file for viruses
+  #     description: Advanced Scan files with 360-degree Content Protection across Viruses
+  #       and Malware, executables, invalid files, scripts, and even restrictions on
+  #       accepted file types with complete content verification. Customize threat rules
+  #       to your needs. Leverage continuously updated signatures for millions of threats,
+  #       and advanced high-performance scanning capabilities.  Over 17 million virus
+  #       and malware signatures.  Continuous cloud-based updates.  Block threats beyond
+  #       viruses including executables, scripts, invalid files, and more.  Optionally
+  #       limit input files to a specific set of file types (e.g. PDF and Word Documents
+  #       only).  Wide file format support including Office, PDF, HTML, Flash.  Zip
+  #       support including .Zip, .Rar, .DMG, .Tar, and other archive formats.  Multi-threat
+  #       scanning across viruses, malware, trojans, ransomware, and spyware.  High-speed
+  #       in-memory scanning delivers subsecond typical response time.
+  #     operationId: Scan_File Advanced
+  #     parameters:
+  #     - name: allowExecutables
+  #       in: header
+  #       description: Set to false to block executable files (program code) from being
+  #         allowed in the input file.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowInvalidFiles
+  #       in: header
+  #       description: Set to false to block invalid files, such as a PDF file that
+  #         is not really a valid PDF file, or a Word Document that is not a valid Word
+  #         Document.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowScripts
+  #       in: header
+  #       description: Set to false to block script files, such as a PHP files, Python
+  #         scripts, and other malicious content or security threats that can be embedded
+  #         in the file.  Set to true to allow these file types.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowPasswordProtectedFiles
+  #       in: header
+  #       description: Set to false to block password protected and encrypted files,
+  #         such as encrypted zip and rar files, and other files that seek to circumvent
+  #         scanning through passwords.  Set to true to allow these file types.  Default
+  #         is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowMacros
+  #       in: header
+  #       description: Set to false to block macros and other threats embedded in document
+  #         files, such as Word, Excel and PowerPoint embedded Macros, and other files
+  #         that contain embedded content threats.  Set to true to allow these file
+  #         types.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowXmlExternalEntities
+  #       in: header
+  #       description: Set to false to block XML External Entities and other threats
+  #         embedded in XML files, and other files that contain embedded content threats.  Set
+  #         to true to allow these file types.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: restrictFileTypes
+  #       in: header
+  #       description: Specify a restricted set of file formats to allow as clean as
+  #         a comma-separated list of file formats, such as .pdf,.docx,.png would allow
+  #         only PDF, PNG and Word document files.  All files must pass content verification
+  #         against this list of file formats, if they do not, then the result will
+  #         be returned as CleanResult=false.  Set restrictFileTypes parameter to null
+  #         or empty string to disable; default is disabled.
+  #       schema:
+  #         type: string
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - inputFile
+  #             properties:
+  #               inputFile:
+  #                 type: string
+  #                 description: Input file to perform the operation on.
+  #                 format: binary
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanAdvancedResult'
+  #           text/json:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanAdvancedResult'
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanAdvancedResult'
+  #           text/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/VirusScanAdvancedResult'
+  #     security:
+  #     - Apikey: []
   /virus/scan/website:
     post:
       tags:
@@ -550,174 +550,174 @@ paths:
                 $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
       security:
       - Apikey: []
-  /virus/scan/cloud-storage/gcp-storage/single:
-    post:
-      tags:
-      - ScanCloudStorage
-      summary: Scan an Google Cloud Platform (GCP) Storage file for viruses
-      description: Scan the contents of a single Google Cloud Platform (GCP) Storage
-        file and its content for viruses. Leverage continuously updated signatures
-        for millions of threats, and advanced high-performance scanning capabilities.  Over
-        17 million virus and malware signatures.  Continuous cloud-based updates.  Wide
-        file format support including Office, PDF, HTML, Flash.  Zip support including
-        .Zip, .Rar, .DMG, .Tar, and other archive formats.  Multi-threat scanning
-        across viruses, malware, trojans, ransomware, and spyware.  High-speed in-memory
-        scanning delivers subsecond typical response time.
-      operationId: Scan Cloud Storage_Scan Gcp Storage File
-      parameters:
-      - name: bucketName
-        in: header
-        description: Name of the bucket in Google Cloud Storage
-        required: true
-        schema:
-          type: string
-      - name: objectName
-        in: header
-        description: Name of the object or file in Google Cloud Storage
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - jsonCredentialFile
-              properties:
-                jsonCredentialFile:
-                  type: string
-                  description: Service Account credential for Google Cloud stored
-                    in a JSON file.
-                  format: binary
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CloudStorageVirusScanResult'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/CloudStorageVirusScanResult'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/CloudStorageVirusScanResult'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/CloudStorageVirusScanResult'
-      security:
-      - Apikey: []
-  /virus/scan/cloud-storage/gcp-storage/single/advanced:
-    post:
-      tags:
-      - ScanCloudStorage
-      summary: Advanced Scan an Google Cloud Platform (GCP) Storage file for viruses
-      description: Advanced Scan the contents of a single Google Cloud Platform (GCP)
-        Storage file and its content for viruses and threats. Advanced Scan files
-        with 360-degree Content Protection across Viruses and Malware, executables,
-        invalid files, scripts, and even restrictions on accepted file types with
-        complete content verification. Customize threat rules to your needs. Leverage
-        continuously updated signatures for millions of threats, and advanced high-performance
-        scanning capabilities.  Over 17 million virus and malware signatures.  Continuous
-        cloud-based updates.  Block threats beyond viruses including executables,
-        scripts, invalid files, and more.  Optionally limit input files to a specific
-        set of file types (e.g. PDF and Word Documents only).  Wide file format support
-        including Office, PDF, HTML, Flash.  Zip support including .Zip, .Rar, .DMG,
-        .Tar, and other archive formats.  Multi-threat scanning across viruses, malware,
-        trojans, ransomware, and spyware.  High-speed in-memory scanning delivers
-        subsecond typical response time.
-      operationId: Scan Cloud Storage_Scan Gcp Storage File Advanced
-      parameters:
-      - name: bucketName
-        in: header
-        description: Name of the bucket in Google Cloud Storage
-        required: true
-        schema:
-          type: string
-      - name: objectName
-        in: header
-        description: Name of the object or file in Google Cloud Storage
-        required: true
-        schema:
-          type: string
-      - name: allowExecutables
-        in: header
-        description: Set to false to block executable files (program code) from being
-          allowed in the input file.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: allowInvalidFiles
-        in: header
-        description: Set to false to block invalid files, such as a PDF file that
-          is not really a valid PDF file, or a Word Document that is not a valid Word
-          Document.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: allowScripts
-        in: header
-        description: Set to false to block script files, such as a PHP files, Python
-          scripts, and other malicious content or security threats that can be embedded
-          in the file.  Set to true to allow these file types.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: allowPasswordProtectedFiles
-        in: header
-        description: Set to false to block password protected and encrypted files,
-          such as encrypted zip and rar files, and other files that seek to circumvent
-          scanning through passwords.  Set to true to allow these file types.  Default
-          is false (recommended).
-        schema:
-          type: boolean
-      - name: allowMacros
-        in: header
-        description: Set to false to block macros and other threats embedded in document
-          files, such as Word, Excel and PowerPoint embedded Macros, and other files
-          that contain embedded content threats.  Set to true to allow these file
-          types.  Default is false (recommended).
-        schema:
-          type: boolean
-      - name: restrictFileTypes
-        in: header
-        description: Specify a restricted set of file formats to allow as clean as
-          a comma-separated list of file formats, such as .pdf,.docx,.png would allow
-          only PDF, PNG and Word document files.  All files must pass content verification
-          against this list of file formats, if they do not, then the result will
-          be returned as CleanResult=false.  Set restrictFileTypes parameter to null
-          or empty string to disable; default is disabled.
-        schema:
-          type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - jsonCredentialFile
-              properties:
-                jsonCredentialFile:
-                  type: string
-                  description: Service Account credential for Google Cloud stored
-                    in a JSON file.
-                  format: binary
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
-      security:
-      - Apikey: []
+  # /virus/scan/cloud-storage/gcp-storage/single:
+  #   post:
+  #     tags:
+  #     - ScanCloudStorage
+  #     summary: Scan an Google Cloud Platform (GCP) Storage file for viruses
+  #     description: Scan the contents of a single Google Cloud Platform (GCP) Storage
+  #       file and its content for viruses. Leverage continuously updated signatures
+  #       for millions of threats, and advanced high-performance scanning capabilities.  Over
+  #       17 million virus and malware signatures.  Continuous cloud-based updates.  Wide
+  #       file format support including Office, PDF, HTML, Flash.  Zip support including
+  #       .Zip, .Rar, .DMG, .Tar, and other archive formats.  Multi-threat scanning
+  #       across viruses, malware, trojans, ransomware, and spyware.  High-speed in-memory
+  #       scanning delivers subsecond typical response time.
+  #     operationId: Scan Cloud Storage_Scan Gcp Storage File
+  #     parameters:
+  #     - name: bucketName
+  #       in: header
+  #       description: Name of the bucket in Google Cloud Storage
+  #       required: true
+  #       schema:
+  #         type: string
+  #     - name: objectName
+  #       in: header
+  #       description: Name of the object or file in Google Cloud Storage
+  #       required: true
+  #       schema:
+  #         type: string
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - jsonCredentialFile
+  #             properties:
+  #               jsonCredentialFile:
+  #                 type: string
+  #                 description: Service Account credential for Google Cloud stored
+  #                   in a JSON file.
+  #                 format: binary
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageVirusScanResult'
+  #           text/json:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageVirusScanResult'
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageVirusScanResult'
+  #           text/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageVirusScanResult'
+  #     security:
+  #     - Apikey: []
+  # /virus/scan/cloud-storage/gcp-storage/single/advanced:
+  #   post:
+  #     tags:
+  #     - ScanCloudStorage
+  #     summary: Advanced Scan an Google Cloud Platform (GCP) Storage file for viruses
+  #     description: Advanced Scan the contents of a single Google Cloud Platform (GCP)
+  #       Storage file and its content for viruses and threats. Advanced Scan files
+  #       with 360-degree Content Protection across Viruses and Malware, executables,
+  #       invalid files, scripts, and even restrictions on accepted file types with
+  #       complete content verification. Customize threat rules to your needs. Leverage
+  #       continuously updated signatures for millions of threats, and advanced high-performance
+  #       scanning capabilities.  Over 17 million virus and malware signatures.  Continuous
+  #       cloud-based updates.  Block threats beyond viruses including executables,
+  #       scripts, invalid files, and more.  Optionally limit input files to a specific
+  #       set of file types (e.g. PDF and Word Documents only).  Wide file format support
+  #       including Office, PDF, HTML, Flash.  Zip support including .Zip, .Rar, .DMG,
+  #       .Tar, and other archive formats.  Multi-threat scanning across viruses, malware,
+  #       trojans, ransomware, and spyware.  High-speed in-memory scanning delivers
+  #       subsecond typical response time.
+  #     operationId: Scan Cloud Storage_Scan Gcp Storage File Advanced
+  #     parameters:
+  #     - name: bucketName
+  #       in: header
+  #       description: Name of the bucket in Google Cloud Storage
+  #       required: true
+  #       schema:
+  #         type: string
+  #     - name: objectName
+  #       in: header
+  #       description: Name of the object or file in Google Cloud Storage
+  #       required: true
+  #       schema:
+  #         type: string
+  #     - name: allowExecutables
+  #       in: header
+  #       description: Set to false to block executable files (program code) from being
+  #         allowed in the input file.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowInvalidFiles
+  #       in: header
+  #       description: Set to false to block invalid files, such as a PDF file that
+  #         is not really a valid PDF file, or a Word Document that is not a valid Word
+  #         Document.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowScripts
+  #       in: header
+  #       description: Set to false to block script files, such as a PHP files, Python
+  #         scripts, and other malicious content or security threats that can be embedded
+  #         in the file.  Set to true to allow these file types.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowPasswordProtectedFiles
+  #       in: header
+  #       description: Set to false to block password protected and encrypted files,
+  #         such as encrypted zip and rar files, and other files that seek to circumvent
+  #         scanning through passwords.  Set to true to allow these file types.  Default
+  #         is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: allowMacros
+  #       in: header
+  #       description: Set to false to block macros and other threats embedded in document
+  #         files, such as Word, Excel and PowerPoint embedded Macros, and other files
+  #         that contain embedded content threats.  Set to true to allow these file
+  #         types.  Default is false (recommended).
+  #       schema:
+  #         type: boolean
+  #     - name: restrictFileTypes
+  #       in: header
+  #       description: Specify a restricted set of file formats to allow as clean as
+  #         a comma-separated list of file formats, such as .pdf,.docx,.png would allow
+  #         only PDF, PNG and Word document files.  All files must pass content verification
+  #         against this list of file formats, if they do not, then the result will
+  #         be returned as CleanResult=false.  Set restrictFileTypes parameter to null
+  #         or empty string to disable; default is disabled.
+  #       schema:
+  #         type: string
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - jsonCredentialFile
+  #             properties:
+  #               jsonCredentialFile:
+  #                 type: string
+  #                 description: Service Account credential for Google Cloud stored
+  #                   in a JSON file.
+  #                 format: binary
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
+  #           text/json:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
+  #           text/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/CloudStorageAdvancedVirusScanResult'
+  #     security:
+  #     - Apikey: []
 components:
   schemas:
     VirusScanResult:
@@ -928,7 +928,6 @@ components:
   securitySchemes:
     Apikey:
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API Key as `Apikey`. Eg: `{\"Apikey\" : \"<API Key>}`\""
-      description: API Key Authentication
+      description: Represents API Key `Apikey`
       name: Apikey
       in: header

@@ -25,3 +25,18 @@ public type PostProxyRequest record {
 # Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT.
 public type PatchProxyRequest record {
 };
+
+public type InlineResponse401 record {
+    # Contains parameter or domain specific information related to the error and why it occured.
+    string detail?;
+    # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+    string _error?;
+    # A human-readable message providing more details about the error.
+    string message?;
+    # Link to documentation of error type
+    string ref?;
+    # HTTP status code
+    decimal status_code?;
+    # The type of error returned
+    string type_name?;
+};

@@ -22,6 +22,40 @@ public type VersionResponse record {
     string revision?;
 };
 
+# Access request info
+public type GroupAccessRequest record {
+    # The ID or URL-encoded path of the project owned by the authenticated user
+    int id?;
+    # Username
+    string username?;
+    # Actual name
+    string name?;
+    # If user is active or not
+    string state?;
+    # Created date/time
+    string created_at?;
+    # Requested date/time
+    string requested_at?;
+};
+
+# Access token info
+public type AccessToken record {
+    # User ID
+    int user_id?;
+    # The name of the project access token
+    string name?;
+    # The token expires at midnight UTC on that date
+    string expires_at?;
+    # The ID or URL-encoded path of the project
+    int id?;
+    # If token is active or not
+    boolean active?;
+    # The token creation date/time
+    string created_at?;
+    # Is the token is revoked
+    boolean revoked?;
+};
+
 # Access token info
 public type AccessTokenList record {
     # User ID
@@ -72,20 +106,50 @@ public type ProjectAccessApprove record {
     int access_level?;
 };
 
-# Access token info
-public type AccessToken record {
-    # User ID
-    anydata user_id?;
-    # The name of the project access token
-    string name?;
-    # The token expires at midnight UTC on that date
-    string expires_at?;
-    # The ID or URL-encoded path of the project
+# Access request info
+public type GroupAccessResponse record {
+    # The ID or URL-encoded path of the project owned by the authenticated user
     int id?;
-    # If token is active or not
-    boolean active?;
-    # The token creation date/time
+    # Username
+    string username?;
+    # Actual name
+    string name?;
+    # If user is active or not
+    string state?;
+    # Created date/time
     string created_at?;
-    # Is the token is revoked
-    boolean revoked?;
+    # Requested date/time
+    string requested_at?;
+};
+
+# Access request info
+public type ProjectAccessRequest record {
+    # The ID or URL-encoded path of the project owned by the authenticated user
+    int id?;
+    # Username
+    string username?;
+    # Actual name
+    string name?;
+    # If user is active or not
+    string state?;
+    # Created date/time
+    string created_at?;
+    # Requested date/time
+    string requested_at?;
+};
+
+# Access request info
+public type GroupAccessApprove record {
+    # The ID or URL-encoded path of the project owned by the authenticated user
+    int id?;
+    # Username
+    string username?;
+    # Actual name
+    string name?;
+    # If user is active or not
+    string state?;
+    # Created date/time
+    string created_at?;
+    # A valid access level (defaults: 30, the Developer role)
+    int access_level?;
 };

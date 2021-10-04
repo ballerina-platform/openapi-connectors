@@ -37,6 +37,9 @@ tags:
     description: Endpoints for managing websites
   - name: Validation
     description: Endpoints for validating API keys
+security:
+  - api_key: []
+
 paths:
   /link:
     post:
@@ -2973,7 +2976,6 @@ components:
   securitySchemes:
     api_key:
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API Key as `X-Api-Key`. Eg: `{\"X-Api-Key\" : \"<API Key>}`\""
-      description: API Key Authentication
+      description: Represents API Key `X-Api-Key`
       name: X-Api-Key
       in: header

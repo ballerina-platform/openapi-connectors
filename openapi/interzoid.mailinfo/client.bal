@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # All requests on the Email Info API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+    string license;
 |};
 
 # This is a generated connector for [Interzoid Email Info API v1.0.0](https://interzoid.com/services/getemailinfo) OpenAPI specification.
@@ -30,19 +28,19 @@ public type ApiKeysConfig record {|
 @display {label: "Interzoid Email Info", iconPath: "resources/interzoid.emailinfo.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create an [Interzoid Account](https://www.interzoid.com/register)  and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
     #
-    # + apiKeyConfig - Provide your private license key as `license`. Eg: `{"license" : "<private license key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.interzoid.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Gets email validation information for an email address
     #
@@ -50,43 +48,9 @@ public isolated client class Client {
     # + return - Email validation and demographic information 
     remote isolated function getEmailInfo(string email) returns EmailInfo|error {
         string  path = string `/getemailinfo`;
-        map<anydata> queryParam = {"email": email, "license": self.apiKeys["license"]};
+        map<anydata> queryParam = {"email": email, "license": self.apiKeyConfig.license};
         path = path + check getPathForQueryParam(queryParam);
         EmailInfo response = check self.clientEp-> get(path, targetType = EmailInfo);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

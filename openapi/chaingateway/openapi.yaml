@@ -50,7 +50,8 @@ paths:
                 decimals: 2
                 supply: 76507131570
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /getLastBlockNumber:
     post:
       tags:
@@ -79,7 +80,8 @@ paths:
                 ok: true
                 blocknumber: 10892021
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /getGasPrice:
     post:
       tags:
@@ -108,7 +110,8 @@ paths:
                 ok: true
                 gasprice: 70
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /getExchangeRate:
     post:
       tags:
@@ -138,7 +141,8 @@ paths:
                 currency: eur
                 rate: 321.2
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /getEthereumBalance:
     post:
       tags:
@@ -168,7 +172,8 @@ paths:
                 ethereumaddress: '0xa1f36016221d48ce7f15cde7b826a4fbe09bacce'
                 balance: 0.009956019840987648
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /getTokenBalance:
     post:
       tags:
@@ -200,7 +205,8 @@ paths:
                 ethereumaddress: '0xa1f36016221d48ce7f15cde7b826a4fbe09bacce'
                 balance: 9980
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /getTransactions:
     post:
       tags:
@@ -242,7 +248,8 @@ paths:
                     to: '0xbee9422f1b65687d0cb923bbd1fc5ccb9307e861'
                     amount: '10'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /getBlock:
     post:
       tags:
@@ -280,7 +287,8 @@ paths:
                 time_stamp: '2018-01-30 14:41:33'
                 transactions_count: '109'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /newAddress:
     post:
       tags:
@@ -310,7 +318,8 @@ paths:
                 ethereumaddress: '0x71892889ed4d79d88ab6ea3783b571b8ece9bef4'
                 password: padN39QkRA2hJ
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /deleteAddress:
     post:
       tags:
@@ -341,7 +350,8 @@ paths:
                 ethereumaddress: '0x71892889ed4d79d88ab6ea3783b571b8ece9bef4'
                 deleted: true
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /listAddresses:
     post:
       tags:
@@ -371,7 +381,8 @@ paths:
                 addresses:
                   - ethereumaddress: '0x71892889ed4d79d88ab6ea3783b571b8ece9bef4'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /importAddress:
     post:
       tags:
@@ -419,7 +430,8 @@ paths:
                 ethaddress: '0x71892889ed4d79d88ab6ea3783b571b8ece9bef4'
                 filename: UTC--2020-09-19T10-42-26.196Z--71892889ed4d79d88ab6ea3783b571b8ece9bef4
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /exportAddress:
     post:
       tags:
@@ -450,7 +462,8 @@ paths:
                 filename: UTC--2020-09-19T10-42-26.196Z--71892889ed4d79d88ab6ea3783b571b8ece9bef4
                 content: '{''version'':3,''id'':''85b790ff-408e-42b8-b123-bec9523964dc'',''address'':''71892889ed4d79d88ab6ea3783b571b8ece9bef4'',''crypto'':{''ciphertext'':''9d74262517b984f9b0560b8f23b5e3340f7be0f56b70cd91ff445dcaf5b1968f'',''cipherparams'':{''iv'':''76e6f2497b9f2a8e024fc752a5418a6d''},''cipher'':''aes-128-ctr'',''kdf'':''scrypt'',''kdfparams'':{''dklen'':32,''salt'':''d11d996a7cc4bfad730d4c9b9057eff2c0fb3940b5bfc59db62ae218c14a54f4'',''n'':131072,''r'':8,''p'':1},''mac'':''dcc342bbbbb8eea97c89b47bafc23de568fc1a48e0bd21ae8d776a95c4704ac9''}}'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /subscribeAddress:
     post:
       tags:
@@ -483,7 +496,8 @@ paths:
                 contractaddress: '0x514910771af9ca656af840dff83e8264ecf986ca'
                 url: 'https://yoururl.com/ipnreceiver.php'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /unsubscribeAddress:
     post:
       tags:
@@ -517,7 +531,8 @@ paths:
                 url: 'https://yoururl.com/ipnreceiver.php'
                 deleted: true
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /listSubscribedAddresses:
     post:
       tags:
@@ -549,7 +564,8 @@ paths:
                     contractaddress: '0x514910771af9ca656af840dff83e8264ecf986ca'
                     url: 'https://yoururl.com/ipnreceiver.php'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /listFailedIPNs:
     post:
       tags:
@@ -585,7 +601,8 @@ paths:
                     url: 'https://yoururl.com/ipnreceiver.php'
                     action: deposit
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /resendFailedIPN:
     post:
       tags:
@@ -614,7 +631,8 @@ paths:
                 ok: true
                 id: 17766
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /sendEthereum:
     post:
       tags:
@@ -649,7 +667,8 @@ paths:
                 to: '0xef4943d727e34280a2efa0b3352dfd61f508ee48'
                 amount: '0.010000000000000000'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /clearAddress:
     post:
       tags:
@@ -685,7 +704,8 @@ paths:
                 gas: 0.0025199999999999997
                 total: '0.025529162250000000'
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
   /sendToken:
     post:
       tags:
@@ -724,7 +744,8 @@ paths:
                 to: '0xef4943d727e34280a2efa0b3352dfd61f508ee48'
                 amount: 5
       deprecated: false
-      security: []
+      security: 
+        - api-key: []
 components:
   schemas:
     getTokenRequest:

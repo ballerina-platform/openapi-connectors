@@ -26,6 +26,9 @@ info:
 externalDocs:
   description: API home page and documentation
   url: https://www.interzoid.com/services/convertcurrency
+security:
+  - ApiKeyAuth : []
+
 paths:
   /convertcurrency:
     get:
@@ -80,7 +83,6 @@ components:
       type: apiKey
       in: query
       name: license
-      x-ballerina-apikey-description: "Provide your private license key as `license`. Eg: `{\"license\" : \"<private license key>\"}`"
   schemas:
     CurrencyConversionInfo:
       description: Contains details about converted currency information

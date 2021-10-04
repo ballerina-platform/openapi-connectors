@@ -32,7 +32,7 @@ components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
-      x-ballerina-apikey-description: "Provide your PAT token as `Private-Token`. Eg: `{\"Private-Token\" : \"<PAT token>\"}`"
+      description: Represents API Key `Private-Token`
       in: header
       name: Private-Token
 paths:
@@ -666,7 +666,7 @@ paths:
                 properties:
                   user_id:
                     description: "User ID"
-                  #   type: integer
+                    type: integer
                   # scopes:
                   #   description: "List of scopes"
                   #   type: array

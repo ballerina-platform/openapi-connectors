@@ -145,12 +145,6 @@ public type InlineResponse2011 record {
     Session data?;
 };
 
-# PosteventsRequest
-public type Body record {
-    # Event post data
-    EventData data?;
-};
-
 # Owner attributes
 public type OwnerAttribute record {
     # Role of owner
@@ -205,12 +199,6 @@ public type PeopleAttribute record {
     string avatar_link?;
 };
 
-# RegisterPeopleRequest
-public type Body2 record {
-    # Add People data
-    PeopleData data?;
-};
-
 # Event session
 public type People record {
     # People type
@@ -219,6 +207,12 @@ public type People record {
     string id?;
     # People attribute
     PeopleAttribute attributes?;
+};
+
+# RegisterPeopleRequest
+public type IdPeopleBody record {
+    # Add People data
+    PeopleData data?;
 };
 
 # Event session attribute
@@ -251,6 +245,12 @@ public type SessionAttribute record {
     string registrants_count?;
 };
 
+# PostSessionRequest
+public type IdSessionsBody record {
+    # Add Session data
+    SessionData data?;
+};
+
 # Add People data
 public type PeopleData record {
     # Event type
@@ -275,10 +275,10 @@ public type Event record {
     EventAttribute attributes?;
 };
 
-# PostSessionRequest
-public type Body1 record {
-    # Add Session data
-    SessionData data?;
+# PosteventsRequest
+public type EventsBody record {
+    # Event post data
+    EventData data?;
 };
 
 public type InlineResponse2003 record {

@@ -1,0 +1,732 @@
+openapi: 3.0.0
+info:
+  title: ADP Corporate Directory v1
+  description: |
+    This is a generated connector for [ADP Corporate Directory API v1](https://developers.adp.com/articles/api/corporate-directory-v1-api) OpenAPI specification.
+    The Corporate Directory API provides the capability to return a list of corporate contacts or detailed information about a specific contact.
+    Each contact may have the name, title, organizational unit (e.g. department), reports to manager, photo, and the business location address, business phone numbers, business emails, and business social media accounts (e.g. LinkedIn uri).
+  version: 1.0.0
+  x-ballerina-init-description: |
+    The connector initialization requires setting the API credentials.
+    Create an [ADP account](https://www.adp.com/) and obtain tokens by following [this guide](https://developers.adp.com/articles/guide/auth-process-data-conn-request-access-token).
+  x-ballerina-display:
+    label: ADP Corporate Directory
+    iconPath: "resources/adp.corporatedirectory.svg"
+security:
+  - OAuth2: []
+  - Bearer: []
+paths:
+  /hr/v1/corporate-contacts:
+    get:
+      summary: Request the list of corporate directory entries.
+      operationId: listContacts
+      parameters:
+        - $ref: "#/components/parameters/roleCode"
+        - $ref: "#/components/parameters/if-none-match"
+        - $ref: "#/components/parameters/searchNameLike"
+        - $ref: "#/components/parameters/limit"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/corporateContacts"
+          description: Corporate Directory
+  /hr/v1/corporate-contacts/{contact-id}:
+    get:
+      summary: Request the details of a contact
+      operationId: getContact
+      parameters:
+        - $ref: "#/components/parameters/roleCode"
+        - $ref: "#/components/parameters/contact-id"
+        - $ref: "#/components/parameters/if-none-match"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/corporateContact"
+          description: Corporate Contact
+components:
+  parameters:
+    roleCode:
+      in: header
+      name: roleCode
+      required: true
+      schema:
+        type: string
+      description: "The role the user is playing during the transaction.  Possible values: employee,manager,practitioner,administrator,supervisor.  The roleCode header will be passed in all calls. When coming from Myself capabilities rolecode=employee. When coming from Team capabilities roleCode=manager. When coming from Practitioner capabilities roleCode=practitioner."
+    if-none-match:
+      in: header
+      name: If-None-Match
+      schema:
+        type: string
+      description: Used with a method to make it conditional; the method is performed only if the client entity (via the given entity tag, ETag header) does not match the server entity.
+    limit:
+      in: query
+      name: limit
+      schema:
+        type: integer
+      description: Limit the number of items returned in the result set of a Get.
+    searchNameLike:
+      in: query
+      name: searchNameLike
+      schema:
+        type: string
+      description: searchNameLike - search for Contacts with familyName like {val}% or givenName like {val}%
+    contact-id:
+      in: path
+      required: true
+      name: contact-id
+      schema:
+        type: string
+      description: Contact ID
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://accounts.adp.com/auth/oauth/v2/token
+    Bearer:
+      type: http
+      scheme: bearer
+  schemas:
+    corporateContacts:
+      type: "object"
+      properties:
+        corporateContacts:
+          description:
+            "object describing the corporate directory list.  last-modified-date:
+            10-29-2010 rev. 002"
+          type: "object"
+          properties:
+            contacts:
+              description: "The list of workers of an Organization (Employee or Consultants)"
+              type: "array"
+              items:
+                description:
+                  "A worker within the context of an organization (employee
+                  or contractor)"
+                type: "object"
+                properties:
+                  givenName:
+                    description: "Person's first name"
+                    type: "string"
+                    maxLength: 64
+                  middleName:
+                    description: "A person's middle name or initial"
+                    type: "string"
+                    maxLength: 64
+                  familyName:
+                    description: "A person's last name"
+                    type: "string"
+                    maxLength: 64
+                  formattedName:
+                    description:
+                      "The name parts of the person to be shown in the
+                      UI in the array item order.  They will be sorted based on
+                      the sortseq"
+                    type: "object"
+                    properties:
+                      sortseq:
+                        type: "array"
+                        description:
+                          "The items in the array which the name will be
+                          sorted by. First item in the array is 0."
+                        minItems: 2
+                        items:
+                          type: "number"
+                      nameParts:
+                        type: "array"
+                        description: "Component parts of the name"
+                        items:
+                          type: "string"
+                          maxLength: 25
+                      namePartSeparators:
+                        type: "array"
+                        description:
+                          "Separators to be inserted between name parts,
+                          e.g. space, comma, no separator (null), etc."
+                        items:
+                          type: "string"
+                          maxLength: 2
+                  alternateNames:
+                    description:
+                      "The alternate names of the person to be shown in
+                      the UI.  Can be expressed in different scripts."
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        languageCode:
+                          description:
+                            "The language in which the associated entity
+                            is represented"
+                          type: "string"
+                        scriptCode:
+                          description:
+                            "The type of script the in which the associated
+                            entity is represented. Associated codelist is ISO15924-A.
+                            Use the alpha-4 representation versus the single digit
+                            numeric representation. Format is lowercase with initial
+                            letter capitalized. For example, Cyrillic is Cyrl"
+                          type: "string"
+                        sortseq:
+                          type: "array"
+                          description:
+                            "The items in the array which the name will
+                            be sorted by. First item in the array is 0."
+                          minItems: 2
+                          items:
+                            type: "number"
+                        nameParts:
+                          type: "array"
+                          description: "Component parts of the name"
+                          items:
+                            type: "string"
+                            maxLength: 40
+                        namePartSeparators:
+                          type: "array"
+                          description:
+                            "Separators to be inserted between name parts,
+                            e.g. space, comma, no separator (null), etc."
+                          items:
+                            type: "string"
+                            maxLength: 2
+                  phone:
+                    description: "A list of telephone numbers"
+                    type: "array"
+                    maxItems: 1
+                    items:
+                      type: "object"
+                      properties:
+                        labelName:
+                          description: "The label to be shown on the UI"
+                          type: "string"
+                          maxLength: 15
+                        channelCode:
+                          description:
+                            "Identifies the channel in which the associated
+                            entity comes"
+                          type: "string"
+                          enum:
+                            - "phone"
+                        channelLabelName:
+                          description:
+                            "The label shown on the UI identifying the
+                            channel"
+                          type: "string"
+                        countryDialing:
+                          description:
+                            "The country dialing code is the national prefix
+                            to be used when dialing TO that particular country FROM
+                            another country.  "
+                          type: "string"
+                        areaDialing:
+                          description:
+                            "The local area dialing code for a telephone
+                            number."
+                          type: "string"
+                        dialNumber:
+                          description:
+                            "The local communication number, not including
+                            country dialing or area dialing codes.   If component
+                            parts of the telephone number are being communicated
+                            then the dialNumber is required."
+                          type: "string"
+                        extension:
+                          description:
+                            "The extension of the local communication number.
+                            In the case of a Telephone Number accessing a Pager
+                            Network the Extension maybe the Pager Identification
+                            Number required to leave a message for the Pager Number."
+                          type: "string"
+                          maxLength: 20
+                        formattedDialNumber:
+                          description:
+                            "The formatted telephone number.  The formatted
+                            dial number should start with a + followed by the country
+                            code for international phone numbers."
+                          type: "string"
+                  email:
+                    description: "A list of electronic addresses (i.e. email)"
+                    type: "array"
+                    maxItems: 1
+                    items:
+                      type: "object"
+                      properties:
+                        labelName:
+                          description: "The label to be shown on the UI"
+                          maxLength: 15
+                          type: "string"
+                        channelCode:
+                          description:
+                            "Identifies the channel in which the associated
+                            entity comes"
+                          type: "string"
+                          enum:
+                            - "email"
+                        channelLabelName:
+                          description:
+                            "The label shown on the UI identifying the
+                            channel"
+                          type: "string"
+                        uri:
+                          description: "An email address (i.e. email)"
+                          type: "string"
+                  associateUri:
+                    description:
+                      "the relative uri of a specific associates detail
+                      information."
+                    type: "object"
+                    properties:
+                      href:
+                        description: "URI"
+                        type: "string"
+                        format: "uri"
+    corporateContact:
+      type: "object"
+      properties:
+        corporateContact:
+          description:
+            "object describing the details of a contact with respect to
+            the corporate directory.  Corporate Directory limits the information
+            to business information"
+          type: "object"
+          properties:
+            givenName:
+              description: "Person's first name"
+              type: "string"
+              maxLength: 64
+            middleName:
+              description: "A person's middle name or initial"
+              type: "string"
+              maxLength: 64
+            familyName:
+              description: "A person's last name"
+              type: "string"
+              maxLength: 64
+            preferredName:
+              description: "A preferred name"
+              type: "string"
+              maxLength: 64
+            formattedName:
+              description:
+                "The name parts of the person to be shown in the UI in
+                the array item order.  They will be sorted based on the sortseq"
+              type: "object"
+              properties:
+                sortseq:
+                  type: "array"
+                  description:
+                    "The items in the array which the name will be sorted
+                    by. First item in the array is 0."
+                  maxItems: 2
+                  minItems: 2
+                  items:
+                    type: "number"
+                nameParts:
+                  type: "array"
+                  description: "Component parts of the name"
+                  items:
+                    type: "string"
+                    maxLength: 25
+                namePartSeparators:
+                  type: "array"
+                  description:
+                    "Separators to be inserted between name parts, e.g.
+                    space, comma, no separator (null), etc."
+                  items:
+                    type: "string"
+                    maxLength: 2
+            alternateNames:
+              description:
+                "The alternate names of the person to be shown in the UI.
+                Can be expressed in different scripts."
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  languageCode:
+                    description: "The language in which the associated entity is represented"
+                    type: "string"
+                  scriptCode:
+                    description:
+                      "The type of script the in which the associated entity
+                      is represented. Associated codelist is ISO15924-A. Use the
+                      alpha-4 representation versus the single digit numeric representation.
+                      Format is lowercase with initial letter capitalized. For example,
+                      Cyrillic is Cyrl"
+                    type: "string"
+                  sortseq:
+                    type: "array"
+                    description:
+                      "The items in the array which the name will be sorted
+                      by. First item in the array is 0."
+                    minItems: 2
+                    items:
+                      type: "number"
+                  nameParts:
+                    type: "array"
+                    description: "Component parts of the name"
+                    items:
+                      type: "string"
+                      maxLength: 40
+                  namePartSeparators:
+                    type: "array"
+                    description:
+                      "Separators to be inserted between name parts, e.g.
+                      space, comma, no separator (null), etc."
+                    items:
+                      type: "string"
+                      maxLength: 2
+            jobTitleDesc:
+              description: "Job TItle Description"
+              type: "string"
+            departmentDesc:
+              description: "Department Description"
+              type: "string"
+            employmentStatusDesc:
+              description: "Employment Status Description"
+              type: "string"
+            reportsToPerson:
+              description:
+                "the person (i.e. associate) which the related associate
+                reports to (e.g. Manager)"
+              type: "object"
+              properties:
+                givenName:
+                  description: "Person's first name"
+                  type: "string"
+                  maxLength: 64
+                middleName:
+                  description: "A person's middle name or initial"
+                  type: "string"
+                  maxLength: 64
+                familyName:
+                  description: "A person's last name"
+                  type: "string"
+                  maxLength: 64
+                preferredName:
+                  description: "A preferred name"
+                  type: "string"
+                  maxLength: 64
+                formattedName:
+                  description:
+                    "The name parts of the person to be shown in the UI
+                    in the array item order.  They will be sorted based on the sortseq"
+                  type: "object"
+                  properties:
+                    sortseq:
+                      type: "array"
+                      description:
+                        "The items in the array which the name will be
+                        sorted by. First item in the array is 0."
+                      maxItems: 2
+                      minItems: 2
+                      items:
+                        type: "number"
+                    nameParts:
+                      type: "array"
+                      description: "Component parts of the name"
+                      items:
+                        type: "string"
+                        maxLength: 25
+                    namePartSeparators:
+                      type: "array"
+                      description:
+                        "Separators to be inserted between name parts,
+                        e.g. space, comma, no separator (null), etc."
+                      items:
+                        type: "string"
+                        maxLength: 2
+                associateUri:
+                  description: "the relative uri of a specific associates detail information."
+                  type: "object"
+                  properties:
+                    href:
+                      description: "URI"
+                      type: "string"
+                      format: "uri"
+            location:
+              type: "array"
+              description: "Location"
+              items:
+                description: "name and address of a physical location"
+                type: "object"
+                properties:
+                  labelName:
+                    description: "The label to be shown on the UI"
+                    type: "string"
+                    maxLength: 15
+                  locationName:
+                    description: "The name of the location"
+                    type: "string"
+                    maxLength: 15
+                  coordinate:
+                    description:
+                      "The coordinates of the location of the device as
+                      captured by the gps of the device.  Following the W3C Geolocation
+                      API Specification.  Reference: http://dev.w3.org/geo/api/spec-source.html#altitude"
+                    type: "object"
+                    properties:
+                      latitude:
+                        description:
+                          "The angle, in degrees, of a position on Earth
+                          above the equator. (Latitude is negative for a place below
+                          the equator.) specified in decimal degrees"
+                        type: "number"
+                      longitude:
+                        description:
+                          "The angle, in degrees, of a position on Earth
+                          around the equator from the Greenwich Meridian specified
+                          in decimal degrees."
+                        type: "number"
+                      altitudeMeasure:
+                        description:
+                          "Denotes the height of th eposition, specified
+                          in meters above the [WGS84] ellipsoid."
+                        type: "number"
+                  formattedAddressLines:
+                    description:
+                      "A list of formatted address lines which will be
+                      shown on the UI in the order of the array items.  This is
+                      mutually exclusive to the component parts of the the address.
+                      If this is returned in the JSON it will be used to present
+                      on the UI"
+                    type: "array"
+                    items:
+                      type: "string"
+                      maxLength: 25
+                  address:
+                    description: "components of an address"
+                    type: "object"
+                    properties:
+                      lineOne:
+                        description:
+                          "Line One consists of any valid set of the following
+                          address components: primary address number, pre-directional
+                          (e.g. East) , street name, suffix, post-directional (e.g.
+                          SW), secondary address identifier, and secondary address.
+                          It may have a Post Office Box, or Private Mail Box Address
+                          (e.g. APO/FPO) if it is a Communication Address"
+                        type: "string"
+                      lineTwo:
+                        description:
+                          "Line Two consists of any secondary address identifiers
+                          which do not fit in Line One. Example is an Apartment
+                          or Suite designation. The preference is to fit all designators
+                          on Line One which the USPS considers the Delivery Point."
+                        type: "string"
+                      lineThree:
+                        description:
+                          "Line Three consists of any additional address
+                          designators."
+                        type: "string"
+                      lineFour:
+                        description:
+                          "Line Four consists of any additional address
+                          designators."
+                        type: "string"
+                      lineFive:
+                        description:
+                          "Line Five consists of any additional address
+                          designators."
+                        type: "string"
+                      cityName:
+                        description: "Identifies the town or city."
+                        type: "string"
+                      citySubdivisionName:
+                        description:
+                          "Qualifies the further division of the City,
+                          for example, a city may have many districts or boroughs.
+                          The type attribute identifies the type of this entity;
+                          e.g., City, Borough etc., and there is a pre-defined list
+                          of types supported, with the ability to add new ones as
+                          necessary."
+                        type: "string"
+                      countrySubdivision:
+                        description:
+                          "Qualifies the further division of the Country.
+                          These may be Districts, Regions, States, Provinces etc.
+                          A possible list of values is as specified in ISO 3166-2.
+                          The type attribute identifies the type of this e.g. District,
+                          Region etc, and there is a pre-defined list of types supported,
+                          with the ability to add new ones as necessary"
+                        type: "array"
+                        minItems: 1
+                        items:
+                          type: "object"
+                          properties:
+                            code:
+                              description:
+                                "Qualifies the further division of the
+                                Country. These may be Districts, Regions, States,
+                                Provinces etc. A possible list of values is as specified
+                                in ISO 3166-2. The type attribute identifies the
+                                type of this e.g. District, Region etc, and there
+                                is a pre-defined list of types supported, with the
+                                ability to add new ones as necessary"
+                              type: "string"
+                            typeCode:
+                              type: "string"
+                              enum:
+                                - "county"
+                                - "province"
+                                - "region"
+                                - "state"
+                      countryCode:
+                        description:
+                          "Country in which the Address is in. ISO_3166-1-alpha-2
+                          code list"
+                        type: "string"
+                      postalCode:
+                        description:
+                          "The string of characters used to identify the
+                          postal zone specific to the country where the mail is
+                          delivered."
+                        type: "string"
+                        maxLength: 15
+            phone:
+              description: "A list of telephone numbers"
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  labelName:
+                    description: "The label to be shown on the UI"
+                    type: "string"
+                    maxLength: 15
+                  channelCode:
+                    description:
+                      "Identifies the channel in which the associated entity
+                      comes"
+                    type: "string"
+                    enum:
+                      - "phone"
+                      - "fax"
+                      - "mobile"
+                      - "pager"
+                  channelLabelName:
+                    description: "The label shown on the UI identifying the channel"
+                    type: "string"
+
+                  countryDialing:
+                    description:
+                      "The country dialing code is the national prefix
+                      to be used when dialing TO that particular country FROM another
+                      country.  "
+                    type: "string"
+                  areaDialing:
+                    description: "The local area dialing code for a telephone number."
+                    type: "string"
+                  dialNumber:
+                    description:
+                      "The local communication number, not including country
+                      dialing or area dialing codes.   If component parts of the
+                      telephone number are being communicated then the dialNumber
+                      is required."
+                    type: "string"
+                  extension:
+                    description:
+                      "The extension of the local communication number.
+                      In the case of a Telephone Number accessing a Pager Network
+                      the Extension maybe the Pager Identification Number required
+                      to leave a message for the Pager Number."
+                    type: "string"
+
+                    maxLength: 20
+                  formattedDialNumber:
+                    description:
+                      "The formatted telephone number.  The formatted dial
+                      number should start with a + followed by the country code
+                      for international phone numbers."
+                    type: "string"
+            email:
+              description: "A list of electronic addresses (i.e. email)"
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  labelName:
+                    description: "The label to be shown on the UI"
+                    maxLength: 15
+                    type: "string"
+                  channelCode:
+                    description:
+                      "Identifies the channel in which the associated entity
+                      comes"
+                    type: "string"
+                    enum:
+                      - "email"
+                  channelLabelName:
+                    description: "The label shown on the UI identifying the channel"
+                    type: "string"
+                  uri:
+                    description: "An email address (i.e. email)"
+                    type: "string"
+            internet:
+              description:
+                "list of internet uri.  For example website, home page,
+                etc..."
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  labelName:
+                    description: "The label to be shown on the UI"
+                    type: "string"
+                    maxLength: 15
+                  channelCode:
+                    description:
+                      "Identifies the channel in which the associated entity
+                      comes"
+                    type: "string"
+                    enum:
+                      - "internet"
+                  channelLabelName:
+                    description: "The label shown on the UI identifying the channel"
+                    type: "string"
+                  uri:
+                    description: "Uri of the internet address"
+                    type: "string"
+            instantMessage:
+              description: "Instant Messaging"
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  labelName:
+                    description: "The label to be shown on the UI"
+                    type: "string"
+                    maxLength: 15
+                  channelCode:
+                    description:
+                      "Identifies the channel in which the associated entity
+                      comes"
+                    type: "string"
+                    enum:
+                      - "im"
+                  channelLabelName:
+                    description: "The label shown on the UI identifying the channel"
+                    type: "string"
+                  uri:
+                    description: "instant messaging address"
+                    type: "string"
+            associateUri:
+              description: "the relative uri of a specific associates detail information."
+              type: "object"
+              properties:
+                href:
+                  description: "URI"
+                  type: "string"
+                  format: "uri"
+            photoUri:
+              description: "uri to a photo image of the related entity"
+              type: "object"
+              properties:
+                href:
+                  description: "URI"
+                  type: "string"
+                  format: "uri"

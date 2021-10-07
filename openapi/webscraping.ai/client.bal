@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `api_key`
+    string apiKey;
 |};
 
 # This is a generated connector for [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification.
@@ -30,109 +28,76 @@ public type ApiKeysConfig record {|
 @display {label: "WebScraping.AI", iconPath: "resources/webscraping.ai.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
     # Create a [WebScraping.AI account](https://webscraping.ai) and obtain tokens from the [dashboard](https://webscraping.ai/dashboard).
     #
-    # + apiKeyConfig - Provide your API key as `api_key`. Eg: `{"api_key" : "<API key>"}`
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + apiKeyConfig - API keys for authorization 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.webscraping.ai") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Page HTML by URL
     #
-    # + url - URL of the target page
-    # + headers - HTTP headers to pass to the target page. Can be specified either via a nested query parameter (...&headers[One]=value1&headers=[Another]=value2) or as a JSON encoded object (...&headers={"One": "value1", "Another": "value2"})
-    # + timeout - Maximum processing time in ms. Increase it in case of timeout errors (5000 by default, maximum is 30000)
-    # + js - Execute on-page JavaScript using a headless browser (true by default)
-    # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details.
-    # + return - Parameters validation error
+    # + url - URL of the target page 
+    # + headers - HTTP headers to pass to the target page. Can be specified either via a nested query parameter (...&headers[One]=value1&headers=[Another]=value2) or as a JSON encoded object (...&headers={"One": "value1", "Another": "value2"}) 
+    # + timeout - Maximum processing time in ms. Increase it in case of timeout errors (5000 by default, maximum is 30000) 
+    # + js - Execute on-page JavaScript using a headless browser (true by default) 
+    # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details. 
+    # + return - Success 
     remote isolated function getHTML(string url, record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
         string  path = string `/html`;
-        map<anydata> queryParam = {"url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
     }
     # HTML of a selected page area by URL and CSS selector
     #
-    # + url - URL of the target page
-    # + selector - CSS selector (null by default, returns whole page HTML)
-    # + headers - HTTP headers to pass to the target page. Can be specified either via a nested query parameter (...&headers[One]=value1&headers=[Another]=value2) or as a JSON encoded object (...&headers={"One": "value1", "Another": "value2"})
-    # + timeout - Maximum processing time in ms. Increase it in case of timeout errors (5000 by default, maximum is 30000)
-    # + js - Execute on-page JavaScript using a headless browser (true by default)
-    # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details.
-    # + return - Parameters validation error
+    # + selector - CSS selector (null by default, returns whole page HTML) 
+    # + url - URL of the target page 
+    # + headers - HTTP headers to pass to the target page. Can be specified either via a nested query parameter (...&headers[One]=value1&headers=[Another]=value2) or as a JSON encoded object (...&headers={"One": "value1", "Another": "value2"}) 
+    # + timeout - Maximum processing time in ms. Increase it in case of timeout errors (5000 by default, maximum is 30000) 
+    # + js - Execute on-page JavaScript using a headless browser (true by default) 
+    # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details. 
+    # + return - Success 
     remote isolated function getSelected(string url, string? selector = (), record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
         string  path = string `/selected`;
-        map<anydata> queryParam = {"selector": selector, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"selector": selector, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         string response = check self.clientEp-> get(path, targetType = string);
         return response;
     }
     # HTML of multiple page areas by URL and CSS selectors
     #
-    # + url - URL of the target page
-    # + selectors - Multiple CSS selectors (null by default, returns whole page HTML)
-    # + headers - HTTP headers to pass to the target page. Can be specified either via a nested query parameter (...&headers[One]=value1&headers=[Another]=value2) or as a JSON encoded object (...&headers={"One": "value1", "Another": "value2"})
-    # + timeout - Maximum processing time in ms. Increase it in case of timeout errors (5000 by default, maximum is 30000)
-    # + js - Execute on-page JavaScript using a headless browser (true by default)
-    # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details.
-    # + return - Parameters validation error
-    remote isolated function getSelectedMultiple(string url, string[]? selectors = (), record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns string|error {
+    # + selectors - Multiple CSS selectors (null by default, returns whole page HTML) 
+    # + url - URL of the target page 
+    # + headers - HTTP headers to pass to the target page. Can be specified either via a nested query parameter (...&headers[One]=value1&headers=[Another]=value2) or as a JSON encoded object (...&headers={"One": "value1", "Another": "value2"}) 
+    # + timeout - Maximum processing time in ms. Increase it in case of timeout errors (5000 by default, maximum is 30000) 
+    # + js - Execute on-page JavaScript using a headless browser (true by default) 
+    # + proxy - Type of proxy, use residential proxies if your site restricts traffic from datacenters (datacenter by default). Note that residential proxy requests are more expensive than datacenter, see the pricing page for details. 
+    # + return - Success 
+    remote isolated function getSelectedMultiple(string url, string[]? selectors = (), record {}? headers = (), int timeout = 5000, boolean js = true, string proxy = "datacenter") returns SelectedAreas|error {
         string  path = string `/selected-multiple`;
-        map<anydata> queryParam = {"selectors": selectors, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeys["api_key"]};
-        path = path + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp-> get(path, targetType = string);
+        map<anydata> queryParam = {"selectors": selectors, "url": url, "headers": headers, "timeout": timeout, "js": js, "proxy": proxy, "api_key": self.apiKeyConfig.apiKey};
+        map<Encoding> queryParamEncoding = {"selectors": {style: FORM, explode: true}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SelectedAreas response = check self.clientEp-> get(path, targetType = SelectedAreas);
         return response;
     }
     # Information about your account calls quota
     #
-    # + return - Wrong API key
+    # + return - Success 
     remote isolated function account() returns Account|error {
         string  path = string `/account`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         Account response = check self.clientEp-> get(path, targetType = Account);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

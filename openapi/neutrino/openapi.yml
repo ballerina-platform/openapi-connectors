@@ -30,481 +30,481 @@ servers:
     description: MS Azure endpoint
     variables: {}
 paths:
-  /image-resize:
-    post:
-      tags:
-        - Imaging
-      summary: Image Resize
-      description: Resize an image and output as either JPEG or PNG
-      operationId: ImageResize
-      parameters: []
-      requestBody:
-        description: Request payload
-        content:
-          application/x-www-form-urlencoded:
-            encoding: {}
-            schema:
-              required:
-                - image-url
-                - width
-                - height
-              type: object
-              properties:
-                image-url:
-                  type: string
-                  description: >-
-                    The URL or Base64 encoded Data URL for the source image (you
-                    can also upload an image file directly in which case this
-                    field is ignored)
-                  example: https://www.neutrinoapi.com/img/LOGO.png
-                width:
-                  type: integer
-                  description: The width to resize to (in px) while preserving aspect ratio
-                  format: int32
-                  example: 32
-                height:
-                  type: integer
-                  description: >-
-                    The height to resize to (in px) while preserving aspect
-                    ratio
-                  format: int32
-                  example: 32
-                format:
-                  type: string
-                  description: The output image format, can be either png or jpg
-                  default: png
-        required: false
-      responses:
-        '200':
-          description: Response status
-          headers: {}
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Your API request has been rejected. Check error code for details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '403':
-          description: You have failed to authenticate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '500':
-          description: We messed up, sorry! Your request has caused a fatal exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        default:
-          description: We messed up, sorry! Your request has caused an error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-      deprecated: false
-  /html5-render:
-    post:
-      tags:
-        - Imaging
-      summary: Render HTML5 
-      description: Render HTML content to PDF, JPG or PNG
-      operationId: RenderHTML5
-      parameters: []
-      requestBody:
-        description: Request payload
-        content:
-          application/x-www-form-urlencoded:
-            encoding: {}
-            schema:
-              required:
-                - content
-              type: object
-              properties:
-                content:
-                  type: string
-                  description: >-
-                    The HTML content. This can be either a URL to load from, a
-                    file upload or an HTML content string
-                  example: <h1>TEST DOCUMENT</h1><p>Hello, this is a test page...</p>
-                format:
-                  type: string
-                  description: 'Which format to output, available options are: PDF, PNG, JPG'
-                  default: PDF
-                page-size:
-                  type: string
-                  description: >-
-                    Set the document page size, can be one of: A0 - A9, B0 -
-                    B10, Comm10E, DLE or Letter
-                  default: A4
-                title:
-                  type: string
-                  description: The document title
-                margin:
-                  type: integer
-                  description: The document margin (in mm)
-                  format: int32
-                  default: 0
-                margin-left:
-                  type: integer
-                  description: The document left margin (in mm)
-                  format: int32
-                  default: 0
-                margin-right:
-                  type: integer
-                  description: The document right margin (in mm)
-                  format: int32
-                  default: 0
-                margin-top:
-                  type: integer
-                  description: The document top margin (in mm)
-                  format: int32
-                  default: 0
-                margin-bottom:
-                  type: integer
-                  description: The document bottom margin (in mm)
-                  format: int32
-                  default: 0
-                landscape:
-                  type: boolean
-                  description: Set the document to landscape orientation
-                  default: false
-                zoom:
-                  type: number
-                  description: >-
-                    Set the zoom factor when rendering the page (2.0 for double
-                    size, 0.5 for half size)
-                  format: double
-                  default: 1
-                grayscale:
-                  type: boolean
-                  description: Render the final document in grayscale
-                  default: false
-                media-print:
-                  type: boolean
-                  description: Use @media print CSS styles to render the document
-                  default: false
-                media-queries:
-                  type: boolean
-                  description: >-
-                    Activate all @media queries before rendering. This can be
-                    useful if you wan't to render the mobile version of a
-                    responsive website
-                  default: false
-                forms:
-                  type: boolean
-                  description: Generate real (fillable) PDF forms from HTML forms
-                  default: false
-                css:
-                  type: string
-                  description: >-
-                    Inject custom CSS into the HTML. e.g. 'body {
-                    background-color: red;}'
-                image-width:
-                  type: integer
-                  description: >-
-                    If rendering to an image format (PNG or JPG) use this image
-                    width (in pixels)
-                  format: int32
-                  default: 1024
-                image-height:
-                  type: integer
-                  description: >-
-                    If rendering to an image format (PNG or JPG) use this image
-                    height (in pixels). The default is automatic which
-                    dynamically sets the image height based on the content
-                  format: int32
-                render-delay:
-                  type: integer
-                  description: >-
-                    Number of milliseconds to wait before rendering the page
-                    (can be useful for pages with animations etc)
-                  format: int32
-                  default: 0
-                header-text-left:
-                  type: string
-                  description: >-
-                    Text to print to the left-hand side header of each page.
-                    e.g. 'My header - Page {page_number} of {total_pages}'
-                header-text-center:
-                  type: string
-                  description: Text to print to the center header of each page
-                header-text-right:
-                  type: string
-                  description: Text to print to the right-hand side header of each page
-                header-size:
-                  type: integer
-                  description: The height of your header (in mm)
-                  format: int32
-                  default: 9
-                header-font:
-                  type: string
-                  description: >-
-                    Set the header font. Fonts available: Times, Courier,
-                    Helvetica, Arial
-                  default: Courier
-                header-font-size:
-                  type: integer
-                  description: Set the header font size (in pt)
-                  format: int32
-                  default: 11
-                header-line:
-                  type: boolean
-                  description: Draw a full page width horizontal line under your header
-                  default: false
-                footer-text-left:
-                  type: string
-                  description: >-
-                    Text to print to the left-hand side footer of each page.
-                    e.g. 'My footer - Page {page_number} of {total_pages}'
-                footer-text-center:
-                  type: string
-                  description: Text to print to the center header of each page
-                footer-text-right:
-                  type: string
-                  description: Text to print to the right-hand side header of each page
-                footer-size:
-                  type: integer
-                  description: The height of your footer (in mm)
-                  format: int32
-                  default: 9
-                footer-font:
-                  type: string
-                  description: >-
-                    Set the footer font. Fonts available: Times, Courier,
-                    Helvetica, Arial
-                  default: Courier
-                footer-font-size:
-                  type: integer
-                  description: Set the footer font size (in pt)
-                  format: int32
-                  default: 11
-                footer-line:
-                  type: boolean
-                  description: Draw a full page width horizontal line above your footer
-                  default: false
-                page-width:
-                  type: integer
-                  description: Set the PDF page width explicitly (in mm)
-                  format: int32
-                page-height:
-                  type: integer
-                  description: Set the PDF page height explicitly (in mm)
-                  format: int32
-        required: false
-      responses:
-        '200':
-          description: Response status
-          headers: {}
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Your API request has been rejected. Check error code for details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '403':
-          description: You have failed to authenticate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '500':
-          description: We messed up, sorry! Your request has caused a fatal exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        default:
-          description: We messed up, sorry! Your request has caused an error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-      deprecated: false
-  /image-watermark:
-    post:
-      tags:
-        - Imaging
-      summary: Image Watermark
-      description: Watermark one image with another image
-      operationId: WatermarkImage
-      parameters: []
-      requestBody:
-        description: Request payload
-        content:
-          application/x-www-form-urlencoded:
-            encoding: {}
-            schema:
-              required:
-                - image-url
-                - watermark-url
-              type: object
-              properties:
-                image-url:
-                  type: string
-                  description: >-
-                    The URL or Base64 encoded Data URL for the source image (you
-                    can also upload an image file directly in which case this
-                    field is ignored)
-                  example: https://www.neutrinoapi.com/img/LOGO.png
-                watermark-url:
-                  type: string
-                  description: >-
-                    The URL or Base64 encoded Data URL for the watermark image
-                    (you can also upload an image file directly in which case
-                    this field is ignored)
-                  example: https://www.neutrinoapi.com/img/icons/security.png
-                opacity:
-                  type: integer
-                  description: The opacity of the watermark (0 to 100)
-                  format: int32
-                  default: 50
-                  example: 90
-                format:
-                  type: string
-                  description: The output image format, can be either png or jpg
-                  default: png
-                position:
-                  type: string
-                  description: >-
-                    The position of the watermark image, possible values are:
-                    <br>center, top-left, top-center, top-right, bottom-left,
-                    bottom-center, bottom-right
-                  default: center
-                width:
-                  type: integer
-                  description: >-
-                    If set resize the resulting image to this width (in px)
-                    while preserving aspect ratio
-                  format: int32
-                height:
-                  type: integer
-                  description: >-
-                    If set resize the resulting image to this height (in px)
-                    while preserving aspect ratio
-                  format: int32
-        required: false
-      responses:
-        '200':
-          description: Response status
-          headers: {}
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Your API request has been rejected. Check error code for details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '403':
-          description: You have failed to authenticate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '500':
-          description: We messed up, sorry! Your request has caused a fatal exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        default:
-          description: We messed up, sorry! Your request has caused an error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-      deprecated: false
-  /qr-code:
-    post:
-      tags:
-        - Imaging
-      summary: QR Code
-      description: Generate a QR code as a PNG image
-      operationId: GenerateQRCode
-      parameters: []
-      requestBody:
-        description: Request payload
-        content:
-          application/x-www-form-urlencoded:
-            encoding: {}
-            schema:
-              required:
-                - content
-              type: object
-              properties:
-                content:
-                  type: string
-                  description: >-
-                    The content to encode into the QR code (e.g. a URL or a
-                    phone number)
-                  example: https://www.neutrinoapi.com/signup/
-                width:
-                  type: integer
-                  description: The width of the QR code (in px)
-                  format: int32
-                  default: 256
-                height:
-                  type: integer
-                  description: The height of the QR code (in px)
-                  format: int32
-                  default: 256
-                fg-color:
-                  type: string
-                  description: The QR code foreground color
-                  default: '#000000'
-                bg-color:
-                  type: string
-                  description: The QR code background color
-                  default: '#ffffff'
-        required: false
-      responses:
-        '200':
-          description: Response status
-          headers: {}
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Your API request has been rejected. Check error code for details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '403':
-          description: You have failed to authenticate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        '500':
-          description: We messed up, sorry! Your request has caused a fatal exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-        default:
-          description: We messed up, sorry! Your request has caused an error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIError'
-      deprecated: false
+  # /image-resize:
+  #   post:
+  #     tags:
+  #       - Imaging
+  #     summary: Image Resize
+  #     description: Resize an image and output as either JPEG or PNG
+  #     operationId: ImageResize
+  #     parameters: []
+  #     requestBody:
+  #       description: Request payload
+  #       content:
+  #         application/x-www-form-urlencoded:
+  #           encoding: {}
+  #           schema:
+  #             required:
+  #               - image-url
+  #               - width
+  #               - height
+  #             type: object
+  #             properties:
+  #               image-url:
+  #                 type: string
+  #                 description: >-
+  #                   The URL or Base64 encoded Data URL for the source image (you
+  #                   can also upload an image file directly in which case this
+  #                   field is ignored)
+  #                 example: https://www.neutrinoapi.com/img/LOGO.png
+  #               width:
+  #                 type: integer
+  #                 description: The width to resize to (in px) while preserving aspect ratio
+  #                 format: int32
+  #                 example: 32
+  #               height:
+  #                 type: integer
+  #                 description: >-
+  #                   The height to resize to (in px) while preserving aspect
+  #                   ratio
+  #                 format: int32
+  #                 example: 32
+  #               format:
+  #                 type: string
+  #                 description: The output image format, can be either png or jpg
+  #                 default: png
+  #       required: false
+  #     responses:
+  #       '200':
+  #         description: Response status
+  #         headers: {}
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: Your API request has been rejected. Check error code for details
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '403':
+  #         description: You have failed to authenticate
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '500':
+  #         description: We messed up, sorry! Your request has caused a fatal exception
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       default:
+  #         description: We messed up, sorry! Your request has caused an error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #     deprecated: false
+  # /html5-render:
+  #   post:
+  #     tags:
+  #       - Imaging
+  #     summary: Render HTML5 
+  #     description: Render HTML content to PDF, JPG or PNG
+  #     operationId: RenderHTML5
+  #     parameters: []
+  #     requestBody:
+  #       description: Request payload
+  #       content:
+  #         application/x-www-form-urlencoded:
+  #           encoding: {}
+  #           schema:
+  #             required:
+  #               - content
+  #             type: object
+  #             properties:
+  #               content:
+  #                 type: string
+  #                 description: >-
+  #                   The HTML content. This can be either a URL to load from, a
+  #                   file upload or an HTML content string
+  #                 example: <h1>TEST DOCUMENT</h1><p>Hello, this is a test page...</p>
+  #               format:
+  #                 type: string
+  #                 description: 'Which format to output, available options are: PDF, PNG, JPG'
+  #                 default: PDF
+  #               page-size:
+  #                 type: string
+  #                 description: >-
+  #                   Set the document page size, can be one of: A0 - A9, B0 -
+  #                   B10, Comm10E, DLE or Letter
+  #                 default: A4
+  #               title:
+  #                 type: string
+  #                 description: The document title
+  #               margin:
+  #                 type: integer
+  #                 description: The document margin (in mm)
+  #                 format: int32
+  #                 default: 0
+  #               margin-left:
+  #                 type: integer
+  #                 description: The document left margin (in mm)
+  #                 format: int32
+  #                 default: 0
+  #               margin-right:
+  #                 type: integer
+  #                 description: The document right margin (in mm)
+  #                 format: int32
+  #                 default: 0
+  #               margin-top:
+  #                 type: integer
+  #                 description: The document top margin (in mm)
+  #                 format: int32
+  #                 default: 0
+  #               margin-bottom:
+  #                 type: integer
+  #                 description: The document bottom margin (in mm)
+  #                 format: int32
+  #                 default: 0
+  #               landscape:
+  #                 type: boolean
+  #                 description: Set the document to landscape orientation
+  #                 default: false
+  #               zoom:
+  #                 type: number
+  #                 description: >-
+  #                   Set the zoom factor when rendering the page (2.0 for double
+  #                   size, 0.5 for half size)
+  #                 format: double
+  #                 default: 1
+  #               grayscale:
+  #                 type: boolean
+  #                 description: Render the final document in grayscale
+  #                 default: false
+  #               media-print:
+  #                 type: boolean
+  #                 description: Use @media print CSS styles to render the document
+  #                 default: false
+  #               media-queries:
+  #                 type: boolean
+  #                 description: >-
+  #                   Activate all @media queries before rendering. This can be
+  #                   useful if you wan't to render the mobile version of a
+  #                   responsive website
+  #                 default: false
+  #               forms:
+  #                 type: boolean
+  #                 description: Generate real (fillable) PDF forms from HTML forms
+  #                 default: false
+  #               css:
+  #                 type: string
+  #                 description: >-
+  #                   Inject custom CSS into the HTML. e.g. 'body {
+  #                   background-color: red;}'
+  #               image-width:
+  #                 type: integer
+  #                 description: >-
+  #                   If rendering to an image format (PNG or JPG) use this image
+  #                   width (in pixels)
+  #                 format: int32
+  #                 default: 1024
+  #               image-height:
+  #                 type: integer
+  #                 description: >-
+  #                   If rendering to an image format (PNG or JPG) use this image
+  #                   height (in pixels). The default is automatic which
+  #                   dynamically sets the image height based on the content
+  #                 format: int32
+  #               render-delay:
+  #                 type: integer
+  #                 description: >-
+  #                   Number of milliseconds to wait before rendering the page
+  #                   (can be useful for pages with animations etc)
+  #                 format: int32
+  #                 default: 0
+  #               header-text-left:
+  #                 type: string
+  #                 description: >-
+  #                   Text to print to the left-hand side header of each page.
+  #                   e.g. 'My header - Page {page_number} of {total_pages}'
+  #               header-text-center:
+  #                 type: string
+  #                 description: Text to print to the center header of each page
+  #               header-text-right:
+  #                 type: string
+  #                 description: Text to print to the right-hand side header of each page
+  #               header-size:
+  #                 type: integer
+  #                 description: The height of your header (in mm)
+  #                 format: int32
+  #                 default: 9
+  #               header-font:
+  #                 type: string
+  #                 description: >-
+  #                   Set the header font. Fonts available: Times, Courier,
+  #                   Helvetica, Arial
+  #                 default: Courier
+  #               header-font-size:
+  #                 type: integer
+  #                 description: Set the header font size (in pt)
+  #                 format: int32
+  #                 default: 11
+  #               header-line:
+  #                 type: boolean
+  #                 description: Draw a full page width horizontal line under your header
+  #                 default: false
+  #               footer-text-left:
+  #                 type: string
+  #                 description: >-
+  #                   Text to print to the left-hand side footer of each page.
+  #                   e.g. 'My footer - Page {page_number} of {total_pages}'
+  #               footer-text-center:
+  #                 type: string
+  #                 description: Text to print to the center header of each page
+  #               footer-text-right:
+  #                 type: string
+  #                 description: Text to print to the right-hand side header of each page
+  #               footer-size:
+  #                 type: integer
+  #                 description: The height of your footer (in mm)
+  #                 format: int32
+  #                 default: 9
+  #               footer-font:
+  #                 type: string
+  #                 description: >-
+  #                   Set the footer font. Fonts available: Times, Courier,
+  #                   Helvetica, Arial
+  #                 default: Courier
+  #               footer-font-size:
+  #                 type: integer
+  #                 description: Set the footer font size (in pt)
+  #                 format: int32
+  #                 default: 11
+  #               footer-line:
+  #                 type: boolean
+  #                 description: Draw a full page width horizontal line above your footer
+  #                 default: false
+  #               page-width:
+  #                 type: integer
+  #                 description: Set the PDF page width explicitly (in mm)
+  #                 format: int32
+  #               page-height:
+  #                 type: integer
+  #                 description: Set the PDF page height explicitly (in mm)
+  #                 format: int32
+  #       required: false
+  #     responses:
+  #       '200':
+  #         description: Response status
+  #         headers: {}
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: Your API request has been rejected. Check error code for details
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '403':
+  #         description: You have failed to authenticate
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '500':
+  #         description: We messed up, sorry! Your request has caused a fatal exception
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       default:
+  #         description: We messed up, sorry! Your request has caused an error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #     deprecated: false
+  # /image-watermark:
+  #   post:
+  #     tags:
+  #       - Imaging
+  #     summary: Image Watermark
+  #     description: Watermark one image with another image
+  #     operationId: WatermarkImage
+  #     parameters: []
+  #     requestBody:
+  #       description: Request payload
+  #       content:
+  #         application/x-www-form-urlencoded:
+  #           encoding: {}
+  #           schema:
+  #             required:
+  #               - image-url
+  #               - watermark-url
+  #             type: object
+  #             properties:
+  #               image-url:
+  #                 type: string
+  #                 description: >-
+  #                   The URL or Base64 encoded Data URL for the source image (you
+  #                   can also upload an image file directly in which case this
+  #                   field is ignored)
+  #                 example: https://www.neutrinoapi.com/img/LOGO.png
+  #               watermark-url:
+  #                 type: string
+  #                 description: >-
+  #                   The URL or Base64 encoded Data URL for the watermark image
+  #                   (you can also upload an image file directly in which case
+  #                   this field is ignored)
+  #                 example: https://www.neutrinoapi.com/img/icons/security.png
+  #               opacity:
+  #                 type: integer
+  #                 description: The opacity of the watermark (0 to 100)
+  #                 format: int32
+  #                 default: 50
+  #                 example: 90
+  #               format:
+  #                 type: string
+  #                 description: The output image format, can be either png or jpg
+  #                 default: png
+  #               position:
+  #                 type: string
+  #                 description: >-
+  #                   The position of the watermark image, possible values are:
+  #                   <br>center, top-left, top-center, top-right, bottom-left,
+  #                   bottom-center, bottom-right
+  #                 default: center
+  #               width:
+  #                 type: integer
+  #                 description: >-
+  #                   If set resize the resulting image to this width (in px)
+  #                   while preserving aspect ratio
+  #                 format: int32
+  #               height:
+  #                 type: integer
+  #                 description: >-
+  #                   If set resize the resulting image to this height (in px)
+  #                   while preserving aspect ratio
+  #                 format: int32
+  #       required: false
+  #     responses:
+  #       '200':
+  #         description: Response status
+  #         headers: {}
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: Your API request has been rejected. Check error code for details
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '403':
+  #         description: You have failed to authenticate
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '500':
+  #         description: We messed up, sorry! Your request has caused a fatal exception
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       default:
+  #         description: We messed up, sorry! Your request has caused an error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #     deprecated: false
+  # /qr-code:
+  #   post:
+  #     tags:
+  #       - Imaging
+  #     summary: QR Code
+  #     description: Generate a QR code as a PNG image
+  #     operationId: GenerateQRCode
+  #     parameters: []
+  #     requestBody:
+  #       description: Request payload
+  #       content:
+  #         application/x-www-form-urlencoded:
+  #           encoding: {}
+  #           schema:
+  #             required:
+  #               - content
+  #             type: object
+  #             properties:
+  #               content:
+  #                 type: string
+  #                 description: >-
+  #                   The content to encode into the QR code (e.g. a URL or a
+  #                   phone number)
+  #                 example: https://www.neutrinoapi.com/signup/
+  #               width:
+  #                 type: integer
+  #                 description: The width of the QR code (in px)
+  #                 format: int32
+  #                 default: 256
+  #               height:
+  #                 type: integer
+  #                 description: The height of the QR code (in px)
+  #                 format: int32
+  #                 default: 256
+  #               fg-color:
+  #                 type: string
+  #                 description: The QR code foreground color
+  #                 default: '#000000'
+  #               bg-color:
+  #                 type: string
+  #                 description: The QR code background color
+  #                 default: '#ffffff'
+  #       required: false
+  #     responses:
+  #       '200':
+  #         description: Response status
+  #         headers: {}
+  #         content:
+  #           application/octet-stream:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: Your API request has been rejected. Check error code for details
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '403':
+  #         description: You have failed to authenticate
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       '500':
+  #         description: We messed up, sorry! Your request has caused a fatal exception
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #       default:
+  #         description: We messed up, sorry! Your request has caused an error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/APIError'
+  #     deprecated: false
   /sms-verify:
     post:
       tags:
@@ -3935,16 +3935,14 @@ components:
   securitySchemes:
     user-id:
       type: apiKey
-      description: Your user ID
+      description: Represents API Key `user-id`
       name: user-id
       in: header
-      x-ballerina-apikey-description: "Provide your API keys as `user-id` and `api-key`. Eg: `{\"user-id\" : \"<User ID>\", \"api-key\" : \"<API key>\"}`"
     api-key:
       type: apiKey
-      description: Your API key
+      description: Represent API Key `api-key`
       name: api-key
       in: header
-      x-ballerina-apikey-description: "Provide your API keys as `user-id` and `api-key`. Eg: `{\"user-id\" : \"<User ID>\", \"api-key\" : \"<API key>\"}`"
 security:
   - user-id: []
     api-key: []

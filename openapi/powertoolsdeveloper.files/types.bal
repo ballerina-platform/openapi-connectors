@@ -14,81 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type Body11 record {
-    # Source file (10MB limit)
-    string file;
-};
-
-public type Body10 record {
-    # Crop start position (use negative values to reverse crop area)
-    string position;
-    # Width (X-axis right, negative to reverse)
-    decimal Width;
-    # Height (Y-axis down, negative to reverse)
-    decimal Height;
-    # Source image file
-    string file;
-};
-
-public type OutputString record {
-    # Result
-    string result?;
-};
-
 public type InputQRCode record {
     # Text value(s) (vertical bar delimited by type)
     string input;
     # Payload type
     string payload;
-};
-
-public type Body8 record {
-    # Horizontal or Vertical
-    string orientation;
-    # Source image file
-    string file;
-};
-
-public type Body9 record {
-    # Watermark text
-    string text;
-    # Text font
-    string font;
-    # Font size (points)
-    decimal size;
-    # Text color hex value
-    string color;
-    # Horizontal alignment
-    string horizontal;
-    # Vertical alignment
-    string vertical;
-    # Source image file
-    string file;
-};
-
-public type Body6 record {
-    # Optimize output quality of the target image
-    string algorithm;
-    # Image adjustment units
-    string units;
-    # Image height (pixels or percent)
-    decimal height?;
-    # Image width (pixels or percent)
-    decimal width?;
-    # Source image file
-    string file;
-};
-
-public type Body7 record {
-    # Number of degrees
-    string degrees;
-    # Source image file
-    string file;
-};
-
-public type Body5 record {
-    # Output file format
-    string format;
-    # Source image file
-    string file;
 };

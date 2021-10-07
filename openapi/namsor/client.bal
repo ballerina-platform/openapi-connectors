@@ -18,8 +18,8 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # All requests on the NamSor API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `X-API-KEY`
+    string xApiKey;
 |};
 
 # This is a generated connector for [NamSor API v2](https://v2.namsor.com/NamSorAPIv2/index.html) OpenAPI specification. 
@@ -27,19 +27,19 @@ public type ApiKeysConfig record {|
 @display {label: "NamSor", iconPath: "resources/namsor.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create an [NamSor Account](https://v2.namsor.com/NamSorAPIv2/sign-in.html) and obtain tokens following [this guide](https://v2.namsor.com/NamSorAPIv2/apidoc.html).
     #
-    # + apiKeyConfig - Provide your API key as `X-API-KEY`. Eg: `{"X-API-KEY" : "<your API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://v2.namsor.com/NamSorAPIv2") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # [USES 10 UNITS PER NAME] Infer the likely country of residence of a personal full name, or one surname. Assumes names as they are in the country of residence OR the country of origin.
     #
@@ -47,7 +47,7 @@ public isolated client class Client {
     # + return - A origined name. 
     remote isolated function country(string personalNameFull) returns PersonalNameGeoOut|error {
         string  path = string `/api2/json/country/${personalNameFull}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameGeoOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGeoOut);
         return response;
@@ -58,7 +58,7 @@ public isolated client class Client {
     # + return - A typed name. 
     remote isolated function nameType(string properNoun) returns ProperNounCategorizedOut|error {
         string  path = string `/api2/json/nameType/${properNoun}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ProperNounCategorizedOut response = check self.clientEp-> get(path, accHeaders, targetType = ProperNounCategorizedOut);
         return response;
@@ -70,7 +70,7 @@ public isolated client class Client {
     # + return - Disabled the API Key. 
     remote isolated function disable(string 'source, boolean disabled) returns http:Response|error {
         string  path = string `/api2/json/disable/${'source}/${disabled}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -82,7 +82,7 @@ public isolated client class Client {
     # + return - A origined name. 
     remote isolated function origin(string firstName, string lastName) returns FirstLastNameOriginedOut|error {
         string  path = string `/api2/json/origin/${firstName}/${lastName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameOriginedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameOriginedOut);
         return response;
@@ -92,7 +92,7 @@ public isolated client class Client {
     # + return - The current software version 
     remote isolated function softwareVersion() returns SoftwareVersionOut|error {
         string  path = string `/api2/json/softwareVersion`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         SoftwareVersionOut response = check self.clientEp-> get(path, accHeaders, targetType = SoftwareVersionOut);
         return response;
@@ -102,7 +102,7 @@ public isolated client class Client {
     # + return - Available classifiers and status 
     remote isolated function apiStatus() returns APIClassifiersStatusOut|error {
         string  path = string `/api2/json/apiStatus`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         APIClassifiersStatusOut response = check self.clientEp-> get(path, accHeaders, targetType = APIClassifiersStatusOut);
         return response;
@@ -112,7 +112,7 @@ public isolated client class Client {
     # + return - Available services 
     remote isolated function availableServices() returns APIServicesOut|error {
         string  path = string `/api2/json/apiServices`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         APIServicesOut response = check self.clientEp-> get(path, accHeaders, targetType = APIServicesOut);
         return response;
@@ -123,7 +123,7 @@ public isolated client class Client {
     # + return - Available plans 
     remote isolated function taxonomyClasses(string classifierName) returns APIClassifierTaxonomyOut|error {
         string  path = string `/api2/json/taxonomyClasses/${classifierName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         APIClassifierTaxonomyOut response = check self.clientEp-> get(path, accHeaders, targetType = APIClassifierTaxonomyOut);
         return response;
@@ -133,7 +133,7 @@ public isolated client class Client {
     # + return - Print current API usage. 
     remote isolated function apiUsage() returns APIPeriodUsageOut|error {
         string  path = string `/api2/json/apiUsage`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         APIPeriodUsageOut response = check self.clientEp-> get(path, accHeaders, targetType = APIPeriodUsageOut);
         return response;
@@ -143,7 +143,7 @@ public isolated client class Client {
     # + return - Print historical API usage (NB. new output format form v2.0.15) 
     remote isolated function apiUsageHistory() returns APIUsageHistoryOut|error {
         string  path = string `/api2/json/apiUsageHistory`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         APIUsageHistoryOut response = check self.clientEp-> get(path, accHeaders, targetType = APIUsageHistoryOut);
         return response;
@@ -153,7 +153,7 @@ public isolated client class Client {
     # + return - Print historical API usage. 
     remote isolated function apiUsageHistoryAggregate() returns APIUsageAggregatedOut|error {
         string  path = string `/api2/json/apiUsageHistoryAggregate`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         APIUsageAggregatedOut response = check self.clientEp-> get(path, accHeaders, targetType = APIUsageAggregatedOut);
         return response;
@@ -165,7 +165,7 @@ public isolated client class Client {
     # + return - Set learning from source. 
     remote isolated function learnable(string 'source, boolean learnable) returns http:Response|error {
         string  path = string `/api2/json/learnable/${'source}/${learnable}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -177,7 +177,7 @@ public isolated client class Client {
     # + return - Anonymization of a source. 
     remote isolated function anonymize(string 'source, boolean anonymized) returns http:Response|error {
         string  path = string `/api2/json/anonymize/${'source}/${anonymized}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
         return response;
@@ -189,7 +189,7 @@ public isolated client class Client {
     # + return - A typed name. 
     remote isolated function nameTypeGeo(string properNoun, string countryIso2) returns ProperNounCategorizedOut|error {
         string  path = string `/api2/json/nameTypeGeo/${properNoun}/${countryIso2}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         ProperNounCategorizedOut response = check self.clientEp-> get(path, accHeaders, targetType = ProperNounCategorizedOut);
         return response;
@@ -200,7 +200,7 @@ public isolated client class Client {
     # + return - A list of commonTypeized names. 
     remote isolated function nameTypeBatch(BatchNameIn payload) returns BatchProperNounCategorizedOut|error {
         string  path = string `/api2/json/nameTypeBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -214,7 +214,7 @@ public isolated client class Client {
     # + return - A list of commonTypeized names. 
     remote isolated function nameTypeGeoBatch(BatchNameGeoIn payload) returns BatchProperNounCategorizedOut|error {
         string  path = string `/api2/json/nameTypeGeoBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -233,7 +233,7 @@ public isolated client class Client {
     # + return - Two classified names. 
     remote isolated function corridor(string countryIso2From, string firstNameFrom, string lastNameFrom, string countryIso2To, string firstNameTo, string lastNameTo) returns CorridorOut|error {
         string  path = string `/api2/json/corridor/${countryIso2From}/${firstNameFrom}/${lastNameFrom}/${countryIso2To}/${firstNameTo}/${lastNameTo}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         CorridorOut response = check self.clientEp-> get(path, accHeaders, targetType = CorridorOut);
         return response;
@@ -244,7 +244,7 @@ public isolated client class Client {
     # + return - A list of classified name pairs. 
     remote isolated function corridorBatch(BatchCorridorIn payload) returns BatchCorridorOut|error {
         string  path = string `/api2/json/corridorBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -259,7 +259,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function gender(string firstName, string lastName) returns FirstLastNameGenderedOut|error {
         string  path = string `/api2/json/gender/${firstName}/${lastName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
         return response;
@@ -272,7 +272,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function genderGeo(string firstName, string lastName, string countryIso2) returns FirstLastNameGenderedOut|error {
         string  path = string `/api2/json/genderGeo/${firstName}/${lastName}/${countryIso2}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
         return response;
@@ -283,7 +283,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderGeoBatch(BatchFirstLastNameGeoIn payload) returns BatchFirstLastNameGenderedOut|error {
         string  path = string `/api2/json/genderGeoBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -297,7 +297,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameGenderedOut|error {
         string  path = string `/api2/json/genderBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -312,7 +312,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function genderFullGeo(string fullName, string countryIso2) returns PersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderFullGeo/${fullName}/${countryIso2}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
         return response;
@@ -323,7 +323,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function genderFull(string fullName) returns PersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderFull/${fullName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
         return response;
@@ -334,7 +334,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderFullBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderFullBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -348,7 +348,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderFullGeoBatch(BatchPersonalNameGeoIn payload) returns BatchPersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderFullGeoBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -362,7 +362,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function originBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameOriginedOut|error {
         string  path = string `/api2/json/originBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -376,7 +376,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function countryBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGeoOut|error {
         string  path = string `/api2/json/countryBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -391,7 +391,7 @@ public isolated client class Client {
     # + return - a US resident's likely race/ethnicity : W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usRaceEthnicity(string firstName, string lastName) returns FirstLastNameUSRaceEthnicityOut|error {
         string  path = string `/api2/json/usRaceEthnicity/${firstName}/${lastName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameUSRaceEthnicityOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameUSRaceEthnicityOut);
         return response;
@@ -404,7 +404,7 @@ public isolated client class Client {
     # + return - a US resident's likely race/ethnicity : W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usRaceEthnicityZIP5(string firstName, string lastName, string zip5Code) returns FirstLastNameUSRaceEthnicityOut|error {
         string  path = string `/api2/json/usRaceEthnicityZIP5/${firstName}/${lastName}/${zip5Code}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameUSRaceEthnicityOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameUSRaceEthnicityOut);
         return response;
@@ -415,7 +415,7 @@ public isolated client class Client {
     # + return - A list of US resident's likely race/ethnicity. W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usRaceEthnicityBatch(BatchFirstLastNameGeoIn payload) returns BatchFirstLastNameUSRaceEthnicityOut|error {
         string  path = string `/api2/json/usRaceEthnicityBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -429,7 +429,7 @@ public isolated client class Client {
     # + return - A list of US resident's likely race/ethnicity. W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usZipRaceEthnicityBatch(BatchFirstLastNameGeoZippedIn payload) returns BatchFirstLastNameUSRaceEthnicityOut|error {
         string  path = string `/api2/json/usZipRaceEthnicityBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -445,7 +445,7 @@ public isolated client class Client {
     # + return - A diaspora / ethnicity for given name and geography. 
     remote isolated function diaspora(string countryIso2, string firstName, string lastName) returns FirstLastNameDiasporaedOut|error {
         string  path = string `/api2/json/diaspora/${countryIso2}/${firstName}/${lastName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameDiasporaedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameDiasporaedOut);
         return response;
@@ -456,7 +456,7 @@ public isolated client class Client {
     # + return - A list of diaspora / ethnicity given a name and residency. 
     remote isolated function diasporaBatch(BatchFirstLastNameGeoIn payload) returns BatchFirstLastNameDiasporaedOut|error {
         string  path = string `/api2/json/diasporaBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -471,7 +471,7 @@ public isolated client class Client {
     # + return - A origined name. 
     remote isolated function parseNameGeo(string nameFull, string countryIso2) returns PersonalNameParsedOut|error {
         string  path = string `/api2/json/parseName/${nameFull}/${countryIso2}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
         return response;
@@ -482,7 +482,7 @@ public isolated client class Client {
     # + return - A list of parsed names. 
     remote isolated function parseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
         string  path = string `/api2/json/parseNameBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -496,7 +496,7 @@ public isolated client class Client {
     # + return - A list of parsed names. 
     remote isolated function parseNameGeoBatch(BatchPersonalNameGeoIn payload) returns BatchPersonalNameParsedOut|error {
         string  path = string `/api2/json/parseNameGeoBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -510,7 +510,7 @@ public isolated client class Client {
     # + return - A origined name. 
     remote isolated function parseChineseName(string chineseName) returns PersonalNameParsedOut|error {
         string  path = string `/api2/json/parseChineseName/${chineseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
         return response;
@@ -521,7 +521,7 @@ public isolated client class Client {
     # + return - A list of parsed names. 
     remote isolated function parseChineseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
         string  path = string `/api2/json/parseChineseNameBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -535,7 +535,7 @@ public isolated client class Client {
     # + return - A pinyin name. 
     remote isolated function pinyinChineseName(string chineseName) returns PersonalNameParsedOut|error {
         string  path = string `/api2/json/pinyinChineseName/${chineseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
         return response;
@@ -546,7 +546,7 @@ public isolated client class Client {
     # + return - A list of Pinyin names. 
     remote isolated function pinyinChineseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
         string  path = string `/api2/json/pinyinChineseNameBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -562,7 +562,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function chineseNameMatch(string chineseSurnameLatin, string chineseGivenNameLatin, string chineseName) returns NameMatchedOut|error {
         string  path = string `/api2/json/chineseNameMatch/${chineseSurnameLatin}/${chineseGivenNameLatin}/${chineseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         NameMatchedOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchedOut);
         return response;
@@ -573,7 +573,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function chineseNameMatchBatch(BatchMatchPersonalFirstLastNameIn payload) returns BatchNameMatchedOut|error {
         string  path = string `/api2/json/chineseNameMatchBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -588,7 +588,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function genderChineseNamePinyin(string chineseSurnameLatin, string chineseGivenNameLatin) returns FirstLastNameGenderedOut|error {
         string  path = string `/api2/json/genderChineseNamePinyin/${chineseSurnameLatin}/${chineseGivenNameLatin}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
         return response;
@@ -599,7 +599,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderChineseNamePinyinBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameGenderedOut|error {
         string  path = string `/api2/json/genderChineseNamePinyinBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -613,7 +613,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function genderChineseName(string chineseName) returns PersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderChineseName/${chineseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
         return response;
@@ -624,7 +624,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderChineseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderChineseNameBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -639,7 +639,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function chineseNameCandidates(string chineseSurnameLatin, string chineseGivenNameLatin) returns NameMatchCandidatesOut|error {
         string  path = string `/api2/json/chineseNameCandidates/${chineseSurnameLatin}/${chineseGivenNameLatin}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
         return response;
@@ -650,7 +650,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function chineseNameCandidatesBatch(BatchFirstLastNameIn payload) returns BatchNameMatchCandidatesOut|error {
         string  path = string `/api2/json/chineseNameCandidatesBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -666,7 +666,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function chineseNameGenderCandidates(string chineseSurnameLatin, string chineseGivenNameLatin, string knownGender) returns NameMatchCandidatesOut|error {
         string  path = string `/api2/json/chineseNameGenderCandidates/${chineseSurnameLatin}/${chineseGivenNameLatin}/${knownGender}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
         return response;
@@ -677,7 +677,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function chineseNameCandidatesGenderBatch(BatchFirstLastNameGenderIn payload) returns BatchNameMatchCandidatesOut|error {
         string  path = string `/api2/json/chineseNameCandidatesGenderBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -691,7 +691,7 @@ public isolated client class Client {
     # + return - A origined name. 
     remote isolated function parseJapaneseName(string japaneseName) returns PersonalNameParsedOut|error {
         string  path = string `/api2/json/parseJapaneseName/${japaneseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
         return response;
@@ -702,7 +702,7 @@ public isolated client class Client {
     # + return - A list of parsed names. 
     remote isolated function parseJapaneseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
         string  path = string `/api2/json/parseJapaneseNameBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -718,7 +718,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function japaneseNameKanjiCandidates(string japaneseSurnameLatin, string japaneseGivenNameLatin, string knownGender) returns NameMatchCandidatesOut|error {
         string  path = string `/api2/json/japaneseNameKanjiCandidates/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${knownGender}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
         return response;
@@ -730,7 +730,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function japanesenamekanjicandidates1(string japaneseSurnameLatin, string japaneseGivenNameLatin) returns NameMatchCandidatesOut|error {
         string  path = string `/api2/json/japaneseNameKanjiCandidates/${japaneseSurnameLatin}/${japaneseGivenNameLatin}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
         return response;
@@ -742,7 +742,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function japaneseNameLatinCandidates(string japaneseSurnameKanji, string japaneseGivenNameKanji) returns NameMatchCandidatesOut|error {
         string  path = string `/api2/json/japaneseNameLatinCandidates/${japaneseSurnameKanji}/${japaneseGivenNameKanji}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
         return response;
@@ -753,7 +753,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function japaneseNameKanjiCandidatesBatch(BatchFirstLastNameIn payload) returns BatchNameMatchCandidatesOut|error {
         string  path = string `/api2/json/japaneseNameKanjiCandidatesBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -767,7 +767,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function japaneseNameGenderKanjiCandidatesBatch(BatchFirstLastNameGenderIn payload) returns BatchNameMatchCandidatesOut|error {
         string  path = string `/api2/json/japaneseNameGenderKanjiCandidatesBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -781,7 +781,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function japaneseNameLatinCandidatesBatch(BatchFirstLastNameIn payload) returns BatchNameMatchCandidatesOut|error {
         string  path = string `/api2/json/japaneseNameLatinCandidatesBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -797,7 +797,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function japaneseNameMatch(string japaneseSurnameLatin, string japaneseGivenNameLatin, string japaneseName) returns NameMatchedOut|error {
         string  path = string `/api2/json/japaneseNameMatch/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${japaneseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         NameMatchedOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchedOut);
         return response;
@@ -810,7 +810,7 @@ public isolated client class Client {
     # + return - A romanized name. 
     remote isolated function japaneseNameMatchFeedbackLoop(string japaneseSurnameLatin, string japaneseGivenNameLatin, string japaneseName) returns FeedbackLoopOut|error {
         string  path = string `/api2/json/japaneseNameMatchFeedbackLoop/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${japaneseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FeedbackLoopOut response = check self.clientEp-> get(path, accHeaders, targetType = FeedbackLoopOut);
         return response;
@@ -821,7 +821,7 @@ public isolated client class Client {
     # + return - A list of matched names. 
     remote isolated function japaneseNameMatchBatch(BatchMatchPersonalFirstLastNameIn payload) returns BatchNameMatchedOut|error {
         string  path = string `/api2/json/japaneseNameMatchBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -836,7 +836,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function genderJapaneseNamePinyin(string japaneseSurname, string japaneseGivenName) returns FirstLastNameGenderedOut|error {
         string  path = string `/api2/json/genderJapaneseName/${japaneseSurname}/${japaneseGivenName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
         return response;
@@ -847,7 +847,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderJapaneseNamePinyinBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameGenderedOut|error {
         string  path = string `/api2/json/genderJapaneseNameBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -861,7 +861,7 @@ public isolated client class Client {
     # + return - A genderized name. 
     remote isolated function genderJapaneseNameFull(string japaneseName) returns PersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderJapaneseNameFull/${japaneseName}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
         return response;
@@ -872,7 +872,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function genderJapaneseNameFullBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGenderedOut|error {
         string  path = string `/api2/json/genderJapaneseNameFullBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -888,7 +888,7 @@ public isolated client class Client {
     # + return - A name with country and phone code. 
     remote isolated function phoneCode(string firstName, string lastName, string phoneNumber) returns FirstLastNamePhoneCodedOut|error {
         string  path = string `/api2/json/phoneCode/${firstName}/${lastName}/${phoneNumber}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNamePhoneCodedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNamePhoneCodedOut);
         return response;
@@ -902,7 +902,7 @@ public isolated client class Client {
     # + return - A name with country and phone code. 
     remote isolated function phoneCodeGeo(string firstName, string lastName, string phoneNumber, string countryIso2) returns FirstLastNamePhoneCodedOut|error {
         string  path = string `/api2/json/phoneCodeGeo/${firstName}/${lastName}/${phoneNumber}/${countryIso2}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNamePhoneCodedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNamePhoneCodedOut);
         return response;
@@ -917,7 +917,7 @@ public isolated client class Client {
     # + return - A name with country and phone code. 
     remote isolated function phoneCodeGeoFeedbackLoop(string firstName, string lastName, string phoneNumber, string phoneNumberE164, string countryIso2) returns FirstLastNamePhoneCodedOut|error {
         string  path = string `/api2/json/phoneCodeGeoFeedbackLoop/${firstName}/${lastName}/${phoneNumber}/${phoneNumberE164}/${countryIso2}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FirstLastNamePhoneCodedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNamePhoneCodedOut);
         return response;
@@ -928,7 +928,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function phoneCodeBatch(BatchFirstLastNamePhoneNumberIn payload) returns BatchFirstLastNamePhoneCodedOut|error {
         string  path = string `/api2/json/phoneCodeBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -942,7 +942,7 @@ public isolated client class Client {
     # + return - A list of genderized names. 
     remote isolated function phoneCodeGeoBatch(BatchFirstLastNamePhoneNumberGeoIn payload) returns BatchFirstLastNamePhoneCodedOut|error {
         string  path = string `/api2/json/phoneCodeGeoBatch`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -956,23 +956,9 @@ public isolated client class Client {
     # + return - A origined name. 
     remote isolated function parseName(string nameFull) returns PersonalNameParsedOut|error {
         string  path = string `/api2/json/parseName/${nameFull}`;
-        map<any> headerValues = {"X-API-KEY": self.apiKeys["X-API-KEY"]};
+        map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
         return response;
     }
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

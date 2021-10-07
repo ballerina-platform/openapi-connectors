@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -106,15 +106,6 @@ public type WebResponseNotReady record {
     string eta?;
 };
 
-public type Body record {
-    # The uploaded file data
-    string file;
-    # Optional setting what constitutes a long sentence (default 25)
-    int longSentenceWordCount?;
-    # Optional setting what constitutes a very long sentence (default 30)
-    int veryLongSentenceWordCount?;
-};
-
 public type DocumentResponseNotReady record {
     int id?;
     string started?;
@@ -206,11 +197,6 @@ public type Stats record {
     int longSentenceCount?;
     float fleschKincaidGradeLevel?;
     int passiveSentenceCount?;
-};
-
-public type Body1 record {
-    # The uploaded CSV dictionary
-    string file;
 };
 
 public type NewdocumentresponseScansettings record {

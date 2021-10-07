@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `x-api-key`
+    string xApiKey;
 |};
 
 # This is a generated connector for [Shorten.REST v1.0](https://docs.shorten.rest/) OpenAPI Specification.
@@ -31,45 +29,45 @@ public type ApiKeysConfig record {|
 @display {label: "Shorten.REST", iconPath: "resources/shorten.rest.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [Shorten.REST account](https://app.shorten.rest/auth) and obtain tokens by following [this guide](https://docs.shorten.rest/#section/Authentication).
     #
-    # + apiKeyConfig - Provide your API Key as x-api-key. Eg: {x-api-key : <Your API Key>} 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.shorten.rest") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Get alias
     #
-    # + aliasName - alias value (without `/` at the beginning) 
     # + domainName - domain which alias belongs to (string without `http/https` or `/`) 
+    # + aliasName - alias value (without `/` at the beginning) 
     # + return - Alias model or **null** 
     remote isolated function getAlias(string aliasName, string domainName = "short.fyi") returns AliasModel|error {
         string  path = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-api-key": self.apiKeys["x-api-key"]};
+        map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         AliasModel response = check self.clientEp-> get(path, accHeaders, targetType = AliasModel);
         return response;
     }
     # Update alias
     #
+    # + domainName - domain which alias belongs to (string without `http/https` or `/`) 
     # + aliasName - alias (without `/` at the beginning) 
     # + payload - alias properties you wish to be updated 
-    # + domainName - domain which alias belongs to (string without `http/https` or `/`) 
     # + return - Empty response 
     remote isolated function updateAlias(string aliasName, CreateAliasModel payload, string domainName = "short.fyi") returns http:Response|error {
         string  path = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-api-key": self.apiKeys["x-api-key"]};
+        map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -79,15 +77,15 @@ public isolated client class Client {
     }
     # Create alias
     #
-    # + payload - alias properties 
     # + domainName - domain which alias will belong to (string without `http/https` or `/`) 
     # + aliasName - alias (without `/` at the beginning) 
+    # + payload - alias properties 
     # + return - Response contains aliasName, domainName and full generated short link 
     remote isolated function createAlias(CreateAliasModel payload, string domainName = "short.fyi", string aliasName = "@rnd") returns CreateAliasResponseModel|error {
         string  path = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-api-key": self.apiKeys["x-api-key"]};
+        map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -97,18 +95,16 @@ public isolated client class Client {
     }
     # Delete alias
     #
-    # + aliasName - alias (without `/` at the beginning) 
     # + domainName - domain which alias belongs to (string without `http/https` or `/`) 
+    # + aliasName - alias (without `/` at the beginning) 
     # + return - Empty response 
     remote isolated function deleteAlias(string aliasName, string domainName = "short.fyi") returns http:Response|error {
         string  path = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-api-key": self.apiKeys["x-api-key"]};
+        map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
         return response;
     }
     # Get aliases by domain
@@ -121,7 +117,7 @@ public isolated client class Client {
         string  path = string `/aliases/all`;
         map<anydata> queryParam = {"domainName": domainName, "continueFrom": continueFrom, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-api-key": self.apiKeys["x-api-key"]};
+        map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetAliasesModel response = check self.clientEp-> get(path, accHeaders, targetType = GetAliasesModel);
         return response;
@@ -135,57 +131,9 @@ public isolated client class Client {
         string  path = string `/clicks`;
         map<anydata> queryParam = {"continueFrom": continueFrom, "limit": 'limit};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"x-api-key": self.apiKeys["x-api-key"]};
+        map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         GetClicksModel response = check self.clientEp-> get(path, accHeaders, targetType = GetClicksModel);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

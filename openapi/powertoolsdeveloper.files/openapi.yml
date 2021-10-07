@@ -1882,46 +1882,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/outputString'
       x-codegen-request-body-name: splitString
-  /SpeechToText:
-    post:
-      tags:
-        - Text
-      summary: Text - Speech to Text
-      description: Convert audio file to text (10MB limit)
-      operationId: SpeechToText
-      requestBody:
-        description: Input speech to text parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - file
-                - language
-              properties:
-                language:
-                  type: string
-                  description: Language of audio input
-                  default: English (United States)
-                  x-ms-summary: Language
-                file:
-                  type: string
-                  description: 'Source audio file (WAV, MP3, AAC, M4A)'
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
+  # /SpeechToText:
+  #   post:
+  #     tags:
+  #       - Text
+  #     summary: Text - Speech to Text
+  #     description: Convert audio file to text (10MB limit)
+  #     operationId: SpeechToText
+  #     requestBody:
+  #       description: Input speech to text parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - file
+  #               - language
+  #             properties:
+  #               language:
+  #                 type: string
+  #                 description: Language of audio input
+  #                 default: English (United States)
+  #                 x-ms-summary: Language
+  #               file:
+  #                 type: string
+  #                 description: 'Source audio file (WAV, MP3, AAC, M4A)'
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
   /TextToSpeech:
     post:
       tags:
@@ -2305,366 +2305,366 @@ paths:
               schema:
                 $ref: '#/components/schemas/outputString'
       x-codegen-request-body-name: inputDataQuery
-  /ConvertImage:
-    post:
-      tags:
-        - Files
-      summary: Files - Convert Image
-      description: Convert an image from one format to another
-      operationId: ConvertImage
-      requestBody:
-        description: Input image conversion parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - file
-                - format
-              properties:
-                format:
-                  type: string
-                  description: Output file format
-                  default: PNG
-                  x-ms-summary: Format
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/gif:
-              schema:
-                type: string
-                format: binary
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/bmp:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: ERROR
-          content:
-            image/png:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/gif:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/jpeg:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/bmp:
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /ResizeImage:
-    post:
-      tags:
-        - Files
-      summary: Files - Resize Image
-      description: Resize an image
-      operationId: ResizeImage
-      requestBody:
-        description: Input image resize parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - algorithm
-                - file
-                - units
-              properties:
-                algorithm:
-                  type: string
-                  description: Optimize output quality of the target image
-                  default: Bicubic (default)
-                  x-ms-summary: Resampling Algorithm
-                units:
-                  type: string
-                  description: Image adjustment units
-                  default: Pixels
-                  x-ms-summary: Units
-                height:
-                  type: number
-                  description: Image height (pixels or percent)
-                  x-ms-summary: Height
-                width:
-                  type: number
-                  description: Image width (pixels or percent)
-                  x-ms-summary: Width
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/gif:
-              schema:
-                type: string
-                format: binary
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/bmp:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: ERROR
-          content:
-            image/png:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/gif:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/jpeg:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/bmp:
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /RotateImage:
-    post:
-      tags:
-        - Files
-      summary: Files - Rotate Image
-      description: Rotate an image by specified number of degrees
-      operationId: RotateImage
-      requestBody:
-        description: Input rotate image parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - degrees
-                - file
-              properties:
-                degrees:
-                  type: string
-                  description: Number of degrees
-                  x-ms-summary: Degrees
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: ERROR
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /FlipImage:
-    post:
-      tags:
-        - Files
-      summary: Files - Flip Image
-      description: Flip an image (horizontal or vertical)
-      operationId: FlipImage
-      requestBody:
-        description: Input flip image parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - file
-                - orientation
-              properties:
-                orientation:
-                  type: string
-                  description: Horizontal or Vertical
-                  default: Horizontal
-                  x-ms-summary: Orientation
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: ERROR
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /WatermarkImage:
-    post:
-      tags:
-        - Files
-      summary: Files - Watermark Image
-      description: Add watermark text to an image
-      operationId: WatermarkImage
-      requestBody:
-        description: Input watermark image parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - color
-                - file
-                - font
-                - horizontal
-                - size
-                - text
-                - vertical
-              properties:
-                text:
-                  type: string
-                  description: Watermark text
-                  x-ms-summary: Text
-                font:
-                  type: string
-                  description: Text font
-                  default: Arial
-                  x-ms-summary: Font
-                size:
-                  type: number
-                  description: Font size (points)
-                  x-ms-summary: Font Size
-                color:
-                  type: string
-                  description: Text color hex value
-                  default: '000000'
-                  x-ms-summary: Text Color
-                horizontal:
-                  type: string
-                  description: Horizontal alignment
-                  default: Center
-                  x-ms-summary: Horizontal
-                vertical:
-                  type: string
-                  description: Vertical alignment
-                  default: Center
-                  x-ms-summary: Vertical
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: ERROR
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /CropImage:
-    post:
-      tags:
-        - Files
-      summary: Files - Crop Image
-      description: Crop an image
-      operationId: CropImage
-      requestBody:
-        description: Input crop image parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - Height
-                - Width
-                - file
-                - position
-              properties:
-                position:
-                  type: string
-                  description: Crop start position (use negative values to reverse crop area)
-                  default: TopLeft
-                  x-ms-summary: Position
-                Width:
-                  type: number
-                  description: 'Width (X-axis right, negative to reverse)'
-                  x-ms-summary: Width
-                Height:
-                  type: number
-                  description: 'Height (Y-axis down, negative to reverse)'
-                  x-ms-summary: Height
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/gif:
-              schema:
-                type: string
-                format: binary
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/bmp:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: ERROR
-          content:
-            image/png:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/gif:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/jpeg:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/bmp:
-              schema:
-                $ref: '#/components/schemas/outputString'
+  # /ConvertImage:
+  #   post:
+  #     tags:
+  #       - Files
+  #     summary: Files - Convert Image
+  #     description: Convert an image from one format to another
+  #     operationId: ConvertImage
+  #     requestBody:
+  #       description: Input image conversion parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - file
+  #               - format
+  #             properties:
+  #               format:
+  #                 type: string
+  #                 description: Output file format
+  #                 default: PNG
+  #                 x-ms-summary: Format
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           image/png:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/gif:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/jpeg:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/bmp:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           image/png:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/gif:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/jpeg:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/bmp:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /ResizeImage:
+  #   post:
+  #     tags:
+  #       - Files
+  #     summary: Files - Resize Image
+  #     description: Resize an image
+  #     operationId: ResizeImage
+  #     requestBody:
+  #       description: Input image resize parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - algorithm
+  #               - file
+  #               - units
+  #             properties:
+  #               algorithm:
+  #                 type: string
+  #                 description: Optimize output quality of the target image
+  #                 default: Bicubic (default)
+  #                 x-ms-summary: Resampling Algorithm
+  #               units:
+  #                 type: string
+  #                 description: Image adjustment units
+  #                 default: Pixels
+  #                 x-ms-summary: Units
+  #               height:
+  #                 type: number
+  #                 description: Image height (pixels or percent)
+  #                 x-ms-summary: Height
+  #               width:
+  #                 type: number
+  #                 description: Image width (pixels or percent)
+  #                 x-ms-summary: Width
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           image/png:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/gif:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/jpeg:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/bmp:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           image/png:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/gif:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/jpeg:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/bmp:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # # /RotateImage:
+  #   post:
+  #     tags:
+  #       - Files
+  #     summary: Files - Rotate Image
+  #     description: Rotate an image by specified number of degrees
+  #     operationId: RotateImage
+  #     requestBody:
+  #       description: Input rotate image parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - degrees
+  #               - file
+  #             properties:
+  #               degrees:
+  #                 type: string
+  #                 description: Number of degrees
+  #                 x-ms-summary: Degrees
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # # /FlipImage:
+  #   post:
+  #     tags:
+  #       - Files
+  #     summary: Files - Flip Image
+  #     description: Flip an image (horizontal or vertical)
+  #     operationId: FlipImage
+  #     requestBody:
+  #       description: Input flip image parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - file
+  #               - orientation
+  #             properties:
+  #               orientation:
+  #                 type: string
+  #                 description: Horizontal or Vertical
+  #                 default: Horizontal
+  #                 x-ms-summary: Orientation
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /WatermarkImage:
+  #   post:
+  #     tags:
+  #       - Files
+  #     summary: Files - Watermark Image
+  #     description: Add watermark text to an image
+  #     operationId: WatermarkImage
+  #     requestBody:
+  #       description: Input watermark image parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - color
+  #               - file
+  #               - font
+  #               - horizontal
+  #               - size
+  #               - text
+  #               - vertical
+  #             properties:
+  #               text:
+  #                 type: string
+  #                 description: Watermark text
+  #                 x-ms-summary: Text
+  #               font:
+  #                 type: string
+  #                 description: Text font
+  #                 default: Arial
+  #                 x-ms-summary: Font
+  #               size:
+  #                 type: number
+  #                 description: Font size (points)
+  #                 x-ms-summary: Font Size
+  #               color:
+  #                 type: string
+  #                 description: Text color hex value
+  #                 default: '000000'
+  #                 x-ms-summary: Text Color
+  #               horizontal:
+  #                 type: string
+  #                 description: Horizontal alignment
+  #                 default: Center
+  #                 x-ms-summary: Horizontal
+  #               vertical:
+  #                 type: string
+  #                 description: Vertical alignment
+  #                 default: Center
+  #                 x-ms-summary: Vertical
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /CropImage:
+  #   post:
+  #     tags:
+  #       - Files
+  #     summary: Files - Crop Image
+  #     description: Crop an image
+  #     operationId: CropImage
+  #     requestBody:
+  #       description: Input crop image parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - Height
+  #               - Width
+  #               - file
+  #               - position
+  #             properties:
+  #               position:
+  #                 type: string
+  #                 description: Crop start position (use negative values to reverse crop area)
+  #                 default: TopLeft
+  #                 x-ms-summary: Position
+  #               Width:
+  #                 type: number
+  #                 description: 'Width (X-axis right, negative to reverse)'
+  #                 x-ms-summary: Width
+  #               Height:
+  #                 type: number
+  #                 description: 'Height (Y-axis down, negative to reverse)'
+  #                 x-ms-summary: Height
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           image/png:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/gif:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/jpeg:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/bmp:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           image/png:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/gif:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/jpeg:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/bmp:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
   /GenerateQRCode:
     post:
       tags:
@@ -2694,40 +2694,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/outputString'
       x-codegen-request-body-name: inputQRCode
-  /FileToString:
-    post:
-      tags:
-        - Files
-      summary: Files - File to string
-      description: Convert a file to a Base64 string
-      operationId: FileToString
-      requestBody:
-        description: Input file to string parameters
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - file
-              properties:
-                file:
-                  type: string
-                  description: Source file (10MB limit)
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
-        '400':
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
+  # /FileToString:
+  #   post:
+  #     tags:
+  #       - Files
+  #     summary: Files - File to string
+  #     description: Convert a file to a Base64 string
+  #     operationId: FileToString
+  #     requestBody:
+  #       description: Input file to string parameters
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #               - file
+  #             properties:
+  #               file:
+  #                 type: string
+  #                 description: Source file (10MB limit)
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #       '400':
+  #         description: ERROR
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
   /StringToFile:
     post:
       tags:
@@ -4430,7 +4430,7 @@ components:
       type: apiKey
       name: X-IBM-Client-Id
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `X-IBM-Client-Id`. Eg: `{\"X-IBM-Client-Id\" : \"<API key>\"}`"
+      description: Represents API Key `X-IBM-Client-Id`
 x-ibm-configuration:
   enforced: true
   testable: true

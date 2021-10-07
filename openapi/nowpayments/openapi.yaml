@@ -29,6 +29,8 @@ info:
       version: 2.x
   x-providerName: nowpayments.io
 tags: []
+security:
+  - ApiKeyAuth: []
 paths:
   /v1/estimate:
     get:
@@ -610,4 +612,4 @@ components:
       type: apiKey
       in: header
       name: x-api-key
-      x-ballerina-apikey-description: "Provide your API Key as x-api-key. Eg: {\"x-api-key\" : \"<Your API Key>\"}"
+      description: Represents API Key `x-api-key`

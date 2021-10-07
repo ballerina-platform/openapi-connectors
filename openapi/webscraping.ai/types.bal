@@ -24,8 +24,7 @@ public type Account record {
 };
 
 # Array of elements matched by selectors
-#
-# + string - Array of elements matched by selectors
+# Array of elements matched by selectors
 public type SelectedAreas string[];
 
 public type PageError record {

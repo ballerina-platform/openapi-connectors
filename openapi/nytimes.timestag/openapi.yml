@@ -40,6 +40,7 @@ paths:
   /timestags:
     get:
       summary: Get Times tags.
+      operationId: getTimesTags
       parameters:
         - description: Your search query
           in: query
@@ -86,4 +87,4 @@ components:
       in: query
       name: api-key
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<API key>\"}`"
+      description: Represents API Key `api-key`

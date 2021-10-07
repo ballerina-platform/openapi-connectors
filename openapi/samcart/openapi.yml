@@ -1806,5 +1806,5 @@ components:
       type: apiKey
       name: sc-api
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `sc-api`. Eg: `{\"sc-api\" : \"<API key>\"}`"
+      description: Represents API Key `sc-api`
       

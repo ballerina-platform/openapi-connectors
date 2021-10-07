@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["giphy", "GIF", "sticker"]
+keywords = ["Content & Files/Images & Design", "Cost/Free"]
 org = "ballerinax"
 name = "giphy"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

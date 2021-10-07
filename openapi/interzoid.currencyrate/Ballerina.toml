@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["currency rate", "freemium"]
+keywords = ["Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "interzoid.currencyrate"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

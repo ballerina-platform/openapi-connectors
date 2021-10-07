@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["nowpayments", "cryptocurrency", "payments", "coins"]
+keywords = ["Finance/Payment", "Cost/Paid"]
 org = "ballerinax"
 name = "nowpayments"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

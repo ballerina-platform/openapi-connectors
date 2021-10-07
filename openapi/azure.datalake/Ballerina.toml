@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["azure", "datalake storage", "big data"]
+keywords = ["Business Intelligence/Analytics", "Cost/Paid", "Vendor/Microsoft"]
 org = "ballerinax"
 name = "azure.datalake"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

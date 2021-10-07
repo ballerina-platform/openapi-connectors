@@ -4,7 +4,7 @@ name = "googleapis.bigquery"
 version = "0.1.0-SNAPSHOT"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["google","bigquery","model","dataset"]
+keywords = ["IT Operations/Databases", "Cost/Freemium", "Vendor/Google"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

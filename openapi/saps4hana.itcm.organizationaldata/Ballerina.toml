@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["sap", "saps4hana", "organizational data", "paid"]
+keywords = ["Business Management/ERP", "Cost/Paid"]
 org = "ballerinax"
 name = "saps4hana.itcm.organizationaldata"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

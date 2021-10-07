@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["cloudmersive", "currency"]
+keywords = ["Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "cloudmersive.currency"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["google", "cloudbuild", "build", "trigger"]
+keywords = ["Finance/Billing", "Cost/Paid", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.cloudbuild"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["apideck", "saas", "traffic-analytics"]
+keywords = ["IT Operations/Server Monitoring", "Cost/Freemium"]
 org = "ballerinax"
 name = "apideck.proxy"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

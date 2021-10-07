@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["youtube", "video", "media"]
+keywords = ["Content & Files/Video & Audio", "Cost/Free", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.youtube.data"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

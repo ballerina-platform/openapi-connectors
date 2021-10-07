@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["financial", "banking", "integration"]
+keywords = ["Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "plaid"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

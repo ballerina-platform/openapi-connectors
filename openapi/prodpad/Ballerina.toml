@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["product management", "paid"]
+keywords = ["Productivity/Product Management", "Cost/Paid"]
 org = "ballerinax"
 name = "prodpad"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

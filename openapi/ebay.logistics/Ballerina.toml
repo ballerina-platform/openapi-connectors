@@ -5,7 +5,7 @@ repository = "https://github.com/ballerina-platform/ballerinax-openapi-connector
 version = "0.1.0-SNAPSHOT"
 authors = ["Ballerina"]
 license = ["Apache-2.0"]
-keywords = ["ebay", "logistics", "shipment", "shipping_quote", "ecommerce"]
+keywords = ["Commerce/eCommerce", "Cost/Freemium"]
 
 [build-options]
 observabilityIncluded = true

@@ -5,7 +5,7 @@ repository = "https://github.com/ballerina-platform/ballerinax-openapi-connector
 version = "0.1.0-SNAPSHOT"
 authors = ["Ballerina"]
 license = ["Apache-2.0"]
-keywords = ["vimeo", "media"]
+keywords = ["Content & Files/Video & Audio", "Cost/Freemium"]
 
 [build-options]
 observabilityIncluded = true

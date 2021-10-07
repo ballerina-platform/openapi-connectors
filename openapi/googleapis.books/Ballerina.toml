@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["google", "books", "volumes", "dictionary"]
+keywords = ["Lifestyle & Entertainment/Books", "Cost/Freemium", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.books"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

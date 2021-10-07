@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["cloudmersive", "validate"]
+keywords = ["IT Operations/Security & Identity Tools", "Cost/Freemium"]
 org = "ballerinax"
 name = "cloudmersive.validate"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

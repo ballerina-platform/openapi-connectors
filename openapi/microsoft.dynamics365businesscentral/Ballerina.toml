@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["small-bussiness", "financial", "marketing"]
+keywords = ["Business Management/ERP", "Cost/Paid", "Vendor/Microsoft"]
 org = "ballerinax"
 name = "microsoft.dynamics365businesscentral"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

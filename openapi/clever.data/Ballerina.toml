@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["clever", "data", "education"]
+keywords = ["Education/Elearning", "Cost/Paid"]
 org = "ballerinax"
 name = "clever.data"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

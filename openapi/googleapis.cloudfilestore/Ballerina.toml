@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["google", "cloudfilestore", "filestore", "storage"]
+keywords = ["Content & Files/File Management & Storage", "Cost/Paid", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.cloudfilestore"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

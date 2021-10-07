@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["financial", "commerce", "partner referrels"]
+keywords = ["Human Resources/HRMS", "Cost/Freemium"]
 org = "ballerinax"
 name = "brex.team"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

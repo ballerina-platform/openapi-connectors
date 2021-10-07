@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["azure", "timeseries", "iot"]
+keywords = ["Internet of Things/Device Management", "Cost/Paid", "Vendor/Microsoft"]
 org = "ballerinax"
 name = "azure.timeseries"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

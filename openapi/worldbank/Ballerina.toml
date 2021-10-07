@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["world bank", "world bank indicators"]
+keywords = ["Business Intelligence/Analytics", "Cost/Free"]
 org = "ballerinax"
 name = "worldbank"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

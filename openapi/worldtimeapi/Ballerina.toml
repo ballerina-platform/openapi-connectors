@@ -4,7 +4,7 @@ name = "worldtimeapi"
 version = "0.1.0-SNAPSHOT"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["Time","Time Zone"]
+keywords = ["IT Operations/Cloud Services", "Cost/Free"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

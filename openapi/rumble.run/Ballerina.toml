@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["rumble", "monitor", "network"]
+keywords = ["IT Operations/Server Monitoring", "Cost/Freemium"]
 org = "ballerinax"
 name = "rumble.run"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

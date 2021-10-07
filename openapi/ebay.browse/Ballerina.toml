@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["ebay", "browse", "search"]
+keywords = ["Commerce/eCommerce", "Cost/Freemium"]
 org = "ballerinax"
 name = "ebay.browse"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

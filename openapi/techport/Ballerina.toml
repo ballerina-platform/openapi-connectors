@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["techport", "nasa", "technology", "data"]
+keywords = ["IT Operations/Cloud Services", "Cost/Free"]
 org = "ballerinax"
 name = "techport"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

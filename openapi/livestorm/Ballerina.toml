@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["livestorm", "event", "webinar", "freemium"]
+keywords = ["Communication/Video Conferncing", "Cost/Freemium"]
 org = "ballerinax"
 name = "livestorm"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

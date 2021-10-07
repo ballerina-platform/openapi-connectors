@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["covid19", "covid19 vaccine"]
+keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free"]
 org = "ballerinax"
 name = "covid19"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

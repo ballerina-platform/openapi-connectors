@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["bintable", "bank", "card", "bank identification number"]
+keywords = ["Business Intelligence/Analytics", "Cost/Free"]
 org = "ballerinax"
 name = "bintable"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

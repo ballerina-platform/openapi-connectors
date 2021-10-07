@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["interzoid currency conversion", "money", "freemium"]
+keywords = ["Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "interzoid.convertcurrency"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

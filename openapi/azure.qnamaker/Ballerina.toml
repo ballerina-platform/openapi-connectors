@@ -4,7 +4,7 @@ name = "azure.qnamaker"
 version = "0.1.0-SNAPSHOT"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["azure","qnamaker","cognitive services"]
+keywords = ["IT Operations/Cloud Services", "Cost/Freemium", "Vendor/Microsoft"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

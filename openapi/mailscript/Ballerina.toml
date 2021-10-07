@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["mailscript", "email", "script"]
+keywords = ["Communication/Mail", "Cost/Paid"]
 org = "ballerinax"
 name = "mailscript"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

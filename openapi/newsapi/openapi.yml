@@ -315,7 +315,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WSNewsErrorResponse'
-
+security:
+  - api_key: []
 components:
   securitySchemes:
     api_key:
@@ -323,7 +324,6 @@ components:
       name: apiKey
       type: apiKey
       in: query
-      x-ballerina-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key>\"}`"
   schemas:
     WSNewsErrorResponse:
       description: 'News API error response'
@@ -436,5 +436,3 @@ components:
           type: string
           description: 'Unformatted content of article, where available. This is truncated to 200 chars'
           nullable: true
-security:
-  - apiKey: []

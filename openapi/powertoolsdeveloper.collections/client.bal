@@ -18,8 +18,8 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `X-IBM-Client-Id`
+    string xIbmClientId;
 |};
 
 # This is a generated connector for [Apptigent PowerTools Developer API v2021.1.01](https://portal.apptigent.com/node/612) OpenAPI specification.
@@ -30,27 +30,27 @@ public type ApiKeysConfig record {|
 @display {label: "PowerTools Developer Collections", iconPath: "resources/powertoolsdeveloper.collections.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
     # Create an [Apptigent account](https://portal.apptigent.com/user/register) and obtain tokens following [this guide](https://portal.apptigent.com/start).
     #
-    # + apiKeyConfig - Provide your API key as `X-IBM-Client-Id`. Eg: `{"X-IBM-Client-Id" : "<API key>"}`
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + apiKeyConfig - API keys for authorization 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://connect.apptigent.com/api/utilities") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Collections - Add to collection
     #
-    # + payload - Collection modification parameters
-    # + return - OK
+    # + payload - Collection modification parameters 
+    # + return - OK 
     remote isolated function addToCollection(InputCollectionModify payload) returns OutputCollectionResult|error {
         string  path = string `/AddToCollection`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -60,11 +60,11 @@ public isolated client class Client {
     }
     # Collections - Remove from collection
     #
-    # + payload - Collection modification parameters
-    # + return - OK
+    # + payload - Collection modification parameters 
+    # + return - OK 
     remote isolated function removeFromCollection(InputCollectionModify payload) returns OutputCollectionResult|error {
         string  path = string `/RemoveFromCollection`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -74,11 +74,11 @@ public isolated client class Client {
     }
     # Collections - Filter collection
     #
-    # + payload - Filter collection parameters
-    # + return - OK
+    # + payload - Filter collection parameters 
+    # + return - OK 
     remote isolated function filterCollection(InputCollectionFilter payload) returns OutputCollectionResult|error {
         string  path = string `/FilterCollection`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -88,11 +88,11 @@ public isolated client class Client {
     }
     # Collections - Sort collection
     #
-    # + payload - Sort collection parameters
-    # + return - OK
+    # + payload - Sort collection parameters 
+    # + return - OK 
     remote isolated function sortCollection(InputCollectionSort payload) returns OutputCollectionResult|error {
         string  path = string `/SortCollection`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -102,11 +102,11 @@ public isolated client class Client {
     }
     # Collections - Count collection
     #
-    # + payload - Count collection parameters
-    # + return - OK
+    # + payload - Count collection parameters 
+    # + return - OK 
     remote isolated function countCollection(InputCollectionCount payload) returns OutputNumber|error {
         string  path = string `/CountCollection`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -116,11 +116,11 @@ public isolated client class Client {
     }
     # Collections - Split collection
     #
-    # + payload - Split collection parameters
-    # + return - OK
+    # + payload - Split collection parameters 
+    # + return - OK 
     remote isolated function splitCollection(InputCollectionSplit payload) returns OutputMultiCollection|error {
         string  path = string `/SplitCollection`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -130,11 +130,11 @@ public isolated client class Client {
     }
     # Collections - Replace values in collection
     #
-    # + payload - Replace values in collection parameters
-    # + return - OK
+    # + payload - Replace values in collection parameters 
+    # + return - OK 
     remote isolated function replaceValuesInCollection(InputCollectionReplace payload) returns OutputCollectionResult|error {
         string  path = string `/ReplaceValuesInCollection`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -144,11 +144,11 @@ public isolated client class Client {
     }
     # Collections - Contains string
     #
-    # + payload - Collection search parameters
-    # + return - OK
+    # + payload - Collection search parameters 
+    # + return - OK 
     remote isolated function collectionContainsString(InputCollectionSearch payload) returns OutputCollectionString|error {
         string  path = string `/CollectionContainsString`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -158,11 +158,11 @@ public isolated client class Client {
     }
     # Collections - Starts with string
     #
-    # + payload - Collection search parameters
-    # + return - OK
+    # + payload - Collection search parameters 
+    # + return - OK 
     remote isolated function collectionStartsWithString(InputCollectionSearch payload) returns OutputCollectionString|error {
         string  path = string `/CollectionStartsWithString`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -172,11 +172,11 @@ public isolated client class Client {
     }
     # Collections - Ends with string
     #
-    # + payload - Collection search parameters
-    # + return - OK
+    # + payload - Collection search parameters 
+    # + return - OK 
     remote isolated function collectionEndsWithString(InputCollectionSearch payload) returns OutputCollectionString|error {
         string  path = string `/CollectionEndsWithString`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -186,11 +186,11 @@ public isolated client class Client {
     }
     # Collections - Contains number
     #
-    # + payload - Collection search parameters
-    # + return - OK
+    # + payload - Collection search parameters 
+    # + return - OK 
     remote isolated function collectionContainsNumber(InputCollectionSearchNumeric payload) returns OutputCollectionNumber|error {
         string  path = string `/CollectionContainsNumber`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -200,11 +200,11 @@ public isolated client class Client {
     }
     # Collections - Collection to JSON
     #
-    # + payload - Collection conversion parameters
-    # + return - OK
+    # + payload - Collection conversion parameters 
+    # + return - OK 
     remote isolated function collectionToJSON(InputCollectionConversion payload) returns OutputString|error {
         string  path = string `/CollectionToJSON`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -214,11 +214,11 @@ public isolated client class Client {
     }
     # Collections - Collection to XML
     #
-    # + payload - Collection conversion parameters
-    # + return - OK
+    # + payload - Collection conversion parameters 
+    # + return - OK 
     remote isolated function collectionToXml(InputCollectionConversionXML payload) returns OutputString|error {
         string  path = string `/CollectionToXML`;
-        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeys["X-IBM-Client-Id"]};
+        map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -226,18 +226,4 @@ public isolated client class Client {
         OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
         return response;
     }
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map
-# + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

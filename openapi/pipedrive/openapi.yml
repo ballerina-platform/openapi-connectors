@@ -3036,130 +3036,130 @@ paths:
                   additional_data:
                     type: object
                     example: null
-  '/callLogs/{id}/recordings':
-    post:
-      security:
-        - api_key: []
-        - oauth2:
-            - phone-integration
-      tags:
-        - CallLogs
-      summary: Attach an audio file to the call log
-      description: Adds an audio recording to the call log. That audio can be played by those who have access to the call log object.
-      operationId: addCallLogAudioFile
-      parameters:
-        - in: path
-          name: id
-          description: The ID received when you create the call log
-          required: true
-          schema:
-            type: string
-            example: 3cde3b05035cae14dcfc172bd8000d08
-      requestBody:
-        description: AddCallLogAudioFile request
-        content:
-          multipart/form-data:
-            schema:
-              title: addCallLogAudioFileRequest
-              type: object
-              required:
-                - file
-              properties:
-                file:
-                  description: Audio file supported by the HTML5 specification
-                  type: string
-                  format: binary
-      responses:
-        '200':
-          description: The audio recording was successfully added to the log.
-          content:
-            application/json:
-              schema:
-                title: addCallLogAudioFileResponse200
-                allOf:
-                  - title: baseResponse
-                    type: object
-                    properties:
-                      success:
-                        type: boolean
-                        description: If the response is successful or not
-              example:
-                success: true
-        '404':
-          description: A resource required to process the request was not found.
-          content:
-            application/json:
-              schema:
-                title: callLogResponse404
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  error:
-                    type: string
-                    description: The description of the error
-                    example: A resource required for this operation was not found.
-                  error_info:
-                    type: string
-                    description: A message describing how to solve the problem
-                    example: Please check developers.pipedrive.com for more information about Pipedrive API.
-                  data:
-                    type: object
-                    example: null
-                  additional_data:
-                    type: object
-                    example: null
-        '409':
-          description: Recording for this call already exists.
-          content:
-            application/json:
-              schema:
-                title: callLogResponse409
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  error:
-                    type: string
-                    description: The description of the error
-                    example: A recording for this call already exists
-                  error_info:
-                    type: string
-                    description: A message describing how to solve the problem
-                    example: Please check developers.pipedrive.com for more information about Pipedrive API.
-                  data:
-                    type: object
-                    example: null
-                  additional_data:
-                    type: object
-                    example: null
-        '500':
-          description: There was an error processing the request.
-          content:
-            application/json:
-              schema:
-                title: callLogResponse500
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  error:
-                    type: string
-                    description: The description of the error
-                    example: An internal server error occurred
-                  error_info:
-                    type: string
-                    description: A message describing how to solve the problem
-                    example: Please check developers.pipedrive.com for more information about Pipedrive API.
-                  data:
-                    type: object
-                    example: null
-                  additional_data:
-                    type: object
-                    example: null
+  # '/callLogs/{id}/recordings':
+    # post:
+    #   security:
+    #     - api_key: []
+    #     - oauth2:
+    #         - phone-integration
+    #   tags:
+    #     - CallLogs
+    #   summary: Attach an audio file to the call log
+    #   description: Adds an audio recording to the call log. That audio can be played by those who have access to the call log object.
+    #   operationId: addCallLogAudioFile
+    #   parameters:
+    #     - in: path
+    #       name: id
+    #       description: The ID received when you create the call log
+    #       required: true
+    #       schema:
+    #         type: string
+    #         example: 3cde3b05035cae14dcfc172bd8000d08
+    #   requestBody:
+    #     description: AddCallLogAudioFile request
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           title: addCallLogAudioFileRequest
+    #           type: object
+    #           required:
+    #             - file
+    #           properties:
+    #             file:
+    #               description: Audio file supported by the HTML5 specification
+    #               type: string
+    #               format: binary
+    #   responses:
+    #     '200':
+    #       description: The audio recording was successfully added to the log.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             title: addCallLogAudioFileResponse200
+    #             allOf:
+    #               - title: baseResponse
+    #                 type: object
+    #                 properties:
+    #                   success:
+    #                     type: boolean
+    #                     description: If the response is successful or not
+    #           example:
+    #             success: true
+    #     '404':
+    #       description: A resource required to process the request was not found.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             title: callLogResponse404
+    #             type: object
+    #             properties:
+    #               success:
+    #                 type: boolean
+    #                 example: false
+    #               error:
+    #                 type: string
+    #                 description: The description of the error
+    #                 example: A resource required for this operation was not found.
+    #               error_info:
+    #                 type: string
+    #                 description: A message describing how to solve the problem
+    #                 example: Please check developers.pipedrive.com for more information about Pipedrive API.
+    #               data:
+    #                 type: object
+    #                 example: null
+    #               additional_data:
+    #                 type: object
+    #                 example: null
+    #     '409':
+    #       description: Recording for this call already exists.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             title: callLogResponse409
+    #             type: object
+    #             properties:
+    #               success:
+    #                 type: boolean
+    #                 example: false
+    #               error:
+    #                 type: string
+    #                 description: The description of the error
+    #                 example: A recording for this call already exists
+    #               error_info:
+    #                 type: string
+    #                 description: A message describing how to solve the problem
+    #                 example: Please check developers.pipedrive.com for more information about Pipedrive API.
+    #               data:
+    #                 type: object
+    #                 example: null
+    #               additional_data:
+    #                 type: object
+    #                 example: null
+    #     '500':
+    #       description: There was an error processing the request.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             title: callLogResponse500
+    #             type: object
+    #             properties:
+    #               success:
+    #                 type: boolean
+    #                 example: false
+    #               error:
+    #                 type: string
+    #                 description: The description of the error
+    #                 example: An internal server error occurred
+    #               error_info:
+    #                 type: string
+    #                 description: A message describing how to solve the problem
+    #                 example: Please check developers.pipedrive.com for more information about Pipedrive API.
+    #               data:
+    #                 type: object
+    #                 example: null
+    #               additional_data:
+    #                 type: object
+    #                 example: null
   /currencies:
     get:
       summary: Get all supported currencies
@@ -9250,172 +9250,172 @@ paths:
                     limit: '100,'
                     more_items_in_collection: 'true,'
                     next_start: 100
-    post:
-      summary: Add file
-      description: 'Lets you upload a file and associate it with Deal, Person, Organization, Activity or Product. For more information on how to add a file, see <a href="https://pipedrive.readme.io/docs/adding-a-file" target="_blank" rel="noopener noreferrer">this tutorial</a>.'
-      operationId: addFile
-      tags:
-        - Files
-      security:
-        - api_key: []
-        - oauth2:
-            - 'deals:full'
-            - 'activities:full'
-            - 'contacts:full'
-      requestBody:
-        description: AddFile request
-        content:
-          multipart/form-data:
-            schema:
-              title: addFileRequest
-              type: object
-              required:
-                - file
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: 'A single file, supplied in the multipart/form-data encoding and contained within the given boundaries.'
-                deal_id:
-                  type: integer
-                  description: ID of the deal to associate file(s) with
-                person_id:
-                  type: integer
-                  description: ID of the person to associate file(s) with
-                org_id:
-                  type: integer
-                  description: ID of the organization to associate file(s) with
-                product_id:
-                  type: integer
-                  description: ID of the product to associate file(s) with
-                activity_id:
-                  type: integer
-                  description: ID of the activity to associate file(s) with
-      responses:
-        '200':
-          description: 'Add a file from computer or Google Drive and associate it with Deal, Person, Organization, Activity or Product.'
-          content:
-            application/json:
-              schema:
-                title: addFileResponse200
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    description: If the request was successful or not
-                  data:
-                    type: object
-                    description: The File data
-                    properties:
-                      id:
-                        type: integer
-                        description: The ID of the File
-                      user_id:
-                        type: integer
-                        description: The ID of the User to associate the File with
-                      deal_id:
-                        type: integer
-                        description: The ID of the Deal to associate the File with
-                      person_id:
-                        type: integer
-                        description: The ID of the Person to associate the File with
-                      org_id:
-                        type: integer
-                        description: The ID of the Organization to associate the File with
-                      product_id:
-                        type: integer
-                        description: The ID of the Product to associate the File with
-                      activity_id:
-                        type: integer
-                        description: The ID of the Activity to associate the File with
-                      add_time:
-                        type: string
-                        description: 'The date and time when the File was added/created. Format: YYYY-MM-DD HH:MM:SS'
-                      update_time:
-                        type: string
-                        description: 'The last updated date and time of the File. Format: YYYY-MM-DD HH:MM:SS'
-                      file_name:
-                        type: string
-                        description: The original name of the File
-                      file_size:
-                        type: string
-                        description: The size of the File
-                      active_flag:
-                        type: boolean
-                        description: 'Whether the User is active or not. false = Not activated, true = Activated'
-                      inline_flag:
-                        type: boolean
-                        description: Whether the File was uploaded as inline or not
-                      remote_location:
-                        type: string
-                        description: The location type to send the File to. Only googledrive is supported at the moment.
-                      remote_id:
-                        type: string
-                        description: The ID of the remote item
-                      cid:
-                        type: string
-                        description: The ID of the inline attachment
-                      s3_bucket:
-                        type: string
-                        description: The location of the cloud storage
-                      mail_message_id:
-                        type: string
-                        description: The ID of the mail message to associate the File with
-                      mail_template_id:
-                        type: string
-                        description: The ID of the mail template to associate the File with
-                      deal_name:
-                        type: string
-                        description: The name of the Deal associated with the File
-                      person_name:
-                        type: string
-                        description: The name of the Person associated with the File
-                      org_name:
-                        type: string
-                        description: The name of the Organization associated with the File
-                      product_name:
-                        type: string
-                        description: The name of the Product associated with the File
-                      url:
-                        type: string
-                        description: The URL of the download File
-                      name:
-                        type: string
-                        description: The visible name of the File
-                      description:
-                        type: string
-                        description: The description of the File
-              example:
-                success: true
-                data:
-                  id: 123
-                  user_id: 456
-                  deal_id: null
-                  person_id: 789
-                  org_id: null
-                  product_id: null
-                  activity_id: null
-                  log_id: null
-                  add_time: '2020-02-20 14:36:35'
-                  update_time: '2020-02-20 14:36:31'
-                  file_name: IMG_8189_52233498214699de9579e7b304a81b157b2eb2137e8062.jpg
-                  file_type: img
-                  file_size: 7801780
-                  active_flag: true
-                  inline_flag: false
-                  remote_location: googledocs
-                  remote_id: 1mT6jshiv6537IirwOExXJuG1jdR4F0FQ
-                  cid: null
-                  s3_bucket: null
-                  mail_message_id: null
-                  mail_template_id: null
-                  deal_name: null
-                  person_name: Person
-                  org_name: null
-                  product_name: null
-                  url: 'https://2a7f.pipedrive.com/v1/files/123/download'
-                  name: IMG_8189.jpg
-                  description: null
+    # post:
+    #   summary: Add file
+    #   description: 'Lets you upload a file and associate it with Deal, Person, Organization, Activity or Product. For more information on how to add a file, see <a href="https://pipedrive.readme.io/docs/adding-a-file" target="_blank" rel="noopener noreferrer">this tutorial</a>.'
+    #   operationId: addFile
+    #   tags:
+    #     - Files
+    #   security:
+    #     - api_key: []
+    #     - oauth2:
+    #         - 'deals:full'
+    #         - 'activities:full'
+    #         - 'contacts:full'
+    #   requestBody:
+    #     description: AddFile request
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           title: addFileRequest
+    #           type: object
+    #           required:
+    #             - file
+    #           properties:
+    #             file:
+    #               type: string
+    #               format: binary
+    #               description: 'A single file, supplied in the multipart/form-data encoding and contained within the given boundaries.'
+    #             deal_id:
+    #               type: integer
+    #               description: ID of the deal to associate file(s) with
+    #             person_id:
+    #               type: integer
+    #               description: ID of the person to associate file(s) with
+    #             org_id:
+    #               type: integer
+    #               description: ID of the organization to associate file(s) with
+    #             product_id:
+    #               type: integer
+    #               description: ID of the product to associate file(s) with
+    #             activity_id:
+    #               type: integer
+    #               description: ID of the activity to associate file(s) with
+    #   responses:
+    #     '200':
+    #       description: 'Add a file from computer or Google Drive and associate it with Deal, Person, Organization, Activity or Product.'
+    #       content:
+    #         application/json:
+    #           schema:
+    #             title: addFileResponse200
+    #             type: object
+    #             properties:
+    #               success:
+    #                 type: boolean
+    #                 description: If the request was successful or not
+    #               data:
+    #                 type: object
+    #                 description: The File data
+    #                 properties:
+    #                   id:
+    #                     type: integer
+    #                     description: The ID of the File
+    #                   user_id:
+    #                     type: integer
+    #                     description: The ID of the User to associate the File with
+    #                   deal_id:
+    #                     type: integer
+    #                     description: The ID of the Deal to associate the File with
+    #                   person_id:
+    #                     type: integer
+    #                     description: The ID of the Person to associate the File with
+    #                   org_id:
+    #                     type: integer
+    #                     description: The ID of the Organization to associate the File with
+    #                   product_id:
+    #                     type: integer
+    #                     description: The ID of the Product to associate the File with
+    #                   activity_id:
+    #                     type: integer
+    #                     description: The ID of the Activity to associate the File with
+    #                   add_time:
+    #                     type: string
+    #                     description: 'The date and time when the File was added/created. Format: YYYY-MM-DD HH:MM:SS'
+    #                   update_time:
+    #                     type: string
+    #                     description: 'The last updated date and time of the File. Format: YYYY-MM-DD HH:MM:SS'
+    #                   file_name:
+    #                     type: string
+    #                     description: The original name of the File
+    #                   file_size:
+    #                     type: string
+    #                     description: The size of the File
+    #                   active_flag:
+    #                     type: boolean
+    #                     description: 'Whether the User is active or not. false = Not activated, true = Activated'
+    #                   inline_flag:
+    #                     type: boolean
+    #                     description: Whether the File was uploaded as inline or not
+    #                   remote_location:
+    #                     type: string
+    #                     description: The location type to send the File to. Only googledrive is supported at the moment.
+    #                   remote_id:
+    #                     type: string
+    #                     description: The ID of the remote item
+    #                   cid:
+    #                     type: string
+    #                     description: The ID of the inline attachment
+    #                   s3_bucket:
+    #                     type: string
+    #                     description: The location of the cloud storage
+    #                   mail_message_id:
+    #                     type: string
+    #                     description: The ID of the mail message to associate the File with
+    #                   mail_template_id:
+    #                     type: string
+    #                     description: The ID of the mail template to associate the File with
+    #                   deal_name:
+    #                     type: string
+    #                     description: The name of the Deal associated with the File
+    #                   person_name:
+    #                     type: string
+    #                     description: The name of the Person associated with the File
+    #                   org_name:
+    #                     type: string
+    #                     description: The name of the Organization associated with the File
+    #                   product_name:
+    #                     type: string
+    #                     description: The name of the Product associated with the File
+    #                   url:
+    #                     type: string
+    #                     description: The URL of the download File
+    #                   name:
+    #                     type: string
+    #                     description: The visible name of the File
+    #                   description:
+    #                     type: string
+    #                     description: The description of the File
+    #           example:
+    #             success: true
+    #             data:
+    #               id: 123
+    #               user_id: 456
+    #               deal_id: null
+    #               person_id: 789
+    #               org_id: null
+    #               product_id: null
+    #               activity_id: null
+    #               log_id: null
+    #               add_time: '2020-02-20 14:36:35'
+    #               update_time: '2020-02-20 14:36:31'
+    #               file_name: IMG_8189_52233498214699de9579e7b304a81b157b2eb2137e8062.jpg
+    #               file_type: img
+    #               file_size: 7801780
+    #               active_flag: true
+    #               inline_flag: false
+    #               remote_location: googledocs
+    #               remote_id: 1mT6jshiv6537IirwOExXJuG1jdR4F0FQ
+    #               cid: null
+    #               s3_bucket: null
+    #               mail_message_id: null
+    #               mail_template_id: null
+    #               deal_name: null
+    #               person_name: Person
+    #               org_name: null
+    #               product_name: null
+    #               url: 'https://2a7f.pipedrive.com/v1/files/123/download'
+    #               name: IMG_8189.jpg
+    #               description: null
   /files/remote:
     post:
       summary: Create a remote file and link it to an item
@@ -24149,121 +24149,121 @@ paths:
                 success: true
                 data:
                   id: 12
-    post:
-      summary: Add person picture
-      description: 'Add a picture to a person. If a picture is already set, the old picture will be replaced. Added image (or the cropping parameters supplied with the request) should have an equal width and height and should be at least 128 pixels. GIF, JPG and PNG are accepted. All added images will be resized to 128 and 512 pixel wide squares.'
-      operationId: addPersonPicture
-      tags:
-        - Persons
-      security:
-        - api_key: []
-        - oauth2:
-            - 'contacts:full'
-      parameters:
-        - in: path
-          name: id
-          description: ID of a person
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: AddPersonPicture request
-        content:
-          multipart/form-data:
-            schema:
-              title: addPersonPictureRequest
-              type: object
-              required:
-                - file
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: One image supplied in the multipart/form-data encoding.
-                crop_x:
-                  type: integer
-                  description: X coordinate to where start cropping form (in pixels)
-                crop_y:
-                  type: integer
-                  description: Y coordinate to where start cropping form (in pixels)
-                crop_width:
-                  type: integer
-                  description: Width of cropping area (in pixels)
-                crop_height:
-                  type: integer
-                  description: Height of cropping area (in pixels)
-      responses:
-        '200':
-          description: success
-          content:
-            application/json:
-              schema:
-                title: addPersonPictureResponse200
-                allOf:
-                  - title: baseResponse
-                    type: object
-                    properties:
-                      success:
-                        type: boolean
-                        description: If the response is successful or not
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        description: The picture that is associated with the item
-                        properties:
-                          PICTURE_ID:
-                            type: object
-                            description: The ID of the picture
-                            allOf:
-                              - allOf:
-                                  - type: object
-                                    properties:
-                                      id:
-                                        type: integer
-                                        description: The ID of the picture associated with the item
-                                  - type: object
-                                    properties:
-                                      item_type:
-                                        type: string
-                                        description: The type of item the picture is related to
-                                      item_id:
-                                        type: integer
-                                        description: The ID of related item
-                                      active_flag:
-                                        type: boolean
-                                        description: If the associated picture is activated or not
-                                      add_time:
-                                        type: string
-                                        description: The add time of the picture
-                                      update_time:
-                                        type: string
-                                        description: The update time of the picture
-                                      added_by_user_id:
-                                        type: integer
-                                        description: The ID of the User who added the picture
-                                      pictures:
-                                        type: object
-                                        properties:
-                                          '128':
-                                            type: string
-                                            description: The URL of the 128*128 picture
-                                          '512':
-                                            type: string
-                                            description: The URL of the 512*512 picture
-              example:
-                success: true
-                data:
-                  id: 1
-                  item_type: person
-                  item_id: 25
-                  active_flag: true
-                  add_time: '2020-09-08 08:17:52'
-                  update_time: '0000-00-00 00:00:00'
-                  added_by_user_id: 967055
-                  pictures:
-                    '128': 'https://pipedrive-profile-pics.s3.example.com/f8893852574273f2747bf6ef09d11cfb4ac8f269_128.jpg'
-                    '512': 'https://pipedrive-profile-pics.s3.example.com/f8893852574273f2747bf6ef09d11cfb4ac8f269_512.jpg'
+    # post:
+    #   summary: Add person picture
+    #   description: 'Add a picture to a person. If a picture is already set, the old picture will be replaced. Added image (or the cropping parameters supplied with the request) should have an equal width and height and should be at least 128 pixels. GIF, JPG and PNG are accepted. All added images will be resized to 128 and 512 pixel wide squares.'
+    #   operationId: addPersonPicture
+    #   tags:
+    #     - Persons
+    #   security:
+    #     - api_key: []
+    #     - oauth2:
+    #         - 'contacts:full'
+    #   parameters:
+    #     - in: path
+    #       name: id
+    #       description: ID of a person
+    #       required: true
+    #       schema:
+    #         type: integer
+    #   requestBody:
+    #     description: AddPersonPicture request
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           title: addPersonPictureRequest
+    #           type: object
+    #           required:
+    #             - file
+    #           properties:
+    #             file:
+    #               type: string
+    #               format: binary
+    #               description: One image supplied in the multipart/form-data encoding.
+    #             crop_x:
+    #               type: integer
+    #               description: X coordinate to where start cropping form (in pixels)
+    #             crop_y:
+    #               type: integer
+    #               description: Y coordinate to where start cropping form (in pixels)
+    #             crop_width:
+    #               type: integer
+    #               description: Width of cropping area (in pixels)
+    #             crop_height:
+    #               type: integer
+    #               description: Height of cropping area (in pixels)
+    #   responses:
+    #     '200':
+    #       description: success
+    #       content:
+    #         application/json:
+    #           schema:
+    #             title: addPersonPictureResponse200
+    #             allOf:
+    #               - title: baseResponse
+    #                 type: object
+    #                 properties:
+    #                   success:
+    #                     type: boolean
+    #                     description: If the response is successful or not
+    #               - type: object
+    #                 properties:
+    #                   data:
+    #                     type: object
+    #                     description: The picture that is associated with the item
+    #                     properties:
+    #                       PICTURE_ID:
+    #                         type: object
+    #                         description: The ID of the picture
+    #                         allOf:
+    #                           - allOf:
+    #                               - type: object
+    #                                 properties:
+    #                                   id:
+    #                                     type: integer
+    #                                     description: The ID of the picture associated with the item
+    #                               - type: object
+    #                                 properties:
+    #                                   item_type:
+    #                                     type: string
+    #                                     description: The type of item the picture is related to
+    #                                   item_id:
+    #                                     type: integer
+    #                                     description: The ID of related item
+    #                                   active_flag:
+    #                                     type: boolean
+    #                                     description: If the associated picture is activated or not
+    #                                   add_time:
+    #                                     type: string
+    #                                     description: The add time of the picture
+    #                                   update_time:
+    #                                     type: string
+    #                                     description: The update time of the picture
+    #                                   added_by_user_id:
+    #                                     type: integer
+    #                                     description: The ID of the User who added the picture
+    #                                   pictures:
+    #                                     type: object
+    #                                     properties:
+    #                                       '128':
+    #                                         type: string
+    #                                         description: The URL of the 128*128 picture
+    #                                       '512':
+    #                                         type: string
+    #                                         description: The URL of the 512*512 picture
+    #           example:
+    #             success: true
+    #             data:
+    #               id: 1
+    #               item_type: person
+    #               item_id: 25
+    #               active_flag: true
+    #               add_time: '2020-09-08 08:17:52'
+    #               update_time: '0000-00-00 00:00:00'
+    #               added_by_user_id: 967055
+    #               pictures:
+    #                 '128': 'https://pipedrive-profile-pics.s3.example.com/f8893852574273f2747bf6ef09d11cfb4ac8f269_128.jpg'
+    #                 '512': 'https://pipedrive-profile-pics.s3.example.com/f8893852574273f2747bf6ef09d11cfb4ac8f269_512.jpg'
   '/persons/{id}/products':
     get:
       summary: List products associated with a person
@@ -39004,4 +39004,4 @@ components:
       type: apiKey
       name: api_token
       in: query
-      x-ballerina-apikey-description: "Provide your API key as `api_token`. Eg: `{\"api_token\" : \"<API key>\"}`"
+      description: Represents API Key `api_token`

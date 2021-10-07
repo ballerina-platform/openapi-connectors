@@ -4791,15 +4791,17 @@ components:
       type: apiKey
       in: header
       name: PLAID-CLIENT-ID
+      description: Represents API Key `PLAID-CLIENT-ID`
     secret:
       type: apiKey
       in: header
       name: PLAID-SECRET
+      description: Respresents API Key `PLAID-SECRET`
     plaidVersion:
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API keys as `Plaid-Version`. Eg: `{\"PLAID-CLIENT-ID\" : \"<CLIENT_ID>\", \"PLAID-SECRET\" : \"<CLIENT_SECRET>\", \"Plaid-Version\" : \"<VERSION>\"}`"
       in: header
       name: Plaid-Version
+      description: Respresents API Key `Plaid-Version`
   schemas:
     ItemGetRequest:
       description: ItemGetRequest defines the request schema for `/item/get`

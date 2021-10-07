@@ -3775,7 +3775,6 @@ components:
         simply set the `x-api-key` header to an API Key associated with your account. If you don't have an API key,
         [follow this guide](https://www.spotto.io/developers/using-the-spotto-api) to get one.
         Include the header in all API calls, otherwise you will receive a `403 Forbidden` response.
-      x-ballerina-apikey-description: "Provide your API key as `x-api-key`. Eg: `{\"x-api-key\" : \"<API key>\"}`"
 security:
   - SecurityHeader: []
 servers:

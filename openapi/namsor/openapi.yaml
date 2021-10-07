@@ -3401,4 +3401,4 @@ components:
       description: All requests on the NamSor API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `X-API-KEY`
       name: X-API-KEY
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `X-API-KEY`. Eg: `{\"X-API-KEY\" : \"<your API key>\"}`"
+

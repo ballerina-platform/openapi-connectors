@@ -749,6 +749,12 @@ public type SandboxBankTransferFireWebhookResponse record {
     RequestID request_id;
 };
 
+# A filter to apply to `investment`-type accounts
+public type LinktokencreaterequestaccountsubtypesInvestment record {
+    # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
+    AccountSubtypes account_subtypes?;
+};
+
 # IncomeVerificationCreateRequest defines the request schema for `/income/verification/create`
 public type IncomeVerificationCreateRequest record {
     # Your Plaid API `client_id`. The `client_id` is required and may be provided either in the `PLAID-CLIENT-ID` header or as part of a request body.
@@ -1563,7 +1569,11 @@ public type InstitutionsSearchAccountFilter record {
 };
 
 # PaymentInitiationRecipientGetResponse defines the response schema for `/payment_initiation/recipient/get`
-public type PaymentInitiationRecipientGetResponse record {};
+public type PaymentInitiationRecipientGetResponse record {
+    *PaymentInitiationRecipient;
+    # A unique identifier for the request, which can be used for troubleshooting. This identifier, like all Plaid identifiers, is case sensitive.
+    RequestID request_id;
+};
 
 # PaymentInitiationPaymentCreateRequest defines the request schema for `/payment_initiation/payment/create`
 public type PaymentInitiationPaymentCreateRequest record {
@@ -1828,17 +1838,13 @@ public type ProductAccess record {
 # For institutions using OAuth, the filter will not affect the list of institutions or accounts shown by the bank in the OAuth window.
 public type LinkTokenCreateRequestAccountSubtypes record {
     # A filter to apply to `depository`-type accounts
-    record  { # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
-        AccountSubtypes account_subtypes?;}  depository?;
+    LinktokencreaterequestaccountsubtypesDepository depository?;
     # A filter to apply to `credit`-type accounts
-    record  { # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
-        AccountSubtypes account_subtypes?;}  credit?;
+    LinktokencreaterequestaccountsubtypesCredit credit?;
     # A filter to apply to `loan`-type accounts
-    record  { # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
-        AccountSubtypes account_subtypes?;}  loan?;
+    LinktokencreaterequestaccountsubtypesLoan loan?;
     # A filter to apply to `investment`-type accounts
-    record  { # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
-        AccountSubtypes account_subtypes?;}  investment?;
+    LinktokencreaterequestaccountsubtypesInvestment investment?;
 };
 
 # PaymentInitiationPaymentListResponse defines the response schema for `/payment_initiation/payment/list`
@@ -2012,7 +2018,9 @@ public type TransferStatus string;
 public type BankTransferID string;
 
 # The schedule that the payment will be executed on. If a schedule is provided, the payment is automatically set up as a standing order. If no schedule is specified, the payment will be executed only once.
-public type ExternalPaymentScheduleRequest record {};
+public type ExternalPaymentScheduleRequest record {
+    *ExternalPaymentScheduleBase;
+};
 
 # The address associated with the account holder.
 public type TransferUserAddressInRequest record {
@@ -2101,6 +2109,9 @@ public type TransferEventListResponse record {
 };
 
 # IncomeVerificationPaystubGetRequest defines the request schema for `/income/verification/paystub/get`.
+# 
+# # Deprecated
+@deprecated
 public type IncomeVerificationPaystubGetRequest record {
     # Your Plaid API `client_id`. The `client_id` is required and may be provided either in the `PLAID-CLIENT-ID` header or as part of a request body.
     APIClientID client_id?;
@@ -2568,6 +2579,57 @@ public type ItemStatusTransactions record {
 # A representation of a transaction
 public type Transaction record {
     *TransactionBase;
+    # The channel used to make a payment.
+    # `online:` transactions that took place online.
+    # 
+    # `in store:` transactions that were made at a physical location.
+    # 
+    # `other:` transactions that relate to banks, e.g. fees or deposits.
+    # 
+    # This field replaces the `transaction_type` field.
+    string payment_channel?;
+    # The merchant name, as extracted by Plaid from the `name` field.
+    string? merchant_name?;
+    # The date that the transaction was authorized. Dates are returned in an [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format ( `YYYY-MM-DD` ).
+    string? authorized_date?;
+    # Date and time when a transaction was authorized in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format ( `YYYY-MM-DDTHH:mm:ssZ` ).
+    # 
+    # This field is only populated for UK institutions. For institutions in other countries, will be `null`.
+    string? authorized_datetime?;
+    # Date and time when a transaction was posted in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format ( `YYYY-MM-DDTHH:mm:ssZ` ).
+    # 
+    # This field is only populated for UK institutions. For institutions in other countries, will be `null`.
+    string? datetime?;
+    # The check number of the transaction. This field is only populated for check transactions.
+    string? check_number?;
+    # An identifier classifying the transaction type.
+    # 
+    # This field is only populated for European institutions. For institutions in the US and Canada, this field is set to `null`.
+    # 
+    # `adjustment:` Bank adjustment
+    # 
+    # `atm:` Cash deposit or withdrawal via an automated teller machine
+    # 
+    # `bank charge:` Charge or fee levied by the institution
+    # 
+    # `bill payment`: Payment of a bill
+    # 
+    # `cash:` Cash deposit or withdrawal
+    # 
+    # `cashback:` Cash withdrawal while making a debit card purchase
+    # 
+    # `cheque:` Document ordering the payment of money to another person or organization
+    # 
+    # `direct debit:` Automatic withdrawal of funds initiated by a third party at a regular interval
+    # 
+    # `interest:` Interest earned or incurred
+    # 
+    # `purchase:` Purchase made with a debit or credit card
+    # 
+    # `standing order:` Payment instructed by the account holder to a third party at a regular interval
+    # 
+    # `transfer:` Transfer of money between accounts
+    TransactionCode? transaction_code?;
 };
 
 # DepositSwitchGetResponse defines the response schema for `/deposit_switch/get`
@@ -4006,6 +4068,7 @@ public type NumbersEFTNullable record {
 # The date on which the transaction took place, in IS0 8601 format.
 public type AssetReportTransaction record {
     *TransactionBase;
+    string? date_transacted?;
 };
 
 # The name of the employer, as reported on the paystub.
@@ -4279,6 +4342,12 @@ public type ProcessorApexProcessorTokenCreateRequest record {
     string account_id;
 };
 
+# A filter to apply to `credit`-type accounts
+public type LinktokencreaterequestaccountsubtypesCredit record {
+    # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
+    AccountSubtypes account_subtypes?;
+};
+
 # AssetReportAuditCopyRemoveRequest defines the request schema for `/asset_report/audit_copy/remove`
 public type AssetReportAuditCopyRemoveRequest record {
     # Your Plaid API `client_id`. The `client_id` is required and may be provided either in the `PLAID-CLIENT-ID` header or as part of a request body.
@@ -4296,6 +4365,14 @@ public type ScopesNullable record {
 
 public type AccountAssets record {
     *AccountBase;
+    # The duration of transaction history available for this Item, typically defined as the time since the date of the earliest transaction in that account. Only returned by Assets endpoints.
+    decimal days_available?;
+    # Transaction history associated with the account. Only returned by Assets endpoints. Transaction history returned by endpoints such as `/transactions/get` or `/investments/transactions/get` will be returned in the top-level `transactions` field instead.
+    AssetReportTransaction[] transactions?;
+    # Data returned by the financial institution about the account owner or owners. Only returned by Identity or Assets endpoints. Multiple owners on a single account will be represented in the same `owner` object, not in multiple owner objects within the array.
+    Owner[] owners?;
+    # Calculated data about the historical balances on the account. Only returned by Assets endpoints.
+    HistoricalBalance[] historical_balances?;
 };
 
 # Data to use to set values of test accounts. Some values cannot be specified in the schema and will instead will be calculated from other test data in order to achieve more consistent, realistic test data.
@@ -4432,6 +4509,8 @@ public type AccountFilter record {
 # Account identity information
 public type AccountIdentity record {
     *AccountBase;
+    # Data returned by the financial institution about the account owner or owners. Only returned by Identity or Assets endpoints. Multiple owners on a single account will be represented in the same `owner` object, not in multiple owner objects within the array.
+    Owner[] owners?;
 };
 
 # An object containing identifying numbers used for making electronic transfers to and from the `account`. The identifying number type (ACH, EFT, IBAN, or BACS) used will depend on the country of the account. An account may have more than one number type. If a particular identifying number type is not used by the `account` for which auth data has been requested, a null value will be returned.
@@ -4700,6 +4779,12 @@ public type IncomeVerificationRefreshRequest record {
     AccessTokenNullable? access_token?;
 };
 
+# A filter to apply to `depository`-type accounts
+public type LinktokencreaterequestaccountsubtypesDepository record {
+    # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
+    AccountSubtypes account_subtypes?;
+};
+
 # The access token associated with the Item data is being requested for.
 public type AccessTokenNullable string?;
 
@@ -4848,7 +4933,7 @@ public type ExternalPaymentRefundDetails record {
 
 # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
 # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
-public type AccountSubtypes AccountSubtype?[];
+public type AccountSubtypes AccountSubtype[];
 
 # The amount of the transfer (decimal string with two digits of precision e.g. “10.00”).
 public type TransferAmount string;
@@ -5132,6 +5217,12 @@ public type IncomeVerificationStatusWebhook record {
 public type ItemImportRequestOptions record {
     # Specifies a webhook URL to associate with an Item. Plaid fires a webhook if credentials fail.
     string webhook?;
+};
+
+# A filter to apply to `loan`-type accounts
+public type LinktokencreaterequestaccountsubtypesLoan record {
+    # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
+    AccountSubtypes account_subtypes?;
 };
 
 # LiabilitiesGetRequest defines the request schema for `/liabilities/get`
@@ -5524,7 +5615,11 @@ public type AccountsGetResponse record {
 public type ProcessorToken string;
 
 # PaymentInitiationPaymentGetResponse defines the response schema for `/payment_initation/payment/get`
-public type PaymentInitiationPaymentGetResponse record {};
+public type PaymentInitiationPaymentGetResponse record {
+    *PaymentInitiationPayment;
+    # A unique identifier for the request, which can be used for troubleshooting. This identifier, like all Plaid identifiers, is case sensitive.
+    RequestID request_id;
+};
 
 # Defines the request schema for `/bank_transfer/event/sync`
 public type BankTransferEventSyncRequest record {

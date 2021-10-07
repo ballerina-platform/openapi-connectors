@@ -28,23 +28,14 @@ public type Timezone record {
     string? time;
 };
 
-public type Body19 record {
-    # The output case style
-    string? 'output\-case;
-    # IPv4 or IPv6 address
-    string? ip;
-    # Do a reverse DNS (PTR) lookup. This option can add extra delay to the request so only use it if you need it
-    boolean? 'reverse\-lookup?;
+public type GeocodeAddressResponse record {
+    # The number of possible matching locations found
+    int? found;
+    # Array of matching location objects
+    Location[]? locations;
 };
 
-public type Body18 record {
-    # The data format. Can be either CSV or TXT
-    string? format?;
-    # Include public VPN provider IP addresses, this option is only available for Tier 3 or higher accounts. <br> <b>WARNING</b>: This option will add at least an additional 8 million IP addresses to the download
-    boolean? 'include\-vpn?;
-};
-
-public type Body17 record {
+public type IpblocklistBody record {
     # The output case style
     string? 'output\-case;
     # An IPv4 or IPv6 address
@@ -53,74 +44,28 @@ public type Body17 record {
     boolean? 'vpn\-lookup?;
 };
 
-public type GeocodeAddressResponse record {
-    # The number of possible matching locations found
-    int? found;
-    # Array of matching location objects
-    Location[]? locations;
-};
-
-public type Body12 record {
+public type PhoneplaybackBody record {
     # The output case style
     string? 'output\-case;
-    # A phone number. This can be in international format (E.164) or local format. If passing local format you must also set either the 'country-code' OR 'ip' options as well
+    # The phone number to call. Must be in valid international format
     string? number;
-    # ISO 2-letter country code, assume numbers are based in this country. If not set numbers are assumed to be in international format (with or without the leading + sign)
-    string? 'country\-code?;
-    # Pass in a users IP address and we will assume numbers are based in the country of the IP address
-    string? ip?;
+    # A URL to a valid audio file. Accepted audio formats are: <ul> <li>MP3</li> <li>WAV</li> <li>OGG</li> </ul>You can use the following MP3 URL for testing: <br>https://www.neutrinoapi.com/test-files/test1.mp3
+    string? 'audio\-url;
+    # Limit the total number of calls allowed to the supplied phone number, if the limit is reached error code 14 will be returned (0 means no limit)
+    int? 'limit?;
+    # Set the TTL in number of days that the 'limit' option will remember a phone number (the default is 1 day and the maximum is 365 days)
+    int? 'limit\-ttl?;
 };
 
-public type Body11 record {
+public type ConvertBody record {
     # The output case style
     string? 'output\-case;
-    # An email address
-    string? email;
-    # Automatically attempt to fix typos in the address
-    boolean? 'fix\-typos?;
-};
-
-public type Body10 record {
-    # The output case style
-    string? 'output\-case;
-    # A user agent string
-    string? 'user\-agent;
-};
-
-public type Body16 record {
-    # The output case style
-    string? 'output\-case;
-    # An email address
-    string? email;
-    # Automatically attempt to fix typos in the address
-    boolean? 'fix\-typos?;
-};
-
-public type Body15 record {
-    # The output case style
-    string? 'output\-case;
-    # IPv4 or IPv6 address
-    string? ip;
-};
-
-public type Body14 record {
-    # The output case style
-    string? 'output\-case;
-    # An IP address, domain name, FQDN or URL. <br>If you supply a domain/URL it will be checked against the URI DNSBL lists
-    string? host;
-    # Only check lists with this rating or better
-    int? 'list\-rating?;
-};
-
-public type Body13 record {
-    # The output case style
-    string? 'output\-case;
-    # The content to scan. This can be either a URL to load from, a file upload or an HTML content string
-    string? content;
-    # The character to use to censor out the bad words found
-    string? 'censor\-character?;
-    # Which catalog of bad words to use, we currently maintain two bad word catalogs: <br> <ul> <li>strict - the largest database of bad words which includes profanity, obscenity, sexual, rude, cuss, dirty, swear and objectionable words and phrases. This catalog is suitable for environments of all ages including educational or children's content</li> <li>obscene - like the strict catalog but does not include any mild profanities, idiomatic phrases or words which are considered formal terminology. This catalog is suitable for adult environments where certain types of bad words are considered OK</li> </ul>
-    string? catalog?;
+    # The value to convert from (e.g. 10.95)
+    string? 'from\-value;
+    # The type of the value to convert from (e.g. USD)
+    string? 'from\-type;
+    # The type to convert to (e.g. EUR)
+    string? 'to\-type;
 };
 
 public type PhoneValidateResponse record {
@@ -155,6 +100,29 @@ public type PhonePlaybackResponse record {
     boolean? calling;
     # True if this a valid phone number
     boolean? numberValid;
+};
+
+public type HlrlookupBody record {
+    # The output case style
+    string? 'output\-case;
+    # A phone number
+    string? number;
+    # ISO 2-letter country code, assume numbers are based in this country. <br>If not set numbers are assumed to be in international format (with or without the leading + sign)
+    string? 'country\-code?;
+};
+
+public type HtmlcleanBody record {
+    # The HTML content. This can be either a URL to load from, a file upload or an HTML content string
+    string? content;
+    # The level of sanitization, possible values are: <br> <b>plain-text</b>: reduce the content to plain text only (no HTML tags at all) <br> <br> <b>simple-text</b>: allow only very basic text formatting tags like b, em, i, strong, u <br> <br> <b>basic-html</b>: allow advanced text formatting and hyper links <br> <br> <b>basic-html-with-images</b>: same as basic html but also allows image tags <br> <br> <b>advanced-html</b>: same as basic html with images but also allows many more common HTML tags like table, ul, dl, pre <br>
+    string? 'output\-type;
+};
+
+public type BinlistdownloadBody record {
+    # Include ISO 3-letter country codes and ISO 3-letter currency codes in the data. These will be added to columns 10 and 11 respectively
+    boolean? 'include\-iso3?;
+    # Include 8-digit and higher BIN codes. Use this option if you want to download BINs with more than 6-digits
+    boolean? 'include\-8digit?;
 };
 
 public type GeocodeReverseResponse record {
@@ -230,11 +198,50 @@ public type Blacklist record {
     int? responseTime;
 };
 
+public type HostreputationBody record {
+    # The output case style
+    string? 'output\-case;
+    # An IP address, domain name, FQDN or URL. <br>If you supply a domain/URL it will be checked against the URI DNSBL lists
+    string? host;
+    # Only check lists with this rating or better
+    int? 'list\-rating?;
+};
+
 public type APIError record {
     # API error code. If set and > 0 then an API error has occurred your request could not be completed
     int? apiError;
     # API error message
     string? apiErrorMsg;
+};
+
+public type SmsmessageBody record {
+    # The output case style
+    string? 'output\-case;
+    # The phone number to send a message to
+    string? number;
+    # The SMS message to send. Messages are truncated to a maximum of 150 characters for ASCII content OR 70 characters for UTF content
+    string? message;
+    # ISO 2-letter country code, assume numbers are based in this country. <br>If not set numbers are assumed to be in international format (with or without the leading + sign)
+    string? 'country\-code?;
+    # Limit the total number of SMS allowed to the supplied phone number, if the limit is reached error code 14 will be returned (the default is no limit)
+    int? 'limit?;
+    # Set the TTL in number of days that the 'limit' option will remember a phone number (the default is 1 day and the maximum is 365 days)
+    int? 'limit\-ttl?;
+};
+
+public type UrlinfoBody record {
+    # The output case style
+    string? 'output\-case;
+    # The URL to probe
+    string? url;
+    # If this URL responds with html, text, json or xml then return the response. This option is useful if you want to perform further processing on the URL content (e.g. with the HTML Extract or HTML Clean APIs)
+    boolean? 'fetch\-content?;
+    # Ignore any TLS/SSL certificate errors and load the URL anyway
+    boolean? 'ignore\-certificate\-errors?;
+    # Timeout in seconds. Give up if still trying to load the URL after this number of seconds
+    int? timeout?;
+    # If the request fails for any reason try again this many times
+    int? 'retry?;
 };
 
 public type SMSVerifyResponse record {
@@ -244,6 +251,15 @@ public type SMSVerifyResponse record {
     string? securityCode;
     # True if the SMS has been sent
     boolean? sent;
+};
+
+public type VerifysecuritycodeBody record {
+    # The output case style
+    string? 'output\-case;
+    # The security code to verify
+    string? 'security\-code;
+    # If set then enable additional brute-force protection by limiting the number of attempts by the supplied value. This can be set to any unique identifier you would like to limit by, for example a hash of the users email, phone number or IP address. Requests to this API will be ignored after approximately 10 failed verification attempts
+    string? 'limit\-by?;
 };
 
 public type UserAgentInfoResponse record {
@@ -281,6 +297,25 @@ public type UserAgentInfoResponse record {
     string? engine;
     # The browser engine version (if detectable)
     string? engineVersion;
+};
+
+public type BrowserbotBody record {
+    # The output case style
+    string? 'output\-case;
+    # The URL to load
+    string? url;
+    # Timeout in seconds. Give up if still trying to load the page after this number of seconds
+    int? timeout?;
+    # Delay in seconds to wait before capturing any page data, executing selectors or JavaScript
+    int? delay?;
+    # Extract content from the page DOM using this selector. Commonly known as a CSS selector, you can find a good reference <a href="https://www.w3schools.com/cssref/css_selectors.asp">here</a>
+    string? selector?;
+    # Execute JavaScript on the page, each array element should contain a valid JavaScript statement. If a statement returns any kind of value it will be returned in the 'exec-results' response. You can also use the following special user interaction functions: <br> <br> <div> sleep(seconds); Just wait/sleep for the specified number of seconds. <br>click('selector'); Click on the first element matching the given selector. <br>focus('selector'); Focus on the first element matching the given selector. <br>keys('characters'); Send the specified keyboard characters. Use click() or focus() first to send keys to a specific element. <br>enter(); Send the Enter key. <br>tab(); Send the Tab key. <br> </div>
+    string[]? exec?;
+    # Override the browsers default user-agent string with this one
+    string? 'user\-agent?;
+    # Ignore any TLS/SSL certificate errors and load the page anyway
+    boolean? 'ignore\-certificate\-errors?;
 };
 
 public type HostReputationResponse record {
@@ -339,6 +374,31 @@ public type BINLookupResponse record {
     boolean? isPrepaid;
 };
 
+public type GeocodeaddressBody record {
+    # The output case style
+    string? 'output\-case;
+    # The full address, partial address or name of a place to try and locate. Comma separated address components are preferred.
+    string? address?;
+    # The house/building number to locate
+    string? 'house\-number?;
+    # The street/road name to locate
+    string? street?;
+    # The city/town name to locate
+    string? city?;
+    # The county/region name to locate
+    string? county?;
+    # The state name to locate
+    string? state?;
+    # The postal code to locate
+    string? 'postal\-code?;
+    # Limit result to this country (the default is no country bias)
+    string? 'country\-code?;
+    # The language to display results in, available languages are: <ul> <li>de, en, es, fr, it, pt, ru, zh</li> </ul>
+    string? 'language\-code?;
+    # If no matches are found for the given address, start performing a recursive fuzzy search until a geolocation is found. This option is recommended for processing user input or implementing auto-complete. We use a combination of approximate string matching and data cleansing to find possible location matches
+    boolean? 'fuzzy\-search?;
+};
+
 public type ConvertResponse record {
     # True if the coversion was successful and produced a valid result
     boolean? valid;
@@ -352,6 +412,44 @@ public type ConvertResponse record {
     string? fromType;
     # The result of the conversion as a floating-point number
     decimal? resultFloat;
+};
+
+public type BinlookupBody record {
+    # The output case style
+    string? 'output\-case;
+    # The BIN or IIN number. This is the first 6, 8 or 10 digits of a card number, use 8 (or more) digits for the highest level of accuracy
+    string? 'bin\-number;
+    # Pass in the customers IP address and we will return some extra information about them
+    string? 'customer\-ip?;
+};
+
+public type EmailverifyBody record {
+    # The output case style
+    string? 'output\-case;
+    # An email address
+    string? email;
+    # Automatically attempt to fix typos in the address
+    boolean? 'fix\-typos?;
+};
+
+public type IpinfoBody record {
+    # The output case style
+    string? 'output\-case;
+    # IPv4 or IPv6 address
+    string? ip;
+    # Do a reverse DNS (PTR) lookup. This option can add extra delay to the request so only use it if you need it
+    boolean? 'reverse\-lookup?;
+};
+
+public type PhonevalidateBody record {
+    # The output case style
+    string? 'output\-case;
+    # A phone number. This can be in international format (E.164) or local format. If passing local format you must also set either the 'country-code' OR 'ip' options as well
+    string? number;
+    # ISO 2-letter country code, assume numbers are based in this country. If not set numbers are assumed to be in international format (with or without the leading + sign)
+    string? 'country\-code?;
+    # Pass in a users IP address and we will assume numbers are based in the country of the IP address
+    string? ip?;
 };
 
 public type URLInfoResponse record {
@@ -409,6 +507,13 @@ public type URLInfoResponse record {
     string? languageCode;
     # True if an error occurred while loading the URL. This includes network errors, TLS errors and timeouts
     boolean? isError;
+};
+
+public type IpprobeBody record {
+    # The output case style
+    string? 'output\-case;
+    # IPv4 or IPv6 address
+    string? ip;
 };
 
 public type IPInfoResponse record {
@@ -496,6 +601,13 @@ public type VerifySecurityCodeResponse record {
     boolean? verified;
 };
 
+public type UseragentinfoBody record {
+    # The output case style
+    string? 'output\-case;
+    # A user agent string
+    string? 'user\-agent;
+};
+
 public type IPBlocklistResponse record {
     # The IP address
     string? ip;
@@ -533,39 +645,6 @@ public type IPBlocklistResponse record {
     string[]? sensors;
 };
 
-public type Body record {
-    # The URL or Base64 encoded Data URL for the source image (you can also upload an image file directly in which case this field is ignored)
-    string? 'image\-url;
-    # The width to resize to (in px) while preserving aspect ratio
-    int? width;
-    # The height to resize to (in px) while preserving aspect ratio
-    int? height;
-    # The output image format, can be either png or jpg
-    string? format?;
-};
-
-public type Body8 record {
-    # The output case style
-    string? 'output\-case;
-    # The security code to verify
-    string? 'security\-code;
-    # If set then enable additional brute-force protection by limiting the number of attempts by the supplied value. This can be set to any unique identifier you would like to limit by, for example a hash of the users email, phone number or IP address. Requests to this API will be ignored after approximately 10 failed verification attempts
-    string? 'limit\-by?;
-};
-
-public type Body9 record {
-    # The output case style
-    string? 'output\-case;
-    # The phone number to call. Must be in valid international format
-    string? number;
-    # A URL to a valid audio file. Accepted audio formats are: <ul> <li>MP3</li> <li>WAV</li> <li>OGG</li> </ul>You can use the following MP3 URL for testing: <br>https://www.neutrinoapi.com/test-files/test1.mp3
-    string? 'audio\-url;
-    # Limit the total number of calls allowed to the supplied phone number, if the limit is reached error code 14 will be returned (0 means no limit)
-    int? 'limit?;
-    # Set the TTL in number of days that the 'limit' option will remember a phone number (the default is 1 day and the maximum is 365 days)
-    int? 'limit\-ttl?;
-};
-
 public type EmailVerifyResponse record {
     # Is this a valid email address (syntax and domain is valid)
     boolean? valid;
@@ -599,50 +678,16 @@ public type EmailVerifyResponse record {
     boolean? isDeferred;
 };
 
-public type Body6 record {
+public type EmailvalidateBody record {
     # The output case style
     string? 'output\-case;
-    # A phone number
-    string? number;
-    # ISO 2-letter country code, assume numbers are based in this country. <br>If not set numbers are assumed to be in international format (with or without the leading + sign)
-    string? 'country\-code?;
+    # An email address
+    string? email;
+    # Automatically attempt to fix typos in the address
+    boolean? 'fix\-typos?;
 };
 
-public type Body7 record {
-    # The output case style
-    string? 'output\-case;
-    # The phone number to send a message to
-    string? number;
-    # The SMS message to send. Messages are truncated to a maximum of 150 characters for ASCII content OR 70 characters for UTF content
-    string? message;
-    # ISO 2-letter country code, assume numbers are based in this country. <br>If not set numbers are assumed to be in international format (with or without the leading + sign)
-    string? 'country\-code?;
-    # Limit the total number of SMS allowed to the supplied phone number, if the limit is reached error code 14 will be returned (the default is no limit)
-    int? 'limit?;
-    # Set the TTL in number of days that the 'limit' option will remember a phone number (the default is 1 day and the maximum is 365 days)
-    int? 'limit\-ttl?;
-};
-
-public type Body4 record {
-    # The output case style
-    string? 'output\-case;
-    # The phone number to send a verification code to
-    string? number;
-    # The number of digits to use in the security code (must be between 4 and 12)
-    int? 'code\-length?;
-    # Pass in your own security code. This is useful if you have implemented TOTP or similar 2FA methods. If not set then we will generate a secure random code
-    int? 'security\-code?;
-    # ISO 2-letter country code, assume numbers are based in this country. <br>If not set numbers are assumed to be in international format (with or without the leading + sign)
-    string? 'country\-code?;
-    # The language to send the verification code in, available languages are: <ul> <li>de - German</li> <li>en - English</li> <li>es - Spanish</li> <li>fr - French</li> <li>it - Italian</li> <li>pt - Portuguese</li> <li>ru - Russian</li> </ul>
-    string? 'language\-code?;
-    # Limit the total number of SMS allowed to the supplied phone number, if the limit is reached error code 14 will be returned (the default is no limit)
-    int? 'limit?;
-    # Set the TTL in number of days that the 'limit' option will remember a phone number (the default is 1 day and the maximum is 365 days)
-    int? 'limit\-ttl?;
-};
-
-public type Body5 record {
+public type PhoneverifyBody record {
     # The output case style
     string? 'output\-case;
     # The phone number to send the verification code to
@@ -663,23 +708,6 @@ public type Body5 record {
     int? 'limit\-ttl?;
 };
 
-public type Body2 record {
-    # The URL or Base64 encoded Data URL for the source image (you can also upload an image file directly in which case this field is ignored)
-    string? 'image\-url;
-    # The URL or Base64 encoded Data URL for the watermark image (you can also upload an image file directly in which case this field is ignored)
-    string? 'watermark\-url;
-    # The opacity of the watermark (0 to 100)
-    int? opacity?;
-    # The output image format, can be either png or jpg
-    string? format?;
-    # The position of the watermark image, possible values are: <br>center, top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
-    string? position?;
-    # If set resize the resulting image to this width (in px) while preserving aspect ratio
-    int? width?;
-    # If set resize the resulting image to this height (in px) while preserving aspect ratio
-    int? height?;
-};
-
 public type BadWordFilterResponse record {
     # An array of the bad words found
     string[]? badWordsList;
@@ -689,77 +717,6 @@ public type BadWordFilterResponse record {
     string? censoredContent;
     # Does the text contain bad words
     boolean? isBad;
-};
-
-public type Body3 record {
-    # The content to encode into the QR code (e.g. a URL or a phone number)
-    string? content;
-    # The width of the QR code (in px)
-    int? width?;
-    # The height of the QR code (in px)
-    int? height?;
-    # The QR code foreground color
-    string? 'fg\-color?;
-    # The QR code background color
-    string? 'bg\-color?;
-};
-
-public type Body23 record {
-    # The output case style
-    string? 'output\-case;
-    # The BIN or IIN number. This is the first 6, 8 or 10 digits of a card number, use 8 (or more) digits for the highest level of accuracy
-    string? 'bin\-number;
-    # Pass in the customers IP address and we will return some extra information about them
-    string? 'customer\-ip?;
-};
-
-public type Body22 record {
-    # The output case style
-    string? 'output\-case;
-    # The value to convert from (e.g. 10.95)
-    string? 'from\-value;
-    # The type of the value to convert from (e.g. USD)
-    string? 'from\-type;
-    # The type to convert to (e.g. EUR)
-    string? 'to\-type;
-};
-
-public type Body21 record {
-    # The output case style
-    string? 'output\-case;
-    # The full address, partial address or name of a place to try and locate. Comma separated address components are preferred.
-    string? address?;
-    # The house/building number to locate
-    string? 'house\-number?;
-    # The street/road name to locate
-    string? street?;
-    # The city/town name to locate
-    string? city?;
-    # The county/region name to locate
-    string? county?;
-    # The state name to locate
-    string? state?;
-    # The postal code to locate
-    string? 'postal\-code?;
-    # Limit result to this country (the default is no country bias)
-    string? 'country\-code?;
-    # The language to display results in, available languages are: <ul> <li>de, en, es, fr, it, pt, ru, zh</li> </ul>
-    string? 'language\-code?;
-    # If no matches are found for the given address, start performing a recursive fuzzy search until a geolocation is found. This option is recommended for processing user input or implementing auto-complete. We use a combination of approximate string matching and data cleansing to find possible location matches
-    boolean? 'fuzzy\-search?;
-};
-
-public type Body20 record {
-    # The output case style
-    string? 'output\-case;
-    # The location latitude in decimal degrees format
-    string? latitude;
-    # The location longitude in decimal degrees format
-    string? longitude;
-    # The language to display results in, available languages are: <ul> <li>de, en, es, fr, it, pt, ru</li> </ul>
-    string? 'language\-code?;
-    # The zoom level to respond with: <br> <ul> <li>address - the most precise address available</li> <li>street - the street level</li> <li>city - the city level</li> <li>state - the state level</li> <li>country - the country level</li> </ul>
-    string? zoom?;
 };
 
 public type IPProbeResponse record {
@@ -825,52 +782,35 @@ public type IPProbeResponse record {
     boolean? isBogon;
 };
 
-public type Body27 record {
+public type BadwordfilterBody record {
     # The output case style
     string? 'output\-case;
-    # The URL to load
-    string? url;
-    # Timeout in seconds. Give up if still trying to load the page after this number of seconds
-    int? timeout?;
-    # Delay in seconds to wait before capturing any page data, executing selectors or JavaScript
-    int? delay?;
-    # Extract content from the page DOM using this selector. Commonly known as a CSS selector, you can find a good reference <a href="https://www.w3schools.com/cssref/css_selectors.asp">here</a>
-    string? selector?;
-    # Execute JavaScript on the page, each array element should contain a valid JavaScript statement. If a statement returns any kind of value it will be returned in the 'exec-results' response. You can also use the following special user interaction functions: <br> <br> <div> sleep(seconds); Just wait/sleep for the specified number of seconds. <br>click('selector'); Click on the first element matching the given selector. <br>focus('selector'); Focus on the first element matching the given selector. <br>keys('characters'); Send the specified keyboard characters. Use click() or focus() first to send keys to a specific element. <br>enter(); Send the Enter key. <br>tab(); Send the Tab key. <br> </div>
-    string[]? exec?;
-    # Override the browsers default user-agent string with this one
-    string? 'user\-agent?;
-    # Ignore any TLS/SSL certificate errors and load the page anyway
-    boolean? 'ignore\-certificate\-errors?;
-};
-
-public type Body26 record {
-    # The HTML content. This can be either a URL to load from, a file upload or an HTML content string
+    # The content to scan. This can be either a URL to load from, a file upload or an HTML content string
     string? content;
-    # The level of sanitization, possible values are: <br> <b>plain-text</b>: reduce the content to plain text only (no HTML tags at all) <br> <br> <b>simple-text</b>: allow only very basic text formatting tags like b, em, i, strong, u <br> <br> <b>basic-html</b>: allow advanced text formatting and hyper links <br> <br> <b>basic-html-with-images</b>: same as basic html but also allows image tags <br> <br> <b>advanced-html</b>: same as basic html with images but also allows many more common HTML tags like table, ul, dl, pre <br>
-    string? 'output\-type;
+    # The character to use to censor out the bad words found
+    string? 'censor\-character?;
+    # Which catalog of bad words to use, we currently maintain two bad word catalogs: <br> <ul> <li>strict - the largest database of bad words which includes profanity, obscenity, sexual, rude, cuss, dirty, swear and objectionable words and phrases. This catalog is suitable for environments of all ages including educational or children's content</li> <li>obscene - like the strict catalog but does not include any mild profanities, idiomatic phrases or words which are considered formal terminology. This catalog is suitable for adult environments where certain types of bad words are considered OK</li> </ul>
+    string? catalog?;
 };
 
-public type Body25 record {
+public type GeocodereverseBody record {
     # The output case style
     string? 'output\-case;
-    # The URL to probe
-    string? url;
-    # If this URL responds with html, text, json or xml then return the response. This option is useful if you want to perform further processing on the URL content (e.g. with the HTML Extract or HTML Clean APIs)
-    boolean? 'fetch\-content?;
-    # Ignore any TLS/SSL certificate errors and load the URL anyway
-    boolean? 'ignore\-certificate\-errors?;
-    # Timeout in seconds. Give up if still trying to load the URL after this number of seconds
-    int? timeout?;
-    # If the request fails for any reason try again this many times
-    int? 'retry?;
+    # The location latitude in decimal degrees format
+    string? latitude;
+    # The location longitude in decimal degrees format
+    string? longitude;
+    # The language to display results in, available languages are: <ul> <li>de, en, es, fr, it, pt, ru</li> </ul>
+    string? 'language\-code?;
+    # The zoom level to respond with: <br> <ul> <li>address - the most precise address available</li> <li>street - the street level</li> <li>city - the city level</li> <li>state - the state level</li> <li>country - the country level</li> </ul>
+    string? zoom?;
 };
 
-public type Body24 record {
-    # Include ISO 3-letter country codes and ISO 3-letter currency codes in the data. These will be added to columns 10 and 11 respectively
-    boolean? 'include\-iso3?;
-    # Include 8-digit and higher BIN codes. Use this option if you want to download BINs with more than 6-digits
-    boolean? 'include\-8digit?;
+public type IpblocklistdownloadBody record {
+    # The data format. Can be either CSV or TXT
+    string? format?;
+    # Include public VPN provider IP addresses, this option is only available for Tier 3 or higher accounts. <br> <b>WARNING</b>: This option will add at least an additional 8 million IP addresses to the download
+    boolean? 'include\-vpn?;
 };
 
 public type SMSMessageResponse record {
@@ -880,6 +820,25 @@ public type SMSMessageResponse record {
     boolean? sent;
 };
 
+public type SmsverifyBody record {
+    # The output case style
+    string? 'output\-case;
+    # The phone number to send a verification code to
+    string? number;
+    # The number of digits to use in the security code (must be between 4 and 12)
+    int? 'code\-length?;
+    # Pass in your own security code. This is useful if you have implemented TOTP or similar 2FA methods. If not set then we will generate a secure random code
+    int? 'security\-code?;
+    # ISO 2-letter country code, assume numbers are based in this country. <br>If not set numbers are assumed to be in international format (with or without the leading + sign)
+    string? 'country\-code?;
+    # The language to send the verification code in, available languages are: <ul> <li>de - German</li> <li>en - English</li> <li>es - Spanish</li> <li>fr - French</li> <li>it - Italian</li> <li>pt - Portuguese</li> <li>ru - Russian</li> </ul>
+    string? 'language\-code?;
+    # Limit the total number of SMS allowed to the supplied phone number, if the limit is reached error code 14 will be returned (the default is no limit)
+    int? 'limit?;
+    # Set the TTL in number of days that the 'limit' option will remember a phone number (the default is 1 day and the maximum is 365 days)
+    int? 'limit\-ttl?;
+};
+
 public type PhoneVerifyResponse record {
     # True if this a valid phone number
     boolean? numberValid;
@@ -887,79 +846,6 @@ public type PhoneVerifyResponse record {
     boolean? calling;
     # The security code generated, you can save this code to perform your own verification or you can use the <a href="https://www.neutrinoapi.com/api/verify-security-code/">Verify Security Code API</a>
     string? securityCode;
-};
-
-public type Body1 record {
-    # The HTML content. This can be either a URL to load from, a file upload or an HTML content string
-    string? content;
-    # Which format to output, available options are: PDF, PNG, JPG
-    string? format?;
-    # Set the document page size, can be one of: A0 - A9, B0 - B10, Comm10E, DLE or Letter
-    string? 'page\-size?;
-    # The document title
-    string? title?;
-    # The document margin (in mm)
-    int? margin?;
-    # The document left margin (in mm)
-    int? 'margin\-left?;
-    # The document right margin (in mm)
-    int? 'margin\-right?;
-    # The document top margin (in mm)
-    int? 'margin\-top?;
-    # The document bottom margin (in mm)
-    int? 'margin\-bottom?;
-    # Set the document to landscape orientation
-    boolean? landscape?;
-    # Set the zoom factor when rendering the page (2.0 for double size, 0.5 for half size)
-    float? zoom?;
-    # Render the final document in grayscale
-    boolean? grayscale?;
-    # Use @media print CSS styles to render the document
-    boolean? 'media\-print?;
-    # Activate all @media queries before rendering. This can be useful if you wan't to render the mobile version of a responsive website
-    boolean? 'media\-queries?;
-    # Generate real (fillable) PDF forms from HTML forms
-    boolean? forms?;
-    # Inject custom CSS into the HTML. e.g. 'body { background-color: red;}'
-    string? css?;
-    # If rendering to an image format (PNG or JPG) use this image width (in pixels)
-    int? 'image\-width?;
-    # If rendering to an image format (PNG or JPG) use this image height (in pixels). The default is automatic which dynamically sets the image height based on the content
-    int? 'image\-height?;
-    # Number of milliseconds to wait before rendering the page (can be useful for pages with animations etc)
-    int? 'render\-delay?;
-    # Text to print to the left-hand side header of each page. e.g. 'My header - Page {page_number} of {total_pages}'
-    string? 'header\-text\-left?;
-    # Text to print to the center header of each page
-    string? 'header\-text\-center?;
-    # Text to print to the right-hand side header of each page
-    string? 'header\-text\-right?;
-    # The height of your header (in mm)
-    int? 'header\-size?;
-    # Set the header font. Fonts available: Times, Courier, Helvetica, Arial
-    string? 'header\-font?;
-    # Set the header font size (in pt)
-    int? 'header\-font\-size?;
-    # Draw a full page width horizontal line under your header
-    boolean? 'header\-line?;
-    # Text to print to the left-hand side footer of each page. e.g. 'My footer - Page {page_number} of {total_pages}'
-    string? 'footer\-text\-left?;
-    # Text to print to the center header of each page
-    string? 'footer\-text\-center?;
-    # Text to print to the right-hand side header of each page
-    string? 'footer\-text\-right?;
-    # The height of your footer (in mm)
-    int? 'footer\-size?;
-    # Set the footer font. Fonts available: Times, Courier, Helvetica, Arial
-    string? 'footer\-font?;
-    # Set the footer font size (in pt)
-    int? 'footer\-font\-size?;
-    # Draw a full page width horizontal line above your footer
-    boolean? 'footer\-line?;
-    # Set the PDF page width explicitly (in mm)
-    int? 'page\-width?;
-    # Set the PDF page height explicitly (in mm)
-    int? 'page\-height?;
 };
 
 public type HLRLookupResponse record {

@@ -16,6 +16,10 @@
 
 public type InlineResponse2016Arr InlineResponse2016[];
 
+public type IdRulesBody1 record {
+    ServiceEventRule rule;
+};
+
 public type BusinessServiceReference record {
     *Reference;
     string 'type?;
@@ -54,6 +58,10 @@ public type ExtensionSchema record {
     string url?;
 };
 
+public type IdNotificationSubscriptionsBody1 record {
+    NotificationSubscribable[] subscribables;
+};
+
 public type ExtensionSchemaReference record {
     *Reference;
     string 'type?;
@@ -73,6 +81,10 @@ public type AlertGroupingParameters record {
     TimeBasedAlertGroupingConfiguration|ContentBasedAlertGroupingConfiguration config?;
 };
 
+public type BusinessServiceIdImpactsBody record {
+    string relation;
+};
+
 public type Impactor record {
     string id?;
     # The kind of object that is impacting
@@ -81,13 +93,25 @@ public type Impactor record {
 
 public type AuditRecordResponseSchema record {
     AuditRecord[] records?;
-    AuditMetadata response_metadata?;
+    AuditMetadata? response_metadata?;
     *CursorPagination;
+};
+
+public type ExtensionsIdBody record {
+    Extension extension;
 };
 
 public type UserReference record {
     *Reference;
     string 'type?;
+};
+
+public type TagsBody record {
+    Tag tag;
+};
+
+public type SchedulesPreviewBody record {
+    Schedule schedule;
 };
 
 # The escalation target is the entity that will be assigned an incident upon escalation.
@@ -111,6 +135,10 @@ public type IntegrationEmailFilters record {
 public type NotificationRuleReference record {
     *Reference;
     string 'type?;
+};
+
+public type ChangeEventsIdBody record {
+    ChangeEvent change_event;
 };
 
 public type TagReference record {
@@ -216,6 +244,10 @@ public type EventruleParameters record {
     string path;
 };
 
+public type MaintenanceWindowsIdBody record {
+    MaintenanceWindow maintenance_window;
+};
+
 public type InlineResponse20057Members record {
     UserReference user?;
     string role?;
@@ -230,6 +262,18 @@ public type WeeklyRestriction record {
     *Restriction;
     # The first day of the weekly rotation schedule as [ISO 8601 day](https://en.wikipedia.org/wiki/ISO_week_date) (1 is Monday, etc.)
     int start_day_of_week?;
+};
+
+# Tags to add to or remove from the entity.
+public type IdChangeTagsBody record {
+    # Array of tags and/or tag references to add to the entity.
+    # For elements with type `tag_reference`, the tag with the corresponding `id` is added to the entity.
+    # For elements with type `tag`, if there is an existing tag with the given
+    # label that tag is added to the entity. If there is no existing tag with that label and the user has permission
+    # to create tags, a new tag is created with that label and assigned to the entity.
+    TagsToAdd[] add?;
+    # Array of tag references to remove from the entity.
+    EntityTypeidchangeTagsRemove[] remove?;
 };
 
 public type Notification record {
@@ -285,12 +329,20 @@ public type ScheduleLayer record {
     decimal rendered_coverage_percentage?;
 };
 
+public type ResponsePlaysBody record {
+    ResponsePlay response_play;
+};
+
 # A reference of a subscribable entity.
 public type NotificationSubscribable record {
     # The ID of the entity to subscribe to
     string subscribable_id?;
     # The type of the entity being subscribed to
     string subscribable_type?;
+};
+
+public type ServicesIdBody record {
+    Service 'service;
 };
 
 public type InlineResponse2012 record {
@@ -323,7 +375,7 @@ public type AuditRecord record {
     # The date/time the action executed, in ISO8601 format and millisecond precision.
     string execution_time;
     # Action execution context
-    AuditrecordExecutionContext execution_context?;
+    AuditrecordExecutionContext? execution_context?;
     Reference[]? actors?;
     # The method information
     AuditrecordMethod method;
@@ -331,7 +383,7 @@ public type AuditRecord record {
     string action;
     # Additional details to provide further information about the action or
     # the resource that has been audited.
-    AuditrecordDetails details?;
+    AuditrecordDetails? details?;
 };
 
 public type InlineResponse2013 record {
@@ -354,6 +406,10 @@ public type InlineResponse2016 record {
     # If present, an array of strings representing human-readable explanations for errors found.
     string[] errors?;
     Override override;
+};
+
+public type IdNotificationRulesBody record {
+    NotificationRule notification_rule;
 };
 
 public type InlineResponse2015 record {
@@ -385,6 +441,10 @@ public type ScheduledactionAt record {
     string 'type;
     # Designates either the start or the end of support hours.
     string name;
+};
+
+public type RulesetsBody record {
+    record {*Ruleset;} ruleset;
 };
 
 public type InlineResponse409 record {
@@ -487,6 +547,10 @@ public type InlineResponse2005 record {
     BusinessService[] business_services?;
 };
 
+public type BusinessServicesPriorityThresholdsBody record {
+    BusinessServicespriorityThresholdsGlobalThreshold global_threshold;
+};
+
 public type Webhooksv1incidentdataTriggerSummaryData record {
     string subject?;
 };
@@ -575,6 +639,10 @@ public type PhoneContactMethod record {
     boolean blacklisted?;
 };
 
+public type IdSubscribersBody record {
+    NotificationSubscriber[] subscribers;
+};
+
 public type ResponderRequestTargetReference record {
     # The type of target (either a user or an escalation policy)
     string 'type?;
@@ -617,6 +685,14 @@ public type NotificationSubscriberWithContext record {
     # If this subcriber has an indirect subscription to this incident via another object
     boolean has_indirect_subscription?;
     NotificationsubscriberwithcontextSubscribedVia[]? subscribed_via?;
+};
+
+public type ResponsePlayIdRunBody record {
+    IncidentReference incident;
+};
+
+public type RulesetsIdBody record {
+    Ruleset ruleset;
 };
 
 public type InlineResponse20063 record {
@@ -667,10 +743,8 @@ public type Webhooksv1messageData record {
     WebhooksV1IncidentData incident?;
 };
 
-public type TagsToRemove record {
-    string 'type;
-    # The id of the tag
-    string id;
+public type NotificationSubscriptionsUnsubscribeBody1 record {
+    NotificationSubscribable[] subscribables;
 };
 
 public type InlineResponse20069 record {
@@ -709,6 +783,15 @@ public type InlineResponse20014GlobalThreshold record {
     decimal 'order;
 };
 
+public type UsersUserIdBody record {
+    # The role of the user on the team.
+    string role?;
+};
+
+public type AlertsAlertIdBody record {
+    Alert alert;
+};
+
 # The reference to the service that is dependent on the Business Service.
 public type InlineResponse20050DependentService record {
     string id?;
@@ -724,7 +807,7 @@ public type ResponsePlay record {
     string? description?;
     TeamReference|record {} team?;
     # An array containing the users and/or teams to be added as subscribers to any incident on which this response play is run.
-    UserReference|TeamReference[] subscribers?;
+    UserReference|TeamReference[]? subscribers?;
     # The content of the notification that will be sent to all incident subscribers upon the running of this response play. Note that this includes any users who may have already been subscribed to the incident prior to the running of this response play. If empty, no notifications will be sent.
     string? subscribers_message?;
     # An array containing the users and/or escalation policies to be requested as responders to any incident on which this response play is run.
@@ -802,6 +885,25 @@ public type InlineResponse20070 record {
     *Pagination;
 };
 
+public type BusinessServicesIdBody record {
+    # The Business Service to be created
+    BusinessServicesidBusinessService business_service?;
+};
+
+public type IdMergeBody record {
+    # The source incidents that will be merged into the target incident and resolved.
+    IncidentReference[] source_incidents;
+};
+
+public type UsersIdBody record {
+    User user;
+};
+
+public type IncidentsIdBody record {
+    # The parameters of the incident to update.
+    IncidentsidIncident incident;
+};
+
 public type WebhookReference record {
     *Reference;
     string 'type?;
@@ -826,9 +928,14 @@ public type RelatedIncidentServiceDependencyBase record {
     string? self?;
 };
 
+public type IdSnoozeBody record {
+    # The number of seconds to snooze the incident for. After this number of seconds has elapsed, the incident will return to the "triggered" state.
+    int duration;
+};
+
 public type ImpactAdditionalFields record {
     # Priority information for the highest priority level that is affecting the impacted object.
-    ImpactAdditionalFieldsHighestImpactingPriority highest_impacting_priority?;
+    ImpactAdditionalFieldsHighestImpactingPriority? highest_impacting_priority?;
 };
 
 public type VendorReference record {
@@ -904,8 +1011,39 @@ public type EscalationPolicyReference record {
     string 'type?;
 };
 
+public type IdResponderRequestsBody record {
+    # The user id of the requester.
+    string requester_id;
+    # The message sent with the responder request.
+    string message;
+    # The array of targets the responder request is sent to.
+    ResponderRequestTargetReference[] responder_request_targets;
+};
+
+public type TeamsIdBody record {
+    Team team;
+};
+
 public type IncidentsAssignments record {
     UserReference assignee?;
+};
+
+public type RawIncidentsBody record {
+    # Filters the result, only show incidents that match the conditions passed in the filter.
+    AnalyticsrawincidentsFilters filters?;
+    # A cursor to indicate the reference point that the results should follow
+    string starting_after?;
+    # A cursor to indicate the reference point that the results should precede
+    string ending_before?;
+    # The order the results;  asc for ascending, desc for descending. Defaults to 'desc'.
+    string 'order?;
+    # The column to use for ordering the results. Defaults to 'created_at'.
+    string order_by?;
+    # Number of results to include in each batch.
+    # Limits between 1 to 1000 are accepted.
+    int 'limit?;
+    # The time zone to use for the results.
+    string time_zone?;
 };
 
 # The data for a type of relationship where the Incident is related due to Business or Technical Service dependencies.
@@ -925,13 +1063,18 @@ public type PriorityReference record {
     string 'type?;
 };
 
-public type Body65 record {
-    WebhookSubscription webhook_subscription;
+public type ServiceDependenciesDisassociateBody record {
+    # List of all service dependencies to be deleted.
+    ServiceDependenciesassociateRelationships[] relationships?;
 };
 
-public type Body64 record {
-    # A rule for contacting the user for Incident Status Updates.
-    StatusUpdateNotificationRule status_update_notification_rule;
+public type IdOverridesBody record {
+    Override[] overrides?;
+};
+
+public type BusinessServicesBody record {
+    # The Business Service to be created
+    BusinessServicesBusinessService business_service?;
 };
 
 public type Extension record {
@@ -987,6 +1130,10 @@ public type EventruleactionscommonPriority record {
     string value;
 };
 
+public type StatusUpdatesSubscribersBody record {
+    NotificationSubscriber[] subscribers;
+};
+
 public type Alert record {
     # The date/time the alert was first triggered.
     string created_at?;
@@ -1022,6 +1169,10 @@ public type SubSchedule record {
     decimal rendered_coverage_percentage?;
 };
 
+public type SchedulesBody record {
+    Schedule schedule;
+};
+
 public type AuditMetadata record {
     string[]? messages?;
 };
@@ -1040,21 +1191,16 @@ public type LogentryEventDetails record {
     string description?;
 };
 
-public type Body56 record {
-    User user;
+public type ServicesBody record {
+    Service 'service;
 };
 
-public type Body55 record {
-    User user;
+public type ContactMethodsContactMethodIdBody record {
+    PhoneContactMethod|PushContactMethod|EmailContactMethod contact_method;
 };
 
-public type Body54 record {
-    # The role of the user on the team.
-    string role?;
-};
-
-public type Body53 record {
-    NotificationSubscribable[] subscribables;
+public type IntegrationsIntegrationIdBody record {
+    Integration integration;
 };
 
 # The reference to the service that supports the Business Service.
@@ -1063,16 +1209,13 @@ public type InlineResponse20050SupportingService record {
     string 'type?;
 };
 
-public type Body59 record {
-    NotificationRule notification_rule;
+public type StatusUpdateNotificationRulesStatusUpdateNotificationRuleIdBody record {
+    # A rule for contacting the user for Incident Status Updates.
+    StatusUpdateNotificationRule status_update_notification_rule;
 };
 
-public type Body58 record {
-    PhoneContactMethod|PushContactMethod|EmailContactMethod contact_method;
-};
-
-public type Body57 record {
-    PhoneContactMethod|PushContactMethod|EmailContactMethod contact_method;
+public type EscalationPoliciesBody record {
+    EscalationPolicy escalation_policy;
 };
 
 public type NotificationsubscriberwithcontextSubscribedVia record {
@@ -1100,6 +1243,10 @@ public type IncidentsRespondersReference record {
     string requested_at?;
 };
 
+public type NotificationRulesNotificationRuleIdBody record {
+    NotificationRule notification_rule;
+};
+
 # The agent (user, service or integration) that created or modified the Incident Log Entry.
 public type AgentReference record {
     *Reference;
@@ -1121,11 +1268,6 @@ public type WebhooksV1AssignedToUser record {
     string html_url?;
 };
 
-public type Body63 record {
-    # A rule for contacting the user for Incident Status Updates.
-    StatusUpdateNotificationRule status_update_notification_rule;
-};
-
 public type ScheduleReference record {
     *Reference;
     string 'type?;
@@ -1139,17 +1281,9 @@ public type TagsToAdd record {
     string id?;
 };
 
-public type Body62 record {
-    NotificationSubscribable[] subscribables;
-};
-
 public type InlineResponse20021 record {
     *Pagination;
     Incident[] incidents?;
-};
-
-public type Body61 record {
-    NotificationSubscribable[] subscribables;
 };
 
 public type InlineResponse20020 record {
@@ -1157,13 +1291,13 @@ public type InlineResponse20020 record {
     Extension[] extensions?;
 };
 
-public type Body60 record {
-    NotificationRule notification_rule;
-};
-
 public type InlineResponse20023 record {
     *Pagination;
     Alert[] alerts?;
+};
+
+public type UsersBody record {
+    User user;
 };
 
 public type IncidentAddon record {
@@ -1221,6 +1355,12 @@ public type InlineResponse20034Relationships record {
     RelatedIncidentMachineLearningRelationship|RelatedIncidentServiceDependencyRelationship metadata?;
 };
 
+public type RulesRuleIdBody record {
+    EventRule rule?;
+    # The id of the Event Rule to update.
+    string rule_id;
+};
+
 # Reference to the user that has created the Ruleset.
 public type RulesetCreator record {
     string id?;
@@ -1238,10 +1378,6 @@ public type EventruleTimeFrameActiveBetween record {
     int end_time;
 };
 
-public type Body45 record {
-    Integration integration;
-};
-
 public type WebhooksubscriptionupdateWebhookSubscriptionFilter record {
     # The id of the object being used as the filter.  This field is required for all filter types except account_reference.
     string id?;
@@ -1249,27 +1385,9 @@ public type WebhooksubscriptionupdateWebhookSubscriptionFilter record {
     string 'type?;
 };
 
-public type Body44 record {
-    Service 'service;
-};
-
-public type Body43 record {
-    Service 'service;
-};
-
-public type Body42 record {
-    # List of all service dependencies to be deleted.
-    ServiceDependenciesassociateRelationships[] relationships?;
-};
-
-public type Body49 record {
-    Tag tag;
-};
-
-public type Body48 record {
-    ServiceEventRule rule?;
-    # The id of the Event Rule to update on the Service.
-    string rule_id;
+public type IncidentsBody record {
+    # An array of incidents, including the parameters to update.
+    IncidentsIncidents[] incidents;
 };
 
 public type AnalyticsRawIncident record {
@@ -1322,10 +1440,6 @@ public type AnalyticsRawIncident record {
     int snoozed_seconds?;
 };
 
-public type Body47 record {
-    ServiceEventRule rule;
-};
-
 public type EmailparserValueExtractors record {
     string 'type;
     string part;
@@ -1336,8 +1450,9 @@ public type EmailparserValueExtractors record {
     string ends_with?;
 };
 
-public type Body46 record {
-    Integration integration;
+public type IdAlertsBody record {
+    # An array of alerts, including the parameters to update for each alert.
+    Alert[] alerts;
 };
 
 # Details of the incident to be created.
@@ -1362,18 +1477,10 @@ public type InlineResponse20030 record {
     IncidentNote note;
 };
 
-public type Body52 record {
-    NotificationSubscribable[] subscribables;
-};
-
 # The reference to the service that is dependent on the supporting service.
 public type ServiceDependenciesassociateDependentService record {
     string id?;
     string 'type?;
-};
-
-public type Body51 record {
-    Team team;
 };
 
 public type InlineResponse20032 record {
@@ -1385,10 +1492,6 @@ public type InlineResponse20032 record {
     decimal 'limit?;
 };
 
-public type Body50 record {
-    Team team;
-};
-
 public type InlineResponse20031 record {
     # Outlier Incident information calculated over the same Service as the given Incident.
     InlineResponse20031OutlierIncident outlier_incident?;
@@ -1397,6 +1500,16 @@ public type InlineResponse20031 record {
 public type InlineResponse20034 record {
     # A list of Related Incidents and their relationships.
     InlineResponse20034RelatedIncidents[] related_incidents?;
+};
+
+public type IdIntegrationsBody record {
+    Integration integration;
+};
+
+public type RulesRuleIdBody1 record {
+    ServiceEventRule rule?;
+    # The id of the Event Rule to update on the Service.
+    string rule_id;
 };
 
 public type OutboundIntegrationReference record {
@@ -1473,35 +1586,23 @@ public type InlineResponse20010AdditionalFields record {
 # When an event matches this Event Rule, the actions that will be taken to change the resulting Alert and Incident.
 public type EventRuleActionsCommon record {
     # Set a note on the resulting incident.
-    EventruleactionscommonAnnotate annotate?;
+    EventruleactionscommonAnnotate? annotate?;
     # Set whether the resulting alert status is trigger or resolve.
-    EventruleactionscommonEventAction event_action?;
+    EventruleactionscommonEventAction? event_action?;
     # Dynamically extract values to set and modify new and existing PD-CEF fields.
     record {}|record {}[] extractions?;
     # Set the priority ID for the resulting incident. You can find the priority you want by calling the priorities endpoint.
-    EventruleactionscommonPriority priority?;
+    EventruleactionscommonPriority? priority?;
     # Set the severity of the resulting alert.
-    EventruleactionscommonSeverity severity?;
+    EventruleactionscommonSeverity? severity?;
     # Set whether the resulting alert is suppressed. Can optionally be used with a threshold where resulting alerts will be suppressed until the threshold is met in a window of time. If using a threshold the rule must also set a route action.
     EventruleactionscommonSuppress suppress?;
     # Set the length of time to suspend the resulting alert before triggering. Rules with a suspend action must also set a route action, and cannot have a suppress with threshold action
-    EventruleactionscommonSuspend suspend?;
-};
-
-public type Body39 record {
-    Override[] overrides?;
+    EventruleactionscommonSuspend? suspend?;
 };
 
 public type WebhookSubscriptionUpdate record {
     WebhooksubscriptionupdateWebhookSubscription webhook_subscription?;
-};
-
-public type Body34 record {
-    Ruleset ruleset;
-};
-
-public type Body33 record {
-    record {*Ruleset;} ruleset;
 };
 
 public type ResponderRequest record {
@@ -1515,36 +1616,10 @@ public type ResponderRequest record {
     ResponderRequestTargetReference[] responder_request_targets?;
 };
 
-public type Body32 record {
-    IncidentReference incident;
-};
-
-public type Body31 record {
-    ResponsePlay response_play;
-};
-
-public type Body38 record {
-    Schedule schedule;
-};
-
-public type Body37 record {
-    Schedule schedule;
-};
-
-public type Body36 record {
-    EventRule rule?;
-    # The id of the Event Rule to update.
-    string rule_id;
-};
-
 # Priority information for the highest priority level that is affecting the impacted object.
 public type ImpactAdditionalFieldsHighestImpactingPriority record {
     string id?;
     int 'order?;
-};
-
-public type Body35 record {
-    EventRule rule;
 };
 
 public type InlineResponse20031OutlierIncidentIncidentTemplate record {
@@ -1585,18 +1660,9 @@ public type InlineResponse20041 record {
     Oncall[] oncalls?;
 };
 
-public type Body41 record {
-    # List of all service dependencies to be created.
-    ServiceDependenciesassociateRelationships[] relationships?;
-};
-
 public type InlineResponse20040 record {
     *Pagination;
     Notification[] notifications?;
-};
-
-public type Body40 record {
-    Schedule schedule;
 };
 
 # Outlier Incident information calculated over the same Service as the given Incident.
@@ -1656,44 +1722,14 @@ public type LogEntryReference record {
     string 'type?;
 };
 
-public type Body8 record {
-    BusinessServicespriorityThresholdsGlobalThreshold global_threshold;
-};
-
 public type SnoozeLogEntry record {
     *LogEntry;
     IncidentAction[] changed_actions?;
     string 'type?;
 };
 
-public type Body9 record {
-    ChangeEvent change_event;
-};
-
-public type Body6 record {
+public type IdUnsubscribeBody record {
     NotificationSubscriber[] subscribers;
-};
-
-public type Body29 record {
-    MaintenanceWindow maintenance_window;
-};
-
-public type Body7 record {
-    NotificationSubscriber[] subscribers;
-};
-
-public type Body28 record {
-    MaintenanceWindow maintenance_window;
-};
-
-public type Body4 record {
-    # The Business Service to be created
-    BusinessServicesBusinessService business_service?;
-};
-
-public type Body5 record {
-    # The Business Service to be created
-    BusinessServicesidBusinessService business_service?;
 };
 
 # The reference to the service that is dependent on the technical service.
@@ -1705,31 +1741,8 @@ public type InlineResponse20049DependentService record {
 public type Reference record {
 };
 
-public type Body2 record {
-    Addon addon;
-};
-
-public type Body3 record {
-    # Filters the result, only show incidents that match the conditions passed in the filter.
-    AnalyticsrawincidentsFilters filters?;
-    # A cursor to indicate the reference point that the results should follow
-    string starting_after?;
-    # A cursor to indicate the reference point that the results should precede
-    string ending_before?;
-    # The order the results;  asc for ascending, desc for descending. Defaults to 'desc'.
-    string 'order?;
-    # The column to use for ordering the results. Defaults to 'created_at'.
-    string order_by?;
-    # Number of results to include in each batch.
-    # Limits between 1 to 1000 are accepted.
-    int 'limit?;
-    # The time zone to use for the results.
-    string time_zone?;
-};
-
-public type Body23 record {
-    # The number of seconds to snooze the incident for. After this number of seconds has elapsed, the incident will return to the "triggered" state.
-    int duration;
+public type ExtensionsBody record {
+    Extension extension;
 };
 
 public type IncidentNote record {
@@ -1743,19 +1756,6 @@ public type IncidentNote record {
     string created_at?;
 };
 
-public type Body22 record {
-    # The user id of the requester.
-    string requester_id;
-    # The message sent with the responder request.
-    string message;
-    # The array of targets the responder request is sent to.
-    ResponderRequestTargetReference[] responder_request_targets;
-};
-
-public type Body21 record {
-    IncidentsidnotesNote note;
-};
-
 public type InlineResponse20050Relationships record {
     # The reference to the service that supports the Business Service.
     InlineResponse20050SupportingService supporting_service?;
@@ -1765,24 +1765,19 @@ public type InlineResponse20050Relationships record {
     string 'type?;
 };
 
-public type Body20 record {
-    # The source incidents that will be merged into the target incident and resolved.
-    IncidentReference[] source_incidents;
-};
-
 # Set the length of time to suspend the resulting alert before triggering. Rules with a suspend action must also set a route action, and cannot have a suppress with threshold action
 public type EventruleactionscommonSuspend record {
     # The amount of time to suspend the alert in seconds.
     int value;
 };
 
-public type Body27 record {
-    # The parameters to update.
-    LogEntriesidchannelChannel 'channel;
+public type IncidentsBody1 record {
+    # Details of the incident to be created.
+    IncidentsIncident incident;
 };
 
-public type Body26 record {
-    NotificationSubscriber[] subscribers;
+public type SchedulesIdBody record {
+    Schedule schedule;
 };
 
 # The method information
@@ -1804,11 +1799,12 @@ public type AuditrecordMethod record {
     string 'type;
 };
 
-public type Body25 record {
-    NotificationSubscriber[] subscribers;
+public type IdChannelBody record {
+    # The parameters to update.
+    LogEntriesidchannelChannel 'channel;
 };
 
-public type Body24 record {
+public type IdStatusUpdatesBody record {
     # The message to be posted as a status update.
     string message;
 };
@@ -1821,10 +1817,6 @@ public type InlineResponse20050 record {
 public type IncidentReference record {
     *Reference;
     string 'type?;
-};
-
-public type Body30 record {
-    ResponsePlay response_play;
 };
 
 public type InlineResponse20052 record {
@@ -1870,8 +1862,9 @@ public type InlineResponse20056 record {
     Team[] teams?;
 };
 
-public type Body1 record {
-    Addon addon;
+public type IdStatusUpdateNotificationRulesBody record {
+    # A rule for contacting the user for Incident Status Updates.
+    StatusUpdateNotificationRule status_update_notification_rule;
 };
 
 public type InlineResponse20055 record {
@@ -1944,17 +1937,12 @@ public type RulesetUpdater record {
     string self?;
 };
 
-public type Body19 record {
-    string relation;
+public type MaintenanceWindowsBody record {
+    MaintenanceWindow maintenance_window;
 };
 
-public type Body18 record {
-    Alert alert;
-};
-
-public type Body17 record {
-    # An array of alerts, including the parameters to update for each alert.
-    Alert[] alerts;
+public type IdNotificationSubscriptionsBody record {
+    NotificationSubscribable[] subscribables;
 };
 
 # The configuration for Content Based Alert Grouping
@@ -1977,10 +1965,6 @@ public type EventruleTimeFrameScheduledWeekly record {
     int[] weekdays;
 };
 
-public type Body12 record {
-    Extension extension;
-};
-
 # Additional details to provide further information about the action or
 # the resource that has been audited.
 public type AuditrecordDetails record {
@@ -1999,31 +1983,8 @@ public type InlineResponse409Error record {
     string[] errors?;
 };
 
-public type Body11 record {
-    EscalationPolicy escalation_policy;
-};
-
-public type Body10 record {
-    EscalationPolicy escalation_policy;
-};
-
-public type Body16 record {
-    # The parameters of the incident to update.
-    IncidentsidIncident incident;
-};
-
-public type Body15 record {
-    # Details of the incident to be created.
-    IncidentsIncident incident;
-};
-
-public type Body14 record {
-    # An array of incidents, including the parameters to update.
-    IncidentsIncidents[] incidents;
-};
-
-public type Body13 record {
-    Extension extension;
+public type IdNotesBody record {
+    IncidentsidnotesNote note;
 };
 
 public type Pagination record {
@@ -2040,7 +2001,7 @@ public type Pagination record {
 public type WebhooksV1AssignedTo record {
     # Time at which the assignment was created.
     string at?;
-    record {*WebhooksV1AssignedToUser;} 'object?;
+    record {*WebhooksV1AssignedToUser; string 'type?;} 'object?;
 };
 
 public type ServiceDependenciesassociateRelationships record {
@@ -2048,6 +2009,10 @@ public type ServiceDependenciesassociateRelationships record {
     ServiceDependenciesassociateSupportingService supporting_service?;
     # The reference to the service that is dependent on the supporting service.
     ServiceDependenciesassociateDependentService dependent_service?;
+};
+
+public type IdRulesBody record {
+    EventRule rule;
 };
 
 public type AssignLogEntry record {
@@ -2089,6 +2054,10 @@ public type Team2 record {
     string id?;
 };
 
+public type NotificationSubscriptionsUnsubscribeBody record {
+    NotificationSubscribable[] subscribables;
+};
+
 # Reference to the team that owns the Business Service.
 public type Team1 record {
     # The Team ID
@@ -2119,6 +2088,10 @@ public type InlineResponse20034RelatedIncidents record {
 public type MaintenanceWindowReference record {
     *Reference;
     string 'type?;
+};
+
+public type TeamsBody record {
+    Team team;
 };
 
 # The Business Service to be created
@@ -2171,6 +2144,10 @@ public type EscalationRule record {
     int escalation_delay_in_minutes;
     # The targets an incident should be assigned to upon reaching this rule.
     EscalationTargetReference[] targets;
+};
+
+public type EscalationPoliciesIdBody record {
+    EscalationPolicy escalation_policy;
 };
 
 public type CursorPagination record {
@@ -2293,6 +2270,10 @@ public type AnalyticsmodelFilters record {
     string[] priority_names?;
 };
 
+public type AddonsIdBody record {
+    Addon addon;
+};
+
 # Conditions evaluated to check if an event matches this Event Rule. Is always empty for the catch_all rule, though.
 public type EventruleConditions record {
     # Operator to combine sub-conditions.
@@ -2343,6 +2324,10 @@ public type User record {
     NotificationRuleReference[] notification_rules?;
 };
 
+public type WebhookSubscriptionsBody record {
+    WebhookSubscription webhook_subscription;
+};
+
 public type ConferenceBridge record {
     # The phone number of the conference call for the conference bridge. Phone numbers should be formatted like +1 415-555-1212,,,,1234#, where a comma (,) represents a one-second wait and pound (#) completes access code input.
     string conference_number?;
@@ -2371,6 +2356,10 @@ public type EventRule record {
     record {*EventRuleActionsCommon; # Set the service ID of the target service for the resulting alert. You can find the service you want to route to by calling the services endpoint.
         record  { # The target service's ID.
             string value;}  route?;} actions?;
+};
+
+public type AddonsBody record {
+    Addon addon;
 };
 
 # A collection of filters that were applied to the results.
@@ -2408,6 +2397,14 @@ public type InlineResponse200 record {
     Tag[] tags?;
 };
 
+public type ResponsePlaysIdBody record {
+    ResponsePlay response_play;
+};
+
+public type IdContactMethodsBody record {
+    PhoneContactMethod|PushContactMethod|EmailContactMethod contact_method;
+};
+
 public type Acknowledgement record {
     # Time at which the acknowledgement was created.
     string at;
@@ -2436,6 +2433,16 @@ public type Oncall record {
     string 'start?;
     # The end of the on-call. If `null`, the user does not go off-call.
     string end?;
+};
+
+public type EntityTypeidchangeTagsRemove record {
+    string 'type;
+    # The id of the tag
+    string id;
+};
+
+public type StatusUpdatesUnsubscribeBody record {
+    NotificationSubscriber[] subscribers;
 };
 
 public type EntityReference record {
@@ -2703,7 +2710,7 @@ public type BusinessService record {
     # The point of contact assigned to this service.
     string point_of_contact?;
     # Reference to the team that owns the business service.
-    Team3 team?;
+    Team3? team?;
 };
 
 public type ChangeEvent record {
@@ -2731,6 +2738,11 @@ public type InlineResponse20010 record {
     *LiveListResponse;
     Impact[] services?;
     InlineResponse20010AdditionalFields additional_fields?;
+};
+
+public type ServiceDependenciesAssociateBody record {
+    # List of all service dependencies to be created.
+    ServiceDependenciesassociateRelationships[] relationships?;
 };
 
 public type InlineResponse20012 record {
@@ -2794,7 +2806,7 @@ public type Incident record {
 };
 
 public type InlineResponse20013 record {
-    InlineResponse20013GlobalThreshold global_threshold?;
+    InlineResponse20013GlobalThreshold? global_threshold?;
 };
 
 public type ResolveReason record {

@@ -721,7 +721,6 @@ components:
       description: "You must include a 'key' parameter in the query string of each request to the Opti Public API. Opti uses this key to authenticate and throttle all requests to the Public API to help provide reliable and rapid services to all of its customers.\r\n\r\nAPI Keys can be acquired and replaced by contacting your [Opti Support](mailto:support@optirtc.com?subject=[Opti%20Developer%20Docs]%20Public%20API%20Throttling) representative. If you are building multiple web sites, ETL workflows, or other applications on top of the Opti Public API, Opti recommends using a different API key for each application to avoid unnecessary throttling from occurring. All throttled requests will return an [HTTP 429 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429)."
       name: key
       in: query
-      x-ballerina-apikey-description: "Provide your API key as `key`. Eg: `{\"key\" : \"<API key>\"}`"
 security:
   - apiKeyQuery: []
 x-ms-paths:

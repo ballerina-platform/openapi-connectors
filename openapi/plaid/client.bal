@@ -18,8 +18,12 @@ import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `PLAID-CLIENT-ID`
+    string plaidClientId;
+    # Respresents API Key `PLAID-SECRET`
+    string plaidSecret;
+    # Respresents API Key `Plaid-Version`
+    string plaidVersion;
 |};
 
 # This is a generated connector for [Plaid API 2020-09-14 version](https://plaid.com/docs/api/) OpenAPI specification. 
@@ -27,19 +31,19 @@ public type ApiKeysConfig record {|
 @display {label: "Plaid", iconPath: "resources/plaid.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create a [Plaid account](https://plaid.com/) and obtain tokens by following [this guide](https://plaid.com/docs/api/#api-access).
     #
-    # + apiKeyConfig - API key configuration detail 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://production.plaid.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # List a user’s connected applications
     #
@@ -47,7 +51,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function itemApplicationList(ItemApplicationListRequest payload) returns ItemApplicationListResponse|error {
         string  path = string `/item/application/list`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -61,7 +65,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function itemApplicationScopesUpdate(ItemApplicationScopesUpdateRequest payload) returns ItemApplicationScopesUpdateResponse|error {
         string  path = string `/item/application/scopes/update`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -75,7 +79,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function applicationGet(ApplicationGetRequest payload) returns ApplicationGetResponse|error {
         string  path = string `/application/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -89,7 +93,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function itemGet(ItemGetRequest payload) returns ItemGetResponse|error {
         string  path = string `/item/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -103,7 +107,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function authGet(AuthGetRequest payload) returns AuthGetResponse|error {
         string  path = string `/auth/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -117,7 +121,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transactionsGet(TransactionsGetRequest payload) returns TransactionsGetResponse|error {
         string  path = string `/transactions/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -131,7 +135,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transactionsRefresh(TransactionsRefreshRequest payload) returns TransactionsRefreshResponse|error {
         string  path = string `/transactions/refresh`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -145,7 +149,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function institutionsGet(InstitutionsGetRequest payload) returns InstitutionsGetResponse|error {
         string  path = string `/institutions/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -159,7 +163,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function institutionsSearch(InstitutionsSearchRequest payload) returns InstitutionsSearchResponse|error {
         string  path = string `/institutions/search`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -173,7 +177,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function institutionsGetById(InstitutionsGetByIdRequest payload) returns InstitutionsGetByIdResponse|error {
         string  path = string `/institutions/get_by_id`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -187,7 +191,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function itemRemove(ItemRemoveRequest payload) returns ItemRemoveResponse|error {
         string  path = string `/item/remove`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -201,7 +205,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function accountsGet(AccountsGetRequest payload) returns AccountsGetResponse|error {
         string  path = string `/accounts/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -227,7 +231,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxProcessorTokenCreate(SandboxProcessorTokenCreateRequest payload) returns SandboxProcessorTokenCreateResponse|error {
         string  path = string `/sandbox/processor_token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -241,7 +245,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function sandboxPublicTokenCreate(SandboxPublicTokenCreateRequest payload) returns SandboxPublicTokenCreateResponse|error {
         string  path = string `/sandbox/public_token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -255,7 +259,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function sandboxItemFireWebhook(SandboxItemFireWebhookRequest payload) returns SandboxItemFireWebhookResponse|error {
         string  path = string `/sandbox/item/fire_webhook`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -269,7 +273,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function accountsBalanceGet(AccountsBalanceGetRequest payload) returns AccountsGetResponse|error {
         string  path = string `/accounts/balance/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -283,7 +287,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function identityGet(IdentityGetRequest payload) returns IdentityGetResponse|error {
         string  path = string `/identity/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -297,7 +301,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function processorAuthGet(ProcessorAuthGetRequest payload) returns ProcessorAuthGetResponse|error {
         string  path = string `/processor/auth/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -311,7 +315,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function processorBankTransferCreate(ProcessorBankTransferCreateRequest payload) returns ProcessorBankTransferCreateResponse|error {
         string  path = string `/processor/bank_transfer/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -325,7 +329,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function processorIdentityGet(ProcessorIdentityGetRequest payload) returns ProcessorIdentityGetResponse|error {
         string  path = string `/processor/identity/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -339,7 +343,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function processorBalanceGet(ProcessorBalanceGetRequest payload) returns ProcessorBalanceGetResponse|error {
         string  path = string `/processor/balance/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -353,7 +357,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function itemWebhookUpdate(ItemWebhookUpdateRequest payload) returns ItemWebhookUpdateResponse|error {
         string  path = string `/item/webhook/update`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -367,7 +371,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function itemAccessTokenInvalidate(ItemAccessTokenInvalidateRequest payload) returns ItemAccessTokenInvalidateResponse|error {
         string  path = string `/item/access_token/invalidate`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -381,7 +385,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function webhookVerificationKeyGet(WebhookVerificationKeyGetRequest payload) returns WebhookVerificationKeyGetResponse|error {
         string  path = string `/webhook_verification_key/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -395,7 +399,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function liabilitiesGet(LiabilitiesGetRequest payload) returns LiabilitiesGetResponse|error {
         string  path = string `/liabilities/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -409,7 +413,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function paymentInitiationRecipientCreate(PaymentInitiationRecipientCreateRequest payload) returns PaymentInitiationRecipientCreateResponse|error {
         string  path = string `/payment_initiation/recipient/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -423,7 +427,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function paymentInitiationRecipientGet(PaymentInitiationRecipientGetRequest payload) returns PaymentInitiationRecipientGetResponse|error {
         string  path = string `/payment_initiation/recipient/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -437,7 +441,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function paymentInitiationRecipientList(PaymentInitiationRecipientListRequest payload) returns PaymentInitiationRecipientListResponse|error {
         string  path = string `/payment_initiation/recipient/list`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -451,7 +455,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function paymentInitiationPaymentCreate(PaymentInitiationPaymentCreateRequest payload) returns PaymentInitiationPaymentCreateResponse|error {
         string  path = string `/payment_initiation/payment/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -463,9 +467,12 @@ public isolated client class Client {
     #
     # + payload - Request payload 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function createPaymentToken(PaymentInitiationPaymentTokenCreateRequest payload) returns PaymentInitiationPaymentTokenCreateResponse|error {
         string  path = string `/payment_initiation/payment/token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -479,7 +486,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxItemResetLogin(SandboxItemResetLoginRequest payload) returns SandboxItemResetLoginResponse|error {
         string  path = string `/sandbox/item/reset_login`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -493,7 +500,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxItemSetVerificationStatus(SandboxItemSetVerificationStatusRequest payload) returns SandboxItemSetVerificationStatusResponse|error {
         string  path = string `/sandbox/item/set_verification_status`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -507,7 +514,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function itemPublicTokenExchange(ItemPublicTokenExchangeRequest payload) returns ItemPublicTokenExchangeResponse|error {
         string  path = string `/item/public_token/exchange`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -521,7 +528,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function itemCreatePublicToken(ItemPublicTokenCreateRequest payload) returns ItemPublicTokenCreateResponse|error {
         string  path = string `/item/public_token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -535,7 +542,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function paymentInitiationPaymentGet(PaymentInitiationPaymentGetRequest payload) returns PaymentInitiationPaymentGetResponse|error {
         string  path = string `/payment_initiation/payment/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -549,7 +556,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function paymentInitiationPaymentList(PaymentInitiationPaymentListRequest payload) returns PaymentInitiationPaymentListResponse|error {
         string  path = string `/payment_initiation/payment/list`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -563,7 +570,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportCreate(AssetReportCreateRequest payload) returns AssetReportCreateResponse|error {
         string  path = string `/asset_report/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -577,7 +584,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportRefresh(AssetReportRefreshRequest payload) returns AssetReportRefreshResponse|error {
         string  path = string `/asset_report/refresh`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -591,7 +598,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportRemove(AssetReportRemoveRequest payload) returns AssetReportRemoveResponse|error {
         string  path = string `/asset_report/remove`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -605,7 +612,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportFilter(AssetReportFilterRequest payload) returns AssetReportFilterResponse|error {
         string  path = string `/asset_report/filter`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -619,7 +626,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportGet(AssetReportGetRequest payload) returns AssetReportGetResponse|error {
         string  path = string `/asset_report/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -633,7 +640,7 @@ public isolated client class Client {
     # + return - A PDF of the Asset Report 
     remote isolated function assetReportPdfGet(AssetReportPDFGetRequest payload) returns AssetReportPDFGetResponse|error {
         string  path = string `/asset_report/pdf/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -647,7 +654,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportAuditCopyCreate(AssetReportAuditCopyCreateRequest payload) returns AssetReportAuditCopyCreateResponse|error {
         string  path = string `/asset_report/audit_copy/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -661,7 +668,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportAuditCopyRemove(AssetReportAuditCopyRemoveRequest payload) returns AssetReportAuditCopyRemoveResponse|error {
         string  path = string `/asset_report/audit_copy/remove`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -675,7 +682,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function investmentsHoldingsGet(InvestmentsHoldingsGetRequest payload) returns InvestmentsHoldingsGetResponse|error {
         string  path = string `/investments/holdings/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -689,7 +696,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function investmentsTransactionsGet(InvestmentsTransactionsGetRequest payload) returns InvestmentsTransactionsGetResponse|error {
         string  path = string `/investments/transactions/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -703,7 +710,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function processorTokenCreate(ProcessorTokenCreateRequest payload) returns ProcessorTokenCreateResponse|error {
         string  path = string `/processor/token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -717,7 +724,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function processorStripeBankAccountTokenCreate(ProcessorStripeBankAccountTokenCreateRequest payload) returns ProcessorStripeBankAccountTokenCreateResponse|error {
         string  path = string `/processor/stripe/bank_account_token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -731,7 +738,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function processorApexProcessorTokenCreate(ProcessorApexProcessorTokenCreateRequest payload) returns ProcessorTokenCreateResponse|error {
         string  path = string `/processor/apex/processor_token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -745,7 +752,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function depositSwitchCreate(DepositSwitchCreateRequest payload) returns DepositSwitchCreateResponse|error {
         string  path = string `/deposit_switch/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -759,7 +766,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function itemImport(ItemImportRequest payload) returns ItemImportResponse|error {
         string  path = string `/item/import`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -773,7 +780,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function depositSwitchTokenCreate(DepositSwitchTokenCreateRequest payload) returns DepositSwitchTokenCreateResponse|error {
         string  path = string `/deposit_switch/token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -787,7 +794,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function linkTokenCreate(LinkTokenCreateRequest payload) returns LinkTokenCreateResponse|error {
         string  path = string `/link/token/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -801,7 +808,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function linkTokenGet(LinkTokenGetRequest payload) returns LinkTokenGetResponse|error {
         string  path = string `/link/token/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -815,7 +822,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function assetReportAuditCopyGet(AssetReportAuditCopyGetRequest payload) returns AssetReportGetResponse|error {
         string  path = string `/asset_report/audit_copy/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -829,7 +836,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function depositSwitchGet(DepositSwitchGetRequest payload) returns DepositSwitchGetResponse|error {
         string  path = string `/deposit_switch/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -843,7 +850,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transferGet(TransferGetRequest payload) returns TransferGetResponse|error {
         string  path = string `/transfer/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -857,7 +864,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferGet(BankTransferGetRequest payload) returns BankTransferGetResponse|error {
         string  path = string `/bank_transfer/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -871,7 +878,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transferAuthorizationCreate(TransferAuthorizationCreateRequest payload) returns TransferAuthorizationCreateResponse|error {
         string  path = string `/transfer/authorization/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -885,7 +892,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transferCreate(TransferCreateRequest payload) returns TransferCreateResponse|error {
         string  path = string `/transfer/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -899,7 +906,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferCreate(BankTransferCreateRequest payload) returns BankTransferCreateResponse|error {
         string  path = string `/bank_transfer/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -913,7 +920,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transferList(TransferListRequest payload) returns TransferListResponse|error {
         string  path = string `/transfer/list`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -927,7 +934,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferList(BankTransferListRequest payload) returns BankTransferListResponse|error {
         string  path = string `/bank_transfer/list`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -941,7 +948,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transferCancel(TransferCancelRequest payload) returns TransferCancelResponse|error {
         string  path = string `/transfer/cancel`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -955,7 +962,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferCancel(BankTransferCancelRequest payload) returns BankTransferCancelResponse|error {
         string  path = string `/bank_transfer/cancel`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -969,7 +976,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transferEventList(TransferEventListRequest payload) returns TransferEventListResponse|error {
         string  path = string `/transfer/event/list`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -983,7 +990,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferEventList(BankTransferEventListRequest payload) returns BankTransferEventListResponse|error {
         string  path = string `/bank_transfer/event/list`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -997,7 +1004,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function transferEventSync(TransferEventSyncRequest payload) returns TransferEventSyncResponse|error {
         string  path = string `/transfer/event/sync`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1011,7 +1018,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferEventSync(BankTransferEventSyncRequest payload) returns BankTransferEventSyncResponse|error {
         string  path = string `/bank_transfer/event/sync`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1025,7 +1032,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferSweepGet(BankTransferSweepGetRequest payload) returns BankTransferSweepGetResponse|error {
         string  path = string `/bank_transfer/sweep/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1039,7 +1046,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferBalanceGet(BankTransferBalanceGetRequest payload) returns BankTransferBalanceGetResponse|error {
         string  path = string `/bank_transfer/balance/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1053,7 +1060,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function bankTransferMigrateAccount(BankTransferMigrateAccountRequest payload) returns BankTransferMigrateAccountResponse|error {
         string  path = string `/bank_transfer/migrate_account`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1067,7 +1074,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxBankTransferSimulate(SandboxBankTransferSimulateRequest payload) returns SandboxBankTransferSimulateResponse|error {
         string  path = string `/sandbox/bank_transfer/simulate`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1081,7 +1088,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxTransferSimulate(SandboxTransferSimulateRequest payload) returns SandboxTransferSimulateResponse|error {
         string  path = string `/sandbox/transfer/simulate`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1095,7 +1102,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function employersSearch(EmployersSearchRequest payload) returns EmployersSearchResponse|error {
         string  path = string `/employers/search`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1107,9 +1114,12 @@ public isolated client class Client {
     #
     # + payload - Request payload 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function incomeVerificationCreate(IncomeVerificationCreateRequest payload) returns IncomeVerificationCreateResponse|error {
         string  path = string `/income/verification/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1123,7 +1133,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function incomeVerificationSummaryGet(IncomeVerificationSummaryGetRequest payload) returns IncomeVerificationSummaryGetResponse|error {
         string  path = string `/income/verification/summary/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1135,9 +1145,12 @@ public isolated client class Client {
     #
     # + payload - Request payload 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function incomeVerificationPaystubGet(IncomeVerificationPaystubGetRequest payload) returns json|error {
         string  path = string `/income/verification/paystub/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1151,7 +1164,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function incomeVerificationPaystubsGet(IncomeVerificationPaystubsGetRequest payload) returns IncomeVerificationPaystubsGetResponse|error {
         string  path = string `/income/verification/paystubs/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1165,7 +1178,7 @@ public isolated client class Client {
     # + return - A ZIP file containing the source paystub(s) used as the basis for income verification. 
     remote isolated function incomeVerificationDocumentsDownload(IncomeVerificationDocumentsDownloadRequest payload) returns string|error {
         string  path = string `/income/verification/documents/download`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1179,7 +1192,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function incomeVerificationRefresh(IncomeVerificationRefreshRequest payload) returns IncomeVerificationRefreshResponse|error {
         string  path = string `/income/verification/refresh`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1193,7 +1206,7 @@ public isolated client class Client {
     # + return - success 
     remote isolated function incomeVerificationTaxformsGet(IncomeVerificationTaxformsGetRequest payload) returns IncomeVerificationTaxformsGetResponse|error {
         string  path = string `/income/verification/taxforms/get`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1207,7 +1220,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function depositSwitchAltCreate(DepositSwitchAltCreateRequest payload) returns DepositSwitchAltCreateResponse|error {
         string  path = string `/deposit_switch/alt/create`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1221,7 +1234,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxBankTransferFireWebhook(SandboxBankTransferFireWebhookRequest payload) returns SandboxBankTransferFireWebhookResponse|error {
         string  path = string `/sandbox/bank_transfer/fire_webhook`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1235,7 +1248,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxIncomeFireWebhook(SandboxIncomeFireWebhookRequest payload) returns SandboxIncomeFireWebhookResponse|error {
         string  path = string `/sandbox/income/fire_webhook`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1249,7 +1262,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function sandboxOauthSelectAccounts(SandboxOauthSelectAccountsRequest payload) returns SandboxOauthSelectAccountsResponse|error {
         string  path = string `/sandbox/oauth/select_accounts`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1263,7 +1276,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function signalEvaluate(SignalEvaluateRequest payload) returns SignalEvaluateResponse|error {
         string  path = string `/signal/evaluate`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1277,7 +1290,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function signalDecisionReport(SignalDecisionReportRequest payload) returns SignalDecisionReportResponse|error {
         string  path = string `/signal/decision/report`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1291,7 +1304,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function signalReturnReport(SignalReturnReportRequest payload) returns SignalReturnReportResponse|error {
         string  path = string `/signal/return/report`;
-        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeys["PLAID-CLIENT-ID"], "PLAID-SECRET": self.apiKeys["PLAID-SECRET"], "Plaid-Version": self.apiKeys["Plaid-Version"]};
+        map<any> headerValues = {"PLAID-CLIENT-ID": self.apiKeyConfig.plaidClientId, "PLAID-SECRET": self.apiKeyConfig.plaidSecret, "Plaid-Version": self.apiKeyConfig.plaidVersion};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -1299,18 +1312,4 @@ public isolated client class Client {
         SignalReturnReportResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SignalReturnReportResponse);
         return response;
     }
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

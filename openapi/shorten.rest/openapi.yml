@@ -419,4 +419,4 @@ components:
       in: header
       name: x-api-key
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API Key as x-api-key. Eg: {x-api-key : <Your API Key>}"
+      description: Represents API Key `x-api-key`

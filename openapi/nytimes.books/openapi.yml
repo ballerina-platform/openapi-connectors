@@ -908,4 +908,3 @@ components:
       in: query
       name: api-key
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API key as `api-key`. Eg: `{\"api-key\" : \"<your API key>\"}`" 

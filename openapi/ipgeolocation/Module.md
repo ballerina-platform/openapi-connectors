@@ -32,9 +32,7 @@ You can do this step in two ways. You can use any one of this.
 
     ```ballerina
     ApiKeysConfig apiKeyConfig = {
-        apiKeys :{
-            "api_key":"<YOUR API KEY HERE>"
-        }
+        apiKey: "<YOUR API KEY HERE>"
     };
 
     ipgeolocation:Client ipGeolocationClient = check new Client(apiKeyConfig);

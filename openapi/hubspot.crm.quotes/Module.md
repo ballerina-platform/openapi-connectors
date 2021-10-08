@@ -21,9 +21,7 @@ import ballerinax/hubspot.crm.quote;
 You can now make the connection configuration using the access token.
 ```ballerina
 quote:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    hapikey : "<your apiKey>"
 };
 
 quote:Client baseClient = check new Client(clientConfig);

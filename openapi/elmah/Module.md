@@ -26,9 +26,7 @@ import ballerinax/elmah;
 You can now make the connection configuration using the access token.
 ```ballerina
 elmah:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    apikey : "<your apiKey>"
 };
 
 elmah:Client baseClient = check new Client(config);

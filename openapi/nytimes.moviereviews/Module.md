@@ -26,9 +26,7 @@ import ballerinax/nytimes.moviereviews as nm;
 Create a `moviereviews:ApiKeysConfig` with the API key obtained, and initialize the connector with it. 
 ```ballerina
 nm:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 nm:Client baseClient = check new Client(config);
 ```

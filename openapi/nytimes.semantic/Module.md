@@ -27,9 +27,7 @@ import ballerinax/nytimes.semantic as ns;
 Create a `semantic:ApiKeysConfig` with the API key obtained, and initialize the connector with it. 
 ```ballerina
 ns:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 ns:Client baseClient = check new Client(config);
 ```

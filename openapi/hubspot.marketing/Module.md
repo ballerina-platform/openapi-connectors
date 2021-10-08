@@ -22,9 +22,7 @@ import ballerinax/hubspot.marketing;
 You can now make the connection configuration using the access token.
 ```ballerina
 marketing:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    hapikey : "<your apiKey>"
 };
 
 marketing:Client baseClient = check new Client(clientConfig);

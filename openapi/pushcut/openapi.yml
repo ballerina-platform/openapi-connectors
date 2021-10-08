@@ -327,7 +327,7 @@ components:
       in: header
       name: API-Key
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API key as `API-Key`. Eg: `{\"API-Key\" : \"<API key>\"}`"
+      
   schemas:
     Notification:
       type: object

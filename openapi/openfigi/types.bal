@@ -88,11 +88,11 @@ public type MappingJobResultFigiList record {
 public type BulkMappingJob MappingJob[];
 
 # At least one entry should be non-null.
-#
+# At least one entry should be non-null.
 public type NullableNumberInterval decimal[]?;
 
 # At least one entry should be non-null.
-#
+# At least one entry should be non-null.
 public type NullableDateInterval string[]?;
 
 public type MappingJobResultFigiNotFound record {

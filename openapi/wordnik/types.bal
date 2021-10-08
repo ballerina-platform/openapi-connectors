@@ -20,7 +20,7 @@ public type AudioFileArr AudioFile[];
 
 public type DefinitionArr Definition[];
 
-public type stringArr string[];
+public type StringArr string[];
 
 public type SyllableArr Syllable[];
 

@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # All requests on the Wordnik API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `api_key`.
+    string apiKey;
 |};
 
 # This is a generated connector for [Wordnik API v4.0](https://developer.wordnik.com/docs) OpenAPI specification.
@@ -29,19 +27,19 @@ public type ApiKeysConfig record {|
 @display {label: "Wordnik", iconPath: "resources/wordnik.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
     # Create a [Wordnik account](https://developer.wordnik.com/#wordnikUsername) and obtain tokens by following [this guide](https://developer.wordnik.com/gettingstarted).
     #
-    # + apiKeyConfig - Provide your API key as `api_key`. Eg: `{"api_key" : "<your API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.wordnik.com/v4") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Returns usage statistics for the API account.
     #
@@ -49,7 +47,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getApiTokenStatus(string? apiKey = ()) returns ApiTokenStatus|error {
         string  path = string `/account.json/apiTokenStatus`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"api_key": apiKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -63,7 +61,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function authenticate(string username, string password) returns AuthenticationToken|error {
         string  path = string `/account.json/authenticate/${username}`;
-        map<anydata> queryParam = {"password": password, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"password": password, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         AuthenticationToken response = check self.clientEp-> get(path, targetType = AuthenticationToken);
         return response;
@@ -75,7 +73,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function authenticatePost(string username, string payload) returns AuthenticationToken|error {
         string  path = string `/account.json/authenticate/${username}`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -89,7 +87,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getLoggedInUser(string authToken) returns User|error {
         string  path = string `/account.json/user`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -104,7 +102,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getWordListsForLoggedInUser(string authToken, int skip = 0, int 'limit = 50) returns WordList[]|error {
         string  path = string `/account.json/wordLists`;
-        map<anydata> queryParam = {"skip": skip, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"skip": skip, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -119,7 +117,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getAudio(string word, string useCanonical = "false", int 'limit = 50) returns AudioFile[]|error {
         string  path = string `/word.json/${word}/audio`;
-        map<anydata> queryParam = {"useCanonical": useCanonical, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"useCanonical": useCanonical, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         AudioFile[] response = check self.clientEp-> get(path, targetType = AudioFileArr);
         return response;
@@ -136,8 +134,9 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getDefinitions(string word, int 'limit = 200, string? partOfSpeech = (), string includeRelated = "false", string[]? sourceDictionaries = (), string useCanonical = "false", string includeTags = "false") returns Definition[]|error {
         string  path = string `/word.json/${word}/definitions`;
-        map<anydata> queryParam = {"limit": 'limit, "partOfSpeech": partOfSpeech, "includeRelated": includeRelated, "sourceDictionaries": sourceDictionaries, "useCanonical": useCanonical, "includeTags": includeTags, "api_key": self.apiKeys["api_key"]};
-        path = path + check getPathForQueryParam(queryParam);
+        map<anydata> queryParam = {"limit": 'limit, "partOfSpeech": partOfSpeech, "includeRelated": includeRelated, "sourceDictionaries": sourceDictionaries, "useCanonical": useCanonical, "includeTags": includeTags, "api_key": self.apiKeyConfig.apiKey};
+        map<Encoding> queryParamEncoding = {"sourceDictionaries": {style: FORM, explode: false}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
         Definition[] response = check self.clientEp-> get(path, targetType = DefinitionArr);
         return response;
     }
@@ -148,9 +147,9 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getEtymologies(string word, string useCanonical = "false") returns string[]|error {
         string  path = string `/word.json/${word}/etymologies`;
-        map<anydata> queryParam = {"useCanonical": useCanonical, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"useCanonical": useCanonical, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
-        string[] response = check self.clientEp-> get(path, targetType = stringArr);
+        string[] response = check self.clientEp-> get(path, targetType = StringArr);
         return response;
     }
     # Returns examples for a word
@@ -163,7 +162,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getExamples(string word, string includeDuplicates = "false", string useCanonical = "false", int skip = 0, int 'limit = 5) returns ExampleSearchResults|error {
         string  path = string `/word.json/${word}/examples`;
-        map<anydata> queryParam = {"includeDuplicates": includeDuplicates, "useCanonical": useCanonical, "skip": skip, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"includeDuplicates": includeDuplicates, "useCanonical": useCanonical, "skip": skip, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         ExampleSearchResults response = check self.clientEp-> get(path, targetType = ExampleSearchResults);
         return response;
@@ -177,7 +176,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getWordFrequency(string word, string useCanonical = "false", int startYear = 1800, int endYear = 2012) returns FrequencySummary|error {
         string  path = string `/word.json/${word}/frequency`;
-        map<anydata> queryParam = {"useCanonical": useCanonical, "startYear": startYear, "endYear": endYear, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"useCanonical": useCanonical, "startYear": startYear, "endYear": endYear, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         FrequencySummary response = check self.clientEp-> get(path, targetType = FrequencySummary);
         return response;
@@ -191,7 +190,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getHyphenation(string word, string useCanonical = "false", string? sourceDictionary = (), int 'limit = 50) returns Syllable[]|error {
         string  path = string `/word.json/${word}/hyphenation`;
-        map<anydata> queryParam = {"useCanonical": useCanonical, "sourceDictionary": sourceDictionary, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"useCanonical": useCanonical, "sourceDictionary": sourceDictionary, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         Syllable[] response = check self.clientEp-> get(path, targetType = SyllableArr);
         return response;
@@ -205,7 +204,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getPhrases(string word, int 'limit = 5, int wlmi = 0, string useCanonical = "false") returns Bigram[]|error {
         string  path = string `/word.json/${word}/phrases`;
-        map<anydata> queryParam = {"limit": 'limit, "wlmi": wlmi, "useCanonical": useCanonical, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"limit": 'limit, "wlmi": wlmi, "useCanonical": useCanonical, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         Bigram[] response = check self.clientEp-> get(path, targetType = BigramArr);
         return response;
@@ -220,7 +219,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getTextPronunciations(string word, string useCanonical = "false", string? sourceDictionary = (), string? typeFormat = (), int 'limit = 50) returns TextPron[]|error {
         string  path = string `/word.json/${word}/pronunciations`;
-        map<anydata> queryParam = {"useCanonical": useCanonical, "sourceDictionary": sourceDictionary, "typeFormat": typeFormat, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"useCanonical": useCanonical, "sourceDictionary": sourceDictionary, "typeFormat": typeFormat, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         TextPron[] response = check self.clientEp-> get(path, targetType = TextPronArr);
         return response;
@@ -234,7 +233,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getRelatedWords(string word, string useCanonical = "false", string? relationshipTypes = (), int limitPerRelationshipType = 10) returns Related[]|error {
         string  path = string `/word.json/${word}/relatedWords`;
-        map<anydata> queryParam = {"useCanonical": useCanonical, "relationshipTypes": relationshipTypes, "limitPerRelationshipType": limitPerRelationshipType, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"useCanonical": useCanonical, "relationshipTypes": relationshipTypes, "limitPerRelationshipType": limitPerRelationshipType, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         Related[] response = check self.clientEp-> get(path, targetType = RelatedArr);
         return response;
@@ -245,7 +244,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getScrabbleScore(string word) returns int|error {
         string  path = string `/word.json/${word}/scrabbleScore`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         int response = check self.clientEp-> get(path, targetType = int);
         return response;
@@ -257,7 +256,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getTopExample(string word, string useCanonical = "false") returns Example|error {
         string  path = string `/word.json/${word}/topExample`;
-        map<anydata> queryParam = {"useCanonical": useCanonical, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"useCanonical": useCanonical, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         Example response = check self.clientEp-> get(path, targetType = Example);
         return response;
@@ -269,7 +268,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getWordListByPermalink(string permalink, string authToken) returns WordList|error {
         string  path = string `/wordList.json/${permalink}`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -284,7 +283,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function updateWordList(string permalink, string authToken, WordList payload) returns json|error {
         string  path = string `/wordList.json/${permalink}`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -301,13 +300,11 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function deleteWordList(string permalink, string authToken) returns json|error {
         string  path = string `/wordList.json/${permalink}`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        json response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = json);
+        json response = check self.clientEp-> delete(path, accHeaders, targetType = json);
         return response;
     }
     # Removes words from a WordList
@@ -318,7 +315,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function deleteWordsFromWordList(string permalink, string authToken, StringValue[] payload) returns json|error {
         string  path = string `/wordList.json/${permalink}/deleteWords`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -331,15 +328,15 @@ public isolated client class Client {
     # Fetches words in a WordList
     #
     # + permalink - ID of WordList to use 
-    # + authToken - The auth token of the logged-in user, obtained by calling /account.{format}/authenticate/{username} (described above) 
     # + sortBy - Field to sort by 
     # + sortOrder - Direction to sort 
     # + skip - Results to skip 
     # + 'limit - Maximum number of results to return 
+    # + authToken - The auth token of the logged-in user, obtained by calling /account.{format}/authenticate/{username} (described above) 
     # + return - No response was specified 
     remote isolated function getWordListWords(string permalink, string authToken, string sortBy = "createDate", string sortOrder = "desc", int skip = 0, int 'limit = 100) returns WordListWord[]|error {
         string  path = string `/wordList.json/${permalink}/words`;
-        map<anydata> queryParam = {"sortBy": sortBy, "sortOrder": sortOrder, "skip": skip, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"sortBy": sortBy, "sortOrder": sortOrder, "skip": skip, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -354,7 +351,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function addWordsToWordList(string permalink, string authToken, StringValue[] payload) returns json|error {
         string  path = string `/wordList.json/${permalink}/words`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -371,7 +368,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function createWordList(string authToken, WordList payload) returns WordList|error {
         string  path = string `/wordLists.json`;
-        map<anydata> queryParam = {"api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"auth_token": authToken};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
@@ -395,7 +392,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getRandomWord(string hasDictionaryDef = "true", string? includePartOfSpeech = (), string? excludePartOfSpeech = (), int minCorpusCount = 0, int maxCorpusCount = -1, int minDictionaryCount = 1, int maxDictionaryCount = -1, int minLength = 5, int maxLength = -1) returns WordObject|error {
         string  path = string `/words.json/randomWord`;
-        map<anydata> queryParam = {"hasDictionaryDef": hasDictionaryDef, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minDictionaryCount": minDictionaryCount, "maxDictionaryCount": maxDictionaryCount, "minLength": minLength, "maxLength": maxLength, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"hasDictionaryDef": hasDictionaryDef, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minDictionaryCount": minDictionaryCount, "maxDictionaryCount": maxDictionaryCount, "minLength": minLength, "maxLength": maxLength, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         WordObject response = check self.clientEp-> get(path, targetType = WordObject);
         return response;
@@ -417,7 +414,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getRandomWords(string hasDictionaryDef = "true", string? includePartOfSpeech = (), string? excludePartOfSpeech = (), int minCorpusCount = 0, int maxCorpusCount = -1, int minDictionaryCount = 1, int maxDictionaryCount = -1, int minLength = 5, int maxLength = -1, string? sortBy = (), string? sortOrder = (), int 'limit = 10) returns WordObject[]|error {
         string  path = string `/words.json/randomWords`;
-        map<anydata> queryParam = {"hasDictionaryDef": hasDictionaryDef, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minDictionaryCount": minDictionaryCount, "maxDictionaryCount": maxDictionaryCount, "minLength": minLength, "maxLength": maxLength, "sortBy": sortBy, "sortOrder": sortOrder, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"hasDictionaryDef": hasDictionaryDef, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minDictionaryCount": minDictionaryCount, "maxDictionaryCount": maxDictionaryCount, "minLength": minLength, "maxLength": maxLength, "sortBy": sortBy, "sortOrder": sortOrder, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         WordObject[] response = check self.clientEp-> get(path, targetType = WordObjectArr);
         return response;
@@ -443,15 +440,15 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function reverseDictionary(string query, string? findSenseForWord = (), string? includeSourceDictionaries = (), string? excludeSourceDictionaries = (), string? includePartOfSpeech = (), string? excludePartOfSpeech = (), int minCorpusCount = 5, int maxCorpusCount = -1, int minLength = 1, int maxLength = -1, string? expandTerms = (), string includeTags = "false", string? sortBy = (), string? sortOrder = (), string skip = "0", int 'limit = 10) returns DefinitionSearchResults|error {
         string  path = string `/words.json/reverseDictionary`;
-        map<anydata> queryParam = {"query": query, "findSenseForWord": findSenseForWord, "includeSourceDictionaries": includeSourceDictionaries, "excludeSourceDictionaries": excludeSourceDictionaries, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minLength": minLength, "maxLength": maxLength, "expandTerms": expandTerms, "includeTags": includeTags, "sortBy": sortBy, "sortOrder": sortOrder, "skip": skip, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"query": query, "findSenseForWord": findSenseForWord, "includeSourceDictionaries": includeSourceDictionaries, "excludeSourceDictionaries": excludeSourceDictionaries, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minLength": minLength, "maxLength": maxLength, "expandTerms": expandTerms, "includeTags": includeTags, "sortBy": sortBy, "sortOrder": sortOrder, "skip": skip, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         DefinitionSearchResults response = check self.clientEp-> get(path, targetType = DefinitionSearchResults);
         return response;
     }
     # Searches words
     #
-    # + query - Search query 
     # + allowRegex - Search term is a Regular Expression 
+    # + query - Search query 
     # + caseSensitive - Search case sensitive 
     # + includePartOfSpeech - Only include these comma-delimited parts of speech (allowable values are noun, adjective, verb, adverb, interjection, pronoun, preposition, abbreviation, affix, article, auxiliary-verb, conjunction, definite-article, family-name, given-name, idiom, imperative, noun-plural, noun-posessive, past-participle, phrasal-prefix, proper-noun, proper-noun-plural, proper-noun-posessive, suffix, verb-intransitive, verb-transitive) 
     # + excludePartOfSpeech - Exclude these comma-delimited parts of speech (allowable values are noun, adjective, verb, adverb, interjection, pronoun, preposition, abbreviation, affix, article, auxiliary-verb, conjunction, definite-article, family-name, given-name, idiom, imperative, noun-plural, noun-posessive, past-participle, phrasal-prefix, proper-noun, proper-noun-plural, proper-noun-posessive, suffix, verb-intransitive, verb-transitive) 
@@ -466,7 +463,7 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function searchWords(string query, string allowRegex = "false", string caseSensitive = "true", string? includePartOfSpeech = (), string? excludePartOfSpeech = (), int minCorpusCount = 5, int maxCorpusCount = -1, int minDictionaryCount = 1, int maxDictionaryCount = -1, int minLength = 1, int maxLength = -1, int skip = 0, int 'limit = 10) returns WordSearchResults|error {
         string  path = string `/words.json/search/${query}`;
-        map<anydata> queryParam = {"allowRegex": allowRegex, "caseSensitive": caseSensitive, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minDictionaryCount": minDictionaryCount, "maxDictionaryCount": maxDictionaryCount, "minLength": minLength, "maxLength": maxLength, "skip": skip, "limit": 'limit, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"allowRegex": allowRegex, "caseSensitive": caseSensitive, "includePartOfSpeech": includePartOfSpeech, "excludePartOfSpeech": excludePartOfSpeech, "minCorpusCount": minCorpusCount, "maxCorpusCount": maxCorpusCount, "minDictionaryCount": minDictionaryCount, "maxDictionaryCount": maxDictionaryCount, "minLength": minLength, "maxLength": maxLength, "skip": skip, "limit": 'limit, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         WordSearchResults response = check self.clientEp-> get(path, targetType = WordSearchResults);
         return response;
@@ -477,57 +474,9 @@ public isolated client class Client {
     # + return - No response was specified 
     remote isolated function getWordOfTheDay(string? date = ()) returns WordOfTheDay|error {
         string  path = string `/words.json/wordOfTheDay`;
-        map<anydata> queryParam = {"date": date, "api_key": self.apiKeys["api_key"]};
+        map<anydata> queryParam = {"date": date, "api_key": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         WordOfTheDay response = check self.clientEp-> get(path, targetType = WordOfTheDay);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

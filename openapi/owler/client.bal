@@ -15,32 +15,30 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # Represents API Key `user_key`
+    string userKey;
 |};
 
 # Search for information on companies using a website or company name and get access to Company Data, News, Blog Posts, Competitor Lists and much more.
 @display {label: "Owler", iconPath: "resources/owler.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
     # Create an [Owler account](https://corp.owler.com/) and obtain the API key.
     #
-    # + apiKeyConfig - Provide your API key as `user_key`. Eg: `{"user_key" : "<API key>"}` 
+    # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.owler.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Basic Search Company by Ticker or Website or Name or PermID
     #
@@ -52,8 +50,9 @@ public isolated client class Client {
     remote isolated function basicCompanySearch(string q, string[]? fields = (), string? 'limit = (), string format = "json") returns BasicResults|error {
         string  path = string `/v1/company/basicsearch`;
         map<anydata> queryParam = {"q": q, "fields": fields, "limit": 'limit, "format": format};
-        path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         BasicResults response = check self.clientEp-> get(path, accHeaders, targetType = BasicResults);
         return response;
@@ -67,7 +66,7 @@ public isolated client class Client {
         string  path = string `/v1/company/competitor/id/${companyId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         CompanyCompetitorVO response = check self.clientEp-> get(path, accHeaders, targetType = CompanyCompetitorVO);
         return response;
@@ -81,7 +80,7 @@ public isolated client class Client {
         string  path = string `/v1/company/competitor/url/${website}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         CompanyCompetitorVO response = check self.clientEp-> get(path, accHeaders, targetType = CompanyCompetitorVO);
         return response;
@@ -96,7 +95,7 @@ public isolated client class Client {
         string  path = string `/v1/company/competitorpremium/id/${companyId}`;
         map<anydata> queryParam = {"pagination_id": paginationId, "format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Competitors response = check self.clientEp-> get(path, accHeaders, targetType = Competitors);
         return response;
@@ -111,7 +110,7 @@ public isolated client class Client {
         string  path = string `/v1/company/competitorpremium/url/${website}`;
         map<anydata> queryParam = {"pagination_id": paginationId, "format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Competitors response = check self.clientEp-> get(path, accHeaders, targetType = Competitors);
         return response;
@@ -126,8 +125,9 @@ public isolated client class Client {
     remote isolated function fuzzyCompanySearch(string q, string[] fields, string? 'limit = (), string format = "json") returns FuzzyResults|error {
         string  path = string `/v1/company/fuzzysearch`;
         map<anydata> queryParam = {"q": q, "fields": fields, "limit": 'limit, "format": format};
-        path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         FuzzyResults response = check self.clientEp-> get(path, accHeaders, targetType = FuzzyResults);
         return response;
@@ -141,7 +141,7 @@ public isolated client class Client {
         string  path = string `/v1/company/id/${companyId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
         return response;
@@ -156,8 +156,9 @@ public isolated client class Client {
     remote isolated function searchCompany(string q, string[]? fields = (), string? 'limit = (), string format = "json") returns Results|error {
         string  path = string `/v1/company/search`;
         map<anydata> queryParam = {"q": q, "fields": fields, "limit": 'limit, "format": format};
-        path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Results response = check self.clientEp-> get(path, accHeaders, targetType = Results);
         return response;
@@ -171,7 +172,7 @@ public isolated client class Client {
         string  path = string `/v1/company/url/${website}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
         return response;
@@ -185,7 +186,7 @@ public isolated client class Client {
         string  path = string `/v1/companypremium/id/${companyId}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
         return response;
@@ -199,15 +200,15 @@ public isolated client class Client {
         string  path = string `/v1/companypremium/url/${website}`;
         map<anydata> queryParam = {"format": format};
         path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
         return response;
     }
     # Get Feeds for given Company Ids
     #
-    # + companyId - Company Ids separated by comma (Maximum of 150 Company Ids) 
     # + format - Format of the response content - json (by default if not specified), xml 
+    # + companyId - Company Ids separated by comma (Maximum of 150 Company Ids) 
     # + 'limit - Number of results to be displayed - 10 (by default, if not specified) to 100 
     # + paginationId - Pass pagination_id as blank in the first API request. The API response will return the latest feeds along with the next pagination_id which can be passed in the subsequent API request to get the next set of feeds. Repeat this process until needed or till the pagination_id returned is blank 
     # + category - Categories separated by comma. If not specified, will search against all categories 
@@ -215,16 +216,17 @@ public isolated client class Client {
     remote isolated function getFeedsForCompanyIds(string[] companyId, string format = "json", string 'limit = "10", string paginationId = "*", string[]? category = ()) returns Results|error {
         string  path = string `/v1/feed`;
         map<anydata> queryParam = {"format": format, "company_id": companyId, "limit": 'limit, "pagination_id": paginationId, "category": category};
-        path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<Encoding> queryParamEncoding = {"company_id": {style: FORM, explode: false}, "category": {style: FORM, explode: false}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Results response = check self.clientEp-> get(path, accHeaders, targetType = Results);
         return response;
     }
     # Get Feeds for given Company Websites
     #
-    # + domain - Company Websites separated by comma (Maximum of 10 Company Websites) 
     # + format - Format of the response content - json (by default if not specified), xml 
+    # + domain - Company Websites separated by comma (Maximum of 10 Company Websites) 
     # + 'limit - Number of results to be displayed - 10 (by default, if not specified) to 100 
     # + paginationId - Pass pagination_id as blank in the first API request. The API response will return the latest feeds along with the next pagination_id which can be passed in the subsequent API request to get the next set of feeds. Repeat this process until needed or till the pagination_id returned is blank 
     # + category - Categories separated by comma. If not specified, will search against all categories 
@@ -232,58 +234,11 @@ public isolated client class Client {
     remote isolated function getFeedsForCompanyUrls(string[] domain, string format = "json", string 'limit = "10", string paginationId = "*", string[]? category = ()) returns Results|error {
         string  path = string `/v1/feed/url`;
         map<anydata> queryParam = {"format": format, "domain": domain, "limit": 'limit, "pagination_id": paginationId, "category": category};
-        path = path + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"user_key": self.apiKeys["user_key"]};
+        map<Encoding> queryParamEncoding = {"domain": {style: FORM, explode: false}, "category": {style: FORM, explode: false}};
+        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
         map<string|string[]> accHeaders = getMapForHeaders(headerValues);
         Results response = check self.clientEp-> get(path, accHeaders, targetType = Results);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

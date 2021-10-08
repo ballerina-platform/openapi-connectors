@@ -41,34 +41,38 @@ public type NiCallerIdentity record {
 # An object indicating whether all information about a phone number has been returned.
 public type NiresponsexmladvancedLookupOutcome record {
     # Shows if all information about a phone number has been returned. Possible values:
+    # 
+    # Code | Text
+    # -- | --
+    # 0 | Success
+    # 1 | Partial success - some fields populated
+    # 2 | Failed
     decimal code?;
     # Shows if all information about a phone number has been returned.
     string lookup_outcome_message?;
 };
 
 # Code | Text        
-#   -- | --
-#    0 | Success - request accepted for delivery by .
-#    1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
-#    3 | Invalid - your request is incomplete and missing some mandatory parameters.
-#    4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
-#    5 | Internal Error - the format of the recipient address is not valid.
-#    9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
-#
+# #   -- | --
+# #    0 | Success - request accepted for delivery by .
+# #    1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+# #    3 | Invalid - your request is incomplete and missing some mandatory parameters.
+# #    4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+# #    5 | Internal Error - the format of the recipient address is not valid.
+# #    9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
 public type NiBasicStatus int;
 
 # Code | Text
-#         -- | --
-#          0 | Success - request accepted for delivery by .
-#          1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
-#          3 | Invalid - your request is incomplete and missing some mandatory parameters.
-#          4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
-#          5 | Internal Error - the format of the recipient address is not valid.
-#          9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
-#         19 | Facility Not Allowed - your request makes use of a facility that is not enabled on your account.
-# 43, 44, 45 | Live mobile lookup not returned. Not all return parameters are available.
-#        999 | Request unparseable.
-#
+# #         -- | --
+# #          0 | Success - request accepted for delivery by .
+# #          1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+# #          3 | Invalid - your request is incomplete and missing some mandatory parameters.
+# #          4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+# #          5 | Internal Error - the format of the recipient address is not valid.
+# #          9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
+# #         19 | Facility Not Allowed - your request makes use of a facility that is not enabled on your account.
+# # 43, 44, 45 | Live mobile lookup not returned. Not all return parameters are available.
+# #        999 | Request unparseable.
 public type NiStandardAdvancedStatus int;
 
 # Basic
@@ -155,7 +159,6 @@ public type NiResponseJsonStandard record {
     NiInitialCarrierProperties original_carrier?;
     # If the user has changed carrier for `number`. The assumed status means that the information supplier has replied to the request but has not said explicitly that the number is ported.
     string ported?;
-    # Information about the roaming status for `number`. This is applicable to mobile numbers only.
     NiRoaming|string roaming?;
     # Information about the network `number` is currently connected to.
     NiCallerIdentity caller_identity?;
@@ -210,6 +213,16 @@ public type NiResponseXmlStandard record {
 # Advanced
 public type NiResponseJsonAdvanced record {
     # Code | Text
+    # #         -- | --
+    # #          0 | Success - request accepted for delivery by .
+    # #          1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+    # #          3 | Invalid - your request is incomplete and missing some mandatory parameters.
+    # #          4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+    # #          5 | Internal Error - the format of the recipient address is not valid.
+    # #          9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
+    # #         19 | Facility Not Allowed - your request makes use of a facility that is not enabled on your account.
+    # # 43, 44, 45 | Live mobile lookup not returned. Not all return parameters are available.
+    # #        999 | Request unparseable.
     NiStandardAdvancedStatus status;
     # The status description of your request.
     string status_message;
@@ -239,11 +252,16 @@ public type NiResponseJsonAdvanced record {
     NiInitialCarrierProperties original_carrier?;
     # If the user has changed carrier for `number`. The assumed status means that the information supplier has replied to the request but has not said explicitly that the number is ported.
     string? ported?;
-    # Information about the roaming status for `number`. This is applicable to mobile numbers only.
     NiRoaming|string? roaming?;
     # Information about the network `number` is currently connected to.
     NiCallerIdentity caller_identity?;
     # Shows if all information about a phone number has been returned. Possible values:
+    # 
+    # Code | Text
+    # --- | ---
+    # 0 | Success
+    # 1 | Partial success - some fields populated
+    # 2 | Failed
     int lookup_outcome?;
     # Shows if all information about a phone number has been returned.
     string lookup_outcome_message?;
@@ -275,6 +293,13 @@ public type NiresponsexmlbasicError record {
 
 public type NiResponseJsonBasic record {
     # Code | Text        
+    # #   -- | --
+    # #    0 | Success - request accepted for delivery by .
+    # #    1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+    # #    3 | Invalid - your request is incomplete and missing some mandatory parameters.
+    # #    4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+    # #    5 | Internal Error - the format of the recipient address is not valid.
+    # #    9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
     NiBasicStatus status?;
     # The status description of your request.
     string status_message?;
@@ -304,6 +329,16 @@ public type NiResponseAsync record {
     # If there is an internal lookup error, the `refund_price` will reflect the lookup price. If `cnam` is requested for a non-US number the `refund_price` will reflect the `cnam` price. If both of these conditions occur, `refund_price` is the sum of the lookup price and `cnam` price.
     string request_price?;
     # Code | Text
+    # #         -- | --
+    # #          0 | Success - request accepted for delivery by .
+    # #          1 | Busy - you have made more requests in the last second than are permitted by your account. Please retry.
+    # #          3 | Invalid - your request is incomplete and missing some mandatory parameters.
+    # #          4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+    # #          5 | Internal Error - the format of the recipient address is not valid.
+    # #          9 | Partner quota exceeded - your account does not have sufficient credit to process this request.
+    # #         19 | Facility Not Allowed - your request makes use of a facility that is not enabled on your account.
+    # # 43, 44, 45 | Live mobile lookup not returned. Not all return parameters are available.
+    # #        999 | Request unparseable.
     NiStandardAdvancedStatus status?;
     # The status description of your request. Note: This field is equivalent to `status_message` field in the other endpoints
     string error_text?;

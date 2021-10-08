@@ -14,6 +14,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
+public type OutputHourlyForecast record {
+    # Daily weather forecast
+    OutputhourlyforecastResult[] result?;
+};
+
 public type OutputactivityforecastResult record {
     # Name
     string name?;
@@ -72,9 +77,30 @@ public type OutputdailyforecastResult record {
     decimal cloudCover?;
 };
 
+public type InputWeatherActivityForecast record {
+    # Full or partial address
+    string 'source;
+    # Weather-related activity
+    string activity;
+};
+
+public type OutputActivityForecast record {
+    # Current weather-related activity forecast
+    OutputactivityforecastResult[] result?;
+};
+
 public type OutputDailyForecast record {
     # Daily weather forecast
     OutputdailyforecastResult[] result?;
+};
+
+public type InputWeatherHourlyForecast record {
+    # Full or partial address
+    string 'source;
+    # Units
+    string units;
+    # Duration
+    decimal duration;
 };
 
 public type OutputWeatherConditions record {
@@ -123,6 +149,15 @@ public type InputWeatherConditions record {
     string units;
 };
 
+public type InputWeatherDailyForecast record {
+    # Full or partial address
+    string 'source;
+    # Units
+    string units;
+    # Duration
+    decimal duration;
+};
+
 public type OutputhourlyforecastResult record {
     # Date
     string date?;
@@ -164,39 +199,4 @@ public type OutputhourlyforecastResult record {
     string ceiling?;
     # Cloud cover
     decimal cloudCover?;
-};
-
-public type OutputHourlyForecast record {
-    # Daily weather forecast
-    OutputhourlyforecastResult[] result?;
-};
-
-public type InputWeatherActivityForecast record {
-    # Full or partial address
-    string 'source;
-    # Weather-related activity
-    string activity;
-};
-
-public type OutputActivityForecast record {
-    # Current weather-related activity forecast
-    OutputactivityforecastResult[] result?;
-};
-
-public type InputWeatherHourlyForecast record {
-    # Full or partial address
-    string 'source;
-    # Units
-    string units;
-    # Duration
-    decimal duration;
-};
-
-public type InputWeatherDailyForecast record {
-    # Full or partial address
-    string 'source;
-    # Units
-    string units;
-    # Duration
-    decimal duration;
 };

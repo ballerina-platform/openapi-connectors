@@ -15,13 +15,13 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # You can find your API key in your [account overview](https://dashboard.nexmo.com/account-overview)
+    string apiKey;
+    # You can find your API secret in your [account overview](https://dashboard.nexmo.com/account-overview)
+    string apiSecret;
 |};
 
 # This is a generated connector for [Vonage Number Insight API v1.0.10](https://nexmo-api-specification.herokuapp.com/number-insight) OpenAPI specification. 
@@ -31,110 +31,80 @@ public type ApiKeysConfig record {|
 @display {label: "Vonage Number Insight", iconPath: "resources/vonage.numberinsight.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
     # Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
     #
-    # + apiKeyConfig - Provide your API keys as `api_key` and `api_secret`. Eg: `{"api_key" : "<API key>", "api_secret" : "<API secret>"}`
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + apiKeyConfig - API keys for authorization 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.nexmo.com/ni") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Basic Number Insight
     #
-    # + format - The format of the response
-    # + number - A single phone number that you need insight about in national or international format.
-    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number.
-    # + return - OK
+    # + format - The format of the response 
+    # + number - A single phone number that you need insight about in national or international format. 
+    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number. 
+    # + return - OK 
     remote isolated function getNumberInsightBasic(string format, string number, string? country = ()) returns NiResponseJsonBasic|error {
         string  path = string `/basic/${format}`;
-        map<anydata> queryParam = {"number": number, "country": country, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"number": number, "country": country, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseJsonBasic response = check self.clientEp-> get(path, targetType = NiResponseJsonBasic);
         return response;
     }
     # Standard Number Insight
     #
-    # + format - The format of the response
-    # + number - A single phone number that you need insight about in national or international format.
-    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number.
-    # + cnam - Indicates if the name of the person who owns the phone number should be looked up and returned in the response. Set to true to receive phone number owner name in the response. This features is available for US numbers only and incurs an additional charge.
-    # + return - OK
+    # + format - The format of the response 
+    # + number - A single phone number that you need insight about in national or international format. 
+    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number. 
+    # + cnam - Indicates if the name of the person who owns the phone number should be looked up and returned in the response. Set to true to receive phone number owner name in the response. This features is available for US numbers only and incurs an additional charge. 
+    # + return - OK 
     remote isolated function getNumberInsightStandard(string format, string number, string? country = (), boolean cnam = false) returns NiResponseJsonStandard|error {
         string  path = string `/standard/${format}`;
-        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseJsonStandard response = check self.clientEp-> get(path, targetType = NiResponseJsonStandard);
         return response;
     }
     # Advanced Number Insight (async)
     #
-    # + format - The format of the response
-    # + callback - The callback URL
-    # + number - A single phone number that you need insight about in national or international format.
-    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number.
-    # + cnam - Indicates if the name of the person who owns the phone number should be looked up and returned in the response. Set to true to receive phone number owner name in the response. This features is available for US numbers only and incurs an additional charge.
-    # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers. 
-    # + return - OK
-    remote isolated function getNumberInsightAsync(string format, string callback, string number, string? country = (), boolean cnam = false, string? ip = ()) returns NiResponseAsync|error {
+    # + format - The format of the response 
+    # + callback - The callback URL 
+    # + number - A single phone number that you need insight about in national or international format. 
+    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number. 
+    # + cnam - Indicates if the name of the person who owns the phone number should be looked up and returned in the response. Set to true to receive phone number owner name in the response. This features is available for US numbers only and incurs an additional charge. 
+    # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers.  
+    # # Deprecated parameters
+    # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers.  
+    # + return - OK 
+    remote isolated function getNumberInsightAsync(string format, string callback, string number, string? country = (), boolean cnam = false, @deprecated string? ip = ()) returns NiResponseAsync|error {
         string  path = string `/advanced/async/${format}`;
-        map<anydata> queryParam = {"callback": callback, "number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"callback": callback, "number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseAsync response = check self.clientEp-> get(path, targetType = NiResponseAsync);
         return response;
     }
     # Advanced Number Insight (sync)
     #
-    # + format - The format of the response
-    # + number - A single phone number that you need insight about in national or international format.
-    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number.
-    # + cnam - Indicates if the name of the person who owns the phone number should be looked up and returned in the response. Set to true to receive phone number owner name in the response. This features is available for US numbers only and incurs an additional charge.
-    # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers. 
-    # + return - OK
-    remote isolated function getNumberInsightAdvanced(string format, string number, string? country = (), boolean cnam = false, string? ip = ()) returns NiResponseJsonAdvanced|error {
+    # + format - The format of the response 
+    # + number - A single phone number that you need insight about in national or international format. 
+    # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number. 
+    # + cnam - Indicates if the name of the person who owns the phone number should be looked up and returned in the response. Set to true to receive phone number owner name in the response. This features is available for US numbers only and incurs an additional charge. 
+    # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers.  
+    # # Deprecated parameters
+    # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers.  
+    # + return - OK 
+    remote isolated function getNumberInsightAdvanced(string format, string number, string? country = (), boolean cnam = false, @deprecated string? ip = ()) returns NiResponseJsonAdvanced|error {
         string  path = string `/advanced/${format}`;
-        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeys["api_key"], "api_secret": self.apiKeys["api_secret"]};
+        map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
         path = path + check getPathForQueryParam(queryParam);
         NiResponseJsonAdvanced response = check self.clientEp-> get(path, targetType = NiResponseJsonAdvanced);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

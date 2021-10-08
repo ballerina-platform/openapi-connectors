@@ -227,13 +227,11 @@ components:
       name: api_key
       in: query
       description: "You can find your API key in the [developer dashboard](https://dashboard.nexmo.com)"
-      x-ballerina-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
     apiSecret:
       type: apiKey
       name: api_secret
       in: query
       description: "You can find your API secret in the [developer dashboard](https://dashboard.nexmo.com)"
-      x-ballerina-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
   parameters:
     index:
       name: index

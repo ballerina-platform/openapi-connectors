@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # API keys related to connector authentication
-    map<string> apiKeys;
+    # All requests on the News API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `apiKey`
+    string apiKey;
 |};
 
 # This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification.
@@ -29,105 +27,71 @@ public type ApiKeysConfig record {|
 @display {label: "News API", iconPath: "resources/newsapi.svg"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & map<string> apiKeys;
+    final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
     # Create an [News API Account](https://newsapi.org/register) and obtain tokens following [this guide](https://newsapi.org/docs/get-started).
     #
-    # + apiKeyConfig - Provide your API key as `apiKey`. Eg: `{"apiKey" : "<your API key>"}`
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + apiKeyConfig - API keys for authorization 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://newsapi.org/v2") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
-        self.apiKeys = apiKeyConfig.apiKeys.cloneReadOnly();
+        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
     }
     # Returns a list of news sources or blogs
     #
-    # + language - Find sources that display news in a specific language. Possible options: ar de en es fr he it nl no pt ru se ud zh. Default: all languages
-    # + country - Find sources that display news in a specific country. Default: all countries
-    # + category - Find sources that display news of this category. Default: all categories
-    # + return - Record containing list of news sources
+    # + language - Find sources that display news in a specific language. Possible options: ar de en es fr he it nl no pt ru se ud zh. Default: all languages 
+    # + country - Find sources that display news in a specific country. Default: all countries 
+    # + category - Find sources that display news of this category. Default: all categories 
+    # + return - Record containing list of news sources 
     @display {label: "List News Sources"}
     remote isolated function listSources(@display {label: "Language"} string? language = (), @display {label: "Country"} string? country = (), @display {label: "Category"} string? category = ()) returns WSNewsSourcesResponse|error {
         string  path = string `/sources`;
-        map<anydata> queryParam = {"language": language, "country": country, "category": category, "apiKey": self.apiKeys["apiKey"]};
+        map<anydata> queryParam = {"language": language, "country": country, "category": category, "apiKey": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         WSNewsSourcesResponse response = check self.clientEp-> get(path, targetType = WSNewsSourcesResponse);
         return response;
     }
     # Returns a list of top headlines
     #
-    # + q - Keywords or a phrase to search for
-    # + sources - Comma-seperated string of source identifiers for news sources or blogs
-    # + country - Find sources that display news in a specific country. Default: all countries
-    # + category - Find sources that display news of this category. Default: all categories
-    # + page - Use this to page through results if total results found is greater than page size
-    # + pageSize - Number of results to return per page (request). 20 is default, 100 is maximum
-    # + return - Record containing list of top headlines
+    # + q - Keywords or a phrase to search for 
+    # + sources - Comma-seperated string of source identifiers for news sources or blogs 
+    # + country - Find sources that display news in a specific country. Default: all countries 
+    # + category - Find sources that display news of this category. Default: all categories 
+    # + page - Use this to page through results if total results found is greater than page size 
+    # + pageSize - Number of results to return per page (request). 20 is default, 100 is maximum 
+    # + return - Record containing list of top headlines 
     @display {label: "List Top Headlines"}
     remote isolated function listTopHeadlines(@display {label: "Keyword"} string? q = (), @display {label: "Sources"} string? sources = (), @display {label: "Country"} string? country = (), @display {label: "Category"} string? category = (), @display {label: "Page Number"} int? page = (), @display {label: "Page Size"} int pageSize = 20) returns WSNewsTopHeadlineResponse|error {
         string  path = string `/top-headlines`;
-        map<anydata> queryParam = {"q": q, "sources": sources, "country": country, "category": category, "page": page, "pageSize": pageSize, "apiKey": self.apiKeys["apiKey"]};
+        map<anydata> queryParam = {"q": q, "sources": sources, "country": country, "category": category, "page": page, "pageSize": pageSize, "apiKey": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         WSNewsTopHeadlineResponse response = check self.clientEp-> get(path, targetType = WSNewsTopHeadlineResponse);
         return response;
     }
     # Returns list of articles
     #
-    # + page - Use this to page through results
-    # + pageSize - Number of results to return per page. 20 is default, 100 is maximum
-    # + q - Keywords or phrases to search for in article title and body. Complete value for query must be URL-encoded
-    # + qInTitle - Keywords or phrases to search for in article title only. Complete value for qInTitle must be URL-encoded
-    # + sources - Comma-seperated string of source identifiers (maximum 20) for news sources or blogs
-    # + domains - Comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to restrict search
-    # + excludeDomains - Comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to remove from results
-    # + 'from - Date and optional time for oldest article allowed. This should be in ISO 8601 format (e.g. 2021-02-15 or 2021-02-15T19:07:40) Default: oldest according to pricing plan
-    # + to - Date and optional time for newest article allowed. This should be in ISO 8601 format (e.g. 2021-02-15 or 2021-02-15T19:07:40) Default: newest according to pricing plan
-    # + language - Find sources that display news in a specific language. Possible options: ar de en es fr he it nl no pt ru se ud zh .Default: all languages
-    # + sortBy - Order to sort articles in. Possible options: relevancy, popularity, publishedAt
-    # + return - Record containing list of articles
+    # + q - Keywords or phrases to search for in article title and body. Complete value for query must be URL-encoded 
+    # + qInTitle - Keywords or phrases to search for in article title only. Complete value for qInTitle must be URL-encoded 
+    # + sources - Comma-seperated string of source identifiers (maximum 20) for news sources or blogs 
+    # + domains - Comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to restrict search 
+    # + excludeDomains - Comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to remove from results 
+    # + 'from - Date and optional time for oldest article allowed. This should be in ISO 8601 format (e.g. 2021-02-15 or 2021-02-15T19:07:40) Default: oldest according to pricing plan 
+    # + to - Date and optional time for newest article allowed. This should be in ISO 8601 format (e.g. 2021-02-15 or 2021-02-15T19:07:40) Default: newest according to pricing plan 
+    # + language - Find sources that display news in a specific language. Possible options: ar de en es fr he it nl no pt ru se ud zh .Default: all languages 
+    # + sortBy - Order to sort articles in. Possible options: relevancy, popularity, publishedAt 
+    # + page - Use this to page through results 
+    # + pageSize - Number of results to return per page. 20 is default, 100 is maximum 
+    # + return - Record containing list of articles 
     @display {label: "List Articles"}
     remote isolated function listArticles(@display {label: "Page Number"} int page, @display {label: "Page Size"} int pageSize, @display {label: "Keyword"} string? q = (), @display {label: "Title Keyword"} string? qInTitle = (), @display {label: "Sources"} string? sources = (), @display {label: "Domains To Include"} string? domains = (), @display {label: "Domains To Exclude"} string? excludeDomains = (), @display {label: "From"} string? 'from = (), @display {label: "To"} string? to = (), @display {label: "Language"} string? language = (), @display {label: "Sort By"} string? sortBy = ()) returns WSNewsTopHeadlineResponse|error {
         string  path = string `/everything`;
-        map<anydata> queryParam = {"q": q, "qInTitle": qInTitle, "sources": sources, "domains": domains, "excludeDomains": excludeDomains, "from": 'from, "to": to, "language": language, "sortBy": sortBy, "page": page, "pageSize": pageSize, "apiKey": self.apiKeys["apiKey"]};
+        map<anydata> queryParam = {"q": q, "qInTitle": qInTitle, "sources": sources, "domains": domains, "excludeDomains": excludeDomains, "from": 'from, "to": to, "language": language, "sortBy": sortBy, "page": page, "pageSize": pageSize, "apiKey": self.apiKeyConfig.apiKey};
         path = path + check getPathForQueryParam(queryParam);
         WSNewsTopHeadlineResponse response = check self.clientEp-> get(path, targetType = WSNewsTopHeadlineResponse);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

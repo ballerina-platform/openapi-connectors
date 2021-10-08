@@ -24,9 +24,7 @@ import ballerinax/livestorm;
 ### Step 2: Create a new connector instance
 ```ballerina
 livestorm:ApiKeysConfig config = {
-    apiKeys : {
-        Authorization : "<your apiKey>"
-    }
+    authorization : "<your apiKey>"
 };
 
 livestorm:Client myclient = check new livestorm:Client(config, {}, "https://api.livestorm.co/v1");

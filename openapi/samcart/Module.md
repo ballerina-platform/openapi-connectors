@@ -24,9 +24,7 @@ import ballerinax/samcart;
 Create a `samcart:ApiKeysConfig` with the API Key obtained, and initialize the connector with it. 
 ```ballerina
 samcart:ApiKeysConfig config = {
-    apiKeys: {
-        sc-api: "<API_KEY>"
-    }
+    scApi: "<API_KEY>"
 }
 samcart:Client baseClient = check new Client(config);
 ```

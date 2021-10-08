@@ -19,9 +19,7 @@ import ballerinax/cloudmersive.virusscan;
 You can now make the connection configuration using the access token.
 ```ballerina
 virusscan:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    apikey : "<your apiKey>"
 };
 
 virusscan:Client baseClient = check new Client(clientConfig);

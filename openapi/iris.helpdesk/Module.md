@@ -26,9 +26,7 @@ import ballerinax/iris.helpdesk;
 Create a `helpdesk:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 helpdesk:ApiKeysConfig config = {
-    apiKeys: {
-        X-API-KEY: "<API_KEY>"
-    }
+    xApiKey: "<API_KEY>"
 }
 helpdesk:Client baseClient = check new Client(config);
 ```

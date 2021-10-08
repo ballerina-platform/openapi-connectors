@@ -25,9 +25,7 @@ import ballerinax/iris.esignature;
 Create a `esignature:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 esignature:ApiKeysConfig config = {
-    apiKeys: {
-        X-API-KEY: "<API_KEY>"
-    }
+    xApiKey: "<API_KEY>"
 }
 subscriptions:Client baseClient = check new Client(config);
 ```

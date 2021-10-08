@@ -26,9 +26,7 @@ import ballerinax/nytimes.topstories as nt;
 Create a `topstories:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 nt:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 nt:Client baseClient = check new Client(config);
 ```

@@ -28,9 +28,7 @@ import ballerinax/powertoolsdeveloper.math as pm;
 Create a `math:ApiKeysConfig` with the Client ID obtained, and initialize the connector with it.
 ```ballerina
 pm:ApiKeysConfig config = {
-    apiKeys: {
-        X-IBM-Client-Id: "<CLIENT_ID>"
-    }
+    xIbmClientId: "<CLIENT_ID>"
 }
 pm:Client baseClient = check new Client(config);
 ```

@@ -26,9 +26,7 @@ import ballerinax/nytimes.mostpopular as nm;
 Create a `mostpopular:ApiKeysConfig` with the API key obtained, and initialize the connector with it. 
 ```ballerina
 nm:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 nm:Client baseClient = check new Client(config);
 ```

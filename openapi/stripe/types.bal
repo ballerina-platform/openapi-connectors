@@ -606,6 +606,13 @@ public type AccountRequirements record {
     string[]? pending_verification?;
 };
 
+public type CreatedFilterOptions record {
+    int? gt?;
+    int? gte?;
+    int? lt?;
+    int? lte?;
+};
+
 public type PaymentIntentPaymentMethodOptionsAcssDebit record {
     PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit? mandate_options?;
     # Bank account verification method.
@@ -776,6 +783,8 @@ public type OrdersResourceOrderReturnList record {
     # The URL where this list can be accessed.
     string? url;
 };
+
+public type  CreatedDetails CreatedFilterOptions|int;
 
 public type LineItemsTaxAmount record {
     # Amount of tax applied for this rate.
@@ -3835,6 +3844,16 @@ public type MandateAcssDebit record {
     string? payment_schedule;
     # Transaction type of the mandate.
     string? transaction_type;
+};
+
+public type InlineResponse2007 record {
+    Coupon[]? data;
+    # True if this list has another page of items after this one that can be fetched.
+    boolean? has_more;
+    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    string? 'object;
+    # The URL where this list can be accessed.
+    string? url;
 };
 
 public type DeletedCustomer record {

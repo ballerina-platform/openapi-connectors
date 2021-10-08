@@ -24397,6 +24397,8 @@ tags:
     name: Products
   - description: Price
     name: Price
+  - description: "A coupon contains information about a percent-off or amount-off discount you might want to apply to a customer."
+    name: Coupons
 paths:
   "/v1/3d_secure":
     post:
@@ -36785,8 +36787,10 @@ paths:
           description: Error response.
   "/v1/coupons":
     get:
+      tags:
+        - "Coupons"
       description: "<p>Returns a list of your coupons.</p>"
-      operationId: GetCoupons
+      operationId: listCoupons
       parameters:
       - description: A filter on the list, based on the object `created` field. The
           value can be a string with an integer Unix timestamp, or it can be a dictionary
@@ -37022,8 +37026,10 @@ paths:
                 "$ref": "#/components/schemas/error"
           description: Error response.
     get:
+      tags:
+        - "Coupons"
       description: "<p>Retrieves the coupon with the given ID.</p>"
-      operationId: GetCouponsCoupon
+      operationId: getCoupon
       parameters:
       - in: path
         name: coupon
@@ -43068,93 +43074,93 @@ paths:
               schema:
                 "$ref": "#/components/schemas/error"
           description: Error response.
-    post:
-      description: |-
-        <p>To upload a file to Stripe, you’ll need to send a request of type <code>multipart/form-data</code>. The request should contain the file you would like to upload, as well as the parameters for creating a file.</p>
+    # post:
+    #   description: |-
+    #     <p>To upload a file to Stripe, you’ll need to send a request of type <code>multipart/form-data</code>. The request should contain the file you would like to upload, as well as the parameters for creating a file.</p>
 
-        <p>All of Stripe’s officially supported Client libraries should have support for sending <code>multipart/form-data</code>.</p>
-      operationId: PostFiles
-      requestBody:
-        content:
-          multipart/form-data:
-            encoding:
-              expand:
-                explode: true
-                style: deepObject
-              file_link_data:
-                explode: true
-                style: deepObject
-            schema:
-              additionalProperties: false
-              properties:
-                expand:
-                  description: Specifies which fields in the response should be expanded.
-                  items:
-                    maxLength: 5000
-                    type: string
-                  type: array
-                file:
-                  description: A file to upload. The file should follow the specifications
-                    of RFC 2388 (which defines file transfers for the `multipart/form-data`
-                    protocol).
-                  type: string
-                file_link_data:
-                  description: Optional parameters to automatically create a [file
-                    link](https://stripe.com/docs/api#file_links) for the newly created
-                    file.
-                  properties:
-                    create:
-                      type: boolean
-                    expires_at:
-                      format: unix-time
-                      type: integer
-                    metadata:
-                      anyOf:
-                      - additionalProperties:
-                          type: string
-                        type: object
-                      - enum:
-                        - ''
-                        type: string
-                  required:
-                  - create
-                  title: file_link_creation_params
-                  type: object
-                purpose:
-                  description: The [purpose](https://stripe.com/docs/file-upload#uploading-a-file)
-                    of the uploaded file.
-                  enum:
-                  - account_requirement
-                  - additional_verification
-                  - business_icon
-                  - business_logo
-                  - customer_signature
-                  - dispute_evidence
-                  - identity_document
-                  - pci_document
-                  - tax_document_user_upload
-                  type: string
-                  x-stripeBypassValidation: true
-              required:
-              - file
-              - purpose
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/file"
-          description: Successful response.
-        default:
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/error"
-          description: Error response.
-      servers:
-      - url: https://files.stripe.com/
+    #     <p>All of Stripe’s officially supported Client libraries should have support for sending <code>multipart/form-data</code>.</p>
+    #   operationId: PostFiles
+    #   requestBody:
+    #     content:
+    #       multipart/form-data:
+    #         encoding:
+    #           expand:
+    #             explode: true
+    #             style: deepObject
+    #           file_link_data:
+    #             explode: true
+    #             style: deepObject
+    #         schema:
+    #           additionalProperties: false
+    #           properties:
+    #             expand:
+    #               description: Specifies which fields in the response should be expanded.
+    #               items:
+    #                 maxLength: 5000
+    #                 type: string
+    #               type: array
+    #             file:
+    #               description: A file to upload. The file should follow the specifications
+    #                 of RFC 2388 (which defines file transfers for the `multipart/form-data`
+    #                 protocol).
+    #               type: string
+    #             file_link_data:
+    #               description: Optional parameters to automatically create a [file
+    #                 link](https://stripe.com/docs/api#file_links) for the newly created
+    #                 file.
+    #               properties:
+    #                 create:
+    #                   type: boolean
+    #                 expires_at:
+    #                   format: unix-time
+    #                   type: integer
+    #                 metadata:
+    #                   anyOf:
+    #                   - additionalProperties:
+    #                       type: string
+    #                     type: object
+    #                   - enum:
+    #                     - ''
+    #                     type: string
+    #               required:
+    #               - create
+    #               title: file_link_creation_params
+    #               type: object
+    #             purpose:
+    #               description: The [purpose](https://stripe.com/docs/file-upload#uploading-a-file)
+    #                 of the uploaded file.
+    #               enum:
+    #               - account_requirement
+    #               - additional_verification
+    #               - business_icon
+    #               - business_logo
+    #               - customer_signature
+    #               - dispute_evidence
+    #               - identity_document
+    #               - pci_document
+    #               - tax_document_user_upload
+    #               type: string
+    #               x-stripeBypassValidation: true
+    #           required:
+    #           - file
+    #           - purpose
+    #           type: object
+    #     required: true
+    #   responses:
+    #     '200':
+    #       content:
+    #         application/json:
+    #           schema:
+    #             "$ref": "#/components/schemas/file"
+    #       description: Successful response.
+    #     default:
+    #       content:
+    #         application/json:
+    #           schema:
+    #             "$ref": "#/components/schemas/error"
+    #       description: Error response.
+    #   servers:
+    #   - url: https://files.stripe.com/
   "/v1/files/{file}":
     get:
       description: <p>Retrieves the details of an existing file object. Supply the

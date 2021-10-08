@@ -29,9 +29,7 @@ import ballerinax/powertoolsdeveloper.datetime as pd;
 Create a `datetime:ApiKeysConfig` with the Client ID obtained, and initialize the connector with it. 
 ```ballerina
 pd:ApiKeysConfig config = {
-    apiKeys: {
-        X-IBM-Client-Id: "<CLIENT_ID>"
-    }
+    xIbmClientId: "<CLIENT_ID>"
 }
 pd:Client baseClient = check new Client(config);
 ```

@@ -22,9 +22,7 @@ You can now intantiate the client.
 
 ```ballerina
 extpose:ApiKeysConfig apiKeyConfig = {
-    apiKeys: {
-        "X-API-Key": "<API_Key>"
-    }
+    xApiKey": "<API_Key>"
 };
 
 extpose:Client extposeClient = check new(apiKeyConfig);

@@ -24,9 +24,7 @@ import ballerinax/mitto.sms;
 Create a `sms:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 sms:ApiKeysConfig config = {
-    apiKeys: {
-        X-Mitto-API-Key: "<API_KEY>"
-    }
+    xMittoApiKey: "<API_KEY>"
 }
 sms:Client baseClient = check new Client(config);
 ```

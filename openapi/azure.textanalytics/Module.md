@@ -31,14 +31,13 @@ You can now make the connection configuration using `Ocp-Apim-Subscription-Key`.
 You can do this step in two ways. You can use any one of this.
 
 - Option 1 :
-    Configure `Ocp-Apim-Subscription-Key` in ballerina file directly. 
+    Configure API Keys in ballerina file directly. 
 
     ```ballerina
     
     textanalytics:ApiKeysConfig apiKeyConfig = {
-        apiKeys :{
-            Ocp-Apim-Subscription-Key:"<AZURE_TEXT_ANALYTICS_API_KEY>"
-        }
+        ocpApimSubscriptionKey:"<AZURE_API_KEY>"
+        subscriptionKey: "<Subscription Key>"
     };
 
     textanalytics:Client myClient = check new Client(apiKeyConfig, serviceUrl = "https://<REGION>.api.cognitive.microsoft.com/text/analytics/v3.1");
@@ -46,12 +45,13 @@ You can do this step in two ways. You can use any one of this.
     ```
 
 - Option 2 :
-    Configure `Ocp-Apim-Subscription-Key` in `Config.toml` file and configure it in ballerina file, using configurables. 
+    Configure API Keys in `Config.toml` file and configure it in ballerina file, using configurables. 
 
-    1. Set up `Ocp-Apim-Subscription-Key` in `Config.toml` as shown below.
+    1. Set up API Keys in `Config.toml` as shown below.
     ```
-    [apiKeyConfig.apiKeys]
-    Ocp-Apim-Subscription-Key = "<AZURE_TEXT_ANALYTICS_API_KEY>"
+    [apiKeyConfig]
+    ocpApimSubscriptionKey = "<AZURE_API_KEY>"
+    subscriptionKey = "<Subscription Key>"
     ```
 
     2. Configure the client in ballerina file as shown below.

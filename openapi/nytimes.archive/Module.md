@@ -26,9 +26,7 @@ import ballerinax/nytimes.archive as na;
 Create a `archive:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 na:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 na:Client baseClient = check new Client(config);
 ```

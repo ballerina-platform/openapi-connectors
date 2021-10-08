@@ -22,9 +22,7 @@ You can now intantiate the client.
 
 ```ballerina
 iptwist:ApiKeysConfig apiKeyConfig = {
-    apiKeys: {
-        "X-IPTWIST-TOKEN": "<API Token>"  
-    }
+    xIptwistToken: "<API Token>"  
 };
 
 iptwist:Client iptwistClient = check new(apiKeyConfig);

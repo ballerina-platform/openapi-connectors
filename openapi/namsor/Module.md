@@ -24,9 +24,7 @@ Add the project configuration file by creating a `Config.toml` file. Config file
 
 ```ballerina
 namsor:ApiKeysConfig apiKeyConfig = {
-    apiKeys: {
-        X-API-KEY: "<API_KEY>"
-    }
+    xApiKey: "<API_KEY>"
 }
 
 namsor:Client baseClient = check new Client(apiKeyConfig, serviceUrl = "https://v2.namsor.com/NamSorAPIv2");

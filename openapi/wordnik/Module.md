@@ -23,9 +23,7 @@ You can now enter the credentials in the Wordnik client configuration and create
 
 ```ballerina
 wordnik:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 };
 
 wordnik:Client baseClient = check new Client(config);

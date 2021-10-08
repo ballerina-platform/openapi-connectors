@@ -20,9 +20,7 @@ import ballerinax/cloudmersive.currency;
 You can now make the connection configuration using the access token.
 ```ballerina
 currency:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    apikey : "<your apiKey>"
 };
 
 currency:Client baseClient = check new Client(clientConfig);

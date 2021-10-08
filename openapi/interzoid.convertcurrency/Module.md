@@ -33,9 +33,7 @@ You can do this step in two ways. You can use any one of this.
 
     ```ballerina
     convertcurrency:ApiKeysConfig apiKeyConfig = {
-        apiKeys :{
-            license:"<PRIVATE LICENSE KEY>"
-        }
+        license: "<PRIVATE LICENSE KEY>"
     };
 
     convertcurrency:Client myClient = check new Client(apiKeyConfig);

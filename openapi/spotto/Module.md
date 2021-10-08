@@ -27,9 +27,7 @@ import ballerinax/spotto;
 Create a `spotto:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 spotto:ApiKeysConfig config = {
-    apiKeys: {
-        key: "<API_KEY>"
-    }
+    xApiKey: "<API_KEY>"
 }
 spotto:Client baseClient = check new Client(config);
 ```

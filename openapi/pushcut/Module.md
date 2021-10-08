@@ -23,9 +23,7 @@ import ballerinax/pushcut;
 Create a `pushcut:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 pushcut:ApiKeysConfig config = {
-    apiKeys: {
-        API-Key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 pushcut:Client baseClient = check new Client(config);
 ```

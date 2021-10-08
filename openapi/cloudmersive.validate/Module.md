@@ -20,9 +20,7 @@ import ballerinax/cloudmersive.validate;
 You can now make the connection configuration using the access token.
 ```ballerina
 validate:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    apikey : "<your apiKey>"
 };
 
 validate:Client baseClient = check new Client(clientConfig);

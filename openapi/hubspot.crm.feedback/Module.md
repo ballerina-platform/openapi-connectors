@@ -21,9 +21,7 @@ import ballerinax/hubspot.crm.feedback;
 You can now make the connection configuration using the access token.
 ```ballerina
 feedback:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    hapikey : "<your apiKey>"
 };
 
 feedback:Client baseClient = check new Client(clientConfig);

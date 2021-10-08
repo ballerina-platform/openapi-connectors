@@ -20,9 +20,7 @@ import ballerinax/cloudmersive.barcode;
 You can now make the connection configuration using the access token.
 ```ballerina
 barcode:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    apikey : "<your apiKey>"
 };
 
 barcode:Client baseClient = check new Client(clientConfig);

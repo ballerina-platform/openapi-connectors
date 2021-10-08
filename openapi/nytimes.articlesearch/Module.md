@@ -26,9 +26,7 @@ import ballerinax/nytimes.articlesearch as na;
 Create a `articlesearch:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 na:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 na:Client baseClient = check new Client();
 ```

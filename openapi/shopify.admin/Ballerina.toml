@@ -1,0 +1,11 @@
+[package]
+org = "ballerinax"
+name = "shopify.admin"
+version = "1.0.0-SNAPSHOT"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["Commerce/eCommerce","Cost/Paid"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+
+[build-options]
+observabilityIncluded = true

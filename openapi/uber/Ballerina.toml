@@ -4,7 +4,7 @@ name = "uber"
 version = "0.1.0-SNAPSHOT"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["uber","travel"]
+keywords = ["Lifestyle & Entertainment/Ride-Hailing", "Cost/Paid"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

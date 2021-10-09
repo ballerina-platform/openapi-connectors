@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["exchangerates", "currency", "exchange", "rates"]
+keywords = ["Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "exchangerates"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

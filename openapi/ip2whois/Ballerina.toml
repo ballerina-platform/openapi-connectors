@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["ip2whois", "domain information", "server", "whois record"]
+keywords = ["IT Operations/Cloud Services", "Cost/Free"]
 org = "ballerinax"
 name = "ip2whois"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

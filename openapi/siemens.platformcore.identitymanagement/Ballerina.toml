@@ -4,7 +4,7 @@ name = "siemens.platformcore.identitymanagement"
 version = "0.1.0-SNAPSHOT"
 distribution = "slbeta3"
 license = ["Apache-2.0"]
-keywords = ["siemens", "identitymanagement"]
+keywords = ["IT Operations/Security & Identity Tools" "Cost/Freemium"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 authors = ["Ballerina"]
 

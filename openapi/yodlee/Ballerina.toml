@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["yodlee", "financial"]
+keywords = ["Finance/Asset Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "yodlee"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

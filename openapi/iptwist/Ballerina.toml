@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["iptwist", "geolocation", "ip"]
+keywords = ["IT Operations/Geographic Information Systems", "Cost/Freemium"]
 org = "ballerinax"
 name = "iptwist"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

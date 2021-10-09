@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["url", "alias"]
+keywords = ["Marketing/Url Shortener", "Cost/Freemium"]
 org = "ballerinax"
 name = "shorten.rest"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

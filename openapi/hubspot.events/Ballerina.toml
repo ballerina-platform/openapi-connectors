@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["hubspot", "events"]
+keywords = ["Marketing/Event Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "hubspot.events"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

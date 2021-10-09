@@ -4,7 +4,7 @@ name = "optirtc.public"
 version = "0.1.0-SNAPSHOT"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["application development","free"]
+keywords = ["Business Intelligence/Analytics", "Cost/Free"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

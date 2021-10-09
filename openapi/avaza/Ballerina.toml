@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["avaza", "projects", "invoice"]
+keywords = ["Productivity/Project Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "avaza"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

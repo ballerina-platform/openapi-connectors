@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["BitBucket", "Pull Request", "Repository"]
+keywords = ["IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "bitbucket"
 version = "0.2.0-SNAPSHOT"

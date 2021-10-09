@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["browshot", "browser", "website"]
+keywords = ["IT Operations/Browser Tools", "Cost/Freemium"]
 org = "ballerinax"
 name = "browshot"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

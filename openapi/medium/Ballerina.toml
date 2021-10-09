@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Medium", "Publication"]
+keywords = ["Content & Files/Blogs", "Cost/Freemium"]
 org = "ballerinax"
 name = "medium"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

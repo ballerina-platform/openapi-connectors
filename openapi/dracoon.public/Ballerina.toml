@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["dracoon", "files", "enterprise"]
+keywords = ["Content & Files/File Management & Storage", "Cost/Paid"]
 org = "ballerinax"
 name = "dracoon.public"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

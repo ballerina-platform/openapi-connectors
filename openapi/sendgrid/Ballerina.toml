@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["sendgrid", "send mail", "sendgrid alerts"]
+keywords = ["Marketing/Marketing Automation", "Cost/Freemium"]
 org = "ballerinax"
 name = "sendgrid"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

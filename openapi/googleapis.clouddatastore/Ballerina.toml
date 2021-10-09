@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["google", "clouddatastore", "datastore", "database", "nosql"]
+keywords = ["IT Operations/Databases", "Cost/Freemium", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.clouddatastore"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

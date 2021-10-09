@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["mailchimp", "campaigns", "marketing"]
+keywords = ["Marketing/Email Newsletters", "Cost/Freemium"]
 org = "ballerinax"
 name = "mailchimp"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

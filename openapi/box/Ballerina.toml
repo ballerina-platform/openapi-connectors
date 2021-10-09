@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["box", "file", "folder", "freemium"]
+keywords = ["Content & Files/File Management & Storage", "Cost/Freemium"]
 org = "ballerinax"
 name = "box"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["gitlab", "projects", "devops"]
+keywords = ["IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "gitlab"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

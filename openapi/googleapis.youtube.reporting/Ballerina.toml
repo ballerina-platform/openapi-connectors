@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["youtube", "video", "media"]
+keywords = ["Business Intelligence/Reporting", "Cost/Free", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.youtube.reporting"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

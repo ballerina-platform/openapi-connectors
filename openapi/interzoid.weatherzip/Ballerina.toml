@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["weather information", "freemium"]
+keywords = ["IT Operations/Cloud Services", "Cost/Freemium"]
 org = "ballerinax"
 name = "interzoid.weatherzip"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

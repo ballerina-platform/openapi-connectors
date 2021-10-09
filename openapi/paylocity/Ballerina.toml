@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["paylocity", "HR", "payroll"]
+keywords = ["Finance/Payroll", "Cost/Paid"]
 org = "ballerinax"
 name = "paylocity"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

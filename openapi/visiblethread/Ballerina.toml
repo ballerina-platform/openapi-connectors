@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["visiblethread", "dictionaries", "documents"]
+keywords = ["Business Intelligence/Language Analysis", "Cost/Paid"]
 org = "ballerinax"
 name = "visiblethread"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

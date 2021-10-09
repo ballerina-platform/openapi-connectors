@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["stripe", "online payment processing"]
+keywords = ["Finance/Payment", "Cost/Freemium"]
 org = "ballerinax"
 name = "stripe"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

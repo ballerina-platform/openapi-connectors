@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["sales", "paid"]
+keywords = ["Commerce/eCommerce", "Cost/Paid", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.retail"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

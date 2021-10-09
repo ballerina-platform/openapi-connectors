@@ -4,7 +4,7 @@ name = "godaddy.subscriptions"
 version = "0.1.0-SNAPSHOT"
 authors = ["Ballerina"]
 license = ["Apache-2.0"]
-keywords = ["godaddy", "domain", "subscriptions", "hosting"]
+keywords = ["Website & App Building/Website Builders", "Cost/Paid"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 
 [build-options]

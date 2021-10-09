@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["elmah.io", "developer tools", "logging", ".net"]
+keywords = ["IT Operations/Debug Tools", "Cost/Paid"]
 org = "ballerinax"
 name = "elmah"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

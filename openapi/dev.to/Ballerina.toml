@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["community", "freemium"]
+keywords = ["Marketing/Social Media Accounts", "Cost/Freemium"]
 org = "ballerinax"
 name = "dev.to"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

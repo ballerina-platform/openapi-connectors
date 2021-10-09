@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["1password", "password management", "security"]
+keywords = ["IT Operations/Security & Identity Tools", "Cost/Paid"]
 org = "ballerinax"
 name = "onepassword"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

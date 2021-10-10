@@ -4,7 +4,7 @@ keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Freemium"]
 org = "ballerinax"
 name = "newsapi"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

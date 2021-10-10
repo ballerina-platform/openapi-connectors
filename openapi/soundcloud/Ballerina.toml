@@ -1,7 +1,7 @@
 [package]
 org = "ballerinax"
 name = "soundcloud"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 authors = ["Ballerina"]
 license = ["Apache-2.0"]

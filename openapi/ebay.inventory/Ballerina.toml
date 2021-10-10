@@ -4,7 +4,7 @@ keywords = ["Commerce/eCommerce", "Cost/Freemium"]
 org = "ballerinax"
 name = "ebay.inventory"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 authors = ["Ballerina"]
  
 [build-options]

@@ -1,7 +1,7 @@
 [package]
 org = "ballerinax"
 name = "siemens.platformcore.identitymanagement"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 distribution = "slbeta3"
 license = ["Apache-2.0"]
 keywords = ["IT Operations/Security & Identity Tools" "Cost/Freemium"]

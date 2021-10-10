@@ -4,7 +4,7 @@ keywords = ["Content & Files/Documents", "Cost/Freemium", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.slides"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

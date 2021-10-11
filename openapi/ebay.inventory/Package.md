@@ -1,10 +1,10 @@
 Connects to Ebay Inventory API from Ballerina
 
 #### Compatibility
-|                               | Version               |
-|-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Beta 2** |
-| API Version                   | **1.13.0**               |
+|                               | Version         |
+|-------------------------------|-----------------|
+| Ballerina Language Version    | Swan Lake Beta3 |
+| API Version                   | 1.13.0          |
 
 ### Package Overview
 The `ebay.inventory` is a [Ballerina](https://ballerina.io/) connector for *Ebay Inventory*.

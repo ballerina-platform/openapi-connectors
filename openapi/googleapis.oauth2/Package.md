@@ -7,7 +7,7 @@ This package provides end-user authorization grants for use with other Google AP
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake Beta2       |
+| Ballerina Language Version    | Swan Lake Beta3       |
 | API Version                   | v2                    |
 
 ## Report issues

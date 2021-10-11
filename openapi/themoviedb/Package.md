@@ -6,7 +6,7 @@ The `ballerinax/themoviedb` is a [Ballerina](https://ballerina.io/) connector fo
 ### Compatibility
 |                    | Version                    |
 |--------------------|----------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta 2 |
+| Ballerina Language | Ballerina Swan Lake Beta3  |
 | TMDB API           | V3                         |
 
 ## Report issues

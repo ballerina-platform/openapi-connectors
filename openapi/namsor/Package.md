@@ -7,7 +7,7 @@ This package provides the capability to process personal names (gender, cultural
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta2 |
+| Ballerina Language | Ballerina Swan Lake Beta3 |
 | NamSor API         | v2                        |
 
 ## Report issues

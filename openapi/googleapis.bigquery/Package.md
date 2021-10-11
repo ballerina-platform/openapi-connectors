@@ -7,7 +7,7 @@ This package provides the capability to access Google BigQuery API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta2       | 
+| Ballerina Language                | Ballerina Swan Lake Beta3       | 
 | Google BigQuery API               | 2.0                             |
 
 ## Report issues

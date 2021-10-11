@@ -7,7 +7,7 @@ The `ballerinax/yodlee` is a [Ballerina](https://ballerina.io/) connector for co
 ### Compatibility
 |                       | Version                   |
 |-----------------------|---------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta2 |
+| Ballerina Language    | Ballerina Swan Lake Beta3 |
 | Yodlee REST API       | 1.1.0                     |
 
 ## Report issues

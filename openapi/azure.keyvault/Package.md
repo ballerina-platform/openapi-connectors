@@ -8,7 +8,7 @@ The `azure.keyvault` is a [Ballerina](https://ballerina.io/) connector for conne
 #### Compatibility
 |                            | Version                  |
 |----------------------------|--------------------------|
-| Ballerina Language         | Balerina Swan Lake Beta2 |
+| Ballerina Language         | Balerina Swan Lake Beta3 |
 | Azure Key Vault REST API   | v7.0                     |
 
 ## Report issues

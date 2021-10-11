@@ -7,7 +7,7 @@ This package provides the capability to access Google Cloud Natural Language API
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta2       | 
+| Ballerina Language                | Ballerina Swan Lake Beta3       | 
 | Google Cloud Natural Language API | v1                              |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability to access New York Times Top Stories API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta2       | 
+| Ballerina Language            | Ballerina Swan Lake Beta3       | 
 | Top Stories API               | 2.0.0                           |
 
 ## Report issues

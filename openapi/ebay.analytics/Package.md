@@ -1,10 +1,10 @@
 Connects to Ebay Analytics API from Ballerina
 
 #### Compatibility
-|                               | Version               |
-|-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Beta 2** |
-| API Version                   | **1.2.0**               |
+|                               | Version         |
+|-------------------------------|-----------------|
+| Ballerina Language Version    | Swan Lake Beta3 |
+| API Version                   | 1.2.0           |
 
 ### Package Overview
 The `ebay.analytics` is a [Ballerina](https://ballerina.io/) connector for *Ebay Analytics*.

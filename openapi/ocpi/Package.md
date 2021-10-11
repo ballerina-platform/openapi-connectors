@@ -6,7 +6,7 @@ This package provides capabilities to access to Open Charging Network(OCN) that 
 ### Compatibility
 |                           | Version                   |
 |---------------------------|---------------------------|
-| Ballerina Language        | Ballerina Swan Lake Beta2 |
+| Ballerina Language        | Ballerina Swan Lake Beta3 |
 | OCPI specification        | 2.2                       |
 
 ## Report issues

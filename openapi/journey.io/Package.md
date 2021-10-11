@@ -7,7 +7,7 @@ The `ballerinax/journey.io` is a [Ballerina](https://ballerina.io/) connector fo
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta2  |
+| Ballerina Language   | Ballerina Swan Lake Beta3  |
 | Journey.io REST API  | 1.0.0                      |
 
 ## Report issues

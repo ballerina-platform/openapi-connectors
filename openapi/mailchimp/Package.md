@@ -1,10 +1,10 @@
 Connects to Mailchimp Marketing API from Ballerina
 
 #### Compatibility
-|                               | Version               |
-|-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Beta 2** |
-| API Version                   | **3.0.52**               |
+|                               | Version          |
+|-------------------------------|------------------|
+| Ballerina Language Version    | Swan Lake Beta3  |
+| API Version                   | 3.0.52           |
 
 ### Package Overview
 The `mailchimp` is a [Ballerina](https://ballerina.io/) connector for *Mailchimp*.

@@ -8,7 +8,7 @@ This package provides the capability to access to integrate A-to-B route plannin
 ### Compatibility
 |                            | Version                    |
 |----------------------------|----------------------------|
-| Ballerina Language         | Ballerina Swan Lake Beta2  |
+| Ballerina Language         | Ballerina Swan Lake Beta3  |
 | GraphHopper Directions API | 1.0.0                      |
 
 ## Report issues

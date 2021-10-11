@@ -7,7 +7,7 @@ transaction details rehttps://developer.ebay.com/api-docs/sell/finances/static/o
 ### Compatibility
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta2     |
+| Ballerina Language            | Ballerina Swan Lake Beta3     |
 | eBay Finances API             | 1.9.0                         |
 
 ## Report issues

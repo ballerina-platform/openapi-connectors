@@ -7,7 +7,7 @@ This package provides the capability to access Vonage Numbers API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta2       | 
+| Ballerina Language            | Ballerina Swan Lake Beta3       | 
 | Vonage Numbers API            | 1.0.20                          |
 
 ## Report issues

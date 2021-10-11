@@ -7,10 +7,10 @@ The `ballerinax/zoom` is a [Ballerina](https://ballerina.io/) connector for Zoom
 This package provides the capability to easily access Zoom API's meeting and webinar related endpoints.
 
 #### Compatibility
-|                               | Version                       |
-|-------------------------------|-------------------------------|
-| Ballerina Language Version    | **Ballerina Swan Lake Beta2** |
-| API Version                   | **2.0.0**                     |
+|                               | Version                    |
+|-------------------------------|----------------------------|
+| Ballerina Language Version    | Ballerina Swan Lake Beta3  |
+| API Version                   | 2.0.0                      |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

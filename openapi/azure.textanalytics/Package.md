@@ -8,7 +8,7 @@ The `azure.textanalytics` is a [Ballerina](https://ballerina.io/) connector for 
 #### Compatibility
 |                            | Version           |
 |----------------------------|-------------------|
-| Ballerina Language         | Swan Lake Beta2   |
+| Ballerina Language         | Swan Lake Beta3   |
 | Azure Text Analytics API   | v3.1              |
 
 ## Report issues

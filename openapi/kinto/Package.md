@@ -7,7 +7,7 @@ This package provides the capability to store and retrieve JSON data.
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta2 | 
+| Ballerina Language | Swan Lake Beta3 | 
 | Kinto API          | v1.22           |
 
 ## Report issues

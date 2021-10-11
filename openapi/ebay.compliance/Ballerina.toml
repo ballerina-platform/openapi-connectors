@@ -2,7 +2,7 @@
 org = "ballerinax"
 name = "ebay.compliance"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 authors = ["Ballerina"]
 license = ["Apache-2.0"]
 keywords = ["Commerce/eCommerce", "Cost/Freemium"]

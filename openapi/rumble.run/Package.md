@@ -7,7 +7,7 @@ This package provides the capability to scan your IT and OT environments to prov
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta2 | 
+| Ballerina Language | Swan Lake Beta3 | 
 | Rumble API         | v1              |
 
 ## Report issues

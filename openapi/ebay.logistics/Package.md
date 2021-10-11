@@ -6,7 +6,7 @@ This package provides capabilities of creating a "shipment" for the selected shi
 ### Compatibility
 |                      | Version                   |
 |----------------------|---------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta2 |
+| Ballerina Language   | Ballerina Swan Lake Beta3 |
 | eBay Logistics API   | v1_beta.0.0               |
 
 ## Report issues

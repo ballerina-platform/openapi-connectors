@@ -5,10 +5,10 @@ The `ballerinax/newsapi` is a [Ballerina](https://ballerina.io/) connector for N
 This package provides the capability to access News API and get latest news headlines and articles. It currently supports the following operations listArticles, listTopHeadlines and listSources
 
 ### Compatibility
-|                    | Version                    |
-|--------------------|----------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta 2 |
-| News API           | V2                         |
+|                    | Version                   |
+|--------------------|---------------------------|
+| Ballerina Language | Ballerina Swan Lake Beta3 |
+| News API           | V2                        |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

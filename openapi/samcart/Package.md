@@ -7,7 +7,7 @@ This package provides the capability to access SamCart API.
 ### Compatibility
 |                                     | Version                         |
 |-------------------------------------|---------------------------------|
-| Ballerina Language                  | Ballerina Swan Lake Beta2       | 
+| Ballerina Language                  | Ballerina Swan Lake Beta3       | 
 | SamCart API                         | 1.0.0                           |
 
 ## Report issues

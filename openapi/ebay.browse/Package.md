@@ -1,10 +1,10 @@
 Connects to Ebay Browse API from Ballerina
 
 #### Compatibility
-|                               | Version               |
-|-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Beta 2** |
-| API Version                   | **1.6.0**               |
+|                               | Version         |
+|-------------------------------|-----------------|
+| Ballerina Language Version    | Swan Lake Beta3 |
+| API Version                   | 1.6.0           |
 
 ### Package Overview
 The `ebay.browse` is a [Ballerina](https://ballerina.io/) connector for *Ebay Browse*.

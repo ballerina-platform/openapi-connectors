@@ -6,7 +6,7 @@ The `ballerinax/nytimes.books` is a [Ballerina](https://ballerina.io/) connector
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta2 |
+| Ballerina Language | Ballerina Swan Lake Beta3 |
 | Books API          | 3.0.0                     |
 
 ## Report issues

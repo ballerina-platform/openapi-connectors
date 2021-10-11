@@ -6,7 +6,7 @@ simplifying and standardizing the abuse reporting experience.
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake Beta2 |
+| Ballerina Language           | Ballerina Swan Lake Beta3 |
 | GoDaddy Abuse API            | v1                        |
 
 ## Report issues

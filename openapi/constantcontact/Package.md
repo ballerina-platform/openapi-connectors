@@ -7,7 +7,7 @@ This package provides the capability to access Constant Contact API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta2       | 
+| Ballerina Language                | Ballerina Swan Lake Beta3       | 
 | Constant Contact API              | v3                              |
 
 ## Report issues

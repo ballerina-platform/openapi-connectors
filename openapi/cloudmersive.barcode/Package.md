@@ -7,7 +7,7 @@ The `ballerinax/cloudmersive.barcode` is a [Ballerina](https://ballerina.io/) co
 ### Compatibility
 |                          | Version                    |
 |--------------------------|----------------------------|
-| Ballerina Language       | Ballerina Swan Lake Beta2  |
+| Ballerina Language       | Ballerina Swan Lake Beta3  |
 | Cloudmersive API         | v1                         |
 
 ## Report issues

@@ -8,7 +8,7 @@ This package provides the capability to access the Google Books repository. For 
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta2 |
+| Ballerina Language | Ballerina Swan Lake Beta3 |
 | Google Books API   | v1                        |
 
 ## Report issues

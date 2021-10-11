@@ -6,7 +6,7 @@ The `ballerinax/xero.assets` is a [Ballerina](https://ballerina.io/) connector f
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta2 |
+| Ballerina Language | Ballerina Swan Lake Beta3 |
 | Xero Assets API    | 2.9.4                     |
 
 ## Report issues

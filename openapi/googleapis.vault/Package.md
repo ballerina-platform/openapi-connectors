@@ -7,7 +7,7 @@ This package provides the capability to access Google Vault API.
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta2 | 
+| Ballerina Language | Swan Lake Beta3 | 
 | Google Vault API   | v1              |
 
 ## Report issues

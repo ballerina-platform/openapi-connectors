@@ -6,10 +6,10 @@ The `covid19` is a [Ballerina](https://ballerina.io/) connector for [Novel COVID
 This package provides the capability to easily access Novel Covid19 AP.
 
 #### Compatibility
-|                               | Version               |
-|-------------------------------|-----------------------|
-| Ballerina Language Version    | **Swan Lake Beta2**   |
-| API Version                   | **3.0.0**             |
+|                               | Version           |
+|-------------------------------|-------------------|
+| Ballerina Language Version    | Swan Lake Beta3   |
+| API Version                   | 3.0.0             |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

@@ -7,7 +7,7 @@ This package provides the capability to get reliable and accurate currency conve
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake Beta2       |
+| Ballerina Language Version    | Swan Lake Beta3       |
 | API Version                   | v6                    |
 
 ## Report issues

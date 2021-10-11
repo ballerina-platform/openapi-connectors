@@ -7,7 +7,7 @@ This package provides the capability to access New York Times Newswire API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta2       | 
+| Ballerina Language            | Ballerina Swan Lake Beta3       | 
 | Times Newswire API            | 3.0.0                           |
 
 ## Report issues

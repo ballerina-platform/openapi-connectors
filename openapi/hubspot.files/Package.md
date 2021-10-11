@@ -8,7 +8,7 @@ This package provides the capability to easily access  HubSpot Files.
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta2  |
+| Ballerina Language   | Ballerina Swan Lake Beta3  |
 | HubSpot REST API     | V3                         | 
 
 ## Report issues

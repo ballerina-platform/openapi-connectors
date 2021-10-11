@@ -7,7 +7,7 @@ This package provides the capability to do the messaging and ingestion for event
 ### Compatibility
 |                          | Version         |
 |--------------------------|-----------------|
-| Ballerina Language       | Swan Lake Beta2 | 
+| Ballerina Language       | Swan Lake Beta3 | 
 | Google Cloud Pub/Sub API | v1              |
 
 ## Report issues

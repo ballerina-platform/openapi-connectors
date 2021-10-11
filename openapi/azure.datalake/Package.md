@@ -7,7 +7,7 @@ The `ballerinax/azure.datalake` is a [Ballerina](https://ballerina.io/) connecto
 #### Compatibility
 |                        | Version                   |
 |------------------------|---------------------------|
-| Ballerina Language     | Balerina Swan Lake Beta2  |
+| Ballerina Language     | Balerina Swan Lake Beta3  |
 | ADLS(Gen2) REST API    | 2019-10-31                |
 
 ## Report issues

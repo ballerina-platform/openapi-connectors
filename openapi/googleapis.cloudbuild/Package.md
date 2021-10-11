@@ -7,7 +7,7 @@ This package provides the capability to manage builds on Google Cloud Platform.
 ### Compatibility
 |                        | Version         |
 |------------------------|-----------------|
-| Ballerina Language     | Swan Lake Beta2 | 
+| Ballerina Language     | Swan Lake Beta3 | 
 | Google Cloud Build API | v1              |
 
 ## Report issues

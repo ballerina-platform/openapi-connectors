@@ -273,7 +273,7 @@ modules = [
 
 [[package]]
 org = "ballerinax"
-name = "zendesk.support"
+name = "pagerduty"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
@@ -281,7 +281,7 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "zendesk.support", moduleName = "zendesk.support"}
+	{org = "ballerinax", packageName = "pagerduty", moduleName = "pagerduty"}
 ]
 
 

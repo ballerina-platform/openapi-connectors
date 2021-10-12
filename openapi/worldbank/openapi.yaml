@@ -29,6 +29,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-ballerina-display:
             label: "Date"
         - name: format
@@ -64,11 +65,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/CountryPopulation"
-                }
-                nullable: true
+                $ref: "#/components/schemas/WorldBankResponse"
 
   /country/{country_code}/indicator/SP.POP.TOTL:
     get:
@@ -89,9 +86,10 @@ paths:
         - name: date
           in: query
           description: "Date-range by year, month or quarter that scopes the result-set."
-          required: true
+          required: false
           schema:
             type: string
+            default: "2010"
           x-ballerina-display:
             label: "Date"
         - name: format
@@ -127,11 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/CountryPopulation"
-                }
-                nullable: true
+                $ref: "#/components/schemas/WorldBankResponse"
 
   /country/all/indicator/NY.GDP.MKTP.CD:
     get:
@@ -147,6 +141,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-displya:
             label: Date
         - name: format
@@ -182,11 +177,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/GrossDomesticProduct"
-                }
-                nullable: true
+                $ref: "#/components/schemas/WorldBankResponse"
 
   /country/{country_code}/indicator/NY.GDP.MKTP.CD:
     get:
@@ -210,6 +201,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-displya:
             label: Date
         - name: format
@@ -245,11 +237,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/GrossDomesticProduct"
-                }
-                nullable: true
+                $ref: "#/components/schemas/WorldBankResponse"
 
   /country/all/indicator/1.1_ACCESS.ELECTRICITY.TOT:
     get:
@@ -265,6 +253,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-displya:
             label: Date
         - name: format
@@ -300,11 +289,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/AccessToElectricity"
-                }
-                nullable: true
+                $ref: "#/components/schemas/WorldBankResponse"
 
   /country/{country_code}/indicator/1.1_ACCESS.ELECTRICITY.TOT:
     get:
@@ -328,6 +313,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-displya:
             label: "Date"
         - name: format
@@ -363,11 +349,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/AccessToElectricity"
-                }
-                nullable: true
+                $ref: "#/components/schemas/WorldBankResponse"
 
   /country/all/indicator/1.1_YOUTH.LITERACY.RATE:
     get:
@@ -383,6 +365,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-ballerina-display:
             label: "Date"
         - name: format
@@ -418,13 +401,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/YouthLiteracyRate"
-                }
-                nullable: true
-
-
+                $ref: "#/components/schemas/WorldBankResponse"
   /country/{country_code}/indicator/1.1_YOUTH.LITERACY.RATE:
     get:
       tags: ["Literacy rate, youth total (% of people ages 15-24)"]
@@ -447,6 +424,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-ballerina-display:
             label: "Date"
         - name: format
@@ -482,12 +460,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/YouthLiteracyRate"
-                }
-                nullable: true
-
+                $ref: "#/components/schemas/WorldBankResponse"
   /country/all/indicator/UIS.X.PPP.1.FSGOV:
     get:
       tags: ["Government expenditure on primary education, PPP$ (millions)"]
@@ -502,6 +475,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-ballerina-display:
             label: "Date"
         - name: format
@@ -537,12 +511,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/PrimaryEducationExpenditure"
-                }
-                nullable: true
-
+                $ref: "#/components/schemas/WorldBankResponse"
   /country/{country_code}/indicator/UIS.X.PPP.1.FSGOV:
     get:
       tags: ["Government expenditure on primary education, PPP$ (millions)"]
@@ -565,6 +534,7 @@ paths:
           required: false
           schema:
             type: string
+            default: "2010"
           x-ballerina-display:
             label: "Date"
         - name: format
@@ -600,17 +570,52 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: {
-                  "$ref": "#/components/schemas/PrimaryEducationExpenditure"
-                }
-                nullable: true
-
+                $ref: "#/components/schemas/WorldBankResponse"
 components:
   schemas:
+    WorldBankResponse:
+      type: array
+      items:
+        oneOf:
+          - $ref: "#/components/schemas/PaginationData"
+          - type: array
+            items:
+              $ref: "#/components/schemas/IndicatorInformation"
+            nullable: true
+    PaginationData:
+      type: object
+      required:
+        - "page"
+        - "pages"
+        - "per_page"
+        - "total"
+        - "sourceid"
+        - "sourcename"
+        - "lastupdated"
+      properties:
+        page:
+          type: integer
+        pages:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        sourceid:
+          type: string
+          nullable: true
+        sourcename:
+          type: string
+          nullable: true
+        lastupdated:
+          type: string
+          nullable: true
     Indicator:
       type: object
       description: "Data indicator"
+      required:
+        - id
+        - value
       properties:
         id:
           type: string
@@ -624,6 +629,9 @@ components:
     Country:
       type: object
       description: "Represent a Country"
+      required:
+        - id
+        - value
       properties:
         id:
           type: string
@@ -633,94 +641,17 @@ components:
           type: string
           description: "Country name"
           example: Chilie
-
-    AccessToElectricity:
-      type: object
-      description: "Represent access to electricity"
-      properties:
-        indicator:
-          "$ref": "#/components/schemas/Indicator"
-          description: "World bank indicator"
-        country:
-          description: "Country"
-          "$ref": "#/components/schemas/Country"
-        date:
-          type: string
-          description: "Date-range by year, month or quarter that scopes the result-set."
-          example: "2016"
-        value:
-          type: number
-          format: double
-          description: "Population percentage having electricity"
-          nullable: true
-          example: 100
-
-    YouthLiteracyRate:
-      type: object
-      description: "Represent youth literacy rate"
-      properties:
-        indicator:
-          "$ref": "#/components/schemas/Indicator"
-          description: "World bank indicator"
-        country:
-          "$ref": "#/components/schemas/Country"
-          description: "Country"
-        date:
-          type: string
-          description: "Date-range by year, month or quarter that scopes the result-set."
-          example: "2016"
-        value:
-          type: number
-          format: double
-          description: "Youth literacy rate"
-          nullable: true
-          example: 100
-
-    GrossDomesticProduct:
-      type: object
-      description: "Represent gross domestic product"
-      properties:
-        indicator:
-          "$ref": "#/components/schemas/Indicator"
-          description: "World bank indicator"
-        country:
-          "$ref": "#/components/schemas/Country"
-          description: "Country"
-        date:
-          type: string
-          description: "Date-range by year, month or quarter that scopes the result-set."
-          example: "2016"
-        value:
-          type: number
-          format: double
-          description: "Gross domestic product"
-          nullable: true
-          example: 100
-
-    PrimaryEducationExpenditure:
-      type: object
-      description: "Represent primary education expenditure"
-      properties:
-        indicator:
-          "$ref": "#/components/schemas/Indicator"
-          description: "World bank indicator"
-        country:
-          "$ref": "#/components/schemas/Country"
-          description: "Country"
-        date:
-          type: string
-          description: "Date-range by year, month or quarter that scopes the result-set."
-          example: "2016"
-        value:
-          type: number
-          format: double
-          description: "Primary education expenditure"
-          nullable: true
-          example: 100
-
-    CountryPopulation:
+    IndicatorInformation:
       type: object
       description: "Represent country population."
+      required:
+        - "indicator"
+        - "country"
+        - "date"
+        - "value"
+        - "countryiso3code"
+        - "unit"
+        - "decimal"
       properties:
         indicator:
           "$ref": "#/components/schemas/Indicator"
@@ -737,3 +668,15 @@ components:
           description: "Country population"
           nullable: true
           example: 100
+        countryiso3code:
+          type: string
+          description: Country ISO3 Code
+        unit:
+          type: string
+          description: Unit of measure
+        decimal:
+          type: number
+          description: "Decimal"
+        obs_status:
+          type: string
+          description: OBS Status

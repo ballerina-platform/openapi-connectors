@@ -165,9 +165,6 @@ version = "0.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
-modules = [
-	{org = "ballerina", packageName = "lang.string", moduleName = "lang.string"}
-]
 
 [[package]]
 org = "ballerina"
@@ -277,10 +274,9 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "covid19"
-version = "0.7.0"
+version = "1.0.0-SNAPSHOT"
 dependencies = [
 	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "lang.string"},
 	{org = "ballerina", name = "url"},
 	{org = "ballerinai", name = "observe"}
 ]

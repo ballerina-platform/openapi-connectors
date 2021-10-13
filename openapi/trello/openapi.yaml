@@ -11662,6 +11662,9 @@ paths:
       summary: Get types by ID
       tags:
         - type
+security:
+  - api_key: []
+  - api_token: []
 components:
   requestBodies:
     boards_members:
@@ -13059,11 +13062,11 @@ components:
   securitySchemes:
     api_key:
       in: query
-      x-api-key-description: "Provide your API Key and token as `'key` and `token`. Eg: `{'key: trelloKey, token: trelloToken}"
+      description: Represents API Key `key`
       name: key
       type: apiKey
     api_token:
-      x-api-key-description: "Provide your API Key and token as `'key` and `token`. Eg: `{'key: trelloKey, token: trelloToken}"
+      description: Represents API Key `token`
       in: query
       name: token
       type: apiKey

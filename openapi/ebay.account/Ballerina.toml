@@ -1,11 +1,11 @@
 [package]
 org = "ballerinax"
 name = "ebay.account"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 authors = ["Ballerina"]
 license = ["Apache-2.0"]
-keywords = ["ebay", "accounts", "seller", "ecommerce"]
+keywords = ["Commerce/eCommerce", "Cost/Freemium"]
 
 [build-options]
 observabilityIncluded = true

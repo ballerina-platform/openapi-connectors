@@ -2081,7 +2081,6 @@ components:
       type: apiKey
       name: Authorization
       in: header
-      x-ballerina-apikey-description: "Provide your API keys as Authorization . Eg: {\"Authorization\" : \"<API key>\"}"
       description: The API Key with format `Token token=<API_KEY>`
   schemas:
     StatusUpdateNotificationRule:
@@ -6394,7 +6393,6 @@ paths:
                   type: array
                   description: Array of tag references to remove from the entity.
                   items:
-                    title: Tags to remove.
                     type: object
                     properties:
                       type:

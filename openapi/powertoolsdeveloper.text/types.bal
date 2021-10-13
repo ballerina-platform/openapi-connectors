@@ -35,6 +35,11 @@ public type InputTranslateString record {
     string language;
 };
 
+public type ShortenlinkBody record {
+    # String variable or text value
+    string 'source;
+};
+
 public type OutputString record {
     # Result
     string result?;
@@ -106,6 +111,16 @@ public type InputGenerateUniqueID record {
     string uppercase;
 };
 
+public type ValidateemailBody record {
+    # String variable or text value
+    string 'source;
+};
+
+public type UrldecodeBody record {
+    # Encoded string variable or text value
+    string 'source;
+};
+
 public type OutputStringArray record {
     # data
     string[] data?;
@@ -120,7 +135,7 @@ public type InputVerifyHash record {
     string hash;
 };
 
-public type Body record {
+public type DecodestringBody record {
     # Encoded string variable or text value
     string 'source;
 };
@@ -132,11 +147,6 @@ public type InputGenerateHash record {
     string algorithm;
 };
 
-public type Body4 record {
-    # String variable or text value
-    string 'source;
-};
-
 public type InputStringContains record {
     # Text to match
     string find;
@@ -144,18 +154,6 @@ public type InputStringContains record {
     string input;
     # Convert strings to lowercase
     string lower;
-};
-
-public type Body2 record {
-    # Language of audio input
-    string language;
-    # Source audio file (WAV, MP3, AAC, M4A)
-    string file;
-};
-
-public type Body3 record {
-    # Encoded string variable or text value
-    string 'source;
 };
 
 public type InputJoinStrings record {
@@ -170,11 +168,6 @@ public type InputJoinStrings record {
 };
 
 public type InputString record {
-    # String variable or text value
-    string 'source;
-};
-
-public type Body1 record {
     # String variable or text value
     string 'source;
 };

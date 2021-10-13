@@ -1174,7 +1174,6 @@ components:
   securitySchemes:
     user_key:
       type: apiKey
-      description: API Access Key
+      description: Represents API Key `user_key`
       name: user_key
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `user_key`. Eg: `{\"user_key\" : \"<API key>\"}`"

@@ -19,9 +19,7 @@ import ballerinax/cloudmersive.security;
 You can now make the connection configuration using the access token.
 ```ballerina
 security:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    apikey : "<your apiKey>"
 };
 
 security:Client baseClient = check new Client(clientConfig);

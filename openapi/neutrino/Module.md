@@ -23,10 +23,8 @@ import ballerinax/neutrino;
 Create a `neutrino:ApiKeysConfig` with the User ID and API key obtained, and initialize the connector with it.
 ```ballerina
 neutrino:ApiKeysConfig config = {
-    apiKeys: {
-        user-id: "<USER_ID>",
-        api-key: "<API_KEY>"
-    }
+    userId: "<USER_ID>",
+    apiKey: "<API_KEY>"
 }
 neutrino:Client baseClient = check new Client();
 ```

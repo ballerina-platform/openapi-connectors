@@ -27,9 +27,7 @@ import ballerinax/atspoke;
 Create a `atspoke:ApiKeysConfig` with the API key obtained, and initialize the connector with it. 
 ```ballerina
 atspoke:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 atspoke:Client baseClient = check new Client(config);
 ```

@@ -1876,128 +1876,128 @@ paths:
               schema:
                 $ref: '#/components/schemas/outputString'
       x-codegen-request-body-name: splitString
-  /SpeechToText:
-    post:
-      tags:
-      - Text
-      summary: Text - Speech to Text
-      description: Convert audio file to text (10MB limit)
-      operationId: SpeechToText
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              - language
-              properties:
-                language:
-                  type: string
-                  description: Language of audio input
-                  default: English (United States)
-                  enum:
-                  - Arabic (Bahrain)
-                  - Arabic (Egypt)
-                  - Arabic (Iraq)
-                  - Arabic (Jordan)
-                  - Arabic (Kuwait)
-                  - Arabic (Lebanon)
-                  - Arabic (Oman)
-                  - Arabic (Qatar)
-                  - Arabic (Saudi Arabia)
-                  - Arabic (Syria)
-                  - Arabic (United Arab Emirates)
-                  - Bulgarian (Bulgaria)
-                  - Catalan (Spain)
-                  - Chinese (Cantonese, Traditional)
-                  - Chinese (Mandarin, Simplified)
-                  - Chinese (Taiwanese Mandarin)
-                  - Croatian (Croatia)
-                  - Czech (Czech Republic)
-                  - Danish (Denmark)
-                  - Dutch (Netherlands)
-                  - English (Australia)
-                  - English (Canada)
-                  - English (Hong Kong)
-                  - English (India)
-                  - English (Ireland)
-                  - English (New Zealand)
-                  - English (Philippines)
-                  - English (Singapore)
-                  - English (South Africa)
-                  - English (United Kingdom)
-                  - English (United States)
-                  - Estonian(Estonia)
-                  - Finnish (Finland)
-                  - French (Canada)
-                  - French (France)
-                  - German (Germany)
-                  - Greek (Greece)
-                  - Gujarati (Indian)
-                  - Hindi (India)
-                  - Hungarian (Hungary)
-                  - Irish(Ireland)
-                  - Italian (Italy)
-                  - Japanese (Japan)
-                  - Korean (Korea)
-                  - Latvian (Latvia)
-                  - Lithuanian (Lithuania)
-                  - Maltese(Malta)
-                  - Marathi (India)
-                  - Norwegian (Norway)
-                  - Polish (Poland)
-                  - Portuguese (Brazil)
-                  - Portuguese (Portugal)
-                  - Romanian (Romania)
-                  - Russian (Russia)
-                  - Slovak (Slovakia)
-                  - Slovenian (Slovenia)
-                  - Spanish (Argentina)
-                  - Spanish (Bolivia)
-                  - Spanish (Chile)
-                  - Spanish (Colombia)
-                  - Spanish (Costa Rica)
-                  - Spanish (Cuba)
-                  - Spanish (Dominican Republic)
-                  - Spanish (Ecuador)
-                  - Spanish (El Salvador)
-                  - Spanish (Guatemala)
-                  - Spanish (Honduras)
-                  - Spanish (Mexico)
-                  - Spanish (Nicaragua)
-                  - Spanish (Panama)
-                  - Spanish (Paraguay)
-                  - Spanish (Peru)
-                  - Spanish (Puerto Rico)
-                  - Spanish (Spain)
-                  - Spanish (Uruguay)
-                  - Spanish (USA)
-                  - Spanish (Venezuela)
-                  - Swedish (Sweden)
-                  - Tamil (India)
-                  - Telugu (India)
-                  - Thai (Thailand)
-                  - Turkish (Turkey)
-                  x-ms-summary: Language
-                file:
-                  type: string
-                  description: Source audio file (WAV, MP3, AAC, M4A)
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
-        400:
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
+  # /SpeechToText:
+  #   post:
+  #     tags:
+  #     - Text
+  #     summary: Text - Speech to Text
+  #     description: Convert audio file to text (10MB limit)
+  #     operationId: SpeechToText
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - file
+  #             - language
+  #             properties:
+  #               language:
+  #                 type: string
+  #                 description: Language of audio input
+  #                 default: English (United States)
+  #                 enum:
+  #                 - Arabic (Bahrain)
+  #                 - Arabic (Egypt)
+  #                 - Arabic (Iraq)
+  #                 - Arabic (Jordan)
+  #                 - Arabic (Kuwait)
+  #                 - Arabic (Lebanon)
+  #                 - Arabic (Oman)
+  #                 - Arabic (Qatar)
+  #                 - Arabic (Saudi Arabia)
+  #                 - Arabic (Syria)
+  #                 - Arabic (United Arab Emirates)
+  #                 - Bulgarian (Bulgaria)
+  #                 - Catalan (Spain)
+  #                 - Chinese (Cantonese, Traditional)
+  #                 - Chinese (Mandarin, Simplified)
+  #                 - Chinese (Taiwanese Mandarin)
+  #                 - Croatian (Croatia)
+  #                 - Czech (Czech Republic)
+  #                 - Danish (Denmark)
+  #                 - Dutch (Netherlands)
+  #                 - English (Australia)
+  #                 - English (Canada)
+  #                 - English (Hong Kong)
+  #                 - English (India)
+  #                 - English (Ireland)
+  #                 - English (New Zealand)
+  #                 - English (Philippines)
+  #                 - English (Singapore)
+  #                 - English (South Africa)
+  #                 - English (United Kingdom)
+  #                 - English (United States)
+  #                 - Estonian(Estonia)
+  #                 - Finnish (Finland)
+  #                 - French (Canada)
+  #                 - French (France)
+  #                 - German (Germany)
+  #                 - Greek (Greece)
+  #                 - Gujarati (Indian)
+  #                 - Hindi (India)
+  #                 - Hungarian (Hungary)
+  #                 - Irish(Ireland)
+  #                 - Italian (Italy)
+  #                 - Japanese (Japan)
+  #                 - Korean (Korea)
+  #                 - Latvian (Latvia)
+  #                 - Lithuanian (Lithuania)
+  #                 - Maltese(Malta)
+  #                 - Marathi (India)
+  #                 - Norwegian (Norway)
+  #                 - Polish (Poland)
+  #                 - Portuguese (Brazil)
+  #                 - Portuguese (Portugal)
+  #                 - Romanian (Romania)
+  #                 - Russian (Russia)
+  #                 - Slovak (Slovakia)
+  #                 - Slovenian (Slovenia)
+  #                 - Spanish (Argentina)
+  #                 - Spanish (Bolivia)
+  #                 - Spanish (Chile)
+  #                 - Spanish (Colombia)
+  #                 - Spanish (Costa Rica)
+  #                 - Spanish (Cuba)
+  #                 - Spanish (Dominican Republic)
+  #                 - Spanish (Ecuador)
+  #                 - Spanish (El Salvador)
+  #                 - Spanish (Guatemala)
+  #                 - Spanish (Honduras)
+  #                 - Spanish (Mexico)
+  #                 - Spanish (Nicaragua)
+  #                 - Spanish (Panama)
+  #                 - Spanish (Paraguay)
+  #                 - Spanish (Peru)
+  #                 - Spanish (Puerto Rico)
+  #                 - Spanish (Spain)
+  #                 - Spanish (Uruguay)
+  #                 - Spanish (USA)
+  #                 - Spanish (Venezuela)
+  #                 - Swedish (Sweden)
+  #                 - Tamil (India)
+  #                 - Telugu (India)
+  #                 - Thai (Thailand)
+  #                 - Turkish (Turkey)
+  #                 x-ms-summary: Language
+  #               file:
+  #                 type: string
+  #                 description: Source audio file (WAV, MP3, AAC, M4A)
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
   /TextToSpeech:
     post:
       tags:
@@ -2368,496 +2368,496 @@ paths:
               schema:
                 $ref: '#/components/schemas/outputString'
       x-codegen-request-body-name: inputDataQuery
-  /ConvertImage:
-    post:
-      tags:
-      - Files
-      summary: Files - Convert Image
-      description: Convert an image from one format to another
-      operationId: ConvertImage
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              - format
-              properties:
-                format:
-                  type: string
-                  description: Output file format
-                  default: PNG
-                  enum:
-                  - PNG
-                  - JPG
-                  - GIF
-                  - BMP
-                  - TIF
-                  x-ms-summary: Format
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/gif:
-              schema:
-                type: string
-                format: binary
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/bmp:
-              schema:
-                type: string
-                format: binary
-        400:
-          description: ERROR
-          content:
-            image/png:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/gif:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/jpeg:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/bmp:
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /ResizeImage:
-    post:
-      tags:
-      - Files
-      summary: Files - Resize Image
-      description: Resize an image
-      operationId: ResizeImage
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - algorithm
-              - file
-              - units
-              properties:
-                algorithm:
-                  type: string
-                  description: Optimize output quality of the target image
-                  default: Bicubic (default)
-                  enum:
-                  - Bicubic (default)
-                  - Bilinear
-                  - Cubic (Box)
-                  - Cubic (Catmull-Rom)
-                  - Cubic (Hermite)
-                  - Cubic (Spline)
-                  - Nearest Neighbor
-                  - Sinc (Lanczos2)
-                  - Sinc (Lanczos3)
-                  - Sinc (Lanczos5)
-                  - Sinc (Lanczos8)
-                  - Robidoux
-                  - Robidoux Sharp
-                  x-ms-summary: Resampling Algorithm
-                units:
-                  type: string
-                  description: Image adjustment units
-                  default: Pixels
-                  enum:
-                  - Pixels
-                  - Percent
-                  x-ms-summary: Units
-                height:
-                  type: number
-                  description: Image height (pixels or percent)
-                  x-ms-summary: Height
-                width:
-                  type: number
-                  description: Image width (pixels or percent)
-                  x-ms-summary: Width
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/gif:
-              schema:
-                type: string
-                format: binary
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/bmp:
-              schema:
-                type: string
-                format: binary
-        400:
-          description: ERROR
-          content:
-            image/png:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/gif:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/jpeg:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/bmp:
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /RotateImage:
-    post:
-      tags:
-      - Files
-      summary: Files - Rotate Image
-      description: Rotate an image by specified number of degrees
-      operationId: RotateImage
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - degrees
-              - file
-              properties:
-                degrees:
-                  type: string
-                  description: Number of degrees
-                  x-ms-summary: Degrees
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
-        400:
-          description: ERROR
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /FlipImage:
-    post:
-      tags:
-      - Files
-      summary: Files - Flip Image
-      description: Flip an image (horizontal or vertical)
-      operationId: FlipImage
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              - orientation
-              properties:
-                orientation:
-                  type: string
-                  description: Horizontal or Vertical
-                  default: Horizontal
-                  enum:
-                  - Horizontal
-                  - Vertical
-                  x-ms-summary: Orientation
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
-        400:
-          description: ERROR
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /WatermarkImage:
-    post:
-      tags:
-      - Files
-      summary: Files - Watermark Image
-      description: Add watermark text to an image
-      operationId: WatermarkImage
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - color
-              - file
-              - font
-              - horizontal
-              - size
-              - text
-              - vertical
-              properties:
-                text:
-                  type: string
-                  description: Watermark text
-                  x-ms-summary: Text
-                font:
-                  type: string
-                  description: Text font
-                  default: Arial
-                  enum:
-                  - Arial
-                  - Arial Black
-                  - Arial Narrow
-                  - Book Antiqua
-                  - Britannic Bold
-                  - Brush Script MT
-                  - Calisto MT
-                  - Century Gothic
-                  - Century Schoolbook
-                  - Colonna MT
-                  - Comic Sans MS
-                  - Cooper Black
-                  - Copperplate Gothic Bold
-                  - Copperplate Gothic Light
-                  - Courier New
-                  - Edwardian Script ITC
-                  - Engravers MT
-                  - Franklin Gothic Demi
-                  - Franklin Gothic Heavy
-                  - Franklin Gothic Medium
-                  - Garamond
-                  - Georgia
-                  - Gill Sans MT
-                  - Gill Sans MT Condensed
-                  - Gill Sans Ultra Bold
-                  - Gill Sans Ultra Bold Condensed
-                  - Goudy Old Style
-                  - Haettenschweiler
-                  - Holidays MT
-                  - Impact
-                  - Lucida Calligraphy
-                  - Lucida Console
-                  - Lucida Handwriting
-                  - Lucida Sans Typewriter
-                  - Lucida Sans Unicode
-                  - Marlett
-                  - Microsoft Sans Serif
-                  - MS Outlook
-                  - Palace Script MT
-                  - Palatino Linotype
-                  - Papyrus
-                  - Playbill
-                  - Rockwell
-                  - Rockwell Condensed
-                  - Rockwell Extra Bold
-                  - Script MT Bold
-                  - Stencil
-                  - Symbol
-                  - Tahoma
-                  - Times New Roman
-                  - Trebuchet MS
-                  - Verdana
-                  - Vivaldi
-                  - Webdings
-                  - Wingdings 1
-                  - Wingdings 2
-                  - Wingdings 3
-                  x-ms-summary: Font
-                size:
-                  type: number
-                  description: Font size (points)
-                  x-ms-summary: Font Size
-                color:
-                  type: string
-                  description: Text color hex value
-                  default: "000000"
-                  x-ms-summary: Text Color
-                horizontal:
-                  type: string
-                  description: Horizontal alignment
-                  default: Center
-                  enum:
-                  - Left
-                  - Center
-                  - Right
-                  x-ms-summary: Horizontal
-                vertical:
-                  type: string
-                  description: Vertical alignment
-                  default: Center
-                  enum:
-                  - Top
-                  - Center
-                  - Bottom
-                  x-ms-summary: Vertical
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
-        400:
-          description: ERROR
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /CropImage:
-    post:
-      tags:
-      - Files
-      summary: Files - Crop Image
-      description: Crop an image
-      operationId: CropImage
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - Height
-              - Width
-              - file
-              - position
-              properties:
-                position:
-                  type: string
-                  description: Crop start position (use negative values to reverse
-                    crop area)
-                  default: TopLeft
-                  enum:
-                  - TopLeft
-                  - TopCenter
-                  - TopRight
-                  - MiddleLeft
-                  - MiddleCenter
-                  - MiddleRight
-                  - BottomLeft
-                  - BottomCenter
-                  - BottomRight
-                  x-ms-summary: Position
-                Width:
-                  type: number
-                  description: Width (X-axis right, negative to reverse)
-                  x-ms-summary: Width
-                Height:
-                  type: number
-                  description: Height (Y-axis down, negative to reverse)
-                  x-ms-summary: Height
-                file:
-                  type: string
-                  description: Source image file
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-            image/gif:
-              schema:
-                type: string
-                format: binary
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-            image/bmp:
-              schema:
-                type: string
-                format: binary
-        400:
-          description: ERROR
-          content:
-            image/png:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/gif:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/jpeg:
-              schema:
-                $ref: '#/components/schemas/outputString'
-            image/bmp:
-              schema:
-                $ref: '#/components/schemas/outputString'
-  /ImageMetadata:
-    post:
-      tags:
-      - Files
-      summary: Files - Image Metadata
-      description: Retrieve EXIF metadata from an image
-      operationId: ImageMetadata
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              properties:
-                file:
-                  type: string
-                  description: Source file (10MB limit)
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputImageMetadata'
-        400:
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
+  # /ConvertImage:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - Convert Image
+  #     description: Convert an image from one format to another
+  #     operationId: ConvertImage
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - file
+  #             - format
+  #             properties:
+  #               format:
+  #                 type: string
+  #                 description: Output file format
+  #                 default: PNG
+  #                 enum:
+  #                 - PNG
+  #                 - JPG
+  #                 - GIF
+  #                 - BMP
+  #                 - TIF
+  #                 x-ms-summary: Format
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           image/png:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/gif:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/jpeg:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/bmp:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           image/png:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/gif:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/jpeg:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/bmp:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /ResizeImage:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - Resize Image
+  #     description: Resize an image
+  #     operationId: ResizeImage
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - algorithm
+  #             - file
+  #             - units
+  #             properties:
+  #               algorithm:
+  #                 type: string
+  #                 description: Optimize output quality of the target image
+  #                 default: Bicubic (default)
+  #                 enum:
+  #                 - Bicubic (default)
+  #                 - Bilinear
+  #                 - Cubic (Box)
+  #                 - Cubic (Catmull-Rom)
+  #                 - Cubic (Hermite)
+  #                 - Cubic (Spline)
+  #                 - Nearest Neighbor
+  #                 - Sinc (Lanczos2)
+  #                 - Sinc (Lanczos3)
+  #                 - Sinc (Lanczos5)
+  #                 - Sinc (Lanczos8)
+  #                 - Robidoux
+  #                 - Robidoux Sharp
+  #                 x-ms-summary: Resampling Algorithm
+  #               units:
+  #                 type: string
+  #                 description: Image adjustment units
+  #                 default: Pixels
+  #                 enum:
+  #                 - Pixels
+  #                 - Percent
+  #                 x-ms-summary: Units
+  #               height:
+  #                 type: number
+  #                 description: Image height (pixels or percent)
+  #                 x-ms-summary: Height
+  #               width:
+  #                 type: number
+  #                 description: Image width (pixels or percent)
+  #                 x-ms-summary: Width
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           image/png:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/gif:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/jpeg:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/bmp:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           image/png:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/gif:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/jpeg:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/bmp:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /RotateImage:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - Rotate Image
+  #     description: Rotate an image by specified number of degrees
+  #     operationId: RotateImage
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - degrees
+  #             - file
+  #             properties:
+  #               degrees:
+  #                 type: string
+  #                 description: Number of degrees
+  #                 x-ms-summary: Degrees
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /FlipImage:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - Flip Image
+  #     description: Flip an image (horizontal or vertical)
+  #     operationId: FlipImage
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - file
+  #             - orientation
+  #             properties:
+  #               orientation:
+  #                 type: string
+  #                 description: Horizontal or Vertical
+  #                 default: Horizontal
+  #                 enum:
+  #                 - Horizontal
+  #                 - Vertical
+  #                 x-ms-summary: Orientation
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /WatermarkImage:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - Watermark Image
+  #     description: Add watermark text to an image
+  #     operationId: WatermarkImage
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - color
+  #             - file
+  #             - font
+  #             - horizontal
+  #             - size
+  #             - text
+  #             - vertical
+  #             properties:
+  #               text:
+  #                 type: string
+  #                 description: Watermark text
+  #                 x-ms-summary: Text
+  #               font:
+  #                 type: string
+  #                 description: Text font
+  #                 default: Arial
+  #                 enum:
+  #                 - Arial
+  #                 - Arial Black
+  #                 - Arial Narrow
+  #                 - Book Antiqua
+  #                 - Britannic Bold
+  #                 - Brush Script MT
+  #                 - Calisto MT
+  #                 - Century Gothic
+  #                 - Century Schoolbook
+  #                 - Colonna MT
+  #                 - Comic Sans MS
+  #                 - Cooper Black
+  #                 - Copperplate Gothic Bold
+  #                 - Copperplate Gothic Light
+  #                 - Courier New
+  #                 - Edwardian Script ITC
+  #                 - Engravers MT
+  #                 - Franklin Gothic Demi
+  #                 - Franklin Gothic Heavy
+  #                 - Franklin Gothic Medium
+  #                 - Garamond
+  #                 - Georgia
+  #                 - Gill Sans MT
+  #                 - Gill Sans MT Condensed
+  #                 - Gill Sans Ultra Bold
+  #                 - Gill Sans Ultra Bold Condensed
+  #                 - Goudy Old Style
+  #                 - Haettenschweiler
+  #                 - Holidays MT
+  #                 - Impact
+  #                 - Lucida Calligraphy
+  #                 - Lucida Console
+  #                 - Lucida Handwriting
+  #                 - Lucida Sans Typewriter
+  #                 - Lucida Sans Unicode
+  #                 - Marlett
+  #                 - Microsoft Sans Serif
+  #                 - MS Outlook
+  #                 - Palace Script MT
+  #                 - Palatino Linotype
+  #                 - Papyrus
+  #                 - Playbill
+  #                 - Rockwell
+  #                 - Rockwell Condensed
+  #                 - Rockwell Extra Bold
+  #                 - Script MT Bold
+  #                 - Stencil
+  #                 - Symbol
+  #                 - Tahoma
+  #                 - Times New Roman
+  #                 - Trebuchet MS
+  #                 - Verdana
+  #                 - Vivaldi
+  #                 - Webdings
+  #                 - Wingdings 1
+  #                 - Wingdings 2
+  #                 - Wingdings 3
+  #                 x-ms-summary: Font
+  #               size:
+  #                 type: number
+  #                 description: Font size (points)
+  #                 x-ms-summary: Font Size
+  #               color:
+  #                 type: string
+  #                 description: Text color hex value
+  #                 default: "000000"
+  #                 x-ms-summary: Text Color
+  #               horizontal:
+  #                 type: string
+  #                 description: Horizontal alignment
+  #                 default: Center
+  #                 enum:
+  #                 - Left
+  #                 - Center
+  #                 - Right
+  #                 x-ms-summary: Horizontal
+  #               vertical:
+  #                 type: string
+  #                 description: Vertical alignment
+  #                 default: Center
+  #                 enum:
+  #                 - Top
+  #                 - Center
+  #                 - Bottom
+  #                 x-ms-summary: Vertical
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           '*/*':
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /CropImage:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - Crop Image
+  #     description: Crop an image
+  #     operationId: CropImage
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - Height
+  #             - Width
+  #             - file
+  #             - position
+  #             properties:
+  #               position:
+  #                 type: string
+  #                 description: Crop start position (use negative values to reverse
+  #                   crop area)
+  #                 default: TopLeft
+  #                 enum:
+  #                 - TopLeft
+  #                 - TopCenter
+  #                 - TopRight
+  #                 - MiddleLeft
+  #                 - MiddleCenter
+  #                 - MiddleRight
+  #                 - BottomLeft
+  #                 - BottomCenter
+  #                 - BottomRight
+  #                 x-ms-summary: Position
+  #               Width:
+  #                 type: number
+  #                 description: Width (X-axis right, negative to reverse)
+  #                 x-ms-summary: Width
+  #               Height:
+  #                 type: number
+  #                 description: Height (Y-axis down, negative to reverse)
+  #                 x-ms-summary: Height
+  #               file:
+  #                 type: string
+  #                 description: Source image file
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           image/png:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/gif:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/jpeg:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #           image/bmp:
+  #             schema:
+  #               type: string
+  #               format: binary
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           image/png:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/gif:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/jpeg:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #           image/bmp:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  # /ImageMetadata:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - Image Metadata
+  #     description: Retrieve EXIF metadata from an image
+  #     operationId: ImageMetadata
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - file
+  #             properties:
+  #               file:
+  #                 type: string
+  #                 description: Source file (10MB limit)
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputImageMetadata'
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
   /GenerateQRCode:
     post:
       tags:
@@ -2886,39 +2886,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/outputString'
       x-codegen-request-body-name: inputQRCode
-  /FileToString:
-    post:
-      tags:
-      - Files
-      summary: Files - File to string
-      description: Convert a file to a Base64 string
-      operationId: FileToString
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              properties:
-                file:
-                  type: string
-                  description: Source file (10MB limit)
-                  format: binary
-                  x-ms-summary: File
-        required: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
-        400:
-          description: ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/outputString'
+  # /FileToString:
+  #   post:
+  #     tags:
+  #     - Files
+  #     summary: Files - File to string
+  #     description: Convert a file to a Base64 string
+  #     operationId: FileToString
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - file
+  #             properties:
+  #               file:
+  #                 type: string
+  #                 description: Source file (10MB limit)
+  #                 format: binary
+  #                 x-ms-summary: File
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
+  #       400:
+  #         description: ERROR
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/outputString'
   /StringToFile:
     post:
       tags:
@@ -7016,7 +7016,7 @@ components:
       type: apiKey
       name: X-IBM-Client-Id
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `X-IBM-Client-Id`. Eg: `{\"X-IBM-Client-Id\" : \"<API key>\"}`"
+      description: Represents API Key `X-IBM-Client-Id`
 x-ibm-configuration:
   enforced: true
   testable: true

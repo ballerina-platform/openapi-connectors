@@ -24,11 +24,9 @@ import ballerinax/plaid;
 Create a `plaid:ApiKeysConfig` with the credentials obtained, and initialize the connector with it.
 ```ballerina
 plaid:ApiKeysConfig config = {
-    apiKeys: {
-        "PLAID-CLIENT-ID" : "<CLIENT_ID>", 
-        "PLAID-SECRET" : "<CLIENT_SECRET>", 
-        "Plaid-Version" : "<VERSION>"
-    }
+    plaidClientId : "<CLIENT_ID>", 
+    plaidSecret : "<CLIENT_SECRET>", 
+    plaidVersion : "<VERSION>"
 }
 plaid:Client baseClient = check new Client(config);
 ```

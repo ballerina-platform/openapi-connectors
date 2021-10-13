@@ -21,9 +21,7 @@ You can now make the connection configuration using the PAT token
 
 ```ballerina
 gitlab:ApiKeysConfig apiKeyConfig = {
-    apiKeys: {
-        "Private-Token": <GITLAB_PAT_TOKEN>
-    }
+    "privateToken": <GITLAB_PAT_TOKEN>
 };
 
 gitlab:Client baseClient = check new Client(apiKeyConfig);

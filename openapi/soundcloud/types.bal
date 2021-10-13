@@ -223,6 +223,7 @@ public type UserslistInner record {
     string website_title?;
 };
 
+@deprecated
 public type UsersList UserslistInner[];
 
 # SoundCloud User object.
@@ -325,6 +326,7 @@ public type Playlist record {
     int user_id?;
 };
 
+@deprecated
 public type PlaylistsArray Playlist[];
 
 public type ActivitiesCollection record {
@@ -353,6 +355,7 @@ public type WebprofilesInner record {
     string username?;
 };
 
+@deprecated
 public type TracksList Track[];
 
 public type TrackstrackIdcommentsComment record {
@@ -360,10 +363,6 @@ public type TrackstrackIdcommentsComment record {
     string body;
     # Timestamp of a comment. String or float representation is supported
     string|decimal timestamp?;
-};
-
-public type Body record {
-    TrackstrackIdcommentsComment comment?;
 };
 
 public type Streams record {
@@ -439,6 +438,7 @@ public type CompleteUser record {
     string website_title?;
 };
 
+# User's activities.
 public type Activities record {
     ActivitiesCollection[] collection?;
     string future_href?;
@@ -655,6 +655,7 @@ public type CompleteuserQuota record {
     int upload_seconds_used?;
 };
 
+@deprecated
 public type CommentsList Comment[];
 
 public type CreateupdateplaylistrequestPlaylistTracks record {
@@ -678,9 +679,16 @@ public type  InlineResponse2003 Comments|CommentsList;
 
 public type  InlineResponse2002 Playlists|PlaylistsArray;
 
+public type TrackIdCommentsBody record {
+    TrackstrackIdcommentsComment comment?;
+};
+
 # Soundcloud Track object.
 public type Track record {
     # Level of access the user (logged in or anonymous) has to the track.
+    #   * `playable` - user is allowed to listen to a full track.
+    #   * `preview` - user is allowed to preview a track, meaning a snippet is available
+    #   * `blocked` - user can only see the metadata of a track, no streaming is possible
     string? access?;
     # URL to a JPEG image.
     string artwork_url?;
@@ -765,8 +773,7 @@ public type Track record {
 };
 
 # User's links added to their profile
-#
-# + WebprofilesInner - User's links added to their profile
+# User's links added to their profile
 public type WebProfiles WebprofilesInner[];
 
 public type TrackmetadatarequestTrack record {

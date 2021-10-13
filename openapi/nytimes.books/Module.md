@@ -25,9 +25,7 @@ import ballerinax/nytimes.books as books;
 You can initialize the client as follows. You can now provide the API key obtained from the [NYTimes Developer Portal](https://developer.nytimes.com/accounts/login) in the configuration.
 ```ballerina
 books:ApiKeysConfig config = {
-    apiKeys: {
-        api\-key: "<API_KEY>"
-    }
+    apiKey: "<API_KEY>"
 }
 books:Client baseClient = check new Client(config);
 ```

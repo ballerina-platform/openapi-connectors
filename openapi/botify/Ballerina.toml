@@ -1,10 +1,10 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["botify", "paid"]
+keywords = ["Website & App Building/Search Engine Optimization", "Cost/Paid"]
 org = "ballerinax"
 name = "botify"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

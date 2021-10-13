@@ -998,4 +998,4 @@ components:
       in: query
       name: client_id
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API Key as client_id. Eg: {client_id : <Your API Key>}"
+      description: Represents API Key `client_id`

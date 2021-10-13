@@ -14,78 +14,62 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Data indicator
-public type Indicator record {
-    # Id of the indicator
-    string id?;
-    # Value represent by the indicator
-    string value?;
+public type WorldBankResponse (PaginationData|IndicatorInformation[]?)[];
+
+public type PaginationData record {
+    int page;
+    int pages;
+    int per_page;
+    int total;
+    string? sourceid;
+    string? sourcename;
+    string? lastupdated;
+};
+
+# Represent country population.
+public type IndicatorInformation record {
+    # Data indicator
+    Indicator indicator;
+    # Represent a Country
+    Country country;
+    # Date-range by year, month or quarter that scopes the result-set.
+    string date;
+    # Country population
+    int? value;
+    # Country ISO3 Code
+    string countryiso3code;
+    # Unit of measure
+    string unit;
+    # Decimal
+    decimal 'decimal;
+    # OBS Status
+    string obs_status?;
 };
 
 # Represent a Country
 public type Country record {
     # Country code
-    string id?;
+    string id;
     # Country name
-    string value?;
+    string value;
 };
 
-# Represent access to electricity
-public type AccessToElectricity record {
-    # World bank indicator
-    Indicator indicator?;
-    # Country
-    Country country?;
-    # Date-range by year, month or quarter that scopes the result-set.
-    string date?;
-    # Population percentage having electricity
-    float? value?;
+# Data indicator
+public type Indicator record {
+    # Id of the indicator
+    string id;
+    # Value represent by the indicator
+    string value;
 };
 
-# Represent youth literacy rate
-public type YouthLiteracyRate record {
-    # World bank indicator
-    Indicator indicator?;
-    # Country
-    Country country?;
-    # Date-range by year, month or quarter that scopes the result-set.
-    string date?;
-    # Youth literacy rate
-    float? value?;
+type JsonArr json[];
+
+type ErrorResponse record {
+    ErrorMessage[] message;
 };
 
-# Represent gross domestic product
-public type GrossDomesticProduct record {
-    # World bank indicator
-    Indicator indicator?;
-    # Country
-    Country country?;
-    # Date-range by year, month or quarter that scopes the result-set.
-    string date?;
-    # Gross domestic product
-    float? value?;
-};
-
-# Represent primary education expenditure
-public type PrimaryEducationExpenditure record {
-    # World bank indicator
-    Indicator indicator?;
-    # Country
-    Country country?;
-    # Date-range by year, month or quarter that scopes the result-set.
-    string date?;
-    # Primary education expenditure
-    float? value?;
-};
-
-# Represent country population.
-public type CountryPopulation record {
-    # World bank indicator
-    Indicator indicator?;
-    # Country
-    Country country?;
-    # Date-range by year, month or quarter that scopes the result-set.
-    string date?;
-    # Country population
-    int? value?;
+type ErrorMessage record {
+    string id;
+    string 'key;
+    string value;
 };

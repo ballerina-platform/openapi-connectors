@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -211,11 +211,11 @@ public type AddActivityRequest record {
     # The ID of the User whom the Activity is assigned to. If omitted, the Activity is assigned to the authorized User.
     int? user_id?;
     # List of multiple Persons (participants) this Activity is associated with. If omitted, single participant from `person_id` field is used. It requires a structure as follows: `[{"person_id":1,"primary_flag":true}]`
-    record {}[] participants?;
+    record {}[]? participants?;
     # Set the Activity as 'Busy' or 'Free'. If the flag is set to `true`, your customers will not be able to book that time slot through any Scheduler links. The flag can also be unset by never setting it or overriding it with `null`. When the value of the flag is unset (`null`), the flag defaults to 'Busy' if it has a time set, and 'Free' if it is an all-day event without specified time.
     boolean? busy_flag?;
     # Attendees of the Activity. This can be either your existing Pipedrive contacts or an external email address. It requires a structure as follows: `[{"email_address":"mail@example.org"}]` or `[{"person_id":1, "email_address":"mail@example.org"}]`
-    record {}[] attendees?;
+    record {}[]? attendees?;
     # Whether the Activity is done or not. 0 = Not done, 1 = Done
     record {} done?;
 };
@@ -328,7 +328,7 @@ public type AddRecurringSubscriptionRequest record {
     # This indicates that the Recurring Subscription will last until it's manually canceled or deleted. Note that only one field must be set: `cycles_count` or `infinite`.
     boolean? infinite?;
     # Array of additional payments. It requires a minimum structure as follows: [{ amount:SUM, description:DESCRIPTION, due_at:PAYMENT_DATE }]. Replace SUM with a payment amount, DESCRIPTION with an explanation string, PAYMENT_DATE with a date (format YYYY-MM-DD).
-    record {}[] payments?;
+    record {}[]? payments?;
     # Indicates that the Deal value must be set to Recurring Subscription's MRR value
     boolean? update_deal_value?;
 };
@@ -434,7 +434,7 @@ public type Searchdealsresponse200DataItems record {
 
 public type UpdateSubscriptionInstallmentRequest record {
     # Array of payments. It requires a minimum structure as follows: [{ amount:SUM, description:DESCRIPTION, due_at:PAYMENT_DATE }]. Replace SUM with a payment amount, DESCRIPTION with a explanation string, PAYMENT_DATE with a date (format YYYY-MM-DD).
-    record {}[] payments;
+    record {}[]? payments;
     # Indicates that the Deal value must be set to Installment Subscription's total value
     boolean? update_deal_value?;
 };
@@ -545,7 +545,7 @@ public type UpdateLeadRequest record {
     # A flag indicating whether the Lead is archived or not
     boolean? is_archived?;
     # The potential value of the Lead.
-    LeadsValue? value?;
+    LeadsidValue? value?;
     # The date of when the Deal which will be created from the Lead is expected to be closed. In ISO 8601 format: YYYY-MM-DD.
     string? expected_close_date?;
     # Visibility of the lead. If omitted, visibility will be set to the default visibility setting of this item type for the authorized user.<table><tr><th>Value</th><th>Description</th></tr><tr><td>`1`</td><td>Owner &amp; followers (private)</td></tr><tr><td>`3`</td><td>Entire company (shared)</td></tr></table>
@@ -697,11 +697,11 @@ public type UpdateActivityRequest record {
     # The ID of the User whom the Activity is assigned to
     int? user_id?;
     # List of multiple Persons (participants) this Activity is associated with. It requires a structure as follows: `[{"person_id":1,"primary_flag":true}]`
-    record {}[] participants?;
+    record {}[]? participants?;
     # Set the Activity as 'Busy' or 'Free'. If the flag is set to `true`, your customers will not be able to book that time slot through any Scheduler links. The flag can also be unset by never setting it or overriding it with `null`. When the value of the flag is unset (`null`), the flag defaults to 'Busy' if it has a time set, and 'Free' if it is an all-day event without specified time.
     boolean? busy_flag?;
     # Attendees of the Activity. This can be either your existing Pipedrive contacts or an external email address. It requires a structure as follows: `[{"email_address":"mail@example.org"}]` or `[{"person_id":1, "email_address":"mail@example.org"}]`
-    record {}[] attendees?;
+    record {}[]? attendees?;
     # Whether the Activity is done or not. 0 = Not done, 1 = Done
     record {} done?;
 };
@@ -717,7 +717,7 @@ public type AddSubscriptionInstallmentRequest record {
     # The currency of the Installment Subscription. Accepts a 3-character currency code.
     string? currency;
     # Array of payments. It requires a minimum structure as follows: [{ amount:SUM, description:DESCRIPTION, due_at:PAYMENT_DATE }]. Replace SUM with a payment amount, DESCRIPTION with an explanation string, PAYMENT_DATE with a date (format YYYY-MM-DD).
-    record {}[] payments;
+    record {}[]? payments;
     # Indicates that the Deal value must be set to the Installment Subscription's total value
     boolean? update_deal_value?;
 };
@@ -1084,13 +1084,13 @@ public type Fieldsresponse200Data record {
     # Whether or not the Field is mandatory
     boolean? mandatory_flag?;
     # The options of the Field. When there are no options, `null` is returned.
-    record {}[] options?;
+    record {}[]? options?;
     # The deleted options of the Field. Only present when there is at least 1 deleted option.
-    record {}[] options_deleted?;
+    record {}[]? options_deleted?;
     # Whether or not the Field is a subfield of another Field. Only present if Field is subfield.
     boolean? is_subfield?;
     # Subfields of the Field. Only present when Field has subfields.
-    record {}[] subfields?;
+    record {}[]? subfields?;
 };
 
 public type PersonCountEmailDealAndActivityInfo record {
@@ -1147,13 +1147,6 @@ public type OrganizationCountAndAddressInfo record {
     *OrganizationCountAndAddressInfo2;
 };
 
-public type AddPersonPictureResponse200 record {
-    # If the response is successful or not
-    boolean? success?;
-    # The picture that is associated with the item
-    Getorganizationsresponse200RelatedObjectsPicture? data?;
-};
-
 public type UserIds record {
     # If the response is successful or not
     boolean? success?;
@@ -1171,7 +1164,6 @@ public type GetOrganizationsResponse200 record {
 };
 
 # Picture ID
-#
 public type PictureId record {
     *PictureId1;
     *PictureId2;
@@ -1458,7 +1450,6 @@ public type AddUserRoleAssignmentRequest record {
 };
 
 # The assignment data of the Role
-#
 public type RoleAssignment record {
     *BaseRoleRequest;
     *RoleAssignment1;
@@ -1527,6 +1518,14 @@ public type GetUserPermissionsResponse200 record {
     # If the response is successful or not
     boolean? success?;
     Getuserpermissionsresponse200Data? data?;
+};
+
+# The potential value of the Lead.
+public type LeadsidValue record {
+    # Amount
+    decimal? amount;
+    # Currency
+    string? currency;
 };
 
 public type GetAssociatedFilesResponse200 record {
@@ -1725,7 +1724,7 @@ public type ActivityResponseObject2 record {
     # The ID of the User to whom the Activity is assigned to. Equal to `user_id`.
     int? assigned_to_user_id?;
     # The file that is attached to this Activity. For example, this can be a reference to an audio note file generated with Pipedrive mobile app.
-    record {}? file?;
+    record {} file?;
 };
 
 public type Searchdealsresponse200DataItemOrganization record {
@@ -1885,7 +1884,7 @@ public type Searchpersonsresponse200DataItemOwner record {
 public type GetRecentsResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}[] data?;
+    record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}[]? data?;
     Getrecentsresponse200AdditionalData? additional_data?;
 };
 
@@ -2045,7 +2044,7 @@ public type AddOrUpdateProductFieldResponse200 record {
     # Name of the field
     string? name;
     # When field_type is either set or enum, possible options on update must be supplied as an array of objects each containing id and label, for example: [{"id":1, "label":"red"},{"id":2, "label":"blue"},{"id":3, "label":"lilac"}]
-    record {}[] options?;
+    record {}[]? options?;
 };
 
 public type DuplicateDealResponse200 record {
@@ -2180,6 +2179,15 @@ public type GetAssociatedActivitiesResponse200 record {
     ActivityDistributionDataWithAdditionalData? additional_data?;
 };
 
+public type ProductfieldsBody record {
+    # Name of the field
+    string? name;
+    # When `field_type` is either `set` or `enum`, possible options must be supplied as a JSON-encoded sequential array, for example:</br>`[{"label":"red"}, {"label":"blue"}, {"label":"lilac"}]`
+    record {}[]? options?;
+    # Type of the field<table><tr><th>Value</th><th>Description</th></tr><tr><td>`varchar`</td><td>Text (up to 255 characters)</td><tr><td>`varchar_auto`</td><td>Autocomplete text (up to 255 characters)</td><tr><td>`text`</td><td>Long text (up to 65k characters)</td><tr><td>`double`</td><td>Numeric value</td><tr><td>`monetary`</td><td>Monetary field (has a numeric value and a currency value)</td><tr><td>`date`</td><td>Date (format YYYY-MM-DD)</td><tr><td>`set`</td><td>Options field with a possibility of having multiple chosen options</td><tr><td>`enum`</td><td>Options field with a single possible chosen option</td><tr><td>`user`</td><td>User field (contains a user ID of another Pipedrive user)</td><tr><td>`org`</td><td>Organization field (contains an organization ID which is stored on the same account)</td><tr><td>`people`</td><td>Person field (contains a product ID which is stored on the same account)</td><tr><td>`phone`</td><td>Phone field (up to 255 numbers and/or characters)</td><tr><td>`time`</td><td>Time field (format HH:MM:SS)</td><tr><td>`timerange`</td><td>Time-range field (has a start time and end time value, both HH:MM:SS)</td><tr><td>`daterange`</td><td>Date-range field (has a start date and end date value, both YYYY-MM-DD)</td><tr><td>`address`</td><td>Address field (autocompleted by Google Maps)</dd></table>
+    string? field_type;
+};
+
 public type BaseOrganizationItemWithEditNameFlagData record {
     *BaseOrganizationItem;
     # If the company ID of the Organization and company ID of the request is same or not
@@ -2202,7 +2210,6 @@ public type OneLeadResponse200 record {
 };
 
 # The details of the sub-role
-#
 public type SubRole record {
     *BaseRoleRequest;
     *SubRole1;
@@ -2443,7 +2450,7 @@ public type UpdateRecurringSubscriptionRequest record {
     # Amount of each payment
     int? cycle_amount?;
     # Array of additional payments. It requires a minimum structure as follows: [{ amount:SUM, description:DESCRIPTION, due_at:PAYMENT_DATE }]. Replace SUM with a payment amount, DESCRIPTION with an explanation string, PAYMENT_DATE with a date (format YYYY-MM-DD).
-    record {}[] payments?;
+    record {}[]? payments?;
     # Indicates that the Deal value must be set to Recurring Subscription's MRR value
     boolean? update_deal_value?;
     # All payments after that date will be affected. Format: YYYY-MM-DD
@@ -2641,11 +2648,6 @@ public type InlineResponse200 record {
     ResponseCallLogObject? data?;
 };
 
-public type AddCallLogAudioFileRequest record {
-    # Audio file supported by the HTML5 specification
-    string? file;
-};
-
 public type DeleteActivityResponse200 record {
     boolean? success?;
     Deleteactivityresponse200Data? data?;
@@ -2732,15 +2734,6 @@ public type PersonItem1 record {
     string? owner_name?;
     # The CC email associated with the Person
     string? cc_email?;
-};
-
-public type Body record {
-    # Name of the field
-    string? name;
-    # When `field_type` is either `set` or `enum`, possible options must be supplied as a JSON-encoded sequential array, for example:</br>`[{"label":"red"}, {"label":"blue"}, {"label":"lilac"}]`
-    record {}[] options?;
-    # Type of the field<table><tr><th>Value</th><th>Description</th></tr><tr><td>`varchar`</td><td>Text (up to 255 characters)</td><tr><td>`varchar_auto`</td><td>Autocomplete text (up to 255 characters)</td><tr><td>`text`</td><td>Long text (up to 65k characters)</td><tr><td>`double`</td><td>Numeric value</td><tr><td>`monetary`</td><td>Monetary field (has a numeric value and a currency value)</td><tr><td>`date`</td><td>Date (format YYYY-MM-DD)</td><tr><td>`set`</td><td>Options field with a possibility of having multiple chosen options</td><tr><td>`enum`</td><td>Options field with a single possible chosen option</td><tr><td>`user`</td><td>User field (contains a user ID of another Pipedrive user)</td><tr><td>`org`</td><td>Organization field (contains an organization ID which is stored on the same account)</td><tr><td>`people`</td><td>Person field (contains a product ID which is stored on the same account)</td><tr><td>`phone`</td><td>Phone field (up to 255 numbers and/or characters)</td><tr><td>`time`</td><td>Time field (format HH:MM:SS)</td><tr><td>`timerange`</td><td>Time-range field (has a start time and end time value, both HH:MM:SS)</td><tr><td>`daterange`</td><td>Date-range field (has a start date and end date value, both YYYY-MM-DD)</td><tr><td>`address`</td><td>Address field (autocompleted by Google Maps)</dd></table>
-    string? field_type;
 };
 
 public type DealNonStrict1 record {
@@ -2860,21 +2853,6 @@ public type SearchDealsResponse200 record {
     boolean? success?;
     Searchdealsresponse200Data? data?;
     Getactivitiesresponse200AdditionalData? additional_data?;
-};
-
-public type AddFileRequest record {
-    # A single file, supplied in the multipart/form-data encoding and contained within the given boundaries.
-    string? file;
-    # ID of the deal to associate file(s) with
-    int? deal_id?;
-    # ID of the person to associate file(s) with
-    int? person_id?;
-    # ID of the organization to associate file(s) with
-    int? org_id?;
-    # ID of the product to associate file(s) with
-    int? product_id?;
-    # ID of the activity to associate file(s) with
-    int? activity_id?;
 };
 
 public type OrganizationRelationshipRequest record {
@@ -3454,7 +3432,6 @@ public type Getroleresponse200AdditionalDataSettings record {
 };
 
 # The Deal object
-#
 public type DealStrict record {
     *DealStrict1;
     *BaseDeal;
@@ -3670,6 +3647,8 @@ public type Deletefileresponse200Data record {
 public type GetFiltersResponse200 record {
     # If the response is successful or not
     boolean? success?;
+    # The array of filters
+    Getfiltersresponse200Data[]? data?;
 };
 
 public type Searchpersonsresponse200DataItemOrganization record {
@@ -3813,11 +3792,6 @@ public type AdditionalPersonInfo record {
     *PersonCountEmailDealAndActivityInfo;
 };
 
-public type AddCallLogAudioFileResponse200 record {
-    # If the response is successful or not
-    boolean? success?;
-};
-
 public type Searchitemresponse200DataItems record {
     # Search result relevancy
     decimal? result_score?;
@@ -3853,7 +3827,7 @@ public type BaseMailThread2 record {
     # Parties of the mail thread
     Basemailthread2Parties? parties?;
     # Parties of the drafted mail thread
-    record {}[] drafts_parties?;
+    record {}[]? drafts_parties?;
     # Folders in which messages from thread are being stored
     string[]? folders?;
     # Version
@@ -4006,7 +3980,6 @@ public type Getassociatedpersonupdatesresponse200Data record {
 };
 
 # The mail thread object
-#
 public type BaseMailThreadData record {
     *BaseMailThread1;
     *BaseMailThread2;
@@ -4036,7 +4009,7 @@ public type Getnotefieldsresponse200Data record {
     # Whether or not the Field is mandatory
     boolean? mandatory_flag?;
     # The options of the Field. When there are no options, `null` is returned.
-    record {}[] options?;
+    record {}[]? options?;
 };
 
 public type OrganizationFollower record {
@@ -4095,19 +4068,9 @@ public type ProductField1 record {
     # Name of the field
     string? name;
     # When `field_type` is either `set` or `enum`, possible options must be supplied as a JSON-encoded sequential array, for example:</br>`[{"label":"red"}, {"label":"blue"}, {"label":"lilac"}]`
-    record {}[] options?;
+    record {}[]? options?;
     # Type of the field<table><tr><th>Value</th><th>Description</th></tr><tr><td>`varchar`</td><td>Text (up to 255 characters)</td><tr><td>`varchar_auto`</td><td>Autocomplete text (up to 255 characters)</td><tr><td>`text`</td><td>Long text (up to 65k characters)</td><tr><td>`double`</td><td>Numeric value</td><tr><td>`monetary`</td><td>Monetary field (has a numeric value and a currency value)</td><tr><td>`date`</td><td>Date (format YYYY-MM-DD)</td><tr><td>`set`</td><td>Options field with a possibility of having multiple chosen options</td><tr><td>`enum`</td><td>Options field with a single possible chosen option</td><tr><td>`user`</td><td>User field (contains a user ID of another Pipedrive user)</td><tr><td>`org`</td><td>Organization field (contains an organization ID which is stored on the same account)</td><tr><td>`people`</td><td>Person field (contains a product ID which is stored on the same account)</td><tr><td>`phone`</td><td>Phone field (up to 255 numbers and/or characters)</td><tr><td>`time`</td><td>Time field (format HH:MM:SS)</td><tr><td>`timerange`</td><td>Time-range field (has a start time and end time value, both HH:MM:SS)</td><tr><td>`daterange`</td><td>Date-range field (has a start date and end date value, both YYYY-MM-DD)</td><tr><td>`address`</td><td>Address field (autocompleted by Google Maps)</dd></table>
     string? field_type;
-};
-
-public type CallLogResponse409 record {
-    boolean? success?;
-    # The description of the error
-    string? _error?;
-    # A message describing how to solve the problem
-    string? error_info?;
-    record {} data?;
-    record {} additional_data?;
 };
 
 # Pagination details of the list
@@ -4222,7 +4185,7 @@ public type AddProductRequest record {
     # ID of the user who will be marked as the owner of this product. When omitted, the authorized user ID will be used.
     int? owner_id?;
     # Array of objects, each containing: `currency` (string), `price` (number), `cost` (number, optional), `overhead_cost` (number, optional). Note that there can only be one price per product per currency. When `prices` is omitted altogether, no prices will be set up for the product
-    record {}[] prices?;
+    record {}[]? prices?;
 };
 
 public type UnathorizedResponse record {
@@ -4695,7 +4658,7 @@ public type ProductRequest record {
     # ID of the user who will be marked as the owner of this product. When omitted, the authorized user ID will be used.
     int? owner_id?;
     # Array of objects, each containing: `currency` (string), `price` (number), `cost` (number, optional), `overhead_cost` (number, optional). Note that there can only be one price per product per currency. When `prices` is omitted altogether, no prices will be set up for the product
-    record {}[] prices?;
+    record {}[]? prices?;
 };
 
 public type Getpermissionsetsresponse200Data record {
@@ -4778,7 +4741,6 @@ public type MergeDealsResponse200 record {
 };
 
 # The object of Participant
-#
 public type PersonItem record {
     *PersonItem1;
     *AdditionalPersonInfo;
@@ -4849,19 +4811,6 @@ public type CommentPostPutObject record {
 public type Getactivitiesresponse200RelatedObjectsOrganization record {
     # The ID of the Organization associated with the item
     record {} ORGANIZATION_ID?;
-};
-
-public type AddPersonPictureRequest record {
-    # One image supplied in the multipart/form-data encoding.
-    string? file;
-    # X coordinate to where start cropping form (in pixels)
-    int? crop_x?;
-    # Y coordinate to where start cropping form (in pixels)
-    int? crop_y?;
-    # Width of cropping area (in pixels)
-    int? crop_width?;
-    # Height of cropping area (in pixels)
-    int? crop_height?;
 };
 
 public type Getactivitiesresponse200RelatedObjectsUser record {
@@ -5345,15 +5294,7 @@ public type AddRoleAssignmentResponse200 record {
     Addroleassignmentresponse200Data? data?;
 };
 
-public type AddFileResponse200 record {
-    # If the request was successful or not
-    boolean? success?;
-    # The File data
-    Getassociatedfilesresponse200Data? data?;
-};
-
 # The mail thread object
-#
 public type BaseMailThread record {
     *BaseMailThread1;
     *BaseMailThread2;

@@ -28,9 +28,7 @@ You can do this step in two ways. You can use any one of this.
 
     ```ballerina
     globalpageload:ApiKeysConfig apiKeyConfig = {
-        apiKeys :{
-            license:"<PRIVATE LICENSE KEY>"
-        }
+        license:"<PRIVATE LICENSE KEY>"
     };
     globalpageload:Client myClient = check new Client(apiKeyConfig);
     ```

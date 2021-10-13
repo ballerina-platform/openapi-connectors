@@ -1114,6 +1114,17 @@ paths:
 components:
   schemas:
     covidAll:
+      required:
+        - "updated"
+        - "cases"
+        - "todayCases"
+        - "deaths"
+        - "todayDeaths"
+        - "recovered"
+        - "todayRecovered"
+        - "active"
+        - "critical"
+        - "population"
       properties:
         updated:
           type: number
@@ -1158,6 +1169,15 @@ components:
         affectedCountries:
           type: number
     covidState:
+      required:
+        - "state"
+        - "updated"
+        - "cases"
+        - "todayCases"
+        - "deaths"
+        - "todayDeaths"
+        - "active"
+        - "population"
       properties:
         state:
           type: string
@@ -1188,6 +1208,14 @@ components:
       items:
         $ref: '#/components/schemas/covidState'
     covidContinent:
+      required:
+        - "updated"
+        - "cases"
+        - "todayCases"
+        - "deaths"
+        - "todayDeaths"
+        - "active"
+        - "critical"
       properties:
         updated:
           type: number
@@ -1241,6 +1269,16 @@ components:
       items:
         $ref: '#/components/schemas/covidContinent'
     covidCountry:
+      required:
+        - "country"
+        - "cases"
+        - "todayCases"
+        - "deaths"
+        - "todayDeaths"
+        - "recovered"
+        - "active"
+        - "population"
+        - "continent"
       properties:
         updated:
           type: number
@@ -1316,6 +1354,9 @@ components:
       items:
         $ref: '#/components/schemas/covidJHUCountry'
     covidJHUCountry:
+      required:
+        - "country"
+        - "stats"
       properties:
         country:
           type: string
@@ -1329,13 +1370,14 @@ components:
           properties:
             confirmed:
               type: number
-              nullable: true
             deaths:
               type: number
-              nullable: true
             recovered:
               type: number
               nullable: true
+          required:
+            - "confirmed"
+            - "deaths"
         coordinates:
           type: object
           properties:
@@ -1347,6 +1389,10 @@ components:
           type: string
           nullable: true
     covidJHUCounty:
+      required:
+        - "country"
+        - "province"
+        - "county"
       properties:
         country:
           type: string
@@ -1365,6 +1411,10 @@ components:
               type: number
             recovered:
               type: number
+              nullable: true
+          required:
+            - "confirmed"
+            - "deaths"
         coordinates:
           type: object
           properties:
@@ -1374,7 +1424,10 @@ components:
               type: string
     Timeline:
       type: object
-      description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
+      required:
+        - "cases"
+        - "deaths"
+        - "recovered"
       properties:
         cases:
           $ref: "#/components/schemas/Cases"
@@ -1401,6 +1454,9 @@ components:
       type: array
       items:
         type: object
+        required:
+          - "country"
+          - "timeline"
         properties:
           country:
             type: string
@@ -1410,7 +1466,10 @@ components:
           timeline:
             $ref: '#/components/schemas/Timeline'
     covidHistoricalAll:
-      description: The amount of key-value pairs in 'cases', 'deaths' and 'recovered' is dependent on the 'lastdays' query
+      required:
+        - "cases"
+        - "deaths"
+        - "recovered"
       properties:
         cases:
           type: object
@@ -1472,6 +1531,12 @@ components:
       type: array
       items:
         type: object
+        required:
+          - "date"
+          - "state"
+          - "fips"
+          - "cases"
+          - "deaths"
         properties:
           date:
             type: string

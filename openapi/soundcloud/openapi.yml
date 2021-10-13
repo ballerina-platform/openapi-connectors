@@ -382,8 +382,8 @@ paths:
         - $ref: "#/components/parameters/q"
         - $ref: "#/components/parameters/access"
         - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/linked_partitioning"
+        - $ref: "#/components/parameters/offset"
       responses:
         "200":
           $ref: "#/components/responses/Playlists"
@@ -615,8 +615,8 @@ paths:
         - $ref: "#/components/parameters/tags"
         - $ref: "#/components/parameters/access"
         - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/linked_partitioning"
+        - $ref: "#/components/parameters/offset"
       responses:
         "200":
           $ref: "#/components/responses/Tracks"
@@ -632,32 +632,32 @@ paths:
       summary: Performs a track search based on a query
       tags:
         - search
-    post:
-      operationId: uploadNewTrack
-      requestBody:
-        content:
-          multipart/form-data:
-            examples:
-              default:
-                $ref: "#/components/examples/TrackDataRequest"
-            schema:
-              $ref: "#/components/schemas/TrackDataRequest"
-          multipart/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/TrackDataRequest"
-      responses:
-        "201":
-          $ref: "#/components/responses/Track"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-      security:
-        - AuthHeader: []
+    # post:
+    #   operationId: uploadNewTrack
+    #   requestBody:
+    #     content:
+    #       multipart/form-data:
+    #         examples:
+    #           default:
+    #             $ref: "#/components/examples/TrackDataRequest"
+    #         schema:
+    #           $ref: "#/components/schemas/TrackDataRequest"
+    #       multipart/x-www-form-urlencoded:
+    #         schema:
+    #           $ref: "#/components/schemas/TrackDataRequest"
+    #   responses:
+    #     "201":
+    #       $ref: "#/components/responses/Track"
+    #     "400":
+    #       $ref: "#/components/responses/BadRequest"
+    #     "401":
+    #       $ref: "#/components/responses/Unauthorized"
+    #   security:
+    #     - AuthHeader: []
 
-      summary: Uploads a new track.
-      tags:
-        - tracks
+    #   summary: Uploads a new track.
+    #   tags:
+    #     - tracks
   "/tracks/{track_id}":
     delete:
       operationId: deleteTrack
@@ -692,43 +692,43 @@ paths:
       summary: Returns a track.
       tags:
         - tracks
-    put:
-      operationId: updateTrack
-      parameters:
-        - $ref: "#/components/parameters/track_id"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TrackMetadataRequest"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/TrackDataRequest"
-          multipart/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/TrackDataRequest"
-        description: Track payload
-      responses:
-        "200":
-          $ref: "#/components/responses/Track"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-      security:
-        - AuthHeader: []
+    # put:
+    #   operationId: updateTrack
+    #   parameters:
+    #     - $ref: "#/components/parameters/track_id"
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: "#/components/schemas/TrackMetadataRequest"
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: "#/components/schemas/TrackDataRequest"
+    #       multipart/x-www-form-urlencoded:
+    #         schema:
+    #           $ref: "#/components/schemas/TrackDataRequest"
+    #     description: Track payload
+    #   responses:
+    #     "200":
+    #       $ref: "#/components/responses/Track"
+    #     "400":
+    #       $ref: "#/components/responses/BadRequest"
+    #     "401":
+    #       $ref: "#/components/responses/Unauthorized"
+    #   security:
+    #     - AuthHeader: []
 
-      summary: Updates a track's information.
-      tags:
-        - tracks
+    #   summary: Updates a track's information.
+    #   tags:
+    #     - tracks
   "/tracks/{track_id}/comments":
     get:
       operationId: getCommentsOnTrack
       parameters:
         - $ref: "#/components/parameters/track_id"
         - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/linked_partitioning"
+        - $ref: "#/components/parameters/offset"
       responses:
         "200":
           $ref: "#/components/responses/Comments"
@@ -811,8 +811,8 @@ paths:
         - $ref: "#/components/parameters/track_id"
         - $ref: "#/components/parameters/access"
         - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/linked_partitioning"
+        - $ref: "#/components/parameters/offset"        
       responses:
         "200":
           $ref: "#/components/responses/Tracks"
@@ -871,8 +871,8 @@ paths:
         - $ref: "#/components/parameters/q"
         - $ref: "#/components/parameters/ids"
         - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/linked_partitioning"
+        - $ref: "#/components/parameters/offset"        
       responses:
         "200":
           $ref: "#/components/responses/Users"
@@ -3263,5 +3263,4 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      x-ballerina-apikey-description: >-
-        Provide your API key as Authorization. Eg: {"Authorization" : "OAuth <your API key>"}
+      description: Represents API Key `Authorization`

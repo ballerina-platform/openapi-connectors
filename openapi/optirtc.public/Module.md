@@ -28,9 +28,7 @@ import ballerinax/optirtc.public;
 Create a `public:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
 ```ballerina
 public:ApiKeysConfig config = {
-    apiKeys: {
-        'key: "<API_KEY>"
-    }
+    key: "<API_KEY>"
 }
 public:Client baseClient = check new Client(config);
 ```

@@ -277,7 +277,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "zoom"
-version = "0.3.0"
+version = "1.0.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "lang.string"},

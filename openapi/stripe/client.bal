@@ -84,6 +84,7 @@ public isolated client class Client {
     }
     # <p>Retrieves the coupon with the given ID.</p>
     #
+    # + coupon - Coupon Id 
     # + return - Successful response. 
     remote isolated function getCoupon(string coupon) returns Coupon|error {
         string path = string `/v1/coupons/${coupon}`;

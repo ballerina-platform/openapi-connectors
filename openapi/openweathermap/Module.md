@@ -27,9 +27,7 @@ Provide the obtained API Key in client configuration.
 
 ```ballerina
     ApiKeysConfig config = {
-        apiKeys : {
-            appid : "<your appid>"
-        }
+        appid : "<your appid>"
     }
 
     openweathermap:Client openweatherClient = check new openweathermap:Client(config);

@@ -1,10 +1,10 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["the movie database", "tmdb", "movies", "tv shows", "free"]
+keywords = ["Content & Files/Video & Audio", "Cost/Free"]
 org = "ballerinax"
 name = "themoviedb"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "0.1.0"
+version = "1.0.0-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

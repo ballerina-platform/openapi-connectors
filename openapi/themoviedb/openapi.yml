@@ -881,4 +881,3 @@ components:
       description: All requests on the TMDB API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `api_key`
       name: api_key
       in: query
-      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<your API key >\"}`"

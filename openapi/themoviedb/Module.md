@@ -24,9 +24,7 @@ import ballerinax/themoviedb;
 ### Step 2: Create a new connector instance
 ```ballerina
 themoviedb:ApiKeysConfig config = {
-    apiKeys : {
-        api_key : "<your appid>"
-    }
+        apiKey : "<your appid>"
 }
 
 themoviedb:Client myclient = check new themoviedb:Client(config);

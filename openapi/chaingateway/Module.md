@@ -23,9 +23,7 @@ import ballerinax/chaingateway;
 You can initialize the client as follows. You can now provide the API key obtained from the [Chaingateway.io](https://chaingateway.io/account) in the configuration.
 ```ballerina
 chaingateway:ApiKeysConfig config = {
-    apiKeys: {
-        Authorization: "<API_KEY>"
-    }
+    authorization: "<API_KEY>"
 }
 chaingateway:Client baseClient = check new Client(config);
 ```

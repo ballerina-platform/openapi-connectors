@@ -27,10 +27,8 @@ import ballerinax/vonage.numberinsight as vn;
 Create a `numberinsight:ApiKeysConfig` with the API key and API secret obtained, and initialize the connector with it.
 ```ballerina
 vn:ApiKeysConfig config = {
-    apiKeys: {
-        api_key: "<API_KEY>",
-        api_secret: "<API_SECRET"
-    }
+    apiKey: "<API_KEY>",
+    apiSecret: "<API_SECRET"
 }
 vn:Client baseClient = check new Client();
 ```

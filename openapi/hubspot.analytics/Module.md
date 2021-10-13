@@ -20,9 +20,7 @@ import ballerinax/hubspot.analytics;
 You can now make the connection configuration using the access token.
 ```ballerina
 analytics:ApiKeysConfig config = {
-    apiKeys : {
-        hapikey : "<your apiKey>"
-    }
+    hapikey : "<your apiKey>"
 };
 
 analytics:Client baseClient = check new Client(clientConfig);

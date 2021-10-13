@@ -22,9 +22,7 @@ import ballerinax/newsapi;
 ### Step 2: Create a new connector instance
 ```ballerina
 newsapi:ApiKeysConfig config = {
-    apiKeys : {
-        apiKey : "<your apiKey>"
-    }
+    apiKey : "<your apiKey>"
 };
 
 newsapi:Client myclient = check new newsapi:Client(config, {}, "https://newsapi.org/v2");

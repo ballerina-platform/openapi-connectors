@@ -22,9 +22,7 @@ You can now intantiate the client.
 
 ```ballerina
 nowpayments:ApiKeysConfig apiKeyConfig = {
-    apiKeys: {
-        "x-api-key": "<API_Key>"
-    }
+    xApiKey: "<API_Key>"
 };
 
 nowpayments:Client nowpaymentsClient = check new(apiKeyConfig);

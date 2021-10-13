@@ -24,9 +24,7 @@ import ballerinax/pipedrive;
 Create a `pipedrive:ApiKeysConfig` with the API key obtained, and initialize the connector with it. 
 ```ballerina
 pipedrive:ApiKeysConfig config = {
-    apiKeys: {
-        api_token: "<API_KEY>"
-    }
+    apiToken: "<API_KEY>"
 }
 pipedrive:Client baseClient = check new Client(config);
 ```

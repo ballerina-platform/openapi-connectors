@@ -9,15 +9,13 @@ The IP Geolocation connector allows you to look up the location, timezone, count
 #### Compatibility
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake Beta2     |
+| Ballerina Language Version    | Ballerina Swan Lake Beta3     |
 | IP Geolocation API Version    | v1                            |
 
-### Report issues
+## Report issues
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)
 
-To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Open API connector repository](https://github.com/ballerina-platform/ballerinax-openapi-connectors)
-
-### Useful links
-
+## Useful links
 - Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
 - Chat live with us on our [Slack channel](https://ballerina.io/community/slack/).
 - Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

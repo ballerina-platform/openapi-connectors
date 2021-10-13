@@ -30,7 +30,7 @@ info:
 externalDocs:
   url: http://developer.wordnik.com/
 security:
-  - {}
+  - api_key: []
 tags:
   - name: account
   - name: word
@@ -2216,4 +2216,3 @@ components:
       in: query
       name: api_key
       type: apiKey
-      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<your API key>\"}`" 

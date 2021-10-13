@@ -24,9 +24,7 @@ You can initialize the client as follows. You can now provide the API key obtain
 
 ```ballerina
 browshot:ApiKeysConfig apiKeyConfig = {
-    apiKeys: {
-        key: "<API_KEY>"
-    }
+    key: "<API_KEY>"
 }
 
 browshot:Client baseClient = check new Client(apiKeyConfig, serviceUrl = "https://api.browshot.com/api/v1");

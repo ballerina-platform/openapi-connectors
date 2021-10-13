@@ -196,6 +196,7 @@ components:
       in: query
       example: "123.0.0.255"
       description: "This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers. "
+      x-ballerina-deprecated-reason: "This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers. "
       schema:
         type: string
       deprecated: true
@@ -756,7 +757,9 @@ components:
                 - assumed_ported
               example: "not_ported"
             roaming:
-              $ref: "#/components/schemas/niRoaming"
+              oneOf:
+              - $ref: "#/components/schemas/niRoaming"
+              - type: string
             caller_identity:
               $ref: "#/components/schemas/niCallerIdentity"
             caller_name:
@@ -849,7 +852,10 @@ components:
             - assumed_ported
           example: "not_ported"
         roaming:
-          $ref: "#/components/schemas/niRoaming"
+          oneOf:
+            - $ref: "#/components/schemas/niRoaming"
+            - type: string
+          nullable: true
         caller_identity:
           $ref: "#/components/schemas/niCallerIdentity"
         lookup_outcome:
@@ -892,6 +898,7 @@ components:
             - bad_number
             - blacklisted
           example: "reachable"
+          nullable: true
       required:
         - status
         - status_message
@@ -1141,10 +1148,8 @@ components:
       name: api_key
       in: query
       description: "You can find your API key in your [account overview](https://dashboard.nexmo.com/account-overview)"
-      x-ballerina-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"
     apiSecret:
       type: apiKey
       name: api_secret
       in: query
       description: "You can find your API secret in your [account overview](https://dashboard.nexmo.com/account-overview)"
-      x-ballerina-apikey-description: "Provide your API keys as `api_key` and `api_secret`. Eg: `{\"api_key\" : \"<API key>\", \"api_secret\" : \"<API secret>\"}`"

@@ -20,10 +20,8 @@ import ballerinax/trello;
 You can now make the connection configuration using the API key and token.
 ```ballerina
 trello:ApiKeysConfig configuration = {
-    apiKeys: {
-        'key: <TRELLO_API_KEY>,
-        token: <TRELLO_API_TOKEN>
-    }
+    key: <TRELLO_API_KEY>,
+    token: <TRELLO_API_TOKEN>
 };
 
 trello:Client trelloClient = check new Client(configuration);

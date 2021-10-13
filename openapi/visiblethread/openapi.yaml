@@ -35,51 +35,51 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DocumentListSummary'
-    post:
-      tags:
-      - Documents
-      summary: Upload a document
-      description: "Upload a document to your VisibleThread account. \nWe return a\
-        \ JSON response that contains a \"docId\" that represents your document. \
-        \       \nYou can use this id in other requests to check on the analysis status\
-        \ for the document and run a dictionary search and retrieve search\nresults. "
-      operationId: uploadDoc
-      requestBody:
-        description: Request payload to upload document
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              properties:
-                file:
-                  type: string
-                  description: The uploaded file data
-                  format: binary
-                longSentenceWordCount:
-                  type: integer
-                  description: Optional setting what constitutes a long sentence (default
-                    25)
-                  format: int32
-                veryLongSentenceWordCount:
-                  type: integer
-                  description: Optional setting what constitutes a very long sentence
-                    (default 30)
-                  format: int32
-        required: true
-      responses:
-        200:
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NewDocumentResponse'
-        405:
-          description: Invalid input
-          content: {}
-        413:
-          description: The document exceeds the maximum supported file size (15mb)
-          content: {}
+    # post:
+    #   tags:
+    #   - Documents
+    #   summary: Upload a document
+    #   description: "Upload a document to your VisibleThread account. \nWe return a\
+    #     \ JSON response that contains a \"docId\" that represents your document. \
+    #     \       \nYou can use this id in other requests to check on the analysis status\
+    #     \ for the document and run a dictionary search and retrieve search\nresults. "
+    #   operationId: uploadDoc
+    #   requestBody:
+    #     description: Request payload to upload document
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           required:
+    #           - file
+    #           properties:
+    #             file:
+    #               type: string
+    #               description: The uploaded file data
+    #               format: binary
+    #             longSentenceWordCount:
+    #               type: integer
+    #               description: Optional setting what constitutes a long sentence (default
+    #                 25)
+    #               format: int32
+    #             veryLongSentenceWordCount:
+    #               type: integer
+    #               description: Optional setting what constitutes a very long sentence
+    #                 (default 30)
+    #               format: int32
+    #     required: true
+    #   responses:
+    #     200:
+    #       description: Successful response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/NewDocumentResponse'
+    #     405:
+    #       description: Invalid input
+    #       content: {}
+    #     413:
+    #       description: The document exceeds the maximum supported file size (15mb)
+    #       content: {}
   /documents/{docId}:
     get:
       tags:
@@ -128,32 +128,32 @@ paths:
         200:
           description: Successful response
           content: {}
-    post:
-      tags:
-      - Documents
-      summary: Upload a dictionary (CSV)
-      description: 'Upload a dictionary (CSV format) to your VisibleThread account. '
-      operationId: uploadDictionary
-      requestBody:
-        description: Request payload to upload dictionary
-        content:
-          multipart/form-data:
-            schema:
-              required:
-              - file
-              properties:
-                file:
-                  type: string
-                  description: The uploaded CSV dictionary
-                  format: binary
-        required: true
-      responses:
-        200:
-          description: Successful response
-          content: {}
-        405:
-          description: Invalid input
-          content: {}
+    # post:
+    #   tags:
+    #   - Documents
+    #   summary: Upload a dictionary (CSV)
+    #   description: 'Upload a dictionary (CSV format) to your VisibleThread account. '
+    #   operationId: uploadDictionary
+    #   requestBody:
+    #     description: Request payload to upload dictionary
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           required:
+    #           - file
+    #           properties:
+    #             file:
+    #               type: string
+    #               description: The uploaded CSV dictionary
+    #               format: binary
+    #     required: true
+    #   responses:
+    #     200:
+    #       description: Successful response
+    #       content: {}
+    #     405:
+    #       description: Invalid input
+    #       content: {}
   /searches:
     get:
       tags:
@@ -774,4 +774,3 @@ components:
       name: apiKey
       description: All requests on the VisibleThread API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `apiKey`
       in: header
-      x-ballerina-apikey-description: "Provide your API key as `apiKey`. Eg: `{\"apiKey\" : \"<your API key >\"}`"

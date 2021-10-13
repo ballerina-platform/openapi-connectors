@@ -37038,7 +37038,7 @@ paths:
           maxLength: 5000
           type: string
         style: simple
-
+        description: Coupon Id
       responses:
         '200':
           content:

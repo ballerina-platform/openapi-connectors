@@ -271,7 +271,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "namsor"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerinai", name = "observe"}

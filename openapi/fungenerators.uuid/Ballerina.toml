@@ -1,11 +1,10 @@
 [package]
-org = "ballerinax"
-name = "fungenerators.uuid"
-version = "1.0.0-SNAPSHOT"
-authors = ["Ballerina"]
 license = ["Apache-2.0"]
 keywords = ["IT Operations/Cloud Services", "Cost/Paid"]
+org = "ballerinax"
+name = "fungenerators.uuid"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "1.0.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

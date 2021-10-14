@@ -4,8 +4,7 @@ keywords = ["Education/eLearning", "Cost/Freemium"]
 org = "ballerinax"
 name = "mathtools.numbers"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 authors = ["Ballerina"]
-
 [build-options]
 observabilityIncluded = true

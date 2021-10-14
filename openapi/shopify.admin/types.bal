@@ -164,6 +164,12 @@ public type DiscountApplication record {
     string? value_type?;
 };
 
+# The ID of the physical location where the transaction was processed.
+public type LocationID record {
+    # The ID of the physical location where the transaction was processed.
+    int? id?;
+};
+
 # The Product resource lets you update and create products in a merchant's store.
 public type Product record {
     # An unsigned 64-bit integer that's used as a unique identifier for the product. Each id is unique across the Shopify system. No two products will have the same id, even if they're from different shops.
@@ -206,6 +212,20 @@ public type CreateOrder record {
     Order? 'order?;
 };
 
+# An adjustment on the transaction showing the amount lost or gained due to fluctuations in the currency exchange rate. Requires the header X-Shopify-Api-Features = include-currency-exchange-adjustments.
+public type CurrencyExchangeAdjustment record {
+    # The ID of the adjustment.
+    string? ID?;
+    # The difference between the amounts on the associated transaction and the parent transaction.
+    string? adjustment?;
+    # The amount of the parent transaction in the shop currency.
+    string? original_amount?;
+    # The amount of the associated transaction in the shop currency.
+    string? final_amount?;
+    # The shop currency.
+    string? currency?;
+};
+
 # The price of the shipping method in both shop and presentment currencies after line-level discounts have been applied.
 public type DiscountedPriceSet record {
     # The price object
@@ -228,9 +248,23 @@ public type TotalPriceSet record {
     Price? presentment_money?;
 };
 
+# The Transaction object.
+public type TransactionObject record {
+    # Transactions are created for every order that results in an exchange of money. There are five types of transactions. (Authorization: An amount reserved against the cardholder's funding source. Money does not change hands until the authorization is captured, Sale: An authorization and capture performed together in a single step, Capture: A transfer of the money that was reserved during the authorization stage, Void: A cancellation of a pending authorization or capture, Refund: A partial or full return of captured funds to the cardholder. A refund can happen only after a capture is processed.)
+    Transaction? 'transaction?;
+};
+
 public type ProductObject record {
     # The Product resource lets you update and create products in a merchant's store.
     Product? product?;
+};
+
+# The attributes associated with a Shopify Payments refund.
+public type PaymentsRefundAttributes record {
+    # The current status of the refund. Valid values are pending, failure, success, and error.
+    string? status?;
+    # A unique number associated with the transaction that can be used to track the refund. This property has a value only for transactions completed with Visa or Mastercard.
+    string? acquirer_reference_number?;
 };
 
 # The marketing consent information when the customer consented to receiving marketing material by SMS. The phone property is required to create a customer with SMS consent information and to perform an SMS update on a customer that doesn't have a phone number recorded. The customer must have a unique phone number associated to the record.
@@ -243,6 +277,26 @@ public type SmsMarketingConsent record {
     string? consent_updated_at?;
     # The source for whether the customer has consented to receive marketing material by SMS.
     string? consent_collected_from?;
+};
+
+# The discount applied to the line item or the draft order object. Each draft order object can have one applied_discount object and each draft order line item can have its own applied_discount.
+public type AppliedDiscount record {
+    # Title of the discount.
+    string? title?;
+    # Reason for the discount.
+    string? description?;
+    # The value of the discount. If the type of discount is fixed_amount, then it corresponds to a fixed dollar amount. If the type is percentage, then it corresponds to percentage.
+    string? value?;
+    # The type of discount. Valid values are percentage, fixed_amount.
+    string? value_type?;
+    # The applied amount of the discount, based on the setting of value_type. For more information, see Applying discounts.
+    string? amount?;
+};
+
+# The Draft order object.
+public type DraftOrderObject record {
+    # An order is a customer's request to purchase one or more products from a shop. You can create, retrieve, update, and delete orders using the Order resource.
+    DraftOrder? draft_order?;
 };
 
 # The variant's presentment prices and compare-at prices in each of the shop's enabled presentment currencies.
@@ -427,12 +481,32 @@ public type UpdateCustomer record {
     Customer? customer?;
 };
 
+# The Transaction object to be created.
+public type CreateTransaction record {
+    # Transactions are created for every order that results in an exchange of money. There are five types of transactions. (Authorization: An amount reserved against the cardholder's funding source. Money does not change hands until the authorization is captured, Sale: An authorization and capture performed together in a single step, Capture: A transfer of the money that was reserved during the authorization stage, Void: A cancellation of a pending authorization or capture, Refund: A partial or full return of captured funds to the cardholder. A refund can happen only after a capture is processed.)
+    Transaction? 'transaction?;
+};
+
+# The Draft order object to be created.
+public type CreateDraftOrder record {
+    # An order is a customer's request to purchase one or more products from a shop. You can create, retrieve, update, and delete orders using the Order resource.
+    DraftOrder? draft_order?;
+};
+
 # A text field that provides information about the receipt
 public type Receipt record {
     # Whether the fulfillment was a testcase.
     boolean? testcase?;
     # The authorization code.
     string? authorization?;
+};
+
+# The attributes associated with a Shopify Payments extended authorization period.
+public type ExtendedAuthorizationAttributes record {
+    # The date and time (ISO 8601 format) when the standard authorization period expires. After expiry, an extended authorization fee is applied upon capturing the payment.
+    string? standard_authorization_expires_at?;
+    # The date and time (ISO 8601 format) when the extended authorization period expires. After expiry, the merchant can't capture the payment.
+    string? extended_authorization_expires_at?;
 };
 
 # The current total duties charged on the order in shop and presentment currencies. The amount values associated with this field reflect order edits, returns, and refunds.
@@ -534,6 +608,56 @@ public type Refund record {
     int? user_id?;
 };
 
+# Transactions are created for every order that results in an exchange of money. There are five types of transactions. (Authorization: An amount reserved against the cardholder's funding source. Money does not change hands until the authorization is captured, Sale: An authorization and capture performed together in a single step, Capture: A transfer of the money that was reserved during the authorization stage, Void: A cancellation of a pending authorization or capture, Refund: A partial or full return of captured funds to the cardholder. A refund can happen only after a capture is processed.)
+public type Transaction record {
+    # The amount of money included in the transaction. If you don't provide a value for `amount`, then it defaults to the total cost of the order (even if a previous transaction has been made towards it).
+    string? amount?;
+    # The authorization code associated with the transaction.
+    string? authorization?;
+    # The date and time (ISO 8601 format) when the Shopify Payments authorization expires.
+    string? authorization_expires_at?;
+    # The date and time (ISO 8601 format) when the transaction was created.
+    string? created_at?;
+    # The three-letter code (ISO 4217 format) for the currency used for the payment.
+    string? currency?;
+    # The ID for the device.
+    int? device_id?;
+    # A standardized error code, independent of the payment provider.
+    string? error_code?;
+    # The attributes associated with a Shopify Payments extended authorization period.
+    ExtendedAuthorizationAttributes? extended_authorization_attributes?;
+    # The name of the gateway the transaction was issued through. A list of gateways can be found on Shopify's payment gateways page.
+    string? gateway?;
+    # The ID for the transaction.
+    int? id?;
+    # The transaction's type.
+    string? kind?;
+    # The ID of the physical location where the transaction was processed.
+    LocationID? location_id?;
+    # A string generated by the payment provider with additional information about why the transaction succeeded or failed.
+    string? message?;
+    # The ID for the order that the transaction is associated with.
+    int? order_id?;
+    # Information about the credit card used for this transaction.
+    PaymentDetails? payment_details?;
+    # The ID of an associated transaction.
+    int? parent_id?;
+    # The attributes associated with a Shopify Payments refund.
+    PaymentsRefundAttributes? payments_refund_attributes?;
+    # The date and time (ISO 8601 format) when a transaction was processed. This value is the date that's used in the analytic reports. By default, it matches the created_at value. If you're importing transactions from an app or another platform, then you can set processed_at to a date and time in the past to match when the original transaction was processed.
+    string? processed_at?;
+    # The origin of the transaction. This is set by Shopify and can't be overridden. Example values are web, pos, iphone, and android.
+    string? source_name?;
+    # The status of the transaction. Valid values are pending, failure, success, and error.
+    string? status?;
+    # Whether the transaction is a test transaction.
+    boolean? test?;
+    # The ID for the user who was logged into the Shopify POS device when the order was processed, if applicable.
+    int? user_id?;
+    # An adjustment on the transaction showing the amount lost or gained due to fluctuations in the currency exchange rate. Requires the header X-Shopify-Api-Features = include-currency-exchange-adjustments.
+    CurrencyExchangeAdjustment? currency_exchange_adjustment?;
+};
+
 # The price object
 public type Price record {
     # The variant's price or compare-at price in the presentment currency.
@@ -558,6 +682,12 @@ public type OriginalTotalDutiesSet record {
     Price? presentment_money?;
 };
 
+# The Refund object.
+public type RefundObject record {
+    # Schedule associated to the payment terms
+    Refund? refund?;
+};
+
 # The custom properties that a shop owner uses to define product variants. You can define three options for a product variant are option1, option2, option3. Default value is Default Title. The title field is a concatenation of the option1, option2, and option3 fields. Updating the option fields updates the title field.
 public type Option record {
     # Option 1
@@ -566,6 +696,26 @@ public type Option record {
     string? option2?;
     # Option 3
     string? option3?;
+};
+
+# Information about the credit card used for this transaction.
+public type PaymentDetails record {
+    # The issuer identification number (IIN), formerly known as bank identification number (BIN) of the customer's credit card. This is made up of the first few digits of the credit card number.
+    string? credit_card_bin?;
+    # The response code from the address verification system. The code is always a single letter.
+    string? avs_result_code?;
+    # The response code from the credit card company indicating whether the customer entered the card security code, or card verification value, correctly. The code is a single letter or empty string.
+    string? cvv_result_code?;
+    # The customer's credit card number, with most of the leading digits redacted.
+    string? credit_card_number?;
+    # The name of the company that issued the customer's credit card.
+    string? credit_card_company?;
+};
+
+# The Order object to be updated.
+public type UpdateOrder record {
+    # An order is a customer's request to purchase one or more products from a shop. You can create, retrieve, update, and delete orders using the Order resource.
+    Order? 'order?;
 };
 
 # An ordered list of amounts allocated by discount applications. Each discount allocation is associated with a particular discount application.
@@ -623,6 +773,72 @@ public type UpdateProduct record {
     Product? product?;
 };
 
+# An order is a customer's request to purchase one or more products from a shop. You can create, retrieve, update, and delete orders using the Order resource.
+public type DraftOrder record {
+    # The ID of the draft order.
+    int? id?;
+    # The ID of the order that 's created and associated with the draft order after the draft order is completed.
+    DraftOrderID? order_id?;
+    # Name of the draft order.
+    string? name?;
+    # The Customer resource stores information about a shop's customers, such as their contact details, their order history, and whether they've agreed to receive email marketing.
+    Customer? customer?;
+    # The mailing address associated with the payment method. This address is an optional field that won't be available on orders that do not require a payment method.
+    CustomerAddress? shipping_address?;
+    # The mailing address associated with the payment method. This address is an optional field that won't be available on orders that do not require a payment method.
+    CustomerAddress? billing_address?;
+    # The text of an optional note that a shop owner can attach to the draft order.
+    string? note?;
+    # Extra information that is added to the order. Appears in the Additional details section of an order details page. Each array entry must contain a hash with name and value keys.
+    NoteAttribute[]? note_attributes?;
+    # The customer's email address.
+    string? email?;
+    # The three letter code (ISO 4217 format) for the currency used for the payment.
+    string? currency?;
+    # The date and time (ISO 8601 format) when the invoice was emailed to the customer.
+    string? invoice_sent_at?;
+    # The URL for the invoice.
+    string? invoice_url?;
+    # Product variant line item or custom line item associated to the draft order. Each draft order must include at least one line_item.
+    LineItem[]? line_items?;
+    # The terms and conditions under which a payment should be processed.
+    PaymentTerms? payment_terms?;
+    # A shipping_line object, which details the shipping method used.
+    DraftOrderShippingLine? shipping_line?;
+    # A comma-seperated list of additional short descriptors, commonly used for filtering and searching. Each individual tag is limited to 40 characters in length. For example, tags are "tag1","tag2","tag3".
+    string? tags?;
+    # Whether taxes are exempt for the draft order. If set to false, then Shopify refers to the taxable field for each line_item. If a customer is applied to the draft order, then Shopify uses the customer's tax_exempt field instead.
+    boolean? tax_exempt?;
+    # Whether the customer is exempt from paying specific taxes on their order. Canadian taxes only.
+    string[]? tax_exemptions?;
+    # An array of tax line objects, each of which details a tax applicable to the order. When creating an order through the API, tax lines can be specified on the order or the line items but not both. Tax lines specified on the order are split across the taxable line items in the created order.
+    TaxLine[]? tax_lines?;
+    # The discount applied to the line item or the draft order object. Each draft order object can have one applied_discount object and each draft order line item can have its own applied_discount.
+    AppliedDiscount? applied_discount?;
+    # Whether taxes are included in the order subtotal. Valid values are true or false.
+    boolean? taxes_included?;
+    # The sum of all the taxes applied to the order.
+    string? total_tax?;
+    # The price of the order before shipping and taxes.
+    string? subtotal_price?;
+    # The sum of all the prices of all the items in the order, taxes and discounts included.
+    string? total_price?;
+    # The date and time (ISO 8601 format) when the order is created and the draft order is completed.
+    string? completed_at?;
+    # The date and time (ISO 8601 format) when the order was created in Shopify.
+    string? created_at?;
+    # The date and time (ISO 8601 format) when the order was last modified.
+    string? updated_at?;
+    # The status of a draft order as it transitions into an order. When a draft order is created it is set to open status. The invoice can then be sent to the customer, and status changes to invoice_sent. The draft order can then be paid, set to pending, or paid by credit card. In each case, the draft order is set to completed and an order is created. After a draft order is set to completed the only further modifications that can be made are adding tags or metafields.
+    string? status?;
+};
+
+# The ID of the order that 's created and associated with the draft order after the draft order is completed.
+public type DraftOrderID record {
+    # The ID of the order that 's created and associated with the draft order after the draft order is completed.
+    int? id?;
+};
+
 # Products are easier to sell if customers can see pictures of them, which is why there are product images.
 public type ProductImage record {
     # The date and time when the product image was created. The API returns this value in ISO 8601 formatting.
@@ -651,6 +867,16 @@ public type TotalTaxSet record {
     Price? shop_money?;
     # The price object
     Price? presentment_money?;
+};
+
+# A shipping_line object, which details the shipping method used.
+public type DraftOrderShippingLine record {
+    # The handle of the shipping rate which was selected and applied. Required for regular shipping lines.
+    string? 'handle?;
+    # The title of the shipping method. Required for custom shipping lines. (maximum 255 characters)
+    string? title?;
+    # The price of the shipping method. Required for custom shipping lines.
+    decimal? price?;
 };
 
 public type OrderObject record {
@@ -691,7 +917,7 @@ public type CustomerList record {
 # Tax line object, which details a tax applicable to the order.
 public type TaxLine record {
     # The amount of tax to be charged in the shop currency.
-    decimal? price?;
+    string? price?;
     # The rate of tax to be applied.
     decimal? rate?;
     # The name of the tax.
@@ -737,6 +963,14 @@ public type DiscountApplications DiscountApplication[]?;
 public type ProductVariantList record {
     # A list of product variants
     ProductVariant[]? variants?;
+};
+
+# Specify how much shipping to refund.
+public type Shipping record {
+    # Set a specific amount to refund for shipping. Takes precedence over full_refund.
+    decimal? amount?;
+    # Whether to refund all remaining shipping.
+    boolean? full_refund?;
 };
 
 # A variant can be added to a Product resource to represent one version of a product with several options. The Product resource will have a variant for every possible combination of its options. Each product can have a maximum of three options and a maximum of 100 variants.
@@ -969,6 +1203,18 @@ public type NoteAttribute record {
     string? value?;
 };
 
+# Line item IDs, quantities to refund, and restock instructions.
+public type RefundLineItemObject record {
+    # The quantity to refund.
+    int? quantity?;
+    # The ID of the location where the items should be restocked. This is required when the value of restock_type is return or cancel. If the item is not already stocked at the location, then the item is connected to the location. An error is returned when the item is connected to a fulfillment service location and a different location is provided.
+    int? location_id?;
+    # The ID of a line item to refund.
+    int? line_item_id?;
+    # How this refund line item affects inventory levels. Valid values are no_restock, cancel, and return.
+    string? restock_type?;
+};
+
 # The variant's presentment prices and compare-at prices in each of the shop's enabled presentment currencies.
 public type PresentmentPrice record {
     # The price object
@@ -981,6 +1227,24 @@ public type PresentmentPrice record {
 public type ProductList record {
     # A list of products
     Product[]? customers?;
+};
+
+# Schedule associated to the payment terms
+public type RefundRequest record {
+    # The three-letter code (ISO 4217 format) for the currency used for the refund.
+    string? currency?;
+    # An optional comment that explains a discrepancy between calculated and actual refund amounts. Used to populate the reason property of the resulting order adjustment object attached to the refund. Valid values are restock, damage, customer, and other.
+    string? discrepancy_reason?;
+    # An optional note attached to a refund.
+    string? note?;
+    # Whether to send a refund notification to the customer.
+    boolean? notify?;
+    # A list of line item IDs, quantities to refund, and restock instructions.
+    RefundLineItemObject[]? refund_line_items?;
+    # Specify how much shipping to refund.
+    Shipping? shipping?;
+    # A list of transactions to process as refunds.
+    Transaction[]? transactions?;
 };
 
 # The current subtotal price of the order in shop and presentment currencies. The amount values associated with this field reflect order edits, returns, and refunds.
@@ -1003,6 +1267,12 @@ public type SubtotalPriceSet record {
     Price? shop_money?;
     # The price object
     Price? presentment_money?;
+};
+
+# The Refund object to be created.
+public type CreateRefund record {
+    # Schedule associated to the payment terms
+    RefundRequest? refund?;
 };
 
 # A list of order fulfillments

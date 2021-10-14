@@ -296,6 +296,35 @@ public isolated client class Client {
         OrderObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderObject);
         return response;
     }
+    # Retrieves a specific order.
+    #
+    # + orderId - Order ID 
+    # + fields - A comma-separated list of fields to include in the response. 
+    # + return - Requested order 
+    remote isolated function getOrder(string orderId, string? fields = ()) returns OrderObject|error {
+        string path = string `/admin/api/2021-10/orders/${orderId}.json`;
+        map<anydata> queryParam = {"fields": fields};
+        path = path + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        OrderObject response = check self.clientEp->get(path, accHeaders, targetType = OrderObject);
+        return response;
+    }
+    # Updates an existing order.
+    #
+    # + orderId - Order ID 
+    # + payload - The Order object to be updated. 
+    # + return - Updated order 
+    remote isolated function updateOrder(string orderId, UpdateOrder payload) returns OrderObject|error {
+        string path = string `/admin/api/2021-10/orders/${orderId}.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        OrderObject response = check self.clientEp->put(path, request, headers = accHeaders, targetType = OrderObject);
+        return response;
+    }
     # Retrieves fulfillments associated with an order.
     #
     # + orderId - Order ID 
@@ -329,6 +358,57 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody);
         OrderFulfillmentObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderFulfillmentObject);
+        return response;
+    }
+    # Creates a draft order.
+    #
+    # + customerId - Used to load the customer. When a customer is loaded, the customer’s email address is also associated. 
+    # + useCustomerDefaultAddress - An optional boolean that you can send as part of a draft order object to load customer shipping information. Valid values: true or false. 
+    # + payload - The Draft order object to be created. 
+    # + return - Created draft order. 
+    remote isolated function createDraftOrder(CreateDraftOrder payload, string? customerId = (), boolean? useCustomerDefaultAddress = ()) returns DraftOrderObject|error {
+        string path = string `/admin/api/2021-10/draft_orders.json`;
+        map<anydata> queryParam = {"customer_id": customerId, "use_customer_default_address": useCustomerDefaultAddress};
+        path = path + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        DraftOrderObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = DraftOrderObject);
+        return response;
+    }
+    # Creates a transaction for an order.
+    #
+    # + orderId - Order ID 
+    # + 'source - The origin of the transaction. Set to external to create a cash transaction for the associated order. 
+    # + payload - The Transaction object to be created. 
+    # + return - Created transaction. 
+    remote isolated function createTransactionForOrder(string orderId, CreateTransaction payload, string? 'source = ()) returns TransactionObject|error {
+        string path = string `/admin/api/2021-10/orders/${orderId}/transactions.json`;
+        map<anydata> queryParam = {"source": 'source};
+        path = path + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        TransactionObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = TransactionObject);
+        return response;
+    }
+    # Creates a refund.
+    #
+    # + orderId - Order ID 
+    # + payload - The Refund object to be created. 
+    # + return - Created refund. 
+    remote isolated function createRefundForOrder(string orderId, CreateRefund payload) returns RefundObject|error {
+        string path = string `/admin/api/2021-10/orders/${orderId}/refunds.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody);
+        RefundObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = RefundObject);
         return response;
     }
 }

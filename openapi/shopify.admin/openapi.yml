@@ -1243,6 +1243,59 @@ paths:
               schema: 
                 $ref: '#/components/schemas/OrderObject'
       operationId: "create_order"
+  /admin/api/2021-10/orders/{order_id}.json:
+    get:
+      summary: "Retrieves a specific order."
+      description: "https://shopify.dev/docs/admin-api/rest/reference/orders/order#show-2021-10"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "fields"
+          description: "A comma-separated list of fields to include in the response."
+          schema: 
+            type: string
+          required: false
+      tags:
+        - "orders"
+      responses:
+        200:
+          description: "Requested order"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderObject'
+      operationId: "get_order"
+    put:
+      summary: "Updates an existing order."
+      description: "https://shopify.dev/docs/admin-api/rest/reference/orders/order#show-2021-10"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The Order object to be updated.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/UpdateOrder'
+      tags:
+        - "orders"
+      responses:
+        200:
+          description: "Updated order"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderObject'
+      operationId: "update_order"
   /admin/api/2021-10/orders/{order_id}/fulfillments.json:
     get:
       summary: "Retrieves fulfillments associated with an order."
@@ -1471,6 +1524,131 @@ paths:
               schema: 
                 $ref: '#/components/schemas/OrderFulfillmentObject'
       operationId: "create_order_fulfillment"
+  /admin/api/2021-10/draft_orders.json:
+    post:
+      summary: "Creates a draft order."
+      description: "https://shopify.dev/docs/admin-api/rest/reference/orders/draftorder#create-2021-10"
+      parameters:
+        - in: "query"
+          name: "customer_id"
+          description: "Used to load the customer. When a customer is loaded, the customer’s email address is also associated."
+          schema:
+            type: "string"
+          required: false
+        - in: "query"
+          name: "use_customer_default_address"
+          description: "An optional boolean that you can send as part of a draft order object to load customer shipping information. Valid values: true or false."
+          schema:
+            type: "boolean"
+          required: false
+      requestBody:
+        description: The Draft order object to be created. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateDraftOrder'
+      tags:
+        - "orders"
+      responses:
+        200:
+          description: "Created draft order."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/DraftOrderObject'
+      operationId: "create_draft_order"
+  /admin/api/2021-10/orders/{order_id}/transactions.json:
+    post:
+      summary: "Creates a transaction for an order."
+      description: "https://shopify.dev/docs/admin-api/rest/reference/orders/draftorder#create-2021-10"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: "string"
+          required: true
+        - in: "query"
+          name: "source"
+          description: "The origin of the transaction. Set to external to create a cash transaction for the associated order."
+          schema:
+            type: "string"
+          required: false
+      requestBody:
+        description: The Transaction object to be created. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateTransaction'
+      tags:
+        - "orders"
+      responses:
+        200:
+          description: "Created transaction."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/TransactionObject'
+      operationId: "create_transaction_for_order"
+  /admin/api/2021-10/orders/{order_id}/refunds.json:
+    post:
+      summary: "Creates a refund."
+      description: "https://shopify.dev/docs/admin-api/rest/reference/orders/refund#create-2021-10"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: "string"
+          required: true
+      requestBody:
+        description: The Refund object to be created. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateRefund'
+            examples:
+              example1:
+                value:
+                  refund:
+                    currency: "USD"
+                    notify: true
+                    note: "wrong size"
+                    shipping:
+                      full_refund: true
+                    refund_line_items:
+                      - line_item_id: 518995019
+                        quantity: 1
+                        restock_type: "return"
+                        location_id: 487838322
+                    transactions:
+                      - parent_id: 801038806
+                        amount: 41.94
+                        kind: "refund"
+                        gateway: "bogus"
+                summary: "Create a refund for an order"
+              example2:
+                value:
+                  refund:
+                    currency: "USD"
+                    shipping:
+                      amount: 5
+                    transactions:
+                      - parent_id: 801038806
+                        amount: 5
+                        kind: "refund"
+                        gateway: "bogus"
+                summary: "Refund a specific amount of shipping"
+      tags:
+        - "orders"
+      responses:
+        200:
+          description: "Created refund."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RefundObject'
+      operationId: "create_refund_for_order"
 
 components:
   schemas:
@@ -2766,6 +2944,18 @@ components:
           type: string
           description: The name of the payment method gateway.
       description: Schedule associated to the payment terms
+    CreateRefund:
+      type: object
+      properties: 
+        refund:
+          $ref: '#/components/schemas/RefundRequest'
+      description: The Refund object to be created.
+    RefundObject:
+      type: object
+      properties: 
+        refund:
+          $ref: '#/components/schemas/Refund'
+      description: The Refund object.
     Refund:
       type: object
       properties:
@@ -2799,6 +2989,34 @@ components:
         user_id:
           type: integer
           description: The unique identifier of the user who performed the refund.
+      description: Schedule associated to the payment terms
+    RefundRequest:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: The three-letter code (ISO 4217 format) for the currency used for the refund.
+        discrepancy_reason:
+          type: string
+          description: An optional comment that explains a discrepancy between calculated and actual refund amounts. Used to populate the reason property of the resulting order adjustment object attached to the refund. Valid values are restock, damage, customer, and other.
+        note:
+          type: string
+          description: An optional note attached to a refund.
+        notify:
+          type: boolean
+          description: Whether to send a refund notification to the customer.
+        refund_line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Refund_Line_Item_Object'
+          description: A list of line item IDs, quantities to refund, and restock instructions.
+        shipping:
+          $ref: '#/components/schemas/Shipping'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+          description: A list of transactions to process as refunds.
       description: Schedule associated to the payment terms
     OrderAdjustment:
       type: object
@@ -2906,7 +3124,7 @@ components:
       type: object
       properties:
         price: 
-          type: number
+          type: string
           description: The amount of tax to be charged in the shop currency.
         rate: 
           type: number
@@ -2969,8 +3187,328 @@ components:
       properties: 
         order:
           $ref: '#/components/schemas/Order'
-
-
+    UpdateOrder:
+      type: object
+      properties: 
+        order:
+          $ref: '#/components/schemas/Order'
+      description: The Order object to be updated.
+    CreateDraftOrder:
+      type: object
+      properties: 
+        draft_order:
+          $ref: '#/components/schemas/DraftOrder'
+      description: The Draft order object to be created.
+    DraftOrderObject:
+      type: object
+      properties: 
+        draft_order:
+          $ref: '#/components/schemas/DraftOrder'
+      description: The Draft order object.
+    DraftOrder:
+      type: object 
+      properties:
+        id:
+          type: integer
+          description: The ID of the draft order.
+        order_id:
+          $ref: '#/components/schemas/DraftOrderID'
+        name:
+          type: string
+          description: Name of the draft order.
+        customer:
+          $ref: '#/components/schemas/Customer'  
+        shipping_address:
+          $ref: '#/components/schemas/CustomerAddress'
+        billing_address:
+          $ref: '#/components/schemas/CustomerAddress'
+        note:
+          type: string
+          description: The text of an optional note that a shop owner can attach to the draft order.
+        note_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteAttribute'
+          description: Extra information that is added to the order. Appears in the Additional details section of an order details page. Each array entry must contain a hash with name and value keys.
+        email:
+          type: string
+          description: The customer's email address.
+        currency:
+          type: string
+          description: The three letter code (ISO 4217 format) for the currency used for the payment.
+        invoice_sent_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the invoice was emailed to the customer.
+        invoice_url:
+          type: string
+          description: The URL for the invoice.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Line_item' 
+          description: Product variant line item or custom line item associated to the draft order. Each draft order must include at least one line_item.
+        payment_terms:
+          $ref: '#/components/schemas/PaymentTerms'
+        shipping_line:
+          $ref: '#/components/schemas/DraftOrderShippingLine'
+        tags:
+          type: string
+          description: A comma-seperated list of additional short descriptors, commonly used for filtering and searching. Each individual tag is limited to 40 characters in length. For example, tags are "tag1","tag2","tag3".
+        tax_exempt:
+          type: boolean
+          description: Whether taxes are exempt for the draft order. If set to false, then Shopify refers to the taxable field for each line_item. If a customer is applied to the draft order, then Shopify uses the customer's tax_exempt field instead.
+        tax_exemptions:
+          type: array
+          items:
+            type: string
+          description: Whether the customer is exempt from paying specific taxes on their order. Canadian taxes only.
+        tax_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxLine'
+          description: An array of tax line objects, each of which details a tax applicable to the order. When creating an order through the API, tax lines can be specified on the order or the line items but not both. Tax lines specified on the order are split across the taxable line items in the created order.
+        applied_discount:
+          $ref: '#/components/schemas/AppliedDiscount'
+        taxes_included:
+          type: boolean
+          description: Whether taxes are included in the order subtotal. Valid values are true or false.
+        total_tax:
+          type: string
+          description: The sum of all the taxes applied to the order.
+        subtotal_price:
+          type: string
+          description: The price of the order before shipping and taxes.
+        total_price:
+          type: string
+          description: The sum of all the prices of all the items in the order, taxes and discounts included.
+        completed_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the order is created and the draft order is completed.
+        created_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the order was created in Shopify.
+        updated_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the order was last modified.
+        status:
+          type: string
+          description: The status of a draft order as it transitions into an order. When a draft order is created it is set to open status. The invoice can then be sent to the customer, and status changes to invoice_sent. The draft order can then be paid, set to pending, or paid by credit card. In each case, the draft order is set to completed and an order is created. After a draft order is set to completed the only further modifications that can be made are adding tags or metafields.
+      description: An order is a customer's request to purchase one or more products from a shop. You can create, retrieve, update, and delete orders using the Order resource.
+    DraftOrderID:
+      type: object 
+      properties:
+        id:
+          type: integer
+          description: The ID of the order that 's created and associated with the draft order after the draft order is completed.
+      description: The ID of the order that 's created and associated with the draft order after the draft order is completed.
+    DraftOrderShippingLine:
+      type: object
+      properties:
+        # custom:
+        #   type: string
+        #   description: Whether this is a regular shipping line or custom shipping line.
+        handle:
+          type: string
+          description: The handle of the shipping rate which was selected and applied. Required for regular shipping lines.
+        title:
+          type: string
+          description: The title of the shipping method. Required for custom shipping lines. (maximum 255 characters)
+        price:
+          type: number
+          description: The price of the shipping method. Required for custom shipping lines.
+      description: A shipping_line object, which details the shipping method used.
+    AppliedDiscount:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the discount.
+        description:
+          type: string
+          description: Reason for the discount.
+        value:
+          type: string
+          description: The value of the discount. If the type of discount is fixed_amount, then it corresponds to a fixed dollar amount. If the type is percentage, then it corresponds to percentage.
+        value_type:
+          type: string
+          description: The type of discount. Valid values are percentage, fixed_amount.
+        amount:
+          type: string
+          description: The applied amount of the discount, based on the setting of value_type. For more information, see Applying discounts.
+      description: The discount applied to the line item or the draft order object. Each draft order object can have one applied_discount object and each draft order line item can have its own applied_discount.
+    CreateTransaction:
+      type: object
+      properties: 
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+      description: The Transaction object to be created.
+    TransactionObject:
+      type: object
+      properties: 
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+      description: The Transaction object.
+    Transaction:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The amount of money included in the transaction. If you don't provide a value for `amount`, then it defaults to the total cost of the order (even if a previous transaction has been made towards it).
+        authorization:
+          type: string
+          description: The authorization code associated with the transaction.
+        authorization_expires_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the Shopify Payments authorization expires.
+        created_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the transaction was created.
+        currency:
+          type: string
+          description: The three-letter code (ISO 4217 format) for the currency used for the payment.
+        device_id:
+          type: integer
+          description: The ID for the device.
+        error_code:
+          type: string
+          description: A standardized error code, independent of the payment provider. 
+        extended_authorization_attributes:
+          $ref: '#/components/schemas/ExtendedAuthorizationAttributes'
+        gateway:
+          type: string
+          description: The name of the gateway the transaction was issued through. A list of gateways can be found on Shopify's payment gateways page.
+        id:
+          type: integer
+          description: The ID for the transaction.
+        kind:
+          type: string
+          description: The transaction's type. 
+        location_id:
+          $ref: '#/components/schemas/LocationID'
+        message:
+          type: string
+          description: A string generated by the payment provider with additional information about why the transaction succeeded or failed.
+        order_id:
+          type: integer
+          description: The ID for the order that the transaction is associated with.
+        payment_details:
+          $ref: '#/components/schemas/PaymentDetails'
+        parent_id:
+          type: integer
+          description: The ID of an associated transaction. 
+        payments_refund_attributes:
+          $ref: '#/components/schemas/PaymentsRefundAttributes'
+        processed_at:
+          type: string
+          description: The date and time (ISO 8601 format) when a transaction was processed. This value is the date that's used in the analytic reports. By default, it matches the created_at value. If you're importing transactions from an app or another platform, then you can set processed_at to a date and time in the past to match when the original transaction was processed.
+        # receipt:
+        #   $ref: '#/components/schemas/Receipt'
+        source_name:
+          type: string
+          description: The origin of the transaction. This is set by Shopify and can't be overridden. Example values are web, pos, iphone, and android.
+        status:
+          type: string
+          description: The status of the transaction. Valid values are pending, failure, success, and error.
+        test:
+          type: boolean
+          description: Whether the transaction is a test transaction.
+        user_id:
+          type: integer
+          description: The ID for the user who was logged into the Shopify POS device when the order was processed, if applicable.
+        currency_exchange_adjustment:
+          $ref: '#/components/schemas/CurrencyExchangeAdjustment'    
+      description: "Transactions are created for every order that results in an exchange of money. There are five types of transactions. (Authorization: An amount reserved against the cardholder's funding source. Money does not change hands until the authorization is captured, Sale: An authorization and capture performed together in a single step, Capture: A transfer of the money that was reserved during the authorization stage, Void: A cancellation of a pending authorization or capture, Refund: A partial or full return of captured funds to the cardholder. A refund can happen only after a capture is processed.)"
+    ExtendedAuthorizationAttributes:
+      type: object
+      properties:
+        standard_authorization_expires_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the standard authorization period expires. After expiry, an extended authorization fee is applied upon capturing the payment.
+        extended_authorization_expires_at:
+          type: string
+          description: The date and time (ISO 8601 format) when the extended authorization period expires. After expiry, the merchant can't capture the payment.
+      description: The attributes associated with a Shopify Payments extended authorization period. 
+    LocationID:
+      type: object 
+      properties:
+        id:
+          type: integer
+          description: The ID of the physical location where the transaction was processed.
+      description: The ID of the physical location where the transaction was processed.
+    PaymentDetails:
+      type: object 
+      properties:
+        credit_card_bin:
+          type: string
+          description: The issuer identification number (IIN), formerly known as bank identification number (BIN) of the customer's credit card. This is made up of the first few digits of the credit card number.
+        avs_result_code:
+          type: string
+          description: The response code from the address verification system. The code is always a single letter.
+        cvv_result_code:
+          type: string
+          description: The response code from the credit card company indicating whether the customer entered the card security code, or card verification value, correctly. The code is a single letter or empty string.
+        credit_card_number:
+          type: string
+          description: The customer's credit card number, with most of the leading digits redacted.
+        credit_card_company:
+          type: string
+          description: The name of the company that issued the customer's credit card.
+      description: Information about the credit card used for this transaction.
+    PaymentsRefundAttributes:
+      type: object 
+      properties:
+        status:
+          type: string
+          description: The current status of the refund. Valid values are pending, failure, success, and error.
+        acquirer_reference_number:
+          type: string
+          description: A unique number associated with the transaction that can be used to track the refund. This property has a value only for transactions completed with Visa or Mastercard.
+      description: The attributes associated with a Shopify Payments refund. 
+    CurrencyExchangeAdjustment:
+      type: object 
+      properties:
+        ID:
+          type: string
+          description: The ID of the adjustment.
+        adjustment:
+          type: string
+          description: The difference between the amounts on the associated transaction and the parent transaction.
+        original_amount:
+          type: string
+          description: The amount of the parent transaction in the shop currency.
+        final_amount:
+          type: string
+          description: The amount of the associated transaction in the shop currency.
+        currency:
+          type: string
+          description: The shop currency.
+      description: An adjustment on the transaction showing the amount lost or gained due to fluctuations in the currency exchange rate. Requires the header X-Shopify-Api-Features = include-currency-exchange-adjustments.
+    Refund_Line_Item_Object:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          description: The quantity to refund.
+        location_id:
+          type: integer
+          description: The ID of the location where the items should be restocked. This is required when the value of restock_type is return or cancel. If the item is not already stocked at the location, then the item is connected to the location. An error is returned when the item is connected to a fulfillment service location and a different location is provided.
+        line_item_id:
+          type: integer
+          description: The ID of a line item to refund.
+        restock_type:
+          type: string
+          description: How this refund line item affects inventory levels. Valid values are no_restock, cancel, and return.
+      description: Line item IDs, quantities to refund, and restock instructions.
+    Shipping:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Set a specific amount to refund for shipping. Takes precedence over full_refund.
+        full_refund:
+          type: boolean
+          description: Whether to refund all remaining shipping.
+      description: Specify how much shipping to refund.
 
   securitySchemes:
     api_token:

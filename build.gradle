@@ -122,19 +122,30 @@ task codeBuild {
 
     for (String path : updatedBallerinaPackages) {
         Utils.removeSnapshotSuffixFromVersion(path);
-        exec {
-            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
+        try {
+            exec {
+                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
+            }
+        } catch (Exception ex) {
+            print "Failed to build " + path + " connector. Error : " + ex.toString(); 
         }
+        
         Utils.addSnapshotSuffixToVersion(path);
     }
 
     for (String path : updatedBallerinaPackages) {
         if (!release) {
             Utils.removeSnapshotSuffixFromVersion(path);
-            exec {
-                workingDir "${path}"
-                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
+            try {
+                exec {
+                    workingDir "${path}"
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
+                }
             }
+            catch (Exception ex) {
+                print "Failed to push " + path + " connector. Error : " + ex.toString(); 
+            }
+
             Utils.addSnapshotSuffixToVersion(path);
         }
     }
@@ -144,11 +155,15 @@ task releaseConnector {
     if (project.hasProperty("release") ) {
         if(release){
             for (String path : updatedBallerinaPackages) {
-                Utils.removeSnapshotSuffixFromVersion(path);
-                print "Pushing to Ballerina central..."
-                exec {
-                    workingDir "${path}"
-                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push"
+                Utils.removeSnapshotSuffixFromVersion(path);           
+                try {
+                    exec {
+                        print "Pushing" + path + " to Ballerina central..."
+                        workingDir "${path}"
+                        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push"
+                    }
+                } catch (Exception ex) {
+                    print "Failed to push " + path + " connector to central. Error : " + ex.toString(); 
                 }
                 Utils.addSnapshotSuffixToVersion(path);
                 print "Updating Ballerina.toml version: "

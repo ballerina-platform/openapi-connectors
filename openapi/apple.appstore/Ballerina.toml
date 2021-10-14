@@ -4,8 +4,7 @@ keywords = ["Lifestyle & Entertainment/App Store", "Cost/Paid"]
 org = "ballerinax"
 name = "apple.appstore"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 authors = ["Ballerina"]
- 
 [build-options]
 observabilityIncluded = true

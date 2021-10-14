@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["Commerce/eCommerce", "Cost/Paid"]
 org = "ballerinax"
 name = "shippit"
-version = "1.0.0-SNAPSHOT"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["Commerce/eCommerce", "Cost/Paid"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "1.0.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["IT Operations/Cloud Services", "Cost/Free"]
 org = "ballerinax"
 name = "ocpi"
-version = "1.0.0-SNAPSHOT"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["IT Operations/Cloud Services", "Cost/Free"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "1.0.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

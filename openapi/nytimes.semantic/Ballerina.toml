@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free"]
 org = "ballerinax"
 name = "nytimes.semantic"
-version = "1.0.0-SNAPSHOT"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "1.0.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

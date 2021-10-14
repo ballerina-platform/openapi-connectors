@@ -4,7 +4,7 @@ keywords = ["Productivity/Task Management", "Cost/Freeemium"]
 org = "ballerinax"
 name = "trello"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

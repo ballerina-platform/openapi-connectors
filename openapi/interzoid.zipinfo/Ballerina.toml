@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["IT Operations/Cloud Services", "Cost/Freemium"]
 org = "ballerinax"
 name = "interzoid.zipinfo"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Freemium"]
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 authors = ["Ballerina"]
-
 [build-options]
 observabilityIncluded = true

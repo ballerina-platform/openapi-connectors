@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["Website & App Building/App Builders", "Cost/Freemium"]
 org = "ballerinax"
 name = "powertoolsdeveloper.collections"
-version = "1.0.0-SNAPSHOT"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["Website & App Building/App Builders", "Cost/Freemium"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "1.0.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

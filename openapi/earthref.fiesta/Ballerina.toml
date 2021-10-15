@@ -1,11 +1,10 @@
 [package]
-org = "ballerinax"
-name = "earthref.fiesta"
-version = "1.0.0-SNAPSHOT"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-authors = ["Ballerina"]
 license = ["Apache-2.0"]
 keywords = ["IT Operations/Geographic Information Systems", "Cost/Free"]
-
+org = "ballerinax"
+name = "earthref.fiesta"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

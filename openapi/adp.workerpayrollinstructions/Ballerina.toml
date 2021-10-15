@@ -1,11 +1,10 @@
 [package]
+license = ["Apache-2.0"]
+keywords = ["Human Resources/HRMS", "Cost/Paid"]
 org = "ballerinax"
 name = "adp.workerpayrollinstructions"
-version = "1.0.0-SNAPSHOT"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["Human Resources/HRMS", "Cost/Paid"]
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "1.0.1-SNAPSHOT"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

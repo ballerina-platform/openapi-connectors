@@ -273,15 +273,15 @@ modules = [
 
 [[package]]
 org = "ballerinax"
-name = "godday.certificates"
-version = "1.0.0"
+name = "godaddy.certificates"
+version = "1.0.1"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "url"},
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "godday.certificates", moduleName = "godday.certificates"}
+	{org = "ballerinax", packageName = "godaddy.certificates", moduleName = "godaddy.certificates"}
 ]
 
 

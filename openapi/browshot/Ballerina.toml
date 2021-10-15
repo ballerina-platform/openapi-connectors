@@ -4,7 +4,7 @@ keywords = ["IT Operations/Browser Tools", "Cost/Freemium"]
 org = "ballerinax"
 name = "browshot"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

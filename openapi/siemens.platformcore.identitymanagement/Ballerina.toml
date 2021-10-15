@@ -1,12 +1,11 @@
 [package]
-org = "ballerinax"
-name = "siemens.platformcore.identitymanagement"
-version = "1.0.0-SNAPSHOT"
-distribution = "slbeta3"
 license = ["Apache-2.0"]
 keywords = ["IT Operations/Security & Identity Tools", "Cost/Freemium"]
+org = "ballerinax"
+name = "siemens.platformcore.identitymanagement"
+distribution = "slbeta3"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.1-SNAPSHOT"
 authors = ["Ballerina"]
-
 [build-options]
 observabilityIncluded = true

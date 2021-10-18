@@ -1,0 +1,973 @@
+openapi: 3.0.0
+info:
+  title: Paypal Payments API
+  description: |
+    This is a generated connector for [Paypal Payments API v2](https://developer.paypal.com/docs/api/payments/v2/) OpenAPI specification.
+    Call the Payments API to authorize payments, capture authorized payments, refund payments that have already been captured, and show payment information. 
+    Use the Payments API in conjunction with the Orders API.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Paypal account](https://www.paypal.com) and obtain tokens by following [this guide](https://developer.paypal.com/docs/api/overview/#get-credentials).
+  x-ballerina-display:
+    label: Paypal Payments
+    iconPath: "icon.png"
+  version: "v2"
+security:
+- bearerAuth: []
+tags:
+  - name: payments
+paths:
+  /v2/payments/authorizations/{authorization_id}:
+    get:
+      summary: "Shows details for an authorized payment, by ID."
+      description: "https://developer.paypal.com/docs/api/payments/v2/#authorizations_get"
+      parameters:
+        - in: "path"
+          name: "authorization_id"
+          description: "The ID of the authorized payment for which to show details."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "count"
+          description: "The number of items to list in the response."
+          schema: 
+            type: integer
+          required: false
+        - in: "query"
+          name: "end_time"
+          description: "The end date and time for the range to show in the response, in Internet date and time format. For example, end_time=2016-03-06T11:00:00Z."
+          schema: 
+            type: integer
+          required: false
+        - in: "query"
+          name: "page"
+          description: "The page number indicating which set of items will be returned in the response. So, the combination of page=1 and page_size=20 returns the first 20 items. The combination of page=2 and page_size=20 returns items 21 through 40."
+          schema: 
+            type: integer
+          required: false
+        - in: "query"
+          name: "page_size"
+          description: "The number of items to return in the response."
+          schema: 
+            type: integer
+          required: false
+        - in: "query"
+          name: "total_count_required"
+          description: "Indicates whether to show the total count in the response."
+          schema: 
+            type: boolean
+          required: false
+        - in: "query"
+          name: "sort_by"
+          description: "Sorts the payments in the response by a specified value, such as the create time or update time."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "sort_order"
+          description: "Sorts the items in the response in ascending or descending order."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "start_id"
+          description: "The ID of the starting resource in the response. When results are paged, you can use the next_id value as the start_id to continue with the next set of results."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "start_index"
+          description: "The start index of the payments to list. Typically, you use the start_index to jump to a specific position in the resource history based on its cart. For example, to start at the second item in a list of results, specify ?start_index=2."
+          schema: 
+            type: integer
+          required: false
+        - in: "query"
+          name: "start_time"
+          description: "The start date and time for the range to show in the response, in Internet date and time format. For example, start_time=2016-03-06T11:00:00Z."
+          schema: 
+            type: string
+          required: false
+      tags:
+        - "payments"
+      responses:
+        200:
+          description: "Authorization details."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/AuthorizationDetails'
+      operationId: "get_authorization"
+  /v2/payments/authorizations/{authorization_id}/capture:
+    post:
+      summary: "Captures an authorized payment, by ID."
+      description: "https://developer.paypal.com/docs/api/payments/v2/#authorizations_capture"
+      parameters: 
+        - in: "path"
+          name: "authorization_id"
+          description: "The PayPal-generated ID for the authorized payment to capture."
+          schema:
+            type: string
+          required: true
+        - in: "header"
+          name: "PayPal-Request-Id"
+          description: "The server stores keys for 45 days."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "Prefer"
+          description: "The preferred server response upon successful completion of the request. Value is return=minimal or return=representation."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: The capture authorization request
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CaptureAuthorizationRequest'
+      tags:
+        - "payments"
+      responses:
+        201:
+          description: "Captured payment details"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CapturedPaymentDetails'
+      operationId: "capture_authorization"
+  /v2/payments/authorizations/{authorization_id}/reauthorize:
+    post:
+      summary: "Reauthorizes an authorized PayPal account payment, by ID. To ensure that funds are still available, reauthorize a payment after its initial three-day honor period expires. Within the 29-day authorization period, you can issue multiple re-authorizations after the honor period expires. If 30 days have transpired since the date of the original authorization, you must create an authorized payment instead of reauthorizing the original authorized payment. A reauthorized payment itself has a new honor period of three days. You can reauthorize an authorized payment once for up to 115% of the original authorized amount, not to exceed an increase of $75 USD."
+      description: "https://developer.paypal.com/docs/api/payments/v2/#authorizations_reauthorize"
+      parameters: 
+        - in: "path"
+          name: "authorization_id"
+          description: "The PayPal-generated ID for the authorized payment to capture."
+          schema:
+            type: string
+          required: true
+        - in: "header"
+          name: "PayPal-Request-Id"
+          description: "The server stores keys for 45 days."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "Prefer"
+          description: "The preferred server response upon successful completion of the request. Value is return=minimal or return=representation."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: The reauthorize authorization request
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/ReauthorizeAuthorizationRequest'
+      tags:
+        - "payments"
+      responses:
+        201:
+          description: "Reauthorized payment details"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ReauthorizedPaymentDetails'
+      operationId: "reauthorize_authorization"
+  /v2/payments/authorizations/{authorization_id}/void:
+    post:
+      summary: "Voids, or cancels, an authorized payment, by ID. You cannot void an authorized payment that has been fully captured."
+      description: "https://developer.paypal.com/docs/api/payments/v2/#authorizations_void"
+      parameters: 
+        - in: "path"
+          name: "authorization_id"
+          description: "The PayPal-generated ID for the authorized payment to capture."
+          schema:
+            type: string
+          required: true
+        - in: "header"
+          name: "PayPal-Auth-Assertion"
+          description: "An API-caller-provided JSON Web Token (JWT) assertion that identifies the merchant. For details, see PayPal-Auth-Assertion. For three party transactions in which a partner is managing the API calls on behalf of a merchant, the partner must identify the merchant using either a PayPal-Auth-Assertion header or an access token with target_subject."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "payments"
+      responses:
+        204:
+          description: "No JSON response body"
+      operationId: "void_authorization"
+  /v2/payments/captures/{capture_id}:
+    get:
+      summary: "Shows details for a captured payment, by ID."
+      description: "https://developer.paypal.com/docs/api/payments/v2/#captures_get"
+      parameters:
+        - in: "path"
+          name: "capture_id"
+          description: "The PayPal-generated ID for the captured payment for which to show details."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "payments"
+      responses:
+        200:
+          description: "Captured payment details."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CapturedPaymentDetails'
+      operationId: "get_captures"
+  /v2/payments/captures/{capture_id}/refund:
+    post:
+      summary: "Refunds a captured payment, by ID. For a full refund, include an empty payload in the JSON request body. For a partial refund, include an amount object in the JSON request body."
+      description: "https://developer.paypal.com/docs/api/payments/v2/#captures_refund"
+      parameters: 
+        - in: "path"
+          name: "capture_id"
+          description: "The PayPal-generated ID for the captured payment for which to show details."
+          schema:
+            type: string
+          required: true
+        - in: "header"
+          name: "PayPal-Auth-Assertion"
+          description: "An API-caller-provided JSON Web Token (JWT) assertion that identifies the merchant. For details, see PayPal-Auth-Assertion. For three party transactions in which a partner is managing the API calls on behalf of a merchant, the partner must identify the merchant using either a PayPal-Auth-Assertion header or an access token with target_subject."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "PayPal-Request-Id"
+          description: "The server stores keys for 45 days."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "Prefer"
+          description: "The preferred server response upon successful completion of the request. Value is return=minimal or return=representation."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: The refund capture request
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/RefundCaptureRequest'
+      tags:
+        - "payments"
+      responses:
+        201:
+          description: "Refund details"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RefundDetails'
+      operationId: "refund_captures"
+  /v2/payments/refunds/{refund_id}:
+    get:
+      summary: "Shows details for a refund, by ID."
+      description: "https://developer.paypal.com/docs/api/payments/v2/#refunds"
+      parameters:
+        - in: "path"
+          name: "refund_id"
+          description: "The PayPal-generated ID for the refund for which to show details."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "payments"
+      responses:
+        200:
+          description: "Refund details."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RefundDetails'
+      operationId: "get_refunds"
+
+components:
+  schemas:
+    AuthorizationDetails:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status for the authorized payment. The possible values are CREATED, CAPTURED, DENIED, EXPIRED, PARTIALLY_CAPTURED, PARTIALLY_CREATED, VOIDED, PENDING.
+        status_details:
+          $ref: '#/components/schemas/AuthorizationStatusDetails'
+        id:
+          type: string
+          description: The PayPal-generated ID for the authorized payment.
+        amount:
+          $ref: '#/components/schemas/Money'
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice number for this order. Appears in both the payer's transaction history and the emails that the payer receives.
+        custom_id:
+          type: string
+          description: The API caller-provided external ID. Used to reconcile API caller-initiated transactions with PayPal transactions. Appears in transaction and settlement reports.
+        seller_protection:
+          $ref: '#/components/schemas/SellerProtection'
+        expiration_time:
+          type: string
+          description: The date and time when the authorized payment expires, in Internet date and time format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of related HATEOAS links.
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+      description: Authorization details.
+    AuthorizationStatusDetails:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason why the authorized status is PENDING. The possible values are PENDING_REVIEW.
+      description: The details of the authorized order pending status.
+    Money:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount for this authorized payment.
+    SellerProtection:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Indicates whether the transaction is eligible for seller protection. For information, see PayPal Seller Protection for Merchants. The possible values are ELIGIBLE, PARTIALLY_ELIGIBLE, NOT_ELIGIBLE.
+        dispute_categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisputeCategory'
+          description: An array of conditions that are covered for the transaction.
+      description: The level of protection offered as defined by PayPal Seller Protection for Merchants.
+    DisputeCategory:
+      type: object
+      properties:
+        dispute_category:
+          type: string
+          description: The condition that is covered for the transaction. The possible values are ITEM_NOT_RECEIVED, UNAUTHORIZED_TRANSACTION.
+      description: The condition that is covered for the transaction.
+    LinkDescription:
+      type: object
+      required:
+        - "href"
+        - "rel"
+      properties:
+        href:
+          type: string
+          description: The complete target URL. To make the related call, combine the method with this URI Template-formatted link. For pre-processing, include the $, (, and ) characters. The href is the key HATEOAS component that links a completed call with a subsequent call.
+        rel:
+          type: string
+          description: The link relation type, which serves as an ID for a link that unambiguously describes the semantics of the link. See Link Relations.
+        method:
+          type: string
+          description: The HTTP method required to make the related call. Possible values are GET,POST,PUT,DELETE,HEAD,CONNECT,OPTIONS,PATCH.
+      description: Related HATEOAS links.
+    CaptureAuthorizationRequest:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice number for this order. Appears in both the payer's transaction history and the emails that the payer receives.
+        note_to_payer:
+          type: string
+          description: An informational note about this settlement. Appears in both the payer's transaction history and the emails that the payer receives.
+        amount:
+          $ref: '#/components/schemas/MoneyForCaptureAuthorizationRequest'
+        final_capture:
+          type: boolean
+          description: Indicates whether you can make additional captures against the authorized payment. Set to true if you do not intend to capture additional payments against the authorization. Set to false if you intend to capture additional payments against the authorization.
+        payment_instruction:
+          $ref: '#/components/schemas/PaymentInstruction'
+        soft_descriptor:
+          type: string
+          description: The payment descriptor on the payer's account statement.
+      description: Capture authorization request
+    MoneyForCaptureAuthorizationRequest:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount to capture. To capture a portion of the full authorized amount, specify an amount. If amount is not specified, the full authorized amount is captured. The amount must be a positive number and in the same currency as the authorization against which the payment is being captured.
+    PaymentInstruction:
+      type: object
+      properties:
+        platform_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformFee'
+          description: An array of various fees, commissions, tips, or donations. This field is only applicable to merchants that been enabled for PayPal Commerce Platform for Marketplaces and Platforms capability.
+        disbursement_mode:
+          type: string
+          description: The funds that are held on behalf of the merchant.
+        payee_pricing_tier_id:
+          type: string
+          description: This field is only enabled for selected merchants/partners to use and provides the ability to trigger a specific pricing rate/plan for a payment transaction. The list of eligible 'payee_pricing_tier_id' would be provided to you by your Account Manager. Specifying values other than the one provided to you by your account manager would result in an error.
+      description: Any additional payment instructions to be consider during payment processing. This processing instruction is applicable for Capturing an order or Authorizing an Order.
+    PlatformFee:
+      type: object
+      required:
+        - "amount"
+      properties:
+        amount:
+          $ref: '#/components/schemas/MoneyForPlatformFee'
+        payee:
+          $ref: '#/components/schemas/PayeeBase'
+      description: Various fees, commissions, tips, or donations. 
+    MoneyForPlatformFee:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The fee for this transaction.
+    PayeeBase:
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of merchant.
+        merchant_id:
+          type: string
+          description: The encrypted PayPal account ID of the merchant.
+      description: The recipient of the fee for this transaction. If you omit this value, the default is the API caller.
+    CapturedPaymentDetails:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of the captured payment. The possible values are COMPLETED, DECLINED, PARTIALLY_REFUNDED, PENDING, REFUNDED, FAILED.
+        status_details:
+          $ref: '#/components/schemas/CaptureStatusDetails'
+        id:
+          type: string
+          description: The PayPal-generated ID for the captured payment.
+        amount:
+          $ref: '#/components/schemas/MoneyForAmount'
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice number for this order. Appears in both the payer's transaction history and the emails that the payer receives.
+        custom_id:
+          type: string
+          description: The API caller-provided external ID. Used to reconcile API caller-initiated transactions with PayPal transactions. Appears in transaction and settlement reports.
+        seller_protection:
+          $ref: '#/components/schemas/SellerProtectionForCaptureAuthorizationResponse'
+        final_capture:
+          type: boolean
+          description: Indicates whether you can make additional captures against the authorized payment. Set to true if you do not intend to capture additional payments against the authorization. Set to false if you intend to capture additional payments against the authorization.
+        seller_receivable_breakdown:
+          $ref: '#/components/schemas/SellerReceivableBreakdown'
+        disbursement_mode:
+          type: string
+          description: The funds that are held on behalf of the merchant. The possible values are INSTANT, DELAYED.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of related HATEOAS links.
+        processor_response:
+          $ref: '#/components/schemas/ProcessorResponse'
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+      description: Captured payment details.
+    CaptureStatusDetails:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason why the captured payment status is PENDING or DENIED. The possible values are BUYER_COMPLAINT, CHARGEBACK, ECHECK, INTERNATIONAL_WITHDRAWAL, OTHER, PENDING_REVIEW, RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION, REFUNDED, TRANSACTION_APPROVED_AWAITING_FUNDING, UNILATERAL, VERIFICATION_REQUIRED.
+      description: The details of the captured payment status.
+    Amount:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason why the captured payment status is PENDING or DENIED. The possible values are BUYER_COMPLAINT, CHARGEBACK, ECHECK, INTERNATIONAL_WITHDRAWAL, OTHER, PENDING_REVIEW, RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION, REFUNDED, TRANSACTION_APPROVED_AWAITING_FUNDING, UNILATERAL, VERIFICATION_REQUIRED.
+      description: The amount for this captured payment.
+    MoneyForAmount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount for this captured payment.
+    SellerProtectionForCaptureAuthorizationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Indicates whether the transaction is eligible for seller protection. For information, see PayPal Seller Protection for Merchants. The possible values are ELIGIBLE, PARTIALLY_ELIGIBLE, NOT_ELIGIBLE.
+        dispute_categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisputeCategory'
+          description: An array of conditions that are covered for the transaction.
+      description: The level of protection offered as defined by PayPal Seller Protection for Merchants
+    SellerReceivableBreakdown:
+      type: object
+      required:
+        - "gross_amount"
+      properties:
+        gross_amount:
+          $ref: '#/components/schemas/MoneyForGrossAmount'
+        paypal_fee:
+          $ref: '#/components/schemas/MoneyForPaypalFee'
+        paypal_fee_in_receivable_currency:
+          $ref: '#/components/schemas/MoneyForPaypalFeeInReceivableCurrency'
+        net_amount:
+          $ref: '#/components/schemas/MoneyForNetAmount'
+        receivable_amount:
+          $ref: '#/components/schemas/MoneyForReceivableAmount'
+        exchange_rate:
+          $ref: '#/components/schemas/ExchangeRate'
+        platform_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformFeeForGrossAmount'
+          description: An array of platform or partner fees, commissions, or brokerage fees that associated with the captured payment.
+      description: The detailed breakdown of the capture activity. This is not available for transactions that are in pending state.
+    MoneyForGrossAmount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount for this captured payment in the currency of the transaction.
+    MoneyForPaypalFee:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The applicable fee for this captured payment in the currency of the transaction.
+    MoneyForPaypalFeeInReceivableCurrency:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The applicable fee for this captured payment in the receivable currency. Returned only in cases the fee is charged in the receivable currency. Example 'CNY'.
+    MoneyForReceivableAmount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The net amount that the payee receives for this captured payment in their PayPal account. The net amount is computed as gross_amount minus the paypal_fee minus the platform_fees.
+    MoneyForNetAmount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The net amount that is credited to the payee's PayPal account. Returned only when the currency of the captured payment is different from the currency of the PayPal account where the payee wants to credit the funds. The amount is computed as net_amount times exchange_rate. 
+    ExchangeRate:
+      type: object
+      properties:
+        source_currency:
+          type: string
+          description: The source currency from which to convert an amount.
+        target_currency:
+          type: string
+          description: The target currency to which to convert an amount.
+        value:
+          type: string
+          description: The target currency amount. Equivalent to one unit of the source currency. Formatted as integer or decimal value with one to 15 digits to the right of the decimal point. 
+      description: The exchange rate that determines the amount that is credited to the payee's PayPal account. Returned when the currency of the captured payment is different from the currency of the PayPal account where the payee wants to credit the funds.
+    PlatformFeeForGrossAmount:
+      type: object
+      required:
+        - "amount"
+      properties:
+        amount:
+          $ref: '#/components/schemas/MoneyForPlatformFee'
+        payee:
+          $ref: '#/components/schemas/PayeeBase'
+      description: Platform or partner fees, commissions, or brokerage fees that associated with the captured payment.
+    ProcessorResponse:
+      type: object
+      properties:
+        avs_code:
+          type: string
+          description: The address verification code for Visa, Discover, Mastercard, or American Express transactions.
+        cvv_code:
+          type: string
+          description: The card verification value code for for Visa, Discover, Mastercard, or American Express.
+        response_code:
+          type: string
+          description: Processor response code for the non-PayPal payment processor errors.
+        payment_advice_code:
+          type: string
+          description: The declined payment transactions might have payment advice codes. The card networks, like Visa and Mastercard, return payment advice codes.
+      description: An object that provides additional processor information for a direct credit card transaction. 
+    ReauthorizeAuthorizationRequest:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/MoneytForReauthorizeAuthorizationRequest'
+      description: Reauthorize authorization request
+    MoneytForReauthorizeAuthorizationRequest:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount to reauthorize for an authorized payment.
+    ReauthorizedPaymentDetails:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status for the authorized payment. The possible values are CREATED, CAPTURED, DENIED, EXPIRED, PARTIALLY_CAPTURED, PARTIALLY_CREATED, VOIDED, PENDING.
+        status_details:
+          $ref: '#/components/schemas/AuthorizationStatusDetails'        
+        id:
+          type: string
+          description: The PayPal-generated ID for the authorized payment.
+        amount:
+          $ref: '#/components/schemas/Money'
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice number for this order. Appears in both the payer's transaction history and the emails that the payer receives.
+        custom_id:
+          type: string
+          description: The API caller-provided external ID. Used to reconcile API caller-initiated transactions with PayPal transactions. Appears in transaction and settlement reports.
+        seller_protection:
+          $ref: '#/components/schemas/SellerProtection'
+        expiration_time:
+          type: string
+          description: The date and time when the authorized payment expires, in Internet date and time format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of related HATEOAS links.
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+      description: Reauthorized payment details.
+    RefundCaptureRequest:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/MoneyForRefundCaptureRequest'
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice number for this order. Appears in both the payer's transaction history and the emails that the payer receives.
+        note_to_payer:
+          type: string
+          description: The reason for the refund. Appears in both the payer's transaction history and the emails that the payer receives.
+      description: Refund capture request
+    MoneyForRefundCaptureRequest:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount to refund. To refund a portion of the captured amount, specify an amount. If amount is not specified, an amount equal to captured amount - previous refunds is refunded. The amount must be a positive number and in the same currency as the one in which the payment was captured.
+    RefundDetails:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of the refund. The possible values are CANCELLED, PENDING, COMPLETED.
+        status_details:
+          $ref: '#/components/schemas/RefundStatusDetails'        
+        id:
+          type: string
+          description: The PayPal-generated ID for the refund.
+        amount:
+          $ref: '#/components/schemas/MoneyForRefundDetails'
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice number for this order. Appears in both the payer's transaction history and the emails that the payer receives.
+        note_to_payer:
+          type: string
+          description: The reason for the refund. Appears in both the payer's transaction history and the emails that the payer receives.
+        seller_payable_breakdown:
+          $ref: '#/components/schemas/SellerPayableBreakdown'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of related HATEOAS links.
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+      description: Refund details.
+    RefundStatusDetails:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason why the refund has the PENDING or FAILED status. The possible values are ECHECK.
+      description: The details of the refund status.
+    MoneyForRefundDetails:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount that the payee refunded to the payer. 
+    SellerPayableBreakdown:
+      type: object
+      required:
+        - "gross_amount"
+      properties:
+        gross_amount:
+          $ref: '#/components/schemas/MoneyForGrossAmountForSellerPayableBreakdown'
+        paypal_fee:
+          $ref: '#/components/schemas/MoneyForPaypalFeeForSellerPayableBreakdown'
+        paypal_fee_in_receivable_currency:
+          $ref: '#/components/schemas/MoneyForPaypalFeeInReceivableCurrencyForSellerPayableBreakdown'
+        net_amount:
+          $ref: '#/components/schemas/MoneyForNetAmountForSellerPayableBreakdown'
+        net_amount_in_receivable_currency:
+          $ref: '#/components/schemas/MoneyForNetAmountInReceivableCurrencyForSellerPayableBreakdown'
+        platform_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformFeeForGrossAmountForSellerPayableBreakdown'
+          description: An array of platform or partner fees, commissions, or brokerage fees for the refund.
+        net_amount_breakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetAmountBreakdown'
+          description: An array of breakdown values for the net amount. Returned when the currency of the refund is different from the currency of the PayPal account where the payee holds their funds.
+        total_refunded_amount:
+          $ref: '#/components/schemas/TotalRefundedAmountForSellerPayableBreakdown'
+      description: The breakdown of the refund.
+    MoneyForGrossAmountForSellerPayableBreakdown:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The amount that the payee refunded to the payer.
+    MoneyForPaypalFeeForSellerPayableBreakdown:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The PayPal fee that was refunded to the payer in the currency of the transaction. This fee might not match the PayPal fee that the payee paid when the payment was captured.
+    MoneyForPaypalFeeInReceivableCurrencyForSellerPayableBreakdown:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The PayPal fee that was refunded to the payer in the receivable currency. Returned only in cases when the receivable currency is different from transaction currency. Example 'CNY'.
+    MoneyForNetAmountForSellerPayableBreakdown:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The net amount that the payee's account is debited in the transaction currency. The net amount is calculated as gross_amount minus paypal_fee minus platform_fees.
+    MoneyForNetAmountInReceivableCurrencyForSellerPayableBreakdown:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The net amount that the payee's account is debited in the receivable currency. Returned only in cases when the receivable currency is different from transaction currency. Example 'CNY'.
+    PlatformFeeForGrossAmountForSellerPayableBreakdown:
+      type: object
+      required:
+        - "amount"
+      properties:
+        amount:
+          $ref: '#/components/schemas/MoneyForPlatformFee'
+        payee:
+          $ref: '#/components/schemas/PayeeBase'
+      description: Platform or partner fees, commissions, or brokerage fees for the refund.
+    NetAmountBreakdown:
+      type: object
+      properties:
+        payable_amount:
+          $ref: '#/components/schemas/MoneyForPayableAmount'
+        converted_amount:
+          $ref: '#/components/schemas/MoneyForConvertedAmount'
+        exchange_rate:
+          $ref: '#/components/schemas/ExchangeRateForNetAmountBreakdown'
+      description: Breakdown value for the net amount. Returned when the currency of the refund is different from the currency of the PayPal account where the payee holds their funds.
+    MoneyForPayableAmount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The net amount debited from the merchant's PayPal account.
+    MoneyForConvertedAmount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The converted payable amount.
+    ExchangeRateForNetAmountBreakdown:
+      type: object
+      properties:
+        source_currency:
+          type: string
+          description: The source currency from which to convert an amount.
+        target_currency:
+          type: string
+          description: The target currency to which to convert an amount.
+        value:
+          type: string
+          description: The target currency amount. Equivalent to one unit of the source currency. Formatted as integer or decimal value with one to 15 digits to the right of the decimal point. 
+      description: The exchange rate that determines the amount that was debited from the merchant's PayPal account.
+    TotalRefundedAmountForSellerPayableBreakdown:
+      type: object
+      required:
+        - "amount"
+      properties:
+        amount:
+          $ref: '#/components/schemas/MoneyForPlatformFee'
+        payee:
+          $ref: '#/components/schemas/PayeeBase'
+      description: The total amount refunded from the original capture to date. For example, if a payer makes a $100 purchase and was refunded $20 a week ago and was refunded $30 in this refund, the gross_amount is $30 for this refund and the total_refunded_amount is $50.
+
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

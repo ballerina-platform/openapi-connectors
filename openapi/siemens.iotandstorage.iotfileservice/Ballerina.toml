@@ -1,0 +1,12 @@
+[package]
+org = "ballerinax"
+name = "siemens.iotandstorage.iotfileservice"
+version = "1.0.0-SNAPSHOT"
+distribution = "slbeta3"
+license = ["Apache-2.0"]
+keywords = ["Internet of Things/Device Management", "Cost/Paid"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

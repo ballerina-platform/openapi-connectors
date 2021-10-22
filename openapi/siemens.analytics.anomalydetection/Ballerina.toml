@@ -1,0 +1,12 @@
+[package]
+org = "ballerinax"
+name = "siemens.analytics.anomalydetection"
+version = "1.0.0-SNAPSHOT"
+distribution = "slbeta3"
+license = ["Apache-2.0"]
+keywords = ["Business Intelligence/Analytics", "Cost/Paid"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

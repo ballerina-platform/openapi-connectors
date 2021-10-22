@@ -117,10 +117,11 @@ if (isPublishing){
 //     }
 // }
 
-// Temporarily added.
 task codeBuild {
-
     for (String path : updatedBallerinaPackages) {
+        if (!Utils.checkMdFiles(path)) {
+            throw new GradleException('Missing (or empty) Package.md or Module.md files on path ' + path);
+        }
         Utils.removeSnapshotSuffixFromVersion(path);
         try {
             exec {
@@ -129,7 +130,6 @@ task codeBuild {
         } catch (Exception ex) {
             println "Failed to build " + path + " connector. Error : " + ex.toString(); 
         }
-        
         Utils.addSnapshotSuffixToVersion(path);
     }
 

@@ -3,12 +3,13 @@ Connects to Apple App Store Connect API from Ballerina
 #### Compatibility
 |                               | Version         |
 |-------------------------------|-----------------|
-| Ballerina Language Version    | Swan Lake Beta3 |
-| API Version                   | 1.4.1           |
+| Ballerina Language            | Swan Lake Beta3 |
+| Apple appstore API            | 1.4.1           |
 
 ### Package Overview
 The `apple.appstore` is a [Ballerina](https://ballerina.io/) connector for *Apple App Store*.
 This package provides the capability to easily access *Apple App Store API*.
+
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)
 

@@ -1,14 +1,13 @@
-Connects to Apple App Store Connect API from Ballerina
+Connects to [Siemens IoT File Service API](https://developer.mindsphere.io/apis/iot-iotfile/api-iotfile-overview.html) from Ballerina
 
-#### Compatibility
-|                               | Version         |
-|-------------------------------|-----------------|
-| Ballerina Language            | Swan Lake Beta3 |
-| Apple appstore API            | 1.4.1           |
+## Package overview
+The `ballerinax/siemens.iotandstorage.iotfileservice` is a [Ballerina](https://ballerina.io/) connector for Siemens IoT File Service.
 
-### Package Overview
-The `apple.appstore` is a [Ballerina](https://ballerina.io/) connector for *Apple App Store*.
-This package provides the capability to easily access *Apple App Store API*.
+### Compatibility
+|                                   | Version                   |
+|-----------------------------------|---------------------------|
+| Ballerina Language                | Ballerina Swan Lake Beta3 |
+| Siemens IoT File Service  API     | 3.2.4                     |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

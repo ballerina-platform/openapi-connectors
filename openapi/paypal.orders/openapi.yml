@@ -1,0 +1,913 @@
+openapi: 3.0.0
+info:
+  title: Paypal Orders API
+  description: |
+    This is a generated connector for [Paypal Orders API v2](https://developer.paypal.com/docs/api/orders/v2/) OpenAPI specification.
+    An order represents a payment between two or more parties. 
+    Use the Orders API to create, update, retrieve, authorize, and capture orders.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Paypal account](https://www.paypal.com) and obtain tokens by following [this guide](https://developer.paypal.com/docs/api/overview/#get-credentials).
+  x-ballerina-display:
+    label: Paypal Orders
+    iconPath: "icon.png"
+  version: "v2"
+security:
+- bearerAuth: []
+tags:
+  - name: orders
+paths:
+  /v2/checkout/orders:
+    post:
+      summary: "Creates an order."
+      description: "https://developer.paypal.com/docs/api/orders/v2/#orders_create"
+      parameters: 
+        - in: "header"
+          name: "PayPal-Request-Id"
+          description: "The server stores keys for 6 hours. The API callers can request the times to up to 72 hours by speaking to their Account Manager."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "PayPal-Partner-Attribution-Id"
+          description: "PayPal partner attribution ID"
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "PayPal-Client-Metadata-Id"
+          description: "PayPal client metadata ID"
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "Prefer"
+          description: "The preferred server response upon successful completion of the request. Value is return=minimal or return=representation."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: The create order request
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateOrderRequest'
+      tags:
+        - "orders"
+      responses:
+        201:
+          description: "Created order details"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedOrderDetails'
+      operationId: "create_order"
+  /v2/checkout/orders/{id}:
+    get:
+      summary: "Shows details for an order, by ID."
+      description: "https://developer.paypal.com/docs/api/orders/v2/#orders_get"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: The ID of the order for which to show details."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "fields"
+          description: "A comma-separated list of fields that should be returned for the order. Valid filter field is payment_source."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "payments"
+      responses:
+        200:
+          description: "Order details."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderDetails'
+      operationId: "get_order"
+    patch:
+      summary: "Updates an order with a CREATED or APPROVED status. You cannot update an order with the COMPLETED status. To make an update, you must provide a reference_id. If you omit this value with an order that contains only one purchase unit, PayPal sets the value to default which enables you to use the path: /purchase_units/@reference_id=='default'/{attribute-or-object}."
+      description: "https://developer.paypal.com/docs/api/orders/v2/#orders_patch"
+      parameters: 
+        - in: "path"
+          name: "id"
+          description: "The ID of the order to update."
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The update order request
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/UpdateOrderRequest'
+      tags:
+        - "orders"
+      responses:
+        204:
+          description: "An empty object in the JSON response body."
+      operationId: "update_order"
+  /v2/checkout/orders/{id}/authorize:
+    post:
+      summary: "Authorizes payment for an order. To successfully authorize payment for an order, the buyer must first approve the order or a valid payment_source must be provided in the request. A buyer can approve the order upon being redirected to the rel:approve URL that was returned in the HATEOAS links in the create order response."
+      description: "https://developer.paypal.com/docs/api/orders/v2/#orders_authorize"
+      parameters: 
+        - in: "path"
+          name: "id"
+          description: "The ID of the order for which to authorize."
+          schema:
+            type: string
+          required: true
+        - in: "header"
+          name: "PayPal-Request-Id"
+          description: "The server stores keys for 6 hours. The API callers can request the times to up to 72 hours by speaking to their Account Manager."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "Prefer"
+          description: "The preferred server response upon successful completion of the request. Value is return=minimal or return=representation."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "PayPal-Client-Metadata-Id"
+          description: "PayPal client metadata ID"
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "PayPal-Auth-Assertion"
+          description: "PayPal auth assertion"
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: The authorize order request
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/AuthorizeOrderRequest'
+      tags:
+        - "orders"
+      responses:
+        201:
+          description: "Authorized order details"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/AuthorizedOrderDetails'
+      operationId: "authorize_order"
+  /v2/checkout/orders/{id}/capture:
+    post:
+      summary: "Captures payment for an order. To successfully capture payment for an order, the buyer must first approve the order or a valid payment_source must be provided in the request. A buyer can approve the order upon being redirected to the rel:approve URL that was returned in the HATEOAS links in the create order response."
+      description: "https://developer.paypal.com/docs/api/orders/v2/#orders_capture"
+      parameters: 
+        - in: "path"
+          name: "id"
+          description: "The ID of the order for which to capture a payment."
+          schema:
+            type: string
+          required: true
+        - in: "header"
+          name: "PayPal-Request-Id"
+          description: "The server stores keys for 6 hours. The API callers can request the times to up to 72 hours by speaking to their Account Manager."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "Prefer"
+          description: "The preferred server response upon successful completion of the request. Value is return=minimal or return=representation."
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "PayPal-Client-Metadata-Id"
+          description: "PayPal client metadata ID"
+          schema:
+            type: string
+          required: false
+        - in: "header"
+          name: "PayPal-Auth-Assertion"
+          description: "PayPal auth assertion"
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: The capture order request
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CaptureOrderRequest'
+      tags:
+        - "orders"
+      responses:
+        201:
+          description: "Captured payment details"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CapturedPaymentDetails'
+      operationId: "capture_order"
+
+components:
+  schemas:
+    CreateOrderRequest:
+      type: object
+      required:
+        - "intent"
+        - "purchase_units"
+      properties:
+        intent:
+          type: string
+          description: The intent to either capture payment immediately or authorize a payment for an order after order creation. The possible values are CAPTURE, AUTHORIZE.
+        payer:
+          $ref: '#/components/schemas/Payer'
+        purchase_units:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseUnitRequest'
+          description: An array of purchase units. Each purchase unit establishes a contract between a payer and the payee. Each purchase unit represents either a full or partial order that the payer intends to purchase from the payee.
+        application_context:
+          $ref: '#/components/schemas/OrderApplicationContext'
+      description: The create order request
+    UpdateOrderRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/Patch'
+      description: An array of JSON patch objects to apply partial updates to resources.
+    Payer:
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of the payer.
+        payer_id:
+          type: string
+          description: The PayPal-assigned ID for the payer.
+      description: The customer who approves and pays for the order. The customer is also known as the payer.
+    AuthorizeOrderRequest:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/Token'
+      description: The source of payment for the order, which can be a token or a card. Use this object only if you have not redirected the user after order creation to approve the payment. In such cases, the user-selected payment method in the PayPal flow is implicitly used.
+    CaptureOrderRequest:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/Token'
+      description: The payment source definition.
+    PurchaseUnitRequest:
+      type: object
+      required:
+        - "amount"
+      properties:
+        reference_id:
+          type: string
+          description: The API caller-provided external ID for the purchase unit. Required for multiple purchase units when you must update the order through PATCH. If you omit this value and the order contains only one purchase unit, PayPal sets this value to default.
+        amount:
+          $ref: '#/components/schemas/Amount'
+        payee:
+          $ref: '#/components/schemas/Payee'
+        payment_instruction:
+          $ref: '#/components/schemas/PaymentInstruction'
+        description:
+          type: string
+          description: The purchase description.
+        custom_id:
+          type: string
+          description: The API caller-provided external ID. Used to reconcile client transactions with PayPal transactions. Appears in transaction and settlement reports but is not visible to the payer.
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice number for this order. Appears in both the payer's transaction history and the emails that the payer receives.
+        soft_descriptor:
+          type: string
+          description: The soft descriptor is the dynamic text used to construct the statement descriptor that appears on a payer's card statement. If an Order is paid using the "PayPal Wallet", the statement descriptor will appear in following format on the payer's card statement, PAYPAL_prefix+(space)+merchant_descriptor+(space)+ soft_descriptor
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+          description: An array of items that the customer purchases from the merchant.
+        shipping:
+          $ref: '#/components/schemas/ShippingDetail'     
+      description: A purchase unit. Each purchase unit establishes a contract between a payer and the payee. Each purchase unit represents either a full or partial order that the payer intends to purchase from the payee. 
+    Amount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The total order amount with an optional breakdown that provides details, such as the total item amount, total tax amount, shipping, handling, insurance, and discounts, if any. If you specify amount.breakdown, the amount equals item_total plus tax_total plus shipping plus handling plus insurance minus shipping_discount minus discount. The amount must be a positive number. For listed of supported currencies and decimal precision, see the PayPal REST APIs Currency Codes. 
+    Payee:
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of merchant.
+        merchant_id:
+          type: string
+          description: The encrypted PayPal account ID of the merchant.
+      description: The merchant who receives payment for this transaction.
+    PaymentInstruction:
+      type: object
+      properties:
+        platform_fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformFee'
+          description: An array of various fees, commissions, tips, or donations. This field is only applicable to merchants that been enabled for PayPal Commerce Platform for Marketplaces and Platforms capability.
+        disbursement_mode:
+          type: string
+          description: The funds that are held on behalf of the merchant. The possible values are INSTANT, DELAYED.
+        payee_pricing_tier_id:
+          type: string
+          description: This field is only enabled for selected merchants/partners to use and provides the ability to trigger a specific pricing rate/plan for a payment transaction. The list of eligible 'payee_pricing_tier_id' would be provided to you by your Account Manager. Specifying values other than the one provided to you by your account manager would result in an error.
+      description: Any additional payment instructions to be consider during payment processing. This processing instruction is applicable for Capturing an order or Authorizing an Order.
+    PlatformFee:
+      type: object
+      required:
+        - "amount"
+      properties:
+        amount:
+          $ref: '#/components/schemas/MoneyForAmountForPlatformFee'
+        payee:
+          $ref: '#/components/schemas/PayeeBase'
+      description: Various fees, commissions, tips, or donations. This field is only applicable to merchants that been enabled for PayPal Commerce Platform for Marketplaces and Platforms capability.
+    MoneyForAmountForPlatformFee:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The fee for this transaction.
+    PayeeBase:
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of merchant.
+        merchant_id:
+          type: string
+          description: The encrypted PayPal account ID of the merchant.
+      description: The recipient of the fee for this transaction. If you omit this value, the default is the API caller.
+    Item:
+      type: object
+      required:
+        - "name"
+        - "unit_amount"
+        - "quantity"
+      properties:
+        name:
+          type: string
+          description: The item name or title.
+        unit_amount:
+          $ref: '#/components/schemas/UnitAmount'
+        tax:
+          $ref: '#/components/schemas/Tax'
+        quantity:
+          type: string
+          description: The item quantity. Must be a whole number.
+        description:
+          type: string
+          description: The detailed item description.
+        sku:
+          type: string
+          description: The stock keeping unit (SKU) for the item.
+        category:
+          type: string
+          description: The item category type. The possible values are DIGITAL_GOODS, PHYSICAL_GOODS, DONATION. 
+      description: Item that the customer purchases from the merchant. 
+    UnitAmount:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The item price or rate per unit. If you specify unit_amount, purchase_units[].amount.breakdown.item_total is required. Must equal unit_amount * quantity for all items. unit_amount.value can not be a negative number.
+    Tax:
+      type: object
+      required:
+        - "currency_code"
+        - "value"
+      properties:
+        currency_code:
+          type: string
+          description: The three-character ISO-4217 currency code that identifies the currency.
+        value:
+          type: string
+          description: The value, which might be an integer for currencies like JPY that are not typically fractional. A decimal fraction for currencies like TND that are subdivided into thousandths. For the required number of decimal places for a currency code, see Currency Codes.
+      description: The item tax for each unit. If tax is specified, purchase_units[].amount.breakdown.tax_total is required. Must equal tax * quantity for all items. tax.value can not be a negative number.
+    ShippingDetail:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/ShippingDetailName'
+          description: The name of the person to whom to ship the items. Supports only the full_name property.
+        type:
+          type: string
+          description: The method by which the payer wants to get their items from the payee e.g shipping, in-person pickup. Either type or options but not both may be present. The possible values are SHIPPING, PICKUP_IN_PERSON.
+        address:
+          $ref: '#/components/schemas/ShippingDetailAddressPortable'
+      description: The name and address of the person to whom to ship the items.
+    ShippingDetailName:
+      type: object
+      properties:
+        full_name:
+          type: string
+          description: When the party is a person, the party's full name.
+      description: The name of the person to whom to ship the items. Supports only the full_name property. 
+    ShippingDetailAddressPortable:
+      type: object
+      required:
+        - "country_code"
+      properties:
+        address_line_1:
+          type: string
+          description: The first line of the address. For example, number or street. For example, 173 Drury Lane. Required for data entry and compliance and risk checks. Must contain the full address.
+        address_line_2:
+          type: string
+          description: The second line of the address. For example, suite or apartment number.
+        admin_area_2:
+          type: string
+          description: A city, town, or village. Smaller than admin_area_level_1. 
+        admin_area_1:
+          type: string
+          description: The highest level sub-division in a country, which is usually a province, state, or ISO-3166-2 subdivision. Format for postal delivery. For example, CA and not California.
+        postal_code:
+          type: string
+          description: The postal code, which is the zip code or equivalent. Typically required for countries with a postal code or an equivalent.  
+        country_code:
+          type: string
+          description: The two-character ISO 3166-1 code that identifies the country or region.
+      description: The address of the person to whom to ship the items. Supports only the address_line_1, address_line_2, admin_area_1, admin_area_2, postal_code, and country_code properties.
+    OrderApplicationContext:
+      type: object
+      properties:
+        brand_name:
+          type: string
+          description: The label that overrides the business name in the PayPal account on the PayPal site.
+        locale:
+          type: string
+          description: The BCP 47-formatted locale of pages that the PayPal payment experience shows. PayPal supports a five-character code. For example, da-DK, he-IL, id-ID, ja-JP, no-NO, pt-BR, ru-RU, sv-SE, th-TH, zh-CN, zh-HK, or zh-TW.
+        landing_page:
+          type: string
+          description: The type of landing page to show on the PayPal site for customer checkout. The possible values are LOGIN, BILLING, NO_PREFERENCE.
+        shipping_preference:
+          type: string
+          description: The shipping preference. Displays the shipping address to the customer. Enables the customer to choose an address on the PayPal site. Restricts the customer from changing the address during the payment-approval process. The possible values are GET_FROM_FILE, NO_SHIPPING, SET_PROVIDED_ADDRESS.
+        user_action:
+          type: string
+          description: Configures a Continue or Pay Now checkout flow. The possible values are CONTINUE, PAY_NOW.
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        return_url:
+          type: string
+          description: The URL where the customer is redirected after the customer approves the payment.
+        cancel_url:
+          type: string
+          description: The URL where the customer is redirected after the customer cancels the payment.
+        stored_payment_source:
+          $ref: '#/components/schemas/StoredPaymentSource'
+      description: Customize the payer experience during the approval process for the payment with PayPal.
+    PaymentMethod:
+      type: object
+      properties:
+        payer_selected:
+          type: string
+          description: The customer-selected payment method on the merchant site.
+        payee_preferred:
+          type: string
+          description: The merchant-preferred payment methods. The possible values are UNRESTRICTED, IMMEDIATE_PAYMENT_REQUIRED.
+        standard_entry_class_code:
+          type: string
+          description: NACHA (the regulatory body governing the ACH network) requires that API callers (merchants, partners) obtain the consumer’s explicit authorization before initiating a transaction. To stay compliant, you’ll need to make sure that you retain a compliant authorization for each transaction that you originate to the ACH Network using this API. ACH transactions are categorized (using SEC codes) by how you capture authorization from the Receiver (the person whose bank account is being debited or credited). PayPal supports the following SEC codes. The possible values are TEL, WEB, CCD, PPD.
+      description: The customer and merchant payment preferences.
+    StoredPaymentSource:
+      type: object
+      required:
+        - "payment_initiator"
+        - "payment_type"
+      properties:
+        payment_initiator:
+          type: string
+          description: The person or party who initiated or triggered the payment. The possible values are CUSTOMER, MERCHANT.
+        payment_type:
+          type: string
+          description: Indicates the type of the stored payment_source payment. The possible values are ONE_TIME, RECURRING, UNSCHEDULED.
+        usage:
+          type: string
+          description: Indicates if this is a first or subsequent payment using a stored payment source (also referred to as stored credential or card on file). The possible values are FIRST, SUBSEQUENT, DERIVED.
+        previous_network_transaction_reference:
+          $ref: '#/components/schemas/NetworkTransactionReference'
+      description: Provides additional details to process a payment using a payment_source that has been stored or is intended to be stored (also referred to as stored_credential or card-on-file). 
+    NetworkTransactionReference:
+      type: object
+      required:
+        - "id"
+        - "network"
+      properties:
+        id:
+          type: string
+          description: Transaction reference id returned by the scheme. For Visa and Amex, this is the "Tran id" field in response. For MasterCard, this is the "BankNet reference id" field in response. For Discover, this is the "NRID" field in response.
+        date:
+          type: string
+          description: The date that the transaction was authorized by the scheme. For MasterCard, this is the "BankNet reference date" field in response.
+        network:
+          type: string
+          description: Name of the card network through which the transaction was routed.
+      description: Reference values used by the card network to identify a transaction. The possible values are VISA, MASTERCARD, DISCOVER, AMEX, SOLO, JCB, STAR, DELTA, SWITCH, MAESTRO, CB_NATIONALE, CONFIGOGA, CONFIDIS, ELECTRON, CETELEM, CHINA_UNION_PAY.  
+    CreatedOrderDetails:
+      type: object
+      properties:
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+        id:
+          type: string
+          description: The ID of the order.
+        payment_source:
+          $ref: '#/components/schemas/PaymentSourceResponse'
+        intent:
+          type: string
+          description: The intent to either capture payment immediately or authorize a payment for an order after order creation. The possible values are CAPTURE, AUTHORIZE.
+        payer:
+          $ref: '#/components/schemas/Payer'
+        purchase_units:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseUnit'
+          description: An array of purchase units. Each purchase unit establishes a contract between a customer and merchant. Each purchase unit represents either a full or partial order that the customer intends to purchase from the merchant.
+        status:
+          type: string
+          description: The order status. The possible values are CREATED, SAVED, APPROVED, VOIDED, COMPLETED, PAYER_ACTION_REQUIRED.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of request-related HATEOAS links. To complete payer approval, use the approve link to redirect the payer. The API caller has 3 hours (default setting, this which can be changed by your account manager to 24/48/72 hours to accommodate your use case) from the time the order is created, to redirect your payer. Once redirected, the API caller has 3 hours for the payer to approve the order and either authorize or capture the order. If you are not using the PayPal JavaScript SDK to initiate PayPal Checkout (in context) ensure that you include application_context.return_url is specified or you will get "We're sorry, Things don't appear to be working at the moment" after the payer approves the payment. 
+      description: Created order details.
+    PaymentSourceResponse:
+      type: object
+      properties:
+        card:
+          $ref: '#/components/schemas/CardResponse'
+      description: The payment source used to fund the payment. 
+    CardResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The card holder's name as it appears on the card.
+        billing_address:
+          $ref: '#/components/schemas/CardResponseAddressPortable'
+        last_digits:
+          type: string
+          description: The last digits of the payment card.
+        brand:
+          type: string
+          description: The card brand or network. Typically used in the response. The possible values are VISA, MASTERCARD, DISCOVER, AMEX, SOLO, JCB, STAR, DELTA, SWITCH, MAESTRO, CB_NATIONALE, CONFIGOGA, CONFIDIS, ELECTRON, CETELEM, CHINA_UNION_PAY.
+        type:
+          type: string
+          description: The payment card type. The possible values are CREDIT, DEBIT, PREPAID, UNKNOWN.
+        authentication_result:
+          $ref: '#/components/schemas/AuthenticationResponse'
+      description: The payment card to use to fund a payment. Card can be a credit or debit card.
+    CardResponseAddressPortable:
+      type: object
+      required:
+        - "country_code"
+      properties:
+        address_line_1:
+          type: string
+          description: The first line of the address. For example, number or street. For example, 173 Drury Lane. Required for data entry and compliance and risk checks. Must contain the full address.
+        address_line_2:
+          type: string
+          description: The second line of the address. For example, suite or apartment number.
+        admin_area_2:
+          type: string
+          description: A city, town, or village. Smaller than admin_area_level_1. 
+        admin_area_1:
+          type: string
+          description: The highest level sub-division in a country, which is usually a province, state, or ISO-3166-2 subdivision. Format for postal delivery. For example, CA and not California.
+        postal_code:
+          type: string
+          description: The postal code, which is the zip code or equivalent. Typically required for countries with a postal code or an equivalent.  
+        country_code:
+          type: string
+          description: The two-character ISO 3166-1 code that identifies the country or region.
+      description: The billing address for this card. Supports only the address_line_1, address_line_2, admin_area_1, admin_area_2, postal_code, and country_code properties.
+    AuthenticationResponse:
+      type: object
+      properties:
+        liability_shift:
+          type: string
+          description: Liability shift indicator. The outcome of the issuer's authentication. The possible values are YES, NO, POSSIBLE, UNKNOWN.
+        three_d_secure:
+          $ref: '#/components/schemas/ThreeDSecureAuthenticationResponse'
+      description: Results of Authentication such as 3D Secure.
+    ThreeDSecureAuthenticationResponse:
+      type: object
+      properties:
+        authentication_status:
+          type: string
+          description: The outcome of the issuer's authentication. The possible values are Y, N, U, A, C, R, D, I.
+        enrollment_status:
+          type: string
+          description: Status of authentication eligibility. The possible values are Y, N, U, B.
+      description: Results of 3D Secure Authentication.
+    PurchaseUnit:
+      type: object
+      properties:
+        reference_id:
+          type: string
+          description: The API caller-provided external ID for the purchase unit. Required for multiple purchase units when you must update the order through PATCH. If you omit this value and the order contains only one purchase unit, PayPal sets this value to default.
+        amount:
+          $ref: '#/components/schemas/Amount'
+        payee:
+          $ref: '#/components/schemas/Payee'
+        payment_instruction:
+          $ref: '#/components/schemas/PaymentInstruction'
+        description:
+          type: string
+          description: The purchase description.
+        custom_id:
+          type: string
+          description: The API caller-provided external ID. Used to reconcile API caller-initiated transactions with PayPal transactions. Appears in transaction and settlement reports.
+        invoice_id:
+          type: string
+          description: The API caller-provided external invoice ID for this order.
+        id:
+          type: string
+          description: The PayPal-generated ID for the purchase unit. This ID appears in both the payer's transaction history and the emails that the payer receives. In addition, this ID is available in transaction and settlement reports that merchants and API callers can use to reconcile transactions. This ID is only available when an order is saved by calling v2/checkout/orders/id/save.
+        soft_descriptor:
+          type: string
+          description: The payment descriptor on account transactions on the customer's credit card statement, that PayPal sends to processors. The maximum length of the soft descriptor information that you can pass in the API field is 22 characters, in the following format:22 - len(PAYPAL * (8)) - len(Descriptor in Payment Receiving Preferences of Merchant account + 1)The PAYPAL prefix uses 8 characters.
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+          description: An array of items that the customer purchases from the merchant.
+        shipping:
+          $ref: '#/components/schemas/ShippingDetail'   
+        payments:
+          $ref: '#/components/schemas/PaymentCollection'     
+      description: A purchase unit. Each purchase unit establishes a contract between a customer and merchant. Each purchase unit represents either a full or partial order that the customer intends to purchase from the merchant.
+    PaymentCollection:
+      type: object
+      properties:
+        authorizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorizationWithAdditionalData'     
+          description: An array of authorized payments for a purchase unit. A purchase unit can have zero or more authorized payments.
+        captures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capture'     
+          description: An array of captured payments for a purchase unit. A purchase unit can have zero or more captured payments.
+        refunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/Refund'     
+          description: An array of refunds for a purchase unit. A purchase unit can have zero or more refunds.
+      description: The comprehensive history of payments for the purchase unit.
+    AuthorizationWithAdditionalData:
+      type: object
+      properties:
+        processor_response:
+          $ref: '#/components/schemas/ProcessorResponse'     
+      description: An authorized payment for a purchase unit. A purchase unit can have zero or more authorized payments. 
+    ProcessorResponse:
+      type: object
+      properties:
+        avs_code:
+          type: string
+          description: The address verification code for Visa, Discover, Mastercard, or American Express transactions.
+        cvv_code:
+          type: string
+          description: The card verification value code for for Visa, Discover, Mastercard, or American Express.
+        response_code:
+          type: string
+          description: Processor response code for the non-PayPal payment processor errors.
+        payment_advice_code:
+          type: string
+          description: The declined payment transactions might have payment advice codes. The card networks, like Visa and Mastercard, return payment advice codes. 
+      description: The processor response for card transactions.
+    Capture:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of the captured payment.
+        status_details:
+          $ref: '#/components/schemas/CaptureStatusDetails'     
+      description: A captured payment for a purchase unit. A purchase unit can have zero or more captured payments.
+    CaptureStatusDetails:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason why the captured payment status is PENDING or DENIED. The possible values are BUYER_COMPLAINT, CHARGEBACK, ECHECK, INTERNATIONAL_WITHDRAWAL, OTHER, PENDING_REVIEW, RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION, REFUNDED, TRANSACTION_APPROVED_AWAITING_FUNDING, UNILATERAL, VERIFICATION_REQUIRED.
+      description: The details of the captured payment status.
+    Refund:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The status of the refund.
+        status_details:
+          $ref: '#/components/schemas/RefundStatusDetails'     
+      description: A refund for a purchase unit. A purchase unit can have zero or more refunds.
+    RefundStatusDetails:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: The reason why the refund has the PENDING or FAILED status. The possible values are ECHECK.
+      description: The details of the refund status.
+    LinkDescription:
+      type: object
+      required:
+        - "href"
+        - "rel"
+      properties:
+        href:
+          type: string
+          description: The complete target URL. To make the related call, combine the method with this URI Template-formatted link. For pre-processing, include the $, (, and ) characters. The href is the key HATEOAS component that links a completed call with a subsequent call.
+        rel:
+          type: string
+          description: The link relation type, which serves as an ID for a link that unambiguously describes the semantics of the link. See Link Relations.
+        method:
+          type: string
+          description: The HTTP method required to make the related call. Possible values are GET,POST,PUT,DELETE,HEAD,CONNECT,OPTIONS,PATCH.
+      description: Related HATEOAS links.
+    Patch:
+      type: object
+      required:
+        - "op"
+      properties:
+        op:
+          type: string
+          description: The operation. The possible values are add, remove, replace, move, copy, test.
+        path:
+          type: string
+          description: The JSON Pointer to the target document location at which to complete the operation.
+        value:
+          oneOf:
+            - type: number
+            - type: integer
+            - type: string
+            - type: boolean
+            - type: object
+            - type: array
+              items:
+                type: object
+          description: The value to apply. The remove operation does not require a value.
+        from:
+          type: string 
+          description: The JSON Pointer to the target document location from which to move the value. Required for the move operation.
+      description: A JSON patch object to apply partial updates to resources. 
+    OrderDetails:
+      type: object
+      properties:
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+        id:
+          type: string
+          description: The ID of the order.
+        payment_source:
+          $ref: '#/components/schemas/PaymentSourceResponse'
+        intent:
+          type: string
+          description: The intent to either capture payment immediately or authorize a payment for an order after order creation. The possible values are CAPTURE, AUTHORIZE.
+        payer:
+          $ref: '#/components/schemas/Payer'
+        purchase_units:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseUnit'
+          description: An array of purchase units. Each purchase unit establishes a contract between a customer and merchant. Each purchase unit represents either a full or partial order that the customer intends to purchase from the merchant.
+        status:
+          type: string
+          description: The order status. The possible values are CREATED, SAVED, APPROVED, VOIDED, COMPLETED, PAYER_ACTION_REQUIRED.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of request-related HATEOAS links. To complete payer approval, use the approve link to redirect the payer. The API caller has 3 hours (default setting, this which can be changed by your account manager to 24/48/72 hours to accommodate your use case) from the time the order is created, to redirect your payer. Once redirected, the API caller has 3 hours for the payer to approve the order and either authorize or capture the order. If you are not using the PayPal JavaScript SDK to initiate PayPal Checkout (in context) ensure that you include application_context.return_url is specified or you will get "We're sorry, Things don't appear to be working at the moment" after the payer approves the payment. 
+      description: Order details.
+    Token:
+      type: object
+      required:
+        - "id"
+        - "type"
+      properties:
+        id:
+          type: string
+          description: The PayPal-generated ID for the token.
+        type:
+          type: string
+          description: The tokenization method that generated the ID. The possible values are BILLING_AGREEMENT. 
+      description: The tokenized payment source to fund a payment.
+    AuthorizedOrderDetails:
+      type: object
+      properties:
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+        id:
+          type: string
+          description: The ID of the order.
+        payment_source:
+          $ref: '#/components/schemas/PaymentSourceResponse'
+        intent:
+          type: string
+          description: The intent to either capture payment immediately or authorize a payment for an order after order creation. The possible values are CAPTURE, AUTHORIZE.
+        payer:
+          $ref: '#/components/schemas/Payer'
+        purchase_units:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseUnit'
+          description: An array of purchase units. Each purchase unit establishes a contract between a customer and merchant. Each purchase unit represents either a full or partial order that the customer intends to purchase from the merchant.
+        status:
+          type: string
+          description: The order status. The possible values are CREATED, SAVED, APPROVED, VOIDED, COMPLETED, PAYER_ACTION_REQUIRED.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of request-related HATEOAS links. To complete payer approval, use the approve link to redirect the payer. The API caller has 3 hours (default setting, this which can be changed by your account manager to 24/48/72 hours to accommodate your use case) from the time the order is created, to redirect your payer. Once redirected, the API caller has 3 hours for the payer to approve the order and either authorize or capture the order. If you are not using the PayPal JavaScript SDK to initiate PayPal Checkout (in context) ensure that you include application_context.return_url is specified or you will get "We're sorry, Things don't appear to be working at the moment" after the payer approves the payment. 
+      description: Authorized order details.
+    CapturedPaymentDetails:
+      type: object
+      properties:
+        create_time:
+          type: string
+          description: The date and time when the transaction occurred, in Internet date and time format.
+        update_time:
+          type: string
+          description: The date and time when the transaction was last updated, in Internet date and time format.
+        id:
+          type: string
+          description: The ID of the order.
+        payment_source:
+          $ref: '#/components/schemas/PaymentSourceResponse'
+        intent:
+          type: string
+          description: The intent to either capture payment immediately or authorize a payment for an order after order creation. The possible values are CAPTURE, AUTHORIZE.
+        payer:
+          $ref: '#/components/schemas/Payer'
+        purchase_units:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseUnit'
+          description: An array of purchase units. Each purchase unit establishes a contract between a customer and merchant. Each purchase unit represents either a full or partial order that the customer intends to purchase from the merchant.
+        status:
+          type: string
+          description: The order status. The possible values are CREATED, SAVED, APPROVED, VOIDED, COMPLETED, PAYER_ACTION_REQUIRED.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDescription'
+          description: An array of request-related HATEOAS links. To complete payer approval, use the approve link to redirect the payer. The API caller has 3 hours (default setting, this which can be changed by your account manager to 24/48/72 hours to accommodate your use case) from the time the order is created, to redirect your payer. Once redirected, the API caller has 3 hours for the payer to approve the order and either authorize or capture the order. If you are not using the PayPal JavaScript SDK to initiate PayPal Checkout (in context) ensure that you include application_context.return_url is specified or you will get "We're sorry, Things don't appear to be working at the moment" after the payer approves the payment. 
+      description: Captured payment details.
+
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

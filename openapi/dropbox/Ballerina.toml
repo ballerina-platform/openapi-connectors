@@ -1,0 +1,11 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["Content & Files/File Management & Storage", "Cost/Free"]
+org = "ballerinax"
+name = "dropbox"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.0-SNAPSHOT"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

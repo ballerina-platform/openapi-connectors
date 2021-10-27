@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>315CC4CB-3EFE-4B0A-9604-F5E4D3E70413</title>
+    <g id="UI-kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Connectors" transform="translate(-120.000000, -2888.000000)" fill="#03363D" fill-rule="nonzero">
+            <g id="Connector/zendesk.support" transform="translate(120.000000, 2888.000000)">
+                <g id="zendesk-logo-z" transform="translate(0.000000, 6.000000)">
+                    <polygon id="Path" points="22.1717197 9.50680787 22.1717197 36 0 36"></polygon>
+                    <path d="M22.1717197,0 C22.1717197,6.05748865 17.2066242,10.9712557 11.0858599,10.9712557 C4.96509554,10.9712557 0,6.05748865 0,0 L22.1717197,0 Z" id="Path"></path>
+                    <path d="M25.8282803,36 C25.8282803,29.9364599 30.7872611,25.0287443 36.9141401,25.0287443 C43.0410191,25.0287443 48,29.9425113 48,36 L25.8282803,36 Z" id="Path"></path>
+                    <polygon id="Path" points="25.8282803 26.4871407 25.8282803 0 48 0"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

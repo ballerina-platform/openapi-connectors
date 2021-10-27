@@ -1,0 +1,10 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["Support/Customer Support", "Cost/Freemium"]
+org = "ballerinax"
+name = "zendesk.voice"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.0-SNAPSHOT"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

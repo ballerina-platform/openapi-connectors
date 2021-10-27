@@ -1,0 +1,490 @@
+openapi: 3.0.1
+info:
+  title: Zendesk Talk API
+  description: >
+    This is a generated connector for [Zendesk Talk API v2](https://developer.zendesk.com/api-reference/voice/talk-api/introduction/) OpenAPI specification.
+    
+    Zendesk Talk API in conjunction with the Support API to work with Talk agents, groups, and tickets.
+  version: "v2"
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create an [Zendesk account](https://www.zendesk.com/) and obtain tokens by following [this guide](https://developer.zendesk.com/api-reference/ticketing/introduction/#security-and-authentication).
+  x-ballerina-display:
+    label: Zendesk Voice
+    iconPath: "resources/zendesk.voice.svg"
+paths:
+  /api/v2/channels/voice/phone_numbers.json:
+    get:
+      summary: List phone numbers.
+      operationId: listPhoneNumbers
+      responses:
+        200:
+          description: Returns list of phone numbers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumbers'
+    post:
+      summary: Create phone number (This endpoint is not available for trial accounts).
+      operationId: createPhoneNumber
+      requestBody:
+        description: The information for create phone number request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumberInfo'
+        required: true
+      responses:
+        200:
+          description: Returns detail of phone number created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+  /api/v2/channels/voice/phone_numbers/search.json:
+    get:
+      summary: Search for available phone numbers (This endpoint is not available for trial accounts).
+      operationId: searchAvailablePhoneNumbers
+      parameters:
+        - name: country
+          in: query
+          required: true
+          description: The ISO country code
+          schema:
+            type: string
+        - name: area_code
+          in: query
+          required: false
+          description: Find phone numbers in the specified area code. (US and Canada only
+          schema:
+            type: string
+        - name: contains
+          in: query
+          required: false
+          description: The regular expression used to search for phone numbers. Valid characters are '' and [0-9a-zA-Z]
+          schema:
+            type: string
+        - name: toll_free
+          in: query
+          required: false
+          description: Whether the number should be toll-free or local
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: Returns available phone numbers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+  /api/v2/channels/voice/phone_numbers/{phone_number_id}.json:
+    get:
+      summary: Show phone number.
+      operationId: showPhoneNumber
+      parameters:
+        - name: phone_number_id
+          in: path
+          required: true
+          description: ID of a phone number
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns phone number by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+    delete:
+      summary: Delete phone number by id.
+      operationId: deletePhoneNumberById
+      parameters:
+        - name: phone_number_id
+          in: path
+          required: true
+          description: ID of a phone number
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns detail of phone number deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+  /api/v2/channels/voice/greeting_categories.json:
+    get:
+      summary: List greeting categories.
+      operationId: listGreetingCategories
+      responses:
+        200:
+          description: Returns list of greeting categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GreetingCategories'
+  /api/v2/channels/voice/greeting_categories/{greeting_categories_id}.json:
+    get:
+      summary: Show greeting category.
+      operationId: showGreetingCategory
+      parameters:
+        - name: greeting_categories_id
+          in: path
+          required: true
+          description: ID of the greeting category
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns greeting category by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GreetingCategory'
+  /api/v2/channels/voice/greetings.json:
+    get:
+      summary: List greetings.
+      operationId: listGreetings
+      responses:
+        200:
+          description: Returns list of greetings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Greetings'
+    post:
+      summary: Create greeting.
+      operationId: createGreeting
+      requestBody:
+        description: The information for create greeting request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GreetingInfo'
+        required: true
+      responses:
+        200:
+          description: Returns detail of greeting created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Greeting'
+  /api/v2/channels/voice/greetings/{greetings_id}.json:
+    get:
+      summary: Show greeting.
+      operationId: showGreeting
+      parameters:
+        - name: greetings_id
+          in: path
+          required: true
+          description: ID of a greeting
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns greeting by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Greeting'
+    delete:
+      summary: Delete greeting by id.
+      operationId: deleteGreetingById
+      parameters:
+        - name: greetings_id
+          in: path
+          required: true
+          description: ID of a greeting
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns detail of greeting deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Greeting'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    PhoneNumberInfo:
+      description: The phone number information to create
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token returned by a search for available numbers.
+    PhoneNumber:
+      type: object
+      properties:
+        phone_number:
+          type: object
+          properties:
+            number:
+              type: string
+              description: The phone number digits
+              nullable: true
+            display_number:
+              type: string
+              description: The formatted phone number
+              nullable: true
+            toll_free:
+              type: boolean
+              description: Whether the number is toll-free or local
+              nullable: true
+            location:
+              type: string
+              description: The number's geographical location. For example, "CA" or "Leeds"
+              nullable: true
+            country_code:
+              type: string
+              description: The ISO code of the country for the phone number
+              nullable: true
+            token:
+              type: string
+              description: A generated token unique for each phone number and used when provisioning the number
+              nullable: true
+            price:
+              type: string
+              description: The monthly cost of the phone number
+              nullable: true
+            address_requirements:
+              type: string
+              description: The type of address that must be supplied when purchasing the phone number. Possible values - "none", "local", "any", or "foreign"
+              nullable: true
+    PhoneNumbers:
+      type: object
+      properties:
+        phone_numbers:
+          type: array
+          items:
+            properties:
+              call_recording_consent:
+                type: string
+                description: What call recording consent is set to
+                nullable: true
+              capabilities:
+                type: object
+                description: Whether a phone number has mms, sms, or voice capability
+                properties:
+                  sms:
+                    type: boolean
+                    description: sms
+                    nullable: true
+                  mms:
+                    type: boolean
+                    description: mms
+                    nullable: true
+                  voice:
+                    type: boolean
+                    description: voice
+                    nullable: true
+              country_code:
+                type: string
+                description: The ISO code of the country for this number
+                nullable: true
+              created_at:
+                type: string
+                description: The date and time the phone number was created
+                nullable: true
+              default_greeting_ids:
+                type: array
+                items:
+                  type: string
+                description: The names of default system greetings associated with the phone number
+              default_group_id:
+                type: integer
+                description: Default group id
+                nullable: true
+              display_number:
+                type: string
+                description: The formatted phone number
+                nullable: true
+              external:
+                type: boolean
+                description: The external caller id number
+                nullable: true
+              failover_number:
+                type: string
+                description: Failover number associated with the phone number
+                nullable: true
+              greeting_ids:
+                type: array
+                items:
+                  type: integer
+                description: Custom greetings associated with the phone number
+              group_ids:
+                type: array
+                items:
+                  type: integer
+                description: An ids of associated groups
+              id:
+                type: integer
+                description: Automatically assigned id upon creation
+                nullable: true
+              ivr_id:
+                type: integer
+                description: ID of IVR associated with the phone number
+                nullable: true
+              line_type:
+                type: string
+                description: The type of line associated with the phone number
+                nullable: true
+              location:
+                type: string
+                description: The number's geographical location. For example, "CA" or "Leeds"
+                nullable: true
+              name:
+                type: string
+                description: The nickname if one is set. Otherwise the display_number
+                nullable: true
+              nickname:
+                type: string
+                description: The nickname of the number if one is set
+                nullable: true
+              number:
+                type: string
+                description: The phone number digits
+                nullable: true
+              outbound_enabled:
+                type: boolean
+                description: Whether or not the phone number has outbound enabled
+                nullable: true
+              priority:
+                type: integer
+                description: Level of priority associated with the phone number
+                nullable: true
+              recorded:
+                type: boolean
+                description: Whether calls for the number are recorded or not
+                nullable: true
+              schedule_id:
+                type: integer
+                description: ID of schedule associated with the phone number
+                nullable: true
+              sms_enabled:
+                type: boolean
+                description: Whether or not the phone number has sms enabled
+                nullable: true
+              sms_group_id:
+                type: integer
+                description: The group associated with this phone number
+                nullable: true
+              token:
+                type: string
+                description: A generated token, unique for each phone number and used when provisioning the number
+                nullable: true
+              toll_free:
+                type: boolean
+                description: Whether the number is toll-free or local
+                nullable: true
+              transcription:
+                type: boolean
+                description: Whether calls for the number are transcribed or not
+                nullable: true
+              voice_enabled:
+                type: boolean
+                description: Whether or not the phone number has voice enabled
+                nullable: true
+        next_page:
+          type: integer
+          description: Next page
+          nullable: true
+        previous_page:
+          type: integer
+          description: Previous page
+          nullable: true
+        count:
+          type: integer
+          description: Count of records exists
+    GreetingCategories:
+      type: object
+      properties:
+        greeting_categories:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+                description: The greeting category ID
+                nullable: true
+              name:
+                type: string
+                description: The name of the greeting category
+                nullable: true
+    GreetingCategory:
+      type: object
+      properties:
+        greeting_category:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: The greeting category ID
+              nullable: true
+            name:
+              type: string
+              description: The name of the greeting category
+              nullable: true
+    GreetingInfo:
+      description: The greeting information to create
+      type: object
+      properties:
+        category_id:
+          type: string
+          description: The greeting category ID
+        name:
+          type: string
+          description: The name of greeting
+    Greetings:
+      type: object
+      properties:
+        greetings:
+          type: array
+          items:
+            properties:
+              category_id:
+                type: integer
+                description: The greeting category ID
+                nullable: true
+              id:
+                type: string
+                description: The greeting ID
+                nullable: true
+              name:
+                type: string
+                description: The name of the greeting category
+                nullable: true
+        next_page:
+          type: integer
+          description: Next page
+          nullable: true
+        previous_page:
+          type: integer
+          description: Previous page
+          nullable: true
+        count:
+          type: integer
+          description: Count of records exists
+    Greeting:
+      type: object
+      properties:
+        greeting:
+          type: object
+          properties:
+            category_id:
+              type: integer
+              description: The greeting category ID
+              nullable: true
+            id:
+              type: string
+              description: The greeting ID
+              nullable: true
+            name:
+              type: string
+              description: The name of the greeting category
+              nullable: true

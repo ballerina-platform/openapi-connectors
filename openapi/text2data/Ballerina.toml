@@ -1,0 +1,11 @@
+[package]
+org = "ballerinax"
+name = "text2data"
+version = "1.0.0-SNAPSHOT"
+license = ["Apache-2.0"]
+keywords = ["Business Intelligence/Analytics", "Cost/Freemium"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

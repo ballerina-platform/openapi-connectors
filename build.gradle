@@ -41,100 +41,20 @@ if (isPublishing){
     updatedBallerinaPackages = ballerinaPackages;
 }
 
-// TODO: Remove this cleanup task once the file override enabled
-// task cleanup {
-//     println "Cleaning up generated code..."
-//     Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
-//     updatedBallerinaPackages.each {
-//         dir->exec{
-//             commandLine 'sh', '-c', "find ${dir} -name '*.bal' -type f -delete"
-//         }
-//     }
-//     updatedBallerinaPackages.each {
-//         dir->exec{
-//             commandLine 'sh', '-c', "find ${dir} -name 'target' -type d -exec rm -rf {} +"
-//         }
-//     }
-//     updatedBallerinaPackages.each {
-//         dir->exec{
-//             commandLine 'sh', '-c', "find ${dir} -name 'resources' -type d -exec rm -rf {} +"
-//         }
-//     }
-// }
-
-// task codegen {
-//     Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
-//     updatedBallerinaPackages = Utils.findUpdatedBallerinaPackages(project.projectDir.absolutePath)
-
-//     exec {
-//         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slbeta1"
-//     }
-
-//     for(String updatedPackagePath : updatedBallerinaPackages){
-//         List<String> updatedYamlFiles = Utils.findOpenAPIs(updatedPackagePath);
-//         println "Code generation..."
-//         updatedYamlFiles.each {
-//             file->exec{
-//                 commandLine 'bash', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i ${file} --mode client -o ${updatedPackagePath}"
-//             }
-//         }
-//     }
-
-//     // Pulling slalpha5 distribution if not available
-//     if (project.hasProperty("remote") ) {
-//         if (remote) {
-//             exec {
-//                 commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist pull slalpha5"
-//             }
-
-//             exec {
-//                 commandLine 'sh', '-c', "rm -rf ${ballerinaDistributionPath}/bin/../dependencies/jdk-11.0.8+10-jre"
-//             }
-//         }
-//     }
-
-//     // Changing the build distribution to SL Alpha5
-//     exec {
-//         commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal dist use slalpha5"
-//     }
-
-
-//     for (String path : updatedBallerinaPackages) {
-//         println "Code building..."
-//         exec {
-//             commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
-//         }
-//     }
-
-//     for (String path : updatedBallerinaPackages) {
-
-//         if (!release) {
-//             exec {
-//                 workingDir "${path}"
-//                 commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
-//             }
-//         }
-//     }
-// }
-
-// Temporarily added.
 task codeBuild {
-
+    println "Task: Building connectors..."
     for (String path : updatedBallerinaPackages) {
+        Utils.executePrechecks(path);
         Utils.removeSnapshotSuffixFromVersion(path);
-        try {
-            exec {
-                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
-            }
-        } catch (Exception ex) {
-            println "Failed to build " + path + " connector. Error : " + ex.toString(); 
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
         }
-        
         Utils.addSnapshotSuffixToVersion(path);
     }
 
-    for (String path : updatedBallerinaPackages) {
-        if (!release) {
+    if (!release) {
+        println "Task: Pushing connectors to local..."
+        for (String path : updatedBallerinaPackages) {
             Utils.removeSnapshotSuffixFromVersion(path);
             try {
                 exec {
@@ -143,38 +63,39 @@ task codeBuild {
                 }
             }
             catch (Exception ex) {
-                println "Failed to push " + path + " connector. Error : " + ex.toString(); 
+                println "Failed to push connector [" + path + "] to local repository. Error : " + ex.toString(); 
             }
-
             Utils.addSnapshotSuffixToVersion(path);
         }
     }
 }
 
 task releaseConnector {
-    if (project.hasProperty("release") ) {
-        if(release){
-            for (String path : updatedBallerinaPackages) {
-                Utils.removeSnapshotSuffixFromVersion(path);           
-                try {
-                    exec {
-                        println "Pushing" + path + " to Ballerina central..."
-                        workingDir "${path}"
-                        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push"
-                    }
-                } catch (Exception ex) {
-                    println "Failed to push " + path + " connector to central. Error : " + ex.toString(); 
+    if(release){
+        println "Task: Pushing connectors to Ballerina Central..."
+        for (String path : updatedBallerinaPackages) {
+            Utils.removeSnapshotSuffixFromVersion(path);           
+            try {
+                exec {
+                    println "Pushing connector [" + path + "] to Ballerina Central"
+                    workingDir "${path}"
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push"
                 }
-                Utils.addSnapshotSuffixToVersion(path);
-                print "Updating Ballerina.toml version: "
-                Utils.bumpBallerinaTomlVersion(path);
-                println "Success"
-                println "---------------------------------------"
+            } catch (Exception ex) {
+                println "Failed to push connector [" + path + "] to Ballerina Central. Error : " + ex.toString(); 
             }
-            print "Updating package hashes: "
-            Utils.writeUpdatedFileHashes(project.projectDir.absolutePath, updatedBallerinaPackages)
-            println "Success"
+            try {
+                Utils.addSnapshotSuffixToVersion(path);
+                Utils.bumpBallerinaTomlVersion(path);
+            } catch (Exception ex) {
+                println "Failed to bump version of connector [" + path + "] to next. Error : " + ex.toString();
+            }
+            println "---------------------------------------"
         }
+        println "Task: Pushed all connectors to Ballerina Central successfully..."
+        print "Task: Updating package hashes: "
+        Utils.writeUpdatedFileHashes(project.projectDir.absolutePath, updatedBallerinaPackages)
+        println "Success"
     }
 }
 

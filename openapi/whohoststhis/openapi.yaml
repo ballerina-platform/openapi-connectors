@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: Who Hosts This
+    url: https://www.who-hosts-this.com/Contact
+  description:
+    This is a generated connector for [Who Hosts This API v0.0.1](https://www.who-hosts-this.com/Documentation) OpenAPI specification. 
+    
+    The Who Hosts This API provides services to get discover the hosting provider for any web site.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create an [Who Hosts This Account](https://www.who-hosts-this.com/Profile?cmd=RegisterForm) and obtain token by following [this link](https://www.who-hosts-this.com/APIKey).
+  x-ballerina-display:
+    label: Who Hosts This
+    iconPath: "resources/whohoststhis.svg"
+  title: Who Hosts This API
+  version: 0.0.1
+  x-apisguru-categories:
+    - hosting
+    - iot
+    - tools
+  x-logo:
+    backgroundColor: '#2c3e50'
+    url: https://www.who-hosts-this.com/data/_uploaded/image/logo-who-hosts-padded.png
+  x-origin:
+    - format: swagger
+      url: https://www.who-hosts-this.com/APISpecification
+      version: '2.0'
+  x-preferred: null
+  x-providerName: who-hosts-this.com
+externalDocs:
+  url: https://www.who-hosts-this.com/Documentation
+security:
+  - QueryKey: []
+paths:
+  /Detect:
+    get:
+      operationId: discoverHostingProvider
+      parameters:
+        - description: The url of the page to check
+          in: query
+          name: url
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status of the detection and list of any found hosting providers
+          content:
+            application/json: {}
+      summary: Discover the hosting provider for a web site
+      tags:
+        - hosting
+  /Status:
+    get:
+      operationId: listHostingProvider
+      responses:
+        '200':
+          description: Status of the detection and list of any found hosting providers
+          content:
+            application/json: {}
+      summary: View usage details for the current billing period
+servers:
+  - url: https://www.who-hosts-this.com/APIEndpoint
+components:
+  securitySchemes:
+    QueryKey:
+      description: All requests on the Who Hosts This API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `key`. API Keys available at https://www.who-hosts-this.com/API
+      in: query
+      name: key
+      type: apiKey

@@ -4,7 +4,7 @@ keywords = ["Content & Files/Images And Design", "Cost/Paid"]
 org = "ballerinax"
 name = "logoraisr"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

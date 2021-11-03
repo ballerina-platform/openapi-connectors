@@ -4,7 +4,7 @@ keywords = ["Marketing/Url Shortener", "Cost/Freemium"]
 org = "ballerinax"
 name = "shorten.rest"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

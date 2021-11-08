@@ -3,7 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "bitbucket"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

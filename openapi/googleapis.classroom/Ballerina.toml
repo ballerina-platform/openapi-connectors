@@ -4,7 +4,7 @@ keywords = ["Education/Elearning", "Cost/Free", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.classroom"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

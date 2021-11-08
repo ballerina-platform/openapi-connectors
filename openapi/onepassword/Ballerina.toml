@@ -4,7 +4,7 @@ keywords = ["IT Operations/Security & Identity Tools", "Cost/Paid"]
 org = "ballerinax"
 name = "onepassword"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

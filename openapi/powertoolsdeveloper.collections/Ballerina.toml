@@ -4,7 +4,7 @@ keywords = ["Website & App Building/App Builders", "Cost/Freemium"]
 org = "ballerinax"
 name = "powertoolsdeveloper.collections"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

@@ -45,17 +45,14 @@ task codeBuild {
     println "Task: Building connectors..."
     for (String path : updatedBallerinaPackages) {
         Utils.executePrechecks(path);
-        Utils.removeSnapshotSuffixFromVersion(path);
         exec {
-            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal build -c ${path}"
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack ${path}"
         }
-        Utils.addSnapshotSuffixToVersion(path);
     }
 
     if (!release) {
         println "Task: Pushing connectors to local..."
         for (String path : updatedBallerinaPackages) {
-            Utils.removeSnapshotSuffixFromVersion(path);
             try {
                 exec {
                     workingDir "${path}"
@@ -65,7 +62,6 @@ task codeBuild {
             catch (Exception ex) {
                 println "Failed to push connector [" + path + "] to local repository. Error : " + ex.toString(); 
             }
-            Utils.addSnapshotSuffixToVersion(path);
         }
     }
 }
@@ -73,8 +69,7 @@ task codeBuild {
 task releaseConnector {
     if(release){
         println "Task: Pushing connectors to Ballerina Central..."
-        for (String path : updatedBallerinaPackages) {
-            Utils.removeSnapshotSuffixFromVersion(path);           
+        for (String path : updatedBallerinaPackages) {          
             try {
                 exec {
                     println "Pushing connector [" + path + "] to Ballerina Central"
@@ -85,7 +80,6 @@ task releaseConnector {
                 println "Failed to push connector [" + path + "] to Ballerina Central. Error : " + ex.toString(); 
             }
             try {
-                Utils.addSnapshotSuffixToVersion(path);
                 Utils.bumpBallerinaTomlVersion(path);
             } catch (Exception ex) {
                 println "Failed to bump version of connector [" + path + "] to next. Error : " + ex.toString();

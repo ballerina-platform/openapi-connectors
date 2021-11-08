@@ -4,7 +4,7 @@ keywords = ["IT Operations/Geographic Information Systems", "Cost/Freemium"]
 org = "ballerinax"
 name = "iptwist"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

@@ -4,7 +4,7 @@ keywords = ["Content & Files/Video & Audio", "Cost/Freemium"]
 org = "ballerinax"
 name = "listen.notes"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 authors = ["Ballerina"]
 
 [build-options]

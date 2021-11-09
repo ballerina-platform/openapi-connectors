@@ -22,22 +22,22 @@ List<String> ballerinaPackages = new ArrayList<>();
 List<String> updatedBallerinaPackages = new ArrayList<>();
 boolean release = false;
 boolean remote = false;
-boolean isPublishing = false;
+boolean buildAll = false;
 if (project.hasProperty("remote")){
     remote = new Boolean(project.property("remote").toString())
 }
 if (project.hasProperty("release")){
     release = new Boolean(project.property("release").toString())
 }
-if (project.hasProperty("publishing")){
-    isPublishing = new Boolean(project.property("publishing").toString())
+if (project.hasProperty("buildAll")){
+    buildAll = new Boolean(project.property("buildAll").toString())
 }
 
 Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
 String openApiPackageDirPath = project.projectDir.absolutePath + "/openapi";
 updatedBallerinaPackages = Utils.findUpdatedBallerinaPackages(openApiPackageDirPath);
 ballerinaPackages = Utils.findBallerinaPackages(openApiPackageDirPath);
-if (isPublishing){
+if (buildAll){
     updatedBallerinaPackages = ballerinaPackages;
 }
 
@@ -93,68 +93,3 @@ task releaseConnector {
     }
 }
 
-// Daily build configurations
-
-task copyDistribution {
-
-    def packageOrg = "ballerinax"
-    def platform = "java11"
-    def artifactCacheParent = file("${project.projectDir}/build/cache_parent/")
-
-    if (isPublishing) {
-        for(String packagePath: ballerinaPackages) {
-            def packageName = Utils.getPackageName(packagePath);
-            def packageVersion = Utils.getPackageVersion(packagePath);
-            mkdir "${project.projectDir}/openapi/${packageName}/target/bala"
-            def pathToBala = file("${project.projectDir}/openapi/${packageName}/target/bala")
-
-            inputs.dir file(project.projectDir)
-            pathToBala.eachFileMatch(~/.*.bala/) { balaFile ->
-                copy {
-                    from zipTree(balaFile)
-                    into file("${artifactCacheParent}/bala/${packageOrg}/${packageName}/${packageVersion}/${platform}")
-                }
-            }
-            copy {
-                from file("${packagePath}/target/cache")
-                exclude '**/*-testable.jar'
-                exclude '**/tests_cache/'
-                into file("${artifactCacheParent}/cache/")
-            }
-            outputs.dir artifactCacheParent
-        }
-    }
-}
-
-task createArtifactZip(type: Zip) {
-    if (isPublishing){
-        println("Creating Zip Artifact");
-        from "${buildDir}/cache_parent"
-        archiveName 'distribution.zip'
-        destinationDir(file("${buildDir}/distribution"))
-    }    
-}
-
-publishing {
-    if (isPublishing){
-        println("Publishing Packages");
-        publications {
-            mavenJava(MavenPublication) {
-                artifact source: createArtifactZip, extension: 'zip'
-            }
-        }
-
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/ballerina-platform/ballerinax-openapi-connectors")
-                credentials {
-                    username = System.getenv("publishUser")
-                    password = System.getenv("publishPAT")
-                }
-            }
-        }
-    }
-}
-
-publish.dependsOn copyDistribution

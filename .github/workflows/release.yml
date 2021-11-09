@@ -21,7 +21,7 @@ jobs:
           BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
           JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
         run: |
-           ./gradlew build -Prelease=true -Premote=true -Ppublishing=false
+           ./gradlew build -Prelease=true -Premote=true
       - name: Create Pull Request For Updating Release Files
         id: cpr
         uses: peter-evans/create-pull-request@v3

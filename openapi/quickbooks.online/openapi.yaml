@@ -1,0 +1,3238 @@
+openapi: 3.0.1
+info:
+  title: QuickBooks Online API
+  version: v3
+  description: >
+    This is a generated connector for [QuickBooks Online API
+    v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI
+    specification.  
+    
+    The QuickBooks Online Accounting API utilizes the REST
+    architecture. It lets you seamlessly integrate your app with QuickBooks
+    Online and the Intuit Financial Ecosystem 
+  x-ballerina-init-description: >-
+    The connector initialization requires setting the API credentials.
+
+    Create a [QuickBooks account](https://quickbooks.intuit.com/global/) and
+    obtain tokens by following [this
+    guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app).
+  x-ballerina-display:
+    label: QuickBooks Online
+    iconPath: resources/quickbooks.online.svg
+servers:
+  - url: https://quickbooks.api.intuit.com
+tags: []
+paths:
+  /v3/company/{realm-id}/account:
+    post:
+      tags:
+        - Account
+      description: >-
+        Create or Update an Account.
+        The ID of the object to update is specified in the request body.​
+      operationId: Create or Update Account
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+      requestBody:
+        description: Account creation data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+  /v3/company/{realm-id}/account/{account-id}:
+    get:
+      tags:
+        - Account
+      description: >-
+        Retrieves the details of an Account object that has been previously
+        created.
+      operationId: Read Account
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: path
+          name: account-id
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+  /v3/company/{realm-id}/bill:
+    post:
+      tags:
+        - Bill
+      description: >-
+        Create or Update a Bill.
+        The ID of the object to update is specified in the request body.​
+      operationId: Create or Update Bill
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: query
+          name: operation
+          required: false
+          schema:
+            type: string
+          description: Opearation type
+      requestBody:
+        description: Bill creation data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillResponse'
+  /v3/company/{realm-id}/bill/{bill-id}:
+    get:
+      tags:
+        - Bill
+      description: Retrieves the details of a bill that has been previously created.
+      operationId: Read bill
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: path
+          name: bill-id
+          required: true
+          schema:
+            type: string
+          description: Bill ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillResponse'
+  /v3/company/{realm-id}/customer:
+    post:
+      tags:
+        - Customer
+      description: >-
+        Create or Update a Customer.
+        The ID of the object to update is specified in the request body.​
+      operationId: Create or Update Customer
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+      requestBody:
+        description: Customer creation data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+  /v3/company/{realm-id}/customer/{customer-id}:
+    get:
+      tags:
+        - Customer
+      description: >-
+        Retrieves the details of a Customer object that has been previously
+        created.
+      operationId: Read Customer
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: path
+          name: customer-id
+          required: true
+          schema:
+            type: string
+          description: Customer ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+  /v3/company/{realm-id}/payment:
+    post:
+      tags:
+        - Payment
+      description: >-
+        Create or Update a Payment. 
+        The ID of the object to update is specifiedin the request body.​
+      operationId: Create or Update Payment
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: query
+          name: operation
+          required: false
+          schema:
+            type: string
+          description: Opearation type
+      requestBody:
+        description: Payment creation data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+  /v3/company/{realm-id}/payment/{payment-id}:
+    get:
+      tags:
+        - Payment
+      description: >-
+        Retrieves the details of a Payment object that has been previously
+        created.
+      operationId: Read Payment
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: path
+          name: payment-id
+          required: true
+          schema:
+            type: string
+          description: Payment ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+  /v3/company/{realm-id}/estimate:
+    post:
+      tags:
+        - Estimate
+      description: >-
+        Create or Update an Estimate 
+        The ID of the object to update is specifiedin the request body.​
+      operationId: Create or Update Estimate
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: query
+          name: operation
+          required: false
+          schema:
+            type: string
+          description: Opearation type
+      requestBody:
+        description: Estimate creation data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EstimateCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimateResponse'
+  /v3/company/{realm-id}/estimate/{estimate-id}:
+    get:
+      tags:
+        - Estimate
+      description: >-
+        Retrieves the details of an estimate that has been previously created.
+      operationId: Read Estimate
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: path
+          name: estimate-id
+          required: true
+          schema:
+            type: string
+          description: Estimate ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimateResponse'
+  /v3/company/{realm-id}/invoice:
+    post:
+      tags:
+        - Invoice
+      description: >-
+        Create or Update an Invoice 
+        The ID of the object to update is specifiedin the request body.​
+      operationId: Create or Update Invoice
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: query
+          name: operation
+          required: false
+          schema:
+            type: string
+          description: Opearation type
+      requestBody:
+        description: Invoice creation data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+  /v3/company/{realm-id}/invoice/{invoice-id}:
+    get:
+      tags:
+        - Payment
+      description: >-
+        Retrieves the details of an invoice that has been previously created.
+      operationId: Read Invoice
+      parameters:
+        - in: path
+          name: realm-id
+          required: true
+          schema:
+            type: string
+          description: Realm ID.
+        - in: path
+          name: invoice-id
+          required: true
+          schema:
+            type: string
+          description: Invoice ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'   
+  /v3/company/{realm-id}/vendor:
+    post:
+      tags:
+        - "Vendor"
+      description: Create or Update a vendor
+        The ID of the object to update is specified in the request body.​
+        Either the DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes are required during create.
+      operationId: Create or Update vendor
+      parameters:
+          - in: path
+            name: realm-id
+            required: true
+            schema:
+              type: string
+            description: Realm ID.
+      requestBody:
+        description: Vendor creation data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VendorCreateObject"        
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorResponse'  
+  /v3/company/{realm-id}/vendor/{vendor-id}:
+    get:
+      tags:
+        - "Vendor"
+      description: Retrieves the details of a vendor object that has been previously created.
+      operationId: Read Vendor
+      parameters:
+          - in: path
+            name: realm-id
+            required: true
+            schema:
+              type: string
+            description: Realm ID.
+          - in: path
+            name: vendor-id
+            required: true
+            schema:
+              type: string
+            description: Vendor ID.      
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorResponse'          
+  /v3/company/{realm-id}/query:
+    get:
+      tags:
+        - "Other"
+      description: Query an entity
+      operationId: Query Entity
+      parameters:
+          - in: path
+            name: realm-id
+            required: true
+            schema:
+              type: string
+            description: Realm ID.  
+          - in: query
+            name: query
+            required: true
+            schema:
+              type: string
+            description: Query statement.     
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                {}
+components:
+  schemas:
+    VendorResponse:
+      type: object
+      properties: 
+        Vendor:
+          $ref: '#/components/schemas/Vendor'
+    VendorCreateObject:
+      type: object
+      properties: 
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. As soon as an application modifies an object, its SyncToken is incremented. Attempts to modify an object specifying an older SyncToken fails. Only the latest version of the object is maintained by QuickBooks Online.
+        Title:
+          type: string
+          description: Title of the person. This tag supports i18n, all locales. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes are required during create.
+        GivenName:
+          type: string
+          description: Given name or first name of a person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        MiddleName:
+          type: string
+          description: Middle name of the person. The person can have zero or more middle names. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        Suffix:
+          type: string
+          description: Suffix of the name. For example, Jr. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        FamilyName:
+          type: string
+          description: Family name or the last name of the person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        PrimaryEmailAddr:
+          description: Primary email address. 
+          $ref: '#/components/schemas/EmailAddress'
+        DisplayName:
+          type: string
+          description: The name of the vendor as displayed. Must be unique across all Vendor, Customer, and Employee objects. Cannot be removed with sparse update. If not supplied, the system generates DisplayName by concatenating vendor name components supplied in the request from the following list- Title, GivenName, MiddleName, FamilyName, and Suffix.
+        OtherContactInfo:
+          type: object
+          description: List of ContactInfo entities of any contact info type.
+          # $ref: '#/components/schemas/ContactInfo  
+        APAccountRef:
+          type: object
+          description: Identifies the accounts payable account to be used for this supplier. Each supplier must have his own AP account. Applicable for France companies, only. Available when endpoint is evoked with the minorversion=3 query parameter. Query the Account name list resource to determine the appropriate Account object for this reference. Use Account.Id and Account.Name from that object for APAccountRef.value and APAccountRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        TermRef:
+          type: object
+          description: Reference to a default Term associated with this Vendor object. Query the Term name list resource to determine the appropriate Term object for this reference. Use Term.Id and Term.Name from that object for TermRef.value and TermRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        Source:
+          type: string
+          description: The Source type of the transactions created by QuickBooks Commerce. Valid values include- QBCommerce
+        GSTIN:
+          type: string
+          description: GSTIN is an identification number assigned to every GST registered business.
+        T4AEligible:
+          type: string
+          description: True if vendor is T4A eligible. Valid for CA locale
+        Fax:
+          type: object
+          description: Fax number
+          $ref: '#/components/schemas/TelephoneNumber'
+        BusinessNumber:
+          type: string
+          description: Also called, PAN (in India) is a code that acts as an identification for individuals, families and corporates, especially for those who pay taxes on their income.
+        HasTPAR:
+          type: boolean
+          description: Indicate if the vendor has TPAR enabled. TPAR stands for Taxable Payments Annual Report. The TPAR is mandated by ATO to get the details payments that businesses make to contractors for providing services. Some government entities also need to report the grants they have paid in a TPAR.
+        TaxReportingBasis:
+          type: string
+          description: The method in which the supplier tracks their income. Applicable for France companies, only. Available when endpoint is evoked with the minorversion=3 query parameter. Valid values include- Cash and Accrual.
+        Mobile:
+          type: object
+          description: Mobile phone number
+          $ref: '#/components/schemas/TelephoneNumber'
+        PrimaryPhone:
+          type: object
+          description: Primary phone number
+          $ref: '#/components/schemas/TelephoneNumber'
+        Active:
+          type: boolean
+          description: If true, this object is currently enabled for use by QuickBooks.
+        AlternatePhone:
+          type: object
+          description: Alternate phone number
+          $ref: '#/components/schemas/TelephoneNumber'
+        MetaData:
+          type: object
+          description: Descriptive information about the object. The MetaData values are set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        Vendor1099:
+          type: boolean
+          description: This vendor is an independent contractor; someone who is given a 1099-MISC form at the end of the year. A 1099 vendor is paid with regular checks, and taxes are not withheld on their behalf.
+        BillRate:
+          type: number
+          description: BillRate can be set to specify this vendor's hourly billing rate.
+        WebAddr:
+          type: object
+          description: Website address.
+          $ref: '#/components/schemas/WebSiteAddress'
+        T5018Eligible:
+          type: boolean
+          description: True if vendor is T5018 eligible. Valid for CA locale
+        CompanyName:
+          type: string
+          description: The name of the company associated with the person or organization.
+        VendorPaymentBankDetail:
+          type: object
+          description: Vendor Payment Bank Detail.
+          # $ref: '#/components/schemas/VendorPaymentBankDetail'
+        TaxIdentifier:
+          type: string
+          description: The tax ID of the Person or Organization. The value is masked in responses, exposing only last four characters. For example, the ID of 123-45-6789 is returned as XXXXXXX6789.
+        AcctNum:
+          type: string
+          description: Name or number of the account associated with this vendor.
+        GSTRegistrationType:
+          type: string
+          description: For the filing of GSTR, transactions need to be classified depending on the type of vendor from whom the purchase is made. To facilitate this, we have introduced a new field as 'GST registration type'. Possible values are listed below-
+            GST_REG_REG GST registered- Regular. Customer who has a business which is registered under GST and has a GSTIN (doesn’t include customers registered under composition scheme, as an SEZ or as EOU's, STP's EHTP's etc.).
+            GST_REG_COMP GST registered-Composition. Customer who has a business which is registered under the composition scheme of GST and has a GSTIN.
+            GST_UNREG GST unregistered. Customer who has a business which is not registered under GST and does not have a GSTIN.
+            CONSUMER Consumer. Customer who is not registered under GST and is the final consumer of the service or product sold.
+            OVERSEAS Overseas. Customer who has a business which is located out of India.
+            SEZ SEZ. Customer who has a business which is registered under GST, has a GSTIN and is located in a SEZ or is a SEZ Developer.
+            DEEMED Deemed exports- EOU's, STP's EHTP's etc. Customer who has a business which is registered under GST and falls in the category of companies (EOU's, STP's EHTP's etc.), to which supplies are made they are termed as deemed exports.
+        PrintOnCheckName:
+          type: string
+          description: Name of the person or organization as printed on a check. If not provided, this is populated from DisplayName. Cannot be removed with sparse update.
+        BillAddr:
+          type: object
+          description: Default billing address
+          $ref: '#/components/schemas/PhysicalAddress'
+    Vendor:
+      type: object
+      properties: 
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. As soon as an application modifies an object, its SyncToken is incremented. Attempts to modify an object specifying an older SyncToken fails. Only the latest version of the object is maintained by QuickBooks Online.
+        Title:
+          type: string
+          description: Title of the person. This tag supports i18n, all locales. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes are required during create.
+        GivenName:
+          type: string
+          description: Given name or first name of a person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        MiddleName:
+          type: string
+          description: Middle name of the person. The person can have zero or more middle names. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        Suffix:
+          type: string
+          description: Suffix of the name. For example, Jr. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        FamilyName:
+          type: string
+          description: Family name or the last name of the person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required for object create.
+        PrimaryEmailAddr:
+          description: Primary email address. 
+          $ref: '#/components/schemas/EmailAddress'
+        DisplayName:
+          type: string
+          description: The name of the vendor as displayed. Must be unique across all Vendor, Customer, and Employee objects. Cannot be removed with sparse update. If not supplied, the system generates DisplayName by concatenating vendor name components supplied in the request from the following list- Title, GivenName, MiddleName, FamilyName, and Suffix.
+        OtherContactInfo:
+          type: object
+          description: List of ContactInfo entities of any contact info type.
+          # $ref: '#/components/schemas/ContactInfo  
+        APAccountRef:
+          type: object
+          description: Identifies the accounts payable account to be used for this supplier. Each supplier must have his own AP account. Applicable for France companies, only. Available when endpoint is evoked with the minorversion=3 query parameter. Query the Account name list resource to determine the appropriate Account object for this reference. Use Account.Id and Account.Name from that object for APAccountRef.value and APAccountRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        TermRef:
+          type: object
+          description: Reference to a default Term associated with this Vendor object. Query the Term name list resource to determine the appropriate Term object for this reference. Use Term.Id and Term.Name from that object for TermRef.value and TermRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        Source:
+          type: string
+          description: The Source type of the transactions created by QuickBooks Commerce. Valid values include- QBCommerce
+        GSTIN:
+          type: string
+          description: GSTIN is an identification number assigned to every GST registered business.
+        T4AEligible:
+          type: string
+          description: True if vendor is T4A eligible. Valid for CA locale
+        Fax:
+          type: object
+          description: Fax number
+          $ref: '#/components/schemas/TelephoneNumber'
+        BusinessNumber:
+          type: string
+          description: Also called, PAN (in India) is a code that acts as an identification for individuals, families and corporates, especially for those who pay taxes on their income.
+        CurrencyRef:
+          type: object
+          description: Reference to the currency in which all amounts associated with this vendor are expressed. Once set, it cannot be changed. If specified currency is not currently in the company's currency list, it is added. If not specified, currency for this vendor is the home currency of the company, as defined by Preferences.CurrencyPrefs.HomeCurrency. Read-only after object is created.
+          $ref: '#/components/schemas/CurrencyRefType'
+        HasTPAR:
+          type: boolean
+          description: Indicate if the vendor has TPAR enabled. TPAR stands for Taxable Payments Annual Report. The TPAR is mandated by ATO to get the details payments that businesses make to contractors for providing services. Some government entities also need to report the grants they have paid in a TPAR.
+        TaxReportingBasis:
+          type: string
+          description: The method in which the supplier tracks their income. Applicable for France companies, only. Available when endpoint is evoked with the minorversion=3 query parameter. Valid values include- Cash and Accrual.
+        Mobile:
+          type: object
+          description: Mobile phone number
+          $ref: '#/components/schemas/TelephoneNumber'
+        PrimaryPhone:
+          type: object
+          description: Primary phone number
+          $ref: '#/components/schemas/TelephoneNumber'
+        Active:
+          type: boolean
+          description: If true, this object is currently enabled for use by QuickBooks.
+        AlternatePhone:
+          type: object
+          description: Alternate phone number
+          $ref: '#/components/schemas/TelephoneNumber'
+        MetaData:
+          type: object
+          description: Descriptive information about the object. The MetaData values are set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        Vendor1099:
+          type: boolean
+          description: This vendor is an independent contractor; someone who is given a 1099-MISC form at the end of the year. A 1099 vendor is paid with regular checks, and taxes are not withheld on their behalf.
+        BillRate:
+          type: number
+          description: BillRate can be set to specify this vendor's hourly billing rate.
+        WebAddr:
+          type: object
+          description: Website address.
+          $ref: '#/components/schemas/WebSiteAddress'
+        T5018Eligible:
+          type: boolean
+          description: True if vendor is T5018 eligible. Valid for CA locale
+        CompanyName:
+          type: string
+          description: The name of the company associated with the person or organization.
+        VendorPaymentBankDetail:
+          type: object
+          description: Vendor Payment Bank Detail.
+          # $ref: '#/components/schemas/VendorPaymentBankDetail'
+        TaxIdentifier:
+          type: string
+          description: The tax ID of the Person or Organization. The value is masked in responses, exposing only last four characters. For example, the ID of 123-45-6789 is returned as XXXXXXX6789.
+        AcctNum:
+          type: string
+          description: Name or number of the account associated with this vendor.
+        GSTRegistrationType:
+          type: string
+          description: For the filing of GSTR, transactions need to be classified depending on the type of vendor from whom the purchase is made. To facilitate this, we have introduced a new field as 'GST registration type'. Possible values are listed below-
+            GST_REG_REG GST registered- Regular. Customer who has a business which is registered under GST and has a GSTIN (doesn’t include customers registered under composition scheme, as an SEZ or as EOU's, STP's EHTP's etc.).
+            GST_REG_COMP GST registered-Composition. Customer who has a business which is registered under the composition scheme of GST and has a GSTIN.
+            GST_UNREG GST unregistered. Customer who has a business which is not registered under GST and does not have a GSTIN.
+            CONSUMER Consumer. Customer who is not registered under GST and is the final consumer of the service or product sold.
+            OVERSEAS Overseas. Customer who has a business which is located out of India.
+            SEZ SEZ. Customer who has a business which is registered under GST, has a GSTIN and is located in a SEZ or is a SEZ Developer.
+            DEEMED Deemed exports- EOU's, STP's EHTP's etc. Customer who has a business which is registered under GST and falls in the category of companies (EOU's, STP's EHTP's etc.), to which supplies are made they are termed as deemed exports.
+        PrintOnCheckName:
+          type: string
+          description: Name of the person or organization as printed on a check. If not provided, this is populated from DisplayName. Cannot be removed with sparse update.
+        BillAddr:
+          type: object
+          description: Default billing address
+          $ref: '#/components/schemas/PhysicalAddress'
+        Balance:
+          type: number
+          description: Specifies the open balance amount or the amount unpaid by the customer. For the create operation, this represents the opening balance for the customer. When returned in response to the query request it represents the current open balance (unpaid amount) for that customer. Write-on-create, read-only otherwise.
+    InvoiceResponse:
+      type: object
+      properties:
+        Invoice:
+          $ref: '#/components/schemas/Invoice'
+    InvoiceCreateObject:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        Line:
+          type: array
+          description: >-
+            Individual line items of a transaction. Valid Line types include
+            SalesItemLine, GroupLine, DescriptionOnlyLine (also used for inline
+            Subtotal lines), DiscountLine and SubTotalLine (used for the overall
+            transaction)
+          items: {}
+        CustomerRef:
+          type: object
+          description: >-
+            Reference to a customer or job. Query the Customer name list
+            resource to determine the appropriate Customer object for this
+            reference. Use Customer.Id and Customer.DisplayName from that object
+            for CustomerRef.value and CustomerRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        SyncToken:
+          type: string
+          description: >-
+            Version number of the object. It is used to lock an object for use
+            by one app at a time. As soon as an application modifies an object,
+            its SyncToken is incremented. Attempts to modify an object
+            specifying an older SyncToken fails. Only the latest version of the
+            object is maintained by QuickBooks Online.
+        CurrencyRef:
+          type: object
+          description: >-
+            Reference to the currency in which all amounts on the associated
+            transaction are expressed. This must be defined if multicurrency is
+            enabled for the company. Multicurrency is enabled for the company if
+            Preferences.MultiCurrencyEnabled is set to true. Read more about
+            multicurrency support here. Applicable if multicurrency is enabled
+            for the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+        DocNumber:
+          type: string
+          description: >-
+            Reference number for the transaction. If not explicitly provided at
+            create time, this field is populated based on the setting of
+            Preferences:CustomTxnNumber as follows- If
+            Preferences:CustomTxnNumber is true a custom value can be provided.
+            If no value is supplied, the resulting DocNumber is null. If
+            Preferences:CustomTxnNumber is false, resulting DocNumber is system
+            generated by incrementing the last number by 1. If
+            Preferences:CustomTxnNumber is false then do not send a value as it
+            can lead to unwanted duplicates. If a DocNumber value is sent for an
+            Update operation, then it just updates that particular invoice and
+            does not alter the internal system DocNumber. Note- DocNumber is an
+            optional field for all locales except France. For France locale if
+            Preferences:CustomTxnNumber is enabled it will not be automatically
+            generated and is a required field. If a duplicate DocNumber needs to
+            be supplied, add the query parameter name/value pair,
+            include=allowduplicatedocnum to the URI.
+        BillEmail:
+          type: object
+          description: >-
+            Identifies the e-mail address where the invoice is sent. If
+            EmailStatus=NeedToSend, BillEmailis a required input.
+          $ref: '#/components/schemas/EmailAddress'
+        TxnDate:
+          type: string
+          description: >-
+            The date entered by the user when this transaction occurred.
+            yyyy/MM/dd is the valid date format. For posting transactions, this
+            is the posting date that affects the financial statements. If the
+            date is not supplied, the current date on the server is used. Sort
+            order is ASC by default.
+        ShipFromAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods are shipped from. For
+            transactions without shipping, it represents the address where the
+            sale took place. For international addresses - countries should be
+            passed as 3 ISO alpha-3 characters or the full name of the country.
+            If a physical address is updated from within the transaction object,
+            the QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ShipDate:
+          type: string
+          description: Date for delivery of goods or services.
+        TrackingNum:
+          type: string
+          description: >-
+            Shipping provider's tracking number for the delivery of the goods
+            associated with the transaction.
+        ClassRef:
+          type: object
+          description: >-
+            Reference to the Class associated with the transaction. Available if
+            Preferences.AccountingInfoPrefs.ClassTrackingPerTxn is set to true.
+            Query the Class name list resource to determine the appropriate
+            Class object for this reference. Use Class.Id and Class.Name from
+            that object for ClassRef.value and ClassRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        PrintStatus:
+          type: string
+          description: >-
+            Printing status of the invoice. Valid values- NotSet, NeedToPrint,
+            PrintComplete .
+        SalesTermRef:
+          type: object
+          description: >-
+            Reference to the sales term associated with the transaction. Query
+            the Term name list resource to determine the appropriate Term object
+            for this reference. Use Term.Id and Term.Name from that object for
+            SalesTermRef.value and SalesTermRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        TxnSource:
+          type: string
+          description: >-
+            Used internally to specify originating source of a credit card
+            transaction.
+        LinkedTxn:
+          type: array
+          description: >-
+            Zero or more related transactions to this Invoice object. The
+            following linked relationships are supported- Links to Estimate and
+            TimeActivity objects can be established directly to this Invoice
+            object with UI or with the API. Create, Read, Update, and Query
+            operations are avaialble at the API level for these types of links.
+            Only one link can be made to an Estimate. Progress Invoicing is not
+            supported via the API. Links to expenses incurred on behalf of the
+            customer are returned in the response with LinkedTxn.TxnType set to
+            ReimburseCharge, ChargeCredit or StatementCharge corresponding to
+            billable customer expenses of type Cash, Delayed Credit, and Delayed
+            Charge, respectively. Links to these types of transactions are
+            established within the QuickBooks UI, only, and are available as
+            read-only at the API level. Links to payments applied to an Invoice
+            object are returned in the response with LinkedTxn.TxnType set to
+            Payment. Links to Payment transactions are established within the
+            QuickBooks UI, only, and are available as read-only at the API
+            level. Use LinkedTxn.TxnId as the ID in a separate read request for
+            the specific resource to retrieve details of the linked object.
+          items: {}
+        DepositToAccountRef:
+          type: object
+          description: >-
+            Account to which money is deposited. Query the Account name list
+            resource to determine the appropriate Account object for this
+            reference, where Account.AccountType is Other Current Asset or Bank.
+            Use Account.Id and Account.Name from that object for
+            DepositToAccountRef.value and DepositToAccountRef.name,
+            respectively. Before you can use this field ensure that the company
+            allows deposits in their invoices first. This can be found by
+            querying the Preferences endpoint. SalesFormsPrefs.AllowDeposit must
+            be equal to true. If you do not specify this account the payment is
+            applied to the Undeposited Funds account.
+          $ref: '#/components/schemas/ReferenceType'
+        GlobalTaxCalculation:
+          type: string
+          description: >-
+            Method in which tax is applied. Allowed values are- TaxExcluded,
+            TaxInclusive, and NotApplicable.
+        AllowOnlineACHPayment:
+          type: boolean
+          description: >-
+            Specifies if this invoice can be paid with online bank transfers and
+            corresponds to the Free bank transfer online payment check box on
+            the QuickBooks UI. Active when
+            Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to
+            true. If set to true, allow invoice to be paid with online bank
+            transfers. The Free bank transfer online payment check box is
+            checked on the QuickBooks UI for this invoice. If set to false,
+            online bank transfers are not allowed. The Free bank transfer online
+            payment check box is not checked on the QuickBooks UI for this
+            invoice.
+        TransactionLocationType:
+          type: string
+          description: >-
+            The account location. For France locale valid values include-
+            WithinFrance FranceOverseas OutsideFranceWithEU OutsideEU For UAE,
+            valid values include ABUDHABI AJMAN SHARJAH DUBAI FUJAIRAH
+            RAS_AL_KHAIMAH UMM_AL_QUWAIN OTHER_GCC
+        DueDate:
+          type: string
+          description: >-
+            Date when the payment of the transaction is due. If date is not
+            provided, the number of days specified in SalesTermRef added the
+            transaction date will be used.
+        MetaData:
+          type: object
+          description: >-
+            Descriptive information about the object. The MetaData values are
+            set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        PrivateNote:
+          type: string
+          description: >-
+            User entered, organization-private note about the transaction. This
+            note does not appear on the invoice to the customer. This field maps
+            to the Statement Memo field on the Invoice form in the QuickBooks
+            Online UI.
+        BillEmailCc:
+          type: object
+          description: >-
+            Identifies the carbon copy e-mail address where the invoice is sent.
+            If not specified, this field is populated from that defined in
+            Preferences.SalesFormsPrefs.SalesEmailCc. If this email address is
+            invalid, carbon copy email is not sent.
+          $ref: '#/components/schemas/EmailAddress'
+        CustomerMemo:
+          type: object
+          description: >-
+            User-entered message to the customer; this message is visible to end
+            user on their transactions.
+          $ref: '#/components/schemas/MemoRef'
+        EmailStatus:
+          type: string
+          description: >-
+            Email status of the invoice. Valid values- NotSet, NeedToSend,
+            EmailSent
+        ExchangeRate:
+          type: number
+          description: >-
+            The number of home currency units it takes to equal one unit of
+            currency specified by CurrencyRef. Applicable if multicurrency is
+            enabled for the company.
+        Deposit:
+          type: number
+          description: The deposit made towards this invoice.
+        TxnTaxDetail:
+          type: object
+          description: >-
+            This data type provides information for taxes charged on the
+            transaction as a whole. It captures the details sales taxes
+            calculated for the transaction based on the tax codes referenced by
+            the transaction. This can be calculated by QuickBooks business logic
+            or you may supply it when adding a transaction. See Global tax model
+            for more information about this element. If sales tax is disabled
+            (Preferences.TaxPrefs.UsingSalesTax is set to false) then
+            TxnTaxDetail is ignored and not stored.
+          # $ref: '#/components/schemas/TxnTaxDetail'
+        AllowOnlineCreditCardPayment:
+          type: boolean
+          description: >-
+            Specifies if online credit card payments are allowed for this
+            invoice and corresponds to the Cards online payment check box on the
+            QuickBooks UI. Active when
+            Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to
+            true. If set to true, allow invoice to be paid with online credit
+            card payments. The Cards online payment check box is checked on the
+            QuickBooks UI. If set to false, online credit card payments are not
+            allowed. The Cards online payment check box is not checked on the
+            QuickBooks UI.
+        CustomField:
+          type: object
+          description: >-
+            One of, up to three custom fields for the transaction. Available for
+            custom fields so configured for the company. Check
+            Preferences.SalesFormsPrefs.CustomField and
+            Preferences.VendorAndPurchasesPrefs.POCustomField for custom fields
+            currenly configured. Click here to learn about managing custom
+            fields.
+          # $ref: '#/components/schemas/TxnTaxDetail'
+        ShipAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods must be shipped. If
+            ShipAddris not specified, and a default Customer:ShippingAddr is
+            specified in QuickBooks for this customer, the default ship-to
+            address will be used by QuickBooks. For international addresses -
+            countries should be passed as 3 ISO alpha-3 characters or the full
+            name of the country. If a physical address is updated from within
+            the transaction object, the QuickBooks Online API flows individual
+            address components differently into the Line elements of the
+            transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and
+            company name. Original Line1 through Line 5 contents, City,
+            SubDivisionCode, and PostalCode flow into Line3 through Line5as a
+            free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        DepartmentRef:
+          type: object
+          description: >-
+            A reference to a Department object specifying the location of the
+            transaction. Available if
+            Preferences.AccountingInfoPrefs.TrackDepartments is set to true.
+            Query the Department name list resource to determine the appropriate
+            department object for this reference. Use Department.Id and
+            Department.Name from that object for DepartmentRef.value and
+            DepartmentRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        BillEmailBcc:
+          type: object
+          description: >-
+            Identifies the blind carbon copy e-mail address where the invoice is
+            sent. If not specified, this field is populated from that defined in
+            Preferences.SalesFormsPrefs.SalesEmailBcc. If this email address is
+            invalid, blind carbon copy email is not sent.
+          $ref: '#/components/schemas/EmailAddress'
+        ShipMethodRef:
+          type: object
+          description: >-
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+          $ref: '#/components/schemas/ReferenceType'
+        BillAddr:
+          type: object
+          description: >-
+            Bill-to address of the Invoice. If BillAddris not specified, and a
+            default Customer:BillingAddr is specified in QuickBooks for this
+            customer, the default bill-to address is used by QuickBooks. For
+            international addresses - countries should be passed as 3 ISO
+            alpha-3 characters or the full name of the country. If a physical
+            address is updated from within the transaction object, the
+            QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings. Starting
+            minorversion=54 if you update the CustomerRef, the address passed
+            using BillAddr will be honored.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ApplyTaxAfterDiscount:
+          type: boolean
+          description: >-
+            If false or null, calculate the sales tax first, and then apply the
+            discount. If true, subtract the discount first and then calculate
+            the sales tax.
+        FreeFormAddress:
+          type: boolean
+          description: >-
+            Denotes how ShipAddr is stored- formatted or unformatted. The value
+            of this flag is system defined based on format of shipping address
+            at object create time. If set to false, shipping address is returned
+            in a formatted style using City, Country, CountrySubDivisionCode,
+            Postal code. If set to true, shipping address is returned in an
+            unformatted style using Line1 through Line5 attributes.
+      required:
+        - "Line"
+        - "CustomerRef"
+    Invoice:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        Line:
+          type: array
+          description: >-
+            Individual line items of a transaction. Valid Line types include
+            SalesItemLine, GroupLine, DescriptionOnlyLine (also used for inline
+            Subtotal lines), DiscountLine and SubTotalLine (used for the overall
+            transaction)
+          items: {}
+        CustomerRef:
+          type: object
+          description: >-
+            Reference to a customer or job. Query the Customer name list
+            resource to determine the appropriate Customer object for this
+            reference. Use Customer.Id and Customer.DisplayName from that object
+            for CustomerRef.value and CustomerRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        SyncToken:
+          type: string
+          description: >-
+            Version number of the object. It is used to lock an object for use
+            by one app at a time. As soon as an application modifies an object,
+            its SyncToken is incremented. Attempts to modify an object
+            specifying an older SyncToken fails. Only the latest version of the
+            object is maintained by QuickBooks Online.
+        CurrencyRef:
+          type: object
+          description: >-
+            Reference to the currency in which all amounts on the associated
+            transaction are expressed. This must be defined if multicurrency is
+            enabled for the company. Multicurrency is enabled for the company if
+            Preferences.MultiCurrencyEnabled is set to true. Read more about
+            multicurrency support here. Applicable if multicurrency is enabled
+            for the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+        DocNumber:
+          type: string
+          description: >-
+            Reference number for the transaction. If not explicitly provided at
+            create time, this field is populated based on the setting of
+            Preferences:CustomTxnNumber as follows- If
+            Preferences:CustomTxnNumber is true a custom value can be provided.
+            If no value is supplied, the resulting DocNumber is null. If
+            Preferences:CustomTxnNumber is false, resulting DocNumber is system
+            generated by incrementing the last number by 1. If
+            Preferences:CustomTxnNumber is false then do not send a value as it
+            can lead to unwanted duplicates. If a DocNumber value is sent for an
+            Update operation, then it just updates that particular invoice and
+            does not alter the internal system DocNumber. Note- DocNumber is an
+            optional field for all locales except France. For France locale if
+            Preferences:CustomTxnNumber is enabled it will not be automatically
+            generated and is a required field. If a duplicate DocNumber needs to
+            be supplied, add the query parameter name/value pair,
+            include=allowduplicatedocnum to the URI.
+        BillEmail:
+          type: object
+          description: >-
+            Identifies the e-mail address where the invoice is sent. If
+            EmailStatus=NeedToSend, BillEmailis a required input.
+          $ref: '#/components/schemas/EmailAddress'
+        TxnDate:
+          type: string
+          description: >-
+            The date entered by the user when this transaction occurred.
+            yyyy/MM/dd is the valid date format. For posting transactions, this
+            is the posting date that affects the financial statements. If the
+            date is not supplied, the current date on the server is used. Sort
+            order is ASC by default.
+        ShipFromAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods are shipped from. For
+            transactions without shipping, it represents the address where the
+            sale took place. For international addresses - countries should be
+            passed as 3 ISO alpha-3 characters or the full name of the country.
+            If a physical address is updated from within the transaction object,
+            the QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ShipDate:
+          type: string
+          description: Date for delivery of goods or services.
+        TrackingNum:
+          type: string
+          description: >-
+            Shipping provider's tracking number for the delivery of the goods
+            associated with the transaction.
+        ClassRef:
+          type: object
+          description: >-
+            Reference to the Class associated with the transaction. Available if
+            Preferences.AccountingInfoPrefs.ClassTrackingPerTxn is set to true.
+            Query the Class name list resource to determine the appropriate
+            Class object for this reference. Use Class.Id and Class.Name from
+            that object for ClassRef.value and ClassRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        PrintStatus:
+          type: string
+          description: >-
+            Printing status of the invoice. Valid values- NotSet, NeedToPrint,
+            PrintComplete .
+        SalesTermRef:
+          type: object
+          description: >-
+            Reference to the sales term associated with the transaction. Query
+            the Term name list resource to determine the appropriate Term object
+            for this reference. Use Term.Id and Term.Name from that object for
+            SalesTermRef.value and SalesTermRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        TxnSource:
+          type: string
+          description: >-
+            Used internally to specify originating source of a credit card
+            transaction.
+        LinkedTxn:
+          type: array
+          description: >-
+            Zero or more related transactions to this Invoice object. The
+            following linked relationships are supported- Links to Estimate and
+            TimeActivity objects can be established directly to this Invoice
+            object with UI or with the API. Create, Read, Update, and Query
+            operations are avaialble at the API level for these types of links.
+            Only one link can be made to an Estimate. Progress Invoicing is not
+            supported via the API. Links to expenses incurred on behalf of the
+            customer are returned in the response with LinkedTxn.TxnType set to
+            ReimburseCharge, ChargeCredit or StatementCharge corresponding to
+            billable customer expenses of type Cash, Delayed Credit, and Delayed
+            Charge, respectively. Links to these types of transactions are
+            established within the QuickBooks UI, only, and are available as
+            read-only at the API level. Links to payments applied to an Invoice
+            object are returned in the response with LinkedTxn.TxnType set to
+            Payment. Links to Payment transactions are established within the
+            QuickBooks UI, only, and are available as read-only at the API
+            level. Use LinkedTxn.TxnId as the ID in a separate read request for
+            the specific resource to retrieve details of the linked object.
+          items: {}
+        DepositToAccountRef:
+          type: object
+          description: >-
+            Account to which money is deposited. Query the Account name list
+            resource to determine the appropriate Account object for this
+            reference, where Account.AccountType is Other Current Asset or Bank.
+            Use Account.Id and Account.Name from that object for
+            DepositToAccountRef.value and DepositToAccountRef.name,
+            respectively. Before you can use this field ensure that the company
+            allows deposits in their invoices first. This can be found by
+            querying the Preferences endpoint. SalesFormsPrefs.AllowDeposit must
+            be equal to true. If you do not specify this account the payment is
+            applied to the Undeposited Funds account.
+          $ref: '#/components/schemas/ReferenceType'
+        GlobalTaxCalculation:
+          type: string
+          description: >-
+            Method in which tax is applied. Allowed values are- TaxExcluded,
+            TaxInclusive, and NotApplicable.
+        AllowOnlineACHPayment:
+          type: boolean
+          description: >-
+            Specifies if this invoice can be paid with online bank transfers and
+            corresponds to the Free bank transfer online payment check box on
+            the QuickBooks UI. Active when
+            Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to
+            true. If set to true, allow invoice to be paid with online bank
+            transfers. The Free bank transfer online payment check box is
+            checked on the QuickBooks UI for this invoice. If set to false,
+            online bank transfers are not allowed. The Free bank transfer online
+            payment check box is not checked on the QuickBooks UI for this
+            invoice.
+        TransactionLocationType:
+          type: string
+          description: >-
+            The account location. For France locale valid values include-
+            WithinFrance FranceOverseas OutsideFranceWithEU OutsideEU For UAE,
+            valid values include ABUDHABI AJMAN SHARJAH DUBAI FUJAIRAH
+            RAS_AL_KHAIMAH UMM_AL_QUWAIN OTHER_GCC
+        DueDate:
+          type: string
+          description: >-
+            Date when the payment of the transaction is due. If date is not
+            provided, the number of days specified in SalesTermRef added the
+            transaction date will be used.
+        MetaData:
+          type: object
+          description: >-
+            Descriptive information about the object. The MetaData values are
+            set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        PrivateNote:
+          type: string
+          description: >-
+            User entered, organization-private note about the transaction. This
+            note does not appear on the invoice to the customer. This field maps
+            to the Statement Memo field on the Invoice form in the QuickBooks
+            Online UI.
+        BillEmailCc:
+          type: object
+          description: >-
+            Identifies the carbon copy e-mail address where the invoice is sent.
+            If not specified, this field is populated from that defined in
+            Preferences.SalesFormsPrefs.SalesEmailCc. If this email address is
+            invalid, carbon copy email is not sent.
+          $ref: '#/components/schemas/EmailAddress'
+        CustomerMemo:
+          type: object
+          description: >-
+            User-entered message to the customer; this message is visible to end
+            user on their transactions.
+          $ref: '#/components/schemas/MemoRef'
+        EmailStatus:
+          type: string
+          description: >-
+            Email status of the invoice. Valid values- NotSet, NeedToSend,
+            EmailSent
+        ExchangeRate:
+          type: number
+          description: >-
+            The number of home currency units it takes to equal one unit of
+            currency specified by CurrencyRef. Applicable if multicurrency is
+            enabled for the company.
+        Deposit:
+          type: number
+          description: The deposit made towards this invoice.
+        TxnTaxDetail:
+          type: object
+          description: >-
+            This data type provides information for taxes charged on the
+            transaction as a whole. It captures the details sales taxes
+            calculated for the transaction based on the tax codes referenced by
+            the transaction. This can be calculated by QuickBooks business logic
+            or you may supply it when adding a transaction. See Global tax model
+            for more information about this element. If sales tax is disabled
+            (Preferences.TaxPrefs.UsingSalesTax is set to false) then
+            TxnTaxDetail is ignored and not stored.
+          # $ref: '#/components/schemas/TxnTaxDetail'
+        AllowOnlineCreditCardPayment:
+          type: boolean
+          description: >-
+            Specifies if online credit card payments are allowed for this
+            invoice and corresponds to the Cards online payment check box on the
+            QuickBooks UI. Active when
+            Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to
+            true. If set to true, allow invoice to be paid with online credit
+            card payments. The Cards online payment check box is checked on the
+            QuickBooks UI. If set to false, online credit card payments are not
+            allowed. The Cards online payment check box is not checked on the
+            QuickBooks UI.
+        CustomField:
+          type: object
+          description: >-
+            One of, up to three custom fields for the transaction. Available for
+            custom fields so configured for the company. Check
+            Preferences.SalesFormsPrefs.CustomField and
+            Preferences.VendorAndPurchasesPrefs.POCustomField for custom fields
+            currenly configured. Click here to learn about managing custom
+            fields.
+          # $ref: '#/components/schemas/TxnTaxDetail'
+        ShipAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods must be shipped. If
+            ShipAddris not specified, and a default Customer:ShippingAddr is
+            specified in QuickBooks for this customer, the default ship-to
+            address will be used by QuickBooks. For international addresses -
+            countries should be passed as 3 ISO alpha-3 characters or the full
+            name of the country. If a physical address is updated from within
+            the transaction object, the QuickBooks Online API flows individual
+            address components differently into the Line elements of the
+            transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and
+            company name. Original Line1 through Line 5 contents, City,
+            SubDivisionCode, and PostalCode flow into Line3 through Line5as a
+            free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        DepartmentRef:
+          type: object
+          description: >-
+            A reference to a Department object specifying the location of the
+            transaction. Available if
+            Preferences.AccountingInfoPrefs.TrackDepartments is set to true.
+            Query the Department name list resource to determine the appropriate
+            department object for this reference. Use Department.Id and
+            Department.Name from that object for DepartmentRef.value and
+            DepartmentRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        BillEmailBcc:
+          type: object
+          description: >-
+            Identifies the blind carbon copy e-mail address where the invoice is
+            sent. If not specified, this field is populated from that defined in
+            Preferences.SalesFormsPrefs.SalesEmailBcc. If this email address is
+            invalid, blind carbon copy email is not sent.
+          $ref: '#/components/schemas/EmailAddress'
+        ShipMethodRef:
+          type: object
+          description: >-
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+          $ref: '#/components/schemas/ReferenceType'
+        BillAddr:
+          type: object
+          description: >-
+            Bill-to address of the Invoice. If BillAddris not specified, and a
+            default Customer:BillingAddr is specified in QuickBooks for this
+            customer, the default bill-to address is used by QuickBooks. For
+            international addresses - countries should be passed as 3 ISO
+            alpha-3 characters or the full name of the country. If a physical
+            address is updated from within the transaction object, the
+            QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings. Starting
+            minorversion=54 if you update the CustomerRef, the address passed
+            using BillAddr will be honored.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ApplyTaxAfterDiscount:
+          type: boolean
+          description: >-
+            If false or null, calculate the sales tax first, and then apply the
+            discount. If true, subtract the discount first and then calculate
+            the sales tax.
+        HomeBalance:
+          type: number
+          description: >-
+            Convenience field containing the amount in Balance expressed in
+            terms of the home currency. Calculated by QuickBooks business logic.
+            Value is valid only when CurrencyRef is specified and available when
+            endpoint is evoked with the minorversion=3 query parameter.
+            Applicable if multicurrency is enabled for the company
+        DeliveryInfo:
+          type: object
+          description: >-
+            Email delivery information. Returned when a request has been made to
+            deliver email with the send operation.
+          # $ref: '#/components/schemas/DeliveryInfo'
+        TotalAmt:
+          type: number
+          description: >-
+            Indicates the total amount of the transaction. This includes the
+            total of all the charges, allowances, and taxes. Calculated by
+            QuickBooks business logic; any value you supply is over-written by
+            QuickBooks.
+        InvoiceLink:
+          type: string
+          description: >-
+            Sharable link for the invoice sent to external customers. The link
+            is generated only for invoices with online payment enabled and
+            having a valid customer email address. Include query param
+            `include=invoiceLink` to get the link back on query response.
+        RecurDataRef:
+          type: object
+          description: >-
+            A reference to the Recurring Transaction. It captures what recurring
+            transaction template the Invoice was created from.
+          $ref: '#/components/schemas/ReferenceType'
+        TaxExemptionRef:
+          type: object
+          description: >-
+            Reference to the TaxExepmtion ID associated with this object.
+            Available for companies that have automated sales tax enabled.
+            TaxExemptionRef.Name- The Tax Exemption Id for the customer to which
+            this object is associated. This Id is typically issued by the state.
+            TaxExemptionRef.value- The system-generated Id of the exemption
+            type.
+          $ref: '#/components/schemas/ReferenceType'
+        Balance:
+          type: number
+          description: >-
+            The balance reflecting any payments made against the transaction.
+            Initially set to the value of TotalAmt. A Balance of 0 indicates the
+            invoice is fully paid. Calculated by QuickBooks business logic; any
+            value you supply is over-written by QuickBooks.
+        HomeTotalAmt:
+          type: number
+          description: >-
+            Total amount of the transaction in the home currency. Includes the
+            total of all the charges, allowances and taxes. Calculated by
+            QuickBooks business logic. Value is valid only when CurrencyRef is
+            specified. Applicable if multicurrency is enabled for the company.
+        FreeFormAddress:
+          type: boolean
+          description: >-
+            Denotes how ShipAddr is stored- formatted or unformatted. The value
+            of this flag is system defined based on format of shipping address
+            at object create time. If set to false, shipping address is returned
+            in a formatted style using City, Country, CountrySubDivisionCode,
+            Postal code. If set to true, shipping address is returned in an
+            unformatted style using Line1 through Line5 attributes.
+    MemoRef:
+      type: object
+      properties:
+        value:
+          type: string
+          description: >-
+            User-entered message to the customer; this message is visible to the
+            end user on their transactions.
+    EstimateResponse:
+      type: object
+      properties:
+        Estimate:
+          $ref: '#/components/schemas/Estimate'
+    EstimateCreateObject:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        CustomerRef:
+          type: object
+          description: >-
+            Reference to a customer or job. Query the Customer name list
+            resource to determine the appropriate Customer object for this
+            reference. Use Customer.Id and Customer.DisplayName from that object
+            for CustomerRef.value and CustomerRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        SyncToken:
+          type: string
+          description: >-
+            Version number of the object. It is used to lock an object for use
+            by one app at a time. As soon as an application modifies an object,
+            its SyncToken is incremented. Attempts to modify an object
+            specifying an older SyncToken fails. Only the latest version of the
+            object is maintained by QuickBooks Online.
+        CurrencyRef:
+          type: object
+          description: >-
+            Reference to the currency in which all amounts on the associated
+            transaction are expressed. This must be defined if multicurrency is
+            enabled for the company. Multicurrency is enabled for the company if
+            Preferences.MultiCurrencyEnabled is set to true. Read more about
+            multicurrency support here. Required if multicurrency is enabled for
+            the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+        BillEmail:
+          type: object
+          description: >-
+            Identifies the e-mail address where the estimate is sent. If
+            EmailStatus=NeedToSend, BillEmailis a required input.
+          $ref: '#/components/schemas/EmailAddress'
+        TxnDate:
+          type: string
+          description: >-
+            The date entered by the user when this transaction occurred. For
+            posting transactions, this is the posting date that affects the
+            financial statements. If the date is not supplied, the current date
+            on the server is used. Sort order is ASC by default.
+        ShipFromAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods are shipped from. For
+            transactions without shipping, it represents the address where the
+            sale took place. For international addresses - countries should be
+            passed as 3 ISO alpha-3 characters or the full name of the country.
+            If a physical address is updated from within the transaction object,
+            the QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ShipDate:
+          type: string
+          description: Date for delivery of goods or services.
+        ClassRef:
+          type: object
+          description: >-
+            Reference to the Class associated with the transaction. Available if
+            Preferences.AccountingInfoPrefs.ClassTrackingPerTxn is set to true.
+            Query the Class name list resource to determine the appropriate
+            Class object for this reference. Use Class.Id and Class.Name from
+            that object for ClassRef.value and ClassRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        PrintStatus:
+          type: string
+          description: >-
+            Printing status of the invoice. Valid values- NotSet, NeedToPrint,
+            PrintComplete .
+        CustomField:
+          type: object
+          description: >-
+            One of, up to three custom fields for the transaction. Available for
+            custom fields so configured for the company. Check
+            Preferences.SalesFormsPrefs.CustomField and
+            Preferences.VendorAndPurchasesPrefs.POCustomField for custom fields
+            currenly configured. Click here to learn about managing custom
+            fields.
+        SalesTermRef:
+          type: object
+          description: >-
+            Reference to the sales term associated with the transaction. Query
+            the Term name list resource to determine the appropriate Term object
+            for this reference. Use Term.Id and Term.Name from that object for
+            SalesTermRef.value and SalesTermRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        TxnStatus:
+          type: string
+          description: >-
+            One of the following status settings- Accepted, Closed, Pending,
+            Rejected, Converted
+        LinkedTxn:
+          type: array
+          description: >-
+            Zero or more Invoice objects related to this transaction. Use
+            LinkedTxn.TxnId as the ID in a separate Invoice read request to
+            retrieve details of the linked object.
+          items:
+            $ref: '#/components/schemas/LinkedTxn'
+        GlobalTaxCalculation:
+          type: string
+          description: >-
+            TaxExcluded Method in which tax is applied. Allowed values are-
+            TaxExcluded, TaxInclusive, and NotApplicable.
+          enum:
+            - ''
+        AcceptedDate:
+          type: string
+          description: Date estimate was accepted.
+        ExpirationDate:
+          type: string
+          description: Date by which estimate must be accepted before invalidation.
+        TransactionLocationType:
+          type: string
+          description: >-
+            The account location. Valid values include- - WithinFrance -
+            FranceOverseas - OutsideFranceWithEU - OutsideEU - For France
+            locales, only.
+        DueDate:
+          type: string
+          description: >-
+            Date when the payment of the transaction is due. If date is not
+            provided, the number of days specified in SalesTermRef added the
+            transaction date will be used.
+        MetaData:
+          type: object
+          description: >-
+            Descriptive information about the object. The MetaData values are
+            set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        DocNumber:
+          type: string
+          description: >-
+            Reference number for the transaction. If not explicitly provided at
+            create time, this field is populated based on the setting of
+            Preferences:CustomTxnNumber as follows- If
+            Preferences:CustomTxnNumber is true a custom value can be provided.
+            If no value is supplied, the resulting DocNumber is null. If
+            Preferences:CustomTxnNumber is false, resulting DocNumber is system
+            generated by incrementing the last number by 1. If
+            Preferences:CustomTxnNumber is false then do not send a value as it
+            can lead to unwanted duplicates. If a DocNumber value is sent for an
+            Update operation, then it just updates that particular invoice and
+            does not alter the internal system DocNumber. Note- DocNumber is an
+            optional field for all locales except France. For France locale if
+            Preferences:CustomTxnNumber is enabled it will not be automatically
+            generated and is a required field.
+        PrivateNote:
+          type: string
+          description: >-
+            User entered, organization-private note about the transaction. This
+            note does not appear on the invoice to the customer. This field maps
+            to the Memo field on the Invoice form.
+        Line:
+          type: array
+          description: >-
+            Individual line items of a transaction. Valid Line types include-
+            SalesItemLine, GroupLine, DescriptionOnlyLine (also used for inline
+            Subtotal lines), DiscountLine and SubTotalLine (used for the overall
+            transaction)
+          items: {}
+        CustomerMemo:
+          type: object
+          description: >-
+            User-entered message to the customer; this message is visible to end
+            user on their transactions.
+          $ref: '#/components/schemas/MemoRef'
+        EmailStatus:
+          type: string
+          description: >-
+            Email status of the invoice. Valid values- NotSet, NeedToSend,
+            EmailSent
+        TxnTaxDetail:
+          type: object
+          description: >-
+            This data type provides information for taxes charged on the
+            transaction as a whole. It captures the details sales taxes
+            calculated for the transaction based on the tax codes referenced by
+            the transaction. This can be calculated by QuickBooks business logic
+            or you may supply it when adding a transaction. See Global tax model
+            for more information about this element. If sales tax is disabled
+            (Preferences.TaxPrefs.UsingSalesTax is set to false) then
+            TxnTaxDetail is ignored and not stored.
+        AcceptedBy:
+          type: string
+          description: Name of customer who accepted the estimate.
+        ExchangeRate:
+          type: number
+          description: >-
+            The number of home currency units it takes to equal one unit of
+            currency specified by CurrencyRef. Applicable if multicurrency is
+            enabled for the company.
+        ShipAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods must be shipped. If
+            ShipAddris not specified, and a default Customer:ShippingAddr is
+            specified in QuickBooks for this customer, the default ship-to
+            address will be used by QuickBooks. For international addresses -
+            countries should be passed as 3 ISO alpha-3 characters or the full
+            name of the country. If a physical address is updated from within
+            the transaction object, the QuickBooks Online API flows individual
+            address components differently into the Line elements of the
+            transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and
+            company name. Original Line1 through Line 5 contents, City,
+            SubDivisionCode, and PostalCode flow into Line3 through Line5as a
+            free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        DepartmentRef:
+          type: object
+          description: >-
+            A reference to a Department object specifying the location of the
+            transaction. Available if
+            Preferences.AccountingInfoPrefs.TrackDepartments is set to true.
+            Query the Department name list resource to determine the appropriate
+            department object for this reference. Use Department.Id and
+            Department.Name from that object for DepartmentRef.value and
+            DepartmentRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        ShipMethodRef:
+          type: object
+          description: >-
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+          $ref: '#/components/schemas/ReferenceType'
+        BillAddr:
+          type: object
+          description: >-
+            Bill-to address of the Invoice. If BillAddris not specified, and a
+            default Customer:BillingAddr is specified in QuickBooks for this
+            customer, the default bill-to address is used by QuickBooks. For
+            international addresses - countries should be passed as 3 ISO
+            alpha-3 characters or the full name of the country. If a physical
+            address is updated from within the transaction object, the
+            QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ApplyTaxAfterDiscount:
+          type: boolean
+          description: >-
+            If false or null, calculate the sales tax first, and then apply the
+            discount. If true, subtract the discount first and then calculate
+            the sales tax.
+        FreeFormAddress:
+          type: boolean
+          description: >-
+            Denotes how ShipAddr is stored- formatted or unformatted. The value
+            of this flag is system defined based on format of shipping address
+            at object create time. If set to false, shipping address is returned
+            in a formatted style using City, Country, CountrySubDivisionCode,
+            Postal code. If set to true, shipping address is returned in an
+            unformatted style using Line1 through Line5 attributes.
+      required:
+        - "CustomerRef"
+    Estimate:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        CustomerRef:
+          type: object
+          description: >-
+            Reference to a customer or job. Query the Customer name list
+            resource to determine the appropriate Customer object for this
+            reference. Use Customer.Id and Customer.DisplayName from that object
+            for CustomerRef.value and CustomerRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        SyncToken:
+          type: string
+          description: >-
+            Version number of the object. It is used to lock an object for use
+            by one app at a time. As soon as an application modifies an object,
+            its SyncToken is incremented. Attempts to modify an object
+            specifying an older SyncToken fails. Only the latest version of the
+            object is maintained by QuickBooks Online.
+        CurrencyRef:
+          type: object
+          description: >-
+            Reference to the currency in which all amounts on the associated
+            transaction are expressed. This must be defined if multicurrency is
+            enabled for the company. Multicurrency is enabled for the company if
+            Preferences.MultiCurrencyEnabled is set to true. Read more about
+            multicurrency support here. Required if multicurrency is enabled for
+            the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+        BillEmail:
+          type: object
+          description: >-
+            Identifies the e-mail address where the estimate is sent. If
+            EmailStatus=NeedToSend, BillEmailis a required input.
+          $ref: '#/components/schemas/EmailAddress'
+        TxnDate:
+          type: string
+          description: >-
+            The date entered by the user when this transaction occurred. For
+            posting transactions, this is the posting date that affects the
+            financial statements. If the date is not supplied, the current date
+            on the server is used. Sort order is ASC by default.
+        ShipFromAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods are shipped from. For
+            transactions without shipping, it represents the address where the
+            sale took place. For international addresses - countries should be
+            passed as 3 ISO alpha-3 characters or the full name of the country.
+            If a physical address is updated from within the transaction object,
+            the QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ShipDate:
+          type: string
+          description: Date for delivery of goods or services.
+        ClassRef:
+          type: object
+          description: >-
+            Reference to the Class associated with the transaction. Available if
+            Preferences.AccountingInfoPrefs.ClassTrackingPerTxn is set to true.
+            Query the Class name list resource to determine the appropriate
+            Class object for this reference. Use Class.Id and Class.Name from
+            that object for ClassRef.value and ClassRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        PrintStatus:
+          type: string
+          description: >-
+            Printing status of the invoice. Valid values- NotSet, NeedToPrint,
+            PrintComplete .
+        CustomField:
+          type: object
+          description: >-
+            One of, up to three custom fields for the transaction. Available for
+            custom fields so configured for the company. Check
+            Preferences.SalesFormsPrefs.CustomField and
+            Preferences.VendorAndPurchasesPrefs.POCustomField for custom fields
+            currenly configured. Click here to learn about managing custom
+            fields.
+        SalesTermRef:
+          type: object
+          description: >-
+            Reference to the sales term associated with the transaction. Query
+            the Term name list resource to determine the appropriate Term object
+            for this reference. Use Term.Id and Term.Name from that object for
+            SalesTermRef.value and SalesTermRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        TxnStatus:
+          type: string
+          description: >-
+            One of the following status settings- Accepted, Closed, Pending,
+            Rejected, Converted
+        LinkedTxn:
+          type: array
+          description: >-
+            Zero or more Invoice objects related to this transaction. Use
+            LinkedTxn.TxnId as the ID in a separate Invoice read request to
+            retrieve details of the linked object.
+          items:
+            $ref: '#/components/schemas/LinkedTxn'
+        GlobalTaxCalculation:
+          type: string
+          description: >-
+            TaxExcluded Method in which tax is applied. Allowed values are-
+            TaxExcluded, TaxInclusive, and NotApplicable.
+          enum:
+            - ''
+        AcceptedDate:
+          type: string
+          description: Date estimate was accepted.
+        ExpirationDate:
+          type: string
+          description: Date by which estimate must be accepted before invalidation.
+        TransactionLocationType:
+          type: string
+          description: >-
+            The account location. Valid values include- - WithinFrance -
+            FranceOverseas - OutsideFranceWithEU - OutsideEU - For France
+            locales, only.
+        DueDate:
+          type: string
+          description: >-
+            Date when the payment of the transaction is due. If date is not
+            provided, the number of days specified in SalesTermRef added the
+            transaction date will be used.
+        MetaData:
+          type: object
+          description: >-
+            Descriptive information about the object. The MetaData values are
+            set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        DocNumber:
+          type: string
+          description: >-
+            Reference number for the transaction. If not explicitly provided at
+            create time, this field is populated based on the setting of
+            Preferences:CustomTxnNumber as follows- If
+            Preferences:CustomTxnNumber is true a custom value can be provided.
+            If no value is supplied, the resulting DocNumber is null. If
+            Preferences:CustomTxnNumber is false, resulting DocNumber is system
+            generated by incrementing the last number by 1. If
+            Preferences:CustomTxnNumber is false then do not send a value as it
+            can lead to unwanted duplicates. If a DocNumber value is sent for an
+            Update operation, then it just updates that particular invoice and
+            does not alter the internal system DocNumber. Note- DocNumber is an
+            optional field for all locales except France. For France locale if
+            Preferences:CustomTxnNumber is enabled it will not be automatically
+            generated and is a required field.
+        PrivateNote:
+          type: string
+          description: >-
+            User entered, organization-private note about the transaction. This
+            note does not appear on the invoice to the customer. This field maps
+            to the Memo field on the Invoice form.
+        Line:
+          type: array
+          description: >-
+            Individual line items of a transaction. Valid Line types include-
+            SalesItemLine, GroupLine, DescriptionOnlyLine (also used for inline
+            Subtotal lines), DiscountLine and SubTotalLine (used for the overall
+            transaction)
+          items: {}
+        CustomerMemo:
+          type: object
+          description: >-
+            User-entered message to the customer; this message is visible to end
+            user on their transactions.
+          $ref: '#/components/schemas/MemoRef'
+        EmailStatus:
+          type: string
+          description: >-
+            Email status of the invoice. Valid values- NotSet, NeedToSend,
+            EmailSent
+        TxnTaxDetail:
+          type: object
+          description: >-
+            This data type provides information for taxes charged on the
+            transaction as a whole. It captures the details sales taxes
+            calculated for the transaction based on the tax codes referenced by
+            the transaction. This can be calculated by QuickBooks business logic
+            or you may supply it when adding a transaction. See Global tax model
+            for more information about this element. If sales tax is disabled
+            (Preferences.TaxPrefs.UsingSalesTax is set to false) then
+            TxnTaxDetail is ignored and not stored.
+        AcceptedBy:
+          type: string
+          description: Name of customer who accepted the estimate.
+        ExchangeRate:
+          type: number
+          description: >-
+            The number of home currency units it takes to equal one unit of
+            currency specified by CurrencyRef. Applicable if multicurrency is
+            enabled for the company.
+        ShipAddr:
+          type: object
+          description: >-
+            Identifies the address where the goods must be shipped. If
+            ShipAddris not specified, and a default Customer:ShippingAddr is
+            specified in QuickBooks for this customer, the default ship-to
+            address will be used by QuickBooks. For international addresses -
+            countries should be passed as 3 ISO alpha-3 characters or the full
+            name of the country. If a physical address is updated from within
+            the transaction object, the QuickBooks Online API flows individual
+            address components differently into the Line elements of the
+            transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and
+            company name. Original Line1 through Line 5 contents, City,
+            SubDivisionCode, and PostalCode flow into Line3 through Line5as a
+            free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        DepartmentRef:
+          type: object
+          description: >-
+            A reference to a Department object specifying the location of the
+            transaction. Available if
+            Preferences.AccountingInfoPrefs.TrackDepartments is set to true.
+            Query the Department name list resource to determine the appropriate
+            department object for this reference. Use Department.Id and
+            Department.Name from that object for DepartmentRef.value and
+            DepartmentRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        ShipMethodRef:
+          type: object
+          description: >-
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+            Reference to the ShipMethod associated with the transaction. There
+            is no shipping method list. Reference resolves to a string.
+          $ref: '#/components/schemas/ReferenceType'
+        BillAddr:
+          type: object
+          description: >-
+            Bill-to address of the Invoice. If BillAddris not specified, and a
+            default Customer:BillingAddr is specified in QuickBooks for this
+            customer, the default bill-to address is used by QuickBooks. For
+            international addresses - countries should be passed as 3 ISO
+            alpha-3 characters or the full name of the country. If a physical
+            address is updated from within the transaction object, the
+            QuickBooks Online API flows individual address components
+            differently into the Line elements of the transaction response then
+            when the transaction was first created- Line1 and Line2 elements are
+            populated with the customer name and company name. Original Line1
+            through Line 5 contents, City, SubDivisionCode, and PostalCode flow
+            into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        ApplyTaxAfterDiscount:
+          type: boolean
+          description: >-
+            If false or null, calculate the sales tax first, and then apply the
+            discount. If true, subtract the discount first and then calculate
+            the sales tax.
+        TotalAmt:
+          type: number
+          description: >-
+            Indicates the total amount of the transaction. This includes the
+            total of all the charges, allowances, and taxes. Calculated by
+            QuickBooks business logic; any value you supply is over-written by
+            QuickBooks.
+        RecurDataRef:
+          type: object
+          description: >-
+            A reference to the Recurring Transaction. It captures what recurring
+            transaction template the Estimate was created from.
+          $ref: '#/components/schemas/ReferenceType'
+        TaxExemptionRef:
+          type: object
+          description: >-
+            Reference to the TaxExepmtion ID associated with this object.
+            Available for companies that have automated sales tax enabled.
+            TaxExemptionRef.Name- The Tax Exemption Id for the customer to which
+            this object is associated. This Id is typically issued by the state.
+            TaxExemptionRef.value- The system-generated Id of the exemption
+            type.
+          $ref: '#/components/schemas/ReferenceType'
+        HomeTotalAmt:
+          type: number
+          description: >-
+            Total amount of the transaction in the home currency. Includes the
+            total of all the charges, allowances and taxes. Calculated by
+            QuickBooks business logic. Value is valid only when CurrencyRef is
+            specified. Applicable if multicurrency is enabled for the company.
+        FreeFormAddress:
+          type: boolean
+          description: >-
+            Denotes how ShipAddr is stored- formatted or unformatted. The value
+            of this flag is system defined based on format of shipping address
+            at object create time. If set to false, shipping address is returned
+            in a formatted style using City, Country, CountrySubDivisionCode,
+            Postal code. If set to true, shipping address is returned in an
+            unformatted style using Line1 through Line5 attributes.
+    EmailAddress:
+      type: object
+      description: Email address
+      properties:
+        Address:
+          type: string
+          description: An email address. The address format must follow the RFC 822 standard.
+    PaymentResponse:
+      type: object
+      properties: 
+        Payment:
+          $ref: '#/components/schemas/Payment'
+    PaymentCreateObject:
+      type: object
+      properties: 
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        TotalAmt:
+          type: number
+          description: Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes.
+        CustomerRef:
+          type: object
+          description: Reference to a customer or job. Query the Customer name list resource to determine the appropriate Customer object for this reference. Use Customer.Id and Customer.DisplayName from that object for CustomerRef.value and CustomerRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. As soon as an application modifies an object, its SyncToken is incremented. Attempts to modify an object specifying an older SyncToken fails. Only the latest version of the object is maintained by QuickBooks Online.
+        CurrencyRef:
+          type: object
+          description: Reference to the currency in which all amounts on the associated transaction are expressed. This must be defined if multicurrency is enabled for the company.
+            Multicurrency is enabled for the company if Preferences.MultiCurrencyEnabled is set to true. Read more about multicurrency support here. Required if multicurrency is enabled for the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+        PrivateNote:
+          type: string
+          description: User entered, organization-private note about the transaction.
+        PaymentMethodRef:
+          type: object
+          description: Reference to a PaymentMethod associated with this transaction. Query the PaymentMethod name list resource to determine the appropriate PaymentMethod object for this reference. 
+            Use PaymentMethod.Id and PaymentMethod.Name from that object for PaymentMethodRef.value and PaymentMethodRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType' 
+        DepositToAccountRef:
+          type: object
+          description: Identifies the account to be used for this payment. Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType is Other Current Asset or Bank. Use Account.Id and Account.Name from that object for DepositToAccountRef.value and DepostiToAccountRef.name, respectively.
+            If you do not specify this account, payment is applied to the Undeposited Funds account.
+        ExchangeRate:
+          type: number
+          description: The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company
+        Line:
+          type: array
+          description: Zero or more transactions accounting for this payment. Values for Line.LinkedTxn.TxnTypecan be one of the following-
+            - Expense--Payment is reimbursement for expense paid by cash made on behalf of the customer
+            - Check--Payment is reimbursement for expense paid by check made on behalf of the customer
+            - CreditCardCredit--Payment is reimbursement for a credit card credit made on behalf of the customer
+            - JournalEntry--Payment is linked to the representative journal entry
+            - CreditMemo--Payment is linked to the credit memo the customer has with the business
+            - Invoice--The invoice to which payment is applied
+            - Use Line.LinkedTxn.TxnId as the ID in a separate read request for the specific resource to retrieve details of the linked object.
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ItemBasedExpenseLine'
+              - $ref: '#/components/schemas/AccountBasedExpenseLine'
+        TxnSource:
+          type: string
+          description: Used internally to specify originating source of a credit card transaction.
+        ARAccountRef:
+          type: object
+          description: Specifies the accounts receivable account associated with this payment. 
+            Query the Account name list resource to determine the appropriate Account object for this reference. 
+            Use Account.Id and Account.Name from that object for ARAccountRef.value and ARAccountRef.name, respectively. 
+            The specified account must have Account.AccountType set to Accounts Receivable.
+          $ref: '#/components/schemas/ReferenceType'
+        TxnDate:
+          type: string
+          description: The date entered by the user when this transaction occurred. For posting transactions, this is the posting date that affects the financial statements. If the date is not supplied, the current date on the server is used.
+            Sort order is ASC by default.
+        CreditCardPayment:
+          type: object
+          description: Information about a payment received by credit card. Inject with data only if the payment was transacted through Intuit Payments API.
+          ############
+        TransactionLocationType:
+          type: string
+          description: The account location. Valid values include-
+            WithinFrance
+            FranceOverseas
+            OutsideFranceWithEU
+            OutsideEU
+            For France locales, only.
+        MetaData:
+          type: object
+          description: Descriptive information about the entity. The MetaData values are set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        PaymentRefNum:
+          type: string
+          description: The reference number for the payment received. 
+            For example, Â Check number for a check, envelope number for a cash donation. Required for France locales.
+      required:
+        - "TotalAmt"
+        - "CustomerRef"
+    Payment:
+      type: object
+      properties: 
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        TotalAmt:
+          type: number
+          description: Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes.
+        CustomerRef:
+          type: object
+          description: Reference to a customer or job. Query the Customer name list resource to determine the appropriate Customer object for this reference. Use Customer.Id and Customer.DisplayName from that object for CustomerRef.value and CustomerRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. As soon as an application modifies an object, its SyncToken is incremented. Attempts to modify an object specifying an older SyncToken fails. Only the latest version of the object is maintained by QuickBooks Online.
+        CurrencyRef:
+          type: object
+          description: Reference to the currency in which all amounts on the associated transaction are expressed. This must be defined if multicurrency is enabled for the company.
+            Multicurrency is enabled for the company if Preferences.MultiCurrencyEnabled is set to true. Read more about multicurrency support here. Required if multicurrency is enabled for the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+        PrivateNote:
+          type: string
+          description: User entered, organization-private note about the transaction.
+        PaymentMethodRef:
+          type: object
+          description: Reference to a PaymentMethod associated with this transaction. Query the PaymentMethod name list resource to determine the appropriate PaymentMethod object for this reference. 
+            Use PaymentMethod.Id and PaymentMethod.Name from that object for PaymentMethodRef.value and PaymentMethodRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType' 
+        UnappliedAmt:
+          type: number
+          description: Indicates the amount that has not been applied to pay amounts owed for sales transactions.
+        DepositToAccountRef:
+          type: object
+          description: Identifies the account to be used for this payment. Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType is Other Current Asset or Bank. Use Account.Id and Account.Name from that object for DepositToAccountRef.value and DepostiToAccountRef.name, respectively.
+            If you do not specify this account, payment is applied to the Undeposited Funds account.
+        ExchangeRate:
+          type: number
+          description: The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company
+        Line:
+          type: array
+          description: Zero or more transactions accounting for this payment. Values for Line.LinkedTxn.TxnTypecan be one of the following-
+            - Expense--Payment is reimbursement for expense paid by cash made on behalf of the customer
+            - Check--Payment is reimbursement for expense paid by check made on behalf of the customer
+            - CreditCardCredit--Payment is reimbursement for a credit card credit made on behalf of the customer
+            - JournalEntry--Payment is linked to the representative journal entry
+            - CreditMemo--Payment is linked to the credit memo the customer has with the business
+            - Invoice--The invoice to which payment is applied
+            - Use Line.LinkedTxn.TxnId as the ID in a separate read request for the specific resource to retrieve details of the linked object.
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ItemBasedExpenseLine'
+              - $ref: '#/components/schemas/AccountBasedExpenseLine'
+        TxnSource:
+          type: string
+          description: Used internally to specify originating source of a credit card transaction.
+        ARAccountRef:
+          type: object
+          description: Specifies the accounts receivable account associated with this payment. 
+            Query the Account name list resource to determine the appropriate Account object for this reference. 
+            Use Account.Id and Account.Name from that object for ARAccountRef.value and ARAccountRef.name, respectively. 
+            The specified account must have Account.AccountType set to Accounts Receivable.
+          $ref: '#/components/schemas/ReferenceType'
+        TxnDate:
+          type: string
+          description: The date entered by the user when this transaction occurred. For posting transactions, this is the posting date that affects the financial statements. If the date is not supplied, the current date on the server is used.
+            Sort order is ASC by default.
+        CreditCardPayment:
+          type: object
+          description: Information about a payment received by credit card. Inject with data only if the payment was transacted through Intuit Payments API.
+          ############
+        TransactionLocationType:
+          type: string
+          description: The account location. Valid values include-
+            WithinFrance
+            FranceOverseas
+            OutsideFranceWithEU
+            OutsideEU
+            For France locales, only.
+        MetaData:
+          type: object
+          description: Descriptive information about the entity. The MetaData values are set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        PaymentRefNum:
+          type: string
+          description: The reference number for the payment received. 
+            For example, Â Check number for a check, envelope number for a cash donation. Required for France locales.
+        TaxExemptionRef:
+          type: object
+          description: Reference to the TaxExepmtion ID associated with this object. Available for companies that have automated sales tax enabled.
+            TaxExemptionRef.Name- The Tax Exemption Id for the customer to which this object is associated. This Id is typically issued by the state.
+            TaxExemptionRef.value- The system-generated Id of the exemption type.
+          $ref: '#/components/schemas/ReferenceType'
+    CurrencyRefType:
+      type: object
+      description: Currency reference type
+      properties:
+          value:
+            type: string
+            description: A three letter string representing the ISO 4217 code for the currency. For example, USD, AUD, EUR, and so on.
+          name:
+            type: string
+            description: The full name of the currency.       
+    BillResponse:
+      type: object
+      properties: 
+        Bill:
+          $ref: '#/components/schemas/Bill'
+    BillCreateObject:
+      type: object
+      properties:
+        VendorRef:
+            type: object
+            description: Reference to the vendor for this transaction. 
+              Query the Vendor name list resource to determine the appropriate Vendor object for this reference. 
+              Use Vendor.Id and Vendor.Name from that object for VendorRef.value and VendorRef.name, respectively.  
+            properties:
+              value:
+                type: string
+                description: The ID for the referenced object as found in the Id field of the object payload. 
+                  The context is set by the type of reference and is specific to the QuickBooks company file.
+              name:
+                type: string
+                description: An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. 
+                  This varies by context and specific type of object referenced. 
+                  For example, references to a Customer object use Customer.DisplayName to populate this field. 
+                  Optionally returned in responses, implementation dependent.
+        Line:
+          type: array
+          description: Individual line items of a transaction. Valid Line types include- ItemBasedExpenseLine and AccountBasedExpenseLine
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ItemBasedExpenseLine'
+              - $ref: '#/components/schemas/AccountBasedExpenseLine'
+        CurrencyRef:
+          type: object
+          description: Reference to the currency in which all amounts on the associated transaction are expressed. 
+            - This must be defined if multicurrency is enabled for the company. 
+            - Multicurrency is enabled for the company if Preferences.MultiCurrencyEnabled is set to true. 
+            - Read more about multicurrency support here. Required if multicurrency is enabled for the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+      required:
+        - "VendorRef"
+        - "Line"
+    PhysicalAddress:
+      type: object
+      description: Physical address
+      properties:
+        Id:
+          type: string
+          description: Unique identifier of the QuickBooks object for the address, used for modifying the address.
+        PostalCode:
+          type: string
+          description: Postal code. For example, zip code for USA and Canada
+        City:
+          type: string
+          description: City name.
+        Country:
+          type: string
+          description: Country name. For international addresses - countries should be passed as 3 ISO alpha-3 characters or the full name of the country.
+        Line5:
+          type: string
+          description: Fifth line of the address.
+        Line4:
+          type: string
+          description: Fourth line of the address.
+        Line3:
+          type: string
+          description: Third line of the address.
+        Line2:
+          type: string
+          description: Second line of the address.
+        Line1:
+          type: string
+          description: First line of the address.
+        Lat:
+          type: string
+          description: Latitude coordinate of Geocode (Geospacial Entity Object Code). INVALIDis returned for invalid addresses.
+        Long:
+          type: string
+          description: Longitude coordinate of Geocode (Geospacial Entity Object Code). INVALIDis returned for invalid addresses.
+        CountrySubDivisionCode:
+          type: string
+          description: Region within a country. For example, state name for USA, province name for Canada.
+    TelephoneNumber:
+      type: object
+      description: Telephone number
+      properties:
+        FreeFormNumber:
+          type: string
+          description: Specifies the telephone number in free form.
+    ReferenceType:
+      type: object
+      description: Reference type
+      properties:
+        value:
+          type: string
+          description: The ID for the referenced object as found in the Id field of the object payload. 
+            The context is set by the type of reference and is specific to the QuickBooks company file.
+        name:
+          type: string
+          description: An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. 
+            This varies by context and specific type of object referenced. 
+            For example, references to a Customer object use Customer.DisplayName to populate this field. 
+            Optionally returned in responses, implementation dependent.
+    ModificationMetaData:
+      type: object
+      description: Modification metadata
+      properties:
+        CreateTime:
+          type: string
+          description: Time the entity was created in the source domain. 
+        LastUpdatedTime:
+          type: string  
+          description: Time the entity was last updated in the source domain.
+    WebSiteAddress:
+      type: object
+      description: Website address
+      properties:
+        URI:
+          type: string
+          description: Uniform Resource Identifier for the web site.
+    CustomerResponse:
+      type: object
+      properties: 
+        Customer:
+          $ref: '#/components/schemas/Customer'
+    CustomerCreateObject:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. 
+            As soon as an application modifies an object, its SyncToken is incremented. 
+            Attempts to modify an object specifying an older SyncToken fails. Only the latest version of the object is maintained by QuickBooks Online.
+        DisplayName:
+          type: string
+          description: The name of the person or organization as displayed. Must be unique across all Customer, Vendor, and Employee objects.
+            Cannot be removed with sparse update. If not supplied, the system generates DisplayName by concatenating customer name components supplied in the request from the following list- Title, GivenName, MiddleName, FamilyName, and Suffix.
+        Title:
+          type: string
+          description: Title of the person. This tag supports i18n, all locales. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        GivenName:
+          type: string
+          description: Given name or first name of a person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        MiddleName:
+          type: string
+          description: Middle name of the person. The person can have zero or more middle names. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        Suffix:
+          type: string
+          description: Suffix of the name. For example, Jr. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        FamilyName:
+          type: string
+          description: Family name or the last name of the person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        PrimaryEmailAddr:
+          description: Primary email address. 
+          $ref: '#/components/schemas/EmailAddress'
+        ResaleNum:
+          type: string
+          description: Resale number or some additional info about the customer.
+        SecondaryTaxIdentifier:
+          type: string
+          description: Also called UTR No. in ( UK ) , CST Reg No. ( IN ) also represents the tax registration number of the Person or Organization. This value is masked in responses, exposing only last five characters. For example, the ID of 123-45-6789 is returned as XXXXXX56789.
+        ARAccountRef:
+          type: object
+          description: Identifies the accounts receivable account to be used for this customer. 
+            Each customer must have his own AR account. Applicable for France companies, 
+            only. Available when endpoint is evoked with the minorversion=3 query parameter. 
+            Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType=Accounts Receivable. 
+            Use Account.Id and Account.Name from that object for ARAccountRef.value and ARAccountRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType' 
+        DefaultTaxCodeRef:
+          type: object
+          description: Reference to a default tax code associated with this Customer object. 
+            Reference is valid if Customer.Taxable is set to true; otherwise, it is ignored. 
+            If automated sales tax is enabled (Preferences.TaxPrefs.PartnerTaxEnabled is set to true) the default tax code is set by the system and can not be overridden. 
+            Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. 
+            Use TaxCode.Id and TaxCode.Name from that object for DefaultTaxCodeRef.value and DefaultTaxCodeRef.name, respectively.   
+          $ref: '#/components/schemas/ReferenceType'
+        PreferredDeliveryMethod:
+          type: string
+          description: Preferred delivery method. Values are Print, Email, or None.
+        GSTIN:
+          type: string
+          description: GSTIN is an identification number assigned to every GST registered business.   
+        SalesTermRef:
+          type: object
+          description: Reference to a SalesTerm associated with this Customer object. 
+            Query the Term name list resource to determine the appropriate Term object for this reference. 
+            Use Term.Id and Term.Name from that object for SalesTermRef.value and SalesTermRef.name, respectively.    
+          $ref: '#/components/schemas/ReferenceType'
+        CustomerTypeRef:
+          type: object
+          $ref: '#/components/schemas/CustomerTypeRefType'
+        Fax:
+          type: object
+          description: Fax number.
+          $ref: '#/components/schemas/TelephoneNumber'
+        BillWithParent:
+          type: boolean
+          description: If true, this Customer object is billed with its parent. If false, or null the customer is not to be billed with its parent. This attribute is valid only if this entity is a Job or sub Customer.
+        Mobile:
+          type: object
+          description: Primary phone number. 
+          $ref: '#/components/schemas/TelephoneNumber'
+        PrimaryPhone:
+          type: object
+          description: Mobile phone number.
+          $ref: '#/components/schemas/TelephoneNumber'
+        AlternatePhone:
+          type: object
+          description: Alternate phone number.
+          $ref: '#/components/schemas/TelephoneNumber'
+        MetaData:
+          type: object
+          description: Descriptive information about the entity. The MetaData values are set by Data Services and are read only for all applications.  
+          $ref: '#/components/schemas/ModificationMetaData'
+        ParentRef:
+          type: object
+          description: A reference to a Customer object that is the immediate parent of the Sub-Customer/Job in the hierarchical Customer:Job list. 
+            Required for the create operation if this object is a sub-customer or Job. 
+            Query the Customer name list resource to determine the appropriate Customer object for this reference. 
+            Use Customer.Id and Customer.DisplayName from that object for ParentRef.value and ParentRef.name, respectively.     
+          $ref: '#/components/schemas/ReferenceType'
+        WebAddr:
+          type: object
+          description: Website address. 
+          $ref: '#/components/schemas/WebSiteAddress'
+        ShipAddr: 
+          description: Default shipping address. 
+            If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and company name.
+            Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        PaymentMethodRef:
+          type: object
+          description: Reference to a PaymentMethod associated with this Customer object. 
+            Query the PaymentMethod name list resource to determine the appropriate PaymentMethod object for this reference. 
+            Use PaymentMethod.Id and PaymentMethod.Name from that object for PaymentMethodRef.value and PaymentMethodRef.name, respectively.      
+          $ref: '#/components/schemas/ReferenceType'
+        BillAddr:
+          description: Default billing address. 
+            If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and company name.
+            Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        Job:
+          type: boolean
+          description: If true, this is a Job or sub-customer. If false or null, this is a top level customer, not a Job or sub-customer.
+        BalanceWithJobs:
+          type: number
+          description: Cumulative open balance amount for the Customer (or Job) and all its sub-jobs. Cannot be written to QuickBooks.
+        OpenBalanceDate:
+          type: string
+          description: Date of the Open Balance for the create operation. Write-on-create.
+        Taxable:
+          type: boolean
+          description: If true, transactions for this customer are taxable. Default behavior with minor version 10 and above- true, if DefaultTaxCodeRef is defined or false if TaxExemptionReasonId is set.
+        Notes:
+          type: string
+          description: Free form text describing the Customer.
+        Active:
+          type: boolean
+          description: If true, this entity is currently enabled for use by QuickBooks. If there is an amount in Customer.Balance when setting this Customer object to inactive through the QuickBooks UI, a CreditMemo balancing transaction is created for the amount.
+        CompanyName:
+          type: string
+          description: The name of the company associated with the person or organization.
+        Balance:
+          type: number
+          description: Specifies the open balance amount or the amount unpaid by the customer. For the create operation, this represents the opening balance for the customer. When returned in response to the query request it represents the current open balance (unpaid amount) for that customer. Write-on-create.
+        Source:
+          type: string
+          description: The Source type of the transactions created by QuickBooks Commerce. Valid values include  QBCommerce
+        PrimaryTaxIdentifier:
+          type: string
+          description: Also called Tax Reg. No in ( UK ) , ( CA ) , ( IN ) , ( AU ) represents the tax ID of the Person or Organization. This value is masked in responses, exposing only last five characters. For example, the ID of 123-45-6789 is returned as XXXXXX56789.
+        GSTRegistrationType:
+          type: string
+          description: For the filing of GSTR, transactions need to be classified depending on the type of customer to whom the sale is done. To facilitate this, we have introduced a new field as 'GST registration type'. Possible values are listed below-
+            GST_REG_REG GST registered- Regular. Customer who has a business which is registered under GST and has a GSTIN (doesn’t include customers registered under composition scheme, as an SEZ or as EOU's, STP's EHTP's etc.).
+            GST_REG_COMP GST registered-Composition. Customer who has a business which is registered under the composition scheme of GST and has a GSTIN.
+            GST_UNREG GST unregistered. Customer who has a business which is not registered under GST and does not have a GSTIN.
+            CONSUMER Consumer. Customer who is not registered under GST and is the final consumer of the service or product sold.
+            OVERSEAS Overseas. Customer who has a business which is located out of India.
+            SEZ SEZ. Customer who has a business which is registered under GST, has a GSTIN and is located in a SEZ or is a SEZ Developer.
+            DEEMED Deemed exports- EOU's, STP's EHTP's etc. Customer who has a business which is registered under GST and falls in the category of companies (EOU's, STP's EHTP's etc.), to which supplies are made they are termed as deemed exports.
+        PrintOnCheckName:
+          type: string
+          description: Name of the person or organization as printed on a check. If not provided, this is populated from DisplayName. Constraints- Cannot be removed with sparse update.
+        Level:
+          type: integer
+          description: Specifies the level of the hierarchy in which the entity is located. Zero specifies the top level of the hierarchy; anything above will be level with respect to the parent. Constraints:up to 5 levels
+        TaxExemptionReasonId:
+          type: string
+          description: The tax exemption reason associated with this customer object. Applicable if automated sales tax is enabled (Preferences.TaxPrefs.PartnerTaxEnabled is set to true) for the company. Set TaxExemptionReasonId to one of the following-
+            - Id 	Reason
+            1.  Federal government
+            2. 	State government
+            3. 	Local government
+            4. 	Tribal government
+            5. 	Charitable organization
+            6. 	Religious organization
+            7. 	Educational organization
+            8. 	Hospital
+            9.	Resale
+            10. Direct pay permit
+            11. Multiple points of use
+            12. Direct mail
+            13. Agricultural production
+            14. Industrial production / manufacturing
+            15. Foreign diplomat 
+    CustomerTypeRefType:
+      type: object
+      description: >-
+        Reference to the customer type assigned to a customer. This field is
+        only returned if the customer is assigned a customer type.
+      properties:
+        value:
+          type: string
+          description: >-
+            The unique numeric Id of the customer type. This maps to the
+            CustomerType entity- CustomerType.Id.   
+    Customer:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. 
+            As soon as an application modifies an object, its SyncToken is incremented. 
+            Attempts to modify an object specifying an older SyncToken fails. Only the latest version of the object is maintained by QuickBooks Online.
+        DisplayName:
+          type: string
+          description: The name of the person or organization as displayed. Must be unique across all Customer, Vendor, and Employee objects.
+            Cannot be removed with sparse update. If not supplied, the system generates DisplayName by concatenating customer name components supplied in the request from the following list- Title, GivenName, MiddleName, FamilyName, and Suffix.
+        Title:
+          type: string
+          description: Title of the person. This tag supports i18n, all locales. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        GivenName:
+          type: string
+          description: Given name or first name of a person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        MiddleName:
+          type: string
+          description: Middle name of the person. The person can have zero or more middle names. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        Suffix:
+          type: string
+          description: Suffix of the name. For example, Jr. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        FamilyName:
+          type: string
+          description: Family name or the last name of the person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.
+        PrimaryEmailAddr:
+          description: Primary email address. 
+          $ref: '#/components/schemas/EmailAddress'
+        ResaleNum:
+          type: string
+          description: Resale number or some additional info about the customer.
+        SecondaryTaxIdentifier:
+          type: string
+          description: Also called UTR No. in ( UK ) , CST Reg No. ( IN ) also represents the tax registration number of the Person or Organization. This value is masked in responses, exposing only last five characters. For example, the ID of 123-45-6789 is returned as XXXXXX56789.
+        ARAccountRef:
+          type: object
+          description: Identifies the accounts receivable account to be used for this customer. 
+            Each customer must have his own AR account. Applicable for France companies, 
+            only. Available when endpoint is evoked with the minorversion=3 query parameter. 
+            Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType=Accounts Receivable. 
+            Use Account.Id and Account.Name from that object for ARAccountRef.value and ARAccountRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType' 
+        DefaultTaxCodeRef:
+          type: object
+          description: Reference to a default tax code associated with this Customer object. 
+            Reference is valid if Customer.Taxable is set to true; otherwise, it is ignored. 
+            If automated sales tax is enabled (Preferences.TaxPrefs.PartnerTaxEnabled is set to true) the default tax code is set by the system and can not be overridden. 
+            Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. 
+            Use TaxCode.Id and TaxCode.Name from that object for DefaultTaxCodeRef.value and DefaultTaxCodeRef.name, respectively.   
+          $ref: '#/components/schemas/ReferenceType'
+        PreferredDeliveryMethod:
+          type: string
+          description: Preferred delivery method. Values are Print, Email, or None.
+        GSTIN:
+          type: string
+          description: GSTIN is an identification number assigned to every GST registered business.   
+        SalesTermRef:
+          type: object
+          description: Reference to a SalesTerm associated with this Customer object. 
+            Query the Term name list resource to determine the appropriate Term object for this reference. 
+            Use Term.Id and Term.Name from that object for SalesTermRef.value and SalesTermRef.name, respectively.    
+          $ref: '#/components/schemas/ReferenceType'
+        CustomerTypeRef:
+          type: object
+          $ref: '#/components/schemas/CustomerTypeRefType'
+        Fax:
+          type: object
+          description: Fax number.
+          $ref: '#/components/schemas/TelephoneNumber'
+        BillWithParent:
+          type: boolean
+          description: If true, this Customer object is billed with its parent. If false, or null the customer is not to be billed with its parent. This attribute is valid only if this entity is a Job or sub Customer.
+        Mobile:
+          type: object
+          description: Primary phone number. 
+          $ref: '#/components/schemas/TelephoneNumber'
+        PrimaryPhone:
+          type: object
+          description: Mobile phone number.
+          $ref: '#/components/schemas/TelephoneNumber'
+        AlternatePhone:
+          type: object
+          description: Alternate phone number.
+          $ref: '#/components/schemas/TelephoneNumber'
+        MetaData:
+          type: object
+          description: Descriptive information about the entity. The MetaData values are set by Data Services and are read only for all applications.  
+          $ref: '#/components/schemas/ModificationMetaData'
+        ParentRef:
+          type: object
+          description: A reference to a Customer object that is the immediate parent of the Sub-Customer/Job in the hierarchical Customer:Job list. 
+            Required for the create operation if this object is a sub-customer or Job. 
+            Query the Customer name list resource to determine the appropriate Customer object for this reference. 
+            Use Customer.Id and Customer.DisplayName from that object for ParentRef.value and ParentRef.name, respectively.     
+          $ref: '#/components/schemas/ReferenceType'
+        WebAddr:
+          type: object
+          description: Website address. 
+          $ref: '#/components/schemas/WebSiteAddress'
+        ShipAddr: 
+          description: Default shipping address. 
+            If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and company name.
+            Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        PaymentMethodRef:
+          type: object
+          description: Reference to a PaymentMethod associated with this Customer object. 
+            Query the PaymentMethod name list resource to determine the appropriate PaymentMethod object for this reference. 
+            Use PaymentMethod.Id and PaymentMethod.Name from that object for PaymentMethodRef.value and PaymentMethodRef.name, respectively.      
+          $ref: '#/components/schemas/ReferenceType'
+        BillAddr:
+          description: Default billing address. 
+            If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created-
+            Line1 and Line2 elements are populated with the customer name and company name.
+            Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.
+          $ref: '#/components/schemas/PhysicalAddress'
+        Job:
+          type: boolean
+          description: If true, this is a Job or sub-customer. If false or null, this is a top level customer, not a Job or sub-customer.
+        BalanceWithJobs:
+          type: number
+          description: Cumulative open balance amount for the Customer (or Job) and all its sub-jobs. Cannot be written to QuickBooks.
+        OpenBalanceDate:
+          type: string
+          description: Date of the Open Balance for the create operation. Write-on-create.
+        Taxable:
+          type: boolean
+          description: If true, transactions for this customer are taxable. Default behavior with minor version 10 and above- true, if DefaultTaxCodeRef is defined or false if TaxExemptionReasonId is set.
+        Notes:
+          type: string
+          description: Free form text describing the Customer.
+        Active:
+          type: boolean
+          description: If true, this entity is currently enabled for use by QuickBooks. If there is an amount in Customer.Balance when setting this Customer object to inactive through the QuickBooks UI, a CreditMemo balancing transaction is created for the amount.
+        CompanyName:
+          type: string
+          description: The name of the company associated with the person or organization.
+        Balance:
+          type: number
+          description: Specifies the open balance amount or the amount unpaid by the customer. For the create operation, this represents the opening balance for the customer. When returned in response to the query request it represents the current open balance (unpaid amount) for that customer. Write-on-create.
+        IsProject:
+          type: boolean
+          description: If true, indicates this is a Project.
+        Source:
+          type: string
+          description: The Source type of the transactions created by QuickBooks Commerce. Valid values include  QBCommerce
+        PrimaryTaxIdentifier:
+          type: string
+          description: Also called Tax Reg. No in ( UK ) , ( CA ) , ( IN ) , ( AU ) represents the tax ID of the Person or Organization. This value is masked in responses, exposing only last five characters. For example, the ID of 123-45-6789 is returned as XXXXXX56789.
+        GSTRegistrationType:
+          type: string
+          description: For the filing of GSTR, transactions need to be classified depending on the type of customer to whom the sale is done. To facilitate this, we have introduced a new field as 'GST registration type'. Possible values are listed below-
+            GST_REG_REG GST registered- Regular. Customer who has a business which is registered under GST and has a GSTIN (doesn’t include customers registered under composition scheme, as an SEZ or as EOU's, STP's EHTP's etc.).
+            GST_REG_COMP GST registered-Composition. Customer who has a business which is registered under the composition scheme of GST and has a GSTIN.
+            GST_UNREG GST unregistered. Customer who has a business which is not registered under GST and does not have a GSTIN.
+            CONSUMER Consumer. Customer who is not registered under GST and is the final consumer of the service or product sold.
+            OVERSEAS Overseas. Customer who has a business which is located out of India.
+            SEZ SEZ. Customer who has a business which is registered under GST, has a GSTIN and is located in a SEZ or is a SEZ Developer.
+            DEEMED Deemed exports- EOU's, STP's EHTP's etc. Customer who has a business which is registered under GST and falls in the category of companies (EOU's, STP's EHTP's etc.), to which supplies are made they are termed as deemed exports.
+        PrintOnCheckName:
+          type: string
+          description: Name of the person or organization as printed on a check. If not provided, this is populated from DisplayName. Constraints- Cannot be removed with sparse update.
+        FullyQualifiedName:
+          type: string
+          description: Fully qualified name of the object. The fully qualified name prepends the topmost parent, followed by each sub element separated by colons. Takes the form of Customer:Job:Sub-job. System generated. Limited to 5 levels.
+        Level:
+          type: integer
+          description: Specifies the level of the hierarchy in which the entity is located. Zero specifies the top level of the hierarchy; anything above will be level with respect to the parent. Constraints:up to 5 levels
+        TaxExemptionReasonId:
+          type: string
+          description: The tax exemption reason associated with this customer object. Applicable if automated sales tax is enabled (Preferences.TaxPrefs.PartnerTaxEnabled is set to true) for the company. Set TaxExemptionReasonId to one of the following-
+            - Id 	Reason
+            1.  Federal government
+            2. 	State government
+            3. 	Local government
+            4. 	Tribal government
+            5. 	Charitable organization
+            6. 	Religious organization
+            7. 	Educational organization
+            8. 	Hospital
+            9.	Resale
+            10. Direct pay permit
+            11. Multiple points of use
+            12. Direct mail
+            13. Agricultural production
+            14. Industrial production / manufacturing
+            15. Foreign diplomat  
+
+    Bill:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        VendorRef:
+          type: object
+          description: Reference to the vendor for this transaction. 
+            Query the Vendor name list resource to determine the appropriate Vendor object for this reference. 
+            Use Vendor.Id and Vendor.Name from that object for VendorRef.value and VendorRef.name, respectively.  
+          $ref: '#/components/schemas/ReferenceType'
+        Line:
+          type: array
+          description: Individual line items of a transaction. Valid Line types include- ItemBasedExpenseLine and AccountBasedExpenseLine
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ItemBasedExpenseLine'
+              - $ref: '#/components/schemas/AccountBasedExpenseLine'
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. 
+            - As soon as an application modifies an object, its SyncToken is incremented. 
+            - Attempts to modify an object specifying an older SyncToken fails. 
+            - Only the latest version of the object is maintained by QuickBooks Online.
+        CurrencyRef:
+          type: object
+          description: Reference to the currency in which all amounts on the associated transaction are expressed. 
+            - This must be defined if multicurrency is enabled for the company. 
+            - Multicurrency is enabled for the company if Preferences.MultiCurrencyEnabled is set to true. 
+            - Read more about multicurrency support here. Required if multicurrency is enabled for the company.
+          $ref: '#/components/schemas/CurrencyRefType'
+        TxnDate:
+          type: string
+          description: The date entered by the user when this transaction occurred. 
+            - For posting transactions, this is the posting date that affects the financial statements. 
+            - If the date is not supplied, the current date on the server is used.
+            - Sort order is ASC by default. 
+        APAccountRef:
+          type: object
+          description: Specifies to which AP account the bill is credited. Query the Account name list resource to determine the appropriate Account object for this reference. 
+            - Use Account.Id and Account.Name from that object for APAccountRef.value and APAccountRef.name, respectively. 
+            - The specified account must have Account.Classification set to Liability and Account.AccountSubType set to AccountsPayable. 
+            - If the company has a single AP account, the account is implied. However, it is recommended that the AP Account be explicitly specified in all cases to prevent unexpected errors when relating transactions to each other. 
+          $ref: '#/components/schemas/ReferenceType'
+        SalesTermRef:
+          type: object
+          description: Reference to the Term associated with the transaction. 
+            - Query the Term name list resource to determine the appropriate Term object for this reference. 
+            - Use Term.Id and Term.Name from that object for SalesTermRef.value and SalesTermRef.name, respectively.
+          $ref: '#/components/schemas/ReferenceType'
+        LinkedTxn:
+          type: array
+          description: Zero or more transactions linked to this Bill object. The LinkedTxn.TxnType can be set to PurchaseOrder, BillPaymentCheck or if using Minor Version 55 and above ReimburseCharge. Use LinkedTxn.TxnId as the ID of the transaction.
+          items:
+            $ref: '#/components/schemas/LinkedTxn'
+        GlobalTaxCalculation:
+          type: string
+          description: Method in which tax is applied. Allowed values are- TaxExcluded, TaxInclusive, and NotApplicable.
+          enum:
+            - ""
+        TotalAmt:
+          type: number
+          description: Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes. Calculated by QuickBooks business logic; any value you supply is over-written by QuickBooks.
+        TransactionLocationType:
+          type: string
+          description: The account location. Valid values include-
+              - WithinFrance
+              - FranceOverseas
+              - OutsideFranceWithEU
+              - OutsideEU
+            * For France locales, only.
+        DueDate:
+          type: string
+          description: Date when the payment of the transaction is due. 
+            If date is not provided, the number of days specified in SalesTermRef added the transaction date will be used. 
+        MetaData:
+          type: object
+          description: Descriptive information about the object. The MetaData values are set by Data Services and are read only for all applications. 
+          $ref: '#/components/schemas/ModificationMetaData'
+        DocNumber:
+          type: string
+          description: Reference number for the transaction. If not explicitly provided at create time, a custom value can be provided. 
+            - If no value is supplied, the resulting DocNumber is null. Throws an error when duplicate DocNumber is sent in the request. 
+            - Recommended best practice- check the setting of Preferences:OtherPrefs before setting DocNumber. 
+            - If a duplicate DocNumber needs to be supplied, add the query parameter name/value pair, include=allowduplicatedocnum to the URI. 
+            - Sort order is ASC by default.
+        PrivateNote:
+          type: string
+          description: User entered, organization-private note about the transaction. This note does not appear on the invoice to the customer. 
+            This field maps to the Memo field on the Invoice form.
+        TxnTaxDetail:
+          type: object
+          description: This data type provides information for taxes charged on the transaction as a whole. 
+            - It captures the details of all taxes calculated for the transaction based on the tax codes referenced by the transaction. 
+            - This can be calculated by QuickBooks business logic or you may supply it when adding a transaction. 
+            - If sales tax is disabled (Preferences.TaxPrefs.UsingSalesTax is set to false) then TxnTaxDetail is ignored and not stored.
+          ###########
+        ExchangeRate:
+          type: number
+          description: The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company.
+        DepartmentRef:
+          type: object
+          description: A reference to a Department object specifying the location of the transaction, as defined using location tracking in QuickBooks Online. 
+            Query the Department name list resource to determine the appropriate department object for this reference. 
+            Use Department.Id and Department.Name from that object for DepartmentRef.value and DepartmentRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType'
+        IncludeInAnnualTPAR:
+          type: boolean
+          description: Include the supplier in the annual TPAR. TPAR stands for Taxable Payments Annual Report. 
+            The TPAR is mandated by ATO to get the details payments that businesses make to contractors for providing services. 
+            Some government entities also need to report the grants they have paid in a TPAR.
+        HomeBalance:
+          type: number
+          description: Convenience field containing the amount in Balance expressed in terms of the home currency. 
+            Calculated by QuickBooks business logic. Value is valid only when CurrencyRef is specified and available when endpoint is evoked with the minorversion=3 query parameter. 
+            Applicable if multicurrency is enabled for the company.
+        RecurDataRef:
+          type: object
+          description: A reference to the Recurring Transaction. It captures what recurring transaction template the Bill was created from.
+          $ref: '#/components/schemas/ReferenceType'
+        Balance:
+          type: number
+          description: The balance reflecting any payments made against the transaction. Initially set to the value of TotalAmt. 
+            A Balance of 0 indicates the bill is fully paid. Calculated by QuickBooks business logic; any value you supply is over-written by QuickBooks.
+    LinkedTxn:
+      type: object
+      properties:
+        TxnId:
+          type: string
+          description: Transaction Id of the related transaction.
+        TxnType: 
+          type: string
+          description: Transaction type of the linked object.
+        TxnLineId:
+          type: string
+          description: Required for Deposit and Bill entities. 
+            -The line number of a specific line of the linked transaction. 
+            - If supplied, the TxnId and TxnType attributes of the linked transaction must also be populated.
+    AccountBasedExpenseLine:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: The Id of the line item. Its use in requests is as folllows -
+            - If Id is greater than zero and exists for the company, the request is considered an update operation for a line item.
+            - If no Id is provided, the Idprovided is less than or equal to zero, or the Idprovided is greater than zero and does not exist for the company then the request is considered a create operation for a line item.
+            - Available in all objects that use lines and support the update operation.
+        Amount:
+          type: number
+          description: The amount of the line item.
+        DetailType:
+          type: string
+          description: Set to AccountBasedExpenseLineDetailfor this type of line.
+          enum:
+            - ""
+        AccountBasedExpenseLineDetail:
+          $ref: '#/components/schemas/AccountBasedExpenseLineDetail'
+        LinkedTxn:
+          type: array
+          description: Zero or more PurchaseOrder transactions linked to this Bill object. 
+            The LinkedTxn.TxnType should always be set to PurchaseOrder. Use LinkedTxn.TxnId as the ID of the PurchaseOrder. 
+            When updating an existing Bill to link to a PurchaseOrder a new Line must be created. 
+            This behavior matches the QuickBooks UI as it does not allow the linking of an existing line, but rather a new line must be added to link the PurchaseOrder. Over the API this is achieved by simply updating the Bill Line.Id to something new. This will ensure old bill line is deleted and the new line is linked to the PurchaseOrder.
+          items:
+            $ref: '#/components/schemas/LinkedTxn'
+        Description:
+          type: string
+          description: Free form text description of the line item that appears in the printed record.
+        LineNum:
+          type: number
+          description: Specifies the position of the line in the collection of transaction lines. Positive Integer.
+    AccountBasedExpenseLineDetail:
+      type: object
+      description: ItemBasedExpenseLineDetail
+      properties:
+        TaxInclusiveAmt:
+          type: number
+          description: The total amount of the line item including tax. Constraints- Available when endpoint is evoked with the minorversion=1query parameter.
+        TaxAmount:
+          type: number
+          description: Sales tax paid as part of the expense.
+        AccountRef:
+          type: object
+          description: Reference to the Expense account associated with this item. 
+            Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType=Expense. Use Account.Id and Account.Name from that object for AccountRef.value and AccountRef.name, respectively. 
+            For France locales- The account associated with the referenced Account object is looked up in the account category list.
+            If this account has same location as specified in the transaction by the TransactionLocationType attribute and the same VAT as in the line item TaxCodeRef attribute, then this account is used.
+            If there is a mismatch, then the account from the account category list that matches the transaction location and VAT is used.
+            If this account is not present in the account category list, then a new account is created with the new location, new VAT code, and all other attributes as in the default account.
+          properties:
+            value:
+              type: string
+              description: The ID for the referenced object as found in the Id field of the object payload. 
+                The context is set by the type of reference and is specific to the QuickBooks company file.
+            name:
+              type: string
+              description: An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. 
+                This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. 
+                Optionally returned in responses, implementation dependent.
+        CustomerRef:
+          type: object
+          description: Reference to a customer or job. Query the Customer name list resource to determine the appropriate Customer object for this reference. 
+            Use Customer.Id and Customer.DisplayName from that object for CustomerRef.value and CustomerRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType'
+        PriceLevelRef:
+          type: object
+          description: Reference to the PriceLevel of the service or item for the line. Support for this element will be available in the coming months.
+          $ref: '#/components/schemas/ReferenceType'
+        ClassRef:
+          type: object
+          description: Reference to the Class associated with the expense. Available if Preferences.AccountingInfoPrefs.ClassTrackingPerLine is set to true. 
+            Query the Class name list resource to determine the appropriate Class object for this reference. 
+            Use Class.Id and Class.Name from that object for ClassRef.value and ClassRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType'
+        TaxCodeRef:
+          type: object
+          description: Reference to the TaxCodefor this item. 
+            Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. 
+            Use TaxCode.Id and TaxCode.Name from that object for TaxCodeRef.value and TaxCodeRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType'
+        MarkupInfo:
+          type: object
+          description: Reference to the TaxCodefor this item. 
+            Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. 
+            Use TaxCode.Id and TaxCode.Name from that object for TaxCodeRef.value and TaxCodeRef.name, respectively.
+        BillableStatus:
+          type: string
+          description: The billable status of the expense. Valid values- Billable, NotBillable, HasBeenBilled
+    ItemBasedExpenseLine:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: The Id of the line item. Its use in requests is as folllows -
+            - If Id is greater than zero and exists for the company, the request is considered an update operation for a line item.
+            - If no Id is provided, the Idprovided is less than or equal to zero, or the Idprovided is greater than zero and does not exist for the company then the request is considered a create operation for a line item.
+            - Available in all objects that use lines and support the update operation.
+        Amount:
+          type: number
+          description: The amount of the line item.
+        DetailType:
+          type: string
+          description: Set to ItemBasedExpenseLineDetail for this type of line.
+          enum:
+            - ""
+        ItemBasedExpenseLineDetail:
+          $ref: '#/components/schemas/ItemBasedExpenseLineDetail'
+        LinkedTxn:
+          type: array
+          description: Zero or more PurchaseOrder transactions linked to this Bill object. 
+            The LinkedTxn.TxnType should always be set to PurchaseOrder. Use LinkedTxn.TxnId as the ID of the PurchaseOrder. 
+            When updating an existing Bill to link to a PurchaseOrder a new Line must be created. 
+            This behavior matches the QuickBooks UI as it does not allow the linking of an existing line, but rather a new line must be added to link the PurchaseOrder. Over the API this is achieved by simply updating the Bill Line.Id to something new. This will ensure old bill line is deleted and the new line is linked to the PurchaseOrder.
+          items:
+            $ref: '#/components/schemas/LinkedTxn'
+        Description:
+          type: string
+          description: Free form text description of the line item that appears in the printed record.
+        LineNum:
+          type: number
+          description: Specifies the position of the line in the collection of transaction lines. Positive Integer.
+    ItemBasedExpenseLineDetail:
+      type: object
+      description: Item Based Expense Line Detail
+      properties:
+        TaxInclusiveAmt:
+          type: number
+          description: The total amount of the line item including tax. Constraints- Available when endpoint is evoked with the minorversion=1query parameter.
+        ItemRef:
+          type: object
+          description: Reference to the Item. Query the Item name list resource to determine the appropriate Item object for this reference. 
+            - Use Item.Id and Item.Name from that object for ItemRef.value and ItemRef.name, respectively.
+            - When a line lacks an ItemRef it is treated as documentation and the Line.Amount attribute is ignored. 
+            - For France locales- The account associated with the referenced Item object is looked up in the account category list.
+            - If this account has same location as specified in the transaction by the TransactionLocationType attribute and the same VAT as in the line item TaxCodeRef attribute, then the item account is used.
+            - If there is a mismatch, then the account from the account category list that matches the transaction location and VAT is used.
+            - If this account is not present in the account category list, then a new account is created with the new location, new VAT code, and all other attributes as in the default account.
+          $ref: '#/components/schemas/ReferenceType'
+        CustomerRef:
+          type: object
+          description: Reference to a customer or job. Query the Customer name list resource to determine the appropriate Customer object for this reference. 
+            Use Customer.Id and Customer.DisplayName from that object for CustomerRef.value and CustomerRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType'
+        PriceLevelRef:
+          type: object
+          description: Reference to the PriceLevel of the service or item for the line. Support for this element will be available in the coming months.
+          $ref: '#/components/schemas/ReferenceType'
+        ClassRef:
+          type: object
+          description: Reference to the Class associated with the expense. Available if Preferences.AccountingInfoPrefs.ClassTrackingPerLine is set to true. 
+            Query the Class name list resource to determine the appropriate Class object for this reference. 
+            Use Class.Id and Class.Name from that object for ClassRef.value and ClassRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType'
+        TaxCodeRef:
+          type: object
+          description: Reference to the TaxCodefor this item. 
+            Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. 
+            Use TaxCode.Id and TaxCode.Name from that object for TaxCodeRef.value and TaxCodeRef.name, respectively. 
+          $ref: '#/components/schemas/ReferenceType'
+        MarkupInfo:
+          type: object
+          description: Reference to the TaxCodefor this item. 
+            Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. 
+            Use TaxCode.Id and TaxCode.Name from that object for TaxCodeRef.value and TaxCodeRef.name, respectively.
+        BillableStatus:
+          type: string
+          description: The billable status of the expense. Valid values- Billable, NotBillable, HasBeenBilled
+        Qty:
+          type: number
+          description: Number of items for the line.
+        UnitPrice:
+          type: number
+          description: Unit price of the subject item as referenced by ItemRef. Corresponds to the Rate column on the QuickBooks Online UI to specify either unit price, a discount, or a tax rate for item. If used for unit price, the monetary value of the service or product, as expressed in the home currency. If used for a discount or tax rate, express the percentage as a fraction. For example, specify 0.4 for 40% tax.
+    AccountResponse:
+      type: object
+      properties:
+        Account:
+          $ref: '#/components/schemas/Account'
+    Account:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: Unique identifier for this object. Sort order is ASC by default.
+        Name:
+          type: string 
+          description: User recognizable name for the Account. Account.Name attribute must not contain double quotes (") or colon (:).
+        SyncToken:
+          type: string
+          description: Version number of the object. It is used to lock an object for use by one app at a time. 
+            - As soon as an application modifies an object, its SyncToken is incremented. 
+            - Attempts to modify an object specifying an older SyncToken fails. 
+            - Only the latest version of the object is maintained by QuickBooks Online.
+        AcctNum:
+          type: string   
+          description: User-defined account number to help the user in identifying the account within the chart-of-accounts and in deciding what should be posted to the account. 
+            The Account.AcctNum attribute must not contain colon (:).
+            * Name must be unique.
+            * For French Locales -
+              - Length must be between 6 and 20 characters
+              - Must start with the account number from the master category list.
+              - Name limited to alpha-numeric characters.
+            * Max length for Account.AcctNum -
+              - AU & CA- 20 characters.
+              - US, UK & IN- 7 characters
+        CurrencyRef:
+          type: object
+          description: Reference to the currency in which this account holds amounts.
+          $ref: '#/components/schemas/CurrencyRefType'
+        ParentRef:
+          type: object
+          description: Specifies the Parent AccountId if this represents a SubAccount. 
+          properties:
+            value:
+              type: string
+              description: The ID for the referenced object as found in the Id field of the object payload. 
+               - The context is set by the type of reference and is specific to the QuickBooks company file.
+            name:
+              type: string  
+              description: An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. 
+               - This varies by context and specific type of object referenced. 
+               - For example, references to a Customer object use Customer.DisplayName to populate this field. 
+               - Optionally returned in responses, implementation dependent.           
+        Description:
+          type: string
+          description: User entered description for the account, which may include user entered information to guide bookkeepers/accountants in deciding what journal entries to post to the account.
+        Active:
+          type: boolean 
+          description: Whether or not active inactive accounts may be hidden from most display purposes and may not be posted to.
+        MetaData:
+          type: object
+          description: Descriptive information about the object. The MetaData values are set by Data Services and are read only for all applications.
+          $ref: '#/components/schemas/ModificationMetaData'
+        SubAccount:
+          type: boolean 
+          description: Specifies whether this object represents a parent (false) or subaccount (true). 
+            - Note that accounts of these types - OpeningBalanceEquity, UndepositedFunds, RetainedEarnings, CashReceiptIncome, CashExpenditureExpense, ExchangeGainOrLoss cannot have a sub account and cannot be a sub account of another account.
+        Classification:
+          type: string
+          description: The classification of an account. Not supported for non-posting accounts. 
+            - Valid values include- Asset, Equity, Expense, Liability, Revenue
+        FullyQualifiedName:
+          type: string
+          description: Fully qualified name of the object; derived from Name and ParentRef. 
+            - The fully qualified name prepends the topmost parent, followed by each subaccount separated by colons and takes the form of Parent:Account1:SubAccount1:SubAccount2. System generated. Limited to 5 levels.
+        TxnLocationType:
+          type: string
+          description: The account location. 
+            * Valid values include
+              - WithinFrance
+              - FranceOverseas
+              - OutsideFranceWithEU
+              - OutsideEU
+            * For France locales, only.
+        AccountType:
+          type: string
+          description: A detailed account classification that specifies the use of this account. The type is based on the Classification. 
+          enum:
+            - ""
+        CurrentBalanceWithSubAccounts:
+          type: number
+          description: Specifies the cumulative balance amount for the current Account and all its sub-accounts.
+        AccountAlias:
+          type: string
+          description: A user friendly name for the account. 
+           - It must be unique across all account categories. 
+           - For example, if an account is created under category 211 with AccountAlias of Terrains, then the system does not allow creation of an account with same AccountAlias of Terrains for any other category except 211. 
+           - In other words, 211001 and 215001 accounts cannot have same AccountAlias because both belong to different account category.
+           - For France locales, only. 
+        TaxCodeRef:
+          type: object
+          description: Reference to the default tax code used by this account. Tax codes are referenced by the TaxCode.
+            - Id in the TaxCode object. 
+            - Available when endpoint is invoked with the minorversion=3 query parameter. For global locales, only.   
+          $ref: '#/components/schemas/ReferenceType'
+        AccountSubType:
+          type: string
+          description: The account sub-type classification and is based on the AccountType value. 
+          enum:
+            - ""
+        CurrentBalance:
+          type: number
+          description: Specifies the balance amount for the current Account. Valid for Balance Sheet accounts.
+    AccountCreateObject:
+      type: object
+      properties:
+        Name:
+          type: string
+          description: User recognizable name for the Account. 
+            Account.Name attribute must not contain double quotes (") or colon (:).
+        AcctNum:
+          type: string
+          description: User-defined account number to help the user in identifying the account within the chart-of-accounts and in deciding what should be posted to the account. 
+              The Account.AcctNum attribute must not contain colon (:). 
+              For France locales:Name must be unique.
+              Length must be between 6 and 20 characters.
+              Must start with the account number from the master category list.
+              Name limited to alpha-numeric characters.
+              Required for France locales.
+        TaxCodeRef:
+          type: string
+          description: Reference to the default tax code used by this account. 
+            Tax codes are referenced by the TaxCode.
+            Id in the TaxCode object. 
+            Available when endpoint is invoked with the minorversion=3 query parameter. 
+            For global locales, only. 
+            Required for France locales
+        AccountType:
+          type: string
+          enum:
+            - Accounts Receivable
+          description: A detailed account classification that specifies the use of this account. The type is based on the Classification. 
+        AccountSubType:
+          type: string
+          description: The account sub-type classification and is based on the AccountType value. 
+      required:
+        - "Name"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: [] 

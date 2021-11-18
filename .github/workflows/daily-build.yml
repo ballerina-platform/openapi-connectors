@@ -31,6 +31,6 @@ jobs:
           --data "{
             \"event_type\": \"notify-build-failure\",
             \"client_payload\": {
-              \"repoName\": \"ballerinax-openapi-connectors\"
+              \"repoName\": \"openapi-connectors\"
             }
           }"

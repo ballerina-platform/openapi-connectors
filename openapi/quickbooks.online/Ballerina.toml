@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["Finance/Accounting", "Cost/Paid"]
 org = "ballerinax"
 name = "quickbooks.online"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.0"
 authors = ["Ballerina"]

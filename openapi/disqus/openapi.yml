@@ -1,0 +1,701 @@
+openapi: 3.0.0
+info:
+  title: Disqus API
+  description: |
+    This is a generated connector for [Disqus API v1](https://disqus.com/api/docs) OpenAPI specification.
+    Disqus is a service for web comments and discussions. 
+    Disqus makes commenting easier and more interactive, helping publishers power online discussions.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Disqus account](https://disqus.com) and obtain tokens by following [this guide](https://help.disqus.com/en/articles/1717212-using-the-api).
+  x-ballerina-display:
+    label: Disqus
+    iconPath: "icon.png"
+  version: "v3"
+security:
+- access_token: []
+- api_key: []
+- api_secret: []
+servers:
+  - url: 'https://disqus.com/api/3.0'
+tags:
+  - name: categories
+  - name: forums
+  - name: posts
+  - name: threads
+paths:
+  /categories/list.json:
+    get:
+      summary: "Returns a list of categories within a forum."
+      description: "https://disqus.com/api/docs/categories/list"
+      parameters: 
+        - in: "query"
+          name: "forum"
+          description: "Looks up a forum by ID (aka short name)"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "since_id"
+          description: "since_id. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "cursor"
+          description: "cursor. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "limit"
+          description: "limit. Defaults to 25. Maximum value of 100."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "order"
+          description: "order. Defaults to 'asc'. Choices: asc, desc."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "categories"
+      responses:
+        200:
+          description: "An object with a single property response which is an array of Category objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Categories'
+      operationId: "list_categories"
+  /categories/details.json:
+    get:
+      summary: "Returns category details."
+      description: "https://disqus.com/api/docs/categories/details"
+      parameters: 
+        - in: "query"
+          name: "category"
+          description: "Looks up a category by ID."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "categories"
+      responses:
+        200:
+          description: "An object with a single property response which is a Category object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Category'
+      operationId: "get_category_details"
+  /forums/details.json:
+    get:
+      summary: "Returns forum details."
+      description: "https://disqus.com/api/docs/forums/details"
+      parameters: 
+        - in: "query"
+          name: "forum"
+          description: "Looks up a forum by ID (aka short name)"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "attach"
+          description: "Choices: followsForum, forumCanDisableAds, forumForumCategory, counters, forumDaysAlive, forumFeatures, forumIntegration, forumNewPolicy, forumPermissions. Defaults to []."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "related"
+          description: "You may specify relations to include with your response. Choices: author. Defaults to []."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "forums"
+      responses:
+        200:
+          description: "An object with a single property response which is a Forum object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Forum'
+      operationId: "get_forum_details"
+  /posts/list.json:
+    get:
+      summary: "Returns a list of posts ordered by the date created."
+      description: "https://disqus.com/api/docs/posts/list"
+      parameters: 
+        - in: "query"
+          name: "category"
+          description: "Looks up a category by ID. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "end"
+          description: "Unix timestamp (or ISO datetime standard). Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "sortType"
+          description: "Choices: date, priority. Defaults to 'date'."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "thread"
+          description: "Looks up a thread by ID. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "forum"
+          description: "Defaults to all forums you moderate. Use :all to retrieve all forums. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "start"
+          description: "Unix timestamp (or ISO datetime standard). Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "since"
+          description: "Unix timestamp (or ISO datetime standard). Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "related"
+          description: "You may specify relations to include with your response. Choices: forum, thread. Defaults to []."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "cursor"
+          description: "Cursor. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "limit"
+          description: "Limit. Maximum value of 100. Defaults to 25."
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "filters"
+          description: "Filters. Defaults to []. Valid values are Is_Anonymous, Has_Link, Has_Low_Rep_Author, Has_Bad_Word, Is_Flagged, No_Issue, Is_Toxic, Modified_By_Rule, Shadow_Banned, Has_Media, Is_At_Flag_Limit, Shadow_Banned_Global."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "query"
+          description: "Query. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "include"
+          description: "Choices: unapproved, approved, spam, deleted, flagged, highlighted. Defaults to [ 'approved' ]."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "order"
+          description: "Choices: asc, desc. Defaults to 'desc'"
+          schema:
+            type: string
+          required: false
+      tags:
+        - "posts"
+      responses:
+        200:
+          description: "An object with a single property response which is an array of Post objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Posts'
+      operationId: "list_posts"
+  /posts/details.json:
+    get:
+      summary: "Returns information about a post."
+      description: "https://disqus.com/api/docs/posts/details"
+      parameters: 
+        - in: "query"
+          name: "post"
+          description: "Looks up a post by ID."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "related"
+          description: "You may specify relations to include with your response. Choices: forum, thread. Defaults to []."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "posts"
+      responses:
+        200:
+          description: "An object with a single property response which is a Post object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Post'
+      operationId: "get_post_details"
+  /threads/list.json:
+    get:
+      summary: "Returns a list of threads sorted by the date created."
+      description: "https://disqus.com/api/docs/threads/list"
+      parameters: 
+        - in: "query"
+          name: "category"
+          description: "Looks up a category by ID. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "forum"
+          description: "Looks up a forum by ID (aka short name). Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "thread"
+          description: "Looks up a thread by ID. You may pass us the 'ident' query type instead of an ID by including 'forum'. You may pass us the 'link' query type to filter by URL. You must pass the 'forum' if you do not have the Pro API Access addon. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "author"
+          description: "Looks up a user by ID. You may look up a user by username using the 'username' query type. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "since"
+          description: "Unix timestamp (or ISO datetime standard). Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "related"
+          description: "You may specify relations to include with your response. Choices: forum, author, category. Defaults to []."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "cursor"
+          description: "Cursor. Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "attach"
+          description: "Attach. Defaults to []."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "limit"
+          description: "Limit. Maximum value of 100. Defaults to 25."
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "include"
+          description: "Choices: open, closed, killed. Defaults to [ 'open', 'closed' ]"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "order"
+          description: "Choices: asc, desc. Defaults to 'desc'."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "threads"
+      responses:
+        200:
+          description: "An object with a single property response which is an array of Thread objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Threads'
+      operationId: "list_threads"
+  /threads/details.json:
+    get:
+      summary: "Returns thread details."
+      description: "https://disqus.com/api/docs/threads/details"
+      parameters: 
+        - in: "query"
+          name: "thread"
+          description: "Looks up a thread by ID. You may pass us the 'ident' or 'link' query types instead of an ID by including 'forum'."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "forum"
+          description: "Looks up a forum by ID (aka short name). Defaults to null."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "related"
+          description: "You may specify relations to include with your response. Choices: forum, author, category. Defaults to []."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "attach"
+          description: "Choices: topics. Defaults to []."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "threads"
+      responses:
+        200:
+          description: "An object with a single property response which is a Thread object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/DisqusThread'
+      operationId: "get_thread_details"
+
+components:
+  schemas:
+    Categories:
+      type: object
+      properties:
+        cursor:
+            $ref: '#/components/schemas/Cursor'
+        code:
+          type: number
+          description: Code
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryObject'
+          description: An array of Category objects.
+      description: An object with a single property response which is an array of Category objects.
+    Category:
+      type: object
+      properties:
+        code:
+          type: number
+          description: Code
+        response:
+          $ref: '#/components/schemas/CategoryObject'
+      description: An object with a single property response which is a Category object.
+    Cursor:
+      type: object
+      properties:
+        prev:
+          type: string
+          description: Prev
+        hasNext:
+          type: boolean
+          description: Has next
+        next:
+          type: string
+          description: Next
+        hasPrev:
+          type: boolean
+          description: Has prev
+        total:
+          type: string
+          description: Total
+        id:
+          type: string
+          description: ID
+        more:
+          type: boolean
+          description: More
+      description: Cursor
+    CategoryObject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Category ID
+        forum:
+          type: string
+          description: Forum
+        order:
+          type: number
+          description: Order
+        isDefault:
+          type: boolean
+          description: Is Default
+        title:
+          type: string
+          description: Title
+      description: Category
+    Forum:
+      type: object
+      properties:
+        code:
+          type: number
+          description: Code
+        response:
+          $ref: '#/components/schemas/ForumObject'
+      description: An object with a single property response which is a Forum object.
+    ForumObject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Forum ID
+        name:
+          type: string
+          description: Forum name
+        founder:
+          type: string
+          description: Founder
+        favicon:
+          $ref: '#/components/schemas/Favicon'
+      description: Forum
+    Favicon:
+      type: object
+      properties:
+        permalink:
+          type: string
+          description: Permalink
+        cache:
+          type: string
+          description: Cache
+      description: Favicon
+    Posts:
+      type: object
+      properties:
+        cursor:
+            $ref: '#/components/schemas/Cursor'
+        code:
+          type: number
+          description: Code
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostObject'
+          description: An array of Post objects.
+      description: An object with a single property response which is an array of Post objects.
+    Post:
+      type: object
+      properties:
+        code:
+          type: number
+          description: Code
+        response:
+          $ref: '#/components/schemas/PostObject'
+      description: An object with a single property response which is a Post object.
+    PostObject:
+      type: object
+      properties:
+        isJuliaFlagged:
+          type: boolean
+          description: Is Julia Flagged
+        isFlagged:
+          type: boolean
+          description: Is Flagged
+        forum:
+          type: string
+          description: Forum
+        parent:
+          type: number
+          description: Is Default
+        author:
+            $ref: '#/components/schemas/Author'
+        isApproved:
+          type: boolean
+          description: Is Approved
+        dislikes:
+          type: number
+          description: Dislikes
+        raw_message:
+          type: string
+          description: Raw message
+        id:
+          type: string
+          description: Post ID
+        thread:
+          type: string
+          description: Thread
+        points:
+          type: number
+          description: Points
+        createdAt:
+          type: string
+          description: Created At
+        isEdited:
+          type: boolean
+          description: Is Edited
+        message:
+          type: string
+          description: Message
+        isHighlighted:
+          type: boolean
+          description: Is Highlighted
+        ipAddress:
+          type: string
+          description: IP Address
+        isSpam:
+          type: boolean
+          description: Is Spam
+        isDeleted:
+          type: boolean
+          description: Is Deleted
+        likes:
+          type: number
+          description: Likes
+      description: Category
+    Author:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Username
+        about:
+          type: string
+          description: About
+        name:
+          type: string
+          description: Name
+        url:
+          type: string
+          description: Url
+        isFollowing:
+          type: boolean
+          description: Is Following
+        isFollowedBy:
+          type: boolean
+          description: Is Followed By
+        profileUrl:
+          type: string
+          description: Profile Url
+        avatar:
+          $ref: '#/components/schemas/Avatar'
+        id:
+          type: string
+          description: Author ID
+        isAnonymous:
+          type: boolean
+          description: Is Anonymous
+        email:
+          type: string
+          description: Email
+      description: Author
+    Avatar:
+      type: object
+      properties:
+        permalink:
+          type: string
+          description: Permalink
+        cache:
+          type: string
+          description: Cache
+      description: Avatar
+    Threads:
+      type: object
+      properties:
+        cursor:
+            $ref: '#/components/schemas/Cursor'
+        code:
+          type: number
+          description: Code
+        response:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreadObject'
+          description: An array of Thread objects.
+      description: An object with a single property response which is an array of Thread objects.
+    DisqusThread:
+      type: object
+      properties:
+        code:
+          type: number
+          description: Code
+        response:
+          $ref: '#/components/schemas/ThreadObject'
+      description: An object with a single property response which is a Thread object.
+    ThreadObject:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Category ID
+        reactions:
+          type: number
+          description: Reactions
+        forum:
+          type: string
+          description: Forum
+        title:
+          type: string
+          description: Title
+        dislikes:
+          type: number
+          description: Dislikes
+        isDeleted:
+          type: boolean
+          description: Is Deleted
+        author:
+          type: string
+          description: Author
+        userScore:
+          type: number
+          description: UserScore
+        id:
+          type: string
+          description: Thread ID
+        isClosed:
+          type: boolean
+          description: Is Closed
+        posts:
+          type: number
+          description: Posts
+        link:
+          type: string
+          description: Link
+        likes:
+          type: number
+          description: Likes
+        message:
+          type: string
+          description: Message
+        ipAddress:
+          type: string
+          description: IP Address
+        slug:
+          type: string
+          description: Slug
+        createdAt:
+          type: string
+          description: Created At
+      description: Thread
+    
+
+  securitySchemes:
+    access_token:
+      type: apiKey
+      name: access_token
+      in: query
+      description: Represents API Key `access_token`
+    api_key:
+      type: apiKey
+      name: api_key
+      in: query
+      description: Represents API Key `api_key`
+    api_secret:
+      type: apiKey
+      name: api_secret
+      in: query
+      description: Represents API Key `api_secret`

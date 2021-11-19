@@ -1,0 +1,10 @@
+[package]
+org = "ballerinax"
+name = "disqus"
+icon = "icon.png"
+version = "1.0.0"
+distribution = "slbeta3"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["Website & App Building/Website Builders","Cost/Freemium"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

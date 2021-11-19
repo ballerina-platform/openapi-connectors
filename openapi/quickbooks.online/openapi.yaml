@@ -18,7 +18,7 @@ info:
     guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app).
   x-ballerina-display:
     label: QuickBooks Online
-    iconPath: resources/quickbooks.online.svg
+    iconPath: icon.png
 servers:
   - url: https://quickbooks.api.intuit.com
 tags: []

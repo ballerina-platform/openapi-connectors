@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [QuickBooks Online API v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification.  
 # The QuickBooks Online Accounting API utilizes the REST architecture. It lets you seamlessly integrate your app with QuickBooks Online and the Intuit Financial Ecosystem 
-@display {label: "QuickBooks Online", iconPath: "resources/quickbooks.online.svg"}
+@display {label: "QuickBooks Online", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

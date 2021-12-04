@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Dropbox API v2](https://www.dropbox.com/developers/documentation/http/overview) OpenAPI specification. 
 # Dropbox is a modern workspace designed to reduce busywork-so you can focus on the things that matter. Sign in and put your creative energy to work.  
-@display {label: "Dropbox", iconPath: "resources/dropbox.svg"}
+@display {label: "Dropbox", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Vision API v1](https://cloud.google.com/vision/docs/reference/rest) OpenAPI specification.
 # Integrates Google Vision features, including image labeling, face, logo, and landmark detection, optical character recognition (OCR), and detection of explicit content, into applications.
-@display {label: "Google Cloud Vision", iconPath: "resources/googleapis.vision.svg"}
+@display {label: "Google Cloud Vision", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -28,7 +28,7 @@ public type ApiKeysConfig record {|
 # The Number Insight API delivers real-time intelligence about the validity, reachability and roaming status of a phone number and tells you how to format the number correctly in your application. 
 # There are three levels of Number Insight API available: [Basic, Standard and Advanced](https://developer.nexmo.com/number-insight/overview#basic-standard-and-advanced-apis). The advanced API is available asynchronously as well as synchronously.
 # More Number Insight API documentation is at https://developer.nexmo.com/number-insight/overview#number-insight-api-overview.
-@display {label: "Vonage Number Insight", iconPath: "resources/vonage.numberinsight.svg"}
+@display {label: "Vonage Number Insight", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

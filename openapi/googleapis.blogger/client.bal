@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Blogger API v3.0](https://developers.google.com/blogger/docs/3.0/getting_started) OpenAPI specification.
 # The Blogger API provides access to posts, comments and pages of a Blogger blog.
-@display {label: "Google Blogger", iconPath: "resources/googleapis.blogger.svg"}
+@display {label: "Google Blogger", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

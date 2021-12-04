@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "bitbucket"
+icon = "icon.png"
 version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]

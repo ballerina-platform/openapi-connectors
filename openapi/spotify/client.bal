@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [Spotify API v1](https://developer.spotify.com/documentation/web-api/) OpenAPI Specification. 
 # Through the Spotify Web API, external applications retrieve Spotify content such as album data and playlists.
-@display {label: "Spotify", iconPath: "resources/spotify.svg"}
+@display {label: "Spotify", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

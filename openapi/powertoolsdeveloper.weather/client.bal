@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # Manipulate text, modify collections, format dates and times, convert currency, perform advanced mathematical calculations, shorten URL's, encode strings, convert text to speech, translate content into multiple languages, process images, and more. 
 # PowerTools is the ultimate developer toolkit.'
 # This connector provides the capability for weather conditions, forecasts and related operations.
-@display {label: "PowerTools Developer Weather", iconPath: "resources/powertoolsdeveloperweather.svg"}
+@display {label: "PowerTools Developer Weather", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

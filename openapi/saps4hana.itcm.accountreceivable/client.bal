@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # A user in SAP Intelligent Trade Claims Management can create and update existing accounts receivable open items within SAP Intelligent Trade Claims Management. Accounts receivable open items contribute to baseline information for claims to be built.
-@display {label: "SAPS4HANA ITCM Account Receivable Open Item", iconPath: "resources/saps4hana.itcm.accountreceivable.svg"}
+@display {label: "SAPS4HANA ITCM Account Receivable Open Item", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

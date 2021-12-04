@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # In SAPS4HANA Intelligent Trade Claims Management, the promotion service allows you to create, add, and delete information about promotions. Execution of Promotions should be done in an particular order.
-@display {label: "SAPS4HANA ITCM Promotion", iconPath: "resources/saps4hana.itcm.promotion.svg"}
+@display {label: "SAPS4HANA ITCM Promotion", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
 # API for Internet Archive's Search-related services.
-@display {label: "Botify", iconPath: "resources/botify.svg"}
+@display {label: "Botify", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [Siemens IoT File Service API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification. 
 # The IoT File API enables storing and retrieving files for asset (entity) instances.
-@display {label: "Siemens IoT And Storage File Service", iconPath: "resources/siemens.iotandstorage.iotfileservice.svg"}
+@display {label: "Siemens IoT And Storage File Service", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -55,7 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Shipwire Containers API v3.0](https://www.shipwire.com/developers/container/) OpenAPI specification.
 # The Container API is used to manage shipping containers and boxes within Shipwire Anywhere warehouses and dropship locations. 
 # Use it to create a new container, to update an existing container, or to get information about already created containers.
-@display {label: "Shipwire Containers", iconPath: "resources/shipwire.containers.svg"}
+@display {label: "Shipwire Containers", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

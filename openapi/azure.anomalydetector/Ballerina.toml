@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["IT Operations/Cloud Services", "Cost/Paid", "Vendor/Microsoft"]
 org = "ballerinax"
 name = "azure.anomalydetector"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.1"
 authors = ["Ballerina"]

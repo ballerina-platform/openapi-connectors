@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Mailchimp Marketing API v3.0.52](https://mailchimp.com/developer/marketing/) OpenAPI Specification. 
 # The Mailchimp Marketing API allow to manage audiences, control automation workflows, sync email activity with your database and more.
-@display {label: "Mailchimp", iconPath: "resources/mailchimp.svg"}
+@display {label: "Mailchimp", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -23,7 +23,7 @@ public type ApiKeysConfig record {|
 |};
 
 # This is a generated connector for [GoDaddy Shoppers API v1](https://developer.godaddy.com/doc/endpoint/shoppers) OpenAPI specification. The GoDaddy Shoppers API provides capability to access GoDaddy operations related to shopper.
-@display {label: "GoDaddy Shopper", iconPath: "resources/godaddy.shopper.svg"}
+@display {label: "GoDaddy Shopper", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

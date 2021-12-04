@@ -18,7 +18,7 @@ import ballerina/http;
 
 # This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification.
 # This is the public REST API for ExchangeRate-API. Fetch the latest currency exchange rates via API.
-@display {label: "Exchange Rates", iconPath: "resources/exchangerates.svg"} 
+@display {label: "Exchange Rates", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

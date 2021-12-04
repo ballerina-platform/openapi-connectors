@@ -55,7 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Asana API v1.0](https://developers.asana.com/docs) OpenAPI specification.
 # This API enables you to help teams organize, track and manage their work.
 # For additional help getting started with the API, visit [Asana API](https://developers.asana.com).
-@display {label: "Asana", iconPath: "resources/asana.svg"}
+@display {label: "Asana", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

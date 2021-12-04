@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [ISBNdb API v2.0.0](https://isbndb.com/apidocs/v2) OpenAPI specification.
 # The ISBNdb.com API exposes data such as title, author, publisher and publish date about books.
-@display {label: "ISBNdb", iconPath: "resources/isbndb.svg"}
+@display {label: "ISBNdb", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [eBay Browse API v1.6.0](https://developer.ebay.com/api-docs/buy/browse/overview.html) OpenAPI Specification.
 # The Browse API lets shoppers search for specific items by keyword, GTIN, category, charity, product, or item aspects and refine the results by using filters, such as aspects, compatibility, and fields values.
-@display {label: "eBay Browse", iconPath: "resources/ebay.browse.svg"} 
+@display {label: "eBay Browse", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

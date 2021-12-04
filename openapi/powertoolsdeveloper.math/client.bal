@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # Manipulate text, modify collections, format dates and times, convert currency, perform advanced mathematical calculations, shorten URL's, encode strings, convert text to speech, translate content into multiple languages, process images, and more. 
 # PowerTools is the ultimate developer toolkit.'
 # This connector provides the capability for mathematical calculations and conversions.
-@display {label: "PowerTools Developer Math", iconPath: "resources/powertoolsdeveloper.math.svg"}
+@display {label: "PowerTools Developer Math", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

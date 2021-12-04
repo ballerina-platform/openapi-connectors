@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["IT Operations/Security & Identity Tools", "Cost/Paid"]
 org = "ballerinax"
 name = "godaddy.certificates"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.2-SNAPSHOT"
 authors = ["Ballerina"]

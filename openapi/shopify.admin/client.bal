@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 # The Admin API lets you build apps and integrations that extend and enhance the Shopify admin.
 # As the primary way that apps and services interact with Shopify, the Admin API allows you to add your own features to the Shopify user experience. 
 # Read and write Shopify store information, including products, inventory, orders, shipping, and more.
-@display {label: "Shopify Admin", iconPath: "resources/shopify.admin.svg"}
+@display {label: "Shopify Admin", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

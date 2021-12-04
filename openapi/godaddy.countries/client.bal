@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [GoDaddy Countries API v1](https://developer.godaddy.com/doc/endpoint/countries) OpenAPI specification.
 # The GoDaddy Countries API provides capability to access GoDaddy operations related to countries.
-@display {label: "GoDaddy Countries", iconPath: "resources/godaddy.countries.svg"}
+@display {label: "GoDaddy Countries", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

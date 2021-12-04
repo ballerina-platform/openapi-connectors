@@ -55,7 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector from [Azure IoT Hub API v1.0](https://docs.microsoft.com/en-us/rest/api/iothub/) OpenAPI specification.
 # Azure IoT Hub is a service that offers programmatic access to the device, messaging, and job services, as well as the resource provider, in IoT Hub. You can access messaging services from within an IoT service running in Azure, or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 # Use this API to manage the IoT hubs in your Azure subscription.
-@display {label: "Azure IoT Hub", iconPath: "resources/azure.iothub.svg"}
+@display {label: "Azure IoT Hub", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

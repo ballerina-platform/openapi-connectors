@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Open Design REST API v0.3.4](https://opendesign.dev/docs/api-reference/introduction) OpenAPI specification. 
 # Open Design read and display data from designs using code. Unlock the power of programmatic design.
-@display {label: "opendesign", iconPath: "resources/opendesign.svg"}
+@display {label: "opendesign", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

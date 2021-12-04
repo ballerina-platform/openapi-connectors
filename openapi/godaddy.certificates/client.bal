@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [GoDaddy Certificates API v1](https://developer.godaddy.com/doc/endpoint/certificates) OpenAPI specification.
 # The GoDaddy Certificates API provides capability to access GoDaddy operations related to certificates.
-@display {label: "GoDaddy Certificates", iconPath: "resources/godaddy.certificates.svg"}
+@display {label: "GoDaddy Certificates", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

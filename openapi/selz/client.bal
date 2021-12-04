@@ -57,7 +57,7 @@ public type ClientConfig record {|
 # resource-oriented URLs, accepts form-encoded request bodies, returns
 # JSON-encoded responses, and uses standard HTTP response codes,
 # authentication, and verbs.
-@display {label: "Selz", iconPath: "resources/selz.svg"}
+@display {label: "Selz", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

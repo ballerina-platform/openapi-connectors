@@ -53,7 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [GoToWebinar API v2.0](https://developer.goto.com/GoToWebinarV2) OpenAPI specification.  
 # The GoToWebinar API provides the capability to schedule webinars and customize webinars with panelists, polls, questions and surveys.
-@display {label: "GoTo Webinar", iconPath: "resources/gotowebinar.svg"}
+@display {label: "GoTo Webinar", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Pushcut API v1](https://www.pushcut.io/webapi.html) OpenAPI specification.
 # API to send Pushcut notifications, execute Automation Server actions, and register custom webhooks as online actions.
-@display {label: "Pushcut", iconPath: "resources/pushcut.svg"}
+@display {label: "Pushcut", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

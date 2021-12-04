@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
 # The Cloudmersive Security APIs help you detect and block security threats.
-@display {label: "Cloudmersive Security", iconPath: "resources/cloudmersive.security.svg"}
+@display {label: "Cloudmersive Security", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

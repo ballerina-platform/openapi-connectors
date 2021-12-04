@@ -19,7 +19,7 @@ import ballerina/url;
 import ballerina/lang.'string;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
-@display {label: "GoDaddy Subscriptions", iconPath: "resources/godaddy.subscriptions.svg"}
+@display {label: "GoDaddy Subscriptions", iconPath: "icon.png"}
 public type ApiKeysConfig record {|
     # API keys related to connector authentication
     map<string> apiKeys;

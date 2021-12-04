@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 # Connect with the E-Signature API to create workflows that send specific documents for e-signature documents.
 # Create field mappings between Lead fields to populate their respective PDF documents.
 # Receive notifications when documents are generated, opened, and signed by recipients.
-@display {label: "IRIS E-Signature", iconPath: "resources/iris.esignature.svg"}
+@display {label: "IRIS E-Signature", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

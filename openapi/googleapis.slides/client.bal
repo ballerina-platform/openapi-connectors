@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification.
 # Reads and writes Google Slides presentations.
-@display {label: "Google Slides", iconPath: "resources/googleapis.slides.svg"}
+@display {label: "Google Slides", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

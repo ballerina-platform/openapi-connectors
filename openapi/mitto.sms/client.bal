@@ -25,7 +25,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Mitto SMS and Bulk SMS APIs v1](https://docs.mitto.ch/sms-api-reference/) OpenAPI specification.
 # Send individual SMS reliably and securely, or send them in bulk. 
 # You can choose from different servers to test with based on where you want to send a message to.
-@display {label: "Mitto SMS", iconPath: "resources/mitto.sms.svg"}
+@display {label: "Mitto SMS", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Cloud Billing Account API v1](https://cloud.google.com/billing/v1/getting-started) OpenAPI specification.
 # The Google Cloud Billing Account API allows developers to manage billing for their Google Cloud Platform projects programmatically.
-@display {label: "Google Cloud Billing Account", iconPath: "resources/googleapis.cloudbillingaccount.svg"}
+@display {label: "Google Cloud Billing Account", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

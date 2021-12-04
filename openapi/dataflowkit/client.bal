@@ -35,7 +35,7 @@ public type ApiKeysConfig record {|
 # The API key can be found in the [DFK Dashboard](https://account.dataflowkit.com) after _free registration_.
 # 
 # Pass a secret API Key to all API requests to the server as the `api_key` query parameter. 
-@display {label: "Dataflow Kit", iconPath: "resources/dataflowkit.svg"}
+@display {label: "Dataflow Kit", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

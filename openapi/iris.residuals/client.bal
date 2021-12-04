@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 # Populate your data warehouse programmatically through this Residuals API and interact with your monthly residuals income calculations, line items, and user compensation data.
 # Line items give you control with the ability to add income or expense calculations that are outside of any residual reports.
 # Receive instant notifications when new residual reports are published or when line items are added.
-@display {label: "IRIS Residuals", iconPath: "resources/iris.residuals.svg"}
+@display {label: "IRIS Residuals", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

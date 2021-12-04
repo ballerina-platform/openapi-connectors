@@ -54,7 +54,7 @@ public type ClientConfig record {|
 # Shippit powers simpler delivery for e-commerce retailers of all shapes and sizes.
 # It fulfil orders and track shipments anywhere you are, anytime you like. 
 # It’s cloud-based multi-carrier shipping software for retailers that takes the guesswork out of shipping decisions.
-@display {label: "Shippit", iconPath: "resources/shippit.svg"}
+@display {label: "Shippit", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

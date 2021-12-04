@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["Education/Dictionary", "Cost/Freemium"]
 org = "ballerinax"
 name = "wordnik"
+icon = "icon.png"
 version = "1.0.1"
 authors = ["Ballerina"]
 [build-options]

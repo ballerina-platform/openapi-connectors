@@ -40,7 +40,7 @@ public type ApiKeysConfig record {|
 # - Management of users in atSpoke
 # - Creation, manipulation, and deletion of knowledge resources in atSpoke
 # The public API is served from https://api.askspoke.com/api/v1 – note `api` in the host name, not your usual organization id.
-@display {label: "atSpoke", iconPath: "resources/atspoke.svg"}
+@display {label: "atSpoke", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

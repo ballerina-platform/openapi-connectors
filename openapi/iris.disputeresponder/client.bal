@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [IRIS Dispute responder API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
 # IRIS CRM's revolutionary new Dispute Responder offers complete, end-to-end dispute management, including instant online notification of new disputes, electronic response submission, and complete record management for Fiserv merchants, all from right within IRIS CRM.
-@display {label: "IRIS Dispute Responder", iconPath: "resources/iris.disputeresponder.svg"}
+@display {label: "IRIS Dispute Responder", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

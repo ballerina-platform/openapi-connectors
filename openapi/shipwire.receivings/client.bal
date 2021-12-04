@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Shipwire Receivings API v3.0](https://www.shipwire.com/developers/receiving) OpenAPI specification.
 # Allows managing inventory at Shipwire and Shipwire Anywhere warehouses using receiving orders.
-@display {label: "Shipwire Receivings", iconPath: "resources/shipwire.receivings.svg"}
+@display {label: "Shipwire Receivings", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

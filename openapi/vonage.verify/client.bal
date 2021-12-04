@@ -21,7 +21,7 @@ import ballerina/lang.'string;
 # This is a generated connector for [Vonage Verify API v1.1.7](https://nexmo-api-specification.herokuapp.com/verify) OpenAPI specification.
 # The Verify API helps you to implement 2FA (two-factor authentication) in your applications.
 # More information is available at https://developer.nexmo.com/verify/overview
-@display {label: "Vonage Verify", iconPath: "resources/vonage.verify.svg"}
+@display {label: "Vonage Verify", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

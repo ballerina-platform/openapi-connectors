@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # The User service allows you to create, add, and delete information about users in SAPS4HANA Intelligent Trade Claims Management.
-@display {label: "SAPS4HANA ITCM User", iconPath: "resources/saps4hana.itcm.user.svg"}
+@display {label: "SAPS4HANA ITCM User", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

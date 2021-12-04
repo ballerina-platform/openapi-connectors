@@ -53,7 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [GoToMeeting API v1.0](https://developer.goto.com/GoToMeetingV1) OpenAPI specification.  
 # The GoToMeeting API provides the capability to organize meetings.
-@display {label: "GoTo Meeting", iconPath: "resources/gotomeeting.svg"}
+@display {label: "GoTo Meeting", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

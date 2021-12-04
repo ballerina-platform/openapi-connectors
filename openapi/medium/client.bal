@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Medium API v1](https://github.com/Medium/medium-api-docs) OpenAPI Specification.
 # Medium’s Publishing API provides capability to access the Medium network, create your content on Medium from  anywhere you write, and expand your audience and your influence.
-@display {label: "Medium", iconPath: "resources/medium.svg"}
+@display {label: "Medium", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

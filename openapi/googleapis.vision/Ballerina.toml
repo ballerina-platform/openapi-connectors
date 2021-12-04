@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["Business Intelligence/Artificial Intelligence", "Cost/Freemium", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.vision"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.1"
 authors = ["Ballerina"]

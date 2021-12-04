@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification.
 # News API used to fetch news(articles, headlines and sources) from news sources and blogs across the web.
-@display {label: "News API", iconPath: "resources/newsapi.svg"}
+@display {label: "News API", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

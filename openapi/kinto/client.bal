@@ -20,7 +20,7 @@ import ballerina/lang.'string;
 
 # This is a generated connector for [Kinto v1.22](https://docs.kinto-storage.org/en/stable/api/index.html) OpenAPI specification.
 # The Kinto API provides the capability to store and retrieve JSON data.
-@display {label: "Kinto", iconPath: "resources/kinto.svg"}
+@display {label: "Kinto", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

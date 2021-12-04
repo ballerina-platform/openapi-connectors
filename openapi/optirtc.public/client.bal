@@ -31,7 +31,7 @@ public type ApiKeysConfig record {|
 # * **Analysts** can use the Public API to pull data into their analysis scripts for repeated analysis.
 # To learn about how Opti's data-driven products are enhancing community resilience to heavy rainfall across North America, see the [Opti Home Page](https://www.optirtc.com).
 # OptiRTC provides simple examples of using open-source technologies to interact with the OptiRTC Public API. Find out more on our [Github page.](https://github.com/OptiRTC/OptiRTC-API-examples)
-@display {label: "Optirtc Public", iconPath: "resources/optirtc.public.svg"}
+@display {label: "Optirtc Public", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

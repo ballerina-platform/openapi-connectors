@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Xero Finance API v2.16.0](https://developer.xero.com/documentation/api/finance/overview) OpenAPI specification.
 # The Finance API is a collection of endpoints which customers can use in the course of a loan application, which may assist lenders to gain the confidence they need to provide capital.
-@display {label: "Xero Finance", iconPath: "resources/xero.finance.svg"}
+@display {label: "Xero Finance", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

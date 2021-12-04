@@ -31,7 +31,7 @@ public type ApiKeysConfig record {|
 # - Control levels of access to Spotto applications and APIs across your account
 # - Query the Spotto event log to gain valuable insights into your historical data
 # - Setup event based hooks when something significant changes in Spotto.
-@display {label: "Spotto", iconPath: "resources/spotto.svg"}
+@display {label: "Spotto", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

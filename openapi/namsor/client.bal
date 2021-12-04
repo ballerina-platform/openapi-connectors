@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [NamSor API v2](https://v2.namsor.com/NamSorAPIv2/index.html) OpenAPI specification. 
 # The NamSor API provides the capability to process personal names (gender, cultural origin or ethnicity) in all alphabets or languages.
-@display {label: "NamSor", iconPath: "resources/namsor.svg"}
+@display {label: "NamSor", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

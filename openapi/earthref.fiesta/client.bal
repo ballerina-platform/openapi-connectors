@@ -65,7 +65,7 @@ public type ClientConfig record {|
 # The API is served over HTTPS thereby making HTTP Basic Authentication secure.
 # The credentials are the username and password of an active EarthRef.org user account and provide access to that user's 
 # private workspace in any of EarthRef.org FIESTA repositories.
-@display {label: "EarthRef FIESTA", iconPath: "resources/earthreffiesta.svg"}
+@display {label: "EarthRef FIESTA", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

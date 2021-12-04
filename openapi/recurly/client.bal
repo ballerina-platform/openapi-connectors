@@ -56,7 +56,7 @@ public type ClientConfig record {|
 # Recurly is a subscription management platform delivering a competitive advantage for leading brands worldwide. 
 # Trusted by Sling TV, BarkBox, Asana, and thousands more to drive recurring revenue.
 # Onboard and manage customers through Recurly API.
-@display {label: "Recurly", iconPath: "resources/recurly.svg"}
+@display {label: "Recurly", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -54,7 +54,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Bitly API v4.0.0](https://dev.bitly.com/api-reference) OpenAPI specification.
 # Bitly is the most widely trusted link management platform in the world. 
 # By using the Bitly API, you will exercise the full power of your links through automated link customization, mobile deep linking, and click analytics.
-@display {label: "Bitly", iconPath: "resources/bitly.svg"}
+@display {label: "Bitly", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

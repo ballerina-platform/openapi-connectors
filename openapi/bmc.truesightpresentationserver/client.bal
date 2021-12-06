@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [BMC Hardware Sentry TrueSight Presentation Server REST API v1.0](https://docs.bmc.com/docs/display/tsps107/Getting+started) OpenAPI specification.  
 # The BMC Hardware Sentry TrueSight Presentation Server API provides the capability to access data from various TrueSight products to provide a consolidated set of views for monitoring the infrastructure, real and synthetic applications, and capacity planning.
-@display {label: "Bmc TrueSight Presentation Server", iconPath: "resources/bmc.truesightpresentationserver.svg"}
+@display {label: "Bmc TrueSight Presentation Server", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

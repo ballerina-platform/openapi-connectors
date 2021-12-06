@@ -55,7 +55,7 @@ public type ClientConfig record {|
 # This API provides access to pipelines. 
 # Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. 
 # They support `deals` and `tickets` object types.
-@display {label: "HubSpot CRM Pipeline", iconPath: "resources/hubspot.crm.pipeline.svg"}
+@display {label: "HubSpot CRM Pipeline", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

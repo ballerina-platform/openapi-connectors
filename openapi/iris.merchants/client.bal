@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # Data points include merchant demographics, deposits, transactions, retrievals, chargebacks, and statements across supported processors.
 # Each merchant account is accessible by users through a set of permissions controlled on the User Class level.
 # Segment your portfolio of merchants by filters such as processor, data source, and processing status.
-@display {label: "IRIS Merchants", iconPath: "resources/iris.merchants.svg"}
+@display {label: "IRIS Merchants", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

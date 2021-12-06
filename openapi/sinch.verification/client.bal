@@ -49,7 +49,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Sinch Verification API v2.0](https://www.sinch.com/) OpenAPI specification.
 # Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
-@display {label: "sinch.verification", iconPath: "resources/sinch.verification.svg"}
+@display {label: "sinch.verification", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

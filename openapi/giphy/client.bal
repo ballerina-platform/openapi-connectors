@@ -23,7 +23,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Giphy API v1](https://developers.giphy.com/docs/api/) OpenAPI Specification.
 # Giphy API provides functions to get GIFs and stickers.
-@display {label: "Giphy", iconPath: "resources/giphy.svg"}
+@display {label: "Giphy", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

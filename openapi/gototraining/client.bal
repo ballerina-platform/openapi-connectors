@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [GoToTraining API v1.0](https://developer.goto.com/GoToTrainingV1) OpenAPI specification.  
 # The GoToTraining API provides the capability to schedule training sessions and customize the trainings with panelists, polls, questions and surveys.
-@display {label: "GoTo Training", iconPath: "resources/gototraining.svg"}
+@display {label: "GoTo Training", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

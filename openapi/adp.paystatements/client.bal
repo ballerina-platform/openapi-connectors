@@ -54,7 +54,7 @@ public type ClientConfig record {|
 # The ADP Pay Statements API provides the capability to describe the details of a payment made to a payee. 
 # These details include the net and gross payment amounts, deductions, earnings, and year-to-date payroll accruals. 
 # The Pay Statements APIs can be used to retrieve the list of a specified number of pay statements for an associate or to get details for a specific statement.
-@display {label: "ADP Pay Statements", iconPath: "resources/adp.paystatements.svg"}
+@display {label: "ADP Pay Statements", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

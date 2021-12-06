@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Listen Notes API v2.0](https://www.listennotes.com/) OpenAPI specification. 
 # Simple & no-nonsense podcast search & directory API. Search all podcasts and episodes by people, places, or topics.
-@display {label: "Listen Notes", iconPath: "resources/listen.notes.svg"}
+@display {label: "Listen Notes", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

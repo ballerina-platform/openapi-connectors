@@ -28,7 +28,7 @@ public type ApiKeysConfig record {|
 # Api2Pdf is a powerful PDF generation API with no rate limits or file size constraints. 
 # Api2Pdf runs on AWS Lambda, a serverless architecture powered by Amazon to scale to millions of requests while being up to 90% cheaper than alternatives. 
 # **Supports wkhtmltopdf, Headless Chrome, LibreOffice, and PDF Merge.** You can also generate barcodes with ZXING (Zebra Crossing).
-@display {label: "Api2Pdf", iconPath: "resources/api2pdf.svg"}
+@display {label: "Api2Pdf", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

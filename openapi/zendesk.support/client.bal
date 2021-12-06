@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Zendesk Support API v2](https://developer.zendesk.com/api-reference/) OpenAPI specification.
 # Zendesk Support is a simple system for tracking, prioritizing and solving customer support tickets.
-@display {label: "Zendesk Support", iconPath: "resources/zendesk.support.svg"}
+@display {label: "Zendesk Support", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -55,7 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [eBay Metadata API v1.4.1](https://developer.ebay.com) OpenAPI specification. 
 # 'The Metadata API has operations that retrieve configuration details pertaining to the different eBay marketplaces. 
 # In addition to marketplace information, the API also has operations that get information that helps sellers list items on eBay.'
-@display {label: "eBay Metadata", iconPath: "resources/ebay.metadata.svg"} 
+@display {label: "eBay Metadata", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

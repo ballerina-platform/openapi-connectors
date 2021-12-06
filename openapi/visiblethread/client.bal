@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [VisibleThread API v1.0](https://api.visiblethread.com/example/index.html) OpenAPI specification. 
 # The VisibleThread API provides services for analyzing or searching documents and web pages.
-@display {label: "VisibleThread", iconPath: "resources/visiblethread.svg"}
+@display {label: "VisibleThread", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

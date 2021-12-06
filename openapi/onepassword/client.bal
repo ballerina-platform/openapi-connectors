@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [1Password Connect API v1.0](https://1password.com/) OpenAPI specification.
 # 1Password is the easiest way to store and use strong passwords. Log in to sites and fill forms securely with a single click.
-@display {label: "1Password", iconPath: "resources/onepassword.svg"}
+@display {label: "1Password", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

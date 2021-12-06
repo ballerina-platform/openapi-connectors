@@ -28,7 +28,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Plaid API 2020-09-14 version](https://plaid.com/docs/api/) OpenAPI specification. 
 # The Plaid REST API. Plaid provides a way for you to seamlessly link your bank accounts for over 3,000 different financial services.
-@display {label: "Plaid", iconPath: "resources/plaid.svg"}
+@display {label: "Plaid", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

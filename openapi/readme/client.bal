@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Readme API v2.0](https://docs.readme.com/reference) OpenAPI specification.  
 # The Readme API provides the capability to create product and API documentation programmatically.
-@display {label: "Readme", iconPath: "resources/readme.svg"}
+@display {label: "Readme", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

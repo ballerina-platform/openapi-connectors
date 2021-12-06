@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Karbon API v3.0](https://developers.karbonhq.com/api) OpenAPI specification.
 # Leverage the Karbon API to integrate your apps with Karbon, build custom solutions, optimize workflows and power your business.
-@display {label: "Karbon", iconPath: "resources/karbon.svg"}
+@display {label: "Karbon", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

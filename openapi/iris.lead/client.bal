@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 # Connect with the Leads API to interact with your lead data.  
 # Includes management of fields, user assignments, status changes, tasks, appointments, email, text messaging, and document attachments.
 # Create custom reports without limits using the data already housed within your CRM.
-@display {label: "IRIS Lead", iconPath: "resources/iris.lead.svg"}
+@display {label: "IRIS Lead", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

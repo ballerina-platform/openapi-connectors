@@ -22,7 +22,7 @@ import ballerina/lang.'string;
 # 'Send an SMS with verification code and a custom message for authentication purpose. 
 # It helps merchants to minimize chargebacks and fraud for various kinds of payment method, such as credit card, paypal, cod and so on. 
 # Please visit https://www.fraudlabspro.com to learn more.'
-@display {label: "FraudLabs Pro SMS Verification", iconPath: "resources/fraudlabspro.smsverification.svg"} 
+@display {label: "FraudLabs Pro SMS Verification", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

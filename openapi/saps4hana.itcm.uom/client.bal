@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # The unit of measure service allows you to load units of measure for various purposes in SAPS4HANA Intelligent Trade Claims Management.
-@display {label: "SAPS4HANA ITCM Unit of Measure", iconPath: "resources/saps4hana.itcm.uom.svg"}
+@display {label: "SAPS4HANA ITCM Unit of Measure", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

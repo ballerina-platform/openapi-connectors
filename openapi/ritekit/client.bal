@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [RitKit API v1.0](https://documenter.getpostman.com/view/2010712/SzS7Qku5?version=latest) OpenAPI specification.  
 # The RiteKit API provides the capability to perform social media marketing through hashtag suggestions, auto hashtagging, emoji suggestions, etc.
-@display {label: "RiteKit", iconPath: "resources/ritekit.svg"}
+@display {label: "RiteKit", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

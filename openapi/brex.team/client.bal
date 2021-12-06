@@ -53,7 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Brex Team API v0.1](https://developer.brex.com/openapi/team_api/) OpenAPI specification. 
 # Team API lets you manage users, departments, locations and cards.
-@display {label: "brex.team", iconPath: "resources/brex.team.svg"}
+@display {label: "brex.team", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

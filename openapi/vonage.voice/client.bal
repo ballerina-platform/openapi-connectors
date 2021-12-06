@@ -55,7 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Vonage Voice API v1.3.6](https://nexmo-api-specification.herokuapp.com/api/voice) OpenAPI specification.
 # The Voice API lets you create outbound calls, control in-progress calls and get information about historical calls. 
 # More information about the Voice API can be found at https://developer.nexmo.com/voice/voice-api/overview.
-@display {label: "Vonage Voice", iconPath: "resources/vonage.voice.svg"}
+@display {label: "Vonage Voice", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

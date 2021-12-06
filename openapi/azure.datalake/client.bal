@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Azure DataLake Storage (Gen2) API version 2019-10-31](https://azure.microsoft.com/en-us/solutions/data-lake/) OpenAPI specification. 
 # Azure Data Lake Storage provides storage for Hadoop and other big data workloads.
-@display {label: "Azure Data Lake", iconPath: "resources/azure.datalake.svg"}
+@display {label: "Azure Data Lake", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

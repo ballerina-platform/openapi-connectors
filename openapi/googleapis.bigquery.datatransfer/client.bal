@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google BigQuery Data Transfer API v2.0](https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest) OpenAPI specification.
 # The BigQuery Data Transfer API schedule queries or transfer external data from SaaS applications to Google BigQuery on a regular basis.
-@display {label: "Google BigQuery Data Transfer", iconPath: "resources/googleapis.bigquery.datatransfer.svg"}
+@display {label: "Google BigQuery Data Transfer", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

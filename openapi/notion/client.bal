@@ -58,7 +58,7 @@ public type ClientConfig record {|
 # components to take notes, add tasks, manage projects & more. Notion provides the building blocks and you can  create 
 # your own layouts and toolkit to get work done. This ballerina connector allows you to connect Notion through its 
 # [REST API](https://developers.notion.com/docs).
-@display {label: "Notion", iconPath: "resources/notion.svg"}
+@display {label: "Notion", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

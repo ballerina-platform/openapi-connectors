@@ -53,7 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Sinch Conversation API v1.0](https://www.sinch.com/) OpenAPI specification. 
 # The Conversation API endpoint uses built-in transcoding to give you the power of conversation across all supported channels and, if required, full control over channel specific features.
-@display {label: "Sinch Conversation", iconPath: "resources/sinch.conversation.svg"}
+@display {label: "Sinch Conversation", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

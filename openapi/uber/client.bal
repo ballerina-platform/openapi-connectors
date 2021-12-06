@@ -53,7 +53,7 @@ public type ClientConfig record {|
 |};
 
 # Move your app forward with the Uber API
-@display {label: "Uber", iconPath: "resources/uber.svg"}
+@display {label: "Uber", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

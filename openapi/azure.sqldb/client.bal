@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [Azure SQL DB API v1.0](https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview)  OpenAPI specification.
 # This Azure SQL Database management API provides a RESTful set of web APIs that interact with Azure SQL Database services to manage your databases. The API enables users to create, retrieve, update, and delete databases, servers, and other entities.
-@display {label: "Azure SQL DB", iconPath: "resources/azure.sqldb.svg"}
+@display {label: "Azure SQL DB", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # Helpdesk tickets are organized by ticket types.
 # Ticket types have properties such as assigned users, expected time to completion (SLA), and visibility to help you segment tickets based on job descriptions.
 # Get detailed helpdesk ticket information, perform updates, and manage attached files with ease by using the Helpdesk API.
-@display {label: "IRIS Helpdesk", iconPath: "resources/iris.helpdesk.svg"}
+@display {label: "IRIS Helpdesk", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

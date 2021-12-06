@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["Content & Files/Video & Audio", "Cost/Freemium"]
 org = "ballerinax"
 name = "listen.notes"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.0"
 authors = ["Ballerina"]

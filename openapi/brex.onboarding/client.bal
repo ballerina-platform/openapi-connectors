@@ -53,7 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Brex Onboarding API v0.1](https://developer.brex.com/openapi/onboarding_api/) OpenAPI specification. 
 # Onboarding APIs allows partners to refer their customers to Brex to streamline the process of creating new accounts  for these customers. By submitting information for referrals, it removes the need for customers to enter in this information again.
-@display {label: "brex.onboarding", iconPath: "resources/brex.onboarding.svg"}
+@display {label: "brex.onboarding", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

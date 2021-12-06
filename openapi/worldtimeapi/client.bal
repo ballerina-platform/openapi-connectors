@@ -21,7 +21,7 @@ import ballerina/http;
 # for a given timezone in both unixtime and ISO8601 format. The worldTimeAPI connector supports to get the current time 
 # based on a request with a timezone and additional information including whether that timezone is currently in Daylight 
 # Savings Time, when DST starts and ends, the UTC offset, etc.
-@display {label: "World Time API", iconPath: "resources/worldtimeapi.svg"}
+@display {label: "World Time API", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

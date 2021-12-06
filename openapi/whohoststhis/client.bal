@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Who Hosts This API v0.0.1](https://www.who-hosts-this.com/Documentation) OpenAPI specification.
 # The Who Hosts This API provides services to get discover the hosting provider for any web site.
-@display {label: "Who Hosts This", iconPath: "resources/whohoststhis.svg"}
+@display {label: "Who Hosts This", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

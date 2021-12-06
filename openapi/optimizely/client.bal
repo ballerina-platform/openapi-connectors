@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # Connects to [Optimizely API v2](https://www.optimizely.com/) from Ballerina
 # Optimizely Agent is a stand-alone, open-source microservice that provides major benefits over using Optimizely SDKs in certain use cases. Its REST API offers consolidated and simplified endpoints for accessing all the functionality of Optimizely Full Stack SDKs. Use this API the control experiments (such as a feature tests).
-@display {label: "Optimizely", iconPath: "resources/optimizely.svg"}
+@display {label: "Optimizely", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

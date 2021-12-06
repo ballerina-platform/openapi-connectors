@@ -39,7 +39,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Apideck Lead API v5.3.0](https://www.apideck.com/lead-api) OpenAPI specification.
 # You can use this API to access all Lead API endpoints.
-@display {label: "Apideck Lead", iconPath: "resources/apideck.lead.svg"}
+@display {label: "Apideck Lead", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

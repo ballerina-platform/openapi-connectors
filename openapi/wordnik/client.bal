@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Wordnik API v4.0](https://developer.wordnik.com/docs) OpenAPI specification.
 # Wordnik is the worlds biggest online English dictionary, by number of words.
-@display {label: "Wordnik", iconPath: "resources/wordnik.svg"}
+@display {label: "Wordnik", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

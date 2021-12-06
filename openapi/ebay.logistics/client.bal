@@ -60,7 +60,7 @@ public type ClientConfig record {|
 # returned totalShippingCost value. This action also generates a shipping label that you can use to ship the package.  The total 
 # cost of the shipment is incurred when the package is shipped using the supplied shipping label. Sellers must set up a payment 
 # method via their eBay account before they can use the methods in this API to create a shipment and the associated shipping label.
-@display {label: "eBay Logistics", iconPath: "resources/ebay.logistics.svg"} 
+@display {label: "eBay Logistics", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

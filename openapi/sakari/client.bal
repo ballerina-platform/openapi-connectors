@@ -55,7 +55,7 @@ public type ClientConfig record {|
 # This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification.
 # Sakari provides an advanced platform to drive large scale customized SMS communication
 # To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
-@display {label: "Sakari", iconPath: "resources/sakari.svg"}
+@display {label: "Sakari", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

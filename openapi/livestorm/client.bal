@@ -27,7 +27,7 @@ public type ApiKeysConfig record {|
 # Livestorm is a browser based online web conferencing software used to share real-time live streams. 
 # It can be used to power remote live meetings, product demos, sales webinars, online lessons, onboarding sessions, more.
 # In addition, all request and response bodies, including errors, are encoded in JSON format.
-@display {label: "Livestorm", iconPath: "resources/livestorm.svg"}
+@display {label: "Livestorm", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

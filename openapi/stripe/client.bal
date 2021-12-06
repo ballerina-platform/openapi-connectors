@@ -53,7 +53,7 @@ public type ClientConfig record {|
 # This is a generated connector for [Stripe API v1](https://stripe.com/docs/api) OpenAPI Specification.
 # Stripe offers payment processing software and application programming interfaces for e-commerce websites and mobile applications.
 # The Stripe API is organized around REST. Our API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
-@display {label: "Stripe", iconPath: "resources/stripe.svg"}
+@display {label: "Stripe", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

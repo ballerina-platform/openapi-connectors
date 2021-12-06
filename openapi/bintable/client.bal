@@ -21,7 +21,7 @@ import ballerina/lang.'string;
 # This is a generated connector from [BINTable API v1](https://bintable.com/get-api) OpenAPI Specification. 
 # BIN lookup API, the free api service from bintable.com to lookup card information using it's BIN. 
 # The service maintains updated database based on the comunity and other third party services to make sure all BINs in the database are accurate and up to date.
-@display {label: "BINTable", iconPath: "resources/bintable.svg"}
+@display {label: "BINTable", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

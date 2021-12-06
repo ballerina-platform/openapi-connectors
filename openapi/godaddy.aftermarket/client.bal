@@ -23,7 +23,7 @@ public type ApiKeysConfig record {|
 |};
 
 # This is a generated connector for [GoDaddy Aftermarket API v1](https://developer.godaddy.com/doc/endpoint/aftermarket) OpenAPI specification. The GoDaddy Aftermarket API provides capability to access GoDaddy operations related to GoDaddy Auctions.
-@display {label: "GoDaddy Aftermarket", iconPath: "resources/godaddy.aftermarket.svg"}
+@display {label: "GoDaddy Aftermarket", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

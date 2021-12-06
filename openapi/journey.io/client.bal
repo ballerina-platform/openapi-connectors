@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Journey.io API v1.0.0](https://www.journey.io/) OpenAPI specification.
 # The journy.io API is organized around REST. Our API has predictable resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
-@display {label: "journey.io", iconPath: "resources/journey.io.svg"}
+@display {label: "journey.io", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

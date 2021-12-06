@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Google Tasks API v1](https://developers.google.com/tasks/get_started) OpenAPI specification.
 # The Google Tasks API lets you manage your tasks and task lists.
-@display {label: "Google Tasks", iconPath: "resources/googleapis.tasks.svg"}
+@display {label: "Google Tasks", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

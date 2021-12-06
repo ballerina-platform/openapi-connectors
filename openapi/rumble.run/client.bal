@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Rumble API v1](https://www.rumble.run/docs/) OpenAPI specification.
 # The Rumble API provides the capability to scan your IT and OT environments to provide a foundation for your asset inventory, attack surface reduction, and incident response programs.
-@display {label: "Rumble Run", iconPath: "resources/rumble.run.svg"}
+@display {label: "Rumble Run", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

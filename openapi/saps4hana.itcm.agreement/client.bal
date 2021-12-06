@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # In SAP Intelligent Trade Claims Management, agreements are used as contractual commitments or obligations to calculate accruals and promotion eligibility.
-@display {label: "SAPS4HANA ITCM Agreement", iconPath: "resources/saps4hana.itcm.agreement.svg"}
+@display {label: "SAPS4HANA ITCM Agreement", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

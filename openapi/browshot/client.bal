@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Browshot API v1.17.0](https://browshot.com/api/documentation) OpenAPI specification.
 # The Browshot API provides services to get screenshots of any website in real time.
-@display {label: "Browshot", iconPath: "resources/browshot.svg"}
+@display {label: "Browshot", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

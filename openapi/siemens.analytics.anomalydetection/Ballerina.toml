@@ -1,6 +1,7 @@
 [package]
 org = "ballerinax"
 name = "siemens.analytics.anomalydetection"
+icon = "icon.png"
 version = "1.0.0"
 distribution = "slbeta3"
 license = ["Apache-2.0"]

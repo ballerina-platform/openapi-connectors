@@ -20,7 +20,7 @@ import ballerina/lang.'string;
 
 # This is a generated connector for [ODWeather API v1.0](https://api.oceandrivers.com/) OpenAPI specification.
 # The ODWeather API provides the capability to access the real time and forecast ocean information.
-@display {label: "ODWeather", iconPath: "resources/odweather.svg"}
+@display {label: "ODWeather", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

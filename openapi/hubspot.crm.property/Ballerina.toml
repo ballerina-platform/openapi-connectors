@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["Sales & CRM/Customer Relationship Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "hubspot.crm.property"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.1"
 authors = ["Ballerina"]

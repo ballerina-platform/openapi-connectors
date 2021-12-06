@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [ProdPad API v1.0](https://www.prodpad.com/) OpenAPI specification. 
 # ProdPad is product management software that helps product managers develop product strategy. Easily manage teams, customers and roadmaps.  
-@display {label: "ProdPad", iconPath: "resources/prodpad.svg"}
+@display {label: "ProdPad", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Mailscript](https://docs.mailscript.com/#api) OpenAPI specification.
 # Mailscript API provides the capability to manage emails.
-@display {label: "Mailscript", iconPath: "resources/mailscript.svg"}
+@display {label: "Mailscript", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

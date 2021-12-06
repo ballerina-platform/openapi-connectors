@@ -28,7 +28,7 @@ public type ApiKeysConfig record {|
 # Learn about API updates and new endpoints by subscribing to the [api.updated](https://iriscrm.com/api/#/paths/~1subscriptions~1sample~1api.updated/get) event.
 # Receive alerts in real-time including lead status changes, e-signature document actions, and helpdesk ticket changes.
 # Subscription API responses provide you with detailed information on a silver platter to avoid sorting through data unnecessarily.
-@display {label: "IRIS Subscriptions", iconPath: "resources/iris.subscriptions.svg"}
+@display {label: "IRIS Subscriptions", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

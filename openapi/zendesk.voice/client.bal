@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Zendesk Talk API v2](https://developer.zendesk.com/api-reference/voice/talk-api/introduction/) OpenAPI specification.
 # Zendesk Talk API in conjunction with the Support API to work with Talk agents, groups, and tickets.
-@display {label: "Zendesk Voice", iconPath: "resources/zendesk.voice.svg"}
+@display {label: "Zendesk Voice", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

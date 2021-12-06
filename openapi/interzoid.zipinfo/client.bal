@@ -25,7 +25,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Interzoid Zip Code Detailed Info API v1.0.0] (https://www.interzoid.com/services/getzipcodeinfo) OpenAPI specification.
 # The Interzoid Zip Code Detailed Info connector module provides detailed information for a given zip code, including city, state, latitude, longitude, area size, and various population demographics.
 # For additional help getting started with the API, visit [Interzoid Zip Code Detailed Info API] (https://www.interzoid.com/services/getzipcodeinfo).
-@display {label: "Interzoid Zip Code Detailed Info", iconPath: "resources/interzoid.zipinfo.svg"}
+@display {label: "Interzoid Zip Code Detailed Info", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

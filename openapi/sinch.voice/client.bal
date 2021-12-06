@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Sinch Voice API v1.0.0](https://www.sinch.com/) OpenAPI specification. 
 # The Calling API exposes calling- and conference-related functionality in the Sinch Voice Platform.
-@display {label: "Sinch Voice", iconPath: "resources/sinch.voice.svg"}
+@display {label: "Sinch Voice", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

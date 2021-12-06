@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [Siemens Analytics Anomaly Detection API](https://developer.mindsphere.io/apis/analytics-anomalydetection/api-anomalydetection-overview.html) OpenAPI Specification.
 # The Anomaly Detection Service aims to automatically detect unexpected behaviour of processes and assets using time series data and provides API to train model and use it for anomaly detection. In the Interactive mode Analytic Model Management service is used as model storage. Model expiration date is set to 14 days.
-@display {label: "Siemens Analytics Anomaly Detection", iconPath: "resources/siemens.analytics.anomalydetection.svg"}
+@display {label: "Siemens Analytics Anomaly Detection", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

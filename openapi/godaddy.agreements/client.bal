@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [GoDaddy Agreements API v1](https://developer.godaddy.com/doc/endpoint/agreements) OpenAPI specification.
 # The GoDaddy Agreements API provides capability to access GoDaddy operations related to agreements.
-@display {label: "GoDaddy Agreements", iconPath: "resources/godaddy.agreements.svg"}
+@display {label: "GoDaddy Agreements", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

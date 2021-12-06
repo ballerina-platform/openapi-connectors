@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Icons8 API v3.0](https://developers.icons8.com/docs/getting-started) OpenAPI specification.  
 # The Icons8 API provides the capability to search and obtain icons.
-@display {label: "Icons8", iconPath: "resources/icons8.svg"}
+@display {label: "Icons8", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

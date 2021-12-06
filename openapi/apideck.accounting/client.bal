@@ -39,7 +39,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Apideck Accounting API v5.3.0](https://docs.apideck.com/apis/accounting/reference) OpenAPI specification.
 # You can use this API to access all Accounting API endpoints.
-@display {label: "Apideck Accounting", iconPath: "resources/apideck.accounting.svg"}
+@display {label: "Apideck Accounting", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

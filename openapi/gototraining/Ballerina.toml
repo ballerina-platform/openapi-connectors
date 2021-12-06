@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["Communication/Video Conferncing", "Cost/Paid"]
 org = "ballerinax"
 name = "gototraining"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.1"
 authors = ["Ballerina"]

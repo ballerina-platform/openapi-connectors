@@ -38,7 +38,7 @@ public type ApiKeysConfig record {|
 # For a real-world example of Forem in action, check out [DEV](https://www.dev.to).
 # All endpoints that don't require authentication are CORS enabled.
 # Dates and date times, unless otherwise specified, must be inthe [RFC 3339](https://tools.ietf.org/html/rfc3339) format.
-@display {label: "dev.to", iconPath: "resources/dev.to.svg"}
+@display {label: "dev.to", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

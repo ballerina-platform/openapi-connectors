@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 # The Shortcut API bring the flow to your software team's workflow. Plan, collaborate, build, and measure success with Shortcut.
 # The Shortcut API provides a greater amount of control over your organization’s Shortcut data than what is possible using the Shortcut web app. 
 # You can use this API to build custom integrations or automate even more of your organization’s workflow.
-@display {label: "Shortcut", iconPath: "resources/shortcut.svg"}
+@display {label: "Shortcut", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

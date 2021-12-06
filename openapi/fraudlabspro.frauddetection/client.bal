@@ -22,7 +22,7 @@ import ballerina/lang.'string;
 # Online payment fraud detection service. It helps merchants to minimize chargebacks and therefore maximize the revenue. 
 # It can be used to detect fraud for various kinds of payment method, such as credit card, paypal, cod and so on. 
 # Please visit https://www.fraudlabspro.com to learn more.
-@display {label: "FraudLabs Pro Fraud Detection", iconPath: "resources/fraudlabspro.frauddetection.svg"} 
+@display {label: "FraudLabs Pro Fraud Detection", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Power BI API v1.0](https://powerbi.microsoft.com/en-us/) OpenAPI specification.
 # Power BI REST API provides service endpoints for embedding, administration, and user resources.
-@display {label: "Power BI", iconPath: "resources/power.bi.svg"}
+@display {label: "Power BI", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

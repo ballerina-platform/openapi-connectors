@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [Symanto Psycholinguistic Text Analytics version 1.5.0](https://api.symanto.net/docs) OpenAPI Specification.
 # Symanto psycholinguistic text analytics API provides capability to access operations related to the deepest understanding of people through psychology & AI
-@display {label: "Symanto Text Analytics", iconPath: "resources/symantoTextAnalytics.svg"}
+@display {label: "Symanto Text Analytics", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

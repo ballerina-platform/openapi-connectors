@@ -67,7 +67,7 @@ public type ClientConfig record {|
 # * [SDKs](https://flat.io/developers/docs/api/sdks.html)
 # * [Rate Limits](https://flat.io/developers/docs/api/rate-limits.html)
 # * [Changelog](https://flat.io/developers/docs/api/changelog.html)
-@display {label: "Flat API", iconPath: "resources/flatapi.svg"} 
+@display {label: "Flat API", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

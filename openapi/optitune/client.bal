@@ -53,7 +53,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [OptiTune API v1](https://manage.opti-tune.com/help/site/articles/api/default.html) OpenAPI specification.
 # A complete API for interacting with all objects on an OptiTune Management Server
-@display {label: "OptiTune", iconPath: "resources/optitune.svg"}
+@display {label: "OptiTune", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

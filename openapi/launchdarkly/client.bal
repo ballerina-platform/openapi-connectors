@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [LaunchDarkly API v2.0](https://apidocs.launchdarkly.com/) OpenAPI specification.
 # LaunchDarkly is a feature management platform enables teams to deploy code at any time, even if a feature isn't ready to be released to all users.
-@display {label: "LaunchDarkly", iconPath: "resources/launchdarkly.svg"}
+@display {label: "LaunchDarkly", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

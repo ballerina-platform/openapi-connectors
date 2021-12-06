@@ -53,7 +53,7 @@ public type ClientConfig record {|
 |};
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
 # All HubSpot objects store data in default and custom properties. These endpoints provide access to read and modify object properties in HubSpot.
-@display {label: "HubSpot CRM Property", iconPath: "resources/hubspot.crm.property.svg"}
+@display {label: "HubSpot CRM Property", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

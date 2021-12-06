@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["IT Operations/Cloud Services", "Cost/Freemium"]
 org = "ballerinax"
 name = "interzoid.globalnumberinfo"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.1"
 authors = ["Ballerina"]

@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [Automata API v1.0.1](https://byautomata.io/api/) OpenAPI specification.
 # The Automata API provides the capability to identify the market intelligence.
-@display {label: "Automata", iconPath: "resources/automata.svg"}
+@display {label: "Automata", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

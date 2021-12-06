@@ -3,6 +3,7 @@ license = ["Apache-2.0"]
 keywords = ["Website & App Building/Website Builders", "Cost/Freemium"]
 org = "ballerinax"
 name = "wordpress"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.1"
 authors = ["Ballerina"]

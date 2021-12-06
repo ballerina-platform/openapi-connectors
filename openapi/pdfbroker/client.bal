@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector from [PdfBroker.io API v1](https://www.pdfbroker.io/docs) OpenAPI Specification.
 # PdfBroker.io is an api for creating pdf files from Xsl-Fo or Html and other useful pdf utilities.
-@display {label: "PdfBroker", iconPath: "resources/pdfbroker.svg"}
+@display {label: "PdfBroker", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

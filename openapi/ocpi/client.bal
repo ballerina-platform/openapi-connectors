@@ -23,7 +23,7 @@ import ballerina/lang.'string;
 # e-Mobility Service Providers. It supports authorization, charge point information exchange (including live status updates 
 # and transaction events), charge detail record exchange, remote charge point commands and the exchange of  smart-charging 
 # related information between parties.
-@display {label: "OCPI", iconPath: "resources/ocpi.svg"}
+@display {label: "OCPI", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

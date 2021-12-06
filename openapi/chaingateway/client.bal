@@ -25,7 +25,7 @@ public type ApiKeysConfig record {|
 # This is a generated connector for [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.
 # This is the REST API to build the bridge between Ethereum and the real world. 
 # All of the integrations communicates with chaingateway.io through this API.
-@display {label: "Chaingateway", iconPath: "resources/chaingateway.svg"}
+@display {label: "Chaingateway", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

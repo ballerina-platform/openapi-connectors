@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [App Store Connect API v1.4.1](https://developer.apple.com/documentation/appstoreconnectapi) OpenAPI Specification.
 # The App Store Connect API enables the automation of actions you take in App Store Connect. 
-@display {label: "Apple App Store", iconPath: "resources/apple.appstore.svg"}
+@display {label: "Apple App Store", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

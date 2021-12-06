@@ -24,7 +24,7 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector from [fungenerators UUID API v1.5](https://fungenerators.com/api/uuid/) OpenAPI Specification.
 # A full featured, REST based UUID generator with json/xml/jsonp result support. You can try them out right here. [Click here to subscribe](http://fungenerators.com/api/uuid/)
-@display {label: "Fun Generators UUID", iconPath: "resources/fungenerators.uuid.svg"}
+@display {label: "Fun Generators UUID", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

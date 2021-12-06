@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [Clever Data API v1.2](https://dev.clever.com/v1.2/docs/secure-sync) OpenAPI specification.
 # Clever Data API provides the capability to retrieve information from Clever data store.
-@display {label: "Clever Data", iconPath: "resources/clever.data.svg"}
+@display {label: "Clever Data", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

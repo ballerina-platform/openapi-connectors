@@ -54,7 +54,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [eBay Inventory API v1.13.0](https://developer.ebay.com/api-docs/sell/inventory/overview.html) OpenAPI Specification.
 # The Inventory API is used to create and manage inventory, and then to publish and manage this inventory on an eBay marketplace. There are also methods in this API that will convert eligible, active eBay listings into the Inventory API model.
-@display {label: "eBay Inventory", iconPath: "resources/ebay.inventory.svg"} 
+@display {label: "eBay Inventory", iconPath: "icon.png"} 
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.

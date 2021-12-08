@@ -1,0 +1,9 @@
+[package]
+org = "ballerinax"
+name = "zuora.collection"
+version = "1.0.0"
+icon = "icon.png"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["Finance/Payment","Cost/Paid"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

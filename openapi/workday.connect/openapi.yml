@@ -1,0 +1,964 @@
+openapi: 3.0.1
+info:
+  title: connect
+  description: >-
+    This is a generated connector for [WorkDay Connect Service REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    
+    The WorkDay connect service enables applications to access REST service for Multichannel Collaboration (MCC) services.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+ 
+    Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
+  x-ballerina-display:
+    label: Workday Connect
+    iconPath: icon.png
+  version: v2
+tags:
+  - name: messageTemplates
+    description: Get Message Templates
+  - name: notificationTypes
+    description: Get Notification Types
+  - name: sendMessage
+    description: sendMessage
+paths:
+  /messageTemplates/{id}:
+    get:
+      tags:
+        - messageTemplates
+      summary: |-
+        Secured by: Set Up: Message Templates
+
+        Scope: Learning Coredescription
+      operationId: getMessageTemplateByID
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/MessageTemplateDetailRef
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    put:
+      tags:
+        - messageTemplates
+      summary: |-
+        Secured by: Set Up: Message Templates
+
+        Scope: Learning Core
+      operationId: createMessageTemplateByID
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/MessageTemplateDetailRef
+        required: true
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data. Updating resource.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/MessageTemplateDetailRef
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            You must enter a Message to continue.
+
+
+            A Message Template with the same name already exists. Please enter a
+            new Message Template name.
+
+
+            The field template name is required and must have a value.
+
+
+            Notification Type is required and must have a value.
+
+
+            You must enter a Subject to continue.
+
+
+            You must enter a Body to continue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: messageTemplateDetail
+    patch:
+      tags:
+        - messageTemplates
+      description: |-
+        Secured by: Set Up: Message Templates
+
+        Scope: Learning Core
+      operationId: updateMessageTemplateByID
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/MessageTemplateDetailRef
+        required: true
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data. Updating resource.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/MessageTemplateDetailRef
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            A Message Template with the same name already exists. Please enter a
+            new Message Template name.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: messageTemplateDetail
+  /notificationTypes:
+    get:
+      tags:
+        - notificationTypes
+      description: |-
+        Secured by: Administer Communications, Set Up: Message Templates
+
+        Scope: Learning Core
+      operationId: getNotificationTypes
+      parameters:
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/NotificationCategoryDetail
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /sendMessage:
+    post:
+      tags:
+        - sendMessage
+      description: 'Secured by: Administer Communications'
+      operationId: sendMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/MessageDetail
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/MessageDetail
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            Notification Type must match the Message Template's Notification
+            Type.
+
+
+            Message Template cannot be provided if Email or Push details is
+            provided.
+
+
+            Notification Type is required and must have a value.
+
+
+            Submit only valid types.
+
+
+            Submit Workday IDs that are of the same contact reference type.
+
+
+            At least one Recipient is required.
+
+
+            Submit Worker type Workday IDs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: messageDetail
+  /notificationTypes/{id}:
+    get:
+      tags:
+        - notificationTypes
+      description: |-
+        Secured by: Administer Communications, Set Up: Message Templates
+
+        Scope: Learning Core
+      operationId: getNotificationTypeByID
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/NotificationCategoryDetail
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /messageTemplates:
+    get:
+      tags:
+        - messageTemplates
+      description: |-
+        Secured by: Set Up: Message Templates
+
+        Scope: Learning Core
+      operationId: getMessageTemplate
+      parameters:
+        - name: inactive
+          in: query
+          description: Indicates template is active or has been disabled.
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: name
+          in: query
+          description: Message Template Name
+          schema:
+            type: string
+        - name: notificationType
+          in: query
+          description: Notification Type indicates where the template can be used.
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/MessageTemplateDetailRef
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    post:
+      tags:
+        - messageTemplates
+      description: |-
+        Secured by: Set Up: Message Templates
+
+        Scope: Learning Core
+      operationId: createMessageTemplate
+      parameters:
+        - name: inactive
+          in: query
+          description: Indicates template is active or has been disabled.
+          schema:
+            type: boolean
+        - name: name
+          in: query
+          description: Message Template Name
+          schema:
+            type: string
+        - name: notificationType
+          in: query
+          description: Notification Type indicates where the template can be used.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/MessageTemplateDetailRef
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/MessageTemplateDetailRef
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            A Message Template with the same name already exists. Please enter a
+            new Message Template name.
+
+
+            You must enter a Message to continue.
+
+
+            The field template name is required and must have a value.
+
+
+            Notification Type is required and must have a value.
+
+
+            You must enter a Body to continue.
+
+
+            You must enter a Subject to continue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: messageTemplateDetail
+components:
+  schemas:
+    INSTANCE_MODEL_REFERENCE:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+          type: string
+          description: wid / id / reference id
+        descriptor:
+          type: string
+          description: A description of the instance
+          readOnly: true
+        href:
+          type: string
+          description: A link to the instance
+          readOnly: true
+    ERROR_MODEL_REFERENCE:
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          type: string
+          description: A description of the error
+    VALIDATION_ERROR_MODEL_REFERENCE:
+      allOf:
+        - $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+        - type: object
+          properties:
+            errors:
+              type: array
+              description: An array of validation errors
+              items:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    MULTIPLE_INSTANCE_MODEL_REFERENCE:
+      type: object
+      properties:
+        total:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+    ParentCategory:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    NotificationCategoryDetail:
+      allOf:
+        - type: object
+          properties:
+            parentCategory:
+              $ref: >-
+                #/components/schemas/ParentCategory
+            name:
+              type: string
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            referenceID:
+              type: string
+              description: >-
+                The Reference ID to use for lookups within our Workday Web
+                Services. For ~supervisory organizations~, this is also the
+                'Organization ID'
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    SenderOverride:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    CommID:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    EmailDetail:
+      allOf:
+        - $ref: '#/components/schemas/EmailDetailRef'
+        - type: object
+    Recipients:
+      allOf:
+        - $ref: >-
+            #/components/schemas/RecipientsDetail
+        - type: object
+    MessageTemplate:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    PushDetail:
+      allOf:
+        - $ref: '#/components/schemas/PushDetailRef'
+        - type: object
+    MessageDetail:
+      allOf:
+        - type: object
+          properties:
+            senderOverride:
+              $ref: >-
+                #/components/schemas/SenderOverride
+            commID:
+              $ref: '#/components/schemas/CommID'
+            emailDetail:
+              $ref: >-
+                #/components/schemas/EmailDetail
+            recipients:
+              $ref: '#/components/schemas/Recipients'
+            messageTemplate:
+              $ref: >-
+                #/components/schemas/MessageTemplate
+            notificationType:
+              $ref: >-
+                #/components/schemas/NotificationType
+            pushDetail:
+              $ref: '#/components/schemas/PushDetail'
+    CreatedBy:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    NotificationType:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    LastUpdatedBy:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    MessageTemplateDetailRef:
+      allOf:
+        - required:
+            - name
+            - notificationType
+          type: object
+          properties:
+            createdBy:
+              $ref: '#/components/schemas/CreatedBy'
+            emailDetail:
+              $ref: >-
+                #/components/schemas/EmailDetail
+            lastUpdated:
+              type: string
+              format: date
+              x-workday-type: Date
+            pushDetail:
+              $ref: '#/components/schemas/PushDetail'
+            usageCount:
+              type: integer
+              description: Count of instances using this Message Template
+              example: 158271606
+              x-workday-type: Numeric
+            createdOn:
+              type: string
+              description: Gives the date that the instance was originally created.
+              format: date
+              x-workday-type: Date
+            notificationType:
+              $ref: >-
+                #/components/schemas/NotificationType
+            name:
+              type: string
+              description: Message Template Name
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            lastUpdatedBy:
+              $ref: >-
+                #/components/schemas/LastUpdatedBy
+            referenceID:
+              type: string
+              description: >-
+                The Reference ID to use for lookups within our Workday Web
+                Services. For ~supervisory organizations~, this is also the
+                'Organization ID'
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            inactive:
+              type: boolean
+              description: Indicates template is active or has been disabled.
+              example: true
+              x-workday-type: Boolean
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    PushDetailRef:
+      allOf:
+        - required:
+            - message
+          type: object
+          properties:
+            redirectURL:
+              type: string
+              description: >-
+                The URL to launch the appropriate mobile app upon
+                acknowledgement.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            message:
+              type: string
+              description: Message content of a push notification.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Rich Text
+            id:
+              type: string
+              description: Id of the instance
+    EmailDetailRef:
+      allOf:
+        - required:
+            - body
+            - subject
+          type: object
+          properties:
+            name:
+              type: string
+              description: Email Configuration Data container for REST API.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            body:
+              type: string
+              description: Message content of the email.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Rich Text
+            subject:
+              type: string
+              description: Email subject line.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Rich Text
+            replyTo:
+              type: string
+              description: Reply To
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+    RecipientsDetail:
+      allOf:
+        - type: object
+          properties:
+            contacts:
+              type: array
+              description: >-
+                Recipients for the Send Message.  This CRF supports any instance
+                of type superclass Workday Connect Subscriber, 1$17306.
+              items:
+                $ref: >-
+                  #/components/schemas/ConnectSubscriberRepresentation
+              x-workday-type: Multi-instance
+    ConnectSubscriberRepresentation:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://tenantauthorizationhostname
+          scopes: {}

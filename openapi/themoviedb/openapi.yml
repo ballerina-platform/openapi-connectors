@@ -11,7 +11,7 @@ info:
   version: "3"
   x-ballerina-display:
     label: The Movie Database (TMDB)
-    iconPath: "resources/themoviedb.svg"
+    iconPath: "icon.png"
 servers:
 - url: https://api.themoviedb.org/3
 paths:

@@ -13,7 +13,7 @@ info:
     Create a [Apptigent account](https://portal.apptigent.com/user/register) and obtain tokens by following [this guide](https://portal.apptigent.com/start).
   x-ballerina-display:
     label: PowerTools Developer Weather
-    iconPath: "resources/powertoolsdeveloperweather.svg"
+    iconPath: "icon.png"
   contact:
     name: Customer Support
     url: https://www.apptigent.com/help/

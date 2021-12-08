@@ -11,7 +11,7 @@ info:
     Contact support@visiblethread.com to request an API key.
   x-ballerina-display:
     label: VisibleThread
-    iconPath: "resources/visiblethread.svg"
+    iconPath: "icon.png"
   version: "1.0"
 servers:
 - url: https://api.visiblethread.com/api/v1

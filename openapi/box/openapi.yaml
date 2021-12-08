@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   x-ballerina-display:
     label: Box
-    iconPath: "resources/box.svg"
+    iconPath: "icon.png"
   title: Box Platform API
   description: >
     This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification.

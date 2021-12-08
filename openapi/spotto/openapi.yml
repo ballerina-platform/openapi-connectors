@@ -14,7 +14,7 @@ info:
     Create a [Spotto account](https://www.spotto.io/developers) and obtain tokens by following [this guide](https://www.spotto.io/developers/using-the-spotto-api).
   x-ballerina-display:
     label: Spotto
-    iconPath: "resources/spotto.svg"
+    iconPath: "icon.png"
   version: 1.0.0
   x-logo:
     url: https://uploads-ssl.webflow.com/5e264918496ea05957137f62/5f39f489fb8e3e51d7d3cb23_brand%20combo%20black.svg

@@ -12,7 +12,7 @@ info:
     Create an [Azure account](https://azure.microsoft.com/en-us/) and obtain tokens by following [this guide](https://docs.microsoft.com/en-us/power-bi/developer/embedded/register-app?tabs=manual%2CAzure).
   x-ballerina-display:
     label: Power BI
-    iconPath: "resources/power.bi.svg" 
+    iconPath: "icon.png" 
 servers:
   - url: https://api.powerbi.com/v1.0/myorg/
 tags: []

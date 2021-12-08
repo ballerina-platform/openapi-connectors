@@ -12,7 +12,7 @@ info:
     Create a [Brex account](https://www.brex.com/) and obtain tokens by following [this guide](https://developer.brex.com/docs/authentication/).
   x-ballerina-display:
     label: brex.onboarding 
-    iconPath: "resources/brex.onboarding.svg"
+    iconPath: "icon.png"
   contact:
     name: Admin
     url: https://brex.com

@@ -22,7 +22,7 @@ info:
 
   x-ballerina-display:
     label: EarthRef FIESTA
-    iconPath: "resources/earthreffiesta.svg"
+    iconPath: "icon.png"
     
   contact:
     email: webmaster@earthref.org

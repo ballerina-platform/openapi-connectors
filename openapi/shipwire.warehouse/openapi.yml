@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Shipwire Warehouse
-    iconPath: "resources/shipwire.warehouse.svg"
+    iconPath: "icon.png"
   title: Shipwire Warehouses API
   description: |
     This is a generated connector for [Shipwire Warehouses API v3.0](https://www.shipwire.com/developers/warehouse/) OpenAPI specification.

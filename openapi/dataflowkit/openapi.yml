@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Dataflow Kit
-    iconPath: "resources/dataflowkit.svg"
+    iconPath: "icon.png"
   contact:
     url: https://dataflowkit.com/
   description: |

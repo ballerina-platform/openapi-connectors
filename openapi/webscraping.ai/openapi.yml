@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   x-ballerina-display:
     label: WebScraping.AI
-    iconPath: "resources/webscraping.ai.svg"
+    iconPath: "icon.png"
   title: WebScraping.AI
   contact:
     name: WebScraping.AI Support

@@ -21,7 +21,7 @@ info:
     Create a [Bitly account](https://dev.bitly.com/) and obtain tokens by following [this guide](https://dev.bitly.com/docs/getting-started/introduction).
   x-ballerina-display:
     label: Bitly
-    iconPath: "resources/bitly.svg"
+    iconPath: "icon.png"
 paths:
   /groups/{group_guid}/referring_networks:
     get:

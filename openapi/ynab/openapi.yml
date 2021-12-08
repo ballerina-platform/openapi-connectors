@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: YNAB
-    iconPath: "resources/ynab.svg"
+    iconPath: "icon.png"
   title: YNAB API Endpoints
   description: |
     This is a generated connector for [YNAB API v1.0.0](https://api.youneedabudget.com) OpenAPI specification.

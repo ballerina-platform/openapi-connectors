@@ -12,7 +12,7 @@ info:
     Create a [Sinch account](https://www.sinch.com/) and obtain tokens by following [this guide](https://developers.sinch.com/docs/conversation/api-reference#authentication).
   x-ballerina-display:
     label: Sinch Conversation
-    iconPath: "resources/sinch.conversation.svg"
+    iconPath: "icon.png"
   title: Conversation API
   version: "1.0"
   license:

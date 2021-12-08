@@ -12,7 +12,7 @@ info:
     Create an [Symanto account](https://www.symanto.com/) and obtain OAuth tokens following [this guide](https://symanto-research.github.io/symanto-docs/#authentication)
   x-ballerina-display:
     label: Symanto Text Analytics
-    iconPath: "resources/symantoTextAnalytics.svg"
+    iconPath: "icon.png"
   termsOfService: https://developers.symanto.net/terms-of-service
   contact:
     name: Symanto Support

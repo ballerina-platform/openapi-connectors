@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Vonage Number Insight
-    iconPath: "resources/vonage.numberinsight.svg"
+    iconPath: "icon.png"
   title: Number Insight API
   version: 1.0.10
   description: >

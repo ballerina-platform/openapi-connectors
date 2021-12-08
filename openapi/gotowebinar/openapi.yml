@@ -9,7 +9,7 @@ info:
     Create a [LogMeIn account](https://accounts.logme.in/registration.aspx) and obtain tokens by following [this guide](https://developer.goto.com/guides/HowTos/02_HOW_createClient/).
   x-ballerina-display:
     label: GoTo Webinar
-    iconPath: "resources/gotowebinar.svg"
+    iconPath: "icon.png"
   version: 2.0.0
 tags:
   - name: Webinars

@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: HubSpot CRM Quote
-    iconPath: "resources/hubspot.crm.quote.svg"
+    iconPath: "icon.png"
   title: Quotes
   version: v3
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.

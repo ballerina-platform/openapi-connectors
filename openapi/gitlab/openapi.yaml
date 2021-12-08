@@ -9,7 +9,7 @@ tags:
 info:
   x-ballerina-display:
     label: GitLab
-    iconPath: "resources/gitlab.svg"
+    iconPath: "icon.png"
   description: |
     This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
 

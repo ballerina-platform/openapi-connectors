@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: Chaingateway
-    iconPath: "resources/chaingateway.svg"
+    iconPath: "icon.png"
   title: Chaingateway.io
   description: |-
     This is a generated connector for [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.

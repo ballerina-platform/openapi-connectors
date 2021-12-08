@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
       label: iSendPro
-      iconPath: "resources/isendpro.svg"
+      iconPath: "icon.png"
   contact:
     email: support@isendpro.com
     name: iSendPro Support Team

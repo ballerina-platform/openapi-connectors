@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Recommendation
-    iconPath: "resources/ebay.recommendation.svg"
+    iconPath: "icon.png"
   title: Recommendation API
   description: >
       This is a generated connector for [Ebay Recommendation API v1.1.0](https://developer.ebay.com) OpenAPI specification. 

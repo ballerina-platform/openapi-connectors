@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Azure Text Analytics
-    iconPath: "resources/azure.textanalytics.svg"
+    iconPath: "icon.png"
   title: Text Analytics API (v3.1)
   description: >
     This is a generated connector for [Azure Text Analytics API v1](https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/) OpenAPI specification.

@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
       label: Interzoid Email Info
-      iconPath: "resources/interzoid.emailinfo.svg"
+      iconPath: "icon.png"
   version: 1.0.0
   title: Interzoid Get Email Information API
   description: >

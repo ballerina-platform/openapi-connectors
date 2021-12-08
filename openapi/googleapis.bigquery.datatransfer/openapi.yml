@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google BigQuery Data Transfer
-    iconPath: "resources/googleapis.bigquery.datatransfer.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

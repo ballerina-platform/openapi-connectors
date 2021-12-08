@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Azure Key Vault
-    iconPath: "resources/azure.keyvault.svg"
+    iconPath: "icon.png"
   title: KeyVaultClient
   description: > 
     This is a generated connector from [Azure Key Vault API v7.0](https://azure.microsoft.com/en-us/services/key-vault/) OpenAPI specification.

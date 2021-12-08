@@ -12,7 +12,7 @@ info:
     Create a [Sinch account](https://www.sinch.com/) and obtain tokens by following [this guide](https://developers.sinch.com/docs/sms/api-reference/#authentication).
   x-ballerina-display:
     label: Sinch SMS
-    iconPath: "resources/sinch.sms.svg"
+    iconPath: "icon.png"
   # contact:
   #   name: Support
   #   url: www.sinch.com

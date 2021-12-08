@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Listing
-    iconPath: "resources/ebay.listing.svg"
+    iconPath: "icon.png"
   title: Listing API
   description: >
     This is a generated connector for [eBay Listing API v1_beta.3.0](https://developer.ebay.com) OpenAPI specification.

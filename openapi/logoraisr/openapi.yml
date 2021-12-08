@@ -11,7 +11,7 @@ info:
     Create an [Logoraisr account](https://logoraisr.com/) and obtain OAuth tokens following [this guide](https://docs.logoraisr.com/#section/Authentication).
   x-ballerina-display:
     label: Logoraisr
-    iconPath: "resources/logoraisr.svg"
+    iconPath: "icon.png"
   termsOfService: https://logoraisr.com/terms-conditions
   contact:
     url: https://logoraisr.com

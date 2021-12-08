@@ -10,7 +10,7 @@ info:
     Create a [OptiTune account](https://manage.opti-tune.com) and obtain tokens by following [this guide](https://manage.opti-tune.com/help/site/articles/api/default.html#authentication).
   x-ballerina-display:
     label: OptiTune 
-    iconPath: "resources/optitune.svg"
+    iconPath: "icon.png"
   contact:
     name: Bravura Software LLC
     url: https://www.bravurasoftware.com/optitune/

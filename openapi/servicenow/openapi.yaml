@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: ServiceNow
-    iconPath: "resources/servicenow.svg"
+    iconPath: "icon.png"
   title: ServiceNow REST API
   description: This is a generated connector for [ServiceNow REST API Quebec version]
                (https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest) OpenAPI Specification.

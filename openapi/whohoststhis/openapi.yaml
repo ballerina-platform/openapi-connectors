@@ -13,7 +13,7 @@ info:
     Create an [Who Hosts This Account](https://www.who-hosts-this.com/Profile?cmd=RegisterForm) and obtain token by following [this link](https://www.who-hosts-this.com/APIKey).
   x-ballerina-display:
     label: Who Hosts This
-    iconPath: "resources/whohoststhis.svg"
+    iconPath: "icon.png"
   title: Who Hosts This API
   version: 0.0.1
   x-apisguru-categories:

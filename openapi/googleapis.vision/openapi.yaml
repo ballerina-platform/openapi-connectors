@@ -5,7 +5,7 @@ x-hasEquivalentPaths: true
 info:
   x-ballerina-display:
     label: Google Cloud Vision
-    iconPath: "resources/googleapis.vision.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: New York Times Top Stories
-    iconPath: "resources/nytimes.topstories.svg"
+    iconPath: "icon.png"
   description: >
     This is a generated connector from [New York Times Top Stories API v2.0.0](https://developer.nytimes.com/docs/top-stories-product/1/overview) OpenAPI specification.
 

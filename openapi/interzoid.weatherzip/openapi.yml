@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
       label: Interzoid Weather by Zip Code
-      iconPath: "resources/interzoid.weatherzip.svg"
+      iconPath: "icon.png"
   contact:
     email: support@interzoid.com
     name: API Support

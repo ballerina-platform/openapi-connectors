@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Wordnik
-    iconPath: "resources/wordnik.svg"
+    iconPath: "icon.png"
   description: 
     This is a generated connector for [Wordnik API v4.0](https://developer.wordnik.com/docs) OpenAPI specification.
 

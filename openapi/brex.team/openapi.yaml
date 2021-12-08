@@ -11,7 +11,7 @@ info:
     Create a [Brex account](https://www.brex.com/) and obtain tokens by following [this guide](https://developer.brex.com/docs/authentication/).
   x-ballerina-display:
     label: brex.team
-    iconPath: "resources/brex.team.svg"
+    iconPath: "icon.png"
   contact:
     name: Admin
     url: https://brex.com

@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Manufacturer Center
-    iconPath: "resources/googleapis.manufacturercenter.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

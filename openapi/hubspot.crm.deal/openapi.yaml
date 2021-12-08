@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: HubSpot CRM  Deal
-    iconPath: "resources/hubspot.crm.deal.svg"
+    iconPath: "icon.png"
   title: Deals
   version: v3
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.

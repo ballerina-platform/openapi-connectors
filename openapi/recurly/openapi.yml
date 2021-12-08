@@ -13,7 +13,7 @@ info:
     Create a [Recurly account](https://recurly.com) and obtain tokens by following [this guide](https://developers.recurly.com/api/v2021-02-25/index.html#section/Authentication).
   x-ballerina-display:
     label: Recurly
-    iconPath: "resources/recurly.svg"
+    iconPath: "icon.png"
   version: v2021-02-25
 security:
 - api_key: []

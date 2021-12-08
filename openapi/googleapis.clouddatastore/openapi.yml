@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Cloud Datastore
-    iconPath: "resources/googleapis.clouddatastore.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

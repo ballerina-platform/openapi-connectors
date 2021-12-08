@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: Fun Generators Barcode
-    iconPath: "resources/fungenerators.barcode.svg"
+    iconPath: "icon.png"
   termsOfService: https://fungenerators.com/terms
   description: >
     This is a generated connector for [fungenerators BarCode API v1](http://fungenerators.com/api/barcode/) OpenAPI specification.

@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: BulkSMS
-    iconPath: "resources/bulksms.svg"
+    iconPath: "icon.png"
   title: BulkSMS JSON REST API
   description: >- 
     This is a generated connector for [BulkSMS API v1](https://www.bulksms.com/developer/) OpenAPI Specification.

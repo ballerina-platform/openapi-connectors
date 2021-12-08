@@ -13,7 +13,7 @@ info:
     Create a [IRIS account](https://www.iriscrm.com) and obtain tokens by following [this guide](https://www.iriscrm.com/api/#section/Generate-an-API-token).
   x-ballerina-display:
     label: IRIS Helpdesk
-    iconPath: "resources/iris.helpdesk.svg"
+    iconPath: "icon.png"
   version: 1.6.4
   contact:
     email: "support@iriscrm.com"

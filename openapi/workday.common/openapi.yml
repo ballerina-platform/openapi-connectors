@@ -1,0 +1,4100 @@
+openapi: 3.0.1
+info:
+  title: common
+  description: >-
+    This is a generated connector for [WorkDay Common Service REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    
+    The WorkDay common service enables applications to access REST service for common resources shared by multiple product areas.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+ 
+    Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
+  x-ballerina-display:
+    label: Workday Common
+    iconPath: icon.png
+  version: v1
+tags:
+- name: auditLogs
+- name: businessTitleChanges
+- name: currencies
+- name: customers
+- name: jobChangeReasons
+- name: organizationTypes
+- name: organizations
+- name: supervisoryOrganizations
+- name: validateWorktags
+- name: workers
+paths:
+  /workers:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of workers.
+      operationId: getCollectionOfWorkers
+      description: |-
+        Secured by: Worker Data: Public Worker Reports, Self-Service: Current Staffing Information
+
+        Scope: Staffing
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      - name: search
+        in: query
+        description: Searches ~workers~ by name. The search is case-insensitive. You
+          can include space-delimited search strings for an OR search.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkerSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/directReports:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of direct reports for a specific worker.
+      operationId: getWorkerReports
+      description: |-
+        Secured by: Reports: Manager, Reports: Matrix Manager, Self-Service: My Team
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkerSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/directReports/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a direct report instance for a specific worker.
+      operationId: getReportForWorker
+      description: |-
+        Secured by: Reports: Manager, Reports: Matrix Manager, Self-Service: My Team
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/organizations:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of organizations for a specific worker.
+      operationId: getOrgForWorker
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkerOrganizationSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/organizations/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves an organization instance for a specific worker.
+      operationId: getWorkerOrganization
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerOrganizationSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/inboxTasks:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of inbox tasks for a specific worker.
+      operationId: getTaskForWorker
+      description: |-
+        Secured by: Core Navigation
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InboxTaskSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/inboxTasks/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves an inbox task instance for a specific worker.
+      operationId: getInboxTaskForWorker
+      description: |-
+        Secured by: Core Navigation
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxTaskSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/timeOffEntries:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of time off entries for a specific worker.
+      operationId: getTimeOffEntriesForWorker
+      description: |-
+        Secured by: Worker Data: Time Off (Time Off Balances), Worker Data: Time Off (Time Off Balances Manager View), Self-Service: Time Off Balances
+
+        Scope: Time Off and Leave
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TimeOffEntries'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/timeOffEntries/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a time off entry for a specific worker.
+      operationId: getTimeOffEntryForWorker
+      description: |-
+        Secured by: Worker Data: Time Off (Time Off Balances), Worker Data: Time Off (Time Off Balances Manager View), Self-Service: Time Off Balances
+
+        Scope: Time Off and Leave
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeOffEntries'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/timeOffPlans:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of time off plans for a specific worker.
+      operationId: getTimeOffPlansForWorker
+      description: |-
+        Secured by: Worker Data: Time Off (Time Off Balances), Worker Data: Time Off (Time Off Balances Manager View), Self-Service: Time Off Balances
+
+        Scope: Time Off and Leave
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TimeOffPlans'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/timeOffPlans/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a particular time off plan for a specific worker.
+      operationId: getTimeOffPlan
+      description: |-
+        Secured by: Worker Data: Time Off (Time Off Balances), Worker Data: Time Off (Time Off Balances Manager View), Self-Service: Time Off Balances
+
+        Scope: Time Off and Leave
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeOffPlans'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/history:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of history items for a specific worker.
+      operationId: getHistoryItemsForWorker
+      description: |-
+        Secured by: Worker Data: Historical Staffing Information
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BusinessProcessSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/history/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a history instance for a specific worker.
+      operationId: getHistoryInstanceForWorker
+      description: |-
+        Secured by: Worker Data: Historical Staffing Information
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcessSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/businessTitleChanges:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of business title changes for a specific worker.
+      operationId: getCollectionBusinessTitleChanges
+      description: |-
+        Secured by: Staffing Actions: Business Title
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BusinessTitleChangeDetail'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    post:
+      tags:
+      - workers
+      summary: Creates a business title change instance with the specified data.
+      operationId: createBusinessTitleChange
+      description: |-
+        Create a new business title change for the specified worker
+
+        Secured by: Change Business Title
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          Application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessTitleChangeInput'
+        required: true
+      responses:
+        201:
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessTitleChangeInput'
+        400:
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+            There are other staffing or business title business processes that affect this business title that are effective after this date.
+
+            Worker submitted is the processing user.
+
+            Worker has additional jobs. This task is not supported for workers with multiple jobs.
+
+            The last filled date for the position is after the current date.
+
+            The position has been vacated by this worker.
+
+            Proposed Business Title is required.
+
+            Worker is terminated and does not have a future hire.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: businessTitleChangeInput
+  /workers/{id}/businessTitleChanges/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a business title change instance for a specific worker.
+      operationId: getBusinessTitleChangeForWorker
+      description: |-
+        Secured by: Staffing Actions: Business Title
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessTitleChangeDetail'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/supervisoryOrganizationsManaged:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of supervisory organizations managed by a specific
+        worker.
+      operationId: getSupervisoryOrgsManagedByWorker
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SupervisoryOrganizationSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/supervisoryOrganizationsManaged/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a supervisory organization managed by a specific worker.
+      operationId: getSupervisoryOrgManagedByWorker
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupervisoryOrganizationSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/paySlips:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a collection of pay slips for a specific worker.
+      operationId: getPaySlipsForWorker
+      description: |-
+        Secured by: Worker Data: Payroll (Payslips), Self-Service: Payroll (My Payslips)
+
+        Scope: Core Payroll
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PaySlipSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/paySlips/{subresourceID}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a pay slip instance for a specific worker.
+      operationId: getPaySlipInstancesForWorker
+      description: |-
+        Secured by: Worker Data: Payroll (Payslips), Self-Service: Payroll (My Payslips)
+
+        Scope: Core Payroll
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaySlipSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}:
+    get:
+      tags:
+      - workers
+      summary: Retrieves a worker instance.
+      operationId: getWorkerInstance
+      description: |-
+        Secured by: Worker Data: Public Worker Reports, Self-Service: Current Staffing Information
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerProfile'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/jobChanges:
+    post:
+      tags:
+      - workers
+      summary: Creates a job change instance with the specified data.
+      operationId: createJobChange
+      description: |-
+        Initiate a job change for the specified worker.
+
+        Secured by: Change Job
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeJobInput'
+        required: true
+      responses:
+        201:
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeJobInput'
+        400:
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+            Reason is not valid for the Job Change Event or the processing user is a ~Manager~ and the Reason is not valid for ~managers~.
+
+            Proposed supervisory organization is not valid. It will be made inactive after the event effective date. This will result in this position not having a supervisory organization.
+
+            Reason is not valid for the worker type (Employee or Contingent Worker).
+
+            The proposed ~supervisory organization~ is in a Hiring Freeze. It cannot be selected.
+
+            Worker submitted is the processing user.
+
+            Reason is required.
+
+            Worker has additional jobs. This task is not supported for workers with multiple jobs.
+
+            Proposed Organizations contains inactive Organizations.
+
+            Proposed Organizations contains those with Organization Types that cannot be part of Change Organization Assignments.
+
+            The effective date must be after the date of the last completed Change Organization assignment.
+
+            The effective date must be after the date of the last completed Matrix Organization change.
+
+            Hiring restrictions are missing for the organization selected.
+
+            The hiring restrictions for the proposed ~supervisory organization~ do not allow this type of ~worker~.
+
+            The current position has a pending organization change or a completed ~Supervisory Organization~ change effective after this date. Therefore, this position cannot have changes as of the effective date.
+
+            This position is in a pending Merit Event. The effective date must be after the pending Merit Event's effective date.
+
+            The effective date must be equal to or greater than the date the position was last updated.
+
+            Organization is not accessible by the user.
+
+            You cannot initiate this action because there are other pending actions for the worker that conflict with this one. Close any pending Staffing, Matrix Organization, Pay Group or Organization events before initiating this action.
+
+            The Proposed Organization assignments do not meet the restrictions defined for the Proposed Supervisory Organization.
+
+            Organizations with the following Organization Types are required: [req_org_types]
+
+            Change Organization is not part of the Change Job workflow definition for the proposed Supervisory Organization
+
+            Supervisory Organization must be active.
+
+            The date entered cannot be earlier than the earliest hire date.
+
+            Proposed Supervisory Organization is required.
+
+            The effective date must be after the date of the last completed Assign Pay Group change.
+
+            Proposed Organizations contains multiple Organizations with Organization Types that are restricted to single assignments.
+
+            Worker is terminated and does not have a future hire.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: changeJobInput
+  /businessTitleChanges/{id}:
+    get:
+      tags:
+      - businessTitleChanges
+      summary: Retrieves a business title change instance.
+      operationId: getBusinessTitle
+      description: |-
+        Secured by: Staffing Actions: Business Title
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessTitleChangeDetail'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /currencies:
+    get:
+      tags:
+      - currencies
+      summary: Retrieves a collection of currencies.
+      operationId: getCurrencies
+      description: |-
+        Secured by: Core Navigation
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CurrencySummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /currencies/{id}:
+    get:
+      tags:
+      - currencies
+      summary: Retrieves a currency instance.
+      operationId: getCurrencyInstance
+      description: |-
+        Secured by: Core Navigation
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencySummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /auditLogs:
+    get:
+      tags:
+      - auditLogs
+      summary: Retrieves a collection of audit logs.
+      operationId: getAuditLogs
+      description: |-
+        DEPRECATED as of 2021-09-11. Workday recommends that you use the Privacy v1 REST service instead.
+
+        Secured by: System Auditing
+      parameters:
+      - name: from
+        in: query
+        description: Returns value entered in "From Moment" parm
+        schema:
+          type: string
+          format: date
+      - name: instancesReturned
+        in: query
+        description: Numeric
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      - name: returnUserActivityEntryCount
+        in: query
+        description: Boolean
+        schema:
+          type: boolean
+      - name: systemAccount
+        in: query
+        description: The system account that initiated the request.
+        schema:
+          type: string
+      - name: taskId
+        in: query
+        description: The Workday ID of the task executed in the transaction.
+        schema:
+          type: string
+      - name: to
+        in: query
+        description: Returns value entered in "To Moment" parm
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserActivityTracking'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /auditLogs/{id}:
+    get:
+      tags:
+      - auditLogs
+      summary: Retrieves an audit log instance.
+      operationId: getAuditLogInstance
+      description: |-
+        DEPRECATED as of 2021-09-11. Workday recommends that you use the Privacy v1 REST service instead.
+
+        Secured by: System Auditing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserActivityTracking'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supervisoryOrganizations:
+    get:
+      tags:
+      - supervisoryOrganizations
+      summary: Retrieves a collection of supervisory organizations.
+      operationId: getCollectionOfSupervisoryOrgs
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SupervisoryOrganizationSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supervisoryOrganizations/{id}:
+    get:
+      tags:
+      - supervisoryOrganizations
+      summary: Retrieves a supervisory organization instance.
+      operationId: getSupervisoryOrgInstance
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupervisoryOrganizationSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supervisoryOrganizations/{id}/workers:
+    get:
+      tags:
+      - supervisoryOrganizations
+      summary: Retrieves a collection of workers for a specific supervisory organization.
+      operationId: getWorkersOfSupervisoryOrg
+      description: |-
+        Secured by: Worker Data: Public Worker Reports
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkerSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supervisoryOrganizations/{id}/workers/{subresourceID}:
+    get:
+      tags:
+      - supervisoryOrganizations
+      summary: Retrieves a worker instance for a specific supervisory organization.
+      operationId: getWorkerForSupervisoryOrg
+      description: |-
+        Secured by: Worker Data: Public Worker Reports
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /jobChangeReasons:
+    get:
+      tags:
+      - jobChangeReasons
+      summary: Retrieves a collection of job change reasons.
+      operationId: getJobChangeReason
+      description: |-
+        Secured by: Staffing Actions: Change Job Date and Reason
+
+        Scope: Staffing
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobChangeReasonSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /jobChangeReasons/{id}:
+    get:
+      tags:
+      - jobChangeReasons
+      summary: Retrieves a job change reason instance.
+      operationId: getJobChangeInstance
+      description: |-
+        Secured by: Staffing Actions: Change Job Date and Reason
+
+        Scope: Staffing
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobChangeReasonSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /validateWorktags:
+    post:
+      tags:
+      - validateWorktags
+      summary: Validates the allowed and required worktag types and worktag combinations
+        for a transaction.
+      operationId: validateWorkTagTypes
+      description: |-
+        Secured by: Manage: Related Worktags, Worktag REST API
+
+        Scope: Worktags, Common Financial Management
+      requestBody:
+        content:
+          Apllication/json:
+            schema:
+              $ref: '#/components/schemas/ValidateWorktagInput'
+        required: true
+      responses:
+        201:
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateWorktagInput'
+        400:
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+            Allow Built-in Worktags must be either true or false.
+
+            Taggable Configuration is required.
+
+            Duplicate worktag types are not allowed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: validateWorktagInput
+  /customers/{id}:
+    get:
+      tags:
+      - customers
+      summary: Retrieves a customer instance.
+      operationId: getCustomerInstance
+      description: |-
+        Secured by: View: Customer
+
+        Scope: Customers
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /customers/{id}/activities:
+    get:
+      tags:
+      - customers
+      summary: Retrieves a collection of activities for a specific customer.
+      operationId: getWorkerActivities
+      description: |-
+        Secured by: Reports: Customer Accounts
+
+        Scope: Customer Accounts
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: fromDate
+        in: query
+        description: |-
+          The transaction date for the reporting transaction.
+
+          NOTE: If used a filtering criteria for expense reports, please use Expense Report Date report field instead to improve performance.
+        schema:
+          type: string
+          format: date
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      - name: toDate
+        in: query
+        description: |-
+          The transaction date for the reporting transaction.
+
+          NOTE: If used a filtering criteria for expense reports, please use Expense Report Date report field instead to improve performance.
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Activity'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /customers/{id}/activities/{subresourceID}:
+    get:
+      tags:
+      - customers
+      summary: Retrieves an activity instance for a specific customer.
+      operationId: getActivityForCustomer
+      description: |-
+        Secured by: Reports: Customer Accounts
+
+        Scope: Customer Accounts
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: subresourceID
+        in: path
+        description: The Workday ID of the subresource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /organizations:
+    get:
+      tags:
+      - organizations
+      summary: Retrieves a collection of organizations.
+      operationId: getOrgCollection
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrganizationSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /organizations/{id}:
+    get:
+      tags:
+      - organizations
+      summary: Retrieves an organization instance.
+      operationId: getOrgInstance
+      description: |-
+        Secured by: Reports: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /organizationTypes:
+    get:
+      tags:
+      - organizationTypes
+      summary: Retrieves a collection of organization types.
+      operationId: getOrganizationTypes
+      description: |-
+        Secured by: Set Up: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrganizationTypeSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /organizationTypes/{id}:
+    get:
+      tags:
+      - organizationTypes
+      summary: Retrieves an organization type instance.
+      operationId: getOrgTypeInstance
+      description: |-
+        Secured by: Set Up: Organization
+
+        Scope: Organizations and Roles
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationTypeSummary'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+components:
+  schemas:
+    INSTANCE_MODEL_REFERENCE:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+          type: string
+          description: wid / id / reference id
+        descriptor:
+          type: string
+          description: A description of the instance
+          readOnly: true
+        href:
+          type: string
+          description: A link to the instance
+          readOnly: true
+    ERROR_MODEL_REFERENCE:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          type: string
+          description: A description of the error
+    VALIDATION_ERROR_MODEL_REFERENCE:
+      allOf:
+      - $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      - type: object
+        properties:
+          errors:
+            type: array
+            description: An array of validation errors
+            items:
+              $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    WorkerProfile:
+      allOf:
+      - type: object
+        properties:
+          primaryWorkEmail:
+            type: string
+            description: The primary work email address for the ~worker~.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          isManager:
+            type: boolean
+            description: Identifies if the ~worker~ has a ~manager~ role.
+            example: true
+            x-workday-type: Boolean
+          primaryWorkPhone:
+            type: string
+            description: The primary work phone number for the ~worker~ including
+              the area code and ~country~ code.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          location:
+            $ref: '#/components/schemas/Location'
+          primarySupervisoryOrganization:
+            $ref: '#/components/schemas/PrimarySupervisoryOrganization'
+          primaryWorkAddressText:
+            type: string
+            description: Returns the primary work address for the ~worker~, or from
+              their default primary work location, full format on a single line.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          yearsOfService:
+            type: integer
+            description: The years of service for the ~worker~.
+            example: 405667280
+            x-workday-type: Numeric
+          businessTitle:
+            type: string
+            description: The business title for the ~worker's~ primary position. If
+              no business title is defined for a position, the position title is returned
+              back.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          dateOfBirth:
+            type: string
+            description: The birth date of the ~worker~.
+            format: date
+            x-workday-type: Date
+          supervisoryOrganizationsManaged:
+            type: string
+            description: All ~supervisory organizations~, excluding inherited organizations,
+              in which the ~worker~ has a leadership role.
+            format: url
+            readOnly: true
+            x-workday-type: Multi-instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    WorkerSummary:
+      allOf:
+      - type: object
+        properties:
+          primaryWorkPhone:
+            type: string
+            description: The primary work phone number for the ~worker~ including
+              the area code and ~country~ code.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          isManager:
+            type: boolean
+            description: Identifies if the ~worker~ has a ~manager~ role.
+            example: true
+            x-workday-type: Boolean
+          primaryWorkEmail:
+            type: string
+            description: The primary work email address for the ~worker~.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          businessTitle:
+            type: string
+            description: The business title for the ~worker's~ primary position. If
+              no business title is defined for a position, the position title is returned
+              back.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          primarySupervisoryOrganization:
+            $ref: '#/components/schemas/PrimarySupervisoryOrganization'
+          href:
+            type: string
+            description: A link to the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    JobChangeReasonSummary:
+      allOf:
+      - type: object
+        properties:
+          isForContingentWorker:
+            type: boolean
+            description: Identifies whether the reason is allowed to be entered for
+              ~contingent workers~.
+            example: true
+            x-workday-type: Boolean
+          isForEmployee:
+            type: boolean
+            description: Identifies whether the reason is allowed to be entered for
+              ~employees~.
+            example: true
+            x-workday-type: Boolean
+          managerReason:
+            type: boolean
+            description: Identifies whether the reason is allowed to be entered by
+              ~managers~.
+            example: true
+            x-workday-type: Boolean
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    Target:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    UserActivityTracking:
+      allOf:
+      - type: object
+        properties:
+          target:
+            $ref: '#/components/schemas/Target'
+          ipAddress:
+            type: string
+            description: The user's IP Address from the user signon used to make the
+              request.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          userAgent:
+            type: string
+            description: The client browser and operating system information from
+              the user signon used to make this request.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          deviceType:
+            type: string
+            description: The device type from the user signon used to make the request.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          taskId:
+            maxLength: 36
+            type: string
+            description: The Workday ID of the task executed in the transaction.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          systemAccount:
+            type: string
+            description: The system account that initiated the request.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          sessionId:
+            type: string
+            description: The system id for tracking signons from the user signon used
+              to make the request.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          userActivityEntryCount:
+            type: integer
+            description: Returns the User Activity Count for the inputted filter parameters
+            example: 625391058
+            x-workday-type: Numeric
+          requestTime:
+            type: string
+            description: The request time of the action.
+            format: date
+            x-workday-type: Date
+          taskDisplayName:
+            type: string
+            description: The action executed in the transaction.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          activityAction:
+            type: string
+            description: The type of action that was executed.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+    Customer:
+      allOf:
+      - type: object
+        properties:
+          name:
+            type: string
+            description: The name of the customer.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    InvoiceOpportunity:
+      allOf:
+      - $ref: '#/components/schemas/OpportunityDisplay'
+      - type: object
+    Activity:
+      allOf:
+      - type: object
+        properties:
+          invoiceOpportunity:
+            $ref: '#/components/schemas/InvoiceOpportunity'
+          paymentReference:
+            type: string
+            description: The check number for a customer payment. This is a reference
+              number that's available only when processed through a settlement run
+              and not a check number.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          transactionAmountSigned:
+            type: object
+            properties: {}
+            description: The positive or negative sign of the transaction amount for
+              this customer transaction. This is for internal use only on a REST API.
+            example: "738972732"
+            x-workday-type: Currency
+          transactionDate:
+            type: string
+            description: The date of the customer transaction. This field is for internal
+              use only on a REST API.
+            format: date
+            x-workday-type: Date
+          transactionType:
+            type: string
+            description: The transaction type of this customer transaction. This is
+              for internal use only on a REST API.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          applicationStatus:
+            type: string
+            description: The payment or application status of the customer invoice,
+              customer invoice adjustment or customer invoice payment. For customer
+              invoice payments, the application status can be Unapplied, Applied with
+              On Account, or Fully Applied. For invoices, the payment status can be
+              Paid, Partially Paid, or Unpaid.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          transactionStatus:
+            type: string
+            description: The current status of the transaction. Applicable for all
+              transaction types. This is for internal use only on a REST API.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          transactionNumber:
+            type: string
+            description: The transaction number for the reporting transaction. This
+              is for internal use only on a REST API.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          invoiceDueDate:
+            type: string
+            description: The due date of the customer invoice or invoice adjustment
+              as of the defined reporting date.
+            format: date
+            x-workday-type: Date
+          id:
+            maxLength: 36
+            type: string
+            description: Returns the Workday ID for a given object.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+    BusinessObjectFilter:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    businessObject:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Manager:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    SupervisoryOrganizationSummary:
+      allOf:
+      - type: object
+        properties:
+          manager:
+            $ref: '#/components/schemas/Manager'
+          workers:
+            type: string
+            description: Contains the ~workers~ in the organization.
+            format: url
+            readOnly: true
+            x-workday-type: Multi-instance
+          name:
+            type: string
+            description: The organization name for the organization.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          code:
+            type: string
+            description: The organization id for the organization.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+    PrimarySupervisoryOrganization:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    CurrencySummary:
+      allOf:
+      - type: object
+        properties:
+          code:
+            type: string
+            description: Currency id - 3 character currency code identified by ISO
+              4217
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          precision:
+            type: integer
+            description: Decimal precision for currency amounts
+            example: 6
+            x-workday-type: Numeric
+          href:
+            type: string
+            description: A link to the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    OrganizationTypeSummary:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    Subject:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Initiator:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    BusinessProcessSummary:
+      allOf:
+      - type: object
+        properties:
+          subject:
+            $ref: '#/components/schemas/Subject'
+          initiator:
+            $ref: '#/components/schemas/Initiator'
+          effective:
+            type: string
+            description: The date this business process takes effect.
+            format: date
+            x-workday-type: Date
+          due:
+            type: string
+            description: The date the business process needs to be completed.
+            format: date
+            x-workday-type: Date
+          initiated:
+            type: string
+            description: The date and time this business process was initiated.
+            format: date
+            x-workday-type: Date
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    BusinessTitleChangeDetail:
+      allOf:
+      - type: object
+        properties:
+          currentBusinessTitle:
+            type: string
+            description: The business title for the ~worker~ prior to this business
+              process.  If there is no business title override, this field defaults
+              to the job title or job profile name.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          proposedBusinessTitle:
+            type: string
+            description: The new business title for the ~worker~ as of the effective
+              date.  If there is no business title override, this field defaults to
+              the job title or job profile name.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          effective:
+            type: string
+            description: The date this business process takes effect.
+            format: date
+            x-workday-type: Date
+          due:
+            type: string
+            description: The date the business process needs to be completed.
+            format: date
+            x-workday-type: Date
+          initiated:
+            type: string
+            description: The date and time this business process was initiated.
+            format: date
+            x-workday-type: Date
+          initiator:
+            $ref: '#/components/schemas/Initiator'
+          subject:
+            $ref: '#/components/schemas/Subject'
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    OrganizationSummary:
+      allOf:
+      - type: object
+        properties:
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+    Location:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    SupervisoryOrganization:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    JobChangeReason:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    ChangeJobInput:
+      allOf:
+      - type: object
+        properties:
+          supervisoryOrganization:
+            $ref: '#/components/schemas/SupervisoryOrganization'
+          jobChangeReason:
+            $ref: '#/components/schemas/JobChangeReason'
+          moveManagersTeam:
+            type: boolean
+            description: Returns a boolean that indicates whether teams reporting
+              to the ~Manager~ moved with them during the Change Job Event.
+            example: true
+            x-workday-type: Boolean
+          effective:
+            type: string
+            description: The date this business process takes effect.
+            format: date
+            x-workday-type: Date
+          proposedOrganizations:
+            type: array
+            description: |-
+              Contains the organizations with staffing behavior that are assigned to the position as a result of this event.
+              All staffing behavior organization types are included (company, cost center, region, custom organizations, fund, grant, program, gift, business unit).
+            items:
+              $ref: '#/components/schemas/ProposedStaffsInput'
+            x-workday-type: Multi-instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    Status:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    PaySlipSummary:
+      allOf:
+      - type: object
+        properties:
+          net:
+            type: integer
+            description: Net Pay for a Payroll Result
+            example: 732864165
+            x-workday-type: Numeric
+          gross:
+            type: integer
+            description: Gross Pay for a Payroll Result
+            example: 1174950633
+            x-workday-type: Numeric
+          status:
+            $ref: '#/components/schemas/Status'
+          date:
+            type: string
+            description: Payment Date
+            format: date
+            x-workday-type: Date
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    OrganizationType:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    WorkerOrganizationSummary:
+      allOf:
+      - type: object
+        properties:
+          organizationType:
+            $ref: '#/components/schemas/OrganizationType'
+          href:
+            type: string
+            description: A link to the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    UnitOfTime:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    TimeOffPlans:
+      allOf:
+      - type: object
+        properties:
+          timeOffBalance:
+            type: integer
+            description: Returns the time off balance including pending events for
+              the ~worker~ and time off plan.  This report field should be used within
+              Calculated Fields.
+            example: 85891314
+            x-workday-type: Numeric
+          unitOfTime:
+            $ref: '#/components/schemas/UnitOfTime'
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    Employee:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    TimeOffRequest:
+      allOf:
+      - $ref: '#/components/schemas/TimeOffEntryStatus'
+      - type: object
+    TimeOff:
+      allOf:
+      - $ref: '#/components/schemas/TimeOffRef'
+      - type: object
+    TimeOffEntries:
+      allOf:
+      - type: object
+        properties:
+          units:
+            type: integer
+            description: The units entered for a time off request line item.
+            example: 1018922464
+            x-workday-type: Numeric
+          employee:
+            $ref: '#/components/schemas/Employee'
+          unitOfTime:
+            $ref: '#/components/schemas/UnitOfTime'
+          timeOffRequest:
+            $ref: '#/components/schemas/TimeOffRequest'
+          date:
+            type: string
+            description: The date requested to be taken for a paid time off request
+              line item.
+            format: date
+            x-workday-type: Date
+          timeOff:
+            $ref: '#/components/schemas/TimeOff'
+          href:
+            type: string
+            description: A link to the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    StepType:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    OverallProcess:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    InboxTaskSummary:
+      allOf:
+      - type: object
+        properties:
+          initiator:
+            $ref: '#/components/schemas/Initiator'
+          stepType:
+            $ref: '#/components/schemas/StepType'
+          status:
+            $ref: '#/components/schemas/Status'
+          overallProcess:
+            $ref: '#/components/schemas/OverallProcess'
+          subject:
+            $ref: '#/components/schemas/Subject'
+          due:
+            type: string
+            description: Returns the due date for this step.
+            format: date
+            x-workday-type: Date
+          assigned:
+            type: string
+            description: Returns the date when the event record was last updated on.
+            format: date
+            x-workday-type: Date
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    BusinessTitleChangeInput:
+      allOf:
+      - type: object
+        properties:
+          proposedBusinessTitle:
+            type: string
+            description: The new business title for the ~worker~ as of the effective
+              date.  If there is no business title override, this field defaults to
+              the job title or job profile name.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    WorkersCompletedMostRecentStep:
+      allOf:
+      - $ref: '#/components/schemas/WorkerSummary'
+      - type: object
+    TransactionStatus:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Owner:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    TaggableConfiguration:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    ValidateWorktagInput:
+      allOf:
+      - type: object
+        properties:
+          validationTypes:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Indicates a set of validation types which should be included in the REST response. If this request parm is not present or is empty, then all validation types supported by the 'validateWorktags' REST API will be included in the response.
+            items:
+              $ref: '#/components/schemas/WorkTagValidationTypeInput'
+            x-workday-type: Multi-instance
+          restrictions:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Restrictions to be validated in combination with the worktags.
+            items:
+              $ref: '#/components/schemas/RestrictionInput'
+            x-workday-type: Multi-instance
+          invalidRestrictionsForWorktags:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Represents the pair of invalid restrictions and a worktag with 'Restricted to' values.
+            items:
+              $ref: '#/components/schemas/WorkTagAndRestrictionInput'
+            x-workday-type: Multi-instance
+          onlyOneProjectOrPhaseOrTaskAllowed:
+            type: string
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Only one worktag value of type ~Project~, ~Project Phase~ or ~Project Task~ is allowed to be sent in the request. This error indicates that the set of worktags contains more than one worktag of these types.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          missingRequiredWorktagTypesForWorktags:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Represents the pair of related worktag and missing required worktag types for that related worktag. Worktag Types can be configured as Required on Transaction on Maintain Related Worktag Usage or the in Related Worktag Widget.
+            items:
+              $ref: '#/components/schemas/WorkTagAndTypeInput'
+            x-workday-type: Multi-instance
+          allowBuiltInWorktags:
+            type: string
+            description: |-
+              When TRUE, allowed worktag types in request are a union of tenant-configured worktags in 'Maintain Worktag Usage' for the taggable type in request + all promptable worktag types for Accounting Journal' taggable type that are not a promptable worktag type for the taggable type in the request.
+              When FALSE, no change in existing behavior (allowed worktag types in request are limited to tenant-configured worktags in 'Maintain Worktag Usage' for the taggable type in request)
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          nonAllowedWorktagTypesForTaggableConfig:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Set of worktag types sent in the request that are not allowed by the Taggable configuration.
+            items:
+              $ref: '#/components/schemas/WorktagTypeInput'
+            x-workday-type: Multi-instance
+          missingRequiredWorktagTypesForTaggableConfig:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Worktag types which are configured as required for the Taggable configuration but are not sent in the request.
+            items:
+              $ref: '#/components/schemas/WorktagTypeInput'
+            x-workday-type: Multi-instance
+          nonAllowedInactiveWorktagValues:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Set of inactive worktags sent in the request which are disallowed by the Taggable configuration.
+            items:
+              $ref: '#/components/schemas/WorktagInput'
+            x-workday-type: Multi-instance
+          status:
+            type: string
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Indicates whether the worktags sent in the request are valid or have any validation errors.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          worktags:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Set of worktags to be validated against tenant configurations such as allowed worktag types, required on transaction, related worktags and taggable configuration.
+            items:
+              $ref: '#/components/schemas/WorktagInput'
+            x-workday-type: Multi-instance
+          invalidWorktagCombinations:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Represents the pair of related worktag and a set of worktags which are not allowed by the configuration for that related worktag.
+            items:
+              $ref: '#/components/schemas/WorkTagsComboInput'
+            x-workday-type: Multi-instance
+          taggableConfiguration:
+            $ref: '#/components/schemas/TaggableConfiguration'
+          missingRequiredWorktagTypesAfterDefaulting:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Worktag types which are configured as required for the taggable configuration but are not explicitly sent in the request and are not defaulted from the related worktags.
+            items:
+              $ref: '#/components/schemas/WorktagTypeInput'
+            x-workday-type: Multi-instance
+    Plan:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    TimeOffRef:
+      allOf:
+      - type: object
+        properties:
+          plan:
+            $ref: '#/components/schemas/Plan'
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    TaskDetails:
+      allOf:
+      - type: object
+        properties:
+          startDate:
+            type: string
+            description: The start date of the ~project task~.
+            format: date
+            x-workday-type: Date
+          percentComplete:
+            type: integer
+            description: The progress of the ~project task~.
+            example: 505
+            x-workday-type: Numeric
+          rowId:
+            type: string
+            description: The WBS id of ~Project Plan Task~.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          name:
+            type: string
+            description: The name of the ~project plan task~.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          endDate:
+            type: string
+            description: The end date of the ~project task~.
+            format: date
+            x-workday-type: Date
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    ProposedStaffsInput:
+      allOf:
+      - type: object
+        properties:
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+    TimeOffEntryStatus:
+      allOf:
+      - type: object
+        properties:
+          status:
+            type: string
+            description: 'The current status of the business process.  For example:
+              Successfully Completed, Denied, Terminated.'
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    EventRecordAssigneeView:
+      allOf:
+      - type: object
+        properties:
+          assignedToWorkers:
+            type: array
+            description: ~Workers~ assigned to this step.
+            items:
+              $ref: '#/components/schemas/WorkerSummary'
+            x-workday-type: Multi-instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    RestrictionInput:
+      allOf:
+      - type: object
+        properties:
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+    WorktagInput:
+      allOf:
+      - type: object
+        properties:
+          href:
+            type: string
+            description: A link to the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    WorktagWithAllowedValues:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    WorkTagsComboInput:
+      allOf:
+      - type: object
+        properties:
+          invalidWorktagValues:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Set of worktags from the REST request which are not valid for the anchor worktag with allowed values.
+            items:
+              $ref: '#/components/schemas/WorktagInput'
+            x-workday-type: Multi-instance
+          worktagWithAllowedValues:
+            $ref: '#/components/schemas/WorktagWithAllowedValues'
+    OpportunityDisplay:
+      allOf:
+      - type: object
+        properties:
+          name:
+            type: string
+            description: The non-unique name of the Opportunity. This is for internal
+              use only.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          id:
+            maxLength: 36
+            type: string
+            description: Returns the Workday ID for a given object.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          opportunityReferenceID:
+            type: string
+            description: The Reference id to use for lookups within our Workday Web
+              Services. For ~supervisory organizations~, this is also the 'Organization
+              id'
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+    WorktagTypeInput:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    PhaseDetails:
+      allOf:
+      - type: object
+        properties:
+          name:
+            type: string
+            description: The name of the ~project plan phase~.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          rowId:
+            type: string
+            description: The WBS UI id of ~Project Plan Phase~.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          tasks:
+            type: array
+            description: The ~project tasks~ for the ~project phase~.
+            items:
+              $ref: '#/components/schemas/TaskDetails'
+            x-workday-type: Multi-instance
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+    WorkTagValidationTypeInput:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          href:
+            type: string
+            description: A link to the instance
+          id:
+            type: string
+            description: Id of the instance
+    WorkTagWithRestrictedToValues:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    WorkTagAndRestrictionInput:
+      allOf:
+      - type: object
+        properties:
+          worktagWithRestrictedToValues:
+            $ref: '#/components/schemas/WorkTagWithRestrictedToValues'
+          invalidRestrictedToValues:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Indicates invalid 'Restricted To Values' for a worktag.
+            items:
+              $ref: '#/components/schemas/RestrictionInput'
+            x-workday-type: Multi-instance
+    WorkTagWithRequiredWorkTags:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    WorkTagAndTypeInput:
+      allOf:
+      - type: object
+        properties:
+          missingWorktagTypes:
+            type: array
+            description: |-
+              Do Not Use. This CRF can be used only by REST APIs.
+              Worktag types configured as required for a worktag with related worktags but not sent in the REST request.
+            items:
+              $ref: '#/components/schemas/WorktagTypeInput'
+            x-workday-type: Multi-instance
+          worktagWithRequiredWorktags:
+            $ref: '#/components/schemas/WorkTagWithRequiredWorkTags'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://tenantauthorizationhostname
+          scopes: {}

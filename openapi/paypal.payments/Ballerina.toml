@@ -1,0 +1,10 @@
+[package]
+org = "ballerinax"
+name = "paypal.payments"
+icon = "icon.png"
+version = "1.0.0"
+distribution = "slbeta3"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["Finance/Payment","Cost/Freemium"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

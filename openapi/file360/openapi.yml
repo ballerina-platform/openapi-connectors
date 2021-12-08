@@ -1,0 +1,4529 @@
+openapi: 3.0.1
+info:
+  title: File360 Web REST API
+  description: >
+    This is a generated connector from [file360](https://developer.opentext.com/apis/ebc5860f-3e04-4d1b-a8be-b2683738c701/File360) OpenAPI Specification.
+    
+    An API that allows interaction with File360 Web client.
+
+    The File360 Web client, a world class user experience powered by Angular/CSS, is built upon a set of RESTful APIs. The power of the web application is available to our customers and partners with the RESTful APIs which power every bit of the web application.
+
+    Please see https://file360demo.otxlab.com/File360Web/test/api for examples and test harness.
+  termsOfService: https://www.opentext.com/about/copyright-information
+  contact:
+    name: Opentext Support
+    url: http://support.opentext.com
+    email: support@opentext.com
+  version: "1.0"
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    
+    Create an [OpenText account](https://login.opentext.com/register) and obtain an API key.
+  x-ballerina-display:
+    label: file360
+    iconPath: "icon.png"
+tags:
+- name: applications
+  description: Applications
+- name: authentication
+  description: Authentication, logon, and logoff
+- name: document
+  description: Document
+- name: documents
+  description: Documents
+- name: errorfolders
+  description: Error folders
+- name: folder
+  description: Folder
+- name: folders
+  description: Folders
+- name: infrastructure
+  description: General - logging, server status ...
+- name: route
+  description: Routing
+- name: template
+  description: Template - Data entry and retrieval
+- name: templates
+  description: Templates - Data entry and retrieval
+- name: usersgroups
+  description: Users/Groups
+- name: usersgroupsadmin
+  description: Users/Groups Administration. These APIs require User/Group functional
+    administration permission for the authenticated user.
+- name: workflow
+  description: Workflow
+paths:
+  /v1/applications:
+    get:
+      tags:
+      - applications
+      summary: Get a listing of archives and applications.
+      description: Get a listing of archives and applications with the required access
+        types. Access types for the applications are defined via the application administration
+        tool.
+      operationId: Applications
+      parameters:
+      - name: accesstype
+        in: query
+        description: 'Access Type, an OR''ed set of the following : No Access = 0,
+          Retrieval Access = 1, Export Access = 2, Entry Access = 4, Import Access
+          = 8, Update Access = 16, Delete Access = 32, Super Access (includes all
+          above) = 65535'
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Applications archive pair array listing
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArchiveApplications'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/auth:
+    post:
+      tags:
+      - authentication
+      summary: Logs on a user with the given credentials defined in the Authentication
+        object.
+      description: Logs on a user with the given credentials.
+      operationId: LogOn
+      requestBody:
+        description: Authentication information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authentication'
+        required: true
+      responses:
+        200:
+          description: Logged on user object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: auth
+    delete:
+      tags:
+      - authentication
+      summary: Logs off the current user.
+      description: Logs off the current user. Logging off will release any associated
+        resources and licenses.
+      operationId: LogOff
+      responses:
+        200:
+          description: Logged off.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/oauth:
+    get:
+      tags:
+      - authentication
+      summary: Authenticates a user via OTDS, using the state and code, and logs that
+        user onto File360.
+      description: Authenticates a user via OTDS and logs that user onto File360.
+      operationId: LogonOAuth
+      parameters:
+      - name: code
+        in: query
+        description: OAuth code provided by OTDS via the Authorization code grant
+          type
+        required: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Authorization specific state value
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Logged on user object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/document:
+    delete:
+      tags:
+      - document
+      summary: Destroy the index data and the files for a document.
+      description: 'Destroy the index data and the files for an document or just the
+        previous versions. '
+      operationId: DestroyDocument
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: version
+        in: query
+        description: 'Version id '
+        required: true
+        schema:
+          type: integer
+      - name: allversions
+        in: query
+        description: Destroy all versions
+        required: true
+        schema:
+          type: boolean
+      - name: priorversions
+        in: query
+        description: Destroy versions prior to the version listed in the version id
+          parameter
+        required: true
+        schema:
+          type: boolean
+      responses:
+        200:
+          description: Destroy document result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceDocumentResult'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/document/devices:
+    get:
+      tags:
+      - document
+      summary: Get a list of devices for a document.
+      description: Get a list of devices, caches, stores, Keyfile, Content Server
+        etc., for a document.
+      operationId: GetDocumentDevices
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: versionId
+        in: query
+        description: Version id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Available devices for a document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableDevices'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/document/files:
+    get:
+      tags:
+      - document
+      summary: Get the file information for the document.
+      description: Get collection of file information for a document.  This includes
+        display name, file extensions, source URL and thumbnail URL.
+      operationId: GetDocumentFileInfo
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: versionId
+        in: query
+        description: Version id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Files for the version of the document.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileInfo'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/document/index:
+    get:
+      tags:
+      - document
+      summary: Get the index data for a document.
+      description: Get the index information for a document.
+      operationId: FetchDocumentIndex
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: version
+        in: query
+        description: Version id
+        required: true
+        schema:
+          type: integer
+      - name: suffix
+        in: query
+        description: Suffix
+        required: true
+        schema:
+          type: integer
+      - name: keyfileDocId
+        in: query
+        description: Keyfile public document id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An array with the index data for the document.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FetchDocumentIndexReturn'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    put:
+      tags:
+      - document
+      summary: Update the index data for a document.
+      description: Update the index data for a document.
+      operationId: UpdateDocumentIndex
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: version
+        in: query
+        description: Version id
+        required: true
+        schema:
+          type: integer
+      - name: suffix
+        in: query
+        description: Suffix
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Data entry template with modified data entry fields
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataEntryTemplate'
+        required: true
+      responses:
+        200:
+          description: An identifier for the newly created document.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: template
+    post:
+      tags:
+      - document
+      summary: Create a document.
+      description: Create a document.
+      operationId: CreateDocument
+      parameters:
+      - name: indexDataId
+        in: query
+        description: Folder document index id used when uploading document files.
+          Set to 0 if using a list of files in CreateDocumentInfo.
+        required: true
+        schema:
+          type: integer
+      - name: action
+        in: query
+        description: 'One of the following indexing action : IndexFirstSuffix = 1,
+          Index = 2, Modify = 4'
+        required: true
+        schema:
+          type: integer
+          default: 2
+          enum:
+          - 1
+          - 2
+          - 4
+      requestBody:
+        description: List of files and index information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDocumentinfo'
+        required: true
+      responses:
+        200:
+          description: Indexed document and folder data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexedDocument'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: files
+    delete:
+      tags:
+      - document
+      summary: Delete a document.
+      description: Delete a document. Marks the document as unsearchable for all users.
+      operationId: DeleteDocument
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: version
+        in: query
+        description: Version id
+        required: true
+        schema:
+          type: integer
+      - name: suffix
+        in: query
+        description: Suffix
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Delete document results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteDocumentResult'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/document/keywords:
+    get:
+      tags:
+      - document
+      summary: Get the keywords associated with a document.
+      description: Get the keywords associated with a document.
+      operationId: GetKeywords
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Keywords for a document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Keywords'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    post:
+      tags:
+      - document
+      summary: Put new keywords in a document.
+      description: Puts new keywords in a document, replaces the existing keywords.
+        To remove all keywords, set keywords data to empty.
+      operationId: PutKeywords
+      requestBody:
+        description: New Keywords data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Keywords'
+        required: true
+      responses:
+        200:
+          description: Keywords for a document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Keywords'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: Keywords
+  /v1/document/legalhold:
+    get:
+      tags:
+      - document
+      summary: Get the legal hold status for a document.
+      description: Get the legal hold status for a document.
+      operationId: GetLegalHold
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Legal hold status for a document. The legal hold status object
+            will be empty if the document is not on legal hold.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalHoldStatus'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    post:
+      tags:
+      - document
+      summary: Set the legal hold data for a document.
+      description: Set the legal hold data for a document. Also provides ability to
+        change the expiration date and the reason.
+      operationId: SetLegalHold
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: version
+        in: query
+        description: Version
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: New legal hold status data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalHoldStatus'
+        required: true
+      responses:
+        200:
+          description: Document identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceDocumentIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: legalHoldStatus
+    delete:
+      tags:
+      - document
+      summary: Removes a document from legal hold .
+      description: Removes a document legal from hold.
+      operationId: RemoveLegalHold
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Document identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceDocumentIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/document/remarks:
+    get:
+      tags:
+      - document
+      summary: Get the remarks associated with a document.
+      description: Get the remarks associated with a document.
+      operationId: GetRemarks
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: suffix
+        in: query
+        description: Suffix id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Remarks for a document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Remark'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    post:
+      tags:
+      - document
+      summary: Put new remarks in a document.
+      description: Put new remarks in a document. This will append to existing remarks.
+      operationId: PutRemarks
+      requestBody:
+        description: New remark data.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Remark'
+        required: true
+      responses:
+        200:
+          description: Remarks for a document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Remark'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: remark
+  /v1/document/suffix:
+    post:
+      tags:
+      - document
+      summary: Create a suffix for a document.
+      description: Create a suffix for a document. Adds a new record in the database
+        for the document.
+      operationId: CreateSuffix
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      - name: version
+        in: query
+        description: Version id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Data entry template.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataEntryTemplate'
+        required: true
+      responses:
+        200:
+          description: Identifier for the new suffix entry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: template
+  /v1/document/unlock:
+    delete:
+      tags:
+      - document
+      summary: Unlock a document.
+      description: Unlock a document. If not an administrator, can only unlock those
+        documents locked to logged on user.
+      operationId: Unlock
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Identifier of unlocked document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceDocumentIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/document/version:
+    post:
+      tags:
+      - document
+      summary: Create a new version for a document.
+      description: Create a new version for a document.
+      operationId: CreateVersion
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id of the document
+        required: true
+        schema:
+          type: integer
+      - name: versionLabel
+        in: query
+        description: New version label
+        required: true
+        schema:
+          type: string
+      - name: deviceId
+        in: query
+        description: Id of device where version is to be created.  Use document/devices
+          to get a list of available devices for user.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Collection of file identifiers
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DocumentCreateVersionFile'
+        required: true
+      responses:
+        200:
+          description: New document version identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceDocumentIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: files
+  /v1/document/versions:
+    get:
+      tags:
+      - document
+      summary: Get a list of versions for a document.
+      description: Get a list of versions for a document.
+      operationId: GetVersions
+      parameters:
+      - name: masterId
+        in: query
+        description: Master id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Versions for a document.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SourceDocumentIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/documents/index:
+    put:
+      tags:
+      - documents
+      summary: Update document index data.
+      description: Update index data for a document or a collection of documents.
+      operationId: UpdateDocumentIndexes
+      requestBody:
+        description: Index data change message
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentIdentifierIndexDataChangeMessage'
+        required: true
+      responses:
+        200:
+          description: Changed documents results.
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: updateDetails
+  /v1/errorfolders:
+    get:
+      tags:
+      - errorfolders
+      summary: Get a list of error folders for user.
+      description: Get a list of error folders for user.
+      operationId: GetIndexErrorFolders
+      responses:
+        200:
+          description: A collection of error folders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFoldersMessage'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/folder:
+    put:
+      tags:
+      - folder
+      summary: Update properties of an index folder.
+      description: Update properties or take action on an index folder.
+      operationId: UpdateFolder
+      parameters:
+      - name: action
+        in: query
+        description: 'Actions to perform on the folder : SendFolderToApplication =
+          1, SendFolderToUser = 3, SendFolderToGroup = 4, RenameFolder = 5, ReleaseFolder
+          = 6, CloseFolder = 10'
+        required: true
+        schema:
+          type: integer
+          default: 1
+          enum:
+          - 1
+          - 3
+          - 4
+          - 5
+          - 6
+          - 10
+      requestBody:
+        description: Folder and data to update.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexFolder'
+        required: true
+      responses:
+        200:
+          description: Updated index folder.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFolder'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: folder
+    delete:
+      tags:
+      - folder
+      summary: Delete an indexing folder.
+      description: Delete an indexing folder.
+      operationId: DeleteFolder
+      parameters:
+      - name: folderId
+        in: query
+        description: Folder id.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Index folder deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFolder'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/folder/document:
+    get:
+      tags:
+      - folder
+      summary: Get the document information from a folder.
+      description: Get the document information from a folder.
+      operationId: GetIndexFolderDocs
+      parameters:
+      - name: folderId
+        in: query
+        description: Id of folder from which to get the document
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: query
+        description: When viewing a specific document, use IndexDataId; when using
+          prevDoc or nextDoc use DocumentId; when opening folder for indexing, use
+          0 to return first document in the folder
+        required: true
+        schema:
+          type: integer
+      - name: prevDoc
+        in: query
+        description: Move to the document previous from the index id parameter value
+        required: true
+        schema:
+          type: integer
+      - name: nextDoc
+        in: query
+        description: Move to the next document from the index id parameter value
+        required: true
+        schema:
+          type: integer
+      - name: isFolderShared
+        in: query
+        description: Is this index folder shared with other users or groups
+        required: true
+        schema:
+          type: boolean
+      responses:
+        200:
+          description: Index folder document viewer information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFolderDocumentViewer'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    post:
+      tags:
+      - folder
+      summary: Create a user folder document.
+      description: Create a user folder document.
+      operationId: CreateUserFolderDocument
+      parameters:
+      - name: sessionName
+        in: query
+        description: 'Document folder name used to identify the directory where the
+          files were uploaded. tThe folder name will be combined with the user''s
+          temorary File360 Server path. Like : ''C:/Users/{username}/AppData/Local/Temp/File360Server/Documents/Upload/my-folder-files''.
+          These folders must resolve to a path within the user''s File360 Server temporary
+          folder.'
+        required: true
+        schema:
+          type: string
+      - name: archiveId
+        in: query
+        description: With applicationId, archive id is used to find or created the
+          user folder to place document
+        required: true
+        schema:
+          type: integer
+      - name: applicationId
+        in: query
+        description: With archiveId, application id is used to find or created the
+          user folder to place document
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: The destination folder, and the document created as part of
+            a collection of documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFolderDocuments'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    delete:
+      tags:
+      - folder
+      summary: Delete a document in the user folder.
+      description: Delete a document in the user folder.
+      operationId: DeleteFolderDocument
+      parameters:
+      - name: indexDataId
+        in: query
+        description: The index id of the document in the folder.  Returned as part
+          of the IndexFolderDocuments object.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Deleted index folder document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFolderDocument'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/folder/document/compid:
+    post:
+      tags:
+      - folder
+      summary: Get a Brava composition id for a list of folder document files.
+      description: Get a Brava composition id for a list of folder document files.
+      operationId: GetIndexFolderDocCompID
+      requestBody:
+        description: List of files in the folder document.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexFolderDocumentFiles'
+        required: true
+      responses:
+        200:
+          description: Brava composition id for a list of folder document files.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFolderDocumentViewer'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: docfiles
+  /v1/folder/document/files:
+    get:
+      tags:
+      - folder
+      summary: Get a list of files in a document.
+      description: Get a list of files in a document.
+      operationId: GetIndexFolderDocFiles
+      parameters:
+      - name: indexId
+        in: query
+        description: Document index id
+        required: true
+        schema:
+          type: integer
+      - name: isFolderShared
+        in: query
+        description: Is this folder shared between users or groups
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Folder document files.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileInfo'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/folder/documents:
+    get:
+      tags:
+      - folder
+      summary: Get a list of documents in a folder.
+      description: Get a list of documents in a folder.
+      operationId: GetIndexFolderDocuments
+      parameters:
+      - name: folderId
+        in: query
+        description: Folder id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: A collection of index folder documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFolderDocuments'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/folders:
+    get:
+      tags:
+      - folders
+      summary: Get a list of data entry folders.
+      description: Get a list of data entry folders.
+      operationId: GetIndexFolders
+      responses:
+        200:
+          description: A collection of data entry folders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexFoldersMessage'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/log:
+    post:
+      tags:
+      - infrastructure
+      summary: Log a client message to the Web Server debug log.
+      description: Log a client message to the Web Server debug log. (See KB710808
+        for details on how to enable web client logging)
+      operationId: Log
+      requestBody:
+        description: Log message information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogMessage'
+        required: true
+      responses:
+        200:
+          description: Message logged.
+          content: {}
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: logData
+  /v1/status:
+    get:
+      tags:
+      - infrastructure
+      summary: Get the status of the RESTAPI server.
+      description: Get the status of the RESTAPI server
+      operationId: Status
+      responses:
+        200:
+          description: Status returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerStatus'
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/route:
+    post:
+      tags:
+      - route
+      summary: Route documents to a user or group.
+      description: Route documents to users or groups.
+      operationId: RouteDocuments
+      parameters:
+      - name: title
+        in: query
+        description: Routing message title
+        required: true
+        schema:
+          type: string
+      - name: comment
+        in: query
+        description: Routing message comment
+        schema:
+          type: string
+      - name: templateId
+        in: query
+        description: Retrieval template id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Routing details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoutingDetails'
+        required: true
+      responses:
+        200:
+          description: Identifier for the Route just created.
+          content:
+            application/json:
+              schema:
+                type: integer
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: routingDetails
+  /v1/template/dataentry:
+    get:
+      tags:
+      - template
+      summary: Get a data entry template.
+      description: Get a data entry template.
+      operationId: GetDataEntryTemplate
+      parameters:
+      - name: id
+        in: query
+        description: Template id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Data entry template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEntryTemplate'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/template/dataentry/callback:
+    post:
+      tags:
+      - template
+      summary: Run a data entry template callback.
+      operationId: RunCallbackDataEntry
+      parameters:
+      - name: callbackHandleId
+        in: query
+        description: Callback handle id
+        required: true
+        schema:
+          type: integer
+      - name: fieldId
+        in: query
+        description: Field id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Data entry template object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataEntryTemplate'
+        required: true
+      responses:
+        200:
+          description: Call back result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallbackResult'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: body
+  /v1/template/retrieval:
+    get:
+      tags:
+      - template
+      summary: Get a retrieval template.
+      description: Get a retrieval template.
+      operationId: GetRetrievalTemplate
+      parameters:
+      - name: id
+        in: query
+        description: Template id
+        required: true
+        schema:
+          type: integer
+      - name: applicationid
+        in: query
+        description: Application id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Retrieval template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalTemplate'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/template/retrieval/callback:
+    post:
+      tags:
+      - template
+      summary: Run a retrieval template callback.
+      operationId: RunCallbackRetrieval
+      parameters:
+      - name: callbackHandleId
+        in: query
+        description: Callback handle id
+        required: true
+        schema:
+          type: integer
+      - name: fieldId
+        in: query
+        description: Field id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Retrieval template
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrievalTemplate'
+        required: true
+      responses:
+        200:
+          description: Call back result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallbackResult'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: searchTemplate
+  /v1/template/retrieval/documents:
+    post:
+      tags:
+      - documents
+      summary: Search for a list of documents.
+      description: Search for a list of documents using the criteria filled into the
+        input fields in the retrieval template.
+      operationId: PerformRetrieval
+      requestBody:
+        description: Retrieval template filled in with search criteria
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrievalTemplate'
+        required: true
+      responses:
+        200:
+          description: Hit list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hits'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: searchTemplate
+  /v1/template/retrieval/layout:
+    put:
+      tags:
+      - template
+      summary: Update retrieval template layout for user.
+      description: Update retrieval template layout for user.
+      operationId: SavePersonalRetrievalTemplate
+      requestBody:
+        description: Retrieval template
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrievalTemplate'
+        required: true
+      responses:
+        200:
+          description: Retrieval template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalTemplate'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: template
+    delete:
+      tags:
+      - template
+      summary: Delete retrieval template layout for user.
+      description: Delete the retrieval template layout for logged on user.
+      operationId: RemovePersonalRetrievalTemplate
+      parameters:
+      - name: templateId
+        in: query
+        description: Template id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Retrieval template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalTemplate'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/templates/dataentry:
+    get:
+      tags:
+      - templates
+      summary: Data entry templates listing.
+      description: Get a list of data entry templates.
+      operationId: dataentrytemplates
+      responses:
+        200:
+          description: A collection of data entry templates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEntryTemplatesList'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/templates/retrieval:
+    get:
+      tags:
+      - templates
+      summary: Retrieval templates listing.
+      description: Get a list of retrieval templates.
+      operationId: retrievaltemplates
+      responses:
+        200:
+          description: A collection of retrieval templates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalTemplatesList'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/users:
+    get:
+      tags:
+      - usersgroups
+      summary: Get a list of users.
+      description: Get a list of the users defined in user administration.
+      operationId: Users
+      responses:
+        200:
+          description: A collection of user identifiers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserIdentifier'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/groups:
+    get:
+      tags:
+      - usersgroups
+      summary: Get a list of groups.
+      description: Get the list of user groups.
+      operationId: Groups
+      responses:
+        200:
+          description: A collection of groups.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupIdentifier'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/admin/users:
+    get:
+      tags:
+      - usersgroupsadmin
+      summary: Get a list of all users.
+      description: Get the list of users.
+      operationId: AdminUsers
+      responses:
+        200:
+          description: A collection of users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/admin/user:
+    get:
+      tags:
+      - usersgroupsadmin
+      summary: Get a user.
+      description: Get a user.
+      operationId: GetUser
+      parameters:
+      - name: userId
+        in: query
+        description: User id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: A user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    delete:
+      tags:
+      - usersgroupsadmin
+      summary: Delete a user.
+      description: Delete a user.
+      operationId: DeleteUser
+      parameters:
+      - name: userId
+        in: query
+        description: User id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Deleted user id.
+          content:
+            application/json:
+              schema:
+                type: integer
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/admin/groups:
+    get:
+      tags:
+      - usersgroupsadmin
+      summary: Get a list of groups.
+      description: Get the list of groups.
+      operationId: AdminGroups
+      responses:
+        200:
+          description: A collection of groups.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/admin/group:
+    get:
+      tags:
+      - usersgroupsadmin
+      summary: Get a group.
+      description: Get a group.
+      operationId: GetGroup
+      parameters:
+      - name: groupId
+        in: query
+        description: Group id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: A group to administer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    put:
+      tags:
+      - usersgroupsadmin
+      summary: Update a group.
+      description: Edit a group.
+      operationId: EditGroup
+      requestBody:
+        description: Group updates
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        200:
+          description: Updated group.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: group
+    post:
+      tags:
+      - usersgroupsadmin
+      summary: Create a group.
+      description: Create a group.
+      operationId: CreateGroup
+      requestBody:
+        description: Group identifier
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupIdentifier'
+        required: true
+      responses:
+        200:
+          description: Group identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupIdentifier'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: group
+    delete:
+      tags:
+      - usersgroupsadmin
+      summary: Delete a group.
+      description: Delete a group.
+      operationId: DeleteGroup
+      parameters:
+      - name: groupId
+        in: query
+        description: Group id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Deleted group id.
+          content:
+            application/json:
+              schema:
+                type: integer
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/admin/group/members:
+    get:
+      tags:
+      - usersgroupsadmin
+      summary: Get a the list of users for a group.
+      description: Get a the list of users for a group.
+      operationId: AdminGroupMembers
+      parameters:
+      - name: groupId
+        in: query
+        description: Group id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: A group with user information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/admin/document-security-level:
+    put:
+      tags:
+      - usersgroupsadmin
+      summary: Edit a document security level.
+      description: Edit a document security level.
+      operationId: UpdateDocumentLevelSecurity
+      parameters:
+      - name: level
+        in: query
+        description: Security level
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: Document security level
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentLevelSecurity'
+        required: true
+      responses:
+        200:
+          description: Updated document security level.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentLevelSecurity'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: securityLevel
+  /v1/workflow/workitem:
+    get:
+      tags:
+      - workflow
+      summary: Get a workitem.
+      description: Get a workitem.
+      operationId: RetrieveWorkitem
+      parameters:
+      - name: workitemId
+        in: query
+        description: Workitem id
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Workitem type
+        required: true
+        schema:
+          type: integer
+      - name: workstep
+        in: query
+        description: Workstep name
+        required: true
+        schema:
+          type: string
+      - name: workset
+        in: query
+        description: Workset name
+        required: true
+        schema:
+          type: string
+      - name: workflowId
+        in: query
+        description: Workflow id
+        required: true
+        schema:
+          type: integer
+      - name: timestamp
+        in: query
+        description: Workitem timestamp
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A workitem.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workitem'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+    put:
+      tags:
+      - workflow
+      summary: Make changes to a workitem.
+      description: Update the workitem.  This WILL NOT send the workitem onto the
+        next workstep.  Use the POST call to send it on.
+      operationId: SaveWorkitem
+      requestBody:
+        description: Workitem
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workitem'
+        required: true
+      responses:
+        200:
+          description: An updated workitem.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workitem'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: workitem
+    post:
+      tags:
+      - workflow
+      summary: Send the changes for the workitem.
+      description: Send the workitem onto the next default workstep in the workflow.
+        This WILL NOT update the workitem.  Use the PUT call to update.
+      operationId: SendWorkitem
+      requestBody:
+        description: Workitem
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workitem'
+        required: true
+      responses:
+        200:
+          description: An updated workitem.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workitem'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+      x-codegen-request-body-name: workitem
+  /v1/workflow/workitem/history:
+    get:
+      tags:
+      - workflow
+      summary: Get the history for a workitem.
+      description: Get the history for a workitem.
+      operationId: GetHistory
+      parameters:
+      - name: workitemId
+        in: query
+        description: Workitem id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The workitem history.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workitem'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/workflow/workitems:
+    get:
+      tags:
+      - workflow
+      summary: Get a list of workitems.
+      description: Get a list of workitems for a particular workset.
+      operationId: Workitems
+      parameters:
+      - name: workflowId
+        in: query
+        description: Workflow id
+        required: true
+        schema:
+          type: integer
+      - name: worksetName
+        in: query
+        description: Workset name
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A collection of workitems.
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/workflow/workitems/backlog:
+    get:
+      tags:
+      - workflow
+      summary: Get a count of workflow items awaiting initiation.
+      description: Get a count of workflow items awaiting initiation.
+      operationId: GetCountOfWorkflowBacklog
+      responses:
+        200:
+          description: Count of workitems awaiting initiation.
+          content:
+            application/json:
+              schema:
+                type: integer
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/workflow/worklist:
+    get:
+      tags:
+      - workflow
+      summary: Get a list of workitems on the currently logged on users worklist.
+      description: Get a list of workitems on the currently logged on users worklist.
+      operationId: Worklist
+      responses:
+        200:
+          description: A collection of workitems.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workitems'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/workflow/worklist/form:
+    get:
+      tags:
+      - workflow
+      summary: Get the workflow form.
+      description: Get the workflow form.
+      operationId: GetForm
+      parameters:
+      - name: className
+        in: query
+        description: Class name
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The workflow form for the class.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkitemForm'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/workflow/worklist/workitem:
+    delete:
+      tags:
+      - workflow
+      summary: Remove a workitem from the current users worklist.
+      description: Remove a workitem from the current users worklist.
+      operationId: RemoveWorkitemFromWorklist
+      parameters:
+      - name: workitemId
+        in: query
+        description: Workitem id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The workitem id that was removed.
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+  /v1/workflow/worksets:
+    get:
+      tags:
+      - workflow
+      summary: Get a list of worksets.
+      description: Get a list of worksets.
+      operationId: Worksets
+      responses:
+        200:
+          description: A collection of worksets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worksets'
+        400:
+          description: Bad request - invalid parameters.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Permission denied.
+          content: {}
+        500:
+          description: Internal server error. Check server log.
+          content: {}
+components:
+  schemas:
+    Application:
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Application id
+        Name:
+          type: string
+          description: Application name
+      description: Application.
+    ApplicationArchiveAccess:
+      type: object
+      properties:
+        ApplicationArchiveAccess:
+          type: array
+          description: Application archive access.
+          items:
+            $ref: '#/components/schemas/ApplicationArchiveAccessItem'
+      description: A collection of application archive pair and their access rights
+        items.
+    ApplicationArchiveAccessItem:
+      type: object
+      properties:
+        Key:
+          $ref: '#/components/schemas/ApplicationArchivePair'
+        Value:
+          type: integer
+          description: 'An OR''ed set of access types : NoAccess = 0, RetrievalAccess
+            = 1, ExportAccess = 2, EntryAccess = 4, ImportAccess = 8, UpdateAccess
+            = 16, DeleteAccess = 32, SuperAccess = 65535'
+      description: An application archive pair and their access rights item
+    ApplicationArchivePair:
+      type: object
+      properties:
+        ApplicationId:
+          type: integer
+          description: Application id
+        ApplicationName:
+          type: string
+          description: Application name
+        ArchiveId:
+          type: integer
+          description: Archive id
+        ArchiveName:
+          type: string
+          description: Archive name
+      description: Application archive pair.
+    ApplicationIdentifier:
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Application id
+        Name:
+          type: string
+          description: Application name
+      description: Application identifier.
+    Archive:
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Archive id
+        Name:
+          type: string
+          description: Archive name
+      description: Archive.
+    ArchiveApplications:
+      type: object
+      properties:
+        Applications:
+          type: array
+          description: Application.
+          items:
+            $ref: '#/components/schemas/Application'
+        Archive:
+          $ref: '#/components/schemas/Archive'
+      description: Applications associated with an archive with the selected access
+        type.
+    Authentication:
+      required:
+      - culture
+      - name
+      - password
+      type: object
+      properties:
+        culture:
+          type: string
+          description: 'Users culture string : ''en-us'''
+        key:
+          type: string
+          description: Application key
+        name:
+          type: string
+          description: User name
+        password:
+          type: string
+          description: Password
+      description: Authentication information.
+    AvailableDevices:
+      type: object
+      properties:
+        Applications:
+          type: array
+          description: Collection of applications associated with device types
+          items:
+            $ref: '#/components/schemas/ApplicationIdentifier'
+        CacheDevices:
+          type: array
+          description: Collection of cache devices
+          items:
+            $ref: '#/components/schemas/Cache'
+        ContentServerDevices:
+          type: array
+          description: Collection of Content Server devices
+          items:
+            $ref: '#/components/schemas/ContentServer'
+        DefaultDevice:
+          $ref: '#/components/schemas/DeviceIdentifier'
+        Devices:
+          type: array
+          description: Collection of available devices
+          items:
+            $ref: '#/components/schemas/DeviceIdentifier'
+        KeyfileDevices:
+          type: array
+          description: Collection of Keyfile devices
+          items:
+            $ref: '#/components/schemas/Keyfile'
+        MicrofilmDevices:
+          type: array
+          description: Collection of microfilm devices
+          items:
+            $ref: '#/components/schemas/Microfilm'
+        StoreDevices:
+          type: array
+          description: Collection of store devices
+          items:
+            $ref: '#/components/schemas/CdromJukebox'
+        Volumes:
+          type: array
+          description: Collection of Volumes
+          items:
+            $ref: '#/components/schemas/Volume'
+      description: Available devices
+    Cache:
+      allOf:
+      - $ref: '#/components/schemas/Device'
+      - type: object
+        properties:
+          ActivateAfterStore:
+            type: string
+            description: Activate cache after storing
+          ActualSize:
+            type: integer
+            description: Actual size of the cache
+          ActualSizeInBytes:
+            type: integer
+            description: Actual size of the cache in bytes
+          ApplicationIdentifier:
+            $ref: '#/components/schemas/ApplicationIdentifier'
+          Applications:
+            type: array
+            description: Collection of applications associated with this device
+            items:
+              $ref: '#/components/schemas/ApplicationIdentifier'
+          CheckForBestPractices:
+            type: boolean
+            description: Check that device employs the best practices
+          ClearAfterStore:
+            type: string
+            description: Clear cache after storing
+          DeviceIdentifier:
+            $ref: '#/components/schemas/DeviceIdentifier'
+          DocumentCount:
+            type: integer
+            description: Count of documents in the cache
+          EnableAutoRun:
+            type: boolean
+            description: Enable auto run
+          ExportIndexDataToStore:
+            type: boolean
+            description: Export index data to store
+          ExportProgramsToStore:
+            type: boolean
+            description: Export programs to store
+          LastDocumentId:
+            type: integer
+            description: Id of last document added to cache
+          LastReset:
+            type: string
+            description: Last time the cache we reset
+          MaximumSizeInBytes:
+            type: integer
+            description: Maximum size of the cache in bytes
+          PathIdentifier:
+            $ref: '#/components/schemas/PathIdentifier'
+          State:
+            type: integer
+            description: 'Cache state - one of the following : None = 0, Active =
+              1, Locked = 2, Full = 3, WritePrepared = 4, Prepared = 5, Checked =
+              6, Preparing = 7, Checking = 8, Migrating = 9, Migrated = 10'
+          StatusReport:
+            $ref: '#/components/schemas/OperationStatus'
+          StoreDeviceId:
+            type: integer
+            description: Id of Store device was stored to
+          StoreLabel:
+            type: string
+            description: Label of store cache has been stored to
+          StoredVolume:
+            $ref: '#/components/schemas/Volume'
+          UnassignedApplications:
+            type: array
+            description: Collection of unassigned applications
+            items:
+              $ref: '#/components/schemas/ApplicationIdentifier'
+          VolumeId:
+            type: integer
+            description: Volume id
+          WorkstationIdentifier:
+            $ref: '#/components/schemas/Workstation'
+        description: Cache device
+    CallbackExternalColumn:
+      type: object
+      properties:
+        CopyToTarget:
+          type: boolean
+        Name:
+          type: string
+        TargetFieldId:
+          type: integer
+      description: Callback external column.
+    CallbackHandle:
+      type: object
+      properties:
+        ExternalHandlerLibrary:
+          type: string
+          description: External handler library
+        ExternalHandlerMethod:
+          type: string
+          description: External handler method
+        ExternalHandlerNamespace:
+          type: string
+          description: External handler name space
+        ExternalHandlerParameters:
+          type: string
+          description: External handler parameters
+        HandleId:
+          type: integer
+          description: Callback handle id
+        Label:
+          type: string
+          description: Callback label
+        SourceId:
+          type: integer
+          description: Source id
+        TypeCallback:
+          type: integer
+          description: Callback type. 0 = None, 1100 = Template entry,3101 = Field
+            entry,3999 = Field entry static file,5001 = Field exit verification,5002
+            = Field exit min/max,5998 = Field exit existence check,5999 = Field exit
+            static file,9999 = User exit
+        TypeUserExit:
+          type: integer
+          description: User exit type. 0 = None, 1 = Callback usage, 2 = Mask, 3 =
+            Lookup
+      description: Callback handle.
+    CallbackResult:
+      type: object
+      properties:
+        Columns:
+          type: array
+          description: Callback external columns.
+          items:
+            $ref: '#/components/schemas/CallbackExternalColumn'
+        EntryTemplate:
+          $ref: '#/components/schemas/DataEntryTemplate'
+        Handle:
+          $ref: '#/components/schemas/CallbackHandle'
+        Rows:
+          type: array
+          description: Collection of callback results returned.
+          items:
+            $ref: '#/components/schemas/CallbackResultRows'
+        SearchTemplate:
+          $ref: '#/components/schemas/RetrievalTemplate'
+      description: Callback result.
+    CallbackResultRows:
+      type: object
+      properties:
+        Row:
+          type: array
+          items:
+            type: object
+            properties: {}
+      description: Callback result.
+    CdromJukebox:
+      allOf:
+      - $ref: '#/components/schemas/Device'
+      - type: object
+        properties:
+          CacheDevices:
+            type: array
+            description: Cache device
+            items:
+              $ref: '#/components/schemas/Cache'
+          CheckForBestPractices:
+            type: boolean
+            description: Check that device employs the best practices
+          DeviceIdentifier:
+            $ref: '#/components/schemas/DeviceIdentifier'
+          IsReadOnly:
+            type: boolean
+            description: Is this CD read only
+          MostRecentLabel:
+            type: string
+            description: Most recent label
+          PathIdentifier:
+            $ref: '#/components/schemas/PathIdentifier'
+          StatusReport:
+            $ref: '#/components/schemas/OperationStatus'
+          WorkstationIdentifier:
+            $ref: '#/components/schemas/Workstation'
+        description: CDRom jukebox device.
+    ContentServer:
+      allOf:
+      - $ref: '#/components/schemas/Device'
+      - type: object
+        properties:
+          ApplicationPassword:
+            type: string
+            description: Application password
+          ApplicationUserName:
+            type: string
+            description: Application user name
+          AuthenticationPassword:
+            type: string
+            description: Authentication password
+          AuthenticationServerAddress:
+            type: string
+            description: Authentication server address
+          AuthenticationUserName:
+            type: string
+            description: Authentication user name
+          CheckForBestPractices:
+            type: boolean
+            description: Check that device employs the best practices
+          ContentServerAddress:
+            type: string
+            description: Content server address
+          DeviceIdentifier:
+            $ref: '#/components/schemas/DeviceIdentifier'
+          EncryptedApplicationPassword:
+            type: string
+            description: Encrypted application password
+          EnterpriseLibraryServerAddress:
+            type: string
+            description: Enterprise library server address
+          PathIdentifier:
+            $ref: '#/components/schemas/PathIdentifier'
+          RootFolderItemId:
+            type: string
+            description: Root folder item id
+          StatusReport:
+            $ref: '#/components/schemas/OperationStatus'
+          WebsiteAddress:
+            type: string
+            description: Web site address
+          WorkstationIdentifier:
+            $ref: '#/components/schemas/Workstation'
+        description: Content server device.
+    CreateDocumentinfo:
+      required:
+      - dataEntryTemplate
+      - indexFolderDocumentFiles
+      type: object
+      properties:
+        dataEntryTemplate:
+          $ref: '#/components/schemas/DataEntryTemplate'
+        indexFolderDocumentFiles:
+          type: array
+          description: 'An array of relative document file paths. Which are expected
+            to resolve to paths within the File360 Web Server''s directory. Like :
+            ''/documents/uploads/1.tif''. This will resolve to ''{WebServerInstallDir}/documents/uploads/1.tif''.
+            No escape characters are accepted.'
+          items:
+            $ref: '#/components/schemas/IndexFolderDocumentFile'
+      description: Create document information.
+    DataEntryInputField:
+      type: object
+      properties:
+        LookupTable:
+          $ref: '#/components/schemas/LookupTable'
+        DisplayType:
+          type: string
+          description: Display type. Edit = 'E', MaskEdit = '<mask value>', Lookup
+            = 'L,<num>'
+          default: E
+          enum:
+          - E
+          - <mask value>
+          - L,<num>
+        EntryCallback:
+          $ref: '#/components/schemas/CallbackHandle'
+        ExitCallback:
+          $ref: '#/components/schemas/CallbackHandle'
+        FieldType:
+          type: integer
+          description: Field type. None = 0, Currency = 11, Date = 9, DateTime = 8,
+            Double = 5, Float = 4, LongInteger = 3, String = 6, Time = 10
+        Hint:
+          type: string
+          description: Field hint
+        Id:
+          type: integer
+          description: Field id
+        IsDuplicate:
+          type: boolean
+          description: Should the field be duplicated on data entry
+        Label:
+          type: string
+          description: Field label
+        Length:
+          type: integer
+          description: Field data max length
+        MappingNumber:
+          type: integer
+          description: Mapping number
+        Mask:
+          type: string
+          description: Field mask
+        MaskPlaceholder:
+          type: string
+          description: Field mask placeholder
+        MaskStorage:
+          type: integer
+          description: Mask storage. UserData = 0, Literals = 1, Spaces = 2, IncludePlaceholders
+            = 3, IncludeLiteralsAndPlaceholders = 4, IncludeLiterals = 5
+        Name:
+          type: string
+          description: Field name
+        Precision:
+          type: integer
+          description: Field precision
+        Required:
+          type: boolean
+          description: Is the field required
+        Value:
+          type: string
+          description: Field value
+      description: Data entry input field.
+    DataEntryInputFieldItem:
+      type: object
+      properties:
+        Key:
+          type: string
+          description: Field Id
+        Value:
+          $ref: '#/components/schemas/DataEntryInputField'
+      description: 'Data entry key-value pair : Field id - DataEntryTemplateField'
+    DataEntryTemplate:
+      allOf:
+      - $ref: '#/components/schemas/DataEntryTemplateIdentifier'
+      - type: object
+        properties:
+          ApplicationId:
+            type: integer
+            description: Application id
+          ApplicationName:
+            type: string
+            description: Application name
+          ArchiveId:
+            type: integer
+            description: Archive id
+          ArchiveName:
+            type: string
+            description: Archive name
+          AvailableDevices:
+            type: array
+            description: Available devices
+            items:
+              $ref: '#/components/schemas/DeviceIdentifier'
+          CanDataEnter:
+            type: boolean
+            description: Can data enter
+          CanUpdate:
+            type: boolean
+            description: Can update
+          EntryCallback:
+            $ref: '#/components/schemas/CallbackHandle'
+          ExitCallback:
+            $ref: '#/components/schemas/CallbackHandle'
+          InputFields:
+            type: array
+            description: Collection of field ids and input field objects
+            items:
+              $ref: '#/components/schemas/DataEntryInputFieldItem'
+          SelectedDevice:
+            $ref: '#/components/schemas/DeviceIdentifier'
+        description: Data entry template.
+    DataEntryTemplateDescription:
+      type: object
+      properties:
+        ApplicationId:
+          type: integer
+          description: Application id
+        ApplicationName:
+          type: string
+          description: Application name
+        ArchiveId:
+          type: integer
+          description: Archive id
+        ArchiveName:
+          type: string
+          description: Archive name
+        Id:
+          type: integer
+          description: Template id
+        Name:
+          type: string
+          description: Template name
+      description: Data entry template description.
+    DataEntryTemplateIdentifier:
+      required:
+      - Id
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Entry template id
+        Name:
+          type: string
+          description: Entry template name
+      description: Data entry template identifier.
+      discriminator:
+        propertyName: Id
+    DataEntryTemplatesList:
+      type: object
+      properties:
+        DataEntryTemplates:
+          type: array
+          description: Data entry templates
+          items:
+            $ref: '#/components/schemas/DataEntryTemplateDescription'
+      description: A collection of data entry templates.
+    DeleteDocumentResult:
+      type: object
+      properties:
+        Document:
+          $ref: '#/components/schemas/DocumentIdentifier'
+        ErrorMessage:
+          type: string
+          description: Error message
+      description: Del document results.
+    Device:
+      type: object
+      properties:
+        CheckForBestPractices:
+          type: boolean
+          description: Check that device employs the best practices
+        DeviceIdentifier:
+          $ref: '#/components/schemas/DeviceIdentifier'
+        PathIdentifier:
+          $ref: '#/components/schemas/PathIdentifier'
+        StatusReport:
+          $ref: '#/components/schemas/OperationStatus'
+        WorkstationIdentifier:
+          $ref: '#/components/schemas/Workstation'
+      description: Device
+    DeviceIdentifier:
+      type: object
+      properties:
+        DeviceType:
+          type: integer
+          description: Device type. 0 = None,1 = Cache,2 = Keyfile,3 = MicrofilmIdw,4
+            = MicrofilmImt,5 = MicrofilmIms,6 = MicrofilmI7300,7 = LocalCdrom,8 =
+            LocalCdWriter,9 = RemoteCdrom,10 = RemoteCdWriter,11 = CdromJukebox,12
+            = CdromJukeboxWriter,13 = CacheServer,14 = DocServer,15 = Offline,16 =
+            AutoCache,17 = Scanner,18 = Volume,19 = ContentServer
+        Id:
+          type: integer
+          description: Device id
+        Name:
+          type: string
+          description: Device name
+      description: Device identifier.
+    DocumentCreateVersionFile:
+      required:
+      - fileNumber
+      - filePath
+      type: object
+      properties:
+        fileNumber:
+          type: integer
+          description: File number
+        filePath:
+          type: string
+          description: File path
+      description: Document file for create new version.
+    DocumentFormatIcon:
+      type: object
+      properties:
+        Icon:
+          $ref: '#/components/schemas/Icon'
+        TotalResults:
+          type: integer
+          description: Tiff = 1, Ascii = 2, Bitmap = 3, Word = 4, Excel = 5, Powerpoint
+            = 6, Windoc = 7, Unknown = 8, Exe = 9, LockedByCurrentUser = 100, Keywords
+            = 101, Remarks = 102, LockedByOtherUser = 103, VersionsExist = 104, Expired
+            = 105, Annotations = 106
+      description: Document format icon.
+    DocumentIdentifier:
+      allOf:
+      - $ref: '#/components/schemas/SourceDocumentIdentifier'
+      - required:
+        - Suffix
+        type: object
+        properties:
+          Suffix:
+            type: integer
+            description: Document suffix id
+        description: Document identifier.
+    DocumentIdentifierIndexDataChangeMessage:
+      required:
+      - Documents
+      - EntryTemplate
+      type: object
+      properties:
+        Documents:
+          type: array
+          description: Collection of document identifiers, one or more, to change
+            index data
+          items:
+            $ref: '#/components/schemas/DocumentIdentifier'
+        EntryTemplate:
+          $ref: '#/components/schemas/DataEntryTemplate'
+      description: Collection of document identifiers to change and associated change
+        data.
+    DocumentLevelSecurity:
+      type: object
+      properties:
+        Level:
+          type: integer
+          description: Security level
+        Description:
+          type: string
+          description: Level description
+        Selected:
+          type: boolean
+          description: Level selected
+      description: Document level security
+    DocumentPageItem:
+      type: object
+      properties:
+        Key:
+          type: integer
+          description: Page number
+        Value:
+          type: string
+          description: Path to page
+      description: Document page Key-value pair - page number - path to page
+    FetchDocumentIndexReturn:
+      type: object
+      properties:
+        Key:
+          type: integer
+          description: fieldId
+        Value:
+          type: string
+          description: String data
+      description: 'Fetch document index key-value return : Field id - string data'
+    Field:
+      type: object
+      properties:
+        Alignment:
+          type: integer
+          description: 'Alignment - one of the following : Left = 0, Right = 1, Center
+            = 2'
+        Display:
+          type: integer
+          description: 'Display type - one of the following : Edit = 0, MaskEdit =
+            1, Lookup = 2'
+        DisplayType:
+          type: string
+          description: Display type. Edit = 'E', MaskEdit = '<mask value>', Lookup
+            = 'L,<num>'
+          default: E
+          enum:
+          - E
+          - <mask value>
+          - L,<num>
+        FieldType:
+          type: integer
+          description: 'Field data type - one of the following : None = 0, Currency
+            = 11, Date = 9, DateTime = 8, Double = 5, Float = 4, LongInteger = 3,
+            String = 6, Time = 10'
+        FillCharacter:
+          type: string
+        Hint:
+          type: string
+        Length:
+          type: integer
+        Mask:
+          type: string
+        MaskFormat:
+          type: integer
+          description: 'Mask format - one of the following : None = 0, Standard =
+            1, DateAndTime = 2, Numeric = 3'
+        MaskPlaceholder:
+          type: string
+        MaskStorage:
+          type: integer
+          description: 'Mask storage type - one of the following : UserData = 0, Literals
+            = 1 (Obsolete), Spaces = 2(Obsolete), IncludePlaceholders = 3, IncludeLiteralsAndPlaceholders
+            = 4, IncludeLiterals = 5'
+        Name:
+          type: string
+        Precision:
+          type: integer
+      description: Field.
+      discriminator:
+        propertyName: type
+    FieldCoordinates:
+      type: object
+      properties:
+        Bottom:
+          type: integer
+        Height:
+          type: integer
+        Left:
+          type: integer
+        Right:
+          type: integer
+        Top:
+          type: integer
+        Width:
+          type: integer
+      description: Field coordinates.
+    FieldIdentifier:
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Field id
+        Name:
+          type: string
+          description: Field name
+      description: Field identifier
+      discriminator:
+        propertyName: Id
+    FileInfo:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Thumbnail display name
+        fileExtension:
+          type: string
+          description: Source file extension
+        fileNumber:
+          type: integer
+          description: File number
+        sourceFileURL:
+          type: string
+          description: Source file URL
+        thumbnailURL:
+          type: string
+          description: Thumbnail URL
+      description: Document file information.
+    FolderDocumentAndIndex:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/IndexFolderDocument'
+        index:
+          type: integer
+          description: Document index
+      description: Folder document index and its associated index folder document
+    Group:
+      allOf:
+      - $ref: '#/components/schemas/GroupIdentifier'
+      - type: object
+        properties:
+          ActiveDirectoryLDAPPath:
+            type: string
+            description: Active directory LDAP path
+          Created:
+            type: string
+            description: Date created.
+            format: date
+          Modified:
+            type: string
+            description: Date modified.
+            format: date
+          ReservedLicenseCount:
+            type: integer
+            description: Reserved license count.
+          UserCount:
+            type: integer
+            description: User count.
+          Members:
+            type: array
+            description: Members. (This collection will only be populated by the GET
+              'group/members' API call)
+            items:
+              $ref: '#/components/schemas/User'
+          FunctionalSecurity:
+            type: array
+            description: A collection of functional security items.
+            items:
+              $ref: '#/components/schemas/FunctionalSecurityItem'
+          ApplicationFieldAccess:
+            type: array
+            description: Collection of application field access items.
+            items:
+              $ref: '#/components/schemas/ApplicationFieldAccessItem'
+          DataEntryTemplateAccess:
+            type: array
+            description: Collection of data entry template access items.
+            items:
+              $ref: '#/components/schemas/DataEntryTemplateAccessItem'
+          RetrievalTemplateAccess:
+            type: array
+            description: Collection of retrieval template access items.
+            items:
+              $ref: '#/components/schemas/RetrievalTemplateAccessItem'
+          SourceDocumentSecurityAccess:
+            type: array
+            description: Source document security access.
+            items:
+              $ref: '#/components/schemas/SourceDocumentSecurityAccessItem'
+          IndexDocumentSecurityAccess:
+            type: array
+            description: Index document security access.
+            items:
+              $ref: '#/components/schemas/IndexDocumentSecurityAccessItem'
+        description: Group.
+    SourceDocumentSecurityAccessItem:
+      type: object
+      properties:
+        Key:
+          type: integer
+          description: Security level
+        Value:
+          type: boolean
+          description: Security level access
+      description: Source document security access item.
+    IndexDocumentSecurityAccessItem:
+      type: object
+      properties:
+        Key:
+          type: integer
+          description: Security level
+        Value:
+          type: boolean
+          description: Security level access
+      description: Index document security access item.
+    DataEntryTemplateAccessItem:
+      type: object
+      properties:
+        Key:
+          $ref: '#/components/schemas/DataEntryTemplate'
+        Value:
+          type: boolean
+          description: Access enabled for data entry template.
+      description: Data entry template access item.
+    RetrievalTemplateAccessItem:
+      type: object
+      properties:
+        Key:
+          $ref: '#/components/schemas/RetrievalTemplate'
+        Value:
+          type: boolean
+          description: Access enabled for retrieval template.
+      description: Retrieval template access item.
+    ApplicationFieldAccessItem:
+      type: object
+      properties:
+        Key:
+          $ref: '#/components/schemas/ApplicationField'
+        Value:
+          type: boolean
+          description: Application filed access item enabled.
+      description: Application field access item.
+    ApplicationField:
+      allOf:
+      - $ref: '#/components/schemas/Field'
+      - type: object
+        properties:
+          Application:
+            $ref: '#/components/schemas/ApplicationIdentifier'
+          Label:
+            type: string
+            description: Field label.
+          IsRequired:
+            type: boolean
+            description: Is field required.
+          UsageType:
+            type: integer
+            description: 'Usage type - one of the following : None = 0, CallbackUsage
+              = 1, Mask = 2, Lookup = 3'
+        description: Functional security item.
+    FunctionalSecurityItem:
+      type: object
+      properties:
+        Key:
+          $ref: '#/components/schemas/PermissionItemDescriptionItem'
+        Value:
+          type: boolean
+          description: Permission item enabled.
+      description: Functional security item.
+    PermissionItemDescriptionItem:
+      type: object
+      properties:
+        Name:
+          type: string
+          description: Permission name.
+        Description:
+          type: string
+          description: Permission description.
+        IndexInDatabase:
+          type: integer
+          description: Database index id.
+        Category:
+          type: integer
+          description: 'Category type - one of the following : Administration = 0,
+            DataEntry = 1, Document = 2, Global = 3, Mail = 4, Remarks = 5, Retrieval
+            = 6, SpecialAPI = 7'
+        PermissionItem:
+          $ref: '#/components/schemas/PermissionItem'
+      description: Permission item description.
+    GroupIdentifier:
+      type: object
+      properties:
+        ApplicationArchiveAccess:
+          $ref: '#/components/schemas/ApplicationArchiveAccess'
+        Id:
+          type: integer
+          description: Group id
+        Name:
+          type: string
+          description: Group name
+      description: Group identifier.
+    Hit:
+      type: object
+      properties:
+        AnnotationCount:
+          type: integer
+        ApplicationId:
+          type: integer
+        ArchiveId:
+          type: integer
+        CanDataEnter:
+          type: boolean
+        CanDelete:
+          type: boolean
+        CanExport:
+          type: boolean
+        CanUpdate:
+          type: boolean
+        ContentServerId:
+          type: string
+        ContentServerWebsiteAddress:
+          type: string
+        DateTimeLocked:
+          type: string
+          format: date
+        Description:
+          type: string
+        DescriptionFieldId:
+          type: integer
+        Editor:
+          type: string
+        Expires:
+          type: string
+          format: date
+        Fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/HitListFieldKeyValuePair'
+        FileFormat:
+          type: integer
+        IsKeywordsEnabled:
+          type: boolean
+        KeywordData:
+          type: string
+        Keywords:
+          type: boolean
+        LegalHoldExpires:
+          type: string
+          format: date
+        LegalHoldReason:
+          type: string
+        LegalHoldUserId:
+          type: integer
+        LockType:
+          type: integer
+          description: 'Lock reserve type - one of the following : NotReserved = 0,
+            Reserved = 1, ReservedByCurrentUser = 2, LegalHold = 3, RecordsManagement
+            = 4'
+        MasterId:
+          type: integer
+        MediumType:
+          type: integer
+          description: 'Document medium type - of the following : Unknown = 0, Cache
+            = 1, Microfilm = 2, Ascii = 3, Hybrid = 4'
+        ModifyDateTime:
+          type: string
+          format: date
+        Remarks:
+          type: boolean
+        Suffix:
+          type: integer
+        Version:
+          type: integer
+      description: Retrieval hit.
+    HitListFieldKeyValuePair:
+      type: object
+      properties:
+        Key:
+          type: integer
+          description: Field id
+        Value:
+          $ref: '#/components/schemas/Field'
+      description: Hit list field key value pair.
+    Hits:
+      type: object
+      properties:
+        DocumentFormatIcons:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentFormatIcon'
+        HitItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/Hit'
+        HitlistId:
+          type: integer
+        LookupTables:
+          type: array
+          description: Look up tables.
+          items:
+            $ref: '#/components/schemas/LookupTable'
+        MoreHits:
+          type: boolean
+        RetrievalTemplate:
+          $ref: '#/components/schemas/RetrievalTemplate'
+        SearchUri:
+          type: string
+        StatusIcons:
+          type: array
+          items:
+            type: object
+        TotalResults:
+          type: integer
+        WebServerUri:
+          type: string
+      description: A collection of hits.
+    Icon:
+      type: object
+      properties:
+        Description:
+          type: string
+        Icon:
+          type: object
+          properties: {}
+          description: Byte array for icon.
+        Identifier:
+          type: integer
+          description: Tiff = 1, Ascii = 2, Bitmap = 3, Word = 4, Excel = 5, Powerpoint
+            = 6, Windoc = 7, Unknown = 8, Exe = 9, LockedByCurrentUser = 100, Keywords
+            = 101, Remarks = 102, LockedByOtherUser = 103, VersionsExist = 104, Expired
+            = 105, Annotations = 106
+      description: Icon
+    IndexFolder:
+      type: object
+      properties:
+        ApplicationId:
+          type: integer
+          description: Id of the assigned application for the folder
+        ApplicationName:
+          type: string
+          description: Name of the assigned application for the folder
+        ArchiveId:
+          type: integer
+          description: Id of the assigned archive for the folder
+        ArchiveName:
+          type: string
+          description: Name of the assigned archive for the folder
+        AssignedToGroupId:
+          type: integer
+          description: Id of group assigned to the folder
+        AssignedToName:
+          type: string
+          description: Name of group or user assigned to the folder
+        AssignedToUserId:
+          type: integer
+          description: Id of user assigned to the folder
+        Count:
+          type: integer
+          description: Number of documents in the folder
+        Created:
+          type: string
+          description: Date the folder was created
+        DistinctApplicationArchives:
+          type: array
+          description: Application archive listing
+          items:
+            $ref: '#/components/schemas/ApplicationArchivePair'
+        Id:
+          type: integer
+          description: Folder id
+        IsError:
+          type: boolean
+          description: Is this an error folder?
+        Name:
+          type: string
+          description: Folder name
+        TypeOfFolder:
+          type: integer
+          description: Folder types - None = 0, DataEntry = 1, Retrieval = 2, Personal
+            = 3, MailDataEntry = 4, Mail = 5, RequestProcessor = 6, ASCII = 7, AsciiDataEntry
+            = 8, Export = 9, Scanner = 10, AsciiDatabaseEngine = 11, MailRequestProcessor
+            = 12, EmailRequestProcessor = 13, AsciiMailDataEntry = 14
+        UsedBy:
+          type: string
+          description: Name of user that is currently using the folder
+        UsedById:
+          type: integer
+          description: Id of user currently using the folder
+      description: Index folder
+    IndexFolderDocument:
+      type: object
+      properties:
+        ApplicationId:
+          type: integer
+          description: Application id
+        ApplicationName:
+          type: string
+          description: Application name
+        ArchiveId:
+          type: integer
+          description: Archive id
+        ArchiveName:
+          type: string
+          description: Archive name
+        Count:
+          type: integer
+          description: File count
+        Created:
+          type: string
+          description: Date document created
+        FolderId:
+          type: integer
+          description: Folder id
+        Id:
+          type: integer
+          description: Folder document id
+        IndexDataId:
+          type: integer
+          description: Document id
+        Name:
+          type: string
+          description: Document name
+        UsedBy:
+          type: string
+          description: Name of user currently using the document
+        UsedById:
+          type: integer
+          description: Id of user currently using the document
+      description: Index folder document.
+    IndexFolderDocumentData:
+      type: object
+      properties:
+        FolderDocument:
+          $ref: '#/components/schemas/IndexFolderDocument'
+        FolderId:
+          type: integer
+          description: Folder id
+        IndexData:
+          type: array
+          description: Indexing string data array
+          items:
+            type: string
+        IsFolderShared:
+          type: boolean
+          description: Is the folder shared between users and groups
+        ParentFolder:
+          $ref: '#/components/schemas/IndexFolder'
+        PathsToDocumentPages:
+          type: array
+          description: Paths to indexed document pages (files)
+          items:
+            $ref: '#/components/schemas/DocumentPageItem'
+        RelativeDocumentNumber:
+          type: integer
+          description: Number of document relative to folder
+        Template:
+          $ref: '#/components/schemas/DataEntryTemplate'
+      description: Indexing folder document data
+    IndexFolderDocumentFile:
+      required:
+      - filePath
+      type: object
+      properties:
+        filePath:
+          type: string
+          description: File path
+      description: Index folder document file.
+    IndexFolderDocumentFiles:
+      required:
+      - files
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexFolderDocumentFile'
+      description: Collection of index folder document file relative paths, one file
+        required
+    IndexFolderDocumentViewer:
+      type: object
+      properties:
+        IndexFolderDocumentdata:
+          $ref: '#/components/schemas/IndexFolderDocumentData'
+        IndexViewerURL:
+          type: string
+          description: Index viewer URL
+      description: Folder document associated viewer information
+    IndexFolderDocuments:
+      type: object
+      properties:
+        Documents:
+          type: array
+          description: List of documents in the folder (GET) or the last document
+            created in the folder (POST)
+          items:
+            $ref: '#/components/schemas/FolderDocumentAndIndex'
+        Folder:
+          $ref: '#/components/schemas/IndexFolder'
+        FolderId:
+          type: integer
+          description: Folder id
+      description: Collection of index folder documents
+    IndexFoldersMessage:
+      type: object
+      properties:
+        BatchErrorCount:
+          type: integer
+          description: Batch error count
+        IndexFolders:
+          type: array
+          description: Index-able folders
+          items:
+            $ref: '#/components/schemas/IndexFolder'
+        UnknownBatchErrorState:
+          type: boolean
+          description: Is the batch in an unknown error state?
+      description: Index-able error folders
+    IndexedDocument:
+      type: object
+      properties:
+        Action:
+          type: integer
+          description: Index action
+        ApplicationId:
+          type: integer
+          description: Application id
+        ArchiveId:
+          type: integer
+          description: Archive id
+        Document:
+          $ref: '#/components/schemas/SourceDocumentIdentifier'
+        FolderData:
+          $ref: '#/components/schemas/IndexFolderDocument'
+        NextFolderData:
+          $ref: '#/components/schemas/IndexFolderDocument'
+      description: Index document.
+    Keyfile:
+      allOf:
+      - $ref: '#/components/schemas/Device'
+      - type: object
+        properties:
+          CheckForBestPractices:
+            type: boolean
+            description: Check that device employs the best practices
+          DeviceIdentifier:
+            $ref: '#/components/schemas/DeviceIdentifier'
+          PathIdentifier:
+            $ref: '#/components/schemas/PathIdentifier'
+          StatusReport:
+            $ref: '#/components/schemas/OperationStatus'
+          WorkstationIdentifier:
+            $ref: '#/components/schemas/Workstation'
+        description: Keyfile device.
+    Keywords:
+      type: object
+      properties:
+        KeywordData:
+          type: string
+          description: Keyword data
+        SourceDocumentIdentifier:
+          $ref: '#/components/schemas/SourceDocumentIdentifier'
+      description: Keywords.
+    LegalHoldStatus:
+      type: object
+      properties:
+        HasHoldEntry:
+          type: boolean
+          description: Has a legal hold entry
+        HoldReason:
+          type: string
+          description: The reason for the hold
+        HoldCreated:
+          type: string
+          description: Date the legal hold was placed
+        HoldExpires:
+          type: string
+          description: Date the legal hold expires - INTERNAL ONLY
+        HoldExpiresDate:
+          type: string
+          description: 'Date the legal hold expires - Microsoft JSON date format -
+            format : ''2012-03-19T07:22Z'''
+        HoldUserCreated:
+          $ref: '#/components/schemas/UserIdentifier'
+      description: Legal hold status.
+    LogMessage:
+      required:
+      - Message
+      - UserName
+      type: object
+      properties:
+        Message:
+          type: string
+          description: Log message
+        UserName:
+          type: string
+          description: User name
+      description: Log message information.
+    LookupTable:
+      type: object
+      properties:
+        FieldId:
+          type: integer
+          description: Field id
+        LookUpTableEntries:
+          type: array
+          description: Look up table entries for field
+          items:
+            $ref: '#/components/schemas/LookupTableEntryItem'
+      description: Look up table
+    LookupTableEntryItem:
+      type: object
+      properties:
+        Key:
+          type: string
+          description: List Key
+        Value:
+          type: string
+          description: List Value
+      description: Lookup table entry field key value pair
+    Microfilm:
+      allOf:
+      - $ref: '#/components/schemas/Device'
+      - type: object
+        description: Microfilm device.
+    OperationStatus:
+      type: object
+      properties:
+        CanCancel:
+          type: boolean
+          description: Can the operation be canceled
+        Count:
+          type: integer
+          description: Operation count
+        StatusMessage:
+          type: string
+          description: Operation status message
+        Total:
+          type: integer
+          description: Operation total
+      description: Device operation status.
+    PathIdentifier:
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Path id
+        Path:
+          type: string
+          description: Path
+      description: device path identifier.
+    PermissionItem:
+      type: object
+      properties:
+        PermissionItem:
+          type: integer
+          description: Permission
+      description: Permission item.
+    Remark:
+      type: object
+      properties:
+        Content:
+          type: string
+          description: Remark content
+        DocumentIdentifier:
+          $ref: '#/components/schemas/DocumentIdentifier'
+      description: Remark.
+    RetrievalTemplate:
+      allOf:
+      - $ref: '#/components/schemas/RetrievalTemplateIdentifier'
+      - type: object
+        properties:
+          AppendResults:
+            type: boolean
+            description: Append next search result to existing results
+          ContentServerSearchAddress:
+            type: string
+            description: Content server URL search address
+          DeleteOption:
+            type: integer
+            description: 'Items inclusion option. NonDeleted = 0: Include only non
+              deleted items, Deleted = 1: include only deleted items, DeletedAndNonDeleted
+              = 2: include both deleted and non-deleted items'
+          IncludeExpiredDocuments:
+            type: boolean
+            description: Include expired documents in hit list
+          InputFields:
+            type: array
+            description: Collection of field ids and input field objects
+            items:
+              $ref: '#/components/schemas/RetrievalTemplateInputFieldItem'
+          IsPersonalTemplate:
+            type: boolean
+            description: Is this a personal template
+          MaxHits:
+            maximum: 5E+4
+            minimum: 1
+            type: integer
+            description: Maximum number of hits to return.  Max 50000
+            format: int32
+            default: 100
+          OnlyLegalHoldDocuments:
+            type: boolean
+            description: Include only documents on legal hold in hit list
+          OutputFields:
+            type: array
+            description: Collection of field ids and output field objects
+            items:
+              $ref: '#/components/schemas/RetrievalTemplateOutputFieldItem'
+          GroupDescriptions:
+            type: array
+            description: Collection of the names of associated groups.
+            items:
+              type: string
+        description: Retrieval template.
+    RetrievalTemplateDescription:
+      type: object
+      properties:
+        ApplicationId:
+          type: integer
+          description: Application id
+        ApplicationName:
+          type: string
+          description: Application name
+        FriendlyName:
+          type: string
+          description: Template friendly name
+        Id:
+          type: integer
+          description: Template id
+        Name:
+          type: string
+          description: Template name
+      description: A retrieval template description.
+    RetrievalTemplateIdentifier:
+      required:
+      - Id
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Template id
+        Name:
+          type: string
+          description: Template name
+      description: Retrieval template identifier.
+      discriminator:
+        propertyName: Id
+    RetrievalTemplateInputField:
+      allOf:
+      - $ref: '#/components/schemas/Field'
+      - type: object
+        properties:
+          CanCompare:
+            type: boolean
+          ChangeCallback:
+            $ref: '#/components/schemas/CallbackHandle'
+          CompareOperator:
+            type: integer
+            description: 'Compare operator type - one of the following : Equal = 1,
+              NotEqual = 2, GreaterThan = 3, LessThan = 4, GreaterThanOrEqualTo =
+              5, LessThanOrEqualTo = 6, Between = 7'
+          ComparePosition1:
+            $ref: '#/components/schemas/FieldCoordinates'
+          ComparePosition2:
+            $ref: '#/components/schemas/FieldCoordinates'
+          Conjunction:
+            type: integer
+            description: 'Conjunction type - one of the following : None = 0, And
+              = 1, Or = 2'
+          ConjunctionPosition:
+            $ref: '#/components/schemas/FieldCoordinates'
+          EntryCallback:
+            $ref: '#/components/schemas/CallbackHandle'
+          ExitCallback:
+            $ref: '#/components/schemas/CallbackHandle'
+          Field1Position:
+            $ref: '#/components/schemas/FieldCoordinates'
+          Field2Position:
+            $ref: '#/components/schemas/FieldCoordinates'
+          Label:
+            type: string
+          LabelPosition:
+            $ref: '#/components/schemas/FieldCoordinates'
+          LeftParenthesis:
+            type: boolean
+          LeftParenthesisPosition:
+            $ref: '#/components/schemas/FieldCoordinates'
+          LookupTable:
+            type: array
+            description: Look up table.
+            items:
+              type: integer
+          Required:
+            type: boolean
+          RightParenthesis:
+            type: boolean
+          RightParenthesisPosition:
+            $ref: '#/components/schemas/FieldCoordinates'
+          Value1:
+            type: object
+            properties: {}
+          Value2:
+            type: object
+            properties: {}
+        description: Retrieval template input field.
+    RetrievalTemplateInputFieldItem:
+      type: object
+      properties:
+        Key:
+          type: string
+          description: Field Id
+        Value:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalTemplateInputField'
+      description: Retrieval template input field id and object.
+    RetrievalTemplateOutputField:
+      allOf:
+      - $ref: '#/components/schemas/FieldIdentifier'
+      - type: object
+        properties:
+          CanSort:
+            type: boolean
+          CharacterLength:
+            type: integer
+          DisplayType:
+            type: string
+            description: Display type. Edit = 'E', MaskEdit = '<mask value>', Lookup
+              = 'L,<num>'
+            default: E
+            enum:
+            - E
+            - <mask value>
+            - L,<num>
+          FieldType:
+            type: integer
+            description: 'Field data type - one of the following : None = 0, Currency
+              = 11, Date = 9, DateTime = 8, Double = 5, Float = 4, LongInteger = 3,
+              String = 6, Time = 10'
+          IncludeInOutput:
+            type: boolean
+          IsSystemField:
+            type: boolean
+          Label:
+            type: string
+          Mask:
+            type: string
+          OutputFieldWidth:
+            type: number
+          OutputOrder:
+            type: integer
+          Precision:
+            type: integer
+          SortOrder:
+            type: integer
+          SortType:
+            type: integer
+            description: 'Sort type - one of the following : Ascending = 0, Descending
+              = 1, NoSort = 2'
+        description: Retrieval template output field.
+    RetrievalTemplateOutputFieldItem:
+      type: object
+      properties:
+        Key:
+          type: string
+          description: Field Id
+        Value:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalTemplateOutputField'
+      description: Retrieval template output field id and object.
+    RetrievalTemplatesList:
+      type: object
+      properties:
+        RetrievalTemplates:
+          type: array
+          description: Retrieval template descriptions
+          items:
+            $ref: '#/components/schemas/RetrievalTemplateDescription'
+      description: A collection of retrieval template descriptions.
+    RoutingDetails:
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Collection of document identifiers to route.
+          items:
+            $ref: '#/components/schemas/DocumentIdentifier'
+        groups:
+          type: array
+          description: Collection of group identifiers to route to.
+          items:
+            type: integer
+        users:
+          type: array
+          description: Collection of user identifiers to route to.
+          items:
+            type: integer
+      description: Routing details.
+    Setting:
+      type: object
+      properties:
+        Category:
+          type: string
+          description: Setting category name
+        Name:
+          type: string
+          description: Setting name
+        Value:
+          type: object
+          properties: {}
+          description: Setting value
+      description: User setting.
+    SourceDocumentIdentifier:
+      required:
+      - MasterId
+      - Version
+      type: object
+      properties:
+        MasterId:
+          type: integer
+          description: Master id
+        Version:
+          type: integer
+          description: Version id
+        VersionCreated:
+          type: string
+          description: Date version was created
+        VersionCreatorId:
+          type: integer
+          description: Version creator user id
+        VersionCreatorName:
+          type: string
+          description: Version creator name
+        VersionLabel:
+          type: string
+          description: Version label
+      description: Source document identifier.
+    SourceDocumentResult:
+      type: object
+      properties:
+        ErrorMessage:
+          type: string
+          description: Document action error message
+        SourceDocument:
+          $ref: '#/components/schemas/SourceDocumentIdentifier'
+      description: Source document result.
+    ServerStatus:
+      type: object
+      properties:
+        ProductName:
+          type: string
+          description: Product name.
+        ProductVersion:
+          type: string
+          description: Product version.
+      description: Web server status information.
+    User:
+      allOf:
+      - $ref: '#/components/schemas/UserIdentifier'
+      - type: object
+        properties:
+          Annotation:
+            type: string
+            description: Annotation note defined for user, see User/Group administration
+          ActiveDirectoryUser:
+            type: boolean
+            description: The user created manually (false) or was auto-provisioned
+              via OTDS or Active Directory (true)
+          DatabaseSerialNumber:
+            type: integer
+            description: System Key serial number
+          DaysBeforePasswordChangeRequired:
+            type: integer
+            description: Days before password expires
+          DisallowedIndexingExtensions:
+            type: array
+            description: Collection of disallowed file extensions
+            items:
+              type: string
+          EndDate:
+            type: string
+            description: End date for user access
+          File360WebserverUrl:
+            type: string
+            description: Web server URL
+          FirstName:
+            type: string
+            description: The user's first name
+          GroupSeats:
+            type: integer
+            description: Licenses reserved
+          InvalidLogonAttemptsAllowed:
+            type: integer
+            description: The number of invalid log on attempts allowed
+          IsActivated:
+            type: boolean
+            description: Countersign for the system has been applied
+          IsAdministrator:
+            type: boolean
+            description: Is the user an administrator, see Administrator setting in
+              User/Group administration
+          IsAutoRunDefault:
+            type: boolean
+            description: Is auto run default, see Autorun setting in System Configuration
+          IsDemo:
+            type: boolean
+            description: Is this a demo system
+          IsRecordsManager:
+            type: boolean
+            description: Is the user a records manager, see Records Manager setting
+              in User/Group administration
+          IsServerVerboseLoggingEnabled:
+            type: boolean
+            description: Is verbose logging enabled
+          LastName:
+            type: string
+            description: The user's last name
+          Locked:
+            type: boolean
+            description: Is user locked out
+          OpenExternalExtensions:
+            type: string
+            description: Semi-colon separated list of file extensions to open externally
+          PasswordLastChanged:
+            type: string
+            description: Date last time password was changed
+          Permissions:
+            type: array
+            description: Collection of permissions
+            items:
+              $ref: '#/components/schemas/PermissionItem'
+          ProgramId:
+            type: integer
+            description: Program id
+          SecurityLevelsGranted:
+            type: array
+            description: Collection of security levels granted
+            items:
+              type: integer
+          Settings:
+            type: array
+            description: Collection of user settings
+            items:
+              $ref: '#/components/schemas/Setting'
+          StartDate:
+            type: string
+            description: Start date for user accessed
+          UniqueId:
+            type: string
+            description: Users unique identifier
+          WarnSystemKeyToExpireMessage:
+            type: string
+            description: System key to expire message.  If this value is set then
+              'Display license expiration warning' checkbox is set.
+          WebViewerOption:
+            type: integer
+            description: 'Web viewer options - one of the following : PDF = 0, Brava
+              = 1'
+          WorkstationId:
+            type: integer
+            description: Workspace id for client logon
+        description: File360 user
+    UserIdentifier:
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: User id
+        Name:
+          type: string
+          description: User name
+      description: User identifier.
+    Volume:
+      type: object
+      properties:
+        DeviceIdentifier:
+          $ref: '#/components/schemas/DeviceIdentifier'
+        Id:
+          type: integer
+          description: Volume id
+        Label:
+          type: string
+          description: Volume label
+        ShouldMoveFilesToTarget:
+          type: boolean
+          description: Should move files to target
+        Slot:
+          type: integer
+          description: Volume slot
+        TargetDeviceIdentifier:
+          $ref: '#/components/schemas/DeviceIdentifier'
+    Workitem:
+      type: object
+      properties:
+        CanModifyDocumentIndex:
+          type: boolean
+          description: Can modify document index
+        ClassName:
+          type: string
+          description: Workitem class name
+        DataEntryTemplateId:
+          type: integer
+          description: Data entry template id
+        FormFields:
+          type: array
+          description: Workitem form field.
+          items:
+            $ref: '#/components/schemas/WorkitemFormField'
+        History:
+          type: array
+          description: Workitem history.
+          items:
+            $ref: '#/components/schemas/WorkitemHistory'
+        Id:
+          type: string
+          description: Workitem id
+        InboxFields:
+          type: array
+          description: Workitem form inbox fields.
+          items:
+            $ref: '#/components/schemas/WorkitemFormInboxField'
+        IsInProgress:
+          type: boolean
+          description: Is workitem in progress
+        IsModified:
+          type: boolean
+          description: Has workitem been modified
+        IsReserved:
+          type: boolean
+          description: Is workitem reserved
+        Name:
+          type: string
+          description: Workitem name
+        SendToDefault:
+          type: boolean
+          description: Send to default workset
+        SourceDocument:
+          $ref: '#/components/schemas/DocumentIdentifier'
+        Type:
+          type: integer
+          description: Workitem type
+        WorkflowId:
+          type: integer
+          description: Workflow id
+        WorkflowName:
+          type: string
+          description: Workflow name
+        WorksetName:
+          type: string
+          description: Workset name
+        WorkstepEntryTime:
+          type: string
+          description: Time workitem entered the workstep
+        WorkstepName:
+          type: string
+          description: Workstep name
+      description: Workitem.
+    WorkitemForm:
+      type: object
+      properties:
+        Fields:
+          type: array
+          description: Workitem form fields.
+          items:
+            $ref: '#/components/schemas/WorkitemFormField'
+        Name:
+          type: string
+          description: Workitem form name
+      description: Work item form.
+    WorkitemFormField:
+      type: object
+      properties:
+        FieldDataType:
+          type: integer
+          description: 'Field data type - one of the following : None = 0, Currency
+            = 11, Date = 9, DateTime = 8, Double = 5, Float = 4, LongInteger = 3,
+            String = 6, Time = 10'
+        Hint:
+          type: string
+          description: Workitem form field label
+        Id:
+          type: integer
+          description: Workitem form field id
+        IsMemo:
+          type: boolean
+          description: Is the Workitem form field a memo field
+        IsReadOnly:
+          type: boolean
+          description: Is the Workitem form field read only
+        IsRequired:
+          type: boolean
+          description: Is the Workitem form field required
+        Label:
+          type: string
+          description: Workitem form field label
+        Length:
+          type: integer
+          description: Workitem form field length
+        Name:
+          type: string
+          description: Workitem form field name
+        OptionList:
+          type: array
+          description: Possible display options of the field.
+          items:
+            type: string
+        Value:
+          type: string
+          description: Workitem form field value
+        ValueList:
+          type: array
+          description: A collection of values for the form field.
+          items:
+            type: string
+      description: Workitem form field.
+    WorkitemFormInboxField:
+      type: object
+      properties:
+        Name:
+          type: string
+          description: Inbox field name
+        Value:
+          type: string
+          description: Inbox field value
+      description: Workitem form field.
+    WorkitemHistory:
+      type: object
+      properties:
+        DestinationWorkstepName:
+          type: string
+          description: Destination workstep name
+        ErrorCode:
+          type: integer
+          description: Error code
+        HasError:
+          type: boolean
+          description: Has an error
+        ResourceName:
+          type: string
+          description: Resource name
+        SourceWorkstepName:
+          type: string
+          description: Source workstep name
+        WorkflowName:
+          type: string
+          description: Workflow Name
+        WorkstepEntryTime:
+          type: string
+          description: Workstep entry time
+      description: Workitem history.
+    Workitems:
+      type: object
+      properties:
+        InboxFields:
+          type: array
+          description: Inbox fields.
+          items:
+            $ref: '#/components/schemas/WorkitemFormField'
+        WorkitemList:
+          type: array
+          description: Workitem list.
+          items:
+            $ref: '#/components/schemas/Workitem'
+      description: Workitems.
+    Workset:
+      type: object
+      properties:
+        Count:
+          type: integer
+          description: Workitem count
+        WorkflowId:
+          type: integer
+          description: Workflow id
+        WorkflowName:
+          type: string
+          description: Workflow name
+        WorksetName:
+          type: string
+          description: Workset name
+      description: Workset.
+    Worksets:
+      type: object
+      properties:
+        WorkitemList:
+          type: array
+          description: Workset list.
+          items:
+            $ref: '#/components/schemas/Workset'
+      description: Worksets.
+    Workstation:
+      type: object
+      properties:
+        Domain:
+          type: string
+          description: Workstation domain name
+        Id:
+          type: integer
+          description: Workstation id
+        Name:
+          type: string
+          description: Workstation name
+      description: Workstation definition.

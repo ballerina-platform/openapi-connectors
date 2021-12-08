@@ -1,0 +1,1432 @@
+openapi: 3.0.0
+info:
+  title: Capsule CRM API
+  description: |
+    This is a generated connector for [Capsule CRM API v2](https://developer.capsulecrm.com/v2/overview/getting-started) OpenAPI specification.
+    Capsule CRM keeps track of the people and companies you do business with, opportunities in the pipeline and what needs to be done.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Capsule CRM account](https://capsulecrm.com) and obtain tokens by following [this guide](https://developer.capsulecrm.com/v2/overview/authentication).
+  x-ballerina-display:
+    label: Capsule CRM
+    iconPath: "icon.png"
+  version: "v2"
+security:
+- bearerAuth: []
+servers:
+  - url: 'https://api.capsulecrm.com'
+tags:
+  - name: case
+  - name: opportunity
+  - name: party
+paths:
+  /api/v2/kases:
+    post:
+      summary: "Creates a new case."
+      description: "https://developer.capsulecrm.com/v2/operations/Case#createCase"
+      parameters: 
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value). "
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: An object with a single property kase which must be a Case object. Note that one or more tracks can be applied to the case by including the relevant track ids in a tracks array. This is a convenient shortcut to apply tracks to new cases only, and tracks is not a field of Case objects. Tracks can be specified using a definition object or the ID shorthand, or a mixture of both.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateCaseRequest'
+      tags:
+        - "case"
+      responses:
+        201:
+          description: "Created case stored in Capsule"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedCase'
+      operationId: "create_case"
+    get:
+      summary: "Retrieves the collection of Cases on the Capsule account."
+      description: "https://developer.capsulecrm.com/v2/operations/Case#listCases"
+      parameters:
+        - in: "query"
+          name: "since"
+          description: "If set then includes only entities that have been changed after this date. Must in be ISO8601 format."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "case"
+      responses:
+        200:
+          description: "An object with a single property kases which is an array of Case objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Cases'
+      operationId: "list_cases"
+  /api/v2/kases/search:
+    get:
+      summary: "Search for cases on the Capsule account. This will return the same results as the global search inside Capsule."
+      description: "https://developer.capsulecrm.com/v2/operations/Case#searchCases"
+      parameters:
+        - in: "query"
+          name: "q"
+          description: "The value to search for e.g. a name, a postcode or a phone number."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "case"
+      responses:
+        200:
+          description: "An object with a single property kases which is an array of Case objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Cases'
+      operationId: "search_cases"
+  /api/v2/kases/{caseId}:
+    get:
+      summary: "Show a specific case."
+      description: "https://developer.capsulecrm.com/v2/operations/Case#showCase"
+      parameters:
+        - in: "path"
+          name: "caseId"
+          description: "The case ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "case"
+      responses:
+        200:
+          description: "A Case object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CaseObject'
+      operationId: "show_case"
+  /api/v2/parties/{partyId}/kases:
+    get:
+      summary: "Retrieves the collection of all cases associated with the given party."
+      description: "https://developer.capsulecrm.com/v2/operations/Case#listCasesByParty"
+      parameters:
+        - in: "path"
+          name: "partyId"
+          description: "The party ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "case"
+      responses:
+        200:
+          description: "An object with a single property kases which is an array of Case objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Cases'
+      operationId: "list_cases_by_party"
+  /api/v2/opportunities:
+    post:
+      summary: "Creates a new opportunity."
+      description: "https://developer.capsulecrm.com/v2/operations/Opportunity#createOpportunity"
+      parameters: 
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value). "
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: An object with a single property opportunity which must be an Opportunity object. One or more tracks can be applied to the opportunity by including the relevant track ids in a tracks array. This is a convenient shortcut to apply tracks to new opportunities only, and tracks is not a field of Opportunity objects. Tracks can be specified using a definition object or the ID shorthand, or a mixture of both.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateOpportunityRequest'
+      tags:
+        - "opportunity"
+      responses:
+        201:
+          description: "Created opportunity stored in Capsule"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedOpportunity'
+      operationId: "create_opportunity"
+    get:
+      summary: "Retrieves the collection of Opportunities on the Capsule account."
+      description: "https://developer.capsulecrm.com/v2/operations/Opportunity#listOpportunities"
+      parameters:
+        - in: "query"
+          name: "since"
+          description: "If set then includes only entities that have been changed after this date. Must in be ISO8601 format."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), party (assigned party), milestone (the opportunity milestone), and missingImportantFields (indicates if an opportunity has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "opportunity"
+      responses:
+        200:
+          description: "An object with a single property opportunity which is an array of Opportunity objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Opportunities'
+      operationId: "list_opportunities"
+  /api/v2/opportunities/search:
+    get:
+      summary: "Search for opportunities on the Capsule account. This will return the same results as the global search inside Capsule. If you're looking for a more structured search endpoint you can use Filters to search by a specific field or tag."
+      description: "https://developer.capsulecrm.com/v2/operations/Opportunity#searchOpportunities"
+      parameters:
+        - in: "query"
+          name: "q"
+          description: "The value to search for e.g. a name, a postcode or a phone number."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "opportunity"
+      responses:
+        200:
+          description: "An object with a single property opportunities which is an array of Opportunity objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Opportunities'
+      operationId: "search_opportunities"
+  /api/v2/opportunities/{opportunityId}:
+    get:
+      summary: "Returns a specific opportunity."
+      description: "https://developer.capsulecrm.com/v2/operations/Opportunity#showOpportunity"
+      parameters:
+        - in: "path"
+          name: "opportunityId"
+          description: "The opportunity ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), party (assigned party), milestone (the opportunity milestone), and missingImportantFields (indicates if an opportunity has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "opportunity"
+      responses:
+        200:
+          description: "An Opportunity object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OpportunityObject'
+      operationId: "show_opportunity"
+    put:
+      summary: "Updates an existing opportunity."
+      description: "https://developer.capsulecrm.com/v2/operations/Opportunity#updateOpportunity"
+      parameters: 
+        - in: "path"
+          name: "opportunityId"
+          description: "The opportunity ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), party (assigned party), milestone (the opportunity milestone), and missingImportantFields (indicates if an opportunity has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: An object with a single property opportunity which must be an Opportunity object. Fields that are not included in the request will remain unchanged. An owner and/or team are required on an opportunity.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/UpdateOpportunityRequest'
+      tags:
+        - "opportunity"
+      responses:
+        200:
+          description: "All good"
+      operationId: "update_opportunity"
+    delete:
+      summary: "Fully delete a specific opportunity from Capsule."
+      description: "https://developer.capsulecrm.com/v2/operations/Opportunity#deleteOpportunity"
+      parameters:
+        - in: "path"
+          name: "opportunityId"
+          description: "The opportunity ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "opportunity"
+      responses:
+        204:
+          description: "An empty body if the opportunity was successfully deleted."
+      operationId: "delete_opportunity"
+  /api/v2/parties/{partyId}/opportunities:
+    get:
+      summary: "Retrieves the collection of all opportunities associated with the given party."
+      description: "https://developer.capsulecrm.com/v2/operations/Opportunity#listOpportunitiesByParty"
+      parameters:
+        - in: "path"
+          name: "partyId"
+          description: "The party ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "opportunity"
+      responses:
+        200:
+          description: "An object with a single property opportunities which is an array of Opportunity objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Opportunities'
+      operationId: "list_opportunities_by_party"
+  /api/v2/parties:
+    post:
+      summary: "Creates a new party."
+      description: "https://developer.capsulecrm.com/v2/operations/Party#createParty"
+      parameters: 
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: An object with a single property party which must be a Party object.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreatePartyRequest'
+      tags:
+        - "party"
+      responses:
+        201:
+          description: "Created party stored in Capsule"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedParty'
+      operationId: "create_party"
+    get:
+      summary: "Retrieves the collection of Parties on the Capsule account."
+      description: "https://developer.capsulecrm.com/v2/operations/Party#listParties"
+      parameters:
+        - in: "query"
+          name: "since"
+          description: "If set then includes only entities that have been changed after this date. Must in be ISO8601 format."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "party"
+      responses:
+        200:
+          description: "An object with a single property parties which is an array of Party objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Parties'
+      operationId: "list_parties"
+  /api/v2/parties/search:
+    get:
+      summary: "Search for parties on the Capsule account. This will return the same results as the global search inside Capsule."
+      description: "https://developer.capsulecrm.com/v2/operations/Party#searchParties"
+      parameters:
+        - in: "query"
+          name: "q"
+          description: "The value to search for e.g. a name, a postcode or a phone number."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "party"
+      responses:
+        200:
+          description: "An object with a single property parties which is an array of Party objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Parties'
+      operationId: "search_parties"
+  /api/v2/parties/{partyId}:
+    get:
+      summary: "Show a specific person or organisation."
+      description: "https://developer.capsulecrm.com/v2/operations/Party#showParty"
+      parameters:
+        - in: "path"
+          name: "partyId"
+          description: "The party ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "party"
+      responses:
+        200:
+          description: "An object with a single property party which will contain a Party object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/PartyObject'
+      operationId: "show_party"
+    put:
+      summary: "Update an existing party."
+      description: "https://developer.capsulecrm.com/v2/operations/Party#updateParty"
+      parameters: 
+        - in: "path"
+          name: "partyId"
+          description: "The party ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value)."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description:  object with a single property party which must be a Party object. Fields that are not included in the request will remain unchanged.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/UpdatePartyRequest'
+      tags:
+        - "party"
+      responses:
+        200:
+          description: "All good"
+      operationId: "update_party"
+    delete:
+      summary: "Fully delete the specific party from Capsule."
+      description: "https://developer.capsulecrm.com/v2/operations/Party#deleteParty"
+      parameters:
+        - in: "path"
+          name: "partyId"
+          description: "The party ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "party"
+      responses:
+        204:
+          description: "An empty body if the party was successfully deleted."
+      operationId: "delete_party"
+  /api/v2/tasks:
+    post:
+      summary: "Creates a new task."
+      description: "https://developer.capsulecrm.com/v2/operations/Task#createTask"
+      parameters: 
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are party (the party this task is assigned to), opportunity (opportunity this task is on), kase (the case this task is on), owner (the owner of the task) and nextTask (the next task)."
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: An object with a single property task which must be a Task object.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateTaskRequest'
+      tags:
+        - "task"
+      responses:
+        201:
+          description: "Created task stored in Capsule"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedTask'
+      operationId: "create_task"
+    get:
+      summary: "Retrieves the collection of Tasks on the Capsule account. By default the body will contain only the open tasks. If you want to retrieve pending and/or completed tasks use the status query parameter."
+      description: "https://developer.capsulecrm.com/v2/operations/Task#listTasks"
+      parameters:
+        - in: "query"
+          name: "page"
+          description: "The page of results to return. Default: 1"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "perPage"
+          description: "The number of entities to return per page. Value must be between 1 and 100. Default: 50"
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "embed"
+          description: "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are party (the party this task is assigned to), opportunity (opportunity this task is on), kase (the case this task is on), owner (the owner of the task) and nextTask (the next task)."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "status"
+          description: "Filter the response based on the status of the task. Must be a comma separated list of strings. Accepted values are open, completed and pending."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "task"
+      responses:
+        200:
+          description: "An object with a single property tasks which is an array of Task objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Tasks'
+      operationId: "list_tasks"
+
+components:
+  schemas:
+    CreateCaseRequest:
+      type: object
+      properties:
+        kase:
+          $ref: '#/components/schemas/CaseRequest'
+      description: An object with a single property kase which must be a Case object. Note that one or more tracks can be applied to the case by including the relevant track ids in a tracks array. This is a convenient shortcut to apply tracks to new cases only, and tracks is not a field of Case objects. Tracks can be specified using a definition object or the ID shorthand, or a mixture of both.
+    CreatedCase:
+      type: object
+      properties:
+        kase:
+          $ref: '#/components/schemas/Case'
+      description: Created case stored in Capsule
+    CaseObject:
+      type: object
+      properties:
+        kase:
+          $ref: '#/components/schemas/Case'
+      description: A Case object.
+    Case:
+      type: object
+      required:
+        - "party"
+        - "name"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this case.
+        party:
+          $ref: '#/components/schemas/NestedParty'
+        name:
+          type: string
+          description: The name of this case.
+        description:
+          type: string
+          description: The description of this case.
+        owner:
+          $ref: '#/components/schemas/NestedUser'
+        team:
+          $ref: '#/components/schemas/NestedTeam'
+        status:
+          type: string
+          description: The status of the case. Accepted values are OPEN, CLOSED.
+        opportunity:
+          $ref: '#/components/schemas/NestedOpportunity'
+        createdAt:
+          type: string
+          description: The ISO date/time when this case was created.
+        updatedAt:
+          type: string
+          description: The ISO date/time when this case was last updated.
+        closedOn:
+          type: string
+          description: The ISO date when this case was closed.
+        lastContactedAt:
+          type: string
+          description: The ISO date/time when this case was last contacted. This field is automatically set by Capsule based on the attached history entries.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTag'
+          description: An array of tags that are added to this case. This field is included in responses only if the embed parameter contains tags.
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValue'
+          description: An array of custom fields that are defined for this case. This field is included in responses only if the embed parameter contains fields.
+        missingImportantFields:
+          type: boolean
+          description: Indicates if this case has any Important custom fields that are missing a value. This field is included in responses only if the embed parameter contains missingImportantFields.
+      description: Represents a case file that is stored in Capsule.
+    CaseRequest:
+      type: object
+      required:
+        - "party"
+        - "name"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this case.
+        party:
+          $ref: '#/components/schemas/NestedParty'
+        name:
+          type: string
+          description: The name of this case.
+        description:
+          type: string
+          description: The description of this case.
+        owner:
+          $ref: '#/components/schemas/NestedUser'
+        team:
+          $ref: '#/components/schemas/NestedTeam'
+        status:
+          type: string
+          description: The status of the case. Accepted values are OPEN, CLOSED.
+        opportunity:
+          $ref: '#/components/schemas/NestedOpportunity'
+        createdAt:
+          type: string
+          description: The ISO date/time when this case was created.
+        updatedAt:
+          type: string
+          description: The ISO date/time when this case was last updated.
+        closedOn:
+          type: string
+          description: The ISO date when this case was closed.
+        lastContactedAt:
+          type: string
+          description: The ISO date/time when this case was last contacted. This field is automatically set by Capsule based on the attached history entries.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTag'
+          description: An array of tags that are added to this case. This field is included in responses only if the embed parameter contains tags.
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValue'
+          description: An array of custom fields that are defined for this case. This field is included in responses only if the embed parameter contains fields.
+        missingImportantFields:
+          type: boolean
+          description: Indicates if this case has any Important custom fields that are missing a value. This field is included in responses only if the embed parameter contains missingImportantFields.
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TracksDefinitionObject'
+          description: One or more tracks can be applied to the case by including the relevant track ids in a tracks array. This is a convenient shortcut to apply tracks to new cases only, and tracks is not a field of Case objects. Tracks can be specified using a definition object or the ID shorthand, or a mixture of both.
+      description: An object with a single property kase which must be a Case object. Note that one or more tracks can be applied to the case by including the relevant track ids in a tracks array. This is a convenient shortcut to apply tracks to new cases only, and tracks is not a field of Case objects. Tracks can be specified using a definition object or the ID shorthand, or a mixture of both.
+    NestedParty:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of the party.
+        firstName:
+          type: string
+          description: The first name of the person. This field is present only when type is person.
+        lastName:
+          type: string
+          description: The last name of the person. This field is present only when type is person.
+        name:
+          type: string
+          description: The name of the organisation. This field is present only when type is organisation. This will contain Private when the user calling the API endpoint doesn't have access to the party record.
+        type:
+          type: string
+          description: Represents if this party is a person or organisation. Accepted values are person, organisation
+        pictureURL:
+          type: string
+          description: A URL that represents the location of the profile picture for this party.
+        isRestricted:
+          type: boolean
+          description: Indicates whether this party is restricted for the user calling the API endpoint.
+      description: Represents a reference to a party. By default, contains only the id, name and pictureURL. If the field is included in the embed parameter will instead be a full Party object. If the party is restricted for the user calling the API endpoint, the full Party object is not included.
+    NestedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of this user.
+        username:
+          type: string
+          description: The username of the user.
+        name:
+          type: string
+          description: The name of the user.     
+      description: Represents a reference to a user. By default, contains only the id, name and username. If the field is included in the embed parameter will instead be a full User object.
+    NestedTeam:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of this team.
+        name:
+          type: string
+          description: The name of the team.    
+      description: Represents a reference to a team.
+    NestedOpportunity:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of the opportunity.
+        name:
+          type: string
+          description: The name of the opportunity. This will contain Private when the user calling the API endpoint doesn't have access to the opportunity record. 
+        isRestricted:
+          type: boolean
+          description: Defines whether this opportunity is restricted for the user calling the API endpoint. 
+      description: Represents a reference to an opportunity. By default, contains only the id and name. If the field is included in the embed parameter will instead be a full Opportunity object. If the opportunity is restricted for the user calling the API endpoint the full Opportunity object is not included.
+    NestedTag:
+      type: object
+      required:
+        - "name"
+      properties:
+        id:
+          type: integer
+          description: The id of this tag. Note that tags assignable to different entities (parties, cases or opportunities) can have the same id.
+        name:
+          type: string
+          description: The name of this tag.
+        description:
+          type: string
+          description: A longer description of this tag.
+      description: Represents an attached tag. Depending on the tag type this can be assignable to parties, opportunities or cases.
+    FieldValue:
+      type: object
+      required:
+        - "value"
+        - "definition"
+      properties:
+        id:
+          type: integer
+          description: The id of this value. Note that field values assignable to different entities (parties, cases or opportunities) can have the same id.
+        value:
+          oneOf:
+            - type: string
+            - type: boolean
+            - type: number
+          description: The value of this field. For text custom fields value is a string. For date custom fields value is a string in the format YYYY-MM-DD. For list custom fields value is a string and must match one of the options specified in the custom field definition. For boolean custom fields value is a boolean. For number custom fields value can be passed as either a string or a number, but will always be returned as a string by the API. For link custom fields value is a string URL and can include one of {id} - id, {name} - name, {email} - first email address, {phone} - first phone number, {phone[Mobile]} first mobile number, {custom[name of custom field]} - value of a custom field.
+        definition:
+          $ref: '#/components/schemas/NestedFieldDefinition'
+      description: Represents a value of a custom field. Depending on the custom field definition this can be assignable to parties, opportunities or cases.
+    NestedFieldDefinition:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The id of this custom field definition. Note that field definitions assignable to different entities (parties, opportunities or cases) can have the same id.
+        name:
+          type: string
+          description: The name of this custom field.
+      description: Represents a reference to a definition of a custom field. 
+    TracksDefinitionObject:
+      type: object
+      properties:
+        definition:
+          oneOf:
+            - type: integer
+            - $ref: '#/components/schemas/TrackDefinitionId'
+          description: Tracks can be specified using a definition object or the ID shorthand, or a mixture of both. 
+      description: Track definition object
+    TrackDefinitionId:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Track ID
+      description: Track Definition ID
+    Cases:
+      type: object
+      properties:
+        kases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Case'
+          description: An array of Case objects.
+      description: An object with a single property kases which is an array of Case objects.
+    CreateOpportunityRequest:
+      type: object
+      properties:
+        opportunity:
+          $ref: '#/components/schemas/OpportunityRequest'
+      description: An object with a single property opportunity which must be an Opportunity object. One or more tracks can be applied to the opportunity by including the relevant track ids in a tracks array. This is a convenient shortcut to apply tracks to new opportunities only, and tracks is not a field of Opportunity objects. Tracks can be specified using a definition object or the ID shorthand, or a mixture of both.
+    UpdateOpportunityRequest:
+      type: object
+      properties:
+        opportunity:
+          $ref: '#/components/schemas/Opportunity'
+      description: An object with a single property opportunity which must be an Opportunity object. Fields that are not included in the request will remain unchanged. An owner and/or team are required on an opportunity.
+    CreatedOpportunity:
+      type: object
+      properties:
+        opportunity:
+          $ref: '#/components/schemas/Opportunity'
+      description: Created opportunity stored in Capsule
+    OpportunityObject:
+      type: object
+      properties:
+        opportunity:
+          $ref: '#/components/schemas/Opportunity'
+      description: An Opportunity object.
+    Opportunity:
+      type: object
+      required:
+        - "party"
+        - "name"
+        - "milestone"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this opportunity.
+        createdAt:
+          type: string
+          description: The ISO date/time this opportunity was created.
+        updatedAt:
+          type: string
+          description: The ISO DateTime when this opportunity was last updated.
+        party:
+          $ref: '#/components/schemas/NestedParty'
+        lostReason:
+          $ref: '#/components/schemas/NestedLostReason'
+        name:
+          type: string
+          description: The name of this opportunity.
+        description:
+          type: string
+          description: The description of this opportunity.
+        owner:
+          $ref: '#/components/schemas/NestedUser'
+        team:
+          $ref: '#/components/schemas/NestedTeam'
+        milestone:
+          $ref: '#/components/schemas/NestedMilestone'
+        value:
+          $ref: '#/components/schemas/OpportunityValue'
+        expectedCloseOn:
+          type: string
+          description: The expected close date of this opportunity.
+        probability:
+          type: integer
+          description: The probability of winning this opportunity.
+        durationBasis:
+          type: string
+          description: The time unit used by the duration field. Accepted values are FIXED, HOUR, DAY, WEEK, MONTH, QUARTER, YEAR.
+        duration:
+          type: integer
+          description: The duration of this opportunity. Must be null if durationBasis is set to FIXED.
+        closedOn:
+          type: string
+          description: The date this opportunity was closed.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTag'
+          description: An array of tags that are added to this opportunity. This field is included in responses only if the embed parameter contains tags.
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValue'
+          description: An array of custom fields that are defined for this opportunity. This field is included in responses only if the embed parameter contains fields.
+        lastContactedAt:
+          type: string
+          description: The ISO DateTime when this opportunity was last contacted.
+        lastStageChangedAt:
+          type: string
+          description: The ISO DateTime when this opportunity last had its milestone changes.
+        lastOpenMilestone:
+          $ref: '#/components/schemas/NestedMilestone'
+        missingImportantFields:
+          type: boolean
+          description: Indicates if this opportunity has any Important custom fields that are missing a value. This field is included in responses only if the embed parameter contains missingImportantFields.
+      description: Represents an opportunity that is stored in Capsule.
+    OpportunityRequest:
+      type: object
+      required:
+        - "party"
+        - "name"
+        - "milestone"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this opportunity.
+        createdAt:
+          type: string
+          description: The ISO date/time this opportunity was created.
+        updatedAt:
+          type: string
+          description: The ISO DateTime when this opportunity was last updated.
+        party:
+          $ref: '#/components/schemas/NestedParty'
+        lostReason:
+          $ref: '#/components/schemas/NestedLostReason'
+        name:
+          type: string
+          description: The name of this opportunity.
+        description:
+          type: string
+          description: The description of this opportunity.
+        owner:
+          $ref: '#/components/schemas/NestedUser'
+        team:
+          $ref: '#/components/schemas/NestedTeam'
+        milestone:
+          $ref: '#/components/schemas/NestedMilestone'
+        value:
+          $ref: '#/components/schemas/OpportunityValue'
+        expectedCloseOn:
+          type: string
+          description: The expected close date of this opportunity.
+        probability:
+          type: integer
+          description: The probability of winning this opportunity.
+        durationBasis:
+          type: string
+          description: The time unit used by the duration field. Accepted values are FIXED, HOUR, DAY, WEEK, MONTH, QUARTER, YEAR.
+        duration:
+          type: integer
+          description: The duration of this opportunity. Must be null if durationBasis is set to FIXED.
+        closedOn:
+          type: string
+          description: The date this opportunity was closed.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTag'
+          description: An array of tags that are added to this opportunity. This field is included in responses only if the embed parameter contains tags.
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValue'
+          description: An array of custom fields that are defined for this opportunity. This field is included in responses only if the embed parameter contains fields.
+        lastContactedAt:
+          type: string
+          description: The ISO DateTime when this opportunity was last contacted.
+        lastStageChangedAt:
+          type: string
+          description: The ISO DateTime when this opportunity last had its milestone changes.
+        lastOpenMilestone:
+          $ref: '#/components/schemas/NestedMilestone'
+        missingImportantFields:
+          type: boolean
+          description: Indicates if this opportunity has any Important custom fields that are missing a value. This field is included in responses only if the embed parameter contains missingImportantFields.
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TracksDefinitionObject'
+          description: One or more tracks can be applied to the case by including the relevant track ids in a tracks array. This is a convenient shortcut to apply tracks to new cases only, and tracks is not a field of Case objects. Tracks can be specified using a definition object or the ID shorthand, or a mixture of both.
+      description: Represents an opportunity that is stored in Capsule.
+    NestedLostReason:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of the lost reason.
+        name:
+          type: string
+          description: The name of the lost reason.
+      description: Represents a reference to a lost reason.
+    NestedMilestone:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of the milestone.
+        name:
+          type: string
+          description: The name of the milestone.
+      description: Represents a reference to a milestone. By default, contains only the id and name. If the field is included in the embed parameter will instead be a full Milestone object.
+    OpportunityValue:
+      type: object
+      required:
+        - "amount"
+      properties:
+        amount:
+          type: number
+          description: The amount the opportunity is worth.
+        currency:
+          type: string
+          description: The currency type of the opportunity.
+      description: Represents the value of an opportunity.
+    Opportunities:
+      type: object
+      properties:
+        opportunities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Opportunity'
+          description: An array of Opportunity objects. 
+      description: An object with a single property opportunities which is an array of Opportunity objects.
+    CreatePartyRequest:
+      type: object
+      properties:
+        party:
+          $ref: '#/components/schemas/Party'
+      description: An object with a single property party which must be a Party object.
+    UpdatePartyRequest:
+      type: object
+      properties:
+        party:
+          $ref: '#/components/schemas/Party'
+      description: An object with a single property party which must be a Party object. Fields that are not included in the request will remain unchanged.
+    CreatedParty:
+      type: object
+      properties:
+        party:
+          $ref: '#/components/schemas/Party'
+      description: Created party stored in Capsule
+    PartyObject:
+      type: object
+      properties:
+        party:
+          $ref: '#/components/schemas/Party'
+      description: A Party object.
+    Party:
+      type: object
+      required:
+        - "type"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this party.
+        type:
+          type: string
+          description: Represents if this party is a person or an organisation. Accepted values are person, organisation.
+        firstName:
+          type: string
+          description: The first name of the person. This field is present only when type is person.
+        lastName:
+          type: string
+          description: The last name of the person. This field is present only when type is person.
+        title:
+          type: string
+          description: The title of the person. This field is present only when type is person. Accepted values are existing custom titles.
+        jobTitle:
+          type: string
+          description: The job title of the person. This field is present only when type is person.
+        organisation:
+          $ref: '#/components/schemas/NestedParty'
+        name:
+          type: string
+          description: The name of the organisation. This field is present only when type is organisation.
+        about:
+          type: string
+          description: A short description of the party.
+        createdAt:
+          type: string
+          description: The ISO date/time when this party was created.
+        updatedAt:
+          type: string
+          description: The ISO date/time when this party was last updated.
+        lastContactedAt:
+          type: string
+          description: The ISO date/time when this party was last contacted.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+          description: An array of all the addresses associated with this party. 
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+          description: An array of all the phone numbers associated with this party.
+        websites:
+          type: array
+          items:
+            $ref: '#/components/schemas/Website'
+          description: An array of the websites and social network accounts associated with this party. 
+        emailAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          description: An array of all the email addresses associated with this party.
+        pictureURL:
+          type: string
+          description: A URL that represents the location of the profile picture for this party. This field is automatically derived by Capsule.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedTag'
+          description: An array of tags that are added to this party. This field is included in responses only if the embed parameter contains tags.
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValue'
+          description: An array of custom fields that are defined for this party. This field is included in responses only if the embed parameter contains fields.
+        owner:
+          $ref: '#/components/schemas/NestedUser'
+        team:
+          $ref: '#/components/schemas/NestedTeam'
+        missingImportantFields:
+          type: boolean
+          description: Indicates if this party has any Important custom fields that are missing a value. This field is included in responses only if the embed parameter contains missingImportantFields.
+      description: Represents a contact that is stored in Capsule. This can be either a person or an organisation. 
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of this address. 
+        type:
+          type: string
+          description: The address type. Accepted values are Home, Postal, Office, Billing, Shipping
+        street:
+          type: string
+          description: The multi-line street address.
+        city:
+          type: string
+          description: The city of the address.
+        state:
+          type: string
+          description: The state or province of the address.
+        country:
+          type: string
+          description: The country of the address. This field should be a valid country name. You can obtain a list of valid countries using the api/v2/countries endpoint.
+        zip:
+          type: string
+          description: The zip/postal code.
+      description: Represents a physical address of a contact that is stored in Capsule.
+    PhoneNumber:
+      type: object
+      required:
+        - "number"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this phone number.
+        type:
+          type: string
+          description: The type of the phone number. Accepted values are Home, Work, Mobile, Fax, Direct.
+        number:
+          type: string
+          description: The actual phone number.
+      description: Represents a phone number of a party. 
+    Website:
+      type: object
+      required:
+        - "service"
+        - "address"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this website.
+        service:
+          type: string
+          description: Defines what social network this website represents. Accepted values are URL, SKYPE, TWITTER, LINKED_IN, FACEBOOK, XING, FEED, GOOGLE_PLUS, FLICKR, GITHUB, YOUTUBE, INSTAGRAM, PINTEREST.
+        address:
+          type: string
+          description: For Twitter, Github, Youtube, Pinterest, Instagram this is the account username. For all other services this is the profile or web page URL.
+        type:
+          type: string
+          description: Accepted values are Home, Work
+        url:
+          type: string
+          description: Generated URL that links to the website or profile page.
+      description: Represents a website or a social network account.
+    EmailAddress:
+      type: object
+      required:
+        - "address"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this email address.
+        type:
+          type: string
+          description: The type of the email address. Accepted values are Home, Work
+        address:
+          type: string
+          description: The actual email address.
+      description: Represents an email address of a party.
+    Parties:
+      type: object
+      properties:
+        parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Party'
+          description: An array of Party objects.
+      description: An object with a single property parties which is an array of Party objects.
+    CreateTaskRequest:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+      description: An object with a single property task which must be a Task object.
+    CreatedTask:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+      description: Created task stored in Capsule
+    Task:
+      type: object
+      required:
+        - "description"
+        - "dueOn"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this task.
+        createdAt:
+          type: string
+          description: The ISO date/time when this task was created. 
+        updatedAt:
+          type: string
+          description: The ISO date/time when this task was last updated.
+        description:
+          type: string
+          description: A short description of the task.
+        detail:
+          type: string
+          description: More details about the task.
+        category:
+          $ref: '#/components/schemas/Category'
+        dueOn:
+          type: string
+          description: The date (without a time element) when this task is due.
+        dueTime:
+          type: string
+          description: The time (without a date element) when this task is due. Note that the time is in the user's timezone, and not UTC.
+        status:
+          type: string
+          description: Specify whether this task is open, completed or pending. A task is pending when it was not completed by the user, but is not relevant anymore (i.e. linked to a closed opportunity). Accepted values are OPEN, COMPLETED, PENDING.
+        party:
+          $ref: '#/components/schemas/NestedParty'
+        opportunity:
+          $ref: '#/components/schemas/NestedOpportunity'
+        kase:
+          $ref: '#/components/schemas/NestedCase'
+        owner:
+          $ref: '#/components/schemas/NestedUser'
+        completedBy:
+          type: string
+          description: The username of the user that completed this task.
+        completedAt:
+          type: string
+          description: The ISO DateTime when this task was completed. By default, this will be the time of the request that marked the task as completed. However, if you provide offline capability, you might want to override this field when completing the task.
+        hasTrack:
+          type: boolean
+          description: Determines if the task is part of a track associated with the parent kase or opportunity.
+        nextTask:
+          $ref: '#/components/schemas/NestedTask'
+        taskDelayRule:
+          type: string
+          description: For tasks that are part of a track, this indicates if the dueOn date is calculated based on the start date of the track (TRACK_START), an end date specified when adding the track (END_DATE), or relative to the date the previous task in the track is completed (LAST_TASK). Accepted values are TRACK_START, END_DATE, LAST_TASK.
+        daysAfter:
+          type: integer
+          description: If this task is part of a track with a taskDelayRule of LAST_TASK, indicates the number of days after the completion of the previous task that this task is due. If this task is part of a track with a taskDelayRule of START_DATE or END_DATE, indicates the number of days between the start or end date of the track and the due date of this task respectively.
+      description: Represents a task that is stored in Capsule. These are generally used as a simple way to create a reminder of something the user needs to do. Tasks can be categorized for such things as a meeting, phone call or submission deadline using task categories and can be linked to a party, opportunity or case.
+    Category:
+      type: object
+      required:
+        - "name"
+      properties:
+        id:
+          type: integer
+          description: The unique id of this category.
+        name:
+          type: string
+          description: The name of the category.
+        colour:
+          type: string
+          description: The hex colour code of the category. Must be a '#' followed by 6 hexadecimal digits.
+      description: Represents a task category.
+    NestedCase:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of this case.
+        name:
+          type: string
+          description: The name of this case. This will contain Private when the user calling the API endpoint doesn't have access to the the case record.
+        isRestricted:
+          type: boolean
+          description: Defines whether this case is restricted for the user calling the API endpoint.
+      description: Represents a reference to a case. By default, contains only the id and name. If the field is included in the embed parameter will instead be a full Case object. If the case is restricted for the user calling the API endpoint the full Case object is not included.
+    NestedTask:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique id of this task.
+        description:
+          type: string
+          description: A short description of the task.
+      description: Represents a reference to a task. By default, contains only the id and description. If the field name is included in the embed parameter will instead be a full Task object.
+    Tasks:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: An array of Task objects. 
+      description: An object with a single property tasks which is an array of Task objects.
+
+
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

@@ -1,0 +1,2063 @@
+openapi: 3.0.1
+info:
+  title: compensation
+  description: >-
+    This is a generated connector for [WorkDay Compensation REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+
+    The Workday compensation service enables applications to extend Workday's HCM compensation features.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+ 
+    Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
+  x-ballerina-display:
+    label: Workday Compensation
+    iconPath: icon.png
+  version: v2
+tags:
+  - name: scorecardResults
+    description: Provides the ability to set up and retrieve Scores on Scorecard Results.
+  - name: scorecards
+    description: Provides the ability to set up and retrieve Scores on Scorecard Results.
+  - name: workers
+paths:
+  /scorecardResults:
+    get:
+      tags:
+        - scorecardResults
+      summary: Provides the ability to set up and retrieve Scores on Scorecard Results.
+      operationId: getScorecardResults
+      description: |-
+        Retrieves the Scorecard Results.
+
+        Secured by: Set Up: Merit and Bonus
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/ScoresetContainer
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    post:
+      tags:
+        - scorecardResults
+      summary: Creates a new Scorecard Result.
+      operationId: createsNewScorecardResults
+      description: >-
+        In the request body, specify these required fields:
+
+
+        * compensationScorecard  - The Workday ID of a Compensation Scorecard.
+        You can use a returned id from the GET /scorecards method.
+
+        * evaluationDate - The date when the Scorecard Result is evaluated. Use
+        the yyyy-mm-dd format.
+
+
+        Secured by: Set Up: Merit and Bonus
+
+
+        Scope: Advanced Compensation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/CreateScorecardResults
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/CreateScorecardResults
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            Either specify a different Evaluation Date or edit the existing
+            Scores. The Scorecard Result for the specified Scorecard and
+            Evaluation Date already exists:([scores])
+
+
+            Change the Evaluation Date to a date that is on or after the
+            Effective Date of the selected Scorecard. The specified Evaluation
+            Date is before the earliest Effective Date of the selected
+            Scorecard.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: createScorecardResults
+  /scorecards:
+    get:
+      tags:
+        - scorecards
+      summary: Retrieves Compensation Scorecard information.
+      operationId: getCompensationScorecards
+      description: >-
+        Retrieves Compensation Scorecard information including the
+        scorecardName, scorecardDescription, inactive status,
+        defaultScorecardGoals, scorecardProfiles containing
+        profileScorecardGoals as of the effective date. The default effective
+        date is the request date.
+
+
+        Secured by: Set Up: Merit and Bonus
+
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: effectiveDate
+          in: query
+          description: Effective date the scorecard task takes effect.
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/ScoreCard
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    post:
+      tags:
+        - scorecards
+      summary: Creates a Compensation Scorecard
+      operationId: createsCompensationScorecards
+      description: >-
+        Creates a new Compensation Scorecard.
+
+
+        In the request body, specify these required fields: scorecardName,
+        effectiveDate, and defaultScorecardGoals[ {goalName, goalWeight} ]. 
+
+        If you specify the optional scorecardProfiles[], you must specify the
+        eligibilityRule{id} and at least 1 goal in profileScorecardGoals[
+        {goalName, goalWeight} ].
+
+
+        Secured by: Set Up: Merit and Bonus
+
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: effectiveDate
+          in: query
+          description: Effective date the scorecard task takes effect.
+          schema:
+            type: string
+            format: date
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/CreateScoreCard
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/CreateScoreCard
+        '400':
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+            A Default Scorecard ~Goal~ is missing
+
+            ~Goal~ Weights must be greater than 0.
+
+            There are duplicate eligibility rules on this request.
+
+            Scorecard Name entered has already been used.
+
+            A ~Goal~ is missing for a Scorecard Profile.
+
+            The sum of the ~goal~ weightings must equal 100%.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: createScorecard
+  /workers/{id}:
+    get:
+      tags:
+        - workers
+      summary: Retrieves a worker instance.
+      operationId: getWorkerInstance
+      description: >-
+        Secured by: Worker Data: Public Worker Reports, Self-Service: Current
+        Staffing Information
+
+
+        Scope: Staffing
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/WorkerProfile
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /scorecardResults/{id}:
+    get:
+      tags:
+        - scorecardResults
+      summary: Provides the ability to set up and retrieve Scores on Scorecard Results.
+      operationId: getAndSetUpScoresOnScorecardResults
+      description: |-
+        Retrieves the Scorecard Results.
+
+        Secured by: Set Up: Merit and Bonus
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/ScoresetContainer
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    delete:
+      tags:
+        - scorecardResults
+      summary: Deletes the Scorecard Results with the specified ID.
+      operationId: deleteScorecardResultsByID
+      description: |-
+        Deletes the Scorecard Results with the specified ID.
+
+        Secured by: Set Up: Merit and Bonus
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data. Deleting resource.
+          content: {}
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            You can’t delete the Scorecard Results used in a completed or
+            in-progress compensation review process.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers:
+    get:
+      tags:
+        - workers
+      summary: Retrieves a collection of workers.
+      operationId: getWorkerCollection
+      description: >-
+        Secured by: Worker Data: Public Worker Reports, Self-Service: Current
+        Staffing Information
+
+
+        Scope: Staffing
+      parameters:
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+        - name: search
+          in: query
+          description: >-
+            Searches ~workers~ by name. The search is case-insensitive. You can
+            include space-delimited search strings for an OR search.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/WorkerSummary
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/requestOneTimePayment:
+    post:
+      tags:
+        - workers
+      summary: Request a one-time payment for a worker with the specified ID.
+      operationId: requestOneTimePayment
+      description: >-
+        Creates a one-time payment for a worker with the specified ID, and
+        initiates the Request One-Time Payment business process. In the request
+        body, specify at least these required fields: reason{id}, position{id},
+        oneTimePayments[ paymentCurrency{id}, oneTimePaymentPlan {id}].
+
+
+        Sample format for paymentAmount:
+
+        "payment Amount": {
+                 "value": "2500"
+        }
+
+
+        Secured by: Request One-Time Payment (REST Service)
+
+
+        Scope: Core Compensation
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/OneTimePaymentPlanEventInput
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/OneTimePaymentPlanEventInput
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            At least 1 One-Time Payment is required.
+
+
+            Based on the worktag type configuration following worktag types are
+            not valid for taggable type [tt]: [awt]. Please remove all worktags
+            for the invalid worktag types.
+
+
+            If specifying a Coverage Date range, then both dates must be
+            specified.
+
+
+            The coverage period End Date must be on or after Start Date.
+
+
+            The job is not valid for the ~employee~.
+
+
+            Multiple One-Time Payment is not enabled. Please enable Multiple
+            One-Time Payment in HCM Tenant Setup - Compensation.
+
+
+            Scheduled Payment Date must be equal to Event Effective Date when
+            Multiple One-Time Payment is not enabled in Edit Tenant Setup - HCM.
+
+
+            Compensation Change cannot take place before ~Employee~ Hire Date.
+
+
+            The ~employee~ you have selected has more than one job. You must
+            supply the job to which this operation applies.
+
+
+            The ~Employee~ Visibility Date has been set to a value, but the
+            ~Employee~ Visibility Feature has not been activated in the HCM
+            Tenant settings. Please leave the date blank or activate the feature
+            in the tenant level settings.
+
+
+            Position submitted is not filled as of the effective date.
+
+
+            Either an amount or a percent for the One-Time Payment is required.
+
+
+            Coverage Start Date and Coverage End Date can not be entered for a
+            One-Time Payment Plan that does not have Coverage Dates enabled.
+
+
+            Select a balancing worktag for Worktags of the following type:
+            [type]
+
+
+            A One-Time Payment plan is required.
+
+
+            Scheduled Payment Date cannot take place before the One Time Payment
+            Effective Date.
+
+
+            The following Accounting Worktags are required but have not been
+            assigned: [missing].
+
+
+            Please use a valid One-Time Payment plan.
+
+
+            The ~Employee~ Visibility Date must be on or after the Effective
+            Date.
+
+
+            Effective Date is required.
+
+
+            Only one worktag for each type is allowed for each document line.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: oneTimePaymentPlanEventInput
+  /scorecardResults/{id}/scores/{subresourceID}:
+    patch:
+      tags:
+        - scorecardResults
+      summary: Updates the Score for the specified Scorecard Result.
+      operationId: updateScore
+      description: >-
+        Sets the achievement value for the specified Score in the specified
+        Scorecard Result.
+
+        Specify the required achievement value as a percentage (1-100%).
+
+
+        Secured by: Set Up: Merit and Bonus
+
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: subresourceID
+          in: path
+          description: The Workday ID of the subresource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreInput'
+        required: true
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data. Updating resource.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/ScoreInput
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            You can’t update Scorecard Results used in a completed compensation
+            review process.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: scoreInput
+  /scorecards/{id}:
+    get:
+      tags:
+        - scorecards
+      summary: Retrieves Compensation Scorecard information.
+      operationId: getCompensationScoreCardInfo
+      description: >-
+        Retrieves Compensation Scorecard information including the
+        scorecardName, scorecardDescription, inactive status,
+        defaultScorecardGoals, scorecardProfiles containing
+        profileScorecardGoals as of the effective date. The default effective
+        date is the request date.
+
+
+        Secured by: Set Up: Merit and Bonus
+
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/ScoreCard
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    put:
+      tags:
+        - scorecards
+      summary: Updates a Compensation Scorecard
+      operationId: UpdateCompensationScorecard
+      description: >-
+        Replaces an existing Compensation Scorecard as of the specified
+        effectiveDate. 
+
+        Call GET /scorecards/{id} to initially populate the request body with
+        the existing data. You can then update the scorecardName,
+        scorecardDescription, and inactive fields. You can also add, update, and
+        delete the existing data in defaultScorecardGoals[],
+        scorecardProfiles[], and profileScorecardGoals[].
+
+
+        Secured by: Set Up: Merit and Bonus
+
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/EditScoreCards
+        required: true
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data. Updating resource.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/EditScoreCards
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            A Default Scorecard ~Goal~ is missing
+
+
+            A Scorecard Profile doesn't exist as of the Effective Date. Remove
+            or replace the invalid Scorecard Profile or change the Effective
+            Date.
+
+
+            A Scorecard Profile is already in use on another Scorecard. Select a
+            Scorecard Profile that's not already in use.
+
+
+            You entered duplicate ~Goals~. Replace or remove the duplicates.
+
+
+            You can't edit the compensation scorecard [scorecard] for the
+            Effective Date [date] because the latest dated performance results
+            associated with the scorecard is the date [latest date]. Enter an
+            Effective Date for editing the scorecard that is after the following
+            date: [latest date]
+
+
+            There are duplicate eligibility rules on this request.
+
+
+            Enter an Effective Date that is on or after the first Effective Date
+            of the scorecard: [effectiveDate].
+
+
+            You entered duplicate Scorecard Profiles. Replace or remove the
+            duplicates.
+
+
+            Scorecard Name entered has already been used.
+
+
+            A ~Goal~ is missing for a Scorecard Profile.
+
+
+            A ~Goal~ is invalid. Enter a valid ~Goal~.
+
+
+            ~Goal~ Weights must be greater than 0.
+
+
+            A ~Goal~ doesn't exist as of the Effective Date. Remove or replace
+            the invalid ~Goal~ or change the Effective Date.
+
+
+            The sum of the ~goal~ weightings must equal 100%.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: editScorecards
+    delete:
+      tags:
+        - scorecards
+      summary: Deletes a Compensation Scorecard with the specified ID.
+      operationId: deleteCompensationScorecardByID
+      description: |-
+        Deletes Compensation Scorecards.
+
+        Secured by: Set Up: Merit and Bonus
+
+        Scope: Advanced Compensation
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data. Deleting resource.
+          content: {}
+        '400':
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+            The Compensation Scorecard cannot be deleted because it is in use.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+components:
+  schemas:
+    INSTANCE_MODEL_REFERENCE:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+          type: string
+          description: wid / id / reference id
+        descriptor:
+          type: string
+          description: A description of the instance
+          readOnly: true
+        href:
+          type: string
+          description: A link to the instance
+          readOnly: true
+    ERROR_MODEL_REFERENCE:
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          type: string
+          description: A description of the error
+    VALIDATION_ERROR_MODEL_REFERENCE:
+      allOf:
+        - $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+        - type: object
+          properties:
+            errors:
+              type: array
+              description: An array of validation errors
+              items:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    FACETS_MODEL_REFERENCE:
+      type: array
+      items:
+        type: object
+        properties:
+          descriptor:
+            type: string
+            description: A description of the facet
+          facetParameter:
+            type: string
+            description: The alias used to select the facet
+          values:
+            type: array
+            description: the facet values
+            items:
+              required:
+                - id
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: The number of instances returned by this facet
+                  format: int32
+                id:
+                  pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+                  type: string
+                  description: wid / id / reference id
+                descriptor:
+                  type: string
+                  description: A description of the facet
+                href:
+                  type: string
+                  description: A link to the instance
+                  readOnly: true
+        description: This object represents the possible facets for this resource
+        readOnly: true
+    MULTIPLE_INSTANCE_MODEL_REFERENCE:
+      type: object
+      properties:
+        total:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+    CreateScoreCard:
+      allOf:
+        - required:
+            - defaultScorecardGoals
+            - effectiveDate
+            - scorecardName
+          type: object
+          properties:
+            effectiveDate:
+              type: string
+              description: >-
+                The Effective Date of the Compensation Scorecard in format
+                YYYY-MM-DD
+              format: date
+              x-workday-type: Date
+            scorecardName:
+              type: string
+              description: The name of the Compensation Scorecard.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            defaultScorecardGoals:
+              type: array
+              description: The ~goals~ for the Compensation Scorecard.
+              items:
+                $ref: >-
+                  #/components/schemas/CreateGoals
+              x-workday-type: Multi-instance
+            scorecardProfiles:
+              type: array
+              description: The profiles for the Compensation Scorecard.
+              items:
+                $ref: >-
+                  #/components/schemas/CreateScorecardProfiles
+              x-workday-type: Multi-instance
+            inactive:
+              type: boolean
+              description: >-
+                Indicates whether the Scorecard is inactive using a value of
+                true/false.
+              example: true
+              x-workday-type: Boolean
+            scorecardDescription:
+              type: string
+              description: The description of the Compensation Scorecard.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+    EditScoreCards:
+      allOf:
+        - required:
+            - defaultScorecardGoals
+            - effectiveDate
+            - scorecardName
+          type: object
+          properties:
+            inactive:
+              type: boolean
+              description: >-
+                Replaces the inactive status of the Compensation Scorecard as of
+                the specified effectiveDate.  Default value: false.
+              example: true
+              x-workday-type: Boolean
+            effectiveDate:
+              type: string
+              description: >-
+                The Effective Date of the updates to the Compensation
+                Scorecard.  Date must be entered in format: YYYY-MM-DD.
+              format: date
+              x-workday-type: Date
+            scorecardDescription:
+              type: string
+              description: >-
+                Replaces the description of the Compensation Scorecard as of the
+                specified effectiveDate.  Deletes the description if a
+                description exists as of the specified effectiveDate and this
+                field is not included in the PUT.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            scorecardProfiles:
+              type: array
+              description: >-
+                Replaces the array of Profile Scorecard Goals and Eligibility
+                Rules as of the specified effectiveDate.  Creates a new array if
+                one does not exist.  Deletes the array if one exists as of the
+                specified effectiveDate and the array is not included in the
+                PUT.
+              items:
+                $ref: >-
+                  #/components/schemas/ScorecardProfiles
+              x-workday-type: Multi-instance
+            defaultScorecardGoals:
+              type: array
+              description: >-
+                Replaces the array of Default Scorecard Goal fields as of the
+                specified effectiveDate.
+              items:
+                $ref: >-
+                  #/components/schemas/ScoreCardGoals
+              x-workday-type: Multi-instance
+            scorecardName:
+              type: string
+              description: >-
+                Replaces the name of the Compensation Scorecard as of the
+                specified effectiveDate.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+    ScoreCard:
+      allOf:
+        - type: object
+          properties:
+            inactive:
+              type: boolean
+              description: >-
+                Indicates whether the Scorecard is inactive using a value of
+                true/false.
+              example: true
+              x-workday-type: Boolean
+            defaultScorecardGoals:
+              type: array
+              description: The goals for the Compensation Scorecard.
+              items:
+                $ref: >-
+                  #/components/schemas/ScorecardGoalSummary
+              x-workday-type: Multi-instance
+            scorecardDescription:
+              type: string
+              description: The description of the Compensation Scorecard.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            scorecardProfiles:
+              type: array
+              description: The profiles for the Compensation Scorecard.
+              items:
+                $ref: >-
+                  #/components/schemas/ScoreCardProfile
+              x-workday-type: Multi-instance
+            scorecardName:
+              type: string
+              description: The name of the Compensation Scorecard.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            effectiveDate:
+              type: string
+              description: >-
+                The Effective Date of the Compensation Scorecard in format
+                YYYY-MM-DD.
+              format: date
+              x-workday-type: Date
+            id:
+              type: string
+              description: Id of the instance
+    Location:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    PrimarySupervisoryOrganization:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    WorkerProfile:
+      allOf:
+        - type: object
+          properties:
+            primaryWorkEmail:
+              type: string
+              description: The primary work email address for the ~worker~.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            isManager:
+              type: boolean
+              description: Identifies if the ~worker~ has a ~manager~ role.
+              example: true
+              x-workday-type: Boolean
+            primaryWorkPhone:
+              type: string
+              description: >-
+                The primary work phone number for the ~worker~ including the
+                area code and ~country~ code.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            location:
+              $ref: '#/components/schemas/Location'
+            primarySupervisoryOrganization:
+              $ref: >-
+                #/components/schemas/PrimarySupervisoryOrganization
+            primaryWorkAddressText:
+              type: string
+              description: >-
+                Returns the primary work address for the ~worker~, or from their
+                default primary work location, full format on a single line.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            yearsOfService:
+              type: integer
+              description: The years of service for the ~worker~.
+              example: 588043613
+              x-workday-type: Numeric
+            businessTitle:
+              type: string
+              description: >-
+                The business title for the ~worker's~ primary position. If no
+                business title is defined for a position, the position title is
+                returned back.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            supervisoryOrganizationsManaged:
+              type: string
+              description: >-
+                All ~supervisory organizations~, excluding inherited
+                organizations, in which the ~worker~ has a leadership role.
+              format: url
+              readOnly: true
+              x-workday-type: Multi-instance
+            dateOfBirth:
+              type: string
+              description: The birth date of the ~worker~.
+              format: date
+              x-workday-type: Date
+            href:
+              type: string
+              description: A link to the instance
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    WorkerSummary:
+      allOf:
+        - type: object
+          properties:
+            primaryWorkPhone:
+              type: string
+              description: >-
+                The primary work phone number for the ~worker~ including the
+                area code and ~country~ code.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            isManager:
+              type: boolean
+              description: Identifies if the ~worker~ has a ~manager~ role.
+              example: true
+              x-workday-type: Boolean
+            primaryWorkEmail:
+              type: string
+              description: The primary work email address for the ~worker~.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            businessTitle:
+              type: string
+              description: >-
+                The business title for the ~worker's~ primary position. If no
+                business title is defined for a position, the position title is
+                returned back.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            primarySupervisoryOrganization:
+              $ref: >-
+                #/components/schemas/PrimarySupervisoryOrganization
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            href:
+              type: string
+              description: A link to the instance
+            id:
+              type: string
+              description: Id of the instance
+    Reason:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Position:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    OneTimePaymentPlanEventInput:
+      allOf:
+        - type: object
+          properties:
+            reason:
+              $ref: '#/components/schemas/Reason'
+            effectiveDate:
+              type: string
+              description: The date this business process takes effect.
+              format: date
+              x-workday-type: Date
+            employeeVisibilityDate:
+              type: string
+              description: >-
+                Returns the date that a compensation change is visible to a
+                ~worker~.
+              format: date
+              x-workday-type: Date
+            position:
+              $ref: '#/components/schemas/Position'
+            oneTimePayments:
+              type: array
+              description: All one-time payments associated with the event.
+              items:
+                $ref: >-
+                  #/components/schemas/OneTimePaymentInput
+              x-workday-type: Multi-instance
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    ScorecardID:
+      allOf:
+        - $ref: >-
+            #/components/schemas/DefaultScoreCard
+        - type: object
+    DefaultScorecardGoalsResult:
+      allOf:
+        - $ref: '#/components/schemas/ScoreSet'
+        - type: object
+    ScoresetContainer:
+      allOf:
+        - type: object
+          properties:
+            scorecardDescription:
+              type: string
+              description: Returns the Scorecard's Description
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            scorecardName:
+              type: string
+              description: The ~goal~ name of the scorecard criteria result.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            scorecardID:
+              $ref: >-
+                #/components/schemas/ScorecardID
+            profileScorecardGoalsResult:
+              type: array
+              description: Returns the Scorecard Profiles for a Scorecard Result
+              items:
+                $ref: '#/components/schemas/ScoreSet'
+              x-workday-type: Multi-instance
+            defaultScorecardGoalsResult:
+              $ref: >-
+                #/components/schemas/DefaultScorecardGoalsResult
+            evaluationDate:
+              type: string
+              description: Scorecard Result Evaluation Date
+              format: date
+              x-workday-type: Date
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    ScoreCardID:
+      allOf:
+        - $ref: >-
+            #/components/schemas/DefaultScoreCard
+        - type: object
+    CreateScorecardResults:
+      allOf:
+        - required:
+            - evaluationDate
+            - scorecardID
+          type: object
+          properties:
+            scorecardName:
+              type: string
+              description: The ~goal~ name of the scorecard criteria result.
+              readOnly: true
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            scorecardID:
+              $ref: >-
+                #/components/schemas/ScoreCardID
+            evaluationDate:
+              type: string
+              description: Scorecard Result Evaluation Date
+              format: date
+              x-workday-type: Date
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    ScoreInput:
+      allOf:
+        - type: object
+          properties:
+            achievement:
+              type: integer
+              description: The achievement percentage for the scorecard criteria result.
+              example: 1
+              x-workday-type: Numeric
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    GoalID:
+      allOf:
+        - $ref: '#/components/schemas/ScoreGoal'
+        - type: object
+    ScoresetScore:
+      allOf:
+        - type: object
+          properties:
+            goalID:
+              $ref: '#/components/schemas/GoalID'
+            goalName:
+              type: string
+              description: The ~goal~ name of the scorecard criteria result.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            achievement:
+              type: integer
+              description: The achievement percentage for the scorecard criteria result.
+              example: 729525
+              x-workday-type: Numeric
+            goalWeight:
+              type: integer
+              description: >-
+                The criteria weighted percentage of the scorecard criteria
+                result.
+              example: 503156
+              x-workday-type: Numeric
+            id:
+              type: string
+              description: Id of the instance
+    ScorecardProfiles:
+      allOf:
+        - required:
+            - eligibilityRule
+            - profileScorecardGoals
+          type: object
+          properties:
+            eligibilityRule:
+              $ref: >-
+                #/components/schemas/EligibilityRule
+            profileScorecardGoals:
+              type: array
+              description: >-
+                Replaces the array of Profile Scorecard Goal fields as of the
+                specified effectiveDate.  Creates a new array if one does not
+                exist.  Deletes the array if one exists as of the specified
+                effectiveDate and the scorecardProfiles array is not included in
+                the PUT.
+              items:
+                $ref: >-
+                  #/components/schemas/ScoreCardGoals
+              x-workday-type: Multi-instance
+            id:
+              type: string
+              description: Id of the instance
+    CreateScorecardProfiles:
+      allOf:
+        - required:
+            - eligibilityRule
+            - profileScorecardGoals
+          type: object
+          properties:
+            profileScorecardGoals:
+              type: array
+              description: The ~goals~ for the Compensation Scorecard.
+              items:
+                $ref: >-
+                  #/components/schemas/CreateGoals
+              x-workday-type: Multi-instance
+            eligibilityRule:
+              $ref: >-
+                #/components/schemas/EligibilityRule
+            id:
+              type: string
+              description: Id of the instance
+    ScorecardGoalSummary:
+      allOf:
+        - type: object
+          properties:
+            goalWeight:
+              type: integer
+              description: >-
+                The weight given to the Compensation Scorecard ~Goal~. [90% will
+                be displayed as 0.9]
+              example: 293556
+              x-workday-type: Numeric
+            goalDescription:
+              type: string
+              description: The description of the Compensation Scorecard ~Goal~.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            goalName:
+              type: string
+              description: The name of the Compensation Scorecard ~Goal~.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+    ScoreGoal:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+    CreateGoals:
+      allOf:
+        - required:
+            - goalName
+            - goalWeight
+          type: object
+          properties:
+            goalDescription:
+              type: string
+              description: The description of the Compensation Scorecard Goal
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            goalWeight:
+              type: integer
+              description: >-
+                The weight given to the Compensation Scorecard Goal. [90% will
+                be displayed as 0.9]
+              example: 808794
+              x-workday-type: Numeric
+            goalName:
+              type: string
+              description: The name of the Compensation Scorecard Goal.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+    DefaultScoreCard:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+    EligibiltyRule:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    ScoreSet:
+      allOf:
+        - type: object
+          properties:
+            eligibiltyRule:
+              $ref: >-
+                #/components/schemas/EligibiltyRule
+            performanceScores:
+              type: array
+              description: The set of Performance Scores for a Compensation Scorecard.
+              items:
+                $ref: >-
+                  #/components/schemas/ScoresetScore
+              x-workday-type: Multi-instance
+            weightedFundingPercent:
+              type: integer
+              description: >-
+                Calculates the total Weighted Funding Percent for all the scores
+                in the scorecard result set.
+              example: 140783
+              x-workday-type: Numeric
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    PayrollWorkTags:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    ScoreCardGoals:
+      allOf:
+        - required:
+            - goalName
+            - goalWeight
+          type: object
+          properties:
+            goalDescription:
+              type: string
+              description: >-
+                Replaces the description of the Compensation Scorecard Goal as
+                of the specified effectiveDate.  Deletes the description if a
+                description exists as of the specified effectiveDate and this
+                field is not included in the PUT.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            goalWeight:
+              type: integer
+              description: >-
+                Replaces the weight of the Compensation Scorecard ~Goal~ as of
+                the specified effectiveDate.  [Weight should be entered as 0.9
+                for a goalWeight of 90%]
+              example: 881107
+              x-workday-type: Numeric
+            goalName:
+              type: string
+              description: >-
+                Replaces the name of the Compensation Scorecard Goal as of the
+                specified effectiveDate.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+    PaymentCurrency:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    OneTimePaymentPlan:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    OneTimePaymentInput:
+      allOf:
+        - type: object
+          properties:
+            payrollWorktags:
+              type: array
+              description: One-Time Payment Worktags for REST API
+              items:
+                $ref: >-
+                  #/components/schemas/PayrollWorkTags
+              x-workday-type: Multi-instance
+            paymentCurrency:
+              $ref: >-
+                #/components/schemas/PaymentCurrency
+            coverageStartDate:
+              type: string
+              description: >-
+                The start date of the Coverage Period for the payment, which
+                enables Workday Payroll or Payroll Integration to associate
+                dates with the one-time payment for Fair Labor Standards Act
+                (FLSA) reporting requirements.
+              format: date
+              x-workday-type: Date
+            paymentAmount:
+              type: object
+              properties: {}
+              description: Amount of compensation payment
+              example: '205094691'
+              x-workday-type: Currency
+            coverageEndDate:
+              type: string
+              description: >-
+                The end date of the Coverage Period for the payment, which
+                enables Workday Payroll or Payroll Integration to associate
+                dates with the one-time payment for Fair Labor Standards Act
+                (FLSA) reporting requirements.
+              format: date
+              x-workday-type: Date
+            additionalInformation:
+              type: string
+              description: Additional information for this compensation payment
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            paymentPercent:
+              type: integer
+              description: >-
+                The actual amount for the ~bonus~ payment represented as a
+                percentage.  The percentage is usually calculated as a
+                percentage of base pay, but on the ~bonus~ plan setup it is
+                possible to override the calculation basis to calculate as a
+                percentage of a set of compensation elements.
+              example: 336341779
+              x-workday-type: Numeric
+            oneTimePaymentPlan:
+              $ref: >-
+                #/components/schemas/OneTimePaymentPlan
+            scheduledPaymentDate:
+              type: string
+              description: The payment date scheduled for the one-time payment request.
+              format: date
+              x-workday-type: Date
+            sendToPayroll:
+              type: boolean
+              description: >-
+                This is true if you selected Send to Payroll on the ~bonus~
+                payment, future payment, or one-time payment. If false, Workday
+                Payroll doesn't process the payment.
+              example: true
+              x-workday-type: Boolean
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    EligibilityRule:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    ScoreCardProfile:
+      allOf:
+        - type: object
+          properties:
+            eligibilityRule:
+              $ref: >-
+                #/components/schemas/EligibilityRule
+            profileScorecardGoals:
+              type: array
+              description: The goals for the Compensation Scorecard.
+              items:
+                $ref: >-
+                  #/components/schemas/ScorecardGoalSummary
+              x-workday-type: Multi-instance
+            id:
+              type: string
+              description: Id of the instance
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://<tenantauthorizationhostname>
+          scopes: {}

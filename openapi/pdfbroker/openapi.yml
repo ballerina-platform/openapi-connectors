@@ -12,7 +12,7 @@ info:
     PdfBroker.io is an api for creating pdf files from Xsl-Fo or Html and other useful pdf utilities.
   x-ballerina-display:
     label: PdfBroker
-    iconPath: "resources/pdfbroker.svg"
+    iconPath: "icon.png"
   termsOfService: https://www.pdfbroker.io/terms
   contact:
     name: PdfBroker.io Support

@@ -5,7 +5,7 @@ x-hasEquivalentPaths: true
 info:
   x-ballerina-display:
     label: Trello
-    iconPath: "resources/trello.svg"
+    iconPath: "icon.png"
   contact:
     name: Trello
     url: https://trello.com/home

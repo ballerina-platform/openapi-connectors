@@ -24,7 +24,7 @@ info:
   x-providerName: ritekit.com
   x-ballerina-display:
       label: RiteKit
-      iconPath: "resources/ritekit.svg"
+      iconPath: "icon.png"
 security:
   - api_key: []
 tags: []

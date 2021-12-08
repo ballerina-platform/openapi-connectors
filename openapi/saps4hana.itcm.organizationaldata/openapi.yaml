@@ -11,7 +11,7 @@ info:
     Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
   x-ballerina-display:
     label: SAPS4HANA ITCM Organizational Data
-    iconPath: "resources/saps4hana.itcm.organizationaldata.svg"
+    iconPath: "icon.png"
   contact:
     name: ITCM
   license:

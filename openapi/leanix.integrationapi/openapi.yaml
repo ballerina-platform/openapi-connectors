@@ -12,7 +12,7 @@ info:
     Create a [LeanIX Account](https://www.leanix.net/en/) and obtain tokens following [this guide](https://docs-eas.leanix.net/docs/authentication).
   x-ballerina-display:
     label: Leanix Integration
-    iconPath: "resources/leanix.integrationapi.svg"
+    iconPath: "icon.png"
 servers:
 - url: https://eu.leanix.net/services/integration-api/v1
 - url: https://us.leanix.net/services/integration-api/v1

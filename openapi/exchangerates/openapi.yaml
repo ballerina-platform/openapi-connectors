@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Exchange Rates
-    iconPath: "resources/exchangerates.svg"
+    iconPath: "icon.png"
   description: >
     This is a generated connector from [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification.
 

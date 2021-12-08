@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: OpenFIGI
-    iconPath: "resources/openfigi.svg"
+    iconPath: "icon.png"
   version: 1.4.0
   title: OpenFIGI API
   description: >- 

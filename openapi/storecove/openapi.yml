@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Storecove
-    iconPath: "resources/storecove.svg"
+    iconPath: "icon.png"
   contact:
     email: apisupport@storecove.nl
   description: | 

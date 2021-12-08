@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Finances
-    iconPath: "resources/ebay.finances.svg"
+    iconPath: "icon.png"
   title: eBay Finances API
   description: >-
     This is a generated connector for [eBay finances API v1.9.0](https://developer.ebay.com/api-docs/sell/finances/overview.html) OpenAPI Specification. 

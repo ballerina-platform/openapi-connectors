@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Azure IoT Central
-    iconPath: "resources/azure.iotcentral.svg"
+    iconPath: "icon.png"
   title: Azure IoT Central
   description: >
     This is a generated connector from [Azure IoT Central API v1.0](https://azure.microsoft.com/en-us/services/iot-central/) OpenAPI specification.

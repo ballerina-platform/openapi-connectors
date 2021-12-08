@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   x-ballerina-display:
     label: Flat API
-    iconPath: "resources/flatapi.svg"
+    iconPath: "icon.png"
   title: Flat API
   description: |-
     This is a generated connector for [Flat API v2.13.0](https://flat.io/developers/docs/api/) OpenAPI specification.

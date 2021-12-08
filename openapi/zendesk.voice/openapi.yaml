@@ -12,7 +12,7 @@ info:
     Create an [Zendesk account](https://www.zendesk.com/) and obtain tokens by following [this guide](https://developer.zendesk.com/api-reference/ticketing/introduction/#security-and-authentication).
   x-ballerina-display:
     label: Zendesk Voice
-    iconPath: "resources/zendesk.voice.svg"
+    iconPath: "icon.png"
 paths:
   /api/v2/channels/voice/phone_numbers.json:
     get:

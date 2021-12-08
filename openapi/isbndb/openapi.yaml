@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
       label: ISBNdb
-      iconPath: "resources/isbndb.svg"
+      iconPath: "icon.png"
   title: ISBNdb API v2
   description: >
     This is a generated connector for [ISBNdb API v2.0.0](https://isbndb.com/apidocs/v2) OpenAPI specification.

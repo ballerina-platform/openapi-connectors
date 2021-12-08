@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: files.com
-    iconPath: "resources/files.com.svg"
+    iconPath: "icon.png"
   title: Files.com API
   contact:
     name: Files.com Customer Success Team

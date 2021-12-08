@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Azure QnA Maker
-    iconPath: "resources/azure.qnamaker.svg"
+    iconPath: "icon.png"
   title: QnA Maker V4.0
   description: > 
     This is a generated connector for [Azure QnA Maker API v4](https://docs.microsoft.com/en-us/rest/api/cognitiveservices-qnamaker/QnAMaker4.0/) OpenAPI specification.

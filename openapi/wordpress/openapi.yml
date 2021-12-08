@@ -13,7 +13,7 @@ info:
     Create a [WordPress account](https://login.wordpress.org/register) and obtain tokens by following [this guide](https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/).
   x-ballerina-display:
     label: WordPress
-    iconPath: "resources/wordpress.svg"
+    iconPath: "icon.png"
   version: 0.1.0
 paths:
   /posts:

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Negotiation
-    iconPath: "resources/ebay.negotiation.svg"
+    iconPath: "icon.png"
   title: Negotiation API
   description: >- 
     This is a generated connector for [eBay Negotiation API v1.1.0](https://developer.ebay.com/api-docs/sell/negotiation/overview.html) OpenAPI Specification

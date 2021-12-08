@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Analytics
-    iconPath: "resources/ebay.analytics.svg"
+    iconPath: "icon.png"
   title: ' Seller Service Metrics API '
   description: >-
     This is a generated connector for [eBay Analytics API v1.2.0](https://developer.ebay.com/api-docs/sell/analytics/overview.html) OpenAPI Specification.

@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Paylocity
-    iconPath: "resources/paylocity.svg"
+    iconPath: "icon.png"
   description: |
     This is a generated connector for [Paylocity API v2](https://www.paylocity.com/our-products/integrations/api-library/) OpenAPI Specification.
     Paylocity Web Services API is an externally facing RESTful Internet protocol. The Paylocity API uses HTTP verbs and a RESTful endpoint structure.

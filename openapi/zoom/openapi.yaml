@@ -20,7 +20,7 @@ info:
   version: 2.0.0
   x-ballerina-display:
     label: Zoom
-    iconPath: "resources/zoom.svg"
+    iconPath: "icon.png"
   x-ballerina-init-description: >
     The connector initialization requires setting the API credentials. 
     

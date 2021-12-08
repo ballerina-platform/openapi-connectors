@@ -21,7 +21,7 @@ info:
     Please create an [Api2Pdf account](https://portal.api2pdf.com/register) and obtain an API key.
   x-ballerina-display:
     label: Api2Pdf
-    iconPath: "resources/api2pdf.svg"  
+    iconPath: "icon.png"  
   license:
     name: Creative Commons
     url: https://creativecommons.org/licenses/by/4.0/legalcode

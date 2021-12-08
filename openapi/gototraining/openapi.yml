@@ -9,7 +9,7 @@ info:
     Create a [LogMeIn account](https://accounts.logme.in/registration.aspx) and obtain tokens by following [this guide](https://developer.goto.com/guides/HowTos/02_HOW_createClient/).
   x-ballerina-display:
     label: GoTo Training
-    iconPath: "resources/gototraining.svg"
+    iconPath: "icon.png"
   version: 1.0.0
 tags:
   - name: Organizers

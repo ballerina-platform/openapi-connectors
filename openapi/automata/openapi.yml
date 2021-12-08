@@ -9,7 +9,7 @@ info:
     Obtain tokens by following [this guide](https://apis.byautomata.io/?ref=api_landing_0).
   x-ballerina-display:
     label: Automata
-    iconPath: "resources/automata.svg"
+    iconPath: "icon.png"
   termsOfService: https://byautomata.io/terms/
   contact:
     email: support@byautomata.io

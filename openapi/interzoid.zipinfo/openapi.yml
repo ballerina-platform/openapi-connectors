@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
       label: Interzoid Zip Code Detailed Info
-      iconPath: "resources/interzoid.zipinfo.svg"
+      iconPath: "icon.png"
   contact:
     email: support@interzoid.com
     name: API Support

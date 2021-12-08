@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Cloud Filestore
-    iconPath: "resources/googleapis.cloudfilestore.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

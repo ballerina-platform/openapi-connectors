@@ -12,7 +12,7 @@ info:
     Create a [ProdPad account](https://www.prodpad.com/) and obtain tokens by following [this guide](https://help.prodpad.com/article/763-generating-an-api-key).
   x-ballerina-display:
     label: ProdPad 
-    iconPath: "resources/prodpad.svg"
+    iconPath: "icon.png"
   termsOfService: https://www.prodpad.com/terms
   contact: 
     name: Support

@@ -14,7 +14,7 @@ info:
     and obtain tokens following [this guide](https://github.com/Medium/medium-api-docs#2-authentication).
   x-ballerina-display:
     label: Medium
-    iconPath: "resources/medium.svg"
+    iconPath: "icon.png"
 servers:
 - url: https://api.medium.com/v1
 paths:

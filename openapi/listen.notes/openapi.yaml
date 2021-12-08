@@ -7,7 +7,7 @@ info:
     Simple & no-nonsense podcast search & directory API. Search all podcasts and episodes by people, places, or topics.
   x-ballerina-display:
     label: Listen Notes
-    iconPath: "resources/listen.notes.svg"
+    iconPath: "icon.png"
   x-ballerina-init-description: 
     The connector initialization requires setting the API credentials.
 

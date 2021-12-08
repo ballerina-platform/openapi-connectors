@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Books
-    iconPath: "resources/googleapis.books.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

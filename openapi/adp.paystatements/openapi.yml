@@ -12,7 +12,7 @@ info:
     Create an [ADP account](https://www.adp.com/) and obtain tokens by following [this guide](https://developers.adp.com/articles/guide/auth-process-data-conn-request-access-token).
   x-ballerina-display:
     label: ADP Pay Statements
-    iconPath: "resources/adp.paystatements.svg"
+    iconPath: "icon.png"
 security:
   - OAuth2: []
   - Bearer: []

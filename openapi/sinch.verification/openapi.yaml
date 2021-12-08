@@ -11,7 +11,7 @@ info:
     Create a [Sinch account](https://www.sinch.com/) and obtain tokens by following [this guide](https://developers.sinch.com/docs/verification/api-reference/authentication/).
   x-ballerina-display:
     label: sinch.verification
-    iconPath: "resources/sinch.verification.svg"
+    iconPath: "icon.png"
   termsOfService: https://www.sinch.com/terms-of-service/
   license:
     name: MIT

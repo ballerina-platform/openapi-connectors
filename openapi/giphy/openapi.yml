@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Giphy
-    iconPath: "resources/giphy.svg"
+    iconPath: "icon.png"
   contact:
     email: support@giphy.com
   description: |

@@ -6,7 +6,7 @@ externalDocs:
 info:
   x-ballerina-display:
     label: Apple App Store
-    iconPath: "resources/apple.appstore.svg"
+    iconPath: "icon.png"
   description: >-
     This is a generated connector for [App Store Connect API v1.4.1](https://developer.apple.com/documentation/appstoreconnectapi) OpenAPI Specification.
 

@@ -27,7 +27,7 @@ info:
     Create a [atSpoke account](https://www.atspoke.com) and obtain tokens by following [this guide](https://help.atspoke.com/article/uga6efxps2-api-authentication).
   x-ballerina-display:
     label: atSpoke
-    iconPath: "resources/atspoke.svg"
+    iconPath: "icon.png"
 servers:
   - url: https://api.askspoke.com/api/v1
     description: Production API server

@@ -22,7 +22,7 @@ info:
     The connector initialization does not require setting the API credentials. 
   x-ballerina-display:
       label: Kinto
-      iconPath: "resources/kinto.svg"
+      iconPath: "icon.png"
 tags:
   - name: Blocklist
   - name: Collection-changeset

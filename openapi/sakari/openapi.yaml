@@ -6,7 +6,7 @@ servers:
 info:
   x-ballerina-display:
     label: Sakari
-    iconPath: "resources/sakari.svg"
+    iconPath: "icon.png"
   description: >
     This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification.
 

@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
       label: IP2WHOIS
-      iconPath: "resources/ip2whois.svg"
+      iconPath: "icon.png"
   description: >
     This is a generated connector from [IP2WHOIS API v2](https://www.ip2whois.com/developers-api) OpenAPI Specification. 
 

@@ -14,7 +14,7 @@ info:
     obtain tokens by using [this](https://docs.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage)
   x-ballerina-display:
     label: Azure SQL DB
-    iconPath: "resources/azure.sqldb.svg" 
+    iconPath: "icon.png" 
   version: 2017-03-01-preview
   x-apisguru-categories:
   - cloud

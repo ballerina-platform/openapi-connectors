@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Cloudmersive Security
-    iconPath: "resources/cloudmersive.security.svg"
+    iconPath: "icon.png"
   title: securityapi
   description: This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
   

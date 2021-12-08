@@ -11,7 +11,7 @@ info:
     Create a [Mitto account](https://docs.mitto.ch) and obtain tokens by following [this guide](https://docs.mitto.ch/sms-api/#authentication).
   x-ballerina-display:
     label: Mitto SMS
-    iconPath: "resources/mitto.sms.svg"
+    iconPath: "icon.png"
   version: '1'
 servers:
   - url: https://rest.mittoapi.net

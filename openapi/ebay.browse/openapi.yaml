@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Browse
-    iconPath: "resources/ebay.browse.svg"
+    iconPath: "icon.png"
   title: Browse API
   description: >-
     This is a generated connector for [eBay Browse API v1.6.0](https://developer.ebay.com/api-docs/buy/browse/overview.html) OpenAPI Specification.

@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
       label: Interzoid Global Phone Number Info
-      iconPath: "resources/interzoid.globalnumberinfo.svg"
+      iconPath: "icon.png"
   version: "1.0.0"
   title: Interzoid Get Global Phone Number Information API
   description: >

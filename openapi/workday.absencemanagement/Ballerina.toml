@@ -1,0 +1,9 @@
+[package]
+org = "ballerinax"
+name = "workday.absencemanagement"
+version = "1.0.0"
+icon = "icon.png"
+license = ["Apache-2.0"]
+keywords = ["Human Resources/HRM", "Cost/Paid"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+authors = ["Ballerina"]

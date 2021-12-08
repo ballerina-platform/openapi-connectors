@@ -1,0 +1,9 @@
+[package]
+org = "ballerinax"
+name = "beezup.merchant"
+version = "1.0.0"
+icon = "icon.png"
+license= ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = ["Commerce/eCommerce","Cost/Paid"]
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

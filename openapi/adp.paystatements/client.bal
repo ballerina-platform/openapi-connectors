@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig|http:BearerTokenConfig auth;
+    OAuth2ClientCredentialsGrantConfig|http:BearerTokenConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://accounts.adp.com/auth/oauth/v2/token";
+|};
+
 # This is a generated connector for [ADP Pay Statements API v1](https://developers.adp.com/articles/api/pay-statements-v1-api) OpenAPI specification.
 # The ADP Pay Statements API provides the capability to describe the details of a payment made to a payee. 
 # These details include the net and gross payment amounts, deductions, earnings, and year-to-date payroll accruals. 
@@ -67,6 +74,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Request the list of the last n payStatements for an Associate. Default = payStatements from the last 5 pay dates.
     #
@@ -76,12 +84,12 @@ public isolated client class Client {
     # + numberoflastpaydates - Maximum pay statements which should be returned based on a request. 
     # + return - Pay statements 
     remote isolated function listPayStatements(string roleCode, string aoid, string? ifNoneMatch = (), int? numberoflastpaydates = ()) returns PayStatements|error {
-        string  path = string `/payroll/v1/workers/${aoid}/pay-statements`;
+        string resourcePath = string `/payroll/v1/workers/${aoid}/pay-statements`;
         map<anydata> queryParam = {"numberoflastpaydates": numberoflastpaydates};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"roleCode": roleCode, "If-None-Match": ifNoneMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PayStatements response = check self.clientEp-> get(path, accHeaders, targetType = PayStatements);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PayStatements response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request the details of a specific pay statement
@@ -91,10 +99,10 @@ public isolated client class Client {
     # + payStatementId - Pay statement ID 
     # + return - Pay statement 
     remote isolated function getPayStatement(string aoid, string roleCode, string payStatementId) returns PayStatement|error {
-        string  path = string `/payroll/v1/workers/${aoid}/pay-statements/${payStatementId}`;
+        string resourcePath = string `/payroll/v1/workers/${aoid}/pay-statements/${payStatementId}`;
         map<any> headerValues = {"roleCode": roleCode};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PayStatement response = check self.clientEp-> get(path, accHeaders, targetType = PayStatement);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PayStatement response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request the list of the last n client-specific pay statements for an associate. Default = pay statements from the last 5 pay dates.
@@ -105,12 +113,12 @@ public isolated client class Client {
     # + ifNoneMatch - Used with a method to make it conditional; the method is performed only if the client entity (via the given entity tag, ETag header) does not match the server entity. 
     # + return - Pay statements 
     remote isolated function listClientPayStatement(string aoid, string roleCode, int? numberoflastpaydates = (), string? ifNoneMatch = ()) returns PayStatements|error {
-        string  path = string `/payroll/v1/workers/${aoid}/organizational-pay-statements`;
+        string resourcePath = string `/payroll/v1/workers/${aoid}/organizational-pay-statements`;
         map<anydata> queryParam = {"numberoflastpaydates": numberoflastpaydates};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"roleCode": roleCode, "If-None-Match": ifNoneMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PayStatements response = check self.clientEp-> get(path, accHeaders, targetType = PayStatements);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PayStatements response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request the details of a single client-specific pay statement.
@@ -120,10 +128,10 @@ public isolated client class Client {
     # + payStatementId - Pay statement ID 
     # + return - Pay statement 
     remote isolated function getClientPayStatement(string aoid, string roleCode, string payStatementId) returns PayStatement|error {
-        string  path = string `/payroll/v1/workers/${aoid}/organizational-pay-statements/${payStatementId}`;
+        string resourcePath = string `/payroll/v1/workers/${aoid}/organizational-pay-statements/${payStatementId}`;
         map<any> headerValues = {"roleCode": roleCode};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PayStatement response = check self.clientEp-> get(path, accHeaders, targetType = PayStatement);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PayStatement response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request the details of a specific paystatement as an image.
@@ -136,10 +144,10 @@ public isolated client class Client {
     # + ifNoneMatch - Used with a method to make it conditional; the method is performed only if the client entity (via the given entity tag, ETag header) does not match the server entity. 
     # + return - Pay statement image 
     remote isolated function getClientPayStatementImage(string associateoid, string payStatementId, string imageId, string imageExtension, string roleCode, string? ifNoneMatch = ()) returns json|error {
-        string  path = string `/payroll/v1/workers/${associateoid}/organizational-pay-statements/${payStatementId}/images/${imageId}.${imageExtension}`;
+        string resourcePath = string `/payroll/v1/workers/${associateoid}/organizational-pay-statements/${payStatementId}/images/${imageId}.${imageExtension}`;
         map<any> headerValues = {"roleCode": roleCode, "If-None-Match": ifNoneMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request the details of a specific paystatement as an image.
@@ -149,10 +157,10 @@ public isolated client class Client {
     # + roleCode - The role the user is playing during the transaction. Possible values: employee,manager,practitioner,administrator,supervisor.  The roleCode header will be passed in all calls. When coming from Myself capabilities rolecode=employee. When coming from Team capabilities roleCode=manager. When coming from Practitioner capabilities roleCode=practitioner. 
     # + return - Projected pay statement 
     remote isolated function getProjectedPayStatement(string aoid, string projectedPayStatementId, string roleCode) returns ProjectedPayStatement|error {
-        string  path = string `/payroll/v1/workers/${aoid}/projected-pay-statements/${projectedPayStatementId}`;
+        string resourcePath = string `/payroll/v1/workers/${aoid}/projected-pay-statements/${projectedPayStatementId}`;
         map<any> headerValues = {"roleCode": roleCode};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProjectedPayStatement response = check self.clientEp-> get(path, accHeaders, targetType = ProjectedPayStatement);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProjectedPayStatement response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

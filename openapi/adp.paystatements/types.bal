@@ -645,7 +645,10 @@ public type PaystatementMemos record {
     # The code of the memo. The code can be user defined or statutory.
     PaystatementNamecode nameCode?;
     # The category of Memo. This is to support Taxable Benefits (memos) in Canada.
-    string memoCategoryCode?;
+    record {# The code for the related entity.
+        string codeValue?; # Short description of the related code not to exceed 25 characters
+        string shortName?; # Long description of the related code
+        string longName?;} memoCategoryCode?;
     # The amount of the memo related to this pay period
     PaystatementMemoamount memoAmount?;
     # The year to date amount of the memo
@@ -743,9 +746,9 @@ public type PaystatementDepositaccountFinancialpartyCommunication record {
     # A list of internet URIs
     InternetAddressWithItemID[] internetAddresses?;
     # A list of instant messages URIs
-    InternetAddressWithItemID[] instantMessages?;
+    PaystatementDepositaccountFinancialpartyCommunicationInstantmessages[] instantMessages?;
     # A list of social networks addresses
-    InternetAddressWithItemID[] socialNetworks?;
+    PaystatementDepositaccountFinancialpartyCommunicationInstantmessages[] socialNetworks?;
 };
 
 # Financial party
@@ -878,6 +881,17 @@ public type NodeValue record {
     string formattedValue?;
 };
 
+public type PaystatementDepositaccountFinancialpartyCommunicationInstantmessages record {
+    # The unique identifier of the object in a collection
+    string itemID?;
+    # A coded name or descriptive label of the associated entity. If this is a coded value, codeValue and shortName should be used. If this is just a string value, only shortName is necessary 
+    PaystatementDepositaccountFinancialpartyCommunicationNamecode nameCode?;
+    # The URI of the associated email address
+    string uri?;
+    # The effective date of the related entity. Follows the ISO-8601:2000 format.
+    string effectiveDate?;
+};
+
 # The type of account, e.g. Checking, Savings
 public type PaystatementDepositaccountFinancialaccountTypecode record {
     # The code for the related entity.
@@ -901,6 +915,12 @@ public type PaystatementDeductions record {
     boolean preTaxIndicator?;
     # Identifies the percentage
     decimal percentage?;
+};
+
+# The URI to be used to request the paystatement to be emailed
+public type ProjectedpaystatementPaystatementEmailpaystatementsuri record {
+    # URI
+    string href?;
 };
 
 # Worker location
@@ -1160,7 +1180,7 @@ public type ProjectedpaystatementPaystatement record {
     # The worker information
     ProjectedpaystatementPaystatementWorker 'worker?;
     # The URI to be used to request the paystatement to be emailed
-    PaystatementEmailpaystatementsuri emailPayStatementsURI?;
+    ProjectedpaystatementPaystatementEmailpaystatementsuri emailPayStatementsURI?;
     # Statement comments
     CommentType[] statementComments?;
 };

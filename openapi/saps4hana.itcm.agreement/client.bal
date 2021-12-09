@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token";
+|};
+
 # This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # In SAP Intelligent Trade Claims Management, agreements are used as contractual commitments or obligations to calculate accruals and promotion eligibility.
 @display {label: "SAPS4HANA ITCM Agreement", iconPath: "icon.png"}
@@ -65,17 +72,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create a new Agreement
     #
     # + payload - Request payload to create an agreement 
     # + return - Success Created. 
     remote isolated function createAgreement(AgreementHeaderDTOIncoming payload) returns ResponseAgreementMessage|error {
-        string  path = string `/agreements`;
+        string resourcePath = string `/agreements`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseAgreementMessage response = check self.clientEp->post(path, request, targetType=ResponseAgreementMessage);
+        request.setPayload(jsonBody, "application/json");
+        ResponseAgreementMessage response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete an Agreement
@@ -83,8 +91,8 @@ public isolated client class Client {
     # + externalId - agreement id to be deleted 
     # + return - Success Deleted. 
     remote isolated function deleteAgreement(string externalId) returns ResponseAgreementDeletionMessage|error {
-        string  path = string `/agreements/${externalId}`;
-        ResponseAgreementDeletionMessage response = check self.clientEp-> delete(path, targetType = ResponseAgreementDeletionMessage);
+        string resourcePath = string `/agreements/${externalId}`;
+        ResponseAgreementDeletionMessage response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

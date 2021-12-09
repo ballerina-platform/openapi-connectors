@@ -15,13 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -52,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://app.leanix.net/services/mtm/v1/oauth2/token";
+|};
+
 # This is a generated connector for [LeanIX Integration API v1](https://eu.leanix.net/services/integration-api/v1/docs/) OpenAPI specification.
 # The Integration API provides the ability to import and export data using a generic LeanIX Data Interchange Format (LDIF). LDIF is a JSON format with a very simple structure described in the following sections. All mapping and processing of the incoming and outgoing data is done using "Data Processors" that are configured behind the API. Configuration of the processors can be done using the UI, please see the [Setup](https://docs-eas.leanix.net/docs/setup) page for more information. The configurations can be managed using the Integration API as well.
 @display {label: "Leanix Integration", iconPath: "icon.png"}
@@ -67,21 +72,22 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://eu.leanix.net/services/integration-api/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Returns a starter example including an Input object and processor configuration
     #
     # + return - Returns a complete input example with processor configurations 
     remote isolated function starterExample() returns InputWithProcessorConfig|error {
-        string  path = string `/examples/starterExample`;
-        InputWithProcessorConfig response = check self.clientEp-> get(path, targetType = InputWithProcessorConfig);
+        string resourcePath = string `/examples/starterExample`;
+        InputWithProcessorConfig response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns an advanced example including an Input object and processor configuration
     #
     # + return - Returns a complete input example with processor configurations 
     remote isolated function advancedExample() returns InputWithProcessorConfig|error {
-        string  path = string `/examples/advancedExample`;
-        InputWithProcessorConfig response = check self.clientEp-> get(path, targetType = InputWithProcessorConfig);
+        string resourcePath = string `/examples/advancedExample`;
+        InputWithProcessorConfig response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of available processor configurations
@@ -93,21 +99,21 @@ public isolated client class Client {
     # + processingMode - The processing mode, could be [partial, full] 
     # + return - successful operation 
     remote isolated function getProcessorConfigurations(string? connectorType = (), string? connectorId = (), string? connectorVersion = (), string? processingDirection = (), string? processingMode = ()) returns ProcessorConfiguration|error {
-        string  path = string `/configurations`;
+        string resourcePath = string `/configurations`;
         map<anydata> queryParam = {"connectorType": connectorType, "connectorId": connectorId, "connectorVersion": connectorVersion, "processingDirection": processingDirection, "processingMode": processingMode};
-        path = path + check getPathForQueryParam(queryParam);
-        ProcessorConfiguration response = check self.clientEp-> get(path, targetType = ProcessorConfiguration);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ProcessorConfiguration response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Inserts a new processor configuration or updates an existing one
     #
     # + return - Upsert successful. 
     remote isolated function upsertProcessorConfiguration(ProcessorConfiguration payload) returns http:Response|error {
-        string  path = string `/configurations`;
+        string resourcePath = string `/configurations`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a single processor configuration
@@ -119,20 +125,18 @@ public isolated client class Client {
     # + processingMode - The processing mode, could be [partial, full] 
     # + return - Not all necessary fields are set in parameters. 
     remote isolated function deleteProcessorConfiguration(string? connectorType = (), string? connectorId = (), string? connectorVersion = (), string? processingDirection = (), string? processingMode = ()) returns http:Response|error {
-        string  path = string `/configurations`;
+        string resourcePath = string `/configurations`;
         map<anydata> queryParam = {"connectorType": connectorType, "connectorId": connectorId, "connectorVersion": connectorVersion, "processingDirection": processingDirection, "processingMode": processingMode};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns the status of all existing synchronization runs
     #
     # + return - A list containing current status of all available synchronization runs 
     remote isolated function getSynchronizationRunsStatusList() returns StatusResponse[]|error {
-        string  path = string `/synchronizationRuns`;
-        StatusResponse[] response = check self.clientEp-> get(path, targetType = StatusResponseArr);
+        string resourcePath = string `/synchronizationRuns`;
+        StatusResponse[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a synchronization run.
@@ -141,13 +145,13 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well 
     # + return - Returns the ID of the new synchronization run. 
     remote isolated function createSynchronizationRun(Input payload, boolean 'start = false, boolean test = false) returns StatusResponse[]|error {
-        string  path = string `/synchronizationRuns`;
+        string resourcePath = string `/synchronizationRuns`;
         map<anydata> queryParam = {"start": 'start, "test": test};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StatusResponse[] response = check self.clientEp->post(path, request, targetType=StatusResponseArr);
+        request.setPayload(jsonBody, "application/json");
+        StatusResponse[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Starts an existing but not yet started synchronization run
@@ -156,12 +160,12 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed 
     # + return - The synchronization run was successfully started and is now in progress 
     remote isolated function startSynchronizationRun(string id, boolean test = false) returns http:Response|error {
-        string  path = string `/synchronizationRuns/${id}/start`;
+        string resourcePath = string `/synchronizationRuns/${id}/start`;
         map<anydata> queryParam = {"test": test};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Shows the progress of a synchronization run, it gives updated counters of the run level that is in execution.
@@ -169,8 +173,8 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - The synchronization run exists and progress information was searched. 
     remote isolated function getSynchronizationRunProgress(string id) returns SyncRunInboundProgressReport|error {
-        string  path = string `/synchronizationRuns/${id}/progress`;
-        SyncRunInboundProgressReport response = check self.clientEp-> get(path, targetType = SyncRunInboundProgressReport);
+        string resourcePath = string `/synchronizationRuns/${id}/progress`;
+        SyncRunInboundProgressReport response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Stops a running synchronization run
@@ -178,10 +182,10 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - The synchronization run was successfully stopped. 
     remote isolated function stopSynchronizationRun(string id) returns http:Response|error {
-        string  path = string `/synchronizationRuns/${id}/stop`;
+        string resourcePath = string `/synchronizationRuns/${id}/stop`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns the status of an existing synchronization run
@@ -189,8 +193,8 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - Returns the status of an existing synchronization run. 
     remote isolated function getSynchronizationRunStatus(string id) returns http:Response|error {
-        string  path = string `/synchronizationRuns/${id}/status`;
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        string resourcePath = string `/synchronizationRuns/${id}/status`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the results of a finished synchronization run
@@ -198,8 +202,8 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - Returns the results of a finished synchronization run. 
     remote isolated function getSynchronizationRunResults(string id) returns http:Response|error {
-        string  path = string `/synchronizationRuns/${id}/results`;
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        string resourcePath = string `/synchronizationRuns/${id}/results`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the url to the results of a finished synchronization run
@@ -207,21 +211,21 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - Returns the url to the results of a finished synchronization run or in case the run exists but is not yet finished a null value for the url. 
     remote isolated function getSynchronizationRunResultsUrl(string id) returns http:Response|error {
-        string  path = string `/synchronizationRuns/${id}/resultsUrl`;
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        string resourcePath = string `/synchronizationRuns/${id}/resultsUrl`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the warnings of a synchronization run
     #
-    # + id - The ID of the synchronization run 
     # + offset - The zero-based index of the first element to retrieve 
     # + 'limit - The number of elements that should be retrieved 
+    # + id - The ID of the synchronization run 
     # + return - Returns the warnings of a synchronization run. 
     remote isolated function getSynchronizationRunWarnings(string id, int offset = 0, int 'limit = 100) returns http:Response|error {
-        string  path = string `/synchronizationRuns/${id}/warnings`;
+        string resourcePath = string `/synchronizationRuns/${id}/warnings`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Starts a new synchronization run using the processor configuration and input object provided in the request.
@@ -230,13 +234,13 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well 
     # + return - Successful operation, the response contains the ID of the run. 
     remote isolated function createSynchronizationRunWithConfig(InputWithProcessorConfig payload, boolean 'start = false, boolean test = false) returns SynchronizationRun|error {
-        string  path = string `/synchronizationRuns/withConfig`;
+        string resourcePath = string `/synchronizationRuns/withConfig`;
         map<anydata> queryParam = {"start": 'start, "test": test};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SynchronizationRun response = check self.clientEp->post(path, request, targetType=SynchronizationRun);
+        request.setPayload(jsonBody, "application/json");
+        SynchronizationRun response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Starts a new synchronization run using a DataProvider information to obtain the LDIF input
@@ -245,13 +249,13 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well 
     # + return - Successful operation, the response contains the ID of the run and the processor configuration selected for the run. 
     remote isolated function createSynchronizationRunWithUrlInput(DataProvider payload, boolean 'start = false, boolean test = false) returns SynchronizationRunWithConfiguration|error {
-        string  path = string `/synchronizationRuns/withUrlInput`;
+        string resourcePath = string `/synchronizationRuns/withUrlInput`;
         map<anydata> queryParam = {"start": 'start, "test": test};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SynchronizationRunWithConfiguration response = check self.clientEp->post(path, request, targetType=SynchronizationRunWithConfiguration);
+        request.setPayload(jsonBody, "application/json");
+        SynchronizationRunWithConfiguration response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Starts a new synchronization run using combined processor configuration within an execution group and input object provided in the request.
@@ -261,13 +265,13 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed. This parameter requires the start parameter to be set to true as well 
     # + return - Successful operation, the response contains the ID of the run. 
     remote isolated function createSynchronizationRunWithExecutionGroup(Input payload, string? groupName = (), boolean 'start = false, boolean test = false) returns SynchronizationRunWithConfiguration|error {
-        string  path = string `/synchronizationRuns/withExecutionGroup`;
+        string resourcePath = string `/synchronizationRuns/withExecutionGroup`;
         map<anydata> queryParam = {"groupName": groupName, "start": 'start, "test": test};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SynchronizationRunWithConfiguration response = check self.clientEp->post(path, request, targetType=SynchronizationRunWithConfiguration);
+        request.setPayload(jsonBody, "application/json");
+        SynchronizationRunWithConfiguration response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Creates a fast synchronization run.
@@ -275,13 +279,13 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed 
     # + return - Results of the execution, it includes error messages and statistics about the run. 
     remote isolated function createSynchronizationFastRun(Input payload, boolean test = false) returns FastRunResponse|error {
-        string  path = string `/fastSynchronizationRuns`;
+        string resourcePath = string `/fastSynchronizationRuns`;
         map<anydata> queryParam = {"test": test};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FastRunResponse response = check self.clientEp->post(path, request, targetType=FastRunResponse);
+        request.setPayload(jsonBody, "application/json");
+        FastRunResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Starts a new fast run synchronization using the processor configuration and input object provided in the request.
@@ -289,55 +293,21 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed 
     # + return - Results of the execution, it includes error messages and statistics about the run. 
     remote isolated function createSynchronizationFastRunWithConfig(InputWithProcessorConfig payload, boolean test = false) returns FastRunResponse|error {
-        string  path = string `/fastSynchronizationRuns/withConfig`;
+        string resourcePath = string `/fastSynchronizationRuns/withConfig`;
         map<anydata> queryParam = {"test": test};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FastRunResponse response = check self.clientEp->post(path, request, targetType=FastRunResponse);
+        request.setPayload(jsonBody, "application/json");
+        FastRunResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Provides storage resources that can be used for synchronisation runs. It creates a blob file in Azure Storage.
     #
     # + return - A new blob file was created and its ready for writing in Azure Blob Storage. 
     remote isolated function createInAzure() returns StorageManagerResponse|error {
-        string  path = string `/storages/azure`;
-        StorageManagerResponse response = check self.clientEp-> get(path, targetType = StorageManagerResponse);
+        string resourcePath = string `/storages/azure`;
+        StorageManagerResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

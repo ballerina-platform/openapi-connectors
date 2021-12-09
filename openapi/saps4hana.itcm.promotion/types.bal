@@ -44,7 +44,7 @@ public type ResponseMessage record {
     string timestamp?;
 };
 
-public type  InlineResponse400 ResponseInvalidCustomer|ResponseInvalidDate|ResponseInvalidProduct;
+public type InlineResponse400 ResponseInvalidCustomer|ResponseInvalidDate|ResponseInvalidProduct;
 
 public type ResponseUnauthorizedMessage record {
     string message?;

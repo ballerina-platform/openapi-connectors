@@ -2487,5 +2487,5 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: /services/mtm/v1/oauth2/token
+          tokenUrl: https://app.leanix.net/services/mtm/v1/oauth2/token
           scopes: {}

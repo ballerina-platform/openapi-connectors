@@ -31,7 +31,7 @@ public type HierarchyNodeAssignment record {
     BusinessObject bo?;
     string businessCodeForMsgReport?;
     BusinessObjectIdentifier businessKey?;
-    record  { }  businessKeyValue?;
+    record {} businessKeyValue?;
     BusinessObjectType businessObjectType?;
     HierarchyNode hierarchyNode?;
     BusinessObjectIdentifier identifier?;
@@ -87,7 +87,7 @@ public type HierarchyNodeResponse record {
 public type BusinessObject record {
     BusinessObject bo?;
     BusinessObjectIdentifier businessKey?;
-    record  { }  businessKeyValue?;
+    record {} businessKeyValue?;
     BusinessObjectType businessObjectType?;
     Association[] changedAssociations?;
     Property[] changedProperties?;
@@ -256,7 +256,7 @@ public type HierarchyNode record {
     BusinessObject bo?;
     string businessCodeForMsgReport?;
     BusinessObjectIdentifier businessKey?;
-    record  { }  businessKeyValue?;
+    record {} businessKeyValue?;
     BusinessObjectType businessObjectType?;
     string externalId?;
     string externalIdNodePath?;
@@ -301,7 +301,7 @@ public type HierarchyNodeDescription record {
     BusinessObject bo?;
     string businessCodeForMsgReport?;
     BusinessObjectIdentifier businessKey?;
-    record  { }  businessKeyValue?;
+    record {} businessKeyValue?;
     BusinessObjectType businessObjectType?;
     string description?;
     HierarchyNode hierarchyNode?;
@@ -327,7 +327,7 @@ public type HierarchyHeaderDescription record {
     BusinessObject bo?;
     string businessCodeForMsgReport?;
     BusinessObjectIdentifier businessKey?;
-    record  { }  businessKeyValue?;
+    record {} businessKeyValue?;
     BusinessObjectType businessObjectType?;
     string description?;
     HierarchyHeader hierarchyHeader?;
@@ -402,7 +402,7 @@ public type HierarchyHeader record {
     BusinessObject bo?;
     string businessCodeForMsgReport?;
     BusinessObjectIdentifier businessKey?;
-    record  { }  businessKeyValue?;
+    record {} businessKeyValue?;
     BusinessObjectType businessObjectType?;
     int businessSystem?;
     string externalId?;
@@ -457,7 +457,7 @@ public type BusinessObjectIdentifier record {
     string boName?;
     string boNamespace?;
     string boNodeTypeName?;
-    record  { }  keyValues?;
+    record {} keyValues?;
     boolean valid?;
 };
 

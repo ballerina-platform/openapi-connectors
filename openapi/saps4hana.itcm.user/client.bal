@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token";
+|};
+
 # This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # The User service allows you to create, add, and delete information about users in SAPS4HANA Intelligent Trade Claims Management.
 @display {label: "SAPS4HANA ITCM User", iconPath: "icon.png"}
@@ -62,20 +69,21 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.dev1.e2e.eurekacloud.io/v1") returns error? {
+    public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create a new User
     #
     # + payload - userProfileDTO 
     # + return - Success Created. 
     remote isolated function createUser(UserProfileDTO payload) returns UserResponseDTO|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserResponseDTO response = check self.clientEp->post(path, request, targetType=UserResponseDTO);
+        request.setPayload(jsonBody, "application/json");
+        UserResponseDTO response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

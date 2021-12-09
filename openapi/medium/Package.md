@@ -5,7 +5,7 @@ This package provides capability to access your Medium contents such as posting 
 ### Compatibility
 |                      | Version                   |
 |----------------------|---------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta3 |
+| Ballerina Language   | Ballerina Swan Lake Beta6 |
 | Medium API           | v1                        |
 
 ## Report issues

@@ -9,7 +9,7 @@ This package provides the capability to easily access Workday payroll service re
 #### Compatibility
 |                               | Version                    |
 |-------------------------------|----------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake Beta3  |
+| Ballerina Language Version    | Ballerina Swan Lake Beta6  |
 | Payroll API Version           | v2                         |
 
 ## Report issues

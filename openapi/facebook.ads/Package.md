@@ -6,7 +6,7 @@ The `ballerinax/facebook.ads` is a [Ballerina](https://ballerina.io/) connector 
 ### Compatibility
 |                           | Version                       |
 |---------------------------|-------------------------------|
-| Ballerina Language        | Ballerina Swan Lake Beta3     | 
+| Ballerina Language        | Ballerina Swan Lake Beta6     | 
 | Facebook Marketing API    | v12.0                         |
 
 ## Report issues

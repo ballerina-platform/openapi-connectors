@@ -7,7 +7,7 @@ This package provides the capability to access Google Blogger API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Google Blogger API                | 3.0                             |
 
 ## Report issues

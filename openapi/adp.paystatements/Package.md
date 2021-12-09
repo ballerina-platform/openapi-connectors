@@ -7,7 +7,7 @@ This package provides the capability to describe the details of a payment made t
 ### Compatibility
 |                        | Version         |
 |------------------------|-----------------|
-| Ballerina Language     | Swan Lake Beta3 | 
+| Ballerina Language     | Swan Lake Beta6 | 
 | ADP Pay Statements API | v1              |
 
 ## Report issues

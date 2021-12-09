@@ -6,7 +6,7 @@ creating and managing business policies, sales tax rates and retrieving various 
 ### Compatibility
 |                      | Version                   |
 |----------------------|---------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta3 |
+| Ballerina Language   | Ballerina Swan Lake Beta6 |
 | eBay Account API     | v1.6.3                    |
 
 ## Report issues

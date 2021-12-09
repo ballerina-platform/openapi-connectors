@@ -7,7 +7,7 @@ This package provides the capability to access OptiTune API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | OptiTune API                  | v1                              |
 
 ## Report issues

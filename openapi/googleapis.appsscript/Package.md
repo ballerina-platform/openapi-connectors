@@ -7,7 +7,7 @@ This package provides the capability to access Google Apps Script API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Google Apps Script API            | v1                              |
 
 ## Report issues

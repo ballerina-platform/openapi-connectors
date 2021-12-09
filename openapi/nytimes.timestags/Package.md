@@ -7,7 +7,7 @@ This package provides the capability to access New York Times TimesTags API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | Times TimesTags API           | 1.0.0                           |
 
 ## Report issues

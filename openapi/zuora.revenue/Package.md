@@ -7,7 +7,7 @@ This package provides the capability to access Zuora Revenue API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | Zuora Revenue API             | V2021-08-12                     |
 
 ## Report issues

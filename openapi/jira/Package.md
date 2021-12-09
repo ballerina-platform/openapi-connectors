@@ -7,7 +7,7 @@ This package provides the capability to access Jira related operations and curre
 ### Compatibility
 |                         | Version                   |
 |-------------------------|---------------------------|
-| Ballerina Language      | Ballerina Swan Lake Beta3 |
+| Ballerina Language      | Ballerina Swan Lake Beta6 |
 | Jira Cloud platform API | V2                        |
 
 ## Report issues

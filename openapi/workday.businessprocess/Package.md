@@ -8,7 +8,7 @@ This package provides the capability to easily access information on event actio
 #### Compatibility
 |                               | Version                    |
 |-------------------------------|----------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake Beta3  |
+| Ballerina Language Version    | Ballerina Swan Lake Beta6  |
 | API Version                   | v1                         |
 
 ## Report issues

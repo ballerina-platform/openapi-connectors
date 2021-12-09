@@ -8,7 +8,7 @@ The `onepassword` is a [Ballerina](https://ballerina.io/) connector for connecti
 #### Compatibility
 |                           | Version                  |
 |---------------------------|--------------------------|
-| Ballerina Language        | Balerina Swan Lake Beta3 |
+| Ballerina Language        | Balerina Swan Lake Beta6 |
 | 1Password Connect API API | v1.3.0                   |
 
 ## Report issues

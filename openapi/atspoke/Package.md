@@ -7,7 +7,7 @@ This package provides the capability to access atSpoke API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | atSpoke API                   | 0.1.0                           |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability to access Google Retail API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Google Retail API                 | v2                              |
 
 ## Report issues

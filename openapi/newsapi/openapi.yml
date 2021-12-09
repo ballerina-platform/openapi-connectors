@@ -11,7 +11,7 @@ info:
   version: 2.0.0
   x-ballerina-display:
     label: News API
-    iconPath: "resources/newsapi.svg"
+    iconPath: "icon.png"
 servers:
 - url: https://newsapi.org/v2
 paths:

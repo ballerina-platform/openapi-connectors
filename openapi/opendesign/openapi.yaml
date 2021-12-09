@@ -11,7 +11,7 @@ info:
     Create a [Open Design account](https://opendesign.dev) and obtain tokens by following [this guide](https://opendesign.dev/docs/api-reference/introduction#step-1-get-your-api-token).
   x-ballerina-display:
     label: opendesign
-    iconPath: "resources/opendesign.svg"
+    iconPath: "icon.png"
   version: 0.3.4
   contact:
     name: Open Design

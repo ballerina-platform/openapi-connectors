@@ -2,7 +2,7 @@ openapi: "3.0.1"
 info:
   x-ballerina-display:
     label: World Time API
-    iconPath: "resources/worldtimeapi.svg"
+    iconPath: "icon.png"
   title: "World Time API"
   version: "20210108"
   description: >-

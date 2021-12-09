@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: New York Times Archive
-    iconPath: "resources/nytimes.archive.svg"
+    iconPath: "icon.png"
   description: >
     This is a generated connector for [New York Times Archive API v1.0.0](https://developer.nytimes.com/docs/archive-product/1/overview) OpenAPI specification. 
   

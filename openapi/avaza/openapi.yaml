@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Avaza
-    iconPath: "resources/avaza.svg"
+    iconPath: "icon.png"
   title: Avaza API Documentation
   description:
     This is a generated connector for [Avaza API v1](https://api.avaza.com/swagger/ui/index) OpenAPI specification. 

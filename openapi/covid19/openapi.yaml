@@ -13,7 +13,7 @@ info:
     url: 'https://github.com/disease-sh/API/blob/master/LICENSE'
   x-ballerina-display:
     label: COVID-19
-    iconPath: "resources/covid19.svg"
+    iconPath: "icon.png"
   x-ballerina-init-description: |
     The connector initialization doesn't require setting the API credentials.
 tags:

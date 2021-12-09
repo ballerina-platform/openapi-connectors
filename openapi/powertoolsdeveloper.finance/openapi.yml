@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: PowerTools Developer Finance
-    iconPath: "resources/powertoolsdeveloper.finance.svg"
+    iconPath: "icon.png"
   title: PowerTools Developer
   description: >
     This is a generated connector for [Apptigent PowerTools Developer API v2021.1.01](https://portal.apptigent.com/node/612) OpenAPI specification.

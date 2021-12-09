@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Cloudmersive Virus Scan
-    iconPath: "resources/cloudmersive.virusscan.svg"
+    iconPath: "icon.png"
   title: virusapi
   description: This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
   

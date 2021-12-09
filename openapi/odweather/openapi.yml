@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: ODWeather
-    iconPath: "resources/odweather.svg"
+    iconPath: "icon.png"
   contact:
     email: matiasbonet@oceandrivers.com
   description: |

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: WhatsApp Business
-    iconPath: "resources/whatsapp.business.svg"
+    iconPath: "icon.png"
   contact:
     x-twitter: WhatsApp
   description: | 

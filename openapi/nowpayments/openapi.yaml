@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: NOWPayments
-    iconPath: "resources/nowpayments.svg"
+    iconPath: "icon.png"
   contact: {}
   description: >
     This is a generated connector from [NOWPayments API v1](https://nowpayments.io/) OpenAPI Specification. 

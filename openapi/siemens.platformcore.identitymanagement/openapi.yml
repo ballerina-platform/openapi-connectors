@@ -13,7 +13,7 @@ info:
     Create a (Siemens MindSphere)(https://siemens.mindsphere.io/en) account and obtain tokens by following [this guide](https://developer.mindsphere.io/howto/howto-selfhosted-api-access.html)
   x-ballerina-display:
    label: Siemens Platform Core Identity Management
-   iconPath: "resources/siemens.platformcore.identitymanagement.svg"
+   iconPath: "icon.png"
 
 tags:
 - name: uiam user

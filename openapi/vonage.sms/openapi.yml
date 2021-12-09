@@ -2,7 +2,7 @@ openapi: "3.0.0"
 info:
   x-ballerina-display:
     label: Vonage SMS
-    iconPath: "resources/vonage.sms.svg"
+    iconPath: "icon.png"
   version: 1.0.10
   title: SMS API
   description: >

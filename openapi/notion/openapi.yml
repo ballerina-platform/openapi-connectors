@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Notion
-    iconPath: "resources/notion.svg"
+    iconPath: "icon.png"
   contact: {}
   description: >-
     This is a generated connector for [Notion API v1](https://developers.notion.com/reference/intro) OpenAPI Specification. 

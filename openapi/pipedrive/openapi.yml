@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Pipedrive
-    iconPath: "resources/pipedrive.svg"
+    iconPath: "icon.png"
   title: Pipedrive API v1
   version: 1.0.0
   description: |

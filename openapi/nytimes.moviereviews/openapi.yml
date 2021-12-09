@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: New York Times Movie Reviews
-    iconPath: "resources/nytimes.moviereviews.svg"
+    iconPath: "icon.png"
   description: >
     This is a generated connector from [New York Times Movie Review API v2.0.0](https://developer.nytimes.com/docs/movie-reviews-api/1/overview) OpenAPI specification.
 

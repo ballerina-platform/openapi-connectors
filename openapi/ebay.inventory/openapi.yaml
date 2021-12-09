@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Inventory
-    iconPath: "resources/ebay.inventory.svg"
+    iconPath: "icon.png"
   title: Inventory API
   description: >-
     This is a generated connector for [eBay Inventory API v1.13.0](https://developer.ebay.com/api-docs/sell/inventory/overview.html) OpenAPI Specification.

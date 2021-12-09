@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: New York Times Semantic
-    iconPath: "resources/nytimes.semantic.svg"
+    iconPath: "icon.png"
   description: >
     This is a generated connector from [New York Times Semantic API v2.0.0](https://developer.nytimes.com/docs/semantic-api-product/1/overview) OpenAPI specification.
 

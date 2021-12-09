@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Account
-    iconPath: "resources/ebay.account.svg"
+    iconPath: "icon.png"
   title: Account API
   description: >-
     This is a generated connector for [eBay Account API v1.6.3](https://developer.ebay.com/api-docs/sell/account/overview.html)  

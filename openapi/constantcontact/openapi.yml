@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Constant Contact
-    iconPath: "resources/constantcontact.svg"
+    iconPath: "icon.png"
   title: AppConnect V3
   description: |
     This is a generated connector for [Constant Contact API v3](https://v3.developer.constantcontact.com/api_guide/index.html) OpenAPI specification.

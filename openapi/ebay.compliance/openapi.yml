@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Compliance
-    iconPath: "resources/ebay.compliance.svg"
+    iconPath: "icon.png"
   title: Compliance API
   description: >
     This is a generated connector for [eBay Compliance API v1.4.1](https://developer.ebay.com) OpenAPI specification.

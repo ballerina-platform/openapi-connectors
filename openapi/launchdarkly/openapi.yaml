@@ -15,7 +15,7 @@ info:
     Create an [LaunchDarkly account](https://launchdarkly.com/request-a-demo/) and obtain tokens by following [this guide](https://apidocs.launchdarkly.com/#section/Overview/Authentication).
   x-ballerina-display:
     label: LaunchDarkly
-    iconPath: "resources/launchdarkly.svg"
+    iconPath: "icon.png"
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html

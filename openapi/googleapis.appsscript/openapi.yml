@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Apps Script
-    iconPath: "resources/googleapis.appsscript.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

@@ -17,7 +17,7 @@ info:
     and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
   x-ballerina-display:
     label: Text2data
-    iconPath: "resources/text2data.svg"
+    iconPath: "icon.png"
   contact:
     name: text2data.com
     url: https://text2data.com/Integration

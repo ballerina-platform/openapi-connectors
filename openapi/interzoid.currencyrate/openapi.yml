@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
       label: Interzoid Currency Rate
-      iconPath: "resources/interzoid.currencyrate.svg"
+      iconPath: "icon.png"
   version: "1.0.0"
   title: Interzoid Get Currency Rate API
   description: >

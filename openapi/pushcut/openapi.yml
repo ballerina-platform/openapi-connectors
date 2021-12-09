@@ -16,7 +16,7 @@ info:
     Create a [Pushcut account](https://www.pushcut.io) and obtain tokens by following [this guide](https://www.pushcut.io/help).
   x-ballerina-display:
     label: Pushcut
-    iconPath: "resources/pushcut.svg"
+    iconPath: "icon.png"
   title: Pushcut API
   version: v1
 paths:

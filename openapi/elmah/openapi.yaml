@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: Elmah
-    iconPath: "resources/elmah.svg"
+    iconPath: "icon.png"
   contact:
     x-twitter: elmah_io
   description: 'This is a generated connector for [Elmah.io REST API v3](https://elmah.io) OpenAPI Specification.

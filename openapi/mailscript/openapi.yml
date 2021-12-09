@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Mailscript
-    iconPath: "resources/mailscript.svg"
+    iconPath: "icon.png"
   license:
     name: MIT
   title: Mailscript

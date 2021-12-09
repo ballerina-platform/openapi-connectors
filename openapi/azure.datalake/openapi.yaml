@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Azure Data Lake
-    iconPath: "resources/azure.datalake.svg"
+    iconPath: "icon.png"
   title: Azure Data Lake Storage REST API
   description: This is a generated connector for [Azure DataLake Storage (Gen2) API version 2019-10-31](https://azure.microsoft.com/en-us/solutions/data-lake/) OpenAPI specification. 
 

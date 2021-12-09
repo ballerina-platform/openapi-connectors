@@ -12,7 +12,7 @@ info:
     Create an [Dropbox account](https://www.dropbox.com/) and obtain tokens by following [this guide](https://www.dropbox.com/developers/documentation/http/documentation).
   x-ballerina-display:
     label: Dropbox
-    iconPath: "resources/dropbox.svg" 
+    iconPath: "icon.png" 
 tags: []
 paths:
   /files/copy_v2:

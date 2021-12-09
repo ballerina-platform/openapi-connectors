@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Discovery
-    iconPath: "resources/googleapis.discovery.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

@@ -24468,7 +24468,7 @@ info:
     Provide obtained API Key as the token at connector initialization. Configure required permissions when generating the API Key.
   x-ballerina-display:
     label: Stripe
-    iconPath: "resources/stripe.svg"
+    iconPath: "icon.png"
 openapi: 3.0.0
 servers:
   - url: 'https://api.stripe.com/'

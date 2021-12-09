@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Clever Data
-    iconPath: "resources/clever.data.svg"
+    iconPath: "icon.png"
   contact:
     x-twitter: clever
   description: | 

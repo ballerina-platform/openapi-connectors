@@ -3,7 +3,7 @@ info:
   title: GraphHopper Directions API
   x-ballerina-display:
     label: GraphHopper Directions
-    iconPath: "resources/GraphHopperDirections.svg"
+    iconPath: "icon.png"
   x-ballerina-init-description: >- 
     The connector initialization requires setting the API credentials.
     

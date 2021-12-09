@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Rumble Run
-    iconPath: "resources/rumble.run.svg"
+    iconPath: "icon.png"
   contact:
     email: support@rumble.run
   description: |

@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
       label: Interzoid State Data
-      iconPath: "resources/interzoid.statedata.svg"
+      iconPath: "icon.png"
   contact:
     email: support@interzoid.com
     name: API Support

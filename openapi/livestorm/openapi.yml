@@ -19,7 +19,7 @@ info:
   version: '1'
   x-ballerina-display:
     label: Livestorm
-    iconPath: "resources/livestorm.svg"
+    iconPath: "icon.png"
 servers:
 - url: https://{defaultHost}
   variables:

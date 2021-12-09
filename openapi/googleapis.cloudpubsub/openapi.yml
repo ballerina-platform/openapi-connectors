@@ -5,7 +5,7 @@ x-hasEquivalentPaths: true
 info:
   x-ballerina-display:
     label: Google Cloud Pub/Sub
-    iconPath: "resources/googleapis.cloudpubsub.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

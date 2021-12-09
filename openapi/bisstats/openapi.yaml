@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: BIS Stats
-    iconPath: "resources/bisstats.svg"
+    iconPath: "icon.png"
   version: '1.4.0'
   title: 'SDMX RESTful API'
   description: >

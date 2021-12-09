@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Tasks
-    iconPath: "resources/googleapis.tasks.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

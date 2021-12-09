@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google BigQuery
-    iconPath: "resources/googleapis.bigquery.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

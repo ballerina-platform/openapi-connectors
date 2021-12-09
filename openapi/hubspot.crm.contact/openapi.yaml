@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: HubSpot CRM  Contact
-    iconPath: "resources/hubspot.crm.contact.svg"
+    iconPath: "icon.png"
   title: Contacts
   version: v3
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.

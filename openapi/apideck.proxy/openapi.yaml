@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Apideck Proxy
-    iconPath: "resources/apideck.proxy.svg"
+    iconPath: "icon.png"
   contact:
     email: hello@apideck.com
     url: https://developers.apideck.com

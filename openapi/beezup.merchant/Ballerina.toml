@@ -1,4 +1,5 @@
 [package]
+distribution = "slbeta6"
 org = "ballerinax"
 name = "beezup.merchant"
 version = "1.0.0"

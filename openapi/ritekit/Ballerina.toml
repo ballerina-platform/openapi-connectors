@@ -1,4 +1,5 @@
 [package]
+distribution = "slbeta6"
 license = ["Apache-2.0"]
 keywords = ["Marketing/Social Media Marketing", "Cost/Freemium"]
 org = "ballerinax"

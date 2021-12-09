@@ -1,4 +1,5 @@
 [package]
+distribution = "slbeta6"
 license = ["Apache-2.0"]
 keywords = ["Lifestyle & Entertainment/App Store", "Cost/Paid"]
 org = "ballerinax"

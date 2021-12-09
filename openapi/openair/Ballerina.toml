@@ -1,10 +1,10 @@
 [package]
+distribution = "slbeta6"
 license = ["Apache-2.0"]
 keywords = ["Productivity/Project Management", "Cost/Paid"]
 org = "ballerinax"
 name = "openair"
 icon = "icon.png"
-distribution = "slbeta3"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.1"
 authors = ["Ballerina"]

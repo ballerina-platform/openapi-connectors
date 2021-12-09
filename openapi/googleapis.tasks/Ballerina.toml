@@ -1,4 +1,5 @@
 [package]
+distribution = "slbeta6"
 license = ["Apache-2.0"]
 keywords = ["Productivity/Task Management", "Cost/Free", "Vendor/Google"]
 org = "ballerinax"

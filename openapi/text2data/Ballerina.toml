@@ -1,4 +1,5 @@
 [package]
+distribution = "slbeta6"
 org = "ballerinax"
 name = "text2data"
 icon = "icon.png"

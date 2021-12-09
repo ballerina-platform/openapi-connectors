@@ -1,4 +1,5 @@
 [package]
+distribution = "slbeta6"
 org = "ballerinax"
 name = "shopify.admin"
 icon = "icon.png"

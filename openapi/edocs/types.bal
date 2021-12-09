@@ -22,7 +22,7 @@ public type CollectionresponseData record {
 };
 
 public type SearchData record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type UrlsDataRestapi record {
@@ -42,11 +42,11 @@ public type CollectionResponse record {
 
 public type UploadData record {
     string file?;
-    record  { }  data?;
+    record {} data?;
 };
 
 public type IdRequestsBody record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type Error record {
@@ -59,11 +59,11 @@ public type DownloadResponse record {
 };
 
 public type ProfileData record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type IdSettingBody record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type ConnectBody record {
@@ -91,28 +91,28 @@ public type ConnectData record {
 };
 
 public type IdReferencesBody1 record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type IdReferencesBody2 record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type AttachmentData record {
     string file?;
-    record  { }  data?;
+    record {} data?;
 };
 
 public type SecurityData record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type IdReferencesBody3 record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type IdReferencesBody record {
-    record  { }  data?;
+    record {} data?;
 };
 
 public type UrlsDataRestapiRef record {

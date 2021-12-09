@@ -6,7 +6,7 @@ The `ballerinax/xero.accounts` is a [Ballerina](https://ballerina.io/) connector
 ### Compatibility
 |                     | Version                   |
 |---------------------|---------------------------|
-| Ballerina Language  | Ballerina Swan Lake Beta3 |
+| Ballerina Language  | Ballerina Swan Lake Beta6 |
 | Xero Accounting API | 2.13.4                    |
 
 ## Report issues

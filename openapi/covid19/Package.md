@@ -8,7 +8,7 @@ This package provides the capability to easily access Novel Covid19 AP.
 #### Compatibility
 |                               | Version           |
 |-------------------------------|-------------------|
-| Ballerina Language Version    | Swan Lake Beta3   |
+| Ballerina Language Version    | Swan Lake Beta6   |
 | API Version                   | 3.0.0             |
 
 ## Report issues

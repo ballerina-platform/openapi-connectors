@@ -7,7 +7,7 @@ The `pagerduty` is a [Ballerina](https://ballerina.io/) connector for connecting
 #### Compatibility
 |                            | Version           |
 |----------------------------|-------------------|
-| Ballerina Language         | Swan Lake Beta3   |
+| Ballerina Language         | Swan Lake Beta6   |
 | pagerduty API              | v2                |
 
 ## Report issues

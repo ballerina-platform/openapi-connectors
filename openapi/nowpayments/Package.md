@@ -7,7 +7,7 @@ This package provides the capability to accept payments in a wide range of crypt
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake Beta3       |
+| Ballerina Language Version    | Swan Lake Beta6       |
 | API Version                   | 1.0.0                 |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability to access Google Manufacturer Center API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Google Manufacturer Center API    | v1                              |
 
 ## Report issues

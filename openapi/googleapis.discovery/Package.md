@@ -7,7 +7,7 @@ This package provides information about other Google APIs, such as what APIs are
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Google Discovery API              | v1                              |
 
 ## Report issues

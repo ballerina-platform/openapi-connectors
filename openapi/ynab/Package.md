@@ -7,7 +7,7 @@ This package provides the capability to access YNAB API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | YNAB API                          | 1.0.0                           |
 
 ## Report issues

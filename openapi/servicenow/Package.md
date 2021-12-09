@@ -11,7 +11,7 @@ This package provides the capability to easily access ServiceNow REST API's `Tab
 ### Compatibility
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language            | Swan Lake Beta3               |
+| Ballerina Language            | Swan Lake Beta6               |
 | ServiceNow API                | Quebec                        |
 
 ## Report issues

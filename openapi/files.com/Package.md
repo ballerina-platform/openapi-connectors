@@ -8,7 +8,7 @@ The `files.com` is a [Ballerina](https://ballerina.io/) connector for connecting
 #### Compatibility
 |                       | Version                  |
 |-----------------------|--------------------------|
-| Ballerina Language    | Balerina Swan Lake Beta3 |
+| Ballerina Language    | Balerina Swan Lake Beta6 |
 | Files.com API         | v1.0                     |
 
 ## Report issues

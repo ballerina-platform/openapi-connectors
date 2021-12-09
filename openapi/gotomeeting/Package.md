@@ -7,7 +7,7 @@ This package provides the capability to organize meetings.
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta3 | 
+| Ballerina Language | Swan Lake Beta6 | 
 | GoToMeeting API    | v1.0            |
 
 ## Report issues

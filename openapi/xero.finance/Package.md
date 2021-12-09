@@ -7,7 +7,7 @@ This package provides the capability to access Xero Finance API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Xero Finance API                  | 2.16.0                          |
 
 ## Report issues

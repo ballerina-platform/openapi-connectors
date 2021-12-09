@@ -7,7 +7,7 @@ This package provides the capability to build applications that enable you to en
 ### Compatibility
 |                      | Version                   |
 |----------------------|---------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta3 |
+| Ballerina Language   | Ballerina Swan Lake Beta6 |
 | SoundCloud API       | 1.0.0                     |
 
 ## Report issues

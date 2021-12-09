@@ -8,7 +8,7 @@ The `apideck.lead` is a [Ballerina](https://ballerina.io/) connector for connect
 #### Compatibility
 |                       | Version                  |
 |-----------------------|--------------------------|
-| Ballerina Language    | Balerina Swan Lake Beta3 |
+| Ballerina Language    | Balerina Swan Lake Beta6 |
 | Apideck Lead API      | v5.3.0                   |
 
 ## Report issues

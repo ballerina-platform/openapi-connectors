@@ -7,7 +7,7 @@ The `ballerinax/cloudmersive.validate` is a [Ballerina](https://ballerina.io/) c
 ### Compatibility
 |                          | Version                    |
 |--------------------------|----------------------------|
-| Ballerina Language       | Ballerina Swan Lake Beta3  |
+| Ballerina Language       | Ballerina Swan Lake Beta6  |
 | Cloudmersive API         | v1                         |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability to access Karbon API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | Karbon API                    | 3.0                             |
 
 ## Report issues

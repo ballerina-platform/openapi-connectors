@@ -7,7 +7,7 @@ This package provides the capability to perform social media marketing through h
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta3 | 
+| Ballerina Language | Swan Lake Beta6 | 
 | RiteKit API        | v1.0            |
 
 ## Report issues

@@ -3,7 +3,7 @@ Connects to Ebay Analytics API from Ballerina
 #### Compatibility
 |                               | Version         |
 |-------------------------------|-----------------|
-| Ballerina Language Version    | Swan Lake Beta3 |
+| Ballerina Language Version    | Swan Lake Beta6 |
 | API Version                   | 1.2.0           |
 
 ### Package Overview

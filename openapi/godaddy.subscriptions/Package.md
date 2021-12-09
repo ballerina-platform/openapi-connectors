@@ -4,7 +4,7 @@ The GoDaddy Subscriptions is a [Ballerina](https://ballerina.io/) connector for 
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake Beta3 |
+| Ballerina Language           | Ballerina Swan Lake Beta6 |
 | GoDaddy Subscriptions API    | v1                        |
 
 ## Report issues

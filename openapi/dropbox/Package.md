@@ -6,7 +6,7 @@ The `ballerinax/dropbox` is a [Ballerina](https://ballerina.io/) connector conne
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta3     | 
+| Ballerina Language    | Ballerina Swan Lake Beta6     | 
 | Dropbox API           | v2                            |
 
 ## Report issues

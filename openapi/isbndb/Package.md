@@ -7,7 +7,7 @@ This package provides the capability to access ISBNdb contains data such as titl
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta3 |
+| Ballerina Language | Ballerina Swan Lake Beta6 |
 | ISBNdb API         | V2.0.0                        |
 
 ## Report issues

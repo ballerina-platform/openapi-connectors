@@ -7,7 +7,7 @@ This package provides the capability to easily access data on technologies funde
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake Beta3       |
+| Ballerina Language Version    | Swan Lake Beta6       |
 | API Version                   | v3.4.0                |
 
 

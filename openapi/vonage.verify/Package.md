@@ -7,7 +7,7 @@ This package provides the capability to access Vonage Verify API.
 ### Compatibility
 |                               | Version                        |
 |-------------------------------|--------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3      |
+| Ballerina Language            | Ballerina Swan Lake Beta6      |
 | Vonage Verify API             | 1.1.7                          |
 
 ## Report issues

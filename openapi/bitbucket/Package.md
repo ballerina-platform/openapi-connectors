@@ -6,7 +6,7 @@ This package provides access to consume the data exposed in [REST API](https://d
 ### Compatibility
 |                      | Version                   |
 |----------------------|---------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta3 |
+| Ballerina Language   | Ballerina Swan Lake Beta6 |
 | BitBucket API        | V2                        |
 
 ## Report issues

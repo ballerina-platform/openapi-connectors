@@ -8,7 +8,7 @@ This package provides the capability to read and write Google Slides presentatio
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta3 |
+| Ballerina Language | Ballerina Swan Lake Beta6 |
 | Google Slides API  | v1                        |
 
 ## Report issues

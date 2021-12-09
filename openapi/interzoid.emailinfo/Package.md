@@ -7,7 +7,7 @@ The `ballerinax/interzoid.emailinfo` is a [Ballerina](https://ballerina.io/) con
 ### Compatibility
 |                             | Version                   |
 |-----------------------------|---------------------------|
-| Ballerina Language          | Swan Lake Beta3           |
+| Ballerina Language          | Swan Lake Beta6           |
 | Interzoid Email Info API    | 1.0.0                     |
 
 ## Report issues

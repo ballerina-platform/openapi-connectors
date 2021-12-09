@@ -8,7 +8,7 @@ This package provides the capability to access to number of the day, random numb
 ### Compatibility
 |                             | Version          |
 |-----------------------------|------------------|
-| Ballerina Language Version  | Swan Lake Beta3  |
+| Ballerina Language Version  | Swan Lake Beta6  |
 | Math Tools Numbers API      | V1.5             |
 
 ## Report issues

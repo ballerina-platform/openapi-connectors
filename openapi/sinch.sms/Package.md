@@ -6,7 +6,7 @@ The `ballerinax/sinch.verification` is a [Ballerina](https://ballerina.io/) conn
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta3     | 
+| Ballerina Language    | Ballerina Swan Lake Beta6     | 
 | Sinch SMS API         | v1                            |
 
 ## Report issues

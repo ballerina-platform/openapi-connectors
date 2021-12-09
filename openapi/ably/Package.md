@@ -7,7 +7,7 @@ This package provides the capability to access Ably API.
 ### Compatibility
 |                               | Version                        |
 |-------------------------------|--------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3      |
+| Ballerina Language            | Ballerina Swan Lake Beta6      |
 | Ably REST API                 | V1.1.0                         | 
 
 ## Report issues

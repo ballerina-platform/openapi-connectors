@@ -7,7 +7,7 @@ This package allows onnecting to File360 Web client REST API.
 #### Compatibility
 |                           | Version             |
 |---------------------------|---------------------|
-| Ballerina Language        | Swan Lake Beta3     |
+| Ballerina Language        | Swan Lake Beta6     |
 | file360 API               | 1.0                 |
 
 ### Report issues

@@ -7,7 +7,7 @@ This package provides the capability to access Mitto SMS and Bulk SMS APIs.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | Mitto SMS and Bulk SMS APIs   | v1                              |
 
 ## Report issues

@@ -5,7 +5,7 @@ The GoDaddy Aftermarket is a [Ballerina](https://ballerina.io/) connector for Go
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake Beta3 |
+| Ballerina Language           | Ballerina Swan Lake Beta6 |
 | GoDaddy Aftermarket API      | v1                        |
 
 ## Report issues

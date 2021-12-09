@@ -7,7 +7,7 @@ This package provides the capability to access New York Times Movie Reviews API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | Movie Reviews API             | 2.0.0                           |
 
 ## Report issues

@@ -6,7 +6,7 @@ creating and managing shopper account.
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake Beta3 |
+| Ballerina Language           | Ballerina Swan Lake Beta6 |
 | GoDaddy Shopper API          | v1                        |
 
 ## Report issues

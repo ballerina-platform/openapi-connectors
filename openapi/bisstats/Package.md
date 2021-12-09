@@ -7,7 +7,7 @@ This package provides the capability to access BIS statistical data and metadata
 ### Compatibility
 |                               | Version                        |
 |-------------------------------|--------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3      |
+| Ballerina Language            | Ballerina Swan Lake Beta6      |
 | BIS SDMX Restful API          | V1                             | 
 
 ## Report issues

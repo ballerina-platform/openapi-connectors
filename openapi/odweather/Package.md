@@ -7,7 +7,7 @@ This package provides the capability to access the real time and forecast ocean 
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta3 | 
+| Ballerina Language | Swan Lake Beta6 | 
 | ODWeather API      | v1.0            |
 
 ## Report issues

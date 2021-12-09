@@ -9,7 +9,7 @@ This package provides the capability to easily access Zoom API's meeting and web
 #### Compatibility
 |                               | Version                    |
 |-------------------------------|----------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake Beta3  |
+| Ballerina Language Version    | Ballerina Swan Lake Beta6  |
 | API Version                   | 2.0.0                      |
 
 ## Report issues

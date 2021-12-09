@@ -7,7 +7,7 @@ This package provides the capability to access Google Abusive Experience Report 
 ### Compatibility
 |                                       | Version                         |
 |---------------------------------------|---------------------------------|
-| Ballerina Language                    | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                    | Ballerina Swan Lake Beta6       | 
 | Google Abusive Experience Report API  | v1                              |
 
 ## Report issues

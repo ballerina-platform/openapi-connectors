@@ -6,7 +6,7 @@ The `ballerinax/launchdarkly` is a [Ballerina](https://ballerina.io/) connector 
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta3 |
+| Ballerina Language | Ballerina Swan Lake Beta6 |
 | LaunchDarkly API   | v2.0                      |
 
 ## Report issues

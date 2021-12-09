@@ -6,7 +6,7 @@ The `azure.sqldb` is a [Ballerina](https://ballerina.io/) connector for connecti
 #### Compatibility
 |                          | Version                  |
 |--------------------------|--------------------------|
-| Ballerina Language       | Balerina Swan Lake Beta3 |
+| Ballerina Language       | Balerina Swan Lake Beta6 |
 | Azure SQL DB             | 2017-03-01-preview       |
 
 ### Report Issues

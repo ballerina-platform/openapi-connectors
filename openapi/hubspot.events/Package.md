@@ -8,7 +8,7 @@ This package provides the capability to easily access  HubSpot Events.
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta3  |
+| Ballerina Language   | Ballerina Swan Lake Beta6  |
 | HubSpot REST API     | V3                         |
 
 ## Report issues

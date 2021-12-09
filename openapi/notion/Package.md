@@ -8,7 +8,7 @@ This package provides the capability to access Notion's pages, databases, and us
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta3  |
+| Ballerina Language   | Ballerina Swan Lake Beta6  |
 | Notion API           | 2021-05-13(v1)             |
 
 ## Report issues

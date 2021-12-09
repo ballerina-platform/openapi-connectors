@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: HubSpot Analytics
-    iconPath: "resources/hubspot.analytics.svg"
+    iconPath: "icon.png"
   title: Custom Behavioral Events API
   description: This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
   

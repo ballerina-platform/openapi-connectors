@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Botify
-    iconPath: "resources/botify.svg"
+    iconPath: "icon.png"
   description: |
     This is a generated connector for [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
     API for Internet Archive's Search-related services.

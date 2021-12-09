@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Shorten.REST
-    iconPath: "resources/shorten.rest.svg"
+    iconPath: "icon.png"
   description: |
     This is a generated connector for [Shorten.REST v1.0](https://docs.shorten.rest/) OpenAPI Specification.
     The Shorten.REST API allows you to programmatically create short URLs for longer URL.

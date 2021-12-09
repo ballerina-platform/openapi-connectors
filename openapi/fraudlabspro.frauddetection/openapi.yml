@@ -7,7 +7,7 @@ servers:
 info:
   x-ballerina-display:
     label: FraudLabs Pro Fraud Detection
-    iconPath: "resources/fraudlabspro.frauddetection.svg"
+    iconPath: "icon.png"
   contact:
     x-twitter: fraudlabspro
   title: FraudLabs Pro Fraud Detection

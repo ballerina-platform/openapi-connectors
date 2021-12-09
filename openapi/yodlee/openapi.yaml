@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Yodlee
-    iconPath: "resources/yodlee.svg"
+    iconPath: "icon.png"
   contact:
     email: developer@yodlee.com
   description: This is a generated connector for [Yodlee Core API v1.1.0](https://www.yodlee.com/) OpenAPI specification

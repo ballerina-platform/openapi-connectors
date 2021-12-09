@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Shipwire Containers
-    iconPath: "resources/shipwire.containers.svg"
+    iconPath: "icon.png"
   title: Shipwire Containers API
   description: |
     This is a generated connector for [Shipwire Containers API v3.0](https://www.shipwire.com/developers/container/) OpenAPI specification.

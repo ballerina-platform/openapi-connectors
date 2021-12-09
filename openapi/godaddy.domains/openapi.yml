@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: GoDaddy Domains
-    iconPath: "resources/godaddy.domains.svg"
+    iconPath: "icon.png"
   version: v1
   title: Godaddy Domains API
   description: >-

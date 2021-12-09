@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: New York Times Newswire
-    iconPath: "resources/nytimes.newswire.svg"
+    iconPath: "icon.png"
   description: >
     This is a generated connector for [New York Times Newswire API v3.0.0](https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification.
 

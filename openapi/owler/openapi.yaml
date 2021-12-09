@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Owler
-    iconPath: "resources/owler.svg"
+    iconPath: "icon.png"
   title: Owler
   description: >
     Search for information on companies using a website or company name and get access to Company Data, News, Blog Posts, Competitor Lists and much more.

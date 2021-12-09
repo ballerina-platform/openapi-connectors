@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Youtube Data
-    iconPath: "resources/googleapis.youtube.data.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

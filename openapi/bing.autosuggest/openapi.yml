@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Bing Autosuggest
-    iconPath: "resources/bing.autosuggest.svg"
+    iconPath: "icon.png"
   title: Autosuggest API - v7
   description: >
     This is a generated connector for [Bing Autosuggest API v1](https://www.microsoft.com/en-us/bing/apis/bing-autosuggest-api) OpenAPI specification.

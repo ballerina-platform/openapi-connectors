@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Google Cloud Scheduler
-    iconPath: "resources/googleapis.cloudscheduler.svg"
+    iconPath: "icon.png"
   contact:
     name: Google
     url: https://google.com

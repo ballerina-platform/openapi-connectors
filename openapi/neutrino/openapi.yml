@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: Neutrino
-    iconPath: "resources/neutrino.svg"
+    iconPath: "icon.png"
   title: Neutrino API
   description: |
     This is a generated connector for [Neutrino API v3.5.0](https://www.neutrinoapi.com/api/api-basics/) OpenAPI specification.

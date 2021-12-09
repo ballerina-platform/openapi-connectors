@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Xero Assets
-    iconPath: "resources/xero.assets.svg"
+    iconPath: "icon.png"
   contact:
     email: api@xero.com
     name: Xero Platform Team

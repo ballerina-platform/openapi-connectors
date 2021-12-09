@@ -12,7 +12,7 @@ info:
     Create a [Shortcut account](https://shortcut.com) and obtain tokens by following [this guide](https://shortcut.com/api/rest/v3#Authentication).
   x-ballerina-display:
     label: Shortcut
-    iconPath: "resources/shortcut.svg"
+    iconPath: "icon.png"
   version: "3.0"
 servers:
 - url: https://api.app.shortcut.com/

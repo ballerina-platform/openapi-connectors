@@ -15,7 +15,7 @@ info:
     Create a [Optirtc account](https://www.optirtc.com) and obtain tokens by following [this guide](https://docs.optirtc.com/api/opti-publicapi-v1.html#section/Authentication).
   x-ballerina-display:
     label: Optirtc Public 
-    iconPath: "resources/optirtc.public.svg"
+    iconPath: "icon.png"
   version: '1.0'
   x-logo:
     url: https://optidocs.blob.core.windows.net/$web/img/opti-logo.svg

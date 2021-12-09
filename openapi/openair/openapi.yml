@@ -15,7 +15,7 @@ info:
 
   x-ballerina-display:
     label: openair
-    iconPath: "resources/openair.svg"
+    iconPath: "icon.png"
 
 tags:
 - name: Attachments

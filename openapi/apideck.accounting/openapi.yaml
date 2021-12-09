@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Apideck Accounting
-    iconPath: "resources/apideck.accounting.svg"
+    iconPath: "icon.png"
   contact:
     email: hello@apideck.com
     url: https://developers.apideck.com

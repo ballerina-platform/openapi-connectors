@@ -12,7 +12,7 @@ info:
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens by following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
   x-ballerina-display:
     label: Xero Projects
-    iconPath: "resources/xero.projects.svg"
+    iconPath: "icon.png"
   termsOfService: "https://developer.xero.com/xero-developer-platform-terms-conditions/"
   contact:
     name: "Xero Platform Team"

@@ -2,7 +2,7 @@ openapi: "3.0.2"
 info:
   x-ballerina-display:
     label: 1Password
-    iconPath: "resources/onepassword.svg"
+    iconPath: "icon.png"
   title: 1Password Connect
   description: >
     This is a generated connector from [1Password Connect API v1.0](https://1password.com/) OpenAPI specification.

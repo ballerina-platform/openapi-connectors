@@ -11,7 +11,7 @@ info:
     Create a [Karbon account](https://developers.karbonhq.com) and obtain tokens by following [this guide](https://help.karbonhq.com/en/articles/4324748-how-do-i-find-my-karbon-api-access-key).
   x-ballerina-display:
     label: Karbon
-    iconPath: "resources/karbon.svg"
+    iconPath: "icon.png"
   contact:
     name: Karbon Support
     email: support@karbonhq.com

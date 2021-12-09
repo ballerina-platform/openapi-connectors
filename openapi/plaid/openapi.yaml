@@ -19,7 +19,7 @@ info:
     Create a [Plaid account](https://plaid.com/) and obtain tokens by following [this guide](https://plaid.com/docs/api/#api-access).
   x-ballerina-display:
     label: Plaid 
-    iconPath: "resources/plaid.svg"
+    iconPath: "icon.png"
   contact:
     name: Plaid Developer Team
     url: https://plaid.com

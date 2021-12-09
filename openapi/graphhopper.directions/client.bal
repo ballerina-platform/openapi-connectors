@@ -26,7 +26,7 @@ public type ApiKeysConfig record {|
 # 
 # With the [GraphHopper Directions API](https://www.graphhopper.com/products/) you can integrate A-to-B route planning, turn-by-turn navigation,
 # route optimization, isochrone calculations and other tools in your application.
-@display {label: "GraphHopper Directions", iconPath: "resources/GraphHopperDirections.svg"}
+@display {label: "GraphHopper Directions", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;

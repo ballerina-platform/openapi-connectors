@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Figshare
-    iconPath: "resources/figshare.svg"
+    iconPath: "icon.png"
   description:
     This is a generated connector for [Figshare API v2.0.0](https://docs.figshare.com/) OpenAPI specification. 
     

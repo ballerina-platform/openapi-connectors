@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Logistics
-    iconPath: "resources/ebay.logistics.svg"
+    iconPath: "icon.png"
   title: Logistics API
   description: >-
     This is a generated connector for [eBay logistics API v1_beta.0.0](https://developer.ebay.com/api-docs/sell/logistics/static/overview.html) OpenAPI Specification.

@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Azure Time Series
-    iconPath: "resources/azure.timeseries.svg"
+    iconPath: "icon.png"
   title: TimeSeriesInsightsClient
   description: >
     This is a generated connector from [Azure Time Series Insights API 2020-07-31 version](https://azure.microsoft.com/en-us/services/time-series-insights/) OpenAPI specification.

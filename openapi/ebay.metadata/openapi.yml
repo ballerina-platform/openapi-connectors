@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: eBay Metadata
-    iconPath: "resources/ebay.metadata.svg"
+    iconPath: "icon.png"
   title: Metadata API
   description: > 
     This is a generated connector for [eBay Metadata API v1.4.1](https://developer.ebay.com) OpenAPI specification. 

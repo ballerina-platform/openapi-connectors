@@ -24,7 +24,7 @@ info:
   x-providerName: icons8.com
   x-ballerina-display:
       label: Icons8
-      iconPath: "resources/icons8.svg"
+      iconPath: "icon.png"
 security:
   - api_key: []
 tags:

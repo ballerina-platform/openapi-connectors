@@ -12,7 +12,7 @@ info:
     Create a [Shopify account](https://www.shopify.com) and obtain tokens by following [this guide](https://shopify.dev/apps/auth/oauth).
   x-ballerina-display:
     label: Shopify Admin
-    iconPath: "resources/shopify.admin.svg"
+    iconPath: "icon.png"
   version: "2021-10"
 security:
 - api_token: []

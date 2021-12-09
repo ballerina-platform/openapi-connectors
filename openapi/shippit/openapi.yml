@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   x-ballerina-display:
     label: Shippit
-    iconPath: "resources/shippit.svg"
+    iconPath: "icon.png"
   title: Shippit
   version: 3.0.20201008
   description: |

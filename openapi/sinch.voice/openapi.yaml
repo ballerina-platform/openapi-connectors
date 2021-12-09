@@ -16,7 +16,7 @@ info:
     Create a [Sinch account](https://www.sinch.com/) and obtain tokens by following [this guide](https://developers.sinch.com/docs/voice/api-reference/authentication/#basic-authorization).
   x-ballerina-display:
     label: Sinch Voice
-    iconPath: "resources/sinch.voice.svg"
+    iconPath: "icon.png"
 servers:
   - url: https://calling.api.sinch.com
     description: redirected by Sinch to an appropriate region

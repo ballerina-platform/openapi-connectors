@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: PocketSmith
-    iconPath: "resources/pocketSmith.svg"
+    iconPath: "icon.png"
   title: PocketSmith
   description: This is a generated connector for [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
 

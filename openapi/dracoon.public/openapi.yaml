@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: Dracoon Public
-    iconPath: "resources/dracoon.public.svg"
+    iconPath: "icon.png"
   contact:
     x-twitter: dracoongmbh
   description: "This is a generated connector from [Dracoon API v4.28.3](https://www.dracoon.com/en/home) OpenAPI specification.

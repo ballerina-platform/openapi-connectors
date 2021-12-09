@@ -5,7 +5,7 @@ servers:
 info:
   x-ballerina-display:
     label: Asana
-    iconPath: "resources/asana.svg"
+    iconPath: "icon.png"
   contact:
     name: Asana Support
     url: https://asana.com/support

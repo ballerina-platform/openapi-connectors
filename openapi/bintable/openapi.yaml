@@ -4,7 +4,7 @@ servers:
 info:
   x-ballerina-display:
     label: BINTable
-    iconPath: "resources/bintable.svg"
+    iconPath: "icon.png"
   contact:
     email: hello@bintable.com
   description: >

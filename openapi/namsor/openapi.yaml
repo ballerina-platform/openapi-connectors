@@ -11,7 +11,7 @@ info:
     Create an [NamSor Account](https://v2.namsor.com/NamSorAPIv2/sign-in.html) and obtain tokens following [this guide](https://v2.namsor.com/NamSorAPIv2/apidoc.html).
   x-ballerina-display:
       label: NamSor
-      iconPath: "resources/namsor.svg"
+      iconPath: "icon.png"
   contact:
     name: Namsor SAS
     url: http://www.namsor.com/

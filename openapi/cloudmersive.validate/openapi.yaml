@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Cloudmersive Validate
-    iconPath: "resources/cloudmersive.validate.svg"
+    iconPath: "icon.png"
   title: validateapi
   description: 'This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. 
   

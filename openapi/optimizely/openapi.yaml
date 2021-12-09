@@ -12,7 +12,7 @@ info:
     Create a [Optimizely account](https://www.optimizely.com/) and obtain tokens by following [this guide](https://docs.developers.optimizely.com/web/docs/rest-api-getting-started#section-2-generate-a-token).
   x-ballerina-display:
     label: Optimizely
-    iconPath: "resources/optimizely.svg" 
+    iconPath: "icon.png" 
 servers:
   - url: https://api.optimizely.com/v2
 tags:

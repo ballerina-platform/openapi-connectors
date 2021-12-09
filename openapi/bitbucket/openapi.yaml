@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   x-ballerina-display:
     label: Bitbucket
-    iconPath: "resources/bitbucket.svg"
+    iconPath: "icon.png"
   title: Bitbucket API
   description: >-
     This is a generated connector for [Bitbucket API v2.0](https://developer.atlassian.com/bitbucket/api/2/reference/) OpenAPI Specification.

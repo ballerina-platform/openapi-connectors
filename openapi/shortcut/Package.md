@@ -7,7 +7,7 @@ This package provides the capability to access Shortcut API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | Shortcut API                  | 3.0                             |
 
 ## Report issues

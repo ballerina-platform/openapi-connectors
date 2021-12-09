@@ -8,7 +8,7 @@ The `ballerinax/interzoid.globalnumberinfo` is a [Ballerina](https://ballerina.i
 ### Compatibility
 |                                               | Version                   |
 |-----------------------------------------------|---------------------------|
-| Ballerina Language                            | Swan Lake Beta3           |
+| Ballerina Language                            | Swan Lake Beta6           |
 | Interzoid Global Phone Number Information API | 1.0.0                     |
 
 ## Report issues

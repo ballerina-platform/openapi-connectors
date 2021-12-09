@@ -7,7 +7,7 @@ This package provides the capability to access IRIS Helpdesk API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | IRIS Helpdesk API             | 1.6.4                           |
 
 ## Report issues

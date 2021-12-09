@@ -6,7 +6,7 @@ The `ballerinax/saps4hana.itcm.producthierarchy` is a [Ballerina](https://baller
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta3 |
+| Ballerina Language | Ballerina Swan Lake Beta6 |
 | SAPS4HANA ITCM API | 1.0.0                     |
 
 ## Report issues

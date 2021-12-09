@@ -7,7 +7,7 @@ The `ballerinax/dracoon.public` is a [Ballerina](https://ballerina.io/) connecto
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta3  |
+| Ballerina Language   | Ballerina Swan Lake Beta6  |
 | Dracoon REST API     | 4.28.3                     |
 
 ## Report issues

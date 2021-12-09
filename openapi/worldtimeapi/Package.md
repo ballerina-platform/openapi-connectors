@@ -5,7 +5,7 @@ This package provides the capability to access World Time API.
 ### Compatibility
 |                               | Version                        |
 |-------------------------------|--------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3      |
+| Ballerina Language            | Ballerina Swan Lake Beta6      |
 | worldTime API                 |   0.6.1                        |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability to access Zuora Collection API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta3       | 
+| Ballerina Language            | Ballerina Swan Lake Beta6       | 
 | Zuora Collection API          | v1                              |
 
 ## Report issues

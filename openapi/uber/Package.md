@@ -7,7 +7,7 @@ This package provides the capability to build applications that enable users to 
 #### Compatibility
 | Ballerina Language Versions  |      Uber Restful API            |
 |:----------------------------:|:--------------------------------:|
-|       Swan Lake Beta3        |            v1.2                  |
+|       Swan Lake Beta6        |            v1.2                  |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

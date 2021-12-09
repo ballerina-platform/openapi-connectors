@@ -6,7 +6,7 @@ The `ballerinax/sinch.voice` is a [Ballerina](https://ballerina.io/) connector c
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta3     | 
+| Ballerina Language    | Ballerina Swan Lake Beta6     | 
 | Sinch Voice API       | v1.0.0                        |
 
 ## Report issues

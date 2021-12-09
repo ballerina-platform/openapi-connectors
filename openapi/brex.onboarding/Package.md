@@ -6,7 +6,7 @@ The `ballerinax/brex.onboarding` is a [Ballerina](https://ballerina.io/) connect
 ### Compatibility
 |                       | Version                         |
 |-----------------------|---------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta3       | 
+| Ballerina Language    | Ballerina Swan Lake Beta6       | 
 | Brex Onboarding API   | 0.1                             |
 
 ## Report issues

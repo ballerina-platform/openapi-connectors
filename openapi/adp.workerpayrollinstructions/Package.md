@@ -7,7 +7,7 @@ This package provides the capability to specify recurring general deductions, ga
 ### Compatibility
 |                                     | Version         |
 |-------------------------------------|-----------------|
-| Ballerina Language                  | Swan Lake Beta3 | 
+| Ballerina Language                  | Swan Lake Beta6 | 
 | ADP Worker Payroll Instructions API | v1              |
 
 ## Report issues

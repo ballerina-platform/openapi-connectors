@@ -5,7 +5,7 @@ accessing legal agreements.
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake Beta3 |
+| Ballerina Language           | Ballerina Swan Lake Beta6 |
 | GoDaddy Agreements API       | v1                        |
 
 ## Report issues

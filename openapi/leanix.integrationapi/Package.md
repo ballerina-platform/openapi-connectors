@@ -6,7 +6,7 @@ The `ballerinax/leanix.integrationapi` is a [Ballerina](https://ballerina.io/) c
 ### Compatibility
 |                        | Version                   |
 |------------------------|---------------------------|
-| Ballerina Language     | Ballerina Swan Lake Beta3 |
+| Ballerina Language     | Ballerina Swan Lake Beta6 |
 | LeanIX Integration API | v1                        |
 
 ## Report issues

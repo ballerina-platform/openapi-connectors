@@ -7,7 +7,7 @@ This package provides the capability to automate web scraping tasks, extract, pr
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta3 | 
+| Ballerina Language | Swan Lake Beta6 | 
 | Dataflow Kit API   | v1.3            |
 
 ## Report issues

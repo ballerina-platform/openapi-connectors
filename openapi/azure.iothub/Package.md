@@ -6,7 +6,7 @@ The `azure.iothub` is a [Ballerina](https://ballerina.io/) connector for connect
 #### Compatibility
 |                               | Version                  |
 |-------------------------------|--------------------------|
-| Ballerina Language            | Balerina Swan Lake Beta3 |
+| Ballerina Language            | Balerina Swan Lake Beta6 |
 | Azure IoT Hub REST API        | 2019-11-04               |
 
 ## Report issues

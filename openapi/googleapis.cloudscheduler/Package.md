@@ -7,7 +7,7 @@ This package provides the capability to manage jobs run on a regular recurring s
 ### Compatibility
 |                            | Version         |
 |----------------------------|-----------------|
-| Ballerina Language         | Swan Lake Beta3 | 
+| Ballerina Language         | Swan Lake Beta6 | 
 | Google Cloud Scheduler API | v1              |
 
 ## Report issues

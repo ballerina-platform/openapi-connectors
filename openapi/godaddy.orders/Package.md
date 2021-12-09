@@ -4,7 +4,7 @@ The GoDaddy Orders is a [Ballerina](https://ballerina.io/) connector for GoDaddy
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake Beta3 |
+| Ballerina Language           | Ballerina Swan Lake Beta6 |
 | GoDaddy Orders API           | v1                        |
 
 ## Report issues

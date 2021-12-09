@@ -7,7 +7,7 @@ This package provides the capability to access Google Classroom API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Google Classroom API              | v1                              |
 
 ## Report issues

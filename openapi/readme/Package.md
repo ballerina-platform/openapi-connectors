@@ -7,7 +7,7 @@ This package provides the capability to create product and API documentation pro
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta3 | 
+| Ballerina Language | Swan Lake Beta6 | 
 | Readme API         | v2.0            |
 
 ## Report issues

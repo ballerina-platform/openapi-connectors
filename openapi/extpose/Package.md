@@ -7,7 +7,7 @@ This package provides the capability to obtain analytics and actionable insights
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake Beta3       |
+| Ballerina Language Version    | Swan Lake Beta6       |
 | API Version                   | v1                    |
 
 ## Report issues

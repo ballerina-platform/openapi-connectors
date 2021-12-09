@@ -10,7 +10,7 @@ This package provides the capability to easily access most commonly used Spotify
 
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake Beta3     |
+| Ballerina Language Version    | Ballerina Swan Lake Beta6     |
 | Spotify Playlist API          | v1                            |
 
 ## Report issues

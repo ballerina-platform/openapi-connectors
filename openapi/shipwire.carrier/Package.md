@@ -7,7 +7,7 @@ This package provides the capability to access Shipwire Carrier API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta3       | 
+| Ballerina Language                | Ballerina Swan Lake Beta6       | 
 | Shipwire Carrier API              | 3.0                             |
 
 ## Report issues

@@ -6,7 +6,7 @@ The `ballerinax/listen.notes` is a [Ballerina](https://ballerina.io/) connector 
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta3     | 
+| Ballerina Language    | Ballerina Swan Lake Beta6     | 
 | Listen Notes API      | v2.0                          |
 
 ## Report issues

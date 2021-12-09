@@ -42,18 +42,19 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get a collection of available libraries
     #
     # + configuration - Retrieve DM Server configuration information (if available) 
     # + return - Expected response to a valid request 
     remote isolated function getLibraries(string? configuration = ()) returns json|error {
-        string path = string `/libraries`;
+        string resourcePath = string `/libraries`;
         map<anydata> queryParam = {"configuration": configuration};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp->get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Connect to the DM Server and get key information in the response
@@ -61,13 +62,13 @@ public isolated client class Client {
     # + payload - Credentials to connect to library 
     # + return - Expected response to a valid request 
     remote isolated function connect(ConnectBody payload) returns json|error {
-        string path = string `/connect`;
+        string resourcePath = string `/connect`;
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve a collection of available folders
@@ -79,13 +80,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of available folders 
-    remote isolated function getFolders(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders`;
+    remote isolated function getFolders(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a new folder
@@ -94,15 +95,15 @@ public isolated client class Client {
     # + payload - Profile data needed to create a folder 
     # + return - Expected response to a valid request 
     remote isolated function addNewFolder(string library, ProfileData payload) returns json|error {
-        string path = string `/folders`;
+        string resourcePath = string `/folders`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve a collection of public folders
@@ -115,13 +116,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of public folders 
-    remote isolated function getPublicFolders(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders/public`;
+    remote isolated function getPublicFolders(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders/public`;
         map<anydata> queryParam = {"library": library, "libs": libs, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of recently edited items
@@ -134,13 +135,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of recently edited items 
-    remote isolated function getRecentEdits(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders/recentedits`;
+    remote isolated function getRecentEdits(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders/recentedits`;
         map<anydata> queryParam = {"library": library, "libs": libs, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of checked out items
@@ -153,13 +154,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of checked out items 
-    remote isolated function getCheckedOutItems(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders/checkedout`;
+    remote isolated function getCheckedOutItems(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders/checkedout`;
         map<anydata> queryParam = {"library": library, "libs": libs, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of deleted items
@@ -172,13 +173,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of deleted items 
-    remote isolated function getDeletedItems(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders/deleted`;
+    remote isolated function getDeletedItems(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders/deleted`;
         map<anydata> queryParam = {"library": library, "libs": libs, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of system defined templates
@@ -191,13 +192,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of system defined templates 
-    remote isolated function getTemplates(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders/templates`;
+    remote isolated function getTemplates(string library, string? libs = (), int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders/templates`;
         map<anydata> queryParam = {"library": library, "libs": libs, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of content from this folder
@@ -210,13 +211,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of folder content 
-    remote isolated function getFolder(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders/${id}`;
+    remote isolated function getFolder(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders/${id}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request this folder be deleted
@@ -225,12 +226,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteFolder(string id, string library) returns http:Response|error {
-        string path = string `/folders/${id}`;
+        string resourcePath = string `/folders/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the profile data for this folder
@@ -239,12 +240,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getProfileForTheFolder(string id, string library) returns http:Response|error {
-        string path = string `/folders/${id}/profile`;
+        string resourcePath = string `/folders/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace the profile data for this folder
@@ -254,15 +255,15 @@ public isolated client class Client {
     # + payload - Profile data that needs to be replaced. 
     # + return - Null response 
     remote isolated function updateProfileData(string id, string library, ProfileData payload) returns http:Response|error {
-        string path = string `/folders/${id}/profile`;
+        string resourcePath = string `/folders/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve the security data for this folder
@@ -271,12 +272,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getSecurityInfo(string id, string library) returns http:Response|error {
-        string path = string `/folders/${id}/security`;
+        string resourcePath = string `/folders/${id}/security`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace the security data for this folder
@@ -286,15 +287,15 @@ public isolated client class Client {
     # + payload - Security data that needs to replaced for this folder 
     # + return - Null response 
     remote isolated function updateSecurityInfo(string id, string library, SecurityData payload) returns http:Response|error {
-        string path = string `/folders/${id}/security`;
+        string resourcePath = string `/folders/${id}/security`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve the user's security rights for this folder
@@ -303,12 +304,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getSecurityRights(string id, string library) returns http:Response|error {
-        string path = string `/folders/${id}/security/rights`;
+        string resourcePath = string `/folders/${id}/security/rights`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of references to this folder
@@ -321,13 +322,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of references 
-    remote isolated function getFolderReferences(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/folders/${id}/references`;
+    remote isolated function getFolderReferences(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/folders/${id}/references`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a reference to this folder into folders and workspaces
@@ -337,15 +338,15 @@ public isolated client class Client {
     # + payload - Reference information 
     # + return - Expected response to a valid request 
     remote isolated function addReferenceToFolder(string id, string library, IdReferencesBody payload) returns json|error {
-        string path = string `/folders/${id}/references`;
+        string resourcePath = string `/folders/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request the reference to this folder be deleted from a folder or workspace
@@ -354,12 +355,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteReferenceFromFolder(string id, string library) returns http:Response|error {
-        string path = string `/folders/${id}/references`;
+        string resourcePath = string `/folders/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the facet data for this folder
@@ -368,12 +369,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getFacetData(string id, string library) returns http:Response|error {
-        string path = string `/folders/${id}/facets`;
+        string resourcePath = string `/folders/${id}/facets`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the history data for this folder
@@ -382,12 +383,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getHistoryData(string id, string library) returns http:Response|error {
-        string path = string `/folders/${id}/history`;
+        string resourcePath = string `/folders/${id}/history`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of available documents
@@ -399,13 +400,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of documents 
-    remote isolated function getAvailableDocuments(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/documents`;
+    remote isolated function getAvailableDocuments(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/documents`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request this document be deleted
@@ -414,12 +415,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteDocumentById(string id, string library) returns http:Response|error {
-        string path = string `/documents/${id}`;
+        string resourcePath = string `/documents/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the profile data for this document
@@ -428,30 +429,29 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getProfileDataOfDocument(string id, string library) returns http:Response|error {
-        string path = string `/documents/${id}/profile`;
+        string resourcePath = string `/documents/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace the profile data for this document
     #
     # + id - Resource identification 
     # + library - Name of library (lib) 
-    # + payload - Profile data
     # + return - Null response 
     remote isolated function updateProfileDataOfDocument(string id, string library, ProfileData payload) returns http:Response|error {
-        string path = string `/documents/${id}/profile`;
+        string resourcePath = string `/documents/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve the security data for this document
@@ -460,12 +460,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getSecurityDataOfDocument(string id, string library) returns http:Response|error {
-        string path = string `/documents/${id}/security`;
+        string resourcePath = string `/documents/${id}/security`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace the security data for this document
@@ -475,15 +475,15 @@ public isolated client class Client {
     # + payload - Security data that needs to be replaced for this document. 
     # + return - Expected response to a valid request 
     remote isolated function updateSecurityData(string id, string library, SecurityData payload) returns json|error {
-        string path = string `/documents/${id}/security`;
+        string resourcePath = string `/documents/${id}/security`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->put(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve a collection of versions for this document
@@ -496,13 +496,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of versions for this document 
-    remote isolated function getVersionsOfDocument(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/documents/${id}/versions`;
+    remote isolated function getVersionsOfDocument(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/documents/${id}/versions`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request this version of the document be deleted
@@ -512,12 +512,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteSpecificVersionofSpecificDocument(string id, string 'version, string library) returns http:Response|error {
-        string path = string `/documents/${id}/versions/${'version}`;
+        string resourcePath = string `/documents/${id}/versions/${'version}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of references to this document
@@ -530,13 +530,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of references to this document 
-    remote isolated function getCollectionOfReferences(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/documents/${id}/references`;
+    remote isolated function getCollectionOfReferences(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/documents/${id}/references`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a reference to this document into folders and workspaces
@@ -546,15 +546,15 @@ public isolated client class Client {
     # + payload - Reference information 
     # + return - Expected response to a valid request 
     remote isolated function addReferencesToFoldersAndWorkspaces(string id, string library, IdReferencesBody1 payload) returns json|error {
-        string path = string `/documents/${id}/references`;
+        string resourcePath = string `/documents/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request the reference to this document be deleted from a folder or workspace
@@ -563,12 +563,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteReference(string id, string library) returns http:Response|error {
-        string path = string `/documents/${id}/references`;
+        string resourcePath = string `/documents/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of attachments for this document
@@ -581,13 +581,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of attachments for this document 
-    remote isolated function getAttachments(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/documents/${id}/attachments/`;
+    remote isolated function getAttachments(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/documents/${id}/attachments/`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the contents of this attachment
@@ -597,12 +597,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getContentOfAttachment(string id, string attachment, string library) returns http:Response|error {
-        string path = string `/documents/${id}/attachments/${attachment}`;
+        string resourcePath = string `/documents/${id}/attachments/${attachment}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request this attachment be deleted
@@ -612,12 +612,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteAttachment(string id, string attachment, string library) returns http:Response|error {
-        string path = string `/documents/${id}/attachments/${attachment}`;
+        string resourcePath = string `/documents/${id}/attachments/${attachment}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the history data for this document
@@ -626,12 +626,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getHistoryDataForDocument(string id, string library) returns http:Response|error {
-        string path = string `/documents/${id}/history`;
+        string resourcePath = string `/documents/${id}/history`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a collection of available saved searches
@@ -643,13 +643,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of saved searches 
-    remote isolated function getSavedSearches(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/searches`;
+    remote isolated function getSavedSearches(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/searches`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of results that satisfy the saved search criteria
@@ -662,13 +662,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of search results 
-    remote isolated function getSearches(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/searches/${id}`;
+    remote isolated function getSearches(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/searches/${id}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request this saved search be deleted
@@ -677,12 +677,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteSearch(string id, string library) returns http:Response|error {
-        string path = string `/searches/${id}`;
+        string resourcePath = string `/searches/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the profile data for this saved search
@@ -691,12 +691,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getProfileForSavedSearch(string id, string library) returns http:Response|error {
-        string path = string `/searches/${id}/profile`;
+        string resourcePath = string `/searches/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of references to this saved search
@@ -709,13 +709,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of references to this saved search 
-    remote isolated function getReferencesForSavedSearch(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/searches/${id}/references`;
+    remote isolated function getReferencesForSavedSearch(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/searches/${id}/references`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a reference to this saved search into workspaces
@@ -725,15 +725,15 @@ public isolated client class Client {
     # + payload - Reference information 
     # + return - Expected response to a valid request 
     remote isolated function addReferenceToSavedSearch(string id, string library, IdReferencesBody2 payload) returns json|error {
-        string path = string `/searches/${id}/references`;
+        string resourcePath = string `/searches/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request the reference to this saved search be deleted from a workspace
@@ -742,12 +742,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteReferenceFromSavedSearch(string id, string library) returns http:Response|error {
-        string path = string `/searches/${id}/references`;
+        string resourcePath = string `/searches/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get a collection of available workspaces
@@ -759,13 +759,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of workspaces 
-    remote isolated function getWorkspaces(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/workspaces`;
+    remote isolated function getWorkspaces(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/workspaces`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a new workspace
@@ -774,15 +774,15 @@ public isolated client class Client {
     # + payload - Profile data for new workspace. 
     # + return - Expected response to a valid request 
     remote isolated function addNewWorkspace(string library, ProfileData payload) returns json|error {
-        string path = string `/workspaces`;
+        string resourcePath = string `/workspaces`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve a collection of content from this workspace
@@ -795,13 +795,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of content from this workspace 
-    remote isolated function getWorkspaceById(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/workspaces/${id}`;
+    remote isolated function getWorkspaceById(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/workspaces/${id}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request this workspace be deleted
@@ -810,12 +810,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteWorkspaces(string id, string library) returns http:Response|error {
-        string path = string `/workspaces/${id}`;
+        string resourcePath = string `/workspaces/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the profile data for this workspace
@@ -824,12 +824,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getProfileDataForWorkspace(string id, string library) returns http:Response|error {
-        string path = string `/workspaces/${id}/profile`;
+        string resourcePath = string `/workspaces/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace the profile data for this workspace
@@ -839,15 +839,15 @@ public isolated client class Client {
     # + payload - Profile data that needs to be replaced in workspace 
     # + return - Null response 
     remote isolated function repalceProfileDataForWorkspace(string id, string library, ProfileData payload) returns http:Response|error {
-        string path = string `/workspaces/${id}/profile`;
+        string resourcePath = string `/workspaces/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve the security data for this workspace
@@ -856,12 +856,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getSecurityDataForWorkspace(string id, string library) returns http:Response|error {
-        string path = string `/workspaces/${id}/security`;
+        string resourcePath = string `/workspaces/${id}/security`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace the security data for this workspace
@@ -871,15 +871,15 @@ public isolated client class Client {
     # + payload - Security data that needs to replaced in workspace. 
     # + return - Null response 
     remote isolated function updateSecurityDataForWorkspace(string id, string library, SecurityData payload) returns http:Response|error {
-        string path = string `/workspaces/${id}/security`;
+        string resourcePath = string `/workspaces/${id}/security`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve the user's security rights for this workspace
@@ -888,12 +888,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getUserSecurityRightsForWorkspace(string id, string library) returns http:Response|error {
-        string path = string `/workspaces/${id}/security/rights`;
+        string resourcePath = string `/workspaces/${id}/security/rights`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a collection of available FlexFolders
@@ -905,13 +905,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of FlexFolders 
-    remote isolated function getCollectionOfFlexFolders(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/flexfolders`;
+    remote isolated function getCollectionOfFlexFolders(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/flexfolders`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of content from this FlexFolder
@@ -924,13 +924,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of content from this FlexFolder 
-    remote isolated function getFlexFolder(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/flexfolders/${id}`;
+    remote isolated function getFlexFolder(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/flexfolders/${id}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request this FlexFolder (subscription) be deleted
@@ -939,12 +939,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteFlexFolder(string id, string library) returns http:Response|error {
-        string path = string `/flexfolders/${id}`;
+        string resourcePath = string `/flexfolders/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of available first level terms
@@ -956,13 +956,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of fileplans 
-    remote isolated function getFilePlans(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/fileplans`;
+    remote isolated function getFilePlans(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/fileplans`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of recently used fileplans
@@ -974,13 +974,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of recently used fileplans 
-    remote isolated function getCollectionOfFilePlans(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/fileplans/recentused`;
+    remote isolated function getCollectionOfFilePlans(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/fileplans/recentused`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of group favourite fileplans
@@ -992,13 +992,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of group favourite fileplans 
-    remote isolated function getFavoriteGroupFilePlans(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/fileplans/groupfavorites`;
+    remote isolated function getFavoriteGroupFilePlans(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/fileplans/groupfavorites`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of available items of this fileplan level
@@ -1011,13 +1011,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of fileplan items 
-    remote isolated function getFilePlansById(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/fileplans/${id}`;
+    remote isolated function getFilePlansById(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/fileplans/${id}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the history data for this fileplan level
@@ -1031,12 +1031,12 @@ public isolated client class Client {
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Null response 
     remote isolated function getHistoryDataForFilePlan(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns http:Response|error {
-        string path = string `/fileplans/${id}/history`;
+        string resourcePath = string `/fileplans/${id}/history`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the profile data for this fileplan level
@@ -1045,12 +1045,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getFilePlansData(string id, string library) returns http:Response|error {
-        string path = string `/fileplans/${id}/profile`;
+        string resourcePath = string `/fileplans/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of reference for this fileplan
@@ -1063,13 +1063,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of references to this fileplan 
-    remote isolated function getCollectionOfReferecenForFilePlan(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/fileplans/${id}/references`;
+    remote isolated function getCollectionOfReferecenForFilePlan(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/fileplans/${id}/references`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a reference to this fileplan into folders and workspaces
@@ -1079,15 +1079,15 @@ public isolated client class Client {
     # + payload - Reference information for fileplan 
     # + return - Expected response to a valid request 
     remote isolated function addReferenceToFilePlan(string id, string library, IdReferencesBody3 payload) returns json|error {
-        string path = string `/fileplans/${id}/references`;
+        string resourcePath = string `/fileplans/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request the reference to this fileplan be deleted from a folder or workspace
@@ -1096,12 +1096,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteReferencesToFilePlan(string id, string library) returns http:Response|error {
-        string path = string `/fileplans/${id}/references`;
+        string resourcePath = string `/fileplans/${id}/references`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Add a request to this fileplan item
@@ -1111,15 +1111,15 @@ public isolated client class Client {
     # + payload - Request information 
     # + return - Expected response to a valid request 
     remote isolated function addRequestToFilePlan(string id, string library, IdRequestsBody payload) returns json|error {
-        string path = string `/fileplans/${id}/requests`;
+        string resourcePath = string `/fileplans/${id}/requests`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve a collection of content from this box
@@ -1132,13 +1132,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of boxes 
-    remote isolated function getBoxes(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/boxes/${id}`;
+    remote isolated function getBoxes(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/boxes/${id}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the history data for this box
@@ -1152,12 +1152,12 @@ public isolated client class Client {
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Null response 
     remote isolated function getHistoryDataForBox(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns http:Response|error {
-        string path = string `/boxes/${id}/history`;
+        string resourcePath = string `/boxes/${id}/history`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the profile data for this box
@@ -1166,12 +1166,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getProfileDataForBox(string id, string library) returns http:Response|error {
-        string path = string `/boxes/${id}/profile`;
+        string resourcePath = string `/boxes/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of requests
@@ -1183,13 +1183,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of requests 
-    remote isolated function getRequests(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/requests`;
+    remote isolated function getRequests(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/requests`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a request to this fileplan item
@@ -1198,14 +1198,14 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Expected response to a valid request 
     remote isolated function addRequestToFilePlanItem(string id, string library) returns json|error {
-        string path = string `/requests/${id}`;
+        string resourcePath = string `/requests/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp->put(path, request, headers = accHeaders, targetType = json);
+        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request the request to this fileplan item be deleted
@@ -1214,12 +1214,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteRequestToFilePlanItem(string id, string library) returns http:Response|error {
-        string path = string `/requests/${id}`;
+        string resourcePath = string `/requests/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Access to user settings
@@ -1231,13 +1231,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of user settings 
-    remote isolated function getUserSettings(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/settings`;
+    remote isolated function getUserSettings(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/settings`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of this setting
@@ -1250,13 +1250,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of this setting 
-    remote isolated function getSettingsById(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/settings/${id}`;
+    remote isolated function getSettingsById(string id, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/settings/${id}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the configurable attributes of this setting
@@ -1270,32 +1270,31 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of attributes of this setting 
-    remote isolated function getConfigurableAttributes(string id, string setting, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/settings/${id}/${setting}`;
+    remote isolated function getConfigurableAttributes(string id, string setting, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/settings/${id}/${setting}`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace the configurable attributes of this setting
     #
     # + id - Resource identification 
     # + setting - Setting identification 
-    # + payload - Setting body
     # + library - Name of library (lib) 
     # + return - Expected response to a valid request 
     remote isolated function replaceConfigurables(string id, string setting, string library, IdSettingBody payload) returns json|error {
-        string path = string `/settings/${id}/${setting}`;
+        string resourcePath = string `/settings/${id}/${setting}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->put(path, request, headers = accHeaders, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request this setting be deleted
@@ -1305,12 +1304,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteSettting(string id, string setting, string library) returns http:Response|error {
-        string path = string `/settings/${id}/${setting}`;
+        string resourcePath = string `/settings/${id}/${setting}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Access to form defenitions
@@ -1322,13 +1321,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of forms 
-    remote isolated function getForms(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/forms`;
+    remote isolated function getForms(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/forms`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of applications and their associated form data
@@ -1336,12 +1335,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getApplications(string library) returns http:Response|error {
-        string path = string `/forms/app_ids`;
+        string resourcePath = string `/forms/app_ids`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the definition data for this form
@@ -1350,12 +1349,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getDefinitionDataForForm(string id, string library) returns http:Response|error {
-        string path = string `/forms/${id}/profile`;
+        string resourcePath = string `/forms/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the column definition data for this form
@@ -1364,12 +1363,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getColumnDefinitionDataForForm(string id, string library) returns http:Response|error {
-        string path = string `/forms/${id}/columns`;
+        string resourcePath = string `/forms/${id}/columns`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a collection of available tables
@@ -1381,13 +1380,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of tables 
-    remote isolated function getLookups(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/lookups`;
+    remote isolated function getLookups(string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/lookups`;
         map<anydata> queryParam = {"library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a collection of entries from this table
@@ -1402,13 +1401,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of entries from this table 
-    remote isolated function getEntriesFromTable(string 'table, string 'key, string profile, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/lookups/${'table}`;
+    remote isolated function getEntriesFromTable(string 'table, string 'key, string profile, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/lookups/${'table}`;
         map<anydata> queryParam = {"key": 'key, "profile": profile, "library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the definition for this table
@@ -1423,13 +1422,13 @@ public isolated client class Client {
     # + 'descending - Retrieve items in descending order by this field 
     # + filter - Restrict items to retrieve based on this criteria 
     # + return - Collection of definition for this table 
-    remote isolated function getDefenitionForThisTable(string 'table, string 'key, string profile, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error {
-        string path = string `/lookups/${'table}/profile`;
+    remote isolated function getDefenitionForThisTable(string 'table, string 'key, string profile, string library, int 'start = 0, int max = 10, string? 'ascending = (), string? 'descending = (), string? filter = ()) returns CollectionResponse|error? {
+        string resourcePath = string `/lookups/${'table}/profile`;
         map<anydata> queryParam = {"key": 'key, "profile": profile, "library": library, "start": 'start, "max": max, "ascending": 'ascending, "descending": 'descending, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CollectionResponse response = check self.clientEp->get(path, accHeaders, targetType = CollectionResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CollectionResponse? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a URL
@@ -1438,15 +1437,15 @@ public isolated client class Client {
     # + payload - URL information to create a URL 
     # + return - Null response 
     remote isolated function createURL(string library, UrlsBody payload) returns http:Response|error {
-        string path = string `/urls`;
+        string resourcePath = string `/urls`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request this url be deleted
@@ -1455,12 +1454,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function deleteURL(string id, string library) returns http:Response|error {
-        string path = string `/urls/${id}`;
+        string resourcePath = string `/urls/${id}`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the column definition data for this form
@@ -1469,12 +1468,12 @@ public isolated client class Client {
     # + library - Name of library (lib) 
     # + return - Null response 
     remote isolated function getProfileDataForURL(string id, string library) returns http:Response|error {
-        string path = string `/urls/${id}/profile`;
+        string resourcePath = string `/urls/${id}/profile`;
         map<anydata> queryParam = {"library": library};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-DM-DST": self.apiKeyConfig.xDmDst};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

@@ -909,19 +909,6 @@ paths:
           schema:
             example: 927
             type: number
-      requestBody:
-        content:
-          application/vnd.vimeo.user+json:
-            schema:
-              properties:
-                user_uri:
-                  description: The URI of a user to remove as a moderator.
-                  example: /users/152184
-                  type: string
-              required:
-                - user_uri
-              type: object
-        required: true
       responses:
         "204":
           content:
@@ -1748,19 +1735,6 @@ paths:
           schema:
             example: 927
             type: number
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                video_uri:
-                  description: The URI of a video to remove.
-                  example: /videos/258684937
-                  type: string
-              required:
-                - video_uri
-              type: object
-        required: true
       responses:
         "204":
           content:
@@ -8428,18 +8402,6 @@ paths:
           schema:
             example: 61326
             type: number
-      requestBody:
-        content:
-          application/vnd.vimeo.ondemand.region+json:
-            schema:
-              properties:
-                countries:
-                  description: An array of country codes.
-                  items:
-                    type: string
-                  type: array
-              type: object
-        required: false
       responses:
         "200":
           content:
@@ -21933,7 +21895,7 @@ components:
             stats: Access video stats
             upload: Upload videos
             video_files: Access video files belonging to members with a PRO subscription or higher
-          tokenUrl: /oauth/access_token
+          tokenUrl: https://api.vimeo.com/oauth/access_token
         clientCredentials:
           scopes:
             create: Create new albums, channels, and so on
@@ -21949,5 +21911,5 @@ components:
             stats: Access video stats
             upload: Upload videos
             video_files: Access video files belonging to members with a PRO subscription or higher
-          tokenUrl: /oauth/authorize/client
+          tokenUrl: https://api.vimeo.com/oauth/access_token
       type: oauth2

@@ -136,7 +136,7 @@ public type VideoMetadataConnections record {
     # Information about the comments on this video.
     VideoMetadataConnectionsComments comments;
     # Information about the users credited in this video.
-    VideoMetadataConnectionsCredits credits;
+    VideoMetadataConnectionsCredits? credits;
     # Information about the users who have liked this video.
     VideoMetadataConnectionsLikes likes;
     # Information about this video's ondemand data.
@@ -146,9 +146,9 @@ public type VideoMetadataConnections record {
     # The DRM playback status connection for this video.
     VideoMetadataConnectionsPlayback playback;
     # The recommendations for this video.
-    VideoMetadataConnectionsRecommendations recommendations;
+    VideoMetadataConnectionsRecommendations? recommendations;
     # Related content for this video.
-    VideoMetadataConnectionsRelated related;
+    VideoMetadataConnectionsRelated? related;
     # Information about the video's season.
     VideoMetadataConnectionsSeason season;
     # Information about this video's text tracks.
@@ -369,6 +369,73 @@ public type MeondemandpagesEpisodesRentPrice record {
     decimal USD?;
 };
 
+public type OndemandPagesBody record {
+    # An array of accepted currencies.
+    # 
+    # Option descriptions:
+    #  * `AUD` - Australian Dollar
+    #  * `CAD` - Canadian Dollar
+    #  * `CHF` - Swiss Franc
+    #  * `DKK` - Danish Krone
+    #  * `EUR` - Euro
+    #  * `GBP` - British Pound
+    #  * `JPY` - Japanese Yen
+    #  * `KRW` - South Korean Won
+    #  * `NOK` - Norwegian Krone
+    #  * `PLN` - Polish Zloty
+    #  * `SEK` - Swedish Krona
+    #  * `USD` - US Dollar
+    string accepted_currencies?;
+    MeondemandpagesBuy buy?;
+    # One or more ratings, either as a comma-separated list or as a JSON array depending on the request format.
+    string content_rating;
+    # The description of the On Demand page.
+    string description;
+    # The custom domain of the On Demand page.
+    string domain_link?;
+    MeondemandpagesEpisodes episodes?;
+    # The custom string to use in this On Demand page's Vimeo URL.
+    string link?;
+    # The name of the On Demand page.
+    string name;
+    MeondemandpagesRent rent?;
+    MeondemandpagesSubscription subscription?;
+    # The type of On Demand page.
+    string 'type;
+};
+
+public type UserIdVideosBody record {
+    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint.
+    string[] content_rating?;
+    # The description of the video.
+    string description?;
+    MevideosEmbed embed?;
+    # The Creative Commons license.
+    string license?;
+    # The video's default language. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
+    string locale?;
+    # The title of the video.
+    string name?;
+    # The password. When you set `privacy.view` to `password`, you must provide the password as an additional parameter.
+    string password?;
+    MevideosPrivacy privacy?;
+    MevideosRatings ratings?;
+    MevideosReviewPage review_page?;
+    MevideosSpatial spatial?;
+    MevideosUpload upload;
+};
+
+public type VideoIdCreditsBody1 record {
+    # The email address of the credited person.
+    string email;
+    # The name of the credited person.
+    string name;
+    # The role of the credited person.
+    string role;
+    # The URI of the Vimeo user who should be given credit in this video.
+    string user_uri;
+};
+
 # Information about the channels related to this category.
 public type CategoryMetadataConnectionsChannels record {
     # An array of HTTP methods permitted on this URI.
@@ -384,7 +451,7 @@ public type ChannelMetadataInteractions record {
     # An action indicating that the authenticated user is the owner of the channel and may therefore add other users as channel moderators. This data requires a bearer token with the `private` scope.
     ChannelMetadataInteractionsAddModerators add_moderators;
     # When a channel appears in the context of adding or removing a video from it (`/videos/{video_id}/available_channels`), include information about adding or removing the video. This data requires a bearer token with the `private` scope.
-    ChannelMetadataInteractionsAddTo add_to;
+    ChannelMetadataInteractionsAddTo? add_to;
     # An action indicating if the authenticated user has followed this channel. This data requires a bearer token with the `private` scope.
     ChannelMetadataInteractionsFollow follow;
     # An action indicating that the authenticated user is a moderator of the channel and may therefore add or remove videos from the channel. This data requires a bearer token with the `private` scope.
@@ -474,6 +541,11 @@ public type OnDemandPromotion record {
     string uri;
 };
 
+public type ChannelIdModeratorsBody1 record {
+    # The URI of the user to add as a moderator.
+    string user_uri;
+};
+
 # Information about the albums created by this user.
 public type UserMetadataConnectionsAlbums record {
     # An array of HTTP methods permitted on this URI.
@@ -487,7 +559,7 @@ public type UserMetadataConnectionsAlbums record {
 # A list of resource URIs related to the activity.
 public type Activity31MetadataConnections record {
     # Related content for this activity.
-    Activity31MetadataConnectionsRelated related;
+    Activity31MetadataConnectionsRelated? related;
 };
 
 # Information about this user's subscribed channels.
@@ -498,6 +570,11 @@ public type UserMetadataConnectionsChannels record {
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+public type PicturesPosterIdBody record {
+    # Whether to make this picture the active picture.
+    boolean active?;
 };
 
 # Information about the groups related to this category.
@@ -528,6 +605,46 @@ public type VideoMetadataConnectionsSeason record {
     string[] options;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+public type ChannelsChannelIdBody record {
+    # The description of the channel.
+    string description?;
+    # The link to access the channel. You can use a custom name in the URL in place of a numeric channel ID, as in `/channels/{url_custom}`. Submitting `""` for this field removes the link alias.
+    string link?;
+    # The name of the channel.
+    string name?;
+    # The privacy level of the channel.
+    string privacy?;
+};
+
+public type AlbumsAlbumIdBody1 record {
+    # The hexadecimal code for the color of the player buttons.
+    string brand_color?;
+    # The description of the album.
+    string description?;
+    # The custom domain a user has selected for their album.
+    string? domain?;
+    # Whether to hide Vimeo navigation when displaying the album.
+    boolean hide_nav?;
+    # The type of layout for presenting the album.
+    string layout?;
+    # The name of the album.
+    string name?;
+    # The album's password. Required only if **privacy** is `password`.
+    string password?;
+    # The privacy level of the album.
+    string privacy?;
+    # Whether album videos should use the review mode URL.
+    boolean review_mode?;
+    # The default sort order of the album's videos.
+    string sort?;
+    # The color theme of the album.
+    string theme?;
+    # The custom Vimeo URL a user has selected for their album.
+    string? url?;
+    # Whether the user has opted in to use a custom domain for their album.
+    boolean use_custom_domain?;
 };
 
 public type Project record {
@@ -567,6 +684,17 @@ public type AuthError record {
     string error_description;
 };
 
+public type TexttracksTexttrackIdBody record {
+    # Whether the text track is active, meaning that it appears in the player. Only one text track per language, and type, can be active.
+    boolean active?;
+    # The language of the text track. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
+    string language?;
+    # The name of the text track.
+    string name?;
+    # The text track type.
+    string 'type?;
+};
+
 public type ContentRating record {
     # The code that uniquely identifies this content rating:
     # 
@@ -582,6 +710,26 @@ public type ContentRating record {
     string name;
     # The canonical relative URI of the content rating.
     string? uri;
+};
+
+public type VideosVideoIdBody1 record {
+    # A list of values describing the content in this video. You can find the full list in the [`/contentratings`](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint.
+    string[] content_rating?;
+    # The new description of the video.
+    string description?;
+    MevideosEmbed embed?;
+    # The Creative Commons license.
+    string license?;
+    # The video's default language. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
+    string locale?;
+    # The new title for the video.
+    string name?;
+    # The password. When you set `privacy.view` to `password`, you must provide the password as an additional parameter.
+    string password?;
+    VideosvideoIdPrivacy privacy?;
+    MevideosRatings ratings?;
+    MevideosReviewPage review_page?;
+    MevideosSpatial spatial?;
 };
 
 public type Group record {
@@ -612,17 +760,17 @@ public type Group record {
 # A list of resource URIs related to the video.
 public type VideoMetadataInteractions record {
     # The Buy interaction for a On Demand video.
-    VideoMetadataInteractionsBuy buy;
+    VideoMetadataInteractionsBuy? buy;
     # When a video is referenced by a channel URI, if the user is a moderator of the channel, include information about removing the video from the channel.
-    VideoMetadataInteractionsChannel 'channel;
+    VideoMetadataInteractionsChannel? 'channel;
     # Information about whether the authenticated user has liked this video.
     VideoMetadataInteractionsLike like;
     # The Rent interaction for an On Demand video.
-    VideoMetadataInteractionsRent rent;
+    VideoMetadataInteractionsRent? rent;
     # Information about where and how to report a video.
     VideoMetadataInteractionsReport report;
     # Subscription information for an On Demand video.
-    VideoMetadataInteractionsSubscribe subscribe?;
+    VideoMetadataInteractionsSubscribe? subscribe?;
     # Information about removing this video from the user's list of watched videos.
     VideoMetadataInteractionsWatched watched;
     # Information about whether this video appears on the authenticated user's Watch Later list.
@@ -657,6 +805,17 @@ public type VideoMetadataInteractionsWatchlater record {
     string uri;
 };
 
+public type ChannelsBody record {
+    # The description of the channel.
+    string description?;
+    # The link to access the channel. You can use a custom name in the URL in place of a numeric channel ID, as in `/channels/{url_custom}`.
+    string link?;
+    # The name of the channel.
+    string name;
+    # The privacy level of the channel.
+    string privacy;
+};
+
 # Information about the likes associated with this page.
 public type OndemandpageMetadataConnectionsMetadataConnectionsLikes record {
     # An array of HTTP methods permitted on this URI.
@@ -677,6 +836,15 @@ public type VideoMetadata record {
     VideoMetadataConnections connections;
     # A list of resource URIs related to the video.
     VideoMetadataInteractions interactions;
+};
+
+public type VideoIdTagsBody record {
+    # The name of the tag to apply. See our documentation on [batch requests](https://developer.vimeo.com/api/common-formats#batch-requests) for more information.
+    string name;
+    # The page number of the results to show.
+    decimal page?;
+    # The number of items to show on each page of results, up to a maximum of 100.
+    decimal per_page?;
 };
 
 # Information about the user's followers.
@@ -709,11 +877,11 @@ public type MeondemandpagesBuy record {
 
 public type PurchaseInteraction record {
     # Information on purchasing this video.
-    PurchaseinteractionBuy buy?;
+    PurchaseinteractionBuy? buy?;
     # Information on renting this video.
     record {} rent?;
     # Information on subscribing to this video.
-    PurchaseinteractionSubscribe subscribe?;
+    PurchaseinteractionSubscribe? subscribe?;
 };
 
 public type OndemandpageMetadataConnectionsMetadataConnections record {
@@ -729,6 +897,38 @@ public type OndemandpageMetadataConnectionsMetadataConnections record {
     OndemandpageMetadataConnectionsMetadataConnectionsSeasons seasons;
     # Information about the videos associated with this page.
     OndemandpageMetadataConnectionsMetadataConnectionsVideos videos;
+};
+
+public type VideosVideoIdBody record {
+    OndemandpagesondemandIdvideosvideoIdBuy buy?;
+    # The position of this video in the On Demand collection.
+    decimal position?;
+    # The video release year.
+    decimal release_year?;
+    OndemandpagesondemandIdvideosvideoIdRent rent?;
+    # The type of video that you are adding to the On Demand page.
+    string 'type;
+};
+
+public type VideoIdCommentsBody record {
+    # The text of the comment.
+    string text;
+};
+
+public type MeBody record {
+    # The user's bio.
+    string bio?;
+    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint. You must provide a comma-separated list if you are using a query string or an array if you are using JSON.
+    string[] content_filter?;
+    # The user's custom Vimeo URL slug.
+    string link?;
+    # The user's location.
+    string location?;
+    # The user's display name.
+    string name?;
+    # The default password for all future videos that this user uploads. To use this field, the `videos.privacy.view` field must be `password`.
+    string password?;
+    MeVideos videos?;
 };
 
 # An action indicating that the authenticated user is an admin of the album and may therefore add videos. This data requires a bearer token with the `private` scope.
@@ -825,9 +1025,58 @@ public type ApiApp record {
     string uri;
 };
 
+public type CreditsCreditIdBody record {
+    # The name of the person being credited.
+    string name?;
+    # The role of the person being credited.
+    string role?;
+};
+
 public type MeondemandpagesSubscriptionMonthlyPrice record {
     # The monthly subscription price in USD. *Required if `subscription.active` is true.
     decimal USD?;
+};
+
+public type PresetsPresetIdBody record {
+    # Disable the outro.
+    string outro?;
+};
+
+public type UserIdAlbumsBody record {
+    # The hexadecimal code for the color of the player buttons.
+    string brand_color?;
+    # The description of the album.
+    string description?;
+    # Whether to hide Vimeo navigation when displaying the album.
+    boolean hide_nav?;
+    # The type of layout for presenting the album.
+    string layout?;
+    # The name of the album.
+    string name;
+    # The album's password. Required only if **privacy** is `password`.
+    string password?;
+    # The privacy level of the album.
+    string privacy?;
+    # Whether album videos should use the review mode URL.
+    boolean review_mode?;
+    # The default sort order of the album's videos.
+    string sort?;
+    # The color theme of the album.
+    string theme?;
+};
+
+public type PrivacyUsersBody record {
+    # The array of either the user URIs or the user IDs to permit to view the private channel.
+    string[] users;
+};
+
+public type AuthorizeVimeoOauth1Body record {
+    # The grant type. Must be set to `vimeo_oauth1`.
+    string grant_type;
+    # The OAuth 1 token.
+    string token;
+    # The OAuth 1 token secret.
+    string token_secret;
 };
 
 # Metadata about the channel.
@@ -835,7 +1084,7 @@ public type ChannelMetadata record {
     # A collection of information that is connected to this resource.
     ChannelMetadataConnections connections;
     # A list of resource URIs related to the channel.
-    ChannelMetadataInteractions interactions;
+    ChannelMetadataInteractions? interactions;
 };
 
 # When a channel appears in the context of adding or removing a video from it (`/videos/{video_id}/available_channels`), include information about adding or removing the video. This data requires a bearer token with the `private` scope.
@@ -892,6 +1141,57 @@ public type VideoMetadataInteractionsChannel record {
     string uri;
 };
 
+public type UsersUserIdBody record {
+    # The user's bio.
+    string bio?;
+    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint. You must provide a comma-separated list if you are using a query string or an array if you are using JSON.
+    string[] content_filter?;
+    # The user's custom Vimeo URL slug.
+    string link?;
+    # The user's location.
+    string location?;
+    # The user's display name.
+    string name?;
+    # The default password for all future videos that this user uploads. To use this field, the `videos.privacy.view` field must be `password`.
+    string password?;
+    MeVideos videos?;
+};
+
+public type OndemandPagesBody1 record {
+    # An array of accepted currencies.
+    # 
+    # Option descriptions:
+    #  * `AUD` - Australian Dollar
+    #  * `CAD` - Canadian Dollar
+    #  * `CHF` - Swiss Franc
+    #  * `DKK` - Danish Krone
+    #  * `EUR` - Euro
+    #  * `GBP` - British Pound
+    #  * `JPY` - Japanese Yen
+    #  * `KRW` - South Korean Won
+    #  * `NOK` - Norwegian Krone
+    #  * `PLN` - Polish Zloty
+    #  * `SEK` - Swedish Krona
+    #  * `USD` - US Dollar
+    string accepted_currencies?;
+    MeondemandpagesBuy buy?;
+    # One or more ratings, either as a comma-separated list or as a JSON array depending on the request format.
+    string content_rating;
+    # The description of the On Demand page.
+    string description;
+    # The custom domain of the On Demand page.
+    string domain_link?;
+    MeondemandpagesEpisodes episodes?;
+    # The custom string to use in this On Demand page's Vimeo URL.
+    string link?;
+    # The name of the On Demand page.
+    string name;
+    MeondemandpagesRent rent?;
+    MeondemandpagesSubscription subscription?;
+    # The type of On Demand page.
+    string 'type;
+};
+
 public type MeondemandpagesEpisodesBuy record {
     # Whether episodes can be bought.
     boolean active?;
@@ -926,6 +1226,11 @@ public type PresetsSettingsOutroLink record {
     string name?;
     # The URL of the outro link.
     string url?;
+};
+
+public type VideoIdCategoriesBody record {
+    # The array of the names of the categories that you're suggesting.
+    string[] category;
 };
 
 # Information about this video's text tracks.
@@ -1070,15 +1375,20 @@ public type Video record {
     # An array of all tags assigned to this video.
     Tag[] tags;
     # The transcode information for a video upload.
-    VideoTranscode transcode;
+    VideoTranscode? transcode;
     # The upload information for this video.
-    VideoUpload upload;
+    VideoUpload? upload;
     # The video's canonical relative URI.
     string uri;
     # The video owner.
     record {*User;} user;
     # The video's width in pixels.
     decimal width;
+};
+
+public type PicturesPictureIdBody record {
+    # Whether this thumbnail is the default.
+    boolean active?;
 };
 
 public type Domain record {
@@ -1188,7 +1498,7 @@ public type OnDemandPage record {
     # The creator-designated SKU for this On Demand page.
     string? sku?;
     # Information about subscribing to this On Demand page, if enabled.
-    OndemandpageSubscription subscription;
+    OndemandpageSubscription? subscription;
     # The graphical theme for this On Demand page.
     string theme;
     # The thumbnail image for the On Demand page on Vimeo.
@@ -1245,6 +1555,11 @@ public type OndemandpagesondemandIdvideosvideoIdRentPrice record {
     decimal SEK?;
     # The rental price of this video in USD. *Required if `rent.active` is true.
     decimal USD?;
+};
+
+public type ChannelIdTagsBody record {
+    # An array of tags to assign.
+    string[] tag;
 };
 
 # A collection of information relating to the embeddable player's title bar.
@@ -1309,6 +1624,16 @@ public type VideoversionsUpload record {
     string status;
     # The link for sending video file data.
     string upload_link?;
+};
+
+public type ProjectsProjectIdBody1 record {
+    # The name of the project.
+    string name;
+};
+
+public type VideoIdCommentsBody1 record {
+    # The text of the comment.
+    string text;
 };
 
 # Related content for this activity.
@@ -1392,6 +1717,11 @@ public type MeondemandpagesRentPrice record {
     decimal USD?;
 };
 
+public type ChannelIdModeratorsBody record {
+    # The URI of a user to add as a moderator.
+    string user_uri;
+};
+
 # The contents of the presets group.
 public type PresetsSettings record {
     PresetsSettingsButtons buttons;
@@ -1443,6 +1773,33 @@ public type UserUploadQuotaSpace record {
     decimal used;
 };
 
+public type MeFollowingBody record {
+    # An array of user URIs for the list of users to follow.
+    string[] users;
+};
+
+public type UserIdFollowingBody record {
+    # An array of user URIs for the list of users to follow.
+    string[] users;
+};
+
+public type VideoIdVersionsBody record {
+    # The name of the version
+    string file_name;
+    VideosvideoIdversionsUpload upload;
+};
+
+public type VideoIdTexttracksBody1 record {
+    # Active text tracks appear in the player and are visible to other users. Only one text track per language can be active.
+    boolean active?;
+    # The language of the text track. For a complete list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
+    string language;
+    # The name of the text track.
+    string name;
+    # The type of the text track.
+    string 'type;
+};
+
 public type MeondemandpagesEpisodes record {
     MeondemandpagesEpisodesBuy buy?;
     MeondemandpagesEpisodesRent rent?;
@@ -1458,9 +1815,44 @@ public type UserMetadataConnectionsModeratedChannels record {
     string uri;
 };
 
+public type OauthAccessTokenBody record {
+    # The authorization code received from the authorization server.
+    string code;
+    # The grant type. Must be set to `authorization_code`.
+    string grant_type;
+    # The redirect URI. Must match the URI from `/oauth/authorize`.
+    string redirect_uri;
+};
+
+public type PresetsPresetIdBody1 record {
+    # Disable the outro.
+    string outro?;
+};
+
 public type MevideosRatings record {
     MevideosRatingsMpaa mpaa?;
     MevideosRatingsTv tv?;
+};
+
+public type MeVideosBody record {
+    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint.
+    string[] content_rating?;
+    # The description of the video.
+    string description?;
+    MevideosEmbed embed?;
+    # The Creative Commons license.
+    string license?;
+    # The video's default language. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
+    string locale?;
+    # The title of the video.
+    string name?;
+    # The password. When you set `privacy.view` to `password`, you must provide the password as an additional parameter.
+    string password?;
+    MevideosPrivacy privacy?;
+    MevideosRatings ratings?;
+    MevideosReviewPage review_page?;
+    MevideosSpatial spatial?;
+    MevideosUpload upload;
 };
 
 # The upload information for this video.
@@ -1495,7 +1887,7 @@ public type OndemandseasonMetadataConnections record {
 
 public type OnDemandVideo record {
     # Information about purchasing this video.
-    OndemandvideoBuy buy;
+    OndemandvideoBuy? buy;
     # Description of the On Demand video.
     string description?;
     # The duration of the On Demand video.
@@ -1523,7 +1915,7 @@ public type OnDemandVideo record {
     # The year that this On Demand video was released.
     decimal? release_year;
     # Information about renting this video.
-    OndemandvideoRent rent;
+    OndemandvideoRent? rent;
     # The type of the On Demand video:
     # 
     # Option descriptions:
@@ -1596,6 +1988,11 @@ public type UploadAttempt record {
     record {*User;} user;
 };
 
+public type OndemandIdRegionsBody record {
+    # An array of country codes.
+    string[] countries;
+};
+
 # The primary and secondary colors used for rendering this On Demand page.
 public type OndemandpageColors record {
     # The hexadecimal color code for the page's primary color.
@@ -1604,15 +2001,33 @@ public type OndemandpageColors record {
     string secondary;
 };
 
-public type Body56 record {
-    # The email address of the credited person.
-    string email;
-    # The name of the credited person.
-    string name;
-    # The role of the credited person.
-    string role;
-    # The URI of the Vimeo user who should be given credit in this video.
-    string user_uri;
+public type AlbumsAlbumIdBody record {
+    # The hexadecimal code for the color of the player buttons.
+    string brand_color?;
+    # The description of the album.
+    string description?;
+    # The custom domain a user has selected for their album.
+    string? domain?;
+    # Whether to hide Vimeo navigation when displaying the album.
+    boolean hide_nav?;
+    # The type of layout for presenting the album.
+    string layout?;
+    # The name of the album.
+    string name?;
+    # The album's password. Required only if **privacy** is `password`.
+    string password?;
+    # The privacy level of the album.
+    string privacy?;
+    # Whether album videos should use the review mode URL.
+    boolean review_mode?;
+    # The default sort order of the album's videos.
+    string sort?;
+    # The color theme of the album.
+    string theme?;
+    # The custom Vimeo URL a user has selected for their album.
+    string? url?;
+    # Whether the user has opted in to use a custom domain for their album.
+    boolean use_custom_domain?;
 };
 
 # The Buy interaction for a On Demand video.
@@ -1647,11 +2062,6 @@ public type VideoMetadataInteractionsBuy record {
     string 'stream;
     # The product URI to purchase the On Demand video.
     string? uri;
-};
-
-public type Body55 record {
-    # The reply to the comment.
-    string text;
 };
 
 # Information about the pictures associated with this page.
@@ -1691,32 +2101,10 @@ public type UserMetadata record {
     UserMetadataInteractions interactions;
 };
 
-public type Body54 record {
-    # The next text of the comment.
-    string text;
-};
-
-public type Body53 record {
-    # The text of the comment.
-    string text;
-};
-
 # A collection of information connected to this resource.
 public type OndemandgenreMetadataConnections record {
     # Information about the On Demand pages related to this group.
     OndemandgenreMetadataConnectionsPages pages;
-};
-
-public type Body59 record {
-    # Whether this thumbnail is the default.
-    boolean active?;
-};
-
-public type Body58 record {
-    # Whether the image created by the `time` field should be the default thumbnail for the video.
-    boolean active?;
-    # Creates an image of the video from the given time offset.
-    decimal time?;
 };
 
 # Information about removing this video from the user's list of watched videos.
@@ -1742,18 +2130,11 @@ public type MevideosUpload record {
     string size?;
 };
 
-public type Body57 record {
-    # The name of the person being credited.
-    string name?;
-    # The role of the person being credited.
-    string role?;
-};
-
 public type PresetsSettingsOutro record {
     # A comma-separated list of video URIs. Present only if the type is `uploaded_clips`.
     string? clips?;
     # The outro link settings. Present only if the type is `link`.
-    PresetsSettingsOutroLink link?;
+    PresetsSettingsOutroLink? link?;
     # The outro text. Present only if the type is `text`.
     string? text?;
     # The preset outro type:
@@ -1780,34 +2161,6 @@ public type Presets record {
     record {*User;} user;
 };
 
-public type Body63 record {
-    # The name of the version
-    string file_name;
-    VideosvideoIdversionsUpload upload;
-};
-
-public type Body62 record {
-    # Whether the text track is active, meaning that it appears in the player. Only one text track per language, and type, can be active.
-    boolean active?;
-    # The language of the text track. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
-    string language?;
-    # The name of the text track.
-    string name?;
-    # The text track type.
-    string 'type?;
-};
-
-public type Body61 record {
-    # Active text tracks appear in the player and are visible to other users. Only one text track per language can be active.
-    boolean active?;
-    # The language of the text track. For a complete list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
-    string language;
-    # The name of the text track.
-    string name;
-    # The type of the text track.
-    string 'type;
-};
-
 # Information about this comment's replies.
 public type CommentMetadataConnectionsReplies record {
     # An array of HTTP methods permitted on this URI.
@@ -1822,15 +2175,6 @@ public type CommentMetadataConnectionsReplies record {
 public type ProjectMetadata record {
     # A list of resource URIs related to the project.
     ProjectMetadataConnections connections;
-};
-
-public type Body60 record {
-    # The name of the tag to apply. See our documentation on [batch requests](https://developer.vimeo.com/api/common-formats#batch-requests) for more information.
-    string name;
-    # The page number of the results to show.
-    decimal page?;
-    # The number of items to show on each page of results, up to a maximum of 100.
-    decimal per_page?;
 };
 
 public type OndemandpagesondemandIdvideosvideoIdBuyPrice record {
@@ -1927,57 +2271,17 @@ public type Activity31 record {
     record {*User;} user?;
 };
 
+public type MeProjectsBody record {
+    # The name of the project.
+    string name;
+};
+
 # A collection of information that is connected to this resource.
 public type GroupMetadataConnections record {
     # Information about the members or moderators of this group.
     GroupMetadataConnectionsUsers users;
     # Information about the videos contained within this group.
     GroupMetadataConnectionsVideos videos;
-};
-
-public type Body45 record {
-    # An array of accepted currencies.
-    # 
-    # Option descriptions:
-    #  * `AUD` - Australian Dollar
-    #  * `CAD` - Canadian Dollar
-    #  * `CHF` - Swiss Franc
-    #  * `DKK` - Danish Krone
-    #  * `EUR` - Euro
-    #  * `GBP` - British Pound
-    #  * `JPY` - Japanese Yen
-    #  * `KRW` - South Korean Won
-    #  * `NOK` - Norwegian Krone
-    #  * `PLN` - Polish Zloty
-    #  * `SEK` - Swedish Krona
-    #  * `USD` - US Dollar
-    string accepted_currencies?;
-    MeondemandpagesBuy buy?;
-    # One or more ratings, either as a comma-separated list or as a JSON array depending on the request format.
-    string content_rating;
-    # The description of the On Demand page.
-    string description;
-    # The custom domain of the On Demand page.
-    string domain_link?;
-    MeondemandpagesEpisodes episodes?;
-    # The custom string to use in this On Demand page's Vimeo URL.
-    string link?;
-    # The name of the On Demand page.
-    string name;
-    MeondemandpagesRent rent?;
-    MeondemandpagesSubscription subscription?;
-    # The type of On Demand page.
-    string 'type;
-};
-
-public type Body44 record {
-    # An array of user URIs for the list of users to follow.
-    string[] users;
-};
-
-public type Body43 record {
-    # The video frame time in seconds to use as the album thumbnail.
-    decimal time_code?;
 };
 
 public type CreativeCommons record {
@@ -1998,11 +2302,6 @@ public type CreativeCommons record {
     string? uri;
 };
 
-public type Body42 record {
-    # A comma-separated list of video URIs.
-    string videos;
-};
-
 # Information about this user's followed categories.
 public type UserMetadataConnectionsCategories record {
     # An array of HTTP methods permitted on this URI.
@@ -2013,29 +2312,14 @@ public type UserMetadataConnectionsCategories record {
     string uri;
 };
 
-public type Body49 record {
-    # The name of the project.
-    string name;
-};
-
-public type Body48 record {
-    # The name of the project.
-    string name;
-};
-
-public type Body47 record {
-    # Disable the outro.
-    string outro?;
-};
-
 public type MeondemandpagesEpisodesBuyPrice record {
     # The purchase price per episode. *Required if `episodes.buy.active` is true.
     decimal USD?;
 };
 
-public type Body46 record {
-    # Whether the picture is the user's active portrait.
-    boolean active?;
+public type CommentsCommentIdBody record {
+    # The next text of the comment.
+    string text;
 };
 
 # A collection of information about the logo in the corner of the embeddable player.
@@ -2049,52 +2333,6 @@ public type EmbedsettingsLogos record {
 public type MevideosReviewPage record {
     # Enable or disable video review.
     boolean active?;
-};
-
-public type Body52 record {
-    # The array of the names of the categories that you're suggesting.
-    string[] category;
-};
-
-public type Body51 record {
-    # A list of values describing the content in this video. You can find the full list in the [`/contentratings`](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint.
-    string[] content_rating?;
-    # The new description of the video.
-    string description?;
-    MevideosEmbed embed?;
-    # The Creative Commons license.
-    string license?;
-    # The video's default language. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
-    string locale?;
-    # The new title for the video.
-    string name?;
-    # The password. When you set `privacy.view` to `password`, you must provide the password as an additional parameter.
-    string password?;
-    VideosvideoIdPrivacy privacy?;
-    MevideosRatings ratings?;
-    MevideosReviewPage review_page?;
-    MevideosSpatial spatial?;
-};
-
-public type Body50 record {
-    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint.
-    string[] content_rating?;
-    # The description of the video.
-    string description?;
-    MevideosEmbed embed?;
-    # The Creative Commons license.
-    string license?;
-    # The video's default language. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
-    string locale?;
-    # The title of the video.
-    string name?;
-    # The password. When you set `privacy.view` to `password`, you must provide the password as an additional parameter.
-    string password?;
-    MevideosPrivacy privacy?;
-    MevideosRatings ratings?;
-    MevideosReviewPage review_page?;
-    MevideosSpatial spatial?;
-    MevideosUpload upload;
 };
 
 # 360 spatial data.
@@ -2159,6 +2397,11 @@ public type UserPreferences record {
     UserPreferencesVideos videos?;
 };
 
+public type ChannelIdVideosBody record {
+    # The URI of a video to add.
+    string video_uri;
+};
+
 public type MeondemandpagesEpisodesRent record {
     # Whether episodes can be rented
     boolean active?;
@@ -2167,33 +2410,9 @@ public type MeondemandpagesEpisodesRent record {
     MeondemandpagesEpisodesRentPrice price?;
 };
 
-public type Body39 record {
-    # The hexadecimal code for the color of the player buttons.
-    string brand_color?;
-    # The description of the album.
-    string description?;
-    # The custom domain a user has selected for their album.
-    string? domain?;
-    # Whether to hide Vimeo navigation when displaying the album.
-    boolean hide_nav?;
-    # The type of layout for presenting the album.
-    string layout?;
-    # The name of the album.
-    string name?;
-    # The album's password. Required only if **privacy** is `password`.
-    string password?;
-    # The privacy level of the album.
-    string privacy?;
-    # Whether album videos should use the review mode URL.
-    boolean review_mode?;
-    # The default sort order of the album's videos.
-    string sort?;
-    # The color theme of the album.
-    string theme?;
-    # The custom Vimeo URL a user has selected for their album.
-    string? url?;
-    # Whether the user has opted in to use a custom domain for their album.
-    boolean use_custom_domain?;
+public type AlbumIdVideosBody1 record {
+    # A comma-separated list of video URIs.
+    string videos;
 };
 
 public type OndemandvideoMetadataInteractions record {
@@ -2218,81 +2437,9 @@ public type OndemandpagesondemandIdPublish record {
     boolean active?;
 };
 
-public type Body34 record {
-    # An array of country codes.
-    string[] countries;
-};
-
-public type Body33 record {
-    # The promotion access type, which is a purchase option that isn't available on the container. VIP promotions always make the content free of charge. If you use this type, you must further define the promotion with the `download` or `stream_period` fields.
-    # 
-    # Option descriptions:
-    #  * `default` - Promotions grant discount on the existing purchase options for an On Demand Container.
-    #  * `vip` - Promotions can be used to grant free access to VOD content before it is released, or to offer a purchase option that isn't available on the container. "vip" promotions will always make the content free, and must be further defined with the `download` or `stream_period` fields.
-    string access_type?;
-    # The promotion code. This field is ignored for batch promotions.
-    string code?;
-    # The type of discount offered by the promo code. When `access_type` is `vip`, the value of this field must be `free`.
-    # 
-    # Option descriptions:
-    #  * `free` - Reduces the price to zero.
-    #  * `percent` - Reduces the price by an amount defined in the "percent_off" field.
-    string discount_type?;
-    # Whether the promotion grants download access to VOD content. This is necessary only when not previously defined in the On Demand container or when `access_type` is `vip` or `product_type` is `buy`.
-    boolean download;
-    # The end of the promotion period. If you don't specify a value, the promotion will never expire.
-    string end_time?;
-    # The description of a batch promotion. This field is ignored for single promotions.
-    string label?;
-    # The percentage of the discount by using this promo code. This field is applicable only when `discount_type` is `percent`.
-    decimal percent_off?;
-    # The type of transaction to which the promotion applies. When `access_type` is `default`, the default value is `any`, but the default value is `rent` when `access_type` is `vip`. Also, when `access_type` is `vip`, the only valid product types are `buy` and `rent`.
-    string product_type?;
-    # The start of the promotion period. If you don't specify a value, the start time defaults to the time that the promotion was created.
-    string start_time?;
-    # The amount of time that a user has access to the VOD content upon redeeming a promo code. This field is necessary only when not defined in the On Demand container or when creating promotions when `access_type` is `vip` or `product_type` is `rent`.
-    string stream_period;
-    # The number of promotions to generate when `type` is `batch`, or the number of uses of the promotion when `type` is `single`.
-    decimal total;
-    # The type of promotion. When `access_type` is `vip`, the value for this field must be `batch`.
-    # 
-    # Option descriptions:
-    #  * `batch` - Generates many random promo codes with one use each.
-    #  * `single` - Generates one promo code that can be used many times.
-    string 'type;
-};
-
-public type Body32 record {
-    # Whether to make this picture the active picture.
-    boolean active?;
-};
-
-public type Body31 record {
+public type BackgroundsBackgroundIdBody record {
     # Whether to make this background the active background.
     boolean active?;
-};
-
-public type Body38 record {
-    # The hexadecimal code for the color of the player buttons.
-    string brand_color?;
-    # The description of the album.
-    string description?;
-    # Whether to hide Vimeo navigation when displaying the album.
-    boolean hide_nav?;
-    # The type of layout for presenting the album.
-    string layout?;
-    # The name of the album.
-    string name;
-    # The album's password. Required only if **privacy** is `password`.
-    string password?;
-    # The privacy level of the album.
-    string privacy?;
-    # Whether album videos should use the review mode URL.
-    boolean review_mode?;
-    # The default sort order of the album's videos.
-    string sort?;
-    # The color theme of the album.
-    string theme?;
 };
 
 # Information about the videos that this user has watched.
@@ -2305,22 +2452,6 @@ public type UserMetadataConnectionsWatchedVideos record {
     string uri;
 };
 
-public type Body37 record {
-    # The user's bio.
-    string bio?;
-    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint. You must provide a comma-separated list if you are using a query string or an array if you are using JSON.
-    string[] content_filter?;
-    # The user's custom Vimeo URL slug.
-    string link?;
-    # The user's location.
-    string location?;
-    # The user's display name.
-    string name?;
-    # The default password for all future videos that this user uploads. To use this field, the `videos.privacy.view` field must be `password`.
-    string password?;
-    MeVideos videos?;
-};
-
 public type MevideosRatingsTv record {
     # The reason for the video's TV rating.
     # 
@@ -2331,22 +2462,6 @@ public type MevideosRatingsTv record {
     #  * `ss` - Sexual situations
     #  * `v` - Violence
     string reason?;
-};
-
-public type Body36 record {
-    OndemandpagesondemandIdvideosvideoIdBuy buy?;
-    # The position of this video in the On Demand collection.
-    decimal position?;
-    # The video release year.
-    decimal release_year?;
-    OndemandpagesondemandIdvideosvideoIdRent rent?;
-    # The type of video that you are adding to the On Demand page.
-    string 'type;
-};
-
-public type Body35 record {
-    # An array of country codes.
-    string[] countries?;
 };
 
 # Information about the comments on this video.
@@ -2369,22 +2484,12 @@ public type OndemandpageMetadataConnectionsMetadataConnectionsSeasons record {
     string uri;
 };
 
-public type Body41 record {
-    # Whether to make this the active album logo.
-    boolean active?;
-};
-
 # Metadata about the category.
 public type CategoryMetadata record {
     # A collection of information that is connected to this resource.
     CategoryMetadataConnections connections;
     # The permissible actions related to the category.
     CategoryMetadataInteractions interactions;
-};
-
-public type Body40 record {
-    # Whether to make this the active album thumbnail.
-    boolean active?;
 };
 
 public type VideosvideoIdPrivacy record {
@@ -2424,46 +2529,10 @@ public type AlbumMetadataInteractions record {
     AlbumMetadataInteractionsAddVideos add_videos;
 };
 
-public type Body8 record {
-    # The URI of a video to add.
-    string video_uri;
-};
-
-public type Body9 record {
-    # The URI of a video to remove.
-    string video_uri;
-};
-
-public type Body6 record {
-    # The array of either the user URIs or the user IDs to permit to view the private channel.
-    string[] users;
-};
-
-public type Body29 record {
-    # The grant type. Must be set to `vimeo_oauth1`.
-    string grant_type;
-    # The OAuth 1 token.
-    string token;
-    # The OAuth 1 token secret.
-    string token_secret;
-};
-
 # A list of resource URIs related to the project.
 public type ProjectMetadataConnections record {
     # A standard connection object indicating how to get all the videos in this project.
     ProjectMetadataConnectionsVideos videos;
-};
-
-public type Body7 record {
-    # An array of tags to assign.
-    string[] tag;
-};
-
-public type Body28 record {
-    # The grant type. Must be set to `client_credentials`.
-    string grant_type;
-    # A space-separated list of the authentication [scopes](https://developer.vimeo.com/api/authentication#supported-scopes) that you want to access. The default is `public`.
-    string scope;
 };
 
 public type CategorySubcategories record {
@@ -2473,11 +2542,6 @@ public type CategorySubcategories record {
     string name;
     # The unique identifier to access the subcategory resource.
     string uri;
-};
-
-public type Body4 record {
-    # The URI of a user to remove as a moderator.
-    string user_uri;
 };
 
 # The permissible actions related to the category.
@@ -2502,14 +2566,43 @@ public type UserUploadQuota record {
     UserUploadQuotaSpace space;
 };
 
-public type Body5 record {
-    # The URI of the user to add as a moderator.
-    string user_uri;
-};
-
-public type Body2 record {
-    # The array of category URIs to add.
-    string[] channels;
+public type OndemandIdPromotionsBody record {
+    # The promotion access type, which is a purchase option that isn't available on the container. VIP promotions always make the content free of charge. If you use this type, you must further define the promotion with the `download` or `stream_period` fields.
+    # 
+    # Option descriptions:
+    #  * `default` - Promotions grant discount on the existing purchase options for an On Demand Container.
+    #  * `vip` - Promotions can be used to grant free access to VOD content before it is released, or to offer a purchase option that isn't available on the container. "vip" promotions will always make the content free, and must be further defined with the `download` or `stream_period` fields.
+    string access_type?;
+    # The promotion code. This field is ignored for batch promotions.
+    string code?;
+    # The type of discount offered by the promo code. When `access_type` is `vip`, the value of this field must be `free`.
+    # 
+    # Option descriptions:
+    #  * `free` - Reduces the price to zero.
+    #  * `percent` - Reduces the price by an amount defined in the "percent_off" field.
+    string discount_type?;
+    # Whether the promotion grants download access to VOD content. This is necessary only when not previously defined in the On Demand container or when `access_type` is `vip` or `product_type` is `buy`.
+    boolean download;
+    # The end of the promotion period. If you don't specify a value, the promotion will never expire.
+    string end_time?;
+    # The description of a batch promotion. This field is ignored for single promotions.
+    string label?;
+    # The percentage of the discount by using this promo code. This field is applicable only when `discount_type` is `percent`.
+    decimal percent_off?;
+    # The type of transaction to which the promotion applies. When `access_type` is `default`, the default value is `any`, but the default value is `rent` when `access_type` is `vip`. Also, when `access_type` is `vip`, the only valid product types are `buy` and `rent`.
+    string product_type?;
+    # The start of the promotion period. If you don't specify a value, the start time defaults to the time that the promotion was created.
+    string start_time?;
+    # The amount of time that a user has access to the VOD content upon redeeming a promo code. This field is necessary only when not defined in the On Demand container or when creating promotions when `access_type` is `vip` or `product_type` is `rent`.
+    string stream_period;
+    # The number of promotions to generate when `type` is `batch`, or the number of uses of the promotion when `type` is `single`.
+    decimal total;
+    # The type of promotion. When `access_type` is `vip`, the value for this field must be `batch`.
+    # 
+    # Option descriptions:
+    #  * `batch` - Generates many random promo codes with one use each.
+    #  * `single` - Generates one promo code that can be used many times.
+    string 'type;
 };
 
 public type Portfolio record {
@@ -2537,11 +2630,6 @@ public type Portfolio record {
     string uri;
 };
 
-public type Body3 record {
-    # The URI of a user to add as a moderator.
-    string user_uri;
-};
-
 # Information about the appearances of this user in other videos.
 public type UserMetadataConnectionsAppearances record {
     # An array of HTTP methods permitted on this URI.
@@ -2552,18 +2640,8 @@ public type UserMetadataConnectionsAppearances record {
     string uri;
 };
 
-public type Body23 record {
-    # Disable the outro.
-    string outro?;
-};
-
 public type UserPreferencesVideos record {
     UserPreferencesVideosPrivacy privacy?;
-};
-
-public type Body22 record {
-    # Whether the picture is the user's active portrait.
-    boolean active?;
 };
 
 # Information about the users following or moderating this channel.
@@ -2592,46 +2670,6 @@ public type VideoContext record {
     string resource_type;
 };
 
-public type Body21 record {
-    # An array of accepted currencies.
-    # 
-    # Option descriptions:
-    #  * `AUD` - Australian Dollar
-    #  * `CAD` - Canadian Dollar
-    #  * `CHF` - Swiss Franc
-    #  * `DKK` - Danish Krone
-    #  * `EUR` - Euro
-    #  * `GBP` - British Pound
-    #  * `JPY` - Japanese Yen
-    #  * `KRW` - South Korean Won
-    #  * `NOK` - Norwegian Krone
-    #  * `PLN` - Polish Zloty
-    #  * `SEK` - Swedish Krona
-    #  * `USD` - US Dollar
-    string accepted_currencies?;
-    MeondemandpagesBuy buy?;
-    # One or more ratings, either as a comma-separated list or as a JSON array depending on the request format.
-    string content_rating;
-    # The description of the On Demand page.
-    string description;
-    # The custom domain of the On Demand page.
-    string domain_link?;
-    MeondemandpagesEpisodes episodes?;
-    # The custom string to use in this On Demand page's Vimeo URL.
-    string link?;
-    # The name of the On Demand page.
-    string name;
-    MeondemandpagesRent rent?;
-    MeondemandpagesSubscription subscription?;
-    # The type of On Demand page.
-    string 'type;
-};
-
-public type Body20 record {
-    # An array of user URIs for the list of users to follow.
-    string[] users;
-};
-
 # Information about the codes associated with this promotion.
 public type OndemandpromotionMetadataConnectionsCodes record {
     # An array of HTTP methods permitted on this URI.
@@ -2655,36 +2693,6 @@ public type PresetsSettingsButtons record {
     boolean vote;
     # Whether the preset includes Watch Later button settings.
     boolean watchlater;
-};
-
-public type Body27 record {
-    # The authorization code received from the authorization server.
-    string code;
-    # The grant type. Must be set to `authorization_code`.
-    string grant_type;
-    # The redirect URI. Must match the URI from `/oauth/authorize`.
-    string redirect_uri;
-};
-
-public type Body26 record {
-    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint.
-    string[] content_rating?;
-    # The description of the video.
-    string description?;
-    MevideosEmbed embed?;
-    # The Creative Commons license.
-    string license?;
-    # The video's default language. For a full list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
-    string locale?;
-    # The title of the video.
-    string name?;
-    # The password. When you set `privacy.view` to `password`, you must provide the password as an additional parameter.
-    string password?;
-    MevideosPrivacy privacy?;
-    MevideosRatings ratings?;
-    MevideosReviewPage review_page?;
-    MevideosSpatial spatial?;
-    MevideosUpload upload;
 };
 
 # The privacy settings of the album.
@@ -2741,14 +2749,27 @@ public type OnDemandPromotionCode record {
     decimal uses;
 };
 
-public type Body25 record {
-    # The name of the project.
+public type MeAlbumsBody record {
+    # The hexadecimal code for the color of the player buttons.
+    string brand_color?;
+    # The description of the album.
+    string description?;
+    # Whether to hide Vimeo navigation when displaying the album.
+    boolean hide_nav?;
+    # The type of layout for presenting the album.
+    string layout?;
+    # The name of the album.
     string name;
-};
-
-public type Body24 record {
-    # The name of the project.
-    string name;
+    # The album's password. Required only if **privacy** is `password`.
+    string password?;
+    # The privacy level of the album.
+    string privacy?;
+    # Whether album videos should use the review mode URL.
+    boolean review_mode?;
+    # The default sort order of the album's videos.
+    string sort?;
+    # The color theme of the album.
+    string theme?;
 };
 
 public type Play record {
@@ -2784,7 +2805,7 @@ public type VideoVersions record {
     # The Play representation.
     record {*Play;} play;
     # The upload information for this version.
-    VideoversionsUpload upload;
+    VideoversionsUpload? upload;
     # The time in ISO 8601 format when the video version was uploaded.
     string? upload_date;
     # The version's canonical relative URI.
@@ -2793,13 +2814,9 @@ public type VideoVersions record {
     record {*User;} user;
 };
 
-public type Body30 record {
-    # The custom string to use in this On Demand page's Vimeo URL.
-    string link?;
-    OndemandpagesondemandIdPreorder preorder?;
-    OndemandpagesondemandIdPublish publish?;
-    # Whether to publish the On Demand page automatically after all videos are finished transcoding.
-    boolean publish_when_ready?;
+public type ChannelIdCategoriesBody record {
+    # The array of category URIs to add.
+    string[] channels;
 };
 
 # An action indicating that the authenticated user is an admin of the album and may therefore add custom logos. This data requires a bearer token with the `private` scope.
@@ -2828,17 +2845,6 @@ public type PresetsMetadataConnections record {
 
 public type MeVideos record {
     MeVideosPrivacy privacy?;
-};
-
-public type Body1 record {
-    # The description of the channel.
-    string description?;
-    # The link to access the channel. You can use a custom name in the URL in place of a numeric channel ID, as in `/channels/{url_custom}`. Submitting `""` for this field removes the link alias.
-    string link?;
-    # The name of the channel.
-    string name?;
-    # The privacy level of the channel.
-    string privacy?;
 };
 
 public type Tag record {
@@ -2898,45 +2904,6 @@ public type OndemandpageEpisodes record {
     OndemandpageEpisodesRent rent;
 };
 
-public type Body19 record {
-    # The video frame time in seconds to use as the album thumbnail.
-    decimal time_code?;
-};
-
-public type Body18 record {
-    # A comma-separated list of video URIs.
-    string videos;
-};
-
-public type Body17 record {
-    # The hexadecimal code for the color of the player buttons.
-    string brand_color?;
-    # The description of the album.
-    string description?;
-    # The custom domain a user has selected for their album.
-    string? domain?;
-    # Whether to hide Vimeo navigation when displaying the album.
-    boolean hide_nav?;
-    # The type of layout for presenting the album.
-    string layout?;
-    # The name of the album.
-    string name?;
-    # The album's password. Required only if **privacy** is `password`.
-    string password?;
-    # The privacy level of the album.
-    string privacy?;
-    # Whether album videos should use the review mode URL.
-    boolean review_mode?;
-    # The default sort order of the album's videos.
-    string sort?;
-    # The color theme of the album.
-    string theme?;
-    # The custom Vimeo URL a user has selected for their album.
-    string? url?;
-    # Whether the user has opted in to use a custom domain for their album.
-    boolean use_custom_domain?;
-};
-
 # Information about the users related to this category.
 public type CategoryMetadataConnectionsUsers record {
     # An array of HTTP methods permitted on this URI.
@@ -2947,11 +2914,21 @@ public type CategoryMetadataConnectionsUsers record {
     string uri;
 };
 
-public type Body12 record {
-    # Whether the image created by the `time` field should be the default thumbnail for the video.
-    boolean active?;
-    # Creates an image of the video from the given time offset.
-    decimal time?;
+public type ProjectsProjectIdBody record {
+    # The name of the project.
+    string name;
+};
+
+public type AuthorizeClientBody record {
+    # The grant type. Must be set to `client_credentials`.
+    string grant_type;
+    # A space-separated list of the authentication [scopes](https://developer.vimeo.com/api/authentication#supported-scopes) that you want to access. The default is `public`.
+    string scope;
+};
+
+public type VideoIdSetAlbumThumbnailBody record {
+    # The video frame time in seconds to use as the album thumbnail.
+    decimal time_code?;
 };
 
 # Information about the users who have liked this video.
@@ -3029,22 +3006,6 @@ public type Album record {
     boolean web_custom_logo;
 };
 
-public type Body11 record {
-    # The email address of the credited person.
-    string email;
-    # The name of the credited person.
-    string name;
-    # The role of the credited person.
-    string role;
-    # The URI of the Vimeo user who should be given credit in this video.
-    string user_uri;
-};
-
-public type Body10 record {
-    # The text of the comment.
-    string text;
-};
-
 public type MevideosEmbedTitle record {
     # Show or hide the video title, or enable the user to determine whether the video title appears.
     string name?;
@@ -3062,45 +3023,6 @@ public type GroupMetadata record {
     GroupMetadataInteractions interactions;
 };
 
-public type Body16 record {
-    # The hexadecimal code for the color of the player buttons.
-    string brand_color?;
-    # The description of the album.
-    string description?;
-    # Whether to hide Vimeo navigation when displaying the album.
-    boolean hide_nav?;
-    # The type of layout for presenting the album.
-    string layout?;
-    # The name of the album.
-    string name;
-    # The album's password. Required only if **privacy** is `password`.
-    string password?;
-    # The privacy level of the album.
-    string privacy?;
-    # Whether album videos should use the review mode URL.
-    boolean review_mode?;
-    # The default sort order of the album's videos.
-    string sort?;
-    # The color theme of the album.
-    string theme?;
-};
-
-public type Body15 record {
-    # The user's bio.
-    string bio?;
-    # A list of values describing the content in this video. Find the full list in the [/contentratings](https://developer.vimeo.com/api/endpoints/videos#GET/contentratings) endpoint. You must provide a comma-separated list if you are using a query string or an array if you are using JSON.
-    string[] content_filter?;
-    # The user's custom Vimeo URL slug.
-    string link?;
-    # The user's location.
-    string location?;
-    # The user's display name.
-    string name?;
-    # The default password for all future videos that this user uploads. To use this field, the `videos.privacy.view` field must be `password`.
-    string password?;
-    MeVideos videos?;
-};
-
 # Information about this user's portraits.
 public type UserMetadataConnectionsPictures record {
     # An array of HTTP methods permitted on this URI.
@@ -3109,24 +3031,6 @@ public type UserMetadataConnectionsPictures record {
     decimal total;
     # The API URI that resolves to the connection data.
     string uri;
-};
-
-public type Body14 record {
-    # The description of the new group.
-    string description?;
-    # The name of the new group.
-    string name;
-};
-
-public type Body13 record {
-    # Active text tracks appear in the player and are visible to other users. Only one text track per language can be active.
-    boolean active?;
-    # The language of the text track. For a complete list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
-    string language;
-    # The name of the text track.
-    string name;
-    # The type of the text track.
-    string 'type;
 };
 
 # Information about the videos associated with this page.
@@ -3149,6 +3053,11 @@ public type OndemandpageMetadataConnectionsMetadataConnectionsVideos record {
 public type PurchaseinteractionBuy record {
     # Whether the On Demand video for purchase has DRM.
     boolean drm?;
+};
+
+public type CommentIdRepliesBody record {
+    # The reply to the comment.
+    string text;
 };
 
 # Information about the On Demand pages related to this group.
@@ -3289,6 +3198,11 @@ public type PurchaseinteractionSubscribe record {
     string? uri?;
 };
 
+public type AlbumIdVideosBody record {
+    # A comma-separated list of video URIs.
+    string videos;
+};
+
 # Data from video associated with version
 public type VideoversionsMetadataConnectionsVideo record {
     # An array of HTTP methods permitted on this URI.
@@ -3392,7 +3306,7 @@ public type Category record {
     # The display name that identifies the category.
     string name;
     # The container of this category's parent category, if the current category is a subcategory.
-    CategoryParent parent;
+    CategoryParent? parent;
     # The active picture for this category; defaults to vertical color bars.
     record {*Picture;} pictures;
     # The resource key of the category.
@@ -3480,6 +3394,15 @@ public type ChannelPrivacy record {
     string view;
 };
 
+public type PagesOndemandIdBody record {
+    # The custom string to use in this On Demand page's Vimeo URL.
+    string link?;
+    OndemandpagesondemandIdPreorder preorder?;
+    OndemandpagesondemandIdPublish publish?;
+    # Whether to publish the On Demand page automatically after all videos are finished transcoding.
+    boolean publish_when_ready?;
+};
+
 public type MevideosEmbedButtons record {
     # Show or hide the Embed button.
     boolean embed?;
@@ -3502,6 +3425,11 @@ public type OndemandgenreInteractions record {
     OndemandgenreInteractionsPage page;
 };
 
+public type PicturesPortraitsetIdBody record {
+    # Whether the picture is the user's active portrait.
+    boolean active?;
+};
+
 public type Credit record {
     # The name of the person credited.
     string name;
@@ -3513,6 +3441,13 @@ public type Credit record {
     record {*User;} user?;
     # The video associated with this credit.
     record {*Video;} video?;
+};
+
+public type VideoIdPicturesBody1 record {
+    # Whether the image created by the `time` field should be the default thumbnail for the video.
+    boolean active?;
+    # Creates an image of the video from the given time offset.
+    decimal time?;
 };
 
 # The Videos connection.
@@ -3571,6 +3506,17 @@ public type UserMetadataConnectionsShared record {
     string uri;
 };
 
+public type VideoIdCreditsBody record {
+    # The email address of the credited person.
+    string email;
+    # The name of the credited person.
+    string name;
+    # The role of the credited person.
+    string role;
+    # The URI of the Vimeo user who should be given credit in this video.
+    string user_uri;
+};
+
 # Information about the users that the current user is following.
 public type UserMetadataConnectionsFollowing record {
     # An array of HTTP methods permitted on this URI.
@@ -3581,6 +3527,11 @@ public type UserMetadataConnectionsFollowing record {
     string uri;
 };
 
+public type PicturesPortraitsetIdBody1 record {
+    # Whether the picture is the user's active portrait.
+    boolean active?;
+};
+
 # Information about the user's lifetime upload usage.
 public type UserUploadQuotaLifetime record {
     # The number of bytes remaining in your lifetime maximum.
@@ -3589,17 +3540,6 @@ public type UserUploadQuotaLifetime record {
     decimal? max;
     # The number of bytes that you've already uploaded against your lifetime limit.
     decimal? used;
-};
-
-public type Body record {
-    # The description of the channel.
-    string description?;
-    # The link to access the channel. You can use a custom name in the URL in place of a numeric channel ID, as in `/channels/{url_custom}`.
-    string link?;
-    # The name of the channel.
-    string name;
-    # The privacy level of the channel.
-    string privacy;
 };
 
 # Related content for this video.
@@ -3615,7 +3555,7 @@ public type AlbumMetadata record {
     # A collection of information that is connected to this resource.
     AlbumMetadataConnections connections;
     # A list of resource URIs related to the album.
-    AlbumMetadataInteractions interactions;
+    AlbumMetadataInteractions? interactions;
 };
 
 public type OndemandpagePublished record {
@@ -3706,6 +3646,23 @@ public type ChannelMetadataConnections record {
     ChannelMetadataConnectionsVideos videos;
 };
 
+public type CustomThumbnailsThumbnailIdBody record {
+    # Whether to make this the active album thumbnail.
+    boolean active?;
+};
+
+public type VideoIdPicturesBody record {
+    # Whether the image created by the `time` field should be the default thumbnail for the video.
+    boolean active?;
+    # Creates an image of the video from the given time offset.
+    decimal time?;
+};
+
+public type VideoIdSetAlbumThumbnailBody1 record {
+    # The video frame time in seconds to use as the album thumbnail.
+    decimal time_code?;
+};
+
 # Information about the videos contained within this group.
 public type GroupMetadataConnectionsVideos record {
     # An array of HTTP methods permitted on this URI.
@@ -3716,6 +3673,13 @@ public type GroupMetadataConnectionsVideos record {
     string uri;
 };
 
+public type GroupsBody record {
+    # The description of the new group.
+    string description?;
+    # The name of the new group.
+    string name;
+};
+
 # Information about the user's Watch Later interactions with this video.
 public type OndemandvideoMetadataInteractionsWatchlater record {
     # Whether the user has added this video to their Watch Later queue.
@@ -3724,6 +3688,11 @@ public type OndemandvideoMetadataInteractionsWatchlater record {
     string added_time;
     # The URI for the user to add this video to their Watch Later queue.
     string uri;
+};
+
+public type LogosLogoIdBody record {
+    # Whether to make this the active album logo.
+    boolean active?;
 };
 
 public type UserMetadataInteractionsAddPrivacyUser record {
@@ -3742,6 +3711,17 @@ public type VideosvideoIdversionsUpload record {
     string redirect_url?;
     # Upload size
     string size?;
+};
+
+public type VideoIdTexttracksBody record {
+    # Active text tracks appear in the player and are visible to other users. Only one text track per language can be active.
+    boolean active?;
+    # The language of the text track. For a complete list of valid languages, use the [/languages?filter=texttracks](https://developer.vimeo.com/api/endpoints/videos#GET/languages) endpoint.
+    string language;
+    # The name of the text track.
+    string name;
+    # The type of the text track.
+    string 'type;
 };
 
 # Information about the videos that belong to this album.
@@ -3772,6 +3752,11 @@ public type VideoMetadataInteractionsReport record {
     string[] reason;
     # The API URI that resolves to the connection data.
     string uri;
+};
+
+public type UserIdProjectsBody record {
+    # The name of the project.
+    string name;
 };
 
 # An action indicating if the authenticated user has followed this category.

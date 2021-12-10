@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token";
+|};
+
 # This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # In SAPS4HANA Intelligent Trade Claims Management, the promotion service allows you to create, add, and delete information about promotions. Execution of Promotions should be done in an particular order.
 @display {label: "SAPS4HANA ITCM Promotion", iconPath: "icon.png"}
@@ -65,17 +72,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create a new Promotion
     #
     # + payload - Request payload to create promotion 
     # + return - Success Created. 
     remote isolated function createPromotion(ExternalPromotionDTO payload) returns ResponsePromotionCreationMessage|error {
-        string  path = string `/promotions`;
+        string resourcePath = string `/promotions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponsePromotionCreationMessage response = check self.clientEp->post(path, request, targetType=ResponsePromotionCreationMessage);
+        request.setPayload(jsonBody, "application/json");
+        ResponsePromotionCreationMessage response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Promotion with externalId
@@ -83,8 +91,8 @@ public isolated client class Client {
     # + externalId - The external id of the promotion, for example `348328430` 
     # + return - OK. 
     remote isolated function getPromotionByExternalId(string externalId) returns ResponseExternalPromotionMessage|error {
-        string  path = string `/promotions/${externalId}`;
-        ResponseExternalPromotionMessage response = check self.clientEp-> get(path, targetType = ResponseExternalPromotionMessage);
+        string resourcePath = string `/promotions/${externalId}`;
+        ResponseExternalPromotionMessage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a Promotion with externalId
@@ -92,8 +100,8 @@ public isolated client class Client {
     # + externalId - The external id of the promotion, for example `348328430` 
     # + return - OK. 
     remote isolated function deletePromotion(string externalId) returns ResponsePromotionDeletionMessage|error {
-        string  path = string `/promotions/${externalId}`;
-        ResponsePromotionDeletionMessage response = check self.clientEp-> delete(path, targetType = ResponsePromotionDeletionMessage);
+        string resourcePath = string `/promotions/${externalId}`;
+        ResponsePromotionDeletionMessage response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

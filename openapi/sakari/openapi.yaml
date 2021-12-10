@@ -2749,6 +2749,6 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: '/oauth2/token'
+          tokenUrl: 'https://api.sakari.io/oauth2/token'
           scopes:
             'messages:send': Send messages

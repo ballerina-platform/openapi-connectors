@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,14 +50,21 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://login.pdfbroker.io/connect/token";
+|};
+
 # This is a generated connector from [PdfBroker.io API v1](https://www.pdfbroker.io/docs) OpenAPI Specification.
 # PdfBroker.io is an api for creating pdf files from Xsl-Fo or Html and other useful pdf utilities.
 @display {label: "PdfBroker", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials. 
-    # Create an [PdfBroker account](https://www.pdfbroker.io/) and obtain tokens following [this guide](https://www.pdfbroker.io/docs/authentication).
+    # The connector initialization requires setting the API credentials.
+    # Create an [PdfBroker account](https://www.pdfbroker.io/) and obtain tokens following  [this guide](https://www.pdfbroker.io/docs/authentication).
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
@@ -65,13 +72,14 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Basic method to verify api is up and running
     #
     # + return - If any error occurs parsing input 
-    remote isolated function verfiyAPIStatus() returns ErrorResponseDto|error {
-        string  path = string `/api/pdf`;
-        ErrorResponseDto response = check self.clientEp-> get(path, targetType = ErrorResponseDto);
+    remote isolated function verfiyAPIStatus() returns http:Response|error {
+        string resourcePath = string `/api/pdf`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create pdf-file from complete XSL-FO document.
@@ -79,11 +87,11 @@ public isolated client class Client {
     # + payload - XSL-FO Request, the basic XSL-FO request. Post your XSL-FO document and digital resources, either as 'multipart/form-data' or 'application/json' 
     # + return - Returns the newly created pdf file. Either the file directly or serialized as Json if Accept-header is set to application/json 
     remote isolated function createPDfFromXSLFO(FoRequestDto payload) returns PdfResponseDto|error {
-        string  path = string `/api/pdf/xslfo`;
+        string resourcePath = string `/api/pdf/xslfo`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PdfResponseDto response = check self.clientEp->post(path, request, targetType=PdfResponseDto);
+        request.setPayload(jsonBody, "application/json");
+        PdfResponseDto response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Create pdf-file from transforming xml document with Xsl-Fo transform document.
@@ -91,11 +99,11 @@ public isolated client class Client {
     # + payload - XSL-FO Transform Request. The XSL-FO is transformed on the supplied xml data document. Post your XSL-FO transform document and xml data document aloing with your digital resources, either as 'multipart/form-data' or 'application/json' 
     # + return - Returns the newly created pdf file. Either the file directly or serialized as Json if Accept-header is set to application/json 
     remote isolated function createPDFfromXML(FoTransformRequestDto payload) returns PdfResponseDto|error {
-        string  path = string `/api/pdf/xslfowithtransform`;
+        string resourcePath = string `/api/pdf/xslfowithtransform`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PdfResponseDto response = check self.clientEp->post(path, request, targetType=PdfResponseDto);
+        request.setPayload(jsonBody, "application/json");
+        PdfResponseDto response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generate an image of to provided pdf file
@@ -103,11 +111,11 @@ public isolated client class Client {
     # + payload - PdfToImage Request. Create an image of a page in an existing pdf document. 
     # + return - Generate an image of the provided pdf file. Either the image file directly or serialized as Json if Accept-header is set to application/json 
     remote isolated function createPDFfromImage(PdfToImageRequestDto payload) returns ImageResponseDto|error {
-        string  path = string `/api/pdf/pdftoimage`;
+        string resourcePath = string `/api/pdf/pdftoimage`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ImageResponseDto response = check self.clientEp->post(path, request, targetType=ImageResponseDto);
+        request.setPayload(jsonBody, "application/json");
+        ImageResponseDto response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Concatenate multiple pdf files into single pdf file..
@@ -115,11 +123,11 @@ public isolated client class Client {
     # + payload - PdfConcat Request. Add two or more pdf files and concatenate pages into single pdf document. 
     # + return - Returns the newly created pdf file. Either the file directly or serialized as Json if Accept-header is set to application/json 
     remote isolated function concatenatePDFs(PdfConcatenationRequestDto payload) returns PdfResponseDto|error {
-        string  path = string `/api/pdf/pdfconcat`;
+        string resourcePath = string `/api/pdf/pdfconcat`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PdfResponseDto response = check self.clientEp->post(path, request, targetType=PdfResponseDto);
+        request.setPayload(jsonBody, "application/json");
+        PdfResponseDto response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Write text on a page in a pdf document.
@@ -127,11 +135,11 @@ public isolated client class Client {
     # + payload - PdfWriteString Request. Write string on page in pdf document 
     # + return - Returns the newly created pdf file. Either the file directly or serialized as Json if Accept-header is set to application/json 
     remote isolated function addTextonPDFPage(PdfWriteStringRequestDto payload) returns PdfResponseDto|error {
-        string  path = string `/api/pdf/pdfwritestring`;
+        string resourcePath = string `/api/pdf/pdfwritestring`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PdfResponseDto response = check self.clientEp->post(path, request, targetType=PdfResponseDto);
+        request.setPayload(jsonBody, "application/json");
+        PdfResponseDto response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generate pdf file from url using the excellent tool wkhtmltopdf.
@@ -139,11 +147,11 @@ public isolated client class Client {
     # + payload - WkHtmlToPdf Request. Generate pdf from html, either from url or base64 encoded html string 
     # + return - Returns the newly created pdf file. Either the file directly or serialized as Json if Accept-header is set to application/json 
     remote isolated function generatePDFfromURL(WkHtmlToPdfRequestDto payload) returns PdfResponseDto|error {
-        string  path = string `/api/pdf/wkhtmltopdf`;
+        string resourcePath = string `/api/pdf/wkhtmltopdf`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PdfResponseDto response = check self.clientEp->post(path, request, targetType=PdfResponseDto);
+        request.setPayload(jsonBody, "application/json");
+        PdfResponseDto response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token";
+|};
+
 # This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # SAP Intelligent Trade Claims Management uses the organizational data services to represent distribution channel services, sales areas, sales divisions, and sales organizations for customer management.
 @display {label: "SAPS4HANA ITCM Organizational Data", iconPath: "icon.png"}
@@ -65,17 +72,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create a new Distribution Channel
     #
     # + payload - Request payload to create distribution channel 
     # + return - Success Created. 
     remote isolated function createDistributionChannel(ExternalDistributionChannelDTO payload) returns ResponseCreated|error {
-        string  path = string `/distributionChannels`;
+        string resourcePath = string `/distributionChannels`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseCreated response = check self.clientEp->post(path, request, targetType=ResponseCreated);
+        request.setPayload(jsonBody, "application/json");
+        ResponseCreated response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get particular Distribution Channel
@@ -83,8 +91,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getDistributionChannelByExternalId(string externalId) returns DistributionChannelResponse|error {
-        string  path = string `/distributionChannels/${externalId}`;
-        DistributionChannelResponse response = check self.clientEp-> get(path, targetType = DistributionChannelResponse);
+        string resourcePath = string `/distributionChannels/${externalId}`;
+        DistributionChannelResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete particular Distribution Channel
@@ -92,8 +100,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK 
     remote isolated function deleteDistributionChannel(string externalId) returns DistributionChannelDeleteResponse|error {
-        string  path = string `/distributionChannels/${externalId}`;
-        DistributionChannelDeleteResponse response = check self.clientEp-> delete(path, targetType = DistributionChannelDeleteResponse);
+        string resourcePath = string `/distributionChannels/${externalId}`;
+        DistributionChannelDeleteResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Create a new Sales Area
@@ -101,11 +109,11 @@ public isolated client class Client {
     # + payload - Request payload to create a sales area 
     # + return - Success Created. 
     remote isolated function createSalesArea(ExternalSalesAreaDTO payload) returns ResponseCreated|error {
-        string  path = string `/salesAreas`;
+        string resourcePath = string `/salesAreas`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseCreated response = check self.clientEp->post(path, request, targetType=ResponseCreated);
+        request.setPayload(jsonBody, "application/json");
+        ResponseCreated response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get particular Sales Area
@@ -113,8 +121,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getSalesAreaByExternalId(string externalId) returns SalesAreaResponse|error {
-        string  path = string `/salesAreas/${externalId}`;
-        SalesAreaResponse response = check self.clientEp-> get(path, targetType = SalesAreaResponse);
+        string resourcePath = string `/salesAreas/${externalId}`;
+        SalesAreaResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete particular Sales Area
@@ -122,8 +130,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function deleteSalesArea(string externalId) returns SalesAreaDeleteResponse|error {
-        string  path = string `/salesAreas/${externalId}`;
-        SalesAreaDeleteResponse response = check self.clientEp-> delete(path, targetType = SalesAreaDeleteResponse);
+        string resourcePath = string `/salesAreas/${externalId}`;
+        SalesAreaDeleteResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Create a new Sales Division
@@ -131,11 +139,11 @@ public isolated client class Client {
     # + payload - salesDivisionDTO 
     # + return - Success Created. 
     remote isolated function createSalesDivision(ExternalSalesDivisionDTO payload) returns ResponseCreated|error {
-        string  path = string `/salesDivisions`;
+        string resourcePath = string `/salesDivisions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseCreated response = check self.clientEp->post(path, request, targetType=ResponseCreated);
+        request.setPayload(jsonBody, "application/json");
+        ResponseCreated response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get particular Sales Division
@@ -143,8 +151,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getSalesDivisionByExternalId(string externalId) returns SalesDivisionResponse|error {
-        string  path = string `/salesDivisions/${externalId}`;
-        SalesDivisionResponse response = check self.clientEp-> get(path, targetType = SalesDivisionResponse);
+        string resourcePath = string `/salesDivisions/${externalId}`;
+        SalesDivisionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # delete particular Sales Division
@@ -152,8 +160,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function deleteSalesDivision(string externalId) returns SalesDivisionDeleteResponse|error {
-        string  path = string `/salesDivisions/${externalId}`;
-        SalesDivisionDeleteResponse response = check self.clientEp-> delete(path, targetType = SalesDivisionDeleteResponse);
+        string resourcePath = string `/salesDivisions/${externalId}`;
+        SalesDivisionDeleteResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Create a new Sales Organization
@@ -161,11 +169,11 @@ public isolated client class Client {
     # + payload - Request payload to create sales organization 
     # + return - Success Created. 
     remote isolated function createSalesOrganization(ExternalSalesOrganizationDTO payload) returns ResponseCreated|error {
-        string  path = string `/salesOrganizations`;
+        string resourcePath = string `/salesOrganizations`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseCreated response = check self.clientEp->post(path, request, targetType=ResponseCreated);
+        request.setPayload(jsonBody, "application/json");
+        ResponseCreated response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get particular Sales Organization
@@ -173,8 +181,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getSalesOrganizationByExternalId(string externalId) returns SalesOrganizationResponse|error {
-        string  path = string `/salesOrganizations/${externalId}`;
-        SalesOrganizationResponse response = check self.clientEp-> get(path, targetType = SalesOrganizationResponse);
+        string resourcePath = string `/salesOrganizations/${externalId}`;
+        SalesOrganizationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete particular Sales Organization
@@ -182,8 +190,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK 
     remote isolated function deleteSalesOrganization(string externalId) returns SalesOrgDeleteResponse|error {
-        string  path = string `/salesOrganizations/${externalId}`;
-        SalesOrgDeleteResponse response = check self.clientEp-> delete(path, targetType = SalesOrgDeleteResponse);
+        string resourcePath = string `/salesOrganizations/${externalId}`;
+        SalesOrgDeleteResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

@@ -15,11 +15,9 @@
 // under the License.
 
 # Id of the account to apply operations to
-#
 public type AccountId string;
 
 # Type of the event
-#
 public type EventType string;
 
 public type ContactsResponse record {
@@ -105,7 +103,7 @@ public type TokenRequest record {
 
 public type SendmessagesrequestFilters record {
     string[] tags?;
-    record {}[] attributes?;
+    record{}[] attributes?;
 };
 
 # Represent an API pagination error
@@ -205,6 +203,10 @@ public type AttributeFilter record {
     string value?;
 };
 
+public type ToolsSharefileBody record {
+    string media?;
+};
+
 public type ContactRequest record {
     *ContactIdentifiers;
     Tag[] tags?;
@@ -249,7 +251,7 @@ public type MessagesResponse record {
     Message[] data?;
 };
 
-public type  InlineResponse201 ContactsResponse|ContactUploadResponse;
+public type InlineResponse201 ContactsResponse|ContactUploadResponse;
 
 public type InlineResponse200 record {
     boolean success?;
@@ -304,6 +306,9 @@ public type TemplateResponse record {
 
 public type CampaignrequestTrigger record {
     # Campaign type specifies how it sources contacts and what event triggers its execution Sort order
+    #   * `M` - Manual
+    #   * `S` - Scheduled
+    #   * `FU` - File Upload
     string code?;
 };
 
@@ -317,12 +322,13 @@ public type CampaignrequestFilters record {
     string[] attributes?;
 };
 
-public type Body record {
-    string media?;
-};
-
 public type SendmessagesrequestMedia record {
     string url?;
+};
+
+public type AccountidWebhooksBody record {
+    string url?;
+    string[] eventTypes?;
 };
 
 # Contact response
@@ -401,11 +407,6 @@ public type Event record {
     # Id of the account to apply operations to
     AccountId accountId?;
     AccountEventPayload|MessageEventPayload data?;
-};
-
-public type Body1 record {
-    string url?;
-    string[] eventTypes?;
 };
 
 public type Webhook record {

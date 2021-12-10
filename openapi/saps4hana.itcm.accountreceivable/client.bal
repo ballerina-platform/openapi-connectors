@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token";
+|};
+
 # This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # A user in SAP Intelligent Trade Claims Management can create and update existing accounts receivable open items within SAP Intelligent Trade Claims Management. Accounts receivable open items contribute to baseline information for claims to be built.
 @display {label: "SAPS4HANA ITCM Account Receivable Open Item", iconPath: "icon.png"}
@@ -65,17 +72,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create a new AR Open Item
     #
     # + payload - Request payload to create AR Open Item 
     # + return - Success Created. 
     remote isolated function createAROpenItem(ReceivedParamDTO payload) returns ResponseAROpenItemsMessage|error {
-        string  path = string `/arOpenItems`;
+        string resourcePath = string `/arOpenItems`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseAROpenItemsMessage response = check self.clientEp->post(path, request, targetType=ResponseAROpenItemsMessage);
+        request.setPayload(jsonBody, "application/json");
+        ResponseAROpenItemsMessage response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the detail of an AR Open Item by id
@@ -83,8 +91,8 @@ public isolated client class Client {
     # + id - id 
     # + return - OK. 
     remote isolated function getAROpenItemById(int id) returns ResidualAccountingDocumentItem4ApiDTO|error {
-        string  path = string `/arOpenItems/${id}`;
-        ResidualAccountingDocumentItem4ApiDTO response = check self.clientEp-> get(path, targetType = ResidualAccountingDocumentItem4ApiDTO);
+        string resourcePath = string `/arOpenItems/${id}`;
+        ResidualAccountingDocumentItem4ApiDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a Reason Code
@@ -92,11 +100,11 @@ public isolated client class Client {
     # + payload - Request payload to create reason code 
     # + return - Success Created. 
     remote isolated function batchCreateReasonCode(ReasonCodeMockDTO payload) returns ResponseReasonCodesMessage|error {
-        string  path = string `/reasonCodes`;
+        string resourcePath = string `/reasonCodes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseReasonCodesMessage response = check self.clientEp->post(path, request, targetType=ResponseReasonCodesMessage);
+        request.setPayload(jsonBody, "application/json");
+        ResponseReasonCodesMessage response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the detail of a Reason Code by code
@@ -104,8 +112,8 @@ public isolated client class Client {
     # + code - code 
     # + return - OK. 
     remote isolated function getReasonCodeList(string code) returns ReasonCodeDTO|error {
-        string  path = string `/reasonCodes/${code}`;
-        ReasonCodeDTO response = check self.clientEp-> get(path, targetType = ReasonCodeDTO);
+        string resourcePath = string `/reasonCodes/${code}`;
+        ReasonCodeDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -66,20 +66,13 @@ public type PdfResponseDto record {
     string? PdfFileBase64String?;
 };
 
-public type Body4 record {
-    # An entry named pdfdocument is required in the multipart/form-data request
-    string pdfdocument?;
-    # After pdfdocument is added, add an entry named options with your PdfWriteStringOptions object serialized as JSON.
-    string options?;
-    # Optional entry to attach your own TrueType font file to style string
-    string fontfile?;
-};
-
-public type Body2 record {
-    # An entry named pdfdocument is required in the multipart/form-data request
-    string pdfdocument?;
-    # After pdfdocument is added, add an entry named options with your PdfToImageOptions object serialized as JSON.
-    string options?;
+public type PdfXslfowithtransformBody record {
+    # An entry named fodocument with your XSL-FO transform is required in the multipart/form-data request
+    string fodocument?;
+    # An entry named xmldatadocument, on which the XSL-FO transform is applied, is required in the multipart/form-data request
+    string xmldatadocument?;
+    # After fodocument and xmldatadocument is added, add all digital resources one by one to your multipart/form-data request, using the filename as name in the form.
+    string resources?;
 };
 
 # When setting the Accept-header in the request to "application/json" the image file will be return as Base64 encoded string. Note that converting data to Base64 encoded strings increases the response size with approximately 33%, if you can accept the a binary format it's better to use Accept-header "image/jpeg", "image/png" or "image/gif".
@@ -88,13 +81,6 @@ public type ImageResponseDto record {
     string? ErrorMessage?;
     # The Base64 encoded string that is the image file. This is a complete data uri, including media type that can be used directly as src on a img-tag e.g.
     string? ImageBase64String?;
-};
-
-public type Body3 record {
-    # Add pdf files to be concatenated into single file
-    string pdfdocument1?;
-    # You can add more than two files in the same request
-    string pdfdocument2?;
 };
 
 public type ErrorResponseDto record {
@@ -140,8 +126,24 @@ public type FontDto record {
     FontStyle Style?;
 };
 
+public type PdfPdfconcatBody record {
+    # Add pdf files to be concatenated into single file
+    string pdfdocument1?;
+    # You can add more than two files in the same request
+    string pdfdocument2?;
+};
+
 # XOriginPoint
 public type XOriginPoint int;
+
+public type PdfPdfwritestringBody record {
+    # An entry named pdfdocument is required in the multipart/form-data request
+    string pdfdocument?;
+    # After pdfdocument is added, add an entry named options with your PdfWriteStringOptions object serialized as JSON.
+    string options?;
+    # Optional entry to attach your own TrueType font file to style string
+    string fontfile?;
+};
 
 # The XSL-FO transform document and xml data document as a Base64 encoded string with a set of resources provided with a name and the data of the resource as a Base64 encoded string.
 public type FoTransformRequestDto record {
@@ -155,13 +157,11 @@ public type FoTransformRequestDto record {
     string? XmlDataDocumentBase64String?;
 };
 
-public type Body1 record {
-    # An entry named fodocument with your XSL-FO transform is required in the multipart/form-data request
-    string fodocument?;
-    # An entry named xmldatadocument, on which the XSL-FO transform is applied, is required in the multipart/form-data request
-    string xmldatadocument?;
-    # After fodocument and xmldatadocument is added, add all digital resources one by one to your multipart/form-data request, using the filename as name in the form.
-    string resources?;
+public type PdfPdftoimageBody record {
+    # An entry named pdfdocument is required in the multipart/form-data request
+    string pdfdocument?;
+    # After pdfdocument is added, add an entry named options with your PdfToImageOptions object serialized as JSON.
+    string options?;
 };
 
 # Enter meta data for pdf document
@@ -221,7 +221,7 @@ public type FoRequestDto record {
     PdfMetadataDto Metadata?;
 };
 
-public type Body record {
+public type PdfXslfoBody record {
     # An entry named fodocument is required in the multipart/form-data request
     string fodocument?;
     # After fodocument is added, add all digital resources one by one to your multipart/form-data request, using the filename as name in the form.

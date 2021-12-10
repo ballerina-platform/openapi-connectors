@@ -15,12 +15,11 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -51,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://accounts.brex.com/oauth2/v1/token";
+|};
+
 # This is a generated connector for [Brex Onboarding API v0.1](https://developer.brex.com/openapi/onboarding_api/) OpenAPI specification. 
 # Onboarding APIs allows partners to refer their customers to Brex to streamline the process of creating new accounts  for these customers. By submitting information for referrals, it removes the need for customers to enter in this information again.
 @display {label: "brex.onboarding", iconPath: "icon.png"}
@@ -66,16 +72,17 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://platform.staging.brexapps.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List referrals
     #
     # + cursor - The cursor 
     # + return - listReferralsGet 200 response 
     remote isolated function listReferralsGet(string? cursor = ()) returns ReferralPage|error {
-        string  path = string `/v1/referrals`;
+        string resourcePath = string `/v1/referrals`;
         map<anydata> queryParam = {"cursor": cursor};
-        path = path + check getPathForQueryParam(queryParam);
-        ReferralPage response = check self.clientEp-> get(path, targetType = ReferralPage);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ReferralPage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a referral
@@ -83,11 +90,11 @@ public isolated client class Client {
     # + payload - Create referral request. 
     # + return - createReferralRequestPost 200 response 
     remote isolated function createReferralRequestPost(CreateReferralRequest payload) returns Referral|error {
-        string  path = string `/v1/referrals`;
+        string resourcePath = string `/v1/referrals`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Referral response = check self.clientEp->post(path, request, targetType=Referral);
+        request.setPayload(jsonBody, "application/json");
+        Referral response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a referral by ID
@@ -95,8 +102,8 @@ public isolated client class Client {
     # + id - Referral ID. 
     # + return - getReferralGet 200 response 
     remote isolated function getReferralGet(string id) returns Referral|error {
-        string  path = string `/v1/referrals/${id}`;
-        Referral response = check self.clientEp-> get(path, targetType = Referral);
+        string resourcePath = string `/v1/referrals/${id}`;
+        Referral response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new document upload
@@ -105,45 +112,11 @@ public isolated client class Client {
     # + payload - Create Document request 
     # + return - createDocumentPost 200 response 
     remote isolated function createDocumentPost(string id, CreateDocumentRequest payload) returns Document|error {
-        string  path = string `/v1/referrals/${id}/document_upload`;
+        string resourcePath = string `/v1/referrals/${id}/document_upload`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Document response = check self.clientEp->post(path, request, targetType=Document);
+        request.setPayload(jsonBody, "application/json");
+        Document response = check self.clientEp->post(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

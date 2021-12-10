@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token";
+|};
+
 # This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # In SAPS4HANA Intelligent Trade Claims Management, the customer service allows you to access their customers retailer and distributor information.
 @display {label: "SAPS4HANA ITCM Customer", iconPath: "icon.png"}
@@ -65,17 +72,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create a new Customer
     #
     # + payload - Request payload to create customer 
     # + return - Success Created. 
     remote isolated function createCustomer(CustomerDTO payload) returns ResponseCreatedMessage|error {
-        string  path = string `/customers`;
+        string resourcePath = string `/customers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ResponseCreatedMessage response = check self.clientEp->post(path, request, targetType=ResponseCreatedMessage);
+        request.setPayload(jsonBody, "application/json");
+        ResponseCreatedMessage response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the details of a Customer with externalId
@@ -83,8 +91,8 @@ public isolated client class Client {
     # + externalid - customer's external id 
     # + return - OK. 
     remote isolated function getCustomerByExternalId(string externalid) returns CustomerDTO|error {
-        string  path = string `/customers/${externalid}`;
-        CustomerDTO response = check self.clientEp-> get(path, targetType = CustomerDTO);
+        string resourcePath = string `/customers/${externalid}`;
+        CustomerDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a Customer with externalId
@@ -92,8 +100,8 @@ public isolated client class Client {
     # + externalid - customer's external id 
     # + return - OK 
     remote isolated function deleteCustomer(string externalid) returns ResponseDeleteCurrencyMessage|error {
-        string  path = string `/customers/${externalid}`;
-        ResponseDeleteCurrencyMessage response = check self.clientEp-> delete(path, targetType = ResponseDeleteCurrencyMessage);
+        string resourcePath = string `/customers/${externalid}`;
+        ResponseDeleteCurrencyMessage response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

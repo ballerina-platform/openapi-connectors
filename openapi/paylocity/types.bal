@@ -593,7 +593,7 @@ public type CompanyCodes record {
 # The employee model
 public type Employee record {
     # Add up to 19 direct deposit accounts in addition to the main direct deposit account. IMPORTANT: A direct deposit update will remove ALL existing main and additional direct deposit information in WebPay and replace with information provided on the request. GET API will not return direct deposit data.
-    DirectdepositAdditionaldirectdeposit[] additionalDirectDeposit?;
+    DirectdepositAdditionaldirectdeposit[19] additionalDirectDeposit?;
     # Add Additional Rates.
     EmployeeAdditionalrate[] additionalRate?;
     #  Add or update setup values used for employee benefits integration, insurance plan settings, and ACA reporting.
@@ -607,15 +607,15 @@ public type Employee record {
     # Employee is paid in this currency. <br  />Max length: 30
     string? currency?;
     # Up to 8 custom fields of boolean (checkbox) type value.
-    EmployeeCustombooleanfields[] customBooleanFields?;
+    EmployeeCustombooleanfields[8] customBooleanFields?;
     # Up to 8 custom fields of the date type value.
-    EmployeeCustomdatefields[] customDateFields?;
+    EmployeeCustomdatefields[8] customDateFields?;
     # Up to 8 custom fields of the dropdown type value.
-    EmployeeCustomdropdownfields[] customDropDownFields?;
+    EmployeeCustomdropdownfields[8] customDropDownFields?;
     # Up to 8 custom fields of numeric type value.
-    EmployeeCustomnumberfields[] customNumberFields?;
+    EmployeeCustomnumberfields[8] customNumberFields?;
     # Up to 8 custom fields of text type value.
-    EmployeeCustomtextfields[] customTextFields?;
+    EmployeeCustomtextfields[8] customTextFields?;
     # Add or update home department cost center, position, supervisor, reviewer, employment type, EEO class, pay settings, and union information.
     EmployeeDepartmentposition departmentPosition?;
     # Indicates if employee has disability status.
@@ -641,7 +641,7 @@ public type Employee record {
     # Employee last name. <br  />Max length: 40
     string? lastName?;
     # Add, update, or delete local tax code, filing status, and exemptions including  PA-PSD taxes.
-    EmployeeLocaltax[] localTax?;
+    EmployeeLocaltax[5] localTax?;
     # Add the main direct deposit account. After deposits are made to any additional direct deposit accounts, the remaining net check is deposited in the main direct deposit account. IMPORTANT: A direct deposit update will remove ALL existing main and additional direct deposit information in WebPay and replace with what is provided on the request. GET API will not return direct deposit data.
     EmployeeMaindirectdeposit mainDirectDeposit?;
     # Employee marital status. Common values *D (Divorced), M (Married), S (Single), W (Widowed)*. <br  />Max length: 10
@@ -1002,23 +1002,23 @@ public type EmployeeHomeaddress record {
 # The staged employee model
 public type StagedEmployee record {
     # Add up to 19 direct deposit accounts in addition to the main direct deposit account. IMPORTANT: A direct deposit update will remove ALL existing main and additional direct deposit information in WebPay and replace with information provided on the request. GET API will not return direct deposit data.
-    StagedemployeeAdditionaldirectdeposit[] additionalDirectDeposit?;
+    StagedemployeeAdditionaldirectdeposit[4] additionalDirectDeposit?;
     # Add setup values used for employee benefits integration, insurance plan settings, and ACA reporting.
-    StagedemployeeBenefitsetup[] benefitSetup?;
+    StagedemployeeBenefitsetup[1] benefitSetup?;
     # Employee birthdate. Common formats include *MM-DD-CCYY*, *CCYY-MM-DD*.
     string? birthDate?;
     # Up to 8 custom fields of boolean (checkbox) type value.
-    EmployeeCustombooleanfields[] customBooleanFields?;
+    EmployeeCustombooleanfields[8] customBooleanFields?;
     # Up to 8 custom fields of the date type value.
-    EmployeeCustomdatefields[] customDateFields?;
+    EmployeeCustomdatefields[8] customDateFields?;
     # Up to 8 custom fields of the dropdown type value.
-    EmployeeCustomdropdownfields[] customDropDownFields?;
+    EmployeeCustomdropdownfields[8] customDropDownFields?;
     # Up to 8 custom fields of numeric type value.
-    EmployeeCustomnumberfields[] customNumberFields?;
+    EmployeeCustomnumberfields[8] customNumberFields?;
     # Up to 8 custom fields of text type value.
-    EmployeeCustomtextfields[] customTextFields?;
+    EmployeeCustomtextfields[8] customTextFields?;
     # Add home department cost center, position, supervisor, reviewer, employment type, EEO class, pay settings, and union information.
-    StagedemployeeDepartmentposition[] departmentPosition?;
+    StagedemployeeDepartmentposition[1] departmentPosition?;
     # Indicates if employee has disability status.
     string? disabilityDescription?;
     # Leave blank to have Web Pay automatically assign the next available employee ID.<br  /> Max length: 10
@@ -1026,7 +1026,7 @@ public type StagedEmployee record {
     # Employee ethnicity.<br  /> Max length: 10
     string? ethnicity?;
     # Add federal tax amount type (taxCalculationCode), amount or percentage, filing status, and exemptions.
-    StagedemployeeFederaltax[] federalTax?;
+    StagedemployeeFederaltax[1] federalTax?;
     # Employee first name. <br  />Max length: 40
     string? firstName?;
     # Reason code for FITW exemption. Common values are *SE* (Statutory employee), *CR* (clergy/Religious). <br  /> Max length: 30
@@ -1036,7 +1036,7 @@ public type StagedEmployee record {
     # Employee gender. Common values *M* (Male), *F* (Female). <br  />Max length: 1
     string? gender?;
     # Add employee's home address, personal phone numbers, and personal email.
-    StagedemployeeHomeaddress[] homeAddress?;
+    StagedemployeeHomeaddress[1] homeAddress?;
     # Indicates if employee in agriculture or farming.
     boolean? isEmployee943?;
     # Indicates if employee is a smoker.
@@ -1044,9 +1044,9 @@ public type StagedEmployee record {
     # Employee last name. <br  />Max length: 40
     string? lastName?;
     # Add local tax code, filing status, and exemptions including PA-PSD taxes.
-    EmployeeLocaltax[] localTax?;
+    EmployeeLocaltax[5] localTax?;
     # Add the main direct deposit account. After deposits are made to any additional direct deposit accounts, the remaining net check is deposited in the main direct deposit account. IMPORTANT: A direct deposit update will remove ALL existing main and additional direct deposit information in WebPay and replace with what is provided on the request. GET API will not return direct deposit data.
-    StagedemployeeMaindirectdeposit[] mainDirectDeposit?;
+    StagedemployeeMaindirectdeposit[1] mainDirectDeposit?;
     # Employee marital status. Common values *D (Divorced), M (Married), S (Single), W (Widowed)*. <br  />Max length: 10
     string? maritalStatus?;
     # Reason code for Medicare exemption. Common values are *501* (5019c)(3) Organization), *IC* (Independent Contractor).<br  /> Max length: 30
@@ -1054,13 +1054,13 @@ public type StagedEmployee record {
     # Employee middle name.<br  /> Max length: 20
     string? middleName?;
     # Add non-primary state tax code, amount type (taxCalculationCode), amount or percentage, filing status, exemptions, supplemental check (specialCheckCalc), and reciprocity code information.
-    StagedemployeeNonprimarystatetax[] nonPrimaryStateTax?;
+    StagedemployeeNonprimarystatetax[1] nonPrimaryStateTax?;
     # Employee preferred display name.<br  /> Max length: 20
     string? preferredName?;
     # Add hourly or salary pay rate, effective date, and pay frequency.
-    StagedemployeePrimarypayrate[] primaryPayRate?;
+    StagedemployeePrimarypayrate[1] primaryPayRate?;
     # Add primary state tax code, amount type (taxCalculationCode), amount or percentage, filing status, exemptions, and supplemental check (specialCheckCalc) information. Only one primary state is allowed.
-    StagedemployeePrimarystatetax[] primaryStateTax?;
+    StagedemployeePrimarystatetax[1] primaryStateTax?;
     # Prior last name if applicable.<br  />Max length: 40
     string? priorLastName?;
     # Employee preferred salutation. <br  />Max length: 10
@@ -1072,7 +1072,7 @@ public type StagedEmployee record {
     # Employee social security number. Leave it blank if valid social security number not available. <br  />Max length: 11
     string? ssn?;
     # Add employee status, change reason, effective date, and adjusted seniority date. Note that companies that are still in Implementation cannot hire future employees.
-    StagedemployeeStatus[] status?;
+    StagedemployeeStatus[1] status?;
     # Employee name suffix. Common values are *Jr, Sr, II*.<br  />Max length: 30
     string? suffix?;
     # Reason code for SUI exemption. Common values are *SE* (Statutory employee), *CR* (clergy/Religious). <br  /> Max length: 30
@@ -1088,9 +1088,9 @@ public type StagedEmployee record {
     # Add Web Time badge number and charge rate and synchronize Web Pay and Web Time employee data.
     StagedemployeeWebtime webTime?;
     # Add employee's work address, phone numbers, and email. Work Location drop down field is not included.
-    StagedemployeeWorkaddress[] workAddress?;
+    StagedemployeeWorkaddress[1] workAddress?;
     # Add I-9 work authorization information.
-    StagedemployeeWorkeligibility[] workEligibility?;
+    StagedemployeeWorkeligibility[1] workEligibility?;
 };
 
 # The employee info model

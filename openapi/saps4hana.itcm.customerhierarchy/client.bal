@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2ClientCredentialsGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,6 +50,13 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Client Credintials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token";
+|};
+
 # This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
 # In SAP Intelligent Trade Claims Management, users can group and organize their customers and nodes and assign them to a customer hierarchy.
 @display {label: "SAPS4HANA ITCM Customer Hierarchy", iconPath: "icon.png"}
@@ -65,17 +72,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.dev1.e2e.eurekacloud.io/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create a new Customer Hierarchy
     #
     # + payload - Request payload to create customer hierarchy 
     # + return - Success Created. 
     remote isolated function createCustomerHierarchy(HierarchyHeaderEO payload) returns HierarchyCreationResponse|error {
-        string  path = string `/hierarchy/customers`;
+        string resourcePath = string `/hierarchy/customers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        HierarchyCreationResponse response = check self.clientEp->post(path, request, targetType=HierarchyCreationResponse);
+        request.setPayload(jsonBody, "application/json");
+        HierarchyCreationResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Customer Hierarchy Nodes with header externalId
@@ -83,8 +91,8 @@ public isolated client class Client {
     # + externalId - External Id 
     # + return - OK. 
     remote isolated function getAllNodes(string externalId) returns HierarchyNodeHeaderResponse|error {
-        string  path = string `/hierarchy/customers/header/${externalId}`;
-        HierarchyNodeHeaderResponse response = check self.clientEp-> get(path, targetType = HierarchyNodeHeaderResponse);
+        string resourcePath = string `/hierarchy/customers/header/${externalId}`;
+        HierarchyNodeHeaderResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Customer Hierarchy Nodes with externalId
@@ -92,8 +100,8 @@ public isolated client class Client {
     # + externalId - External Id 
     # + return - OK. 
     remote isolated function getNode(string externalId) returns HierarchyNodeResponse|error {
-        string  path = string `/hierarchy/customers/${externalId}`;
-        HierarchyNodeResponse response = check self.clientEp-> get(path, targetType = HierarchyNodeResponse);
+        string resourcePath = string `/hierarchy/customers/${externalId}`;
+        HierarchyNodeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a Customer Hierarchy Entity with externalId
@@ -101,8 +109,8 @@ public isolated client class Client {
     # + headerExternalId - Header external Id 
     # + return - OK. 
     remote isolated function deleteCustomerHierarchy(string headerExternalId) returns ResponseDeleteMessage|error {
-        string  path = string `/hierarchy/customers/${headerExternalId}`;
-        ResponseDeleteMessage response = check self.clientEp-> delete(path, targetType = ResponseDeleteMessage);
+        string resourcePath = string `/hierarchy/customers/${headerExternalId}`;
+        ResponseDeleteMessage response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

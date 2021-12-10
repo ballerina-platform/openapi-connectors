@@ -27,11 +27,11 @@ public type IdentifierSetTemplate record {
 public type RelationInboundProcessor record {
     *InboundProcessor;
     # The relation type
-    string 'type?;
+    string 'type;
     # A template representing a unique identifier of a Fact Sheet when evaluated
-    IdentifierTemplate 'from?;
+    IdentifierTemplate 'from;
     # A template representing a unique identifier of a Fact Sheet when evaluated
-    IdentifierTemplate to?;
+    IdentifierTemplate to;
     # A list of changes that are performed to the specified relation
     PatchTemplate[] updates?;
 };
@@ -183,13 +183,13 @@ public type MetricRules record {
 public type OutboundInput record {
     *Input;
     # The type of connector that is used
-    string connectorType?;
+    string connectorType;
     # The identifier of the connector instance
-    string connectorId?;
+    string connectorId;
     # The version of the connector that is expected to process this LDIF file
-    string connectorVersion?;
+    string connectorVersion;
     # The direction of the data flow.
-    string processingDirection?;
+    string processingDirection;
     # Optional additional options to parse this LDIF request
     string processingMode?;
     # A customer added, arbitrary description for any kind of grouping, notification or note purpose
@@ -276,29 +276,29 @@ public type MaximumDeletionRatio record {
 public type InboundProcessorConfiguration record {
     *ProcessorConfiguration;
     # The type of connector that is used
-    string connectorType?;
+    string connectorType;
     # The identifier of the connector instance
-    string connectorId?;
+    string connectorId;
     # The version of the connector that is expected to process this LDIF file
-    string connectorVersion?;
+    string connectorVersion;
     # The data flow direction, must be [inbound]
-    string processingDirection?;
+    string processingDirection;
     # The processing mode, could be [partial, full]
     string processingMode?;
     # The list of processors used to evaluate the LDIF data
     InboundProcessor[] processors?;
     # The deletion scope definition used to delete untouched entities on a 'full' sync mode
-    record  { }  deletionScope?;
+    record {} deletionScope?;
     # The global variable definition used to define default values
     record {} variables?;
     # Definition of the provider which provides the inbound LDIF.
-    record  { }  dataProvider?;
+    record {} dataProvider?;
     # Credentials setting for the synchronization run.
-    record  { }  credentials?;
+    record {} credentials?;
     # Configuration for the created LDIF, in case 'writeToLdif' is used
     TargetLdifConfiguration targetLdif?;
     # The default LDIF for testing with this processor configuration.
-    record  { }  defaultInput?;
+    record {} defaultInput?;
 };
 
 public type FastRunStatsReport record {
@@ -314,19 +314,19 @@ public type FastRunStatsReport record {
 public type LeanIxDataInterchangeFormat record {
     *Input;
     # The type of connector that is used
-    string connectorType?;
+    string connectorType;
     # The identifier of the connector instance
-    string connectorId?;
+    string connectorId;
     # The version of the connector that is expected to process this LDIF file
-    string connectorVersion?;
+    string connectorVersion;
     # The target API version
-    string lxVersion?;
+    string lxVersion;
     # The optional target workspace
     string lxWorkspace?;
     # A customer added, arbitrary description for any kind of grouping, notification or note purpose
     string description?;
     # The direction of the data flow
-    string processingDirection?;
+    string processingDirection;
     # Optional additional options to parse this LDIF request
     string processingMode?;
     ChunkInformation chunkInformation?;
@@ -339,7 +339,7 @@ public type LeanIxDataInterchangeFormat record {
 public type DocumentInboundProcessor record {
     *InboundProcessor;
     # A template representing the conditions for obtaining the fact sheets to been evaluated. Includes an identifier for internal, external Id, or a search criteria to obtain multiple fact sheets to evaluate
-    IdentifierWithSearchScopeTemplate identifier?;
+    IdentifierWithSearchScopeTemplate identifier;
     # A list of changes that are performed to the specified fact sheet
     PatchTemplate[] updates?;
 };
@@ -478,23 +478,23 @@ public type MetricsInboundProcessor record {
 public type OutboundProcessorConfiguration record {
     *ProcessorConfiguration;
     # The type of connector that is used
-    string connectorType?;
+    string connectorType;
     # The identifier of the connector instance
-    string connectorId?;
+    string connectorId;
     # The version of the connector that is expected to process this LDIF file
-    string connectorVersion?;
+    string connectorVersion;
     # The data flow direction, must be [outbound]
-    string processingDirection?;
+    string processingDirection;
     # The processing mode, could be [partial]
     string processingMode?;
     # A list of facet filters to limit which Fact Sheets are considered for output
-    record {} scope?;
+    record {} scope;
     # The list of processors used to evaluate the LDIF data
     OutboundProcessor[] processors?;
     # Define the target location to which the outbound result LDIF should be uploaded to
     DataConsumer dataConsumer?;
     # The default outbound input for testing with this processor configuration.
-    record  { }  defaultInput?;
+    record {} defaultInput?;
 };
 
 public type OutboundFieldTemplate record {
@@ -655,7 +655,7 @@ public type DataConsumer record {
 public type ImpactInboundProcessor record {
     *InboundProcessor;
     # A template representing the conditions for obtaining the fact sheets to been evaluated. Includes an identifier for internal, external Id, or a search criteria to obtain multiple fact sheets to evaluate
-    IdentifierWithSearchScopeTemplate identifier?;
+    IdentifierWithSearchScopeTemplate identifier;
     # A list of changes that are performed to the specified fact sheet
     PatchTemplate[] updates?;
     # Define the components that will be available for JUEL expression under the symbol 'lx'.
@@ -732,13 +732,13 @@ public type SearchScope record {
     # String or JUEL expression that define bookmark that wil be used for selecting factsheets.
     record {} scopeFromBookmark?;
     # The projection query request for obtaining projection PointOfViews, create this section as documented in projection endpoint (https://app.leanix.net/openapi-explorer/?urls.primaryName=Impacts). Every item from the PointOfViews response can be used in JUEL expressions by ${lx.projection}
-    record  { }  projectionScope?;
+    record {} projectionScope?;
 };
 
 # Definition of the entities to be removed if they are not touched by the processor configuration
 public type DeletionScope record {
     # Maximum Ratio (percentage) between elements to be deleted compared to size of the scope. If this limit is violated the deletion is canceled
-    record  { }  maximumDeletionRatio?;
+    record {} maximumDeletionRatio?;
     # The scopes for fact sheet entities
     FactSheetDeletionScope[] factSheets?;
     # The scopes for fact sheet entities
@@ -756,7 +756,7 @@ public type DeletionScope record {
 public type SubscriptionInboundProcessor record {
     *InboundProcessor;
     # A template representing the conditions for obtaining the fact sheets to been evaluated. Includes an identifier for internal, external Id, or a search criteria to obtain multiple fact sheets to evaluate
-    IdentifierWithSearchScopeTemplate identifier?;
+    IdentifierWithSearchScopeTemplate identifier;
     # A list of changes that are performed to the specified subscription
     PatchTemplate[] updates?;
 };
@@ -764,9 +764,9 @@ public type SubscriptionInboundProcessor record {
 public type FactSheetInboundProcessor record {
     *InboundProcessor;
     # An expression resolving to a Fact Sheet type present in the data model of your LeanIX workspace
-    string 'type?;
+    string 'type;
     # A template representing the conditions for obtaining the fact sheets to been evaluated. Includes an identifier for internal, external Id, or a search criteria to obtain multiple fact sheets to evaluate
-    IdentifierWithSearchScopeTemplate identifier?;
+    IdentifierWithSearchScopeTemplate identifier;
     # A list of changes that are performed to the specified fact sheet
     PatchTemplate[] updates?;
     # Define the components that will be available for JUEL expression under the symbol 'lx'.
@@ -788,5 +788,5 @@ public type FastRunResponse record {
     Warning[] warnings?;
     FastRunStatsReport stats?;
     # Output ldif when writeToLdif processor is used.
-    record  { }  results?;
+    record {} results?;
 };

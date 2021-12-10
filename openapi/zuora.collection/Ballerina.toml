@@ -2,7 +2,7 @@
 distribution = "slbeta6"
 org = "ballerinax"
 name = "zuora.collection"
-version = "1.0.0"
+version = "1.1.0"
 icon = "icon.png"
 license= ["Apache-2.0"]
 authors = ["Ballerina"]

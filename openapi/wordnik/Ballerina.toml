@@ -5,7 +5,7 @@ keywords = ["Education/Dictionary", "Cost/Freemium"]
 org = "ballerinax"
 name = "wordnik"
 icon = "icon.png"
-version = "1.0.1"
+version = "1.1.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

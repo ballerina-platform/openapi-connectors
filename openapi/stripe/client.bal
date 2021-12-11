@@ -51,14 +51,14 @@ public type ClientConfig record {|
 |};
 
 # This is a generated connector for [Stripe API v1](https://stripe.com/docs/api) OpenAPI Specification.
-# Stripe offers payment processing software and application programming interfaces for e-commerce websites and mobile applications.
+# Stripe offers payment processing software and application programming interfaces for e-commerce websites and mobile applications. 
 # The Stripe API is organized around REST. Our API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
 @display {label: "Stripe", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create a [Stripe](https://dashboard.stripe.com/login) account and obtain API Key following [this guide](https://stripe.com/docs/api/authentication).
+    # Create a [Stripe](https://dashboard.stripe.com/login) account and obtain API Key following [this guide](https://stripe.com/docs/api/authentication). 
     # Provide obtained API Key as the token at connector initialization. Configure required permissions when generating the API Key.
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
@@ -77,10 +77,11 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + return - Successful response. 
     remote isolated function listCoupons(CreatedDetails? created = (), string? endingBefore = (), int? 'limit = (), string? startingAfter = ()) returns InlineResponse200|error {
-        string path = string `/v1/coupons`;
+        string resourcePath = string `/v1/coupons`;
         map<anydata> queryParam = {"created": created, "ending_before": endingBefore, "limit": 'limit, "starting_after": startingAfter};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp->get(path);
+        map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Retrieves the coupon with the given ID.</p>
@@ -88,8 +89,8 @@ public isolated client class Client {
     # + coupon - Coupon Id 
     # + return - Successful response. 
     remote isolated function getCoupon(string coupon) returns Coupon|error {
-        string path = string `/v1/coupons/${coupon}`;
-        Coupon response = check self.clientEp->get(path);
+        string resourcePath = string `/v1/coupons/${coupon}`;
+        Coupon response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Creates a new customer object.</p>
@@ -97,12 +98,12 @@ public isolated client class Client {
     # + payload - Customer details 
     # + return - Successful response. 
     remote isolated function createCustomer(V1CustomersBody payload) returns Customer|error {
-        string path = string `/v1/customers`;
+        string resourcePath = string `/v1/customers`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"address": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "invoice_settings": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "preferred_locales": {style: DEEPOBJECT, explode: true}, "shipping": {style: DEEPOBJECT, explode: true}, "tax": {style: DEEPOBJECT, explode: true}, "tax_id_data": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Customer response = check self.clientEp->post(path, request);
+        Customer response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Retrieves the details of an existing customer. You need only supply the unique customer identifier that was returned upon customer creation.</p>
@@ -111,11 +112,11 @@ public isolated client class Client {
     # + expand - Specifies which fields in the response should be expanded. 
     # + return - Successful response. 
     remote isolated function getCustomer(string customer, string[]? expand = ()) returns InlineResponse2001|error {
-        string path = string `/v1/customers/${customer}`;
+        string resourcePath = string `/v1/customers/${customer}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->get(path);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Updates the specified customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged. For example, if you pass the <strong>source</strong> parameter, that becomes the customer’s active source (e.g., a card) to be used for all charges in the future. When you update a customer to a new valid card source by passing the <strong>source</strong> parameter: for each of the customer’s current subscriptions, if the subscription bills automatically and is in the <code>past_due</code> state, then the latest open invoice for the subscription with automatic collection enabled will be retried. This retry will not count as an automatic retry, and will not affect the next regularly scheduled payment for the invoice. Changing the <strong>default_source</strong> for a customer will not trigger this behavior.</p>
@@ -126,12 +127,12 @@ public isolated client class Client {
     # + payload - Customer details 
     # + return - Successful response. 
     remote isolated function updateCustomer(string customer, CustomersCustomerBody payload) returns Customer|error {
-        string path = string `/v1/customers/${customer}`;
+        string resourcePath = string `/v1/customers/${customer}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"address": {style: DEEPOBJECT, explode: true}, "bank_account": {style: DEEPOBJECT, explode: true}, "card": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "invoice_settings": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "preferred_locales": {style: DEEPOBJECT, explode: true}, "shipping": {style: DEEPOBJECT, explode: true}, "tax": {style: DEEPOBJECT, explode: true}, "trial_end": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Customer response = check self.clientEp->post(path, request);
+        Customer response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
@@ -139,8 +140,8 @@ public isolated client class Client {
     # + customer - Customer Id 
     # + return - Successful response. 
     remote isolated function deleteCustomer(string customer) returns DeletedCustomer|error {
-        string path = string `/v1/customers/${customer}`;
-        DeletedCustomer response = check self.clientEp->delete(path);
+        string resourcePath = string `/v1/customers/${customer}`;
+        DeletedCustomer response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # <p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
@@ -157,11 +158,11 @@ public isolated client class Client {
     # + subscription - Only return invoices for the subscription specified by this subscription ID. 
     # + return - Successful response. 
     remote isolated function listInvoices(string? collectionMethod = (), Created? created = (), string? customer = (), DueDate? dueDate = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? status = (), string? subscription = ()) returns InvoicesList|error {
-        string path = string `/v1/invoices`;
+        string resourcePath = string `/v1/invoices`;
         map<anydata> queryParam = {"collection_method": collectionMethod, "created": created, "customer": customer, "due_date": dueDate, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter, "status": status, "subscription": subscription};
-        map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InvoicesList response = check self.clientEp->get(path);
+        map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "due_date": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InvoicesList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>This endpoint creates a draft invoice for a given customer. The draft invoice created pulls in all pending invoice items on that customer, including prorations. The invoice remains a draft until you <a href="#finalize_invoice">finalize</a> the invoice, which allows you to <a href="#pay_invoice">pay</a> or <a href="#send_invoice">send</a> the invoice to your customers.</p>
@@ -169,12 +170,12 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function createInvoice(V1InvoicesBody payload) returns Invoice|error {
-        string path = string `/v1/invoices`;
+        string resourcePath = string `/v1/invoices`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"account_tax_ids": {style: DEEPOBJECT, explode: true}, "automatic_tax": {style: DEEPOBJECT, explode: true}, "custom_fields": {style: DEEPOBJECT, explode: true}, "default_tax_rates": {style: DEEPOBJECT, explode: true}, "discounts": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "payment_settings": {style: DEEPOBJECT, explode: true}, "transfer_data": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Invoice response = check self.clientEp->post(path, request);
+        Invoice response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Retrieves the invoice with the given ID.</p>
@@ -183,11 +184,11 @@ public isolated client class Client {
     # + invoice - Invoice Id 
     # + return - Successful response. 
     remote isolated function getInvoice(string invoice, string[]? expand = ()) returns Invoice|error {
-        string path = string `/v1/invoices/${invoice}`;
+        string resourcePath = string `/v1/invoices/${invoice}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Invoice response = check self.clientEp->get(path);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Invoice response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Draft invoices are fully editable. Once an invoice is <a href="/docs/billing/invoices/workflow#finalized">finalized</a>,
@@ -201,12 +202,12 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function updateInvoice(string invoice, InvoicesInvoiceBody payload) returns Invoice|error {
-        string path = string `/v1/invoices/${invoice}`;
+        string resourcePath = string `/v1/invoices/${invoice}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"account_tax_ids": {style: DEEPOBJECT, explode: true}, "automatic_tax": {style: DEEPOBJECT, explode: true}, "custom_fields": {style: DEEPOBJECT, explode: true}, "default_tax_rates": {style: DEEPOBJECT, explode: true}, "discounts": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "on_behalf_of": {style: DEEPOBJECT, explode: true}, "payment_settings": {style: DEEPOBJECT, explode: true}, "transfer_data": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Invoice response = check self.clientEp->post(path, request);
+        Invoice response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="#void_invoice">voided</a>.</p>
@@ -214,8 +215,8 @@ public isolated client class Client {
     # + invoice - Invoice Id 
     # + return - Successful response. 
     remote isolated function deleteInvoice(string invoice) returns DeletedInvoice|error {
-        string path = string `/v1/invoices/${invoice}`;
-        DeletedInvoice response = check self.clientEp->delete(path);
+        string resourcePath = string `/v1/invoices/${invoice}`;
+        DeletedInvoice response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # <p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
@@ -224,12 +225,12 @@ public isolated client class Client {
     # + payload - Invoice payment details 
     # + return - Successful response. 
     remote isolated function payInvoice(string invoice, InvoicePayBody payload) returns Invoice|error {
-        string path = string `/v1/invoices/${invoice}/pay`;
+        string resourcePath = string `/v1/invoices/${invoice}/pay`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Invoice response = check self.clientEp->post(path, request);
+        Invoice response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Stripe will automatically send invoices to customers according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to manually send an invoice to your customer out of the normal schedule, you can do so. When sending invoices that have already been paid, there will be no reference to the payment in the email.</p>
@@ -240,12 +241,12 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function sendInvoice(string invoice, InvoiceSendBody payload) returns Invoice|error {
-        string path = string `/v1/invoices/${invoice}/send`;
+        string resourcePath = string `/v1/invoices/${invoice}/send`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Invoice response = check self.clientEp->post(path, request);
+        Invoice response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Mark a finalized invoice as void. This cannot be undone. Voiding an invoice is similar to <a href="#delete_invoice">deletion</a>, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found.</p>
@@ -254,12 +255,12 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function voidInvoice(string invoice, InvoiceVoidBody payload) returns Invoice|error {
-        string path = string `/v1/invoices/${invoice}/void`;
+        string resourcePath = string `/v1/invoices/${invoice}/void`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Invoice response = check self.clientEp->post(path, request);
+        Invoice response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Marking an invoice as uncollectible is useful for keeping track of bad debts that can be written off for accounting purposes.</p>
@@ -268,12 +269,12 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function markInvoiceUncollectable(string invoice, InvoiceMarkUncollectibleBody payload) returns Invoice|error {
-        string path = string `/v1/invoices/${invoice}/mark_uncollectible`;
+        string resourcePath = string `/v1/invoices/${invoice}/mark_uncollectible`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Invoice response = check self.clientEp->post(path, request);
+        Invoice response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>When retrieving an invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
@@ -284,10 +285,10 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + return - Successful response. 
     remote isolated function getInvoicesInvoiceLines(string invoice, string? endingBefore = (), int? 'limit = (), string? startingAfter = ()) returns InvoiceLinesList|error {
-        string path = string `/v1/invoices/${invoice}/lines`;
+        string resourcePath = string `/v1/invoices/${invoice}/lines`;
         map<anydata> queryParam = {"ending_before": endingBefore, "limit": 'limit, "starting_after": startingAfter};
-        path = path + check getPathForQueryParam(queryParam);
-        InvoiceLinesList response = check self.clientEp->get(path);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InvoiceLinesList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>At any time, you can preview the upcoming invoice for a customer. This will show you all the charges that are pending, including subscription renewal charges, invoice item charges, etc. It will also show you any discounts that are applicable to the invoice.</p>
@@ -317,11 +318,11 @@ public isolated client class Client {
     # + subscriptionTrialFromPlan - Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `subscription_trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `subscription_trial_end` is not allowed. 
     # + return - Successful response. 
     remote isolated function getInvoicesUpcoming(AutomaticTaxParam1? automaticTax = (), string? coupon = (), string? customer = (), CustomerDetailsParam? customerDetails = (), Discounts? discounts = (), InvoiceItemPreviewParams[]? invoiceItems = (), string? schedule = (), string? subscription = (), SubscriptionBillingCycleAnchor? subscriptionBillingCycleAnchor = (), SubscriptionCancelAt? subscriptionCancelAt = (), boolean? subscriptionCancelAtPeriodEnd = (), boolean? subscriptionCancelNow = (), SubscriptionDefaultTaxRates? subscriptionDefaultTaxRates = (), GetInvoicesUpcomingRequestBody[]? subscriptionItems = (), string? subscriptionProrationBehavior = (), int? subscriptionProrationDate = (), int? subscriptionStartDate = (), SubscriptionTrialEnd? subscriptionTrialEnd = (), boolean? subscriptionTrialFromPlan = ()) returns Invoice|error {
-        string path = string `/v1/invoices/upcoming`;
+        string resourcePath = string `/v1/invoices/upcoming`;
         map<anydata> queryParam = {"automatic_tax": automaticTax, "coupon": coupon, "customer": customer, "customer_details": customerDetails, "discounts": discounts, "invoice_items": invoiceItems, "schedule": schedule, "subscription": subscription, "subscription_billing_cycle_anchor": subscriptionBillingCycleAnchor, "subscription_cancel_at": subscriptionCancelAt, "subscription_cancel_at_period_end": subscriptionCancelAtPeriodEnd, "subscription_cancel_now": subscriptionCancelNow, "subscription_default_tax_rates": subscriptionDefaultTaxRates, "subscription_items": subscriptionItems, "subscription_proration_behavior": subscriptionProrationBehavior, "subscription_proration_date": subscriptionProrationDate, "subscription_start_date": subscriptionStartDate, "subscription_trial_end": subscriptionTrialEnd, "subscription_trial_from_plan": subscriptionTrialFromPlan};
-        map<Encoding> queryParamEncoding = {"invoice_items": {style: DEEPOBJECT, explode: true}, "subscription_items": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Invoice response = check self.clientEp->get(path);
+        map<Encoding> queryParamEncoding = {"automatic_tax": {style: DEEPOBJECT, explode: true}, "customer_details": {style: DEEPOBJECT, explode: true}, "discounts": {style: DEEPOBJECT, explode: true}, "invoice_items": {style: DEEPOBJECT, explode: true}, "subscription_billing_cycle_anchor": {style: DEEPOBJECT, explode: true}, "subscription_cancel_at": {style: DEEPOBJECT, explode: true}, "subscription_default_tax_rates": {style: DEEPOBJECT, explode: true}, "subscription_items": {style: DEEPOBJECT, explode: true}, "subscription_trial_end": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Invoice response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>When retrieving an upcoming invoice, you’ll get a <strong>lines</strong> property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.</p>
@@ -350,11 +351,11 @@ public isolated client class Client {
     # + subscriptionTrialFromPlan - Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `subscription_trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `subscription_trial_end` is not allowed. 
     # + return - Successful response. 
     remote isolated function getInvoicesUpcomingLines(AutomaticTaxParam2? automaticTax = (), string? coupon = (), string? customer = (), CustomerDetailsParam1? customerDetails = (), Discounts1? discounts = (), string? endingBefore = (), InvoiceItemPreviewParams[]? invoiceItems = (), int? 'limit = (), string? schedule = (), string? startingAfter = (), string? subscription = (), SubscriptionBillingCycleAnchor1? subscriptionBillingCycleAnchor = (), SubscriptionCancelAt1? subscriptionCancelAt = (), boolean? subscriptionCancelAtPeriodEnd = (), boolean? subscriptionCancelNow = (), SubscriptionDefaultTaxRates1? subscriptionDefaultTaxRates = (), GetInvoicesUpcomingRequestBody[]? subscriptionItems = (), string? subscriptionProrationBehavior = (), int? subscriptionProrationDate = (), int? subscriptionStartDate = (), SubscriptionTrialEnd1? subscriptionTrialEnd = (), boolean? subscriptionTrialFromPlan = ()) returns InvoiceLinesList|error {
-        string path = string `/v1/invoices/upcoming/lines`;
+        string resourcePath = string `/v1/invoices/upcoming/lines`;
         map<anydata> queryParam = {"automatic_tax": automaticTax, "coupon": coupon, "customer": customer, "customer_details": customerDetails, "discounts": discounts, "ending_before": endingBefore, "invoice_items": invoiceItems, "limit": 'limit, "schedule": schedule, "starting_after": startingAfter, "subscription": subscription, "subscription_billing_cycle_anchor": subscriptionBillingCycleAnchor, "subscription_cancel_at": subscriptionCancelAt, "subscription_cancel_at_period_end": subscriptionCancelAtPeriodEnd, "subscription_cancel_now": subscriptionCancelNow, "subscription_default_tax_rates": subscriptionDefaultTaxRates, "subscription_items": subscriptionItems, "subscription_proration_behavior": subscriptionProrationBehavior, "subscription_proration_date": subscriptionProrationDate, "subscription_start_date": subscriptionStartDate, "subscription_trial_end": subscriptionTrialEnd, "subscription_trial_from_plan": subscriptionTrialFromPlan};
-        map<Encoding> queryParamEncoding = {"invoice_items": {style: DEEPOBJECT, explode: true}, "subscription_items": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InvoiceLinesList response = check self.clientEp->get(path);
+        map<Encoding> queryParamEncoding = {"automatic_tax": {style: DEEPOBJECT, explode: true}, "customer_details": {style: DEEPOBJECT, explode: true}, "discounts": {style: DEEPOBJECT, explode: true}, "invoice_items": {style: DEEPOBJECT, explode: true}, "subscription_billing_cycle_anchor": {style: DEEPOBJECT, explode: true}, "subscription_cancel_at": {style: DEEPOBJECT, explode: true}, "subscription_default_tax_rates": {style: DEEPOBJECT, explode: true}, "subscription_items": {style: DEEPOBJECT, explode: true}, "subscription_trial_end": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InvoiceLinesList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Returns a list of PaymentMethods for a given Customer</p>
@@ -367,11 +368,11 @@ public isolated client class Client {
     # + 'type - A required filter on the list, based on the object `type` field. 
     # + return - Successful response. 
     remote isolated function listPaymentMethods(string customer, string 'type, string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = ()) returns PaymentFlowsPaymentMethodList|error {
-        string path = string `/v1/payment_methods`;
+        string resourcePath = string `/v1/payment_methods`;
         map<anydata> queryParam = {"customer": customer, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter, "type": 'type};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        PaymentFlowsPaymentMethodList response = check self.clientEp->get(path);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PaymentFlowsPaymentMethodList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
@@ -381,12 +382,12 @@ public isolated client class Client {
     # + payload - Payment method details 
     # + return - Successful response. 
     remote isolated function createPaymentMethod(V1PaymentMethodsBody payload) returns PaymentMethod|error {
-        string path = string `/v1/payment_methods`;
+        string resourcePath = string `/v1/payment_methods`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"acss_debit": {style: DEEPOBJECT, explode: true}, "afterpay_clearpay": {style: DEEPOBJECT, explode: true}, "alipay": {style: DEEPOBJECT, explode: true}, "au_becs_debit": {style: DEEPOBJECT, explode: true}, "bacs_debit": {style: DEEPOBJECT, explode: true}, "bancontact": {style: DEEPOBJECT, explode: true}, "billing_details": {style: DEEPOBJECT, explode: true}, "boleto": {style: DEEPOBJECT, explode: true}, "card": {style: DEEPOBJECT, explode: true}, "eps": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "fpx": {style: DEEPOBJECT, explode: true}, "giropay": {style: DEEPOBJECT, explode: true}, "grabpay": {style: DEEPOBJECT, explode: true}, "ideal": {style: DEEPOBJECT, explode: true}, "interac_present": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "oxxo": {style: DEEPOBJECT, explode: true}, "p24": {style: DEEPOBJECT, explode: true}, "sepa_debit": {style: DEEPOBJECT, explode: true}, "sofort": {style: DEEPOBJECT, explode: true}, "wechat_pay": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        PaymentMethod response = check self.clientEp->post(path, request);
+        PaymentMethod response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Retrieves a PaymentMethod object.</p>
@@ -395,11 +396,11 @@ public isolated client class Client {
     # + paymentMethod - Payment method Id 
     # + return - Successful response. 
     remote isolated function getPaymentMethod(string paymentMethod, string[]? expand = ()) returns PaymentMethod|error {
-        string path = string `/v1/payment_methods/${paymentMethod}`;
+        string resourcePath = string `/v1/payment_methods/${paymentMethod}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        PaymentMethod response = check self.clientEp->get(path);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PaymentMethod response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Updates a PaymentMethod object. A PaymentMethod must be attached a customer to be updated.</p>
@@ -408,12 +409,12 @@ public isolated client class Client {
     # + payload - Payment method details 
     # + return - Successful response. 
     remote isolated function updatePaymentMethod(string paymentMethod, PaymentMethodsPaymentMethodBody payload) returns PaymentMethod|error {
-        string path = string `/v1/payment_methods/${paymentMethod}`;
+        string resourcePath = string `/v1/payment_methods/${paymentMethod}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"billing_details": {style: DEEPOBJECT, explode: true}, "card": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        PaymentMethod response = check self.clientEp->post(path, request);
+        PaymentMethod response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Attaches a PaymentMethod object to a Customer.</p>
@@ -432,11 +433,11 @@ public isolated client class Client {
     # + payload - The ID of the customer to which to attach the PaymentMethod 
     # + return - Successful response. 
     remote isolated function attachPaymentMethodtoCustomer(string paymentMethod, PaymentMethodAttachBody payload) returns PaymentMethod|error {
-        string path = string `/v1/payment_methods/${paymentMethod}/attach`;
+        string resourcePath = string `/v1/payment_methods/${paymentMethod}/attach`;
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        PaymentMethod response = check self.clientEp->post(path, request);
+        PaymentMethod response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Detaches a PaymentMethod object from a Customer.</p>
@@ -445,12 +446,12 @@ public isolated client class Client {
     # + payload - Additional details 
     # + return - Successful response. 
     remote isolated function detachPaymentMethodfromCustomer(string paymentMethod, PaymentMethodDetachBody payload) returns PaymentMethod|error {
-        string path = string `/v1/payment_methods/${paymentMethod}/detach`;
+        string resourcePath = string `/v1/payment_methods/${paymentMethod}/detach`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        PaymentMethod response = check self.clientEp->post(path, request);
+        PaymentMethod response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Creates a new price for an existing product. The price can be recurring or one-time.</p>
@@ -458,12 +459,12 @@ public isolated client class Client {
     # + payload - Price details 
     # + return - Successful response. 
     remote isolated function createPrice(V1PricesBody payload) returns Price|error {
-        string path = string `/v1/prices`;
+        string resourcePath = string `/v1/prices`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "product_data": {style: DEEPOBJECT, explode: true}, "recurring": {style: DEEPOBJECT, explode: true}, "tiers": {style: DEEPOBJECT, explode: true}, "transform_quantity": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Price response = check self.clientEp->post(path, request);
+        Price response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Updates the specified price by setting the values of the parameters passed. Any parameters not provided are left unchanged.</p>
@@ -472,12 +473,12 @@ public isolated client class Client {
     # + payload - Price details 
     # + return - Successful response. 
     remote isolated function updatePrice(string price, PricesPriceBody payload) returns Price|error {
-        string path = string `/v1/prices/${price}`;
+        string resourcePath = string `/v1/prices/${price}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Price response = check self.clientEp->post(path, request);
+        Price response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Creates a new product object.</p>
@@ -485,12 +486,12 @@ public isolated client class Client {
     # + payload - Product details 
     # + return - Successful response. 
     remote isolated function createProduct(V1ProductsBody payload) returns Product|error {
-        string path = string `/v1/products`;
+        string resourcePath = string `/v1/products`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}, "images": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "package_dimensions": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Product response = check self.clientEp->post(path, request);
+        Product response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Updates the specific product by setting the values of the parameters passed. Any parameters not provided will be left unchanged.</p>
@@ -499,12 +500,12 @@ public isolated client class Client {
     # + payload - Product details 
     # + return - Successful response. 
     remote isolated function updateProduct(string id, ProductsIdBody payload) returns Product|error {
-        string path = string `/v1/products/${id}`;
+        string resourcePath = string `/v1/products/${id}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}, "images": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "package_dimensions": {style: DEEPOBJECT, explode: true}, "tax_code": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Product response = check self.clientEp->post(path, request);
+        Product response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Updates the plan or quantity of an item on a current subscription.</p>
@@ -513,12 +514,12 @@ public isolated client class Client {
     # + payload - Subscription item details 
     # + return - Successful response. 
     remote isolated function updateSubscriptionItem(string item, SubscriptionItemsItemBody payload) returns SubscriptionItem|error {
-        string path = string `/v1/subscription_items/${item}`;
+        string resourcePath = string `/v1/subscription_items/${item}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"billing_thresholds": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "price_data": {style: DEEPOBJECT, explode: true}, "tax_rates": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        SubscriptionItem response = check self.clientEp->post(path, request);
+        SubscriptionItem response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Creates a usage record for a specified subscription item and date, and fills it with a quantity.</p>
@@ -533,12 +534,12 @@ public isolated client class Client {
     # + payload - Usage record details 
     # + return - Successful response. 
     remote isolated function createSubscriptionItemUsageRecord(string subscriptionItem, SubscriptionItemUsageRecordsBody payload) returns UsageRecord|error {
-        string path = string `/v1/subscription_items/${subscriptionItem}/usage_records`;
+        string resourcePath = string `/v1/subscription_items/${subscriptionItem}/usage_records`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        UsageRecord response = check self.clientEp->post(path, request);
+        UsageRecord response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
@@ -556,11 +557,11 @@ public isolated client class Client {
     # + status - The status of the subscriptions to retrieve. Passing in a value of `canceled` will return all canceled subscriptions, including those belonging to deleted customers. Pass `ended` to find subscriptions that are canceled and subscriptions that are expired due to [incomplete payment](https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses). Passing in a value of `all` will return subscriptions of all statuses. If no value is supplied, all subscriptions that have not been canceled are returned. 
     # + return - Successful response. 
     remote isolated function listSubscriptions(string? collectionMethod = (), Created1? created = (), CurrentPeriodEnd? currentPeriodEnd = (), CurrentPeriodStart? currentPeriodStart = (), string? customer = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? price = (), string? startingAfter = (), string? status = ()) returns InlineResponse2002|error {
-        string path = string `/v1/subscriptions`;
+        string resourcePath = string `/v1/subscriptions`;
         map<anydata> queryParam = {"collection_method": collectionMethod, "created": created, "current_period_end": currentPeriodEnd, "current_period_start": currentPeriodStart, "customer": customer, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "price": price, "starting_after": startingAfter, "status": status};
-        map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2002 response = check self.clientEp->get(path);
+        map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "current_period_end": {style: DEEPOBJECT, explode: true}, "current_period_start": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Creates a new subscription on an existing customer. Each customer can have up to 500 active or scheduled subscriptions.</p>
@@ -568,12 +569,12 @@ public isolated client class Client {
     # + payload - Subscription details 
     # + return - Successful response. 
     remote isolated function createSubscriptions(V1SubscriptionsBody payload) returns Subscription|error {
-        string path = string `/v1/subscriptions`;
+        string resourcePath = string `/v1/subscriptions`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"add_invoice_items": {style: DEEPOBJECT, explode: true}, "automatic_tax": {style: DEEPOBJECT, explode: true}, "billing_thresholds": {style: DEEPOBJECT, explode: true}, "default_tax_rates": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "items": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "payment_settings": {style: DEEPOBJECT, explode: true}, "pending_invoice_item_interval": {style: DEEPOBJECT, explode: true}, "transfer_data": {style: DEEPOBJECT, explode: true}, "trial_end": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Subscription response = check self.clientEp->post(path, request);
+        Subscription response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Retrieves the subscription with the given ID.</p>
@@ -582,11 +583,11 @@ public isolated client class Client {
     # + subscriptionExposedId - Subscription Id 
     # + return - Successful response. 
     remote isolated function getSubscription(string subscriptionExposedId, string[]? expand = ()) returns Subscription|error {
-        string path = string `/v1/subscriptions/${subscriptionExposedId}`;
+        string resourcePath = string `/v1/subscriptions/${subscriptionExposedId}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Subscription response = check self.clientEp->get(path);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Subscription response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Updates an existing subscription on a customer to match the specified parameters. When changing plans or quantities, we will optionally prorate the price we charge next month to make up for any price changes. To preview how the proration will be calculated, use the <a href="#upcoming_invoice">upcoming invoice</a> endpoint.</p>
@@ -595,12 +596,12 @@ public isolated client class Client {
     # + payload - Subscription details 
     # + return - Successful response. 
     remote isolated function updateSubscription(string subscriptionExposedId, SubscriptionsSubscriptionExposedIdBody payload) returns Subscription|error {
-        string path = string `/v1/subscriptions/${subscriptionExposedId}`;
+        string resourcePath = string `/v1/subscriptions/${subscriptionExposedId}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"add_invoice_items": {style: DEEPOBJECT, explode: true}, "automatic_tax": {style: DEEPOBJECT, explode: true}, "billing_thresholds": {style: DEEPOBJECT, explode: true}, "cancel_at": {style: DEEPOBJECT, explode: true}, "default_tax_rates": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "items": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "pause_collection": {style: DEEPOBJECT, explode: true}, "payment_settings": {style: DEEPOBJECT, explode: true}, "pending_invoice_item_interval": {style: DEEPOBJECT, explode: true}, "transfer_data": {style: DEEPOBJECT, explode: true}, "trial_end": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        Subscription response = check self.clientEp->post(path, request);
+        Subscription response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Cancels a customer’s subscription immediately. The customer will not be charged again for the subscription.</p>
@@ -612,8 +613,8 @@ public isolated client class Client {
     # + subscriptionExposedId - subscription Id 
     # + return - Successful response. 
     remote isolated function deleteSubscription(string subscriptionExposedId) returns Subscription|error {
-        string path = string `/v1/subscriptions/${subscriptionExposedId}`;
-        Subscription response = check self.clientEp->delete(path);
+        string resourcePath = string `/v1/subscriptions/${subscriptionExposedId}`;
+        Subscription response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # <p>Retrieves the list of your subscription schedules.</p>
@@ -629,10 +630,11 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + return - Successful response. 
     remote isolated function listSubscriptionSchedules(CreatedDetails? canceledAt = (), CreatedDetails? completedAt = (), CreatedDetails? created = (), string? customer = (), string? endingBefore = (), int? 'limit = (), CreatedDetails? releasedAt = (), boolean? scheduled = (), string? startingAfter = ()) returns InlineResponse2003|error {
-        string path = string `/v1/subscription_schedules`;
+        string resourcePath = string `/v1/subscription_schedules`;
         map<anydata> queryParam = {"canceled_at": canceledAt, "completed_at": completedAt, "created": created, "customer": customer, "ending_before": endingBefore, "limit": 'limit, "released_at": releasedAt, "scheduled": scheduled, "starting_after": startingAfter};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp->get(path);
+        map<Encoding> queryParamEncoding = {"canceled_at": {style: DEEPOBJECT, explode: true}, "completed_at": {style: DEEPOBJECT, explode: true}, "created": {style: DEEPOBJECT, explode: true}, "released_at": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Creates a new subscription schedule object. Each customer can have up to 500 active or scheduled subscriptions.</p>
@@ -640,12 +642,12 @@ public isolated client class Client {
     # + payload - Subscription details 
     # + return - Successful response. 
     remote isolated function createSubscriptionSchedule(V1SubscriptionSchedulesBody payload) returns SubscriptionSchedule|error {
-        string path = string `/v1/subscription_schedules`;
+        string resourcePath = string `/v1/subscription_schedules`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"default_settings": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "phases": {style: DEEPOBJECT, explode: true}, "start_date": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        SubscriptionSchedule response = check self.clientEp->post(path, request);
+        SubscriptionSchedule response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Retrieves the details of an existing subscription schedule. You only need to supply the unique subscription schedule identifier that was returned upon subscription schedule creation.</p>
@@ -653,8 +655,8 @@ public isolated client class Client {
     # + schedule - Subscription schedule Id 
     # + return - Successful response. 
     remote isolated function getSubscriptionSchedule(string schedule) returns SubscriptionSchedule|error {
-        string path = string `/v1/subscription_schedules/${schedule}`;
-        SubscriptionSchedule response = check self.clientEp->get(path);
+        string resourcePath = string `/v1/subscription_schedules/${schedule}`;
+        SubscriptionSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
     # <p>Updates an existing subscription schedule.</p>
@@ -663,12 +665,12 @@ public isolated client class Client {
     # + payload - Subscription schedule details 
     # + return - Successful response. 
     remote isolated function updateSubscriptionSchedule(string schedule, SubscriptionSchedulesScheduleBody payload) returns SubscriptionSchedule|error {
-        string path = string `/v1/subscription_schedules/${schedule}`;
+        string resourcePath = string `/v1/subscription_schedules/${schedule}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"default_settings": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "phases": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        SubscriptionSchedule response = check self.clientEp->post(path, request);
+        SubscriptionSchedule response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Cancels a subscription schedule and its associated subscription immediately (if the subscription schedule has an active subscription). A subscription schedule can only be canceled if its status is <code>not_started</code> or <code>active</code>.</p>
@@ -677,12 +679,12 @@ public isolated client class Client {
     # + payload - Subscription schedule details 
     # + return - Successful response. 
     remote isolated function cancelSubscriptionSchedule(string schedule, ScheduleCancelBody payload) returns SubscriptionSchedule|error {
-        string path = string `/v1/subscription_schedules/${schedule}/cancel`;
+        string resourcePath = string `/v1/subscription_schedules/${schedule}/cancel`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        SubscriptionSchedule response = check self.clientEp->post(path, request);
+        SubscriptionSchedule response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # <p>Releases the subscription schedule immediately, which will stop scheduling of its phases, but leave any existing subscription in place. A schedule can only be released if its status is <code>not_started</code> or <code>active</code>. If the subscription schedule is currently associated with a subscription, releasing it will remove its <code>subscription</code> property and set the subscription’s ID to the <code>released_subscription</code> property.</p>
@@ -691,12 +693,12 @@ public isolated client class Client {
     # + payload - Subscription schedule details 
     # + return - Successful response. 
     remote isolated function releaseSubscriptionSchedule(string schedule, ScheduleReleaseBody payload) returns SubscriptionSchedule|error {
-        string path = string `/v1/subscription_schedules/${schedule}/release`;
+        string resourcePath = string `/v1/subscription_schedules/${schedule}/release`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        SubscriptionSchedule response = check self.clientEp->post(path, request);
+        SubscriptionSchedule response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

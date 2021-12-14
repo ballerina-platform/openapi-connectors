@@ -60,7 +60,7 @@ public type Activity record {
     # The check number for a customer payment. This is a reference number that's available only when processed through a settlement run and not a check number.
     string? paymentReference?;
     # The positive or negative sign of the transaction amount for this customer transaction. This is for internal use only on a REST API.
-    record  { }  transactionAmountSigned?;
+    record {} transactionAmountSigned?;
     # The date of the customer transaction. This field is for internal use only on a REST API.
     string? transactionDate?;
     # The transaction type of this customer transaction. This is for internal use only on a REST API.

@@ -204,14 +204,14 @@ public type ErrorModelReference record {
 };
 
 public type CompanySuiRateDetails record {
-    CompanyInstanceDetail? companyInstance?;
-    StateInstanceDetail? stateInstance?;
+    CompanyInstanceDetail? companyInstance;
+    StateInstanceDetail? stateInstance;
     # If true, the SUI rate is exempt.
     boolean? exempt?;
     # The start date for company tax reporting.
-    string? startDate?;
+    string? startDate;
     # The deduction for company tax reporting.
-    string? taxCode?;
+    string? taxCode;
     # The payroll tax authority EIN field for company tax reporting.
     string? ein?;
     # The end date for company tax reporting.
@@ -413,11 +413,16 @@ public type FacetsModelReferenceInner record {
     # The alias used to select the facet
     string? facetParameter?;
     # the facet values
-    record  { # The number of instances returned by this facet
-        int? count?; # wid / id / reference id
-        string? id; # A description of the facet
-        string? descriptor?; # A link to the instance
-        string? href?;} []? values?;
+    record {
+        # The number of instances returned by this facet
+        int? count?;
+        # wid / id / reference id
+        string? id;
+        # A description of the facet
+        string? descriptor?;
+        # A link to the instance
+        string? href?;
+    }[]? values?;
 };
 
 public type StateInstance record {

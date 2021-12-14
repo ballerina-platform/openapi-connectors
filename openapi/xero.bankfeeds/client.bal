@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -69,6 +67,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.xero.com/bankfeeds.xro/1.0") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Searches for feed connections
     #
@@ -77,12 +76,12 @@ public isolated client class Client {
     # + pageSize - Page size which specifies how many records per page will be returned (default 10). Example - https://api.xero.com/bankfeeds.xro/1.0/FeedConnections?pageSize=100 to specify page size of 100. 
     # + return - search results matching criteria returned with pagination and items array 
     remote isolated function getFeedConnections(string xeroTenantId, int? page = (), int? pageSize = ()) returns FeedConnections|error {
-        string  path = string `/FeedConnections`;
+        string resourcePath = string `/FeedConnections`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FeedConnections response = check self.clientEp-> get(path, accHeaders, targetType = FeedConnections);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FeedConnections response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create one or more new feed connection
@@ -91,13 +90,13 @@ public isolated client class Client {
     # + payload - Feed Connection(s) array object in the body 
     # + return - success new feed connection(s)response 
     remote isolated function createFeedConnections(string xeroTenantId, FeedConnections payload) returns FeedConnections|error {
-        string  path = string `/FeedConnections`;
+        string resourcePath = string `/FeedConnections`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FeedConnections response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FeedConnections);
+        request.setPayload(jsonBody, "application/json");
+        FeedConnections response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve single feed connection based on a unique id provided
@@ -106,10 +105,10 @@ public isolated client class Client {
     # + id - Unique identifier for retrieving single object 
     # + return - success returns a FeedConnection object matching the id in response 
     remote isolated function getFeedConnection(string xeroTenantId, string id) returns FeedConnection|error {
-        string  path = string `/FeedConnections/${id}`;
+        string resourcePath = string `/FeedConnections/${id}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FeedConnection response = check self.clientEp-> get(path, accHeaders, targetType = FeedConnection);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FeedConnection response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete an existing feed connection
@@ -118,13 +117,13 @@ public isolated client class Client {
     # + payload - Feed Connections array object in the body 
     # + return - Success response for deleted feed connection 
     remote isolated function deleteFeedConnections(string xeroTenantId, FeedConnections payload) returns FeedConnections|error {
-        string  path = string `/FeedConnections/DeleteRequests`;
+        string resourcePath = string `/FeedConnections/DeleteRequests`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FeedConnections response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FeedConnections);
+        request.setPayload(jsonBody, "application/json");
+        FeedConnections response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve all statements
@@ -136,12 +135,12 @@ public isolated client class Client {
     # + xeroUserId - Xero-User-Id 
     # + return - success returns Statements array of objects response 
     remote isolated function getStatements(string xeroTenantId, int? page = (), int? pageSize = (), string xeroApplicationId = "00000000-0000-0000-0000-0000000010000", string xeroUserId = "00000000-0000-0000-0000-0000030000000") returns Statements|error {
-        string  path = string `/Statements`;
+        string resourcePath = string `/Statements`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId, "Xero-Application-Id": xeroApplicationId, "Xero-User-Id": xeroUserId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Statements response = check self.clientEp-> get(path, accHeaders, targetType = Statements);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Statements response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates one or more new statements
@@ -150,13 +149,13 @@ public isolated client class Client {
     # + payload - Statements array of objects in the body 
     # + return - Success returns Statements array of objects in response 
     remote isolated function createStatements(string xeroTenantId, Statements payload) returns Statements|error {
-        string  path = string `/Statements`;
+        string resourcePath = string `/Statements`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Statements response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Statements);
+        request.setPayload(jsonBody, "application/json");
+        Statements response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve single statement based on unique id provided
@@ -165,58 +164,10 @@ public isolated client class Client {
     # + statementId - statement id for single object 
     # + return - search results matching id for single statement 
     remote isolated function getStatement(string xeroTenantId, string statementId) returns Statement|error {
-        string  path = string `/Statements/${statementId}`;
+        string resourcePath = string `/Statements/${statementId}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Statement response = check self.clientEp-> get(path, accHeaders, targetType = Statement);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Statement response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

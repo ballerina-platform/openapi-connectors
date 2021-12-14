@@ -45,7 +45,7 @@ public type Account record {
     # The Xero identifier for an account – specified as a string following  the endpoint name   e.g. /297c2dc5-cc47-4afd-8ec8-74990b8761e9
     string AccountID?;
     # See Account Types
-    string Type?;
+    AccountType Type?;
     # For bank accounts only (Account Type BANK)
     string BankAccountNumber?;
     # Accounts with a status of ACTIVE can be updated to ARCHIVED. See Account Status Codes
@@ -55,7 +55,7 @@ public type Account record {
     # For bank accounts only. See Bank Account types
     string BankAccountType?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # The tax type from TaxRates
     string TaxType?;
     # Boolean – describes whether account can have payments applied to it
@@ -91,7 +91,7 @@ public type Invoice record {
     # Date invoice is due – YYYY-MM-DD
     string DueDate?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # ACCREC – Unique alpha numeric code identifying invoice (when missing will auto-generate from your Organisation Invoice Settings) (max length = 255)
     string InvoiceNumber?;
     # ACCREC only – additional reference number
@@ -101,7 +101,7 @@ public type Invoice record {
     # URL link to a source document – shown as “Go to [appName]” in the Xero app
     string Url?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # The currency rate for a multicurrency invoice. If no rate is specified, the XE.com day rate is used. (max length = [18].[6])
     float CurrencyRate?;
     # See Invoice Status Codes
@@ -231,7 +231,6 @@ public type ImportSummaryAccounts record {
 };
 
 # 3 letter alpha code for the currency – see list of currency codes
-#
 public type CurrencyCode string;
 
 public type Item record {
@@ -299,7 +298,7 @@ public type RequestEmpty record {
 
 public type Currency record {
     # 3 letter alpha code for the currency – see list of currency codes
-    string Code?;
+    CurrencyCode Code?;
     # Name of Currency
     string Description?;
 };
@@ -353,7 +352,6 @@ public type ReportWithRows record {
 };
 
 # Timezone specifications
-#
 public type TimeZone string;
 
 public type Employee record {
@@ -536,7 +534,7 @@ public type Overpayment record {
     # See Overpayment Status Codes
     string Status?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # See Overpayment Line Items
     LineItem[] LineItems?;
     # The subtotal of the overpayment excluding taxes
@@ -548,7 +546,7 @@ public type Overpayment record {
     # UTC timestamp of last update to the overpayment
     string UpdatedDateUTC?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # Xero generated unique identifier
     string OverpaymentID?;
     # The currency rate for a multicurrency overpayment. If no rate is specified, the XE.com day rate is used
@@ -597,7 +595,7 @@ public type ManualJournal record {
     # Date journal was posted – YYYY-MM-DD
     string Date?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # See Manual Journal Status Codes
     string Status?;
     # Url link to a source document – shown as “Go to [appName]” in the Xero app
@@ -625,7 +623,6 @@ public type Currencies record {
 };
 
 # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-#
 public type LineAmountTypes string;
 
 public type Contacts record {
@@ -645,7 +642,7 @@ public type PurchaseOrder record {
     # Date the goods are to be delivered – YYYY-MM-DD
     string DeliveryDate?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # Unique alpha numeric code identifying purchase order (when missing will auto-generate from your Organisation Invoice Settings)
     string PurchaseOrderNumber?;
     # Additional reference number
@@ -653,7 +650,7 @@ public type PurchaseOrder record {
     # See BrandingThemes
     string BrandingThemeID?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # See Purchase Order Status Codes
     string Status?;
     # Boolean to set whether the purchase order should be marked as “sent”. This can be set only on purchase orders that have been approved or billed
@@ -703,7 +700,7 @@ public type Prepayment record {
     # See Prepayment Status Codes
     string Status?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # See Prepayment Line Items
     LineItem[] LineItems?;
     # The subtotal of the prepayment excluding taxes
@@ -717,7 +714,7 @@ public type Prepayment record {
     # UTC timestamp of last update to the prepayment
     string UpdatedDateUTC?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # Xero generated unique identifier
     string PrepaymentID?;
     # The currency rate for a multicurrency prepayment. If no rate is specified, the XE.com day rate is used
@@ -761,7 +758,7 @@ public type CreditNote record {
     # See Credit Note Status Codes
     string Status?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # See Invoice Line Items
     LineItem[] LineItems?;
     # The subtotal of the credit note excluding taxes
@@ -777,7 +774,7 @@ public type CreditNote record {
     # UTC timestamp of last update to the credit note
     string UpdatedDateUTC?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # Date when credit note was fully paid(UTC format)
     string FullyPaidOnDate?;
     # Xero generated unique identifier
@@ -883,11 +880,9 @@ public type BatchPayment record {
 };
 
 # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-#
 public type QuoteLineAmountTypes string;
 
 # The status of the quote.
-#
 public type QuoteStatusCodes string;
 
 public type OnlineInvoice record {
@@ -919,7 +914,7 @@ public type JournalLine record {
     # See Accounts
     string AccountCode?;
     # See Account Types
-    string AccountType?;
+    AccountType AccountType?;
     # See AccountCodes
     string AccountName?;
     # The description from the source transaction line item. Only returned if populated.
@@ -954,7 +949,7 @@ public type Receipt record {
     # Additional reference number
     string Reference?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # Total of receipt excluding taxes
     float SubTotal?;
     # Total tax on receipt
@@ -1027,7 +1022,6 @@ public type ExternalLink record {
 };
 
 # See Tax Types – can only be used on update calls
-#
 public type TaxType string;
 
 public type Payment record {
@@ -1206,13 +1200,13 @@ public type RepeatingInvoice record {
     # See LineItems
     LineItem[] LineItems?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # ACCREC only – additional reference number
     string Reference?;
     # See BrandingThemes
     string BrandingThemeID?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # One of the following - DRAFT or AUTHORISED – See Invoice Status Codes
     string Status?;
     # Total of invoice excluding taxes
@@ -1291,7 +1285,7 @@ public type BankTransaction record {
     # Reference for the transaction. Only supported for SPEND and RECEIVE transactions.
     string Reference?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # Exchange rate to base currency when money is spent or received. e.g.0.7500 Only used for bank transactions in non base currency. If this isn’t specified for non base currency accounts then either the user-defined rate (preference) or the XE.com day rate will be used. Setting currency is only supported on overpayments.
     float CurrencyRate?;
     # URL link to a source document – shown as “Go to App Name”
@@ -1299,7 +1293,7 @@ public type BankTransaction record {
     # See Bank Transaction Status Codes
     string Status?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    LineAmountTypes LineAmountTypes?;
     # Total of bank transaction excluding taxes
     float SubTotal?;
     # Total tax on bank transaction
@@ -1471,8 +1465,8 @@ public type Organisation record {
     # Organisation Type
     string OrganisationType?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string BaseCurrency?;
-    string CountryCode?;
+    CurrencyCode BaseCurrency?;
+    CountryCode CountryCode?;
     # Boolean to describe if organisation is a demo company.
     boolean IsDemoCompany?;
     # Will be set to ACTIVE if you can connect to organisation via the Xero API
@@ -1502,7 +1496,7 @@ public type Organisation record {
     # Timestamp when the organisation was created in Xero
     string CreatedDateUTC?;
     # Timezone specifications
-    string Timezone?;
+    TimeZone Timezone?;
     # Organisation Entity Type
     string OrganisationEntityType?;
     # A unique identifier for the organisation. Potential uses.
@@ -1635,7 +1629,6 @@ public type PaymentTerm record {
 };
 
 # See Account Types
-#
 public type AccountType string;
 
 public type Contact record {
@@ -1676,7 +1669,7 @@ public type Contact record {
     # true or false – Boolean that describes if a contact has any AR invoices entered against them. Cannot be set via PUT or POST – it is automatically set when an accounts receivable invoice is generated against this contact.
     boolean IsCustomer?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string DefaultCurrency?;
+    CurrencyCode DefaultCurrency?;
     # Store XeroNetworkKey for contacts.
     string XeroNetworkKey?;
     # The default sales account code for contacts
@@ -1726,7 +1719,7 @@ public type Quote record {
     string Reference?;
     # Terms of the quote
     string Terms?;
-    string Contact?;
+    Contact Contact?;
     # See LineItems
     LineItem[] LineItems?;
     # Date quote was issued – YYYY-MM-DD. If the Date element is not specified it will default to the current date based on the timezone setting of the organisation
@@ -1738,9 +1731,9 @@ public type Quote record {
     # Date the quote expires – YYYY-MM-DD.
     string ExpiryDateString?;
     # The status of the quote.
-    string Status?;
+    QuoteStatusCodes Status?;
     # 3 letter alpha code for the currency – see list of currency codes
-    string CurrencyCode?;
+    CurrencyCode CurrencyCode?;
     # The currency rate for a multicurrency quote
     float CurrencyRate?;
     # Total of quote excluding taxes.
@@ -1760,7 +1753,7 @@ public type Quote record {
     # Last modified date UTC format
     string UpdatedDateUTC?;
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
-    string LineAmountTypes?;
+    QuoteLineAmountTypes LineAmountTypes?;
     # A string to indicate if a invoice status
     string StatusAttributeString?;
     # Displays array of validation error messages from the API

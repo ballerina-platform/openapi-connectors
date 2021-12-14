@@ -42,7 +42,7 @@ public type Prediction record {
 
 public type PredictionResults PostPredicted[];
 
-public type LanguageDetectionRequest LanguageDetection[];
+public type LanguageDetectionRequest LanguageDetection[64];
 
 public type PostPredicted record {
     # id of the post.
@@ -73,7 +73,7 @@ public type TopicSentimentOutput record {
     Topic[] topics?;
 };
 
-public type PostRequest Post[];
+public type PostRequest Post[32];
 
 public type LanguageDetection record {
     # id of the text.

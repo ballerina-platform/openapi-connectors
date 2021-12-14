@@ -24,14 +24,14 @@ paths:
       summary: a listing of all timezones.
       operationId: listTimezones
       responses:
-        default:
+        '200':
           $ref: "#/components/responses/SuccessfulListJsonResponse"
   /timezone.txt:
     get:
       summary: a listing of all timezones.
       operationId: listTimezonesAsText
       responses:
-        default:
+        '200':
           $ref: "#/components/responses/SuccessfulListTextResponse"
 
   /timezone/{area}:

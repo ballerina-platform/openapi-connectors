@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Communication & Tonality
     #
@@ -47,15 +48,15 @@ public isolated client class Client {
     # + payload - Request Details 
     # + return - Successful Response 
     remote isolated function getCommunicationStyle(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
-        string  path = string `/communication`;
+        string resourcePath = string `/communication`;
         map<anydata> queryParam = {"all": 'all};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PredictionResults response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PredictionResults);
+        request.setPayload(jsonBody, "application/json");
+        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Emotion Analysis
@@ -64,15 +65,15 @@ public isolated client class Client {
     # + payload - Request Details 
     # + return - Successful Response 
     remote isolated function getEmotion(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
-        string  path = string `/emotion`;
+        string resourcePath = string `/emotion`;
         map<anydata> queryParam = {"all": 'all};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PredictionResults response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PredictionResults);
+        request.setPayload(jsonBody, "application/json");
+        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Emotion Analysis
@@ -81,15 +82,15 @@ public isolated client class Client {
     # + payload - Request Details 
     # + return - Successful Response 
     remote isolated function getEkmanEmotion(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
-        string  path = string `/ekman-emotion`;
+        string resourcePath = string `/ekman-emotion`;
         map<anydata> queryParam = {"all": 'all};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PredictionResults response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PredictionResults);
+        request.setPayload(jsonBody, "application/json");
+        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Personality Traits
@@ -98,15 +99,15 @@ public isolated client class Client {
     # + payload - Request Details 
     # + return - Successful Response 
     remote isolated function getPersonality(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
-        string  path = string `/personality`;
+        string resourcePath = string `/personality`;
         map<anydata> queryParam = {"all": 'all};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PredictionResults response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PredictionResults);
+        request.setPayload(jsonBody, "application/json");
+        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Sentiment Analysis
@@ -115,15 +116,15 @@ public isolated client class Client {
     # + payload - Request Details 
     # + return - Successful Response 
     remote isolated function getSentiment(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
-        string  path = string `/sentiment`;
+        string resourcePath = string `/sentiment`;
         map<anydata> queryParam = {"all": 'all};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PredictionResults response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PredictionResults);
+        request.setPayload(jsonBody, "application/json");
+        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Extracts topics and sentiments and relates them.
@@ -132,15 +133,15 @@ public isolated client class Client {
     # + payload - Request Details 
     # + return - Successful Response 
     remote isolated function getTopicSentiment(PostRequest payload, string? domain = ()) returns TopicSentimentResponse|error {
-        string  path = string `/topic-sentiment`;
+        string resourcePath = string `/topic-sentiment`;
         map<anydata> queryParam = {"domain": domain};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TopicSentimentResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TopicSentimentResponse);
+        request.setPayload(jsonBody, "application/json");
+        TopicSentimentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Language Detection
@@ -148,13 +149,13 @@ public isolated client class Client {
     # + payload - Request Details 
     # + return - Successful Response 
     remote isolated function getLanguageDetection(LanguageDetectionRequest payload) returns LanguageDetectionResponse|error {
-        string  path = string `/language-detection`;
+        string resourcePath = string `/language-detection`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LanguageDetectionResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LanguageDetectionResponse);
+        request.setPayload(jsonBody, "application/json");
+        LanguageDetectionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

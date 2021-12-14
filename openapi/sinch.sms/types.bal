@@ -55,7 +55,7 @@ public type GroupobjectAutoUpdateRemove record {
 public type UpdateBatchReq record {
     # List of phone numbers and group IDs to add to the batch.
     # Constraints: 1 to 100 elements.
-    string[] toAdd?;
+    string[100] toAdd?;
     # List of phone numbers and group IDs to remove from the batch.	
     # 
     # constraints:
@@ -97,10 +97,10 @@ public type GroupObject record {
     # Name of the group
     string name?;
     # Initial list of phone numbers in [E.164 format](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) [MSISDNs](https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628) for the group.
-    Msisdn[] members?;
+    Msisdn[10000] members?;
     # MSISDNs of child group will be included in this group. If present then this group will be auto populated.
     # Constraints: Elements must be group IDs.
-    string[] child_groups?;
+    string[10] child_groups?;
     GroupobjectAutoUpdate auto_update?;
 };
 
@@ -113,6 +113,27 @@ public type InlineResponse200 record {
     int page_size?;
     # The page of batches matching the given filters
     SendBatchObject[] batches?;
+};
+
+public type GroupsGroupIdBody1 record {
+    # phone numbers to add as members.
+    # Constraints: Elements must be phone numbers.
+    #  Max 10 000 elements.
+    Msisdn[10000] add?;
+    # phone numbers to remove from group.
+    # Constraints: Elements must be phone numbers. Max 10 000 elements.
+    Msisdn[10000] remove?;
+    # Name of group.
+    # 	
+    # Constraints:
+    # Max 20 characters
+    string name?;
+    # Copy the members from the given group into this group.
+    # Constraints: Must be valid group ID
+    string add_from_group?;
+    # Remove members in the given group from group.
+    # Constraints: Must be valid group ID
+    string remove_from_group?;
 };
 
 public type RetrieveDeliveryResponseObj record {
@@ -162,7 +183,7 @@ public type Msisdn string;
 
 public type SendBatchObject record {
     # List of Phone numbers and group IDs that will receive the batch. Constraints: 1 to 1000 elements [More info](https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628)
-    Msisdn[] to;
+    Msisdn[1000] to;
     # Sender number.
     # 
     # Required if Automatic Default Originator not configured.
@@ -268,27 +289,6 @@ public type InlineResponse2001 record {
     InlineResponse2001PerRecipient[] per_recipient?;
 };
 
-public type Body1 record {
-    # phone numbers to add as members.
-    # Constraints: Elements must be phone numbers.
-    #  Max 10 000 elements.
-    Msisdn[] add?;
-    # phone numbers to remove from group.
-    # Constraints: Elements must be phone numbers. Max 10 000 elements.
-    Msisdn[] remove?;
-    # Name of group.
-    # 	
-    # Constraints:
-    # Max 20 characters
-    string name?;
-    # Copy the members from the given group into this group.
-    # Constraints: Must be valid group ID
-    string add_from_group?;
-    # Remove members in the given group from group.
-    # Constraints: Must be valid group ID
-    string remove_from_group?;
-};
-
 public type InlineResponse2002 record {
     int page?;
     int page_size?;
@@ -298,7 +298,7 @@ public type InlineResponse2002 record {
 
 public type SendBatchCreated record {
     # List of Phone numbers and group IDs that will receive the batch. [More info](https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628) Constraints: 1 to 1000 elements
-    Msisdn[] to?;
+    Msisdn[1000] to?;
     # Sender number.
     # 
     # Required if Automatic Default Originator not configured.
@@ -352,11 +352,11 @@ public type SendBatchCreated record {
     boolean canceled?;
 };
 
-public type Body record {
+public type GroupsGroupIdBody record {
     # Name of group.
     # Constraints: Max 20 characters
     string name?;
     # The initial members of the group.
     # Constraints: Elements must be phone numbers in [e164](https://en.wikipedia.org/wiki/E.164) format MSISDNs. Max 10 000 elements.
-    Msisdn[] members;
+    Msisdn[10000] members;
 };

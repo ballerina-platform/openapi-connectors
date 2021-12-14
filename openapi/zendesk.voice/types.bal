@@ -67,7 +67,7 @@ public type GreetingsGreetings record {
     # The greeting category ID
     int? category_id?;
     # The greeting ID
-    string? id?;
+    int? id?;
     # The name of the greeting category
     string? name?;
 };

@@ -31,7 +31,7 @@ externalDocs:
   description: "More information on the Verify product on our Developer Portal"
   url: "https://developer.nexmo.com/verify"
 paths:
-  "/{format}":
+  "/json":
     post:
       operationId: verifyRequest
       summary: Request a Verification
@@ -50,8 +50,6 @@ paths:
 
 
         *Note that this endpoint is available by `GET` request as well as `POST`.*
-      parameters:
-        - $ref: "#/components/parameters/format"
       requestBody:
         description: Verify Request
         required: true
@@ -154,7 +152,7 @@ paths:
                   - $ref: "#/components/schemas/requestResponse"
                   - $ref: "#/components/schemas/requestErrorResponse"
 
-  "/check/{format}":
+  "/check/json":
     post:
       description: >-
         Use Verify check to confirm that the PIN you received from your user matches the one sent by
@@ -169,8 +167,6 @@ paths:
         *Note that this endpoint is available by `GET` request as well as `POST`.*
       operationId: verifyCheck
       summary: Verify Check
-      parameters:
-        - $ref: "#/components/parameters/format"
       requestBody:
         description: Check Request
         required: true
@@ -252,7 +248,7 @@ paths:
                   - $ref: "#/components/schemas/checkResponse"
                   - $ref: "#/components/schemas/checkErrorResponse"
 
-  "/search/{format}":
+  "/search/json":
     get:
       description: >-
         Use Verify search to check the status of past or current verification requests:
@@ -268,7 +264,6 @@ paths:
       operationId: verifySearch
       summary: Verify Search
       parameters:
-        - $ref: "#/components/parameters/format"
         - $ref: "#/components/parameters/api_key"
         - $ref: "#/components/parameters/api_secret"
         - name: request_id
@@ -381,7 +376,7 @@ paths:
                   - $ref: "#/components/schemas/searchResponse"
                   - $ref: "#/components/schemas/searchErrorResponse"
 
-  "/control/{format}":
+  "/control/json":
     post:
       description: |-
         Control the progress of your Verify requests. To cancel an existing Verify request, or to trigger the next verification event:
@@ -395,8 +390,6 @@ paths:
         *Note that this endpoint is available by `GET` request as well as `POST`.*
       operationId: verifyControl
       summary: Verify Control
-      parameters:
-        - $ref: "#/components/parameters/format"
       requestBody:
         description: Control Request
         required: true
@@ -480,7 +473,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/controlResponse"
                   - $ref: "#/components/schemas/controlErrorResponse"
-  "/psd2/{format}":
+  "/psd2/json":
     post:
       operationId: verifyRequestWithPSD2
       summary: PSD2 (Payment Services Directive 2) Request
@@ -495,9 +488,6 @@ paths:
         3. Use the `request_id` field in the response for the Verify check.
 
         (Please note that XML format is not supported for the Payment Services Directive endpoint at this time.)
-
-      parameters:
-        - $ref: "#/components/parameters/format"
 
       requestBody:
         description: PSD2 (Payment Services Directive 2) Request

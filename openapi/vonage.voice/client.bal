@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -62,157 +60,120 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials. 
     # Create a [Vonage account](https://dashboard.nexmo.com/) and obtain tokens following [this guide](https://dashboard.nexmo.com/getting-started/voice).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.nexmo.com/v1/calls") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get details of your calls
     #
-    # + status - Filter by call status
-    # + dateStart - Return the records that occurred after this point in time
-    # + dateEnd - Return the records that occurred before this point in time
-    # + pageSize - Return this amount of records in the response
-    # + recordIndex - Return calls from this index in the response
-    # + 'order - Either ascending or  descending order.
-    # + conversationUuid - Return all the records associated with a specific conversation.
-    # + return - OK
+    # + status - Filter by call status 
+    # + dateStart - Return the records that occurred after this point in time 
+    # + dateEnd - Return the records that occurred before this point in time 
+    # + pageSize - Return this amount of records in the response 
+    # + recordIndex - Return calls from this index in the response 
+    # + 'order - Either ascending or  descending order. 
+    # + conversationUuid - Return all the records associated with a specific conversation. 
+    # + return - OK 
     remote isolated function getCalls(string? status = (), string? dateStart = (), string? dateEnd = (), int pageSize = 10, int recordIndex = 0, string 'order = "asc", string? conversationUuid = ()) returns GetCallsResponse|error {
-        string  path = string `/`;
+        string resourcePath = string `/`;
         map<anydata> queryParam = {"status": status, "date_start": dateStart, "date_end": dateEnd, "page_size": pageSize, "record_index": recordIndex, "order": 'order, "conversation_uuid": conversationUuid};
-        path = path + check getPathForQueryParam(queryParam);
-        GetCallsResponse response = check self.clientEp-> get(path, targetType = GetCallsResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GetCallsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an outbound call
     #
-    # + payload - Call Details
-    # + return - Created
+    # + payload - Call Details 
+    # + return - Created 
     remote isolated function createCall(Body payload) returns CreateCallResponse|error {
-        string  path = string `/`;
+        string resourcePath = string `/`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateCallResponse response = check self.clientEp->post(path, request, targetType=CreateCallResponse);
+        request.setPayload(jsonBody, "application/json");
+        CreateCallResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get detail of a specific call
     #
-    # + uuid - UUID of the Call
-    # + return - Ok
+    # + uuid - UUID of the Call 
+    # + return - Ok 
     remote isolated function getCall(string uuid) returns GetCallResponse|error {
-        string  path = string `/${uuid}`;
-        GetCallResponse response = check self.clientEp-> get(path, targetType = GetCallResponse);
+        string resourcePath = string `/${uuid}`;
+        GetCallResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Modify an in progress call
     #
-    # + uuid - UUID of the Call
-    # + payload - Request Body
-    # + return - No Content
-    remote isolated function updateCall(string uuid, Body1 payload) returns http:Response|error {
-        string  path = string `/${uuid}`;
+    # + uuid - UUID of the Call 
+    # + payload - Request Body 
+    # + return - No Content 
+    remote isolated function updateCall(string uuid, UuidBody payload) returns http:Response|error {
+        string resourcePath = string `/${uuid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Play an audio file into a call
     #
-    # + uuid - UUID of the Call Leg
-    # + payload - action to perform
-    # + return - Ok
+    # + uuid - UUID of the Call Leg 
+    # + payload - action to perform 
+    # + return - Ok 
     remote isolated function startStream(string uuid, StartStreamRequest payload) returns StartStreamResponse|error {
-        string  path = string `/${uuid}/stream`;
+        string resourcePath = string `/${uuid}/stream`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StartStreamResponse response = check self.clientEp->put(path, request, targetType=StartStreamResponse);
+        request.setPayload(jsonBody, "application/json");
+        StartStreamResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Stop playing an audio file into a call
     #
-    # + uuid - UUID of the Call Leg
-    # + return - Ok
+    # + uuid - UUID of the Call Leg 
+    # + return - Ok 
     remote isolated function stopStream(string uuid) returns StopStreamResponse|error {
-        string  path = string `/${uuid}/stream`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        StopStreamResponse response = check self.clientEp-> delete(path, request, targetType = StopStreamResponse);
+        string resourcePath = string `/${uuid}/stream`;
+        StopStreamResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Play text to speech into a call
     #
-    # + uuid - UUID of the Call Leg
-    # + payload - Action to perform
-    # + return - Ok
+    # + uuid - UUID of the Call Leg 
+    # + payload - Action to perform 
+    # + return - Ok 
     remote isolated function startTalk(string uuid, StartTalkRequest payload) returns StartTalkResponse|error {
-        string  path = string `/${uuid}/talk`;
+        string resourcePath = string `/${uuid}/talk`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StartTalkResponse response = check self.clientEp->put(path, request, targetType=StartTalkResponse);
+        request.setPayload(jsonBody, "application/json");
+        StartTalkResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Stop text to speech in a call
     #
-    # + uuid - UUID of the Call Leg
-    # + return - Ok
+    # + uuid - UUID of the Call Leg 
+    # + return - Ok 
     remote isolated function stopTalk(string uuid) returns StopTalkResponse|error {
-        string  path = string `/${uuid}/talk`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        StopTalkResponse response = check self.clientEp-> delete(path, request, targetType = StopTalkResponse);
+        string resourcePath = string `/${uuid}/talk`;
+        StopTalkResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Play DTMF tones into a call
     #
-    # + uuid - UUID of the Call Leg
-    # + payload - action to perform
-    # + return - Ok
+    # + uuid - UUID of the Call Leg 
+    # + payload - action to perform 
+    # + return - Ok 
     remote isolated function startDTMF(string uuid, DTMFRequest payload) returns DTMFResponse|error {
-        string  path = string `/${uuid}/dtmf`;
+        string resourcePath = string `/${uuid}/dtmf`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DTMFResponse response = check self.clientEp->put(path, request, targetType=DTMFResponse);
+        request.setPayload(jsonBody, "application/json");
+        DTMFResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

@@ -15,12 +15,9 @@
 // under the License.
 
 # a list of available timezones
-#
-# + string - a list of available timezones
 public type ListJsonResponse string[];
 
 # time zone details, as per the DateTimeJsonResponse response, in the format `key: value`, one item per line
-#
 public type DateTimeTextResponse string;
 
 public type DateTimeJsonResponse record {
@@ -62,9 +59,7 @@ public type ErrorJsonResponse record {
 };
 
 # details about the error encountered in plain text
-#
 public type ErrorTextResponse string;
 
 # a list of available timezones, one per line
-#
 public type ListTextResponse string;

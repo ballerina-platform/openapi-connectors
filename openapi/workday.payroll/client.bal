@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [WorkDay payroll REST API v2](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 # The Payroll service enables you to access and manage payroll information,such as pay groups, payroll inputs, and tax rates.
-@display {label: "Workday Payroll", iconPath: "icon.png"}
+@display {label: "Workday Payroll", iconPath: "“icon.png”"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
@@ -64,6 +64,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieves a single pay group instance.
     #
@@ -71,8 +72,8 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupBySubResourceID(string id, string subresourceID) returns PayGroupViewDetail|error {
-        string path = string `/jobs/${id}/payGroup/${subresourceID}`;
-        PayGroupViewDetail response = check self.clientEp->get(path, targetType = PayGroupViewDetail);
+        string resourcePath = string `/jobs/${id}/payGroup/${subresourceID}`;
+        PayGroupViewDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single pay group instance.
@@ -80,8 +81,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupByID(string id) returns PayGroupViewDetail|error {
-        string path = string `/payGroups/${id}`;
-        PayGroupViewDetail response = check self.clientEp->get(path, targetType = PayGroupViewDetail);
+        string resourcePath = string `/payGroups/${id}`;
+        PayGroupViewDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves the pay group for a specified job ID. This method always returns 1 pay group.
@@ -92,18 +93,18 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupByJobID(string id, string? effective = (), int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string path = string `/jobs/${id}/payGroup`;
+        string resourcePath = string `/jobs/${id}/payGroup`;
         map<anydata> queryParam = {"effective": effective, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves instances that can be used as values for other endpoint parameters in this service.
     #
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInstanceForEndpointParameters() returns MultipleInstanceModelReference|error {
-        string path = string `/values/taxRatesGroup/companyInstances/`;
-        MultipleInstanceModelReference response = check self.clientEp->get(path, targetType = MultipleInstanceModelReference);
+        string resourcePath = string `/values/taxRatesGroup/companyInstances/`;
+        MultipleInstanceModelReference response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves instances that can be used as values for other endpoint parameters in this service.
@@ -114,10 +115,10 @@ public isolated client class Client {
     # + endDate - The end date for the positions, using the date format yyyy-mm-dd. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkTagInstancesForEndpointParameters(string? payComponent = (), string? 'worker = (), string? startDate = (), string? endDate = ()) returns MultipleInstanceModelReference|error {
-        string path = string `/values/payrollInputsGroup/worktags/`;
+        string resourcePath = string `/values/payrollInputsGroup/worktags/`;
         map<anydata> queryParam = {"payComponent": payComponent, "worker": 'worker, "startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        MultipleInstanceModelReference response = check self.clientEp->get(path, targetType = MultipleInstanceModelReference);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MultipleInstanceModelReference response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single pay group detail instance.
@@ -125,8 +126,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupDetailsByID(string id) returns PayGroupDetailView|error {
-        string path = string `/payGroupDetails/${id}`;
-        PayGroupDetailView response = check self.clientEp->get(path, targetType = PayGroupDetailView);
+        string resourcePath = string `/payGroupDetails/${id}`;
+        PayGroupDetailView response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of jobs.
@@ -135,10 +136,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfJobs(int? 'limit = (), int? offset = ()) returns InlineResponse2001|error {
-        string path = string `/jobs`;
+        string resourcePath = string `/jobs`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves instances that can be used as values for other endpoint parameters in this service.
@@ -149,10 +150,10 @@ public isolated client class Client {
     # + endDate - The end date for the positions, using the date format yyyy-mm-dd. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getRunCategoriesForEndpointParameters(string? payComponent = (), string? 'worker = (), string? startDate = (), string? endDate = ()) returns MultipleInstanceModelReference|error {
-        string path = string `/values/payrollInputsGroup/runCategories/`;
+        string resourcePath = string `/values/payrollInputsGroup/runCategories/`;
         map<anydata> queryParam = {"payComponent": payComponent, "worker": 'worker, "startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        MultipleInstanceModelReference response = check self.clientEp->get(path, targetType = MultipleInstanceModelReference);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MultipleInstanceModelReference response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of pay group details.
@@ -162,11 +163,11 @@ public isolated client class Client {
     # + runCategories - One or more Workday IDs of run categories for the pay group. You can use returned ids from GET /values/payrollInputsGroup/runCategories.You can specify 1 or more runCategories query parameters, example: runCategories=category1&runCategories=category2 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfPayGroupDetails(int? 'limit = (), int? offset = (), string[]? runCategories = ()) returns InlineResponse2002|error {
-        string path = string `/payGroupDetails`;
+        string resourcePath = string `/payGroupDetails`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "runCategories": runCategories};
         map<Encoding> queryParamEncoding = {"runCategories": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2002 response = check self.clientEp->get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single job instance.
@@ -174,8 +175,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSingleJobByID(string id) returns JobData|error {
-        string path = string `/jobs/${id}`;
-        JobData response = check self.clientEp->get(path, targetType = JobData);
+        string resourcePath = string `/jobs/${id}`;
+        JobData response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves instances that can be used as values for other endpoint parameters in this service.
@@ -186,10 +187,10 @@ public isolated client class Client {
     # + endDate - The end date for the positions, using the date format yyyy-mm-dd. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPositionInstancesForOtherEndpoints(string? payComponent = (), string? 'worker = (), string? startDate = (), string? endDate = ()) returns MultipleInstanceModelReference|error {
-        string path = string `/values/payrollInputsGroup/positions/`;
+        string resourcePath = string `/values/payrollInputsGroup/positions/`;
         map<anydata> queryParam = {"payComponent": payComponent, "worker": 'worker, "startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        MultipleInstanceModelReference response = check self.clientEp->get(path, targetType = MultipleInstanceModelReference);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MultipleInstanceModelReference response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single payroll input instance.
@@ -197,8 +198,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayRollInputInstance(string id) returns PayrollInputView|error {
-        string path = string `/payrollInputs/${id}`;
-        PayrollInputView response = check self.clientEp->get(path, targetType = PayrollInputView);
+        string resourcePath = string `/payrollInputs/${id}`;
+        PayrollInputView response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing payroll input instance.
@@ -206,8 +207,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Deleting resource. 
     remote isolated function deleteExistingPayroll(string id) returns http:Response|error {
-        string path = string `/payrollInputs/${id}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/payrollInputs/${id}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Partially updates an existing payroll input instance.
@@ -215,11 +216,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function updateAnExistingPayroll(string id, PayrollInputView payload) returns PayrollInputView|error {
-        string path = string `/payrollInputs/${id}`;
+        string resourcePath = string `/payrollInputs/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PayrollInputView response = check self.clientEp->patch(path, request, targetType = PayrollInputView);
+        request.setPayload(jsonBody, "application/json");
+        PayrollInputView response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Retrieves a collection of payroll inputs. At least 1 query parameter is required to get data.
@@ -232,11 +233,11 @@ public isolated client class Client {
     # + 'worker - The Workday ID of worker for the payroll input. You can use a returned id from GET /workers in the Staffing service. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfPayroll(string? endDate = (), int? 'limit = (), int? offset = (), string[]? payComponent = (), string? startDate = (), string[]? 'worker = ()) returns InlineResponse2003|error {
-        string path = string `/payrollInputs`;
+        string resourcePath = string `/payrollInputs`;
         map<anydata> queryParam = {"endDate": endDate, "limit": 'limit, "offset": offset, "payComponent": payComponent, "startDate": startDate, "worker": 'worker};
         map<Encoding> queryParamEncoding = {"payComponent": {style: FORM, explode: true}, "worker": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2003 response = check self.clientEp->get(path, targetType = InlineResponse2003);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates payroll inputs.
@@ -247,22 +248,22 @@ public isolated client class Client {
     # + 'worker - The Workday ID of worker for the payroll input. You can use a returned id from GET /workers in the Staffing service. 
     # + return - Resource created. 
     remote isolated function createPayrollInputs(PayrollInputView payload, string? endDate = (), string[]? payComponent = (), string? startDate = (), string[]? 'worker = ()) returns PayrollInputView|error {
-        string path = string `/payrollInputs`;
+        string resourcePath = string `/payrollInputs`;
         map<anydata> queryParam = {"endDate": endDate, "payComponent": payComponent, "startDate": startDate, "worker": 'worker};
         map<Encoding> queryParamEncoding = {"payComponent": {style: FORM, explode: true}, "worker": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PayrollInputView response = check self.clientEp->post(path, request, targetType = PayrollInputView);
+        request.setPayload(jsonBody, "application/json");
+        PayrollInputView response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves instances that can be used as values for other endpoint parameters in this service.
     #
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getStateInstancesForEndpointParameters() returns MultipleInstanceModelReference|error {
-        string path = string `/values/taxRatesGroup/stateInstances/`;
-        MultipleInstanceModelReference response = check self.clientEp->get(path, targetType = MultipleInstanceModelReference);
+        string resourcePath = string `/values/taxRatesGroup/stateInstances/`;
+        MultipleInstanceModelReference response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single or a collection of company SUI rates.
@@ -274,10 +275,10 @@ public isolated client class Client {
     # + payrollStateAuthorityTaxCode - The FIPS code or WID that represents 1 or more states. Example: payrollStateAuthorityTaxCode=06&payrollStateAuthorityTaxCode=3b3d378d5f4a48b8b3ac46fee0703226&payrollStateAuthorityTaxCode=48 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCompanySUIRates(string? company = (), string? effective = (), int? 'limit = (), int? offset = (), string? payrollStateAuthorityTaxCode = ()) returns InlineResponse2004|error {
-        string path = string `/taxRates`;
+        string resourcePath = string `/taxRates`;
         map<anydata> queryParam = {"company": company, "effective": effective, "limit": 'limit, "offset": offset, "payrollStateAuthorityTaxCode": payrollStateAuthorityTaxCode};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2004 response = check self.clientEp->get(path, targetType = InlineResponse2004);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2004 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a single or a collection of Company SUI Rates.
@@ -287,13 +288,13 @@ public isolated client class Client {
     # + payrollStateAuthorityTaxCode - The FIPS code or WID that represents 1 or more states. Example: payrollStateAuthorityTaxCode=06&payrollStateAuthorityTaxCode=3b3d378d5f4a48b8b3ac46fee0703226&payrollStateAuthorityTaxCode=48 
     # + return - Resource created. 
     remote isolated function createCompanySUIRates(CompanySuiRateDetails payload, string? company = (), string? effective = (), string? payrollStateAuthorityTaxCode = ()) returns CompanySuiRateDetails|error {
-        string path = string `/taxRates`;
+        string resourcePath = string `/taxRates`;
         map<anydata> queryParam = {"company": company, "effective": effective, "payrollStateAuthorityTaxCode": payrollStateAuthorityTaxCode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CompanySuiRateDetails response = check self.clientEp->post(path, request, targetType = CompanySuiRateDetails);
+        request.setPayload(jsonBody, "application/json");
+        CompanySuiRateDetails response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves instances that can be used as values for other endpoint parameters in this service.
@@ -304,10 +305,10 @@ public isolated client class Client {
     # + endDate - The end date for the positions, using the date format yyyy-mm-dd. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayComponentsForEndpoints(string? payComponent = (), string? 'worker = (), string? startDate = (), string? endDate = ()) returns MultipleInstanceModelReference|error {
-        string path = string `/values/payrollInputsGroup/payComponents/`;
+        string resourcePath = string `/values/payrollInputsGroup/payComponents/`;
         map<anydata> queryParam = {"payComponent": payComponent, "worker": 'worker, "startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        MultipleInstanceModelReference response = check self.clientEp->get(path, targetType = MultipleInstanceModelReference);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MultipleInstanceModelReference response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of pay groups.
@@ -317,10 +318,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfPayGroups(string? country = (), int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string path = string `/payGroups`;
+        string resourcePath = string `/payGroups`;
         map<anydata> queryParam = {"country": country, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

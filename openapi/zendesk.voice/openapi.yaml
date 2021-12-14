@@ -452,7 +452,7 @@ components:
                 description: The greeting category ID
                 nullable: true
               id:
-                type: string
+                type: integer
                 description: The greeting ID
                 nullable: true
               name:
@@ -481,7 +481,7 @@ components:
               description: The greeting category ID
               nullable: true
             id:
-              type: string
+              type: integer
               description: The greeting ID
               nullable: true
             name:

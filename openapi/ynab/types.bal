@@ -83,10 +83,10 @@ public type ScheduledtransactionresponseData record {
 public type HybridTransaction record {
     *TransactionSummary;
     # Whether the hybrid transaction represents a regular transaction or a subtransaction
-    string 'type?;
+    string 'type;
     # For subtransaction types, this is the id of the parent transaction.  For transaction types, this id will be always be null.
     string parent_transaction_id?;
-    string account_name?;
+    string account_name;
     string payee_name?;
     string category_name?;
 };
@@ -153,7 +153,7 @@ public type SaveMonthCategory record {
 public type CategoryGroupWithCategories record {
     *CategoryGroup;
     # Category group categories.  Amounts (budgeted, activity, balance, etc.) are specific to the current budget month (UTC).
-    Category[] categories?;
+    Category[] categories;
 };
 
 public type BudgetsettingsresponseData record {
@@ -200,11 +200,11 @@ public type PayeeLocationsResponse record {
 
 public type ScheduledTransactionDetail record {
     *ScheduledTransactionSummary;
-    string account_name?;
+    string account_name;
     string payee_name?;
     string category_name?;
     # If a split scheduled transaction, the subtransactions.
-    ScheduledSubTransaction[] subtransactions?;
+    ScheduledSubTransaction[] subtransactions;
 };
 
 public type PayeeresponseData record {
@@ -271,7 +271,7 @@ public type MonthDetailResponse record {
 public type MonthDetail record {
     *MonthSummary;
     # The budget month categories.  Amounts (budgeted, activity, balance, etc.) are specific to the {month} parameter specified.
-    Category[] categories?;
+    Category[] categories;
 };
 
 public type AccountResponse record {
@@ -383,7 +383,7 @@ public type PayeesResponse record {
 };
 
 public type UpdateTransaction record {
-    string id?;
+    string id;
     *SaveTransaction;
 };
 
@@ -435,11 +435,11 @@ public type MonthSummariesResponse record {
 
 public type TransactionDetail record {
     *TransactionSummary;
-    string account_name?;
+    string account_name;
     string payee_name?;
     string category_name?;
     # If a split transaction, the subtransactions.
-    SubTransaction[] subtransactions?;
+    SubTransaction[] subtransactions;
 };
 
 public type BulkTransactions record {

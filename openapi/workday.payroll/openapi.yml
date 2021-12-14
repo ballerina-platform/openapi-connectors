@@ -11,7 +11,7 @@ info:
     obtain tokens.
   x-ballerina-display:
     label: Workday Payroll
-    iconPath: “icon.png”
+    iconPath: icon.png
   version: v2
 tags:
 - name: jobs

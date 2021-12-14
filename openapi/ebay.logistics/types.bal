@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type stringArr string[];
+public type StringArr string[];
 
 # This complex type specifies the details of a geographical address.
 public type ContactAddress record {

@@ -40,15 +40,16 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get User Extensions
     #
     # + return - successful operation 
     remote isolated function getUserExtensions() returns Extension[]|error {
-        string  path = string `/user-extensions`;
+        string resourcePath = string `/user-extensions`;
         map<any> headerValues = {"X-API-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Extension[] response = check self.clientEp-> get(path, accHeaders, targetType = ExtensionArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Extension[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

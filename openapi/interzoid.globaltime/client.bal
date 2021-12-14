@@ -40,16 +40,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets the current time for a global locale
     #
     # + locale - Geographic locale to get the current time for 
     # + return - Current global time in many forms and related information 
     remote isolated function getGlobalTime(string locale) returns GlobalTime|error {
-        string  path = string `/getglobaltime`;
+        string resourcePath = string `/getglobaltime`;
         map<anydata> queryParam = {"locale": locale, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        GlobalTime response = check self.clientEp-> get(path, targetType = GlobalTime);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GlobalTime response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

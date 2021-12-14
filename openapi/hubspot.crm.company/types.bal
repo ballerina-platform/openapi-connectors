@@ -18,7 +18,7 @@ public type StandardError record {
     string status;
     string id?;
     ErrorCategory category;
-    record  { }  subCategory?;
+    record {} subCategory?;
     string message;
     ErrorDetail[] errors;
     record {} context;
@@ -135,8 +135,8 @@ public type BatchResponseSimplePublicObjectWithErrors record {
     record {} links?;
 };
 
+# Company properties
 public type SimplePublicObjectInput record {
-    # Company properties
     record {} properties;
 };
 

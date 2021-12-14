@@ -538,7 +538,7 @@ public type GoogleLongrunningOperation record {
     record {} metadata?;
     # The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.
     string name?;
-    # The normal response of the operation in case of success.
+    # The normal response of the operation in case of success. If the original method returns no data on success, such as `Delete`, the response is `google.protobuf.Empty`. If the original method is standard `Get`/`Create`/`Update`, the response should be the resource. For other methods, the response should have the type `XxxResponse`, where `Xxx` is the original method name. For example, if the original method name is `TakeSnapshot()`, the inferred response type is `TakeSnapshotResponse`.
     record {} response?;
 };
 
@@ -547,7 +547,7 @@ public type GoogleCloudRetailV2CustomAttribute record {
     # If true, custom attribute values are indexed, so that it can be filtered, faceted or boosted in SearchService.Search. This field is ignored in a UserEvent. See SearchRequest.filter, SearchRequest.facet_specs and SearchRequest.boost_spec for more details.
     boolean indexable?;
     # The numerical values of this custom attribute. For example, `[2.3, 15.4]` when the key is "lengths_cm". At most 400 values are allowed.Otherwise, an INVALID_ARGUMENT error is returned. Exactly one of text or numbers should be set. Otherwise, an INVALID_ARGUMENT error is returned.
-    decimal[] numbers?;
+    float[] numbers?;
     # If true, custom attribute values are searchable by text queries in SearchService.Search. This field is ignored in a UserEvent. Only set if type text is set. Otherwise, a INVALID_ARGUMENT error is returned.
     boolean searchable?;
     # The textual values of this custom attribute. For example, `["yellow", "green"]` when the key is "color". At most 400 values are allowed. Empty values are not allowed. Each value must be a UTF-8 encoded string with a length limit of 256 characters. Otherwise, an INVALID_ARGUMENT error is returned. Exactly one of text or numbers should be set. Otherwise, an INVALID_ARGUMENT error is returned.

@@ -23,7 +23,7 @@ public type StandardError record {
     string status;
     string id?;
     ErrorCategory category;
-    record  { }  subCategory?;
+    record {} subCategory?;
     string message;
     ErrorDetail[] errors;
     record {} context;
@@ -54,7 +54,6 @@ public type PropertyGroup record {
     string label;
     # Property groups are displayed in order starting with the lowest positive integer value. Values of -1 will cause the property group to be displayed after any positive values.
     int displayOrder;
-    # Whether the results that have been archived
     boolean archived;
 };
 

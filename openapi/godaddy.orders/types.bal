@@ -179,7 +179,7 @@ public type LineItemPricing record {
     # Taxes for given `quantity` and `period`
     int taxes;
     # Pricing for a single unit of the given item
-    record  { }  unit;
+    record {} unit;
 };
 
 public type Payment record {

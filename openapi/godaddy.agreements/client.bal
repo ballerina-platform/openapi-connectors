@@ -36,10 +36,11 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "//api.ote-godaddy.com/") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.ote-godaddy.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Retrieve Legal Agreements for provided agreements keys
     #
@@ -48,13 +49,13 @@ public isolated client class Client {
     # + keys - Keys for Agreements whose details are to be retrieved 
     # + return - Request was successful 
     remote isolated function getLegalAgreements(string[] keys, int? xPrivateLabelId = (), string xMarketId = "en-US") returns LegalAgreement[]|error {
-        string  path = string `/v1/agreements`;
+        string resourcePath = string `/v1/agreements`;
         map<anydata> queryParam = {"keys": keys};
         map<Encoding> queryParamEncoding = {"keys": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"X-Private-Label-Id": xPrivateLabelId, "X-Market-Id": xMarketId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LegalAgreement[] response = check self.clientEp-> get(path, accHeaders, targetType = LegalAgreementArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LegalAgreement[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

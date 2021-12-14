@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Retrieves summary country information for the provided marketId and filters
     #
@@ -50,12 +51,12 @@ public isolated client class Client {
     # + 'order - The direction to sort the result countries by. 
     # + return - Request was successful 
     remote isolated function getCountries(string marketId, int? regionTypeId = (), string? regionName = (), string sort = "key", string 'order = "ascending") returns ArrayOfCountrySummary|error {
-        string  path = string `/v1/countries`;
+        string resourcePath = string `/v1/countries`;
         map<anydata> queryParam = {"marketId": marketId, "regionTypeId": regionTypeId, "regionName": regionName, "sort": sort, "order": 'order};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ArrayOfCountrySummary response = check self.clientEp-> get(path, accHeaders, targetType = ArrayOfCountrySummary);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ArrayOfCountrySummary response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves country and summary state information for provided countryKey
@@ -66,12 +67,12 @@ public isolated client class Client {
     # + 'order - The direction to sort the result country states by. 
     # + return - Request was successful 
     remote isolated function getCountry(string countryKey, string marketId, string sort = "key", string 'order = "ascending") returns ArrayOfCountry|error {
-        string  path = string `/v1/countries/${countryKey}`;
+        string resourcePath = string `/v1/countries/${countryKey}`;
         map<anydata> queryParam = {"marketId": marketId, "sort": sort, "order": 'order};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ArrayOfCountry response = check self.clientEp-> get(path, accHeaders, targetType = ArrayOfCountry);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ArrayOfCountry response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

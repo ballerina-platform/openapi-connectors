@@ -40,18 +40,19 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Generate a random UUID (v4).
     #
     # + count - Number of UUID's to generate (defaults to 1) 
     # + return - 200  response 
     remote isolated function generateUUID(int? count = ()) returns json|error {
-        string  path = string `/uuid`;
+        string resourcePath = string `/uuid`;
         map<anydata> queryParam = {"count": count};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Parse a UUID string and return its version and check whether it is valid.
@@ -59,14 +60,14 @@ public isolated client class Client {
     # + uuidstr - UUID String to parse 
     # + return - 200  response 
     remote isolated function parseUUID(string uuidstr) returns json|error {
-        string  path = string `/uuid`;
+        string resourcePath = string `/uuid`;
         map<anydata> queryParam = {"uuidstr": uuidstr};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = json);
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Generate a random UUID (v4).
@@ -77,12 +78,12 @@ public isolated client class Client {
     # + text - For v3 and v5 of UUID Spec supply the text value for the type specified dns/url/oid/x500/nil. For example specify a dns/domain string if the type is "dns" 
     # + return - 200  response 
     remote isolated function generateUUIDByVersion(int 'version, int? count = (), string? 'type = (), string? text = ()) returns json|error {
-        string  path = string `/uuid/version/${'version}`;
+        string resourcePath = string `/uuid/version/${'version}`;
         map<anydata> queryParam = {"count": count, "type": 'type, "text": text};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

@@ -36,10 +36,11 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "//api.ote-godaddy.com/") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.ote-godaddy.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Retrieve a list of orders for the authenticated shopper. Only one filter may be used at a time
     #
@@ -56,12 +57,12 @@ public isolated client class Client {
     # + xMarketId - Unique identifier of the Market in which the request is happening 
     # + return - Request was successful 
     remote isolated function listOrders(string? periodStart = (), string? periodEnd = (), string? domain = (), int? productGroupId = (), int? paymentProfileId = (), string? parentOrderId = (), int offset = 0, int 'limit = 25, string sort = "-createdAt", string? xShopperId = (), string xMarketId = "en-US") returns OrderList|error {
-        string  path = string `/v1/orders`;
+        string resourcePath = string `/v1/orders`;
         map<anydata> queryParam = {"periodStart": periodStart, "periodEnd": periodEnd, "domain": domain, "productGroupId": productGroupId, "paymentProfileId": paymentProfileId, "parentOrderId": parentOrderId, "offset": offset, "limit": 'limit, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "X-Market-Id": xMarketId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderList response = check self.clientEp-> get(path, accHeaders, targetType = OrderList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve details for specified order
@@ -71,10 +72,10 @@ public isolated client class Client {
     # + xMarketId - Unique identifier of the Market in which the request is happening 
     # + return - Request was successful 
     remote isolated function getOrderByID(string orderId, string? xShopperId = (), string xMarketId = "en-US") returns Order|error {
-        string  path = string `/v1/orders/${orderId}`;
+        string resourcePath = string `/v1/orders/${orderId}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "X-Market-Id": xMarketId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Order response = check self.clientEp-> get(path, accHeaders, targetType = Order);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Order response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

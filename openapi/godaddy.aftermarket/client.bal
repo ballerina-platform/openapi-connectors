@@ -34,23 +34,24 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "//api.ote-godaddy.com/") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.ote-godaddy.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Remove listings from GoDaddy Auction
     #
     # + domains - A comma separated list of domain names 
     # + return - Request was successful 
     remote isolated function deleteListings(string[] domains) returns AftermarketListingAction|error {
-        string  path = string `/v1/aftermarket/listings`;
+        string resourcePath = string `/v1/aftermarket/listings`;
         map<anydata> queryParam = {"domains": domains};
         map<Encoding> queryParamEncoding = {"domains": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AftermarketListingAction response = check self.clientEp-> delete(path, accHeaders, targetType = AftermarketListingAction);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AftermarketListingAction response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Add expiry listings into GoDaddy Auction
@@ -58,13 +59,13 @@ public isolated client class Client {
     # + payload - An array of expiry listings to be loaded 
     # + return - Request was successful 
     remote isolated function addExpiryListings(AftermarketListingExpiryCreate[] payload) returns AftermarketListingAction|error {
-        string  path = string `/v1/aftermarket/listings/expiry`;
+        string resourcePath = string `/v1/aftermarket/listings/expiry`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AftermarketListingAction response = check self.clientEp->post(path, request, headers = accHeaders, targetType=AftermarketListingAction);
+        request.setPayload(jsonBody, "application/json");
+        AftermarketListingAction response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

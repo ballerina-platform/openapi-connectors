@@ -15,7 +15,7 @@ info:
     [GoDaddy Shoppers](https://sg.godaddy.com/) and obtain tokens by following
     [this guide](https://developer.godaddy.com/getstarted).  
 servers:
-  - url: //api.ote-godaddy.com/
+  - url: https://api.ote-godaddy.com/
 tags:
   - name: v1
     description: ''

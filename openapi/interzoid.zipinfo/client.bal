@@ -42,16 +42,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets detailed zip code information
     #
     # + zip - Zip code to retrieve detailed information 
     # + return - Zip code detailed code information 
     remote isolated function getzipcodeinfo(string zip) returns ZipInfo|error {
-        string  path = string `/getzipcodeinfo`;
+        string resourcePath = string `/getzipcodeinfo`;
         map<anydata> queryParam = {"zip": zip, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        ZipInfo response = check self.clientEp-> get(path, targetType = ZipInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ZipInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

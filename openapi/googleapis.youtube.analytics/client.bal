@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -67,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://youtubeanalytics.googleapis.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Returns a collection of group items that match the API request parameters.
     #
@@ -81,10 +80,10 @@ public isolated client class Client {
     # + onBehalfOfContentOwner - This parameter can only be used in a properly authorized request. **Note:** This parameter is intended exclusively for YouTube content partners that own and manage many different YouTube channels. The `onBehalfOfContentOwner` parameter indicates that the request's authorization credentials identify a YouTube user who is acting on behalf of the content owner specified in the parameter value. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The account that the user authenticates with must be linked to the specified YouTube content owner. 
     # + return - Successful response 
     remote isolated function listGroupItems(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? groupId = (), string? onBehalfOfContentOwner = ()) returns ListGroupItemsResponse|error {
-        string  path = string `/v2/groupItems`;
+        string resourcePath = string `/v2/groupItems`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "groupId": groupId, "onBehalfOfContentOwner": onBehalfOfContentOwner};
-        path = path + check getPathForQueryParam(queryParam);
-        ListGroupItemsResponse response = check self.clientEp-> get(path, targetType = ListGroupItemsResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ListGroupItemsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a group item.
@@ -99,13 +98,13 @@ public isolated client class Client {
     # + onBehalfOfContentOwner - This parameter can only be used in a properly authorized request. **Note:** This parameter is intended exclusively for YouTube content partners that own and manage many different YouTube channels. The `onBehalfOfContentOwner` parameter indicates that the request's authorization credentials identify a YouTube user who is acting on behalf of the content owner specified in the parameter value. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The account that the user authenticates with must be linked to the specified YouTube content owner. 
     # + return - Successful response 
     remote isolated function insertGroupItems(GroupItem payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? onBehalfOfContentOwner = ()) returns GroupItem|error {
-        string  path = string `/v2/groupItems`;
+        string resourcePath = string `/v2/groupItems`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "onBehalfOfContentOwner": onBehalfOfContentOwner};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupItem response = check self.clientEp->post(path, request, targetType=GroupItem);
+        request.setPayload(jsonBody, "application/json");
+        GroupItem response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Removes an item from a group.
@@ -121,12 +120,10 @@ public isolated client class Client {
     # + onBehalfOfContentOwner - This parameter can only be used in a properly authorized request. **Note:** This parameter is intended exclusively for YouTube content partners that own and manage many different YouTube channels. The `onBehalfOfContentOwner` parameter indicates that the request's authorization credentials identify a YouTube user who is acting on behalf of the content owner specified in the parameter value. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The account that the user authenticates with must be linked to the specified YouTube content owner. 
     # + return - Successful response 
     remote isolated function deleteGroupItems(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? id = (), string? onBehalfOfContentOwner = ()) returns http:Response|error {
-        string  path = string `/v2/groupItems`;
+        string resourcePath = string `/v2/groupItems`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "id": id, "onBehalfOfContentOwner": onBehalfOfContentOwner};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns a collection of groups that match the API request parameters. For example, you can retrieve all groups that the authenticated user owns, or you can retrieve one or more groups by their unique IDs.
@@ -144,10 +141,10 @@ public isolated client class Client {
     # + pageToken - The `pageToken` parameter identifies a specific page in the result set that should be returned. In an API response, the `nextPageToken` property identifies the next page that can be retrieved. 
     # + return - Successful response 
     remote isolated function listGroups(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? id = (), boolean? mine = (), string? onBehalfOfContentOwner = (), string? pageToken = ()) returns ListGroupsResponse|error {
-        string  path = string `/v2/groups`;
+        string resourcePath = string `/v2/groups`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "id": id, "mine": mine, "onBehalfOfContentOwner": onBehalfOfContentOwner, "pageToken": pageToken};
-        path = path + check getPathForQueryParam(queryParam);
-        ListGroupsResponse response = check self.clientEp-> get(path, targetType = ListGroupsResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ListGroupsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Modifies a group. For example, you could change a group's title.
@@ -162,13 +159,13 @@ public isolated client class Client {
     # + onBehalfOfContentOwner - This parameter can only be used in a properly authorized request. **Note:** This parameter is intended exclusively for YouTube content partners that own and manage many different YouTube channels. The `onBehalfOfContentOwner` parameter indicates that the request's authorization credentials identify a YouTube user who is acting on behalf of the content owner specified in the parameter value. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The account that the user authenticates with must be linked to the specified YouTube content owner. 
     # + return - Successful response 
     remote isolated function updateGroups(Group payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? onBehalfOfContentOwner = ()) returns Group|error {
-        string  path = string `/v2/groups`;
+        string resourcePath = string `/v2/groups`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "onBehalfOfContentOwner": onBehalfOfContentOwner};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->put(path, request, targetType=Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Creates a group.
@@ -183,13 +180,13 @@ public isolated client class Client {
     # + onBehalfOfContentOwner - This parameter can only be used in a properly authorized request. **Note:** This parameter is intended exclusively for YouTube content partners that own and manage many different YouTube channels. The `onBehalfOfContentOwner` parameter indicates that the request's authorization credentials identify a YouTube user who is acting on behalf of the content owner specified in the parameter value. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The account that the user authenticates with must be linked to the specified YouTube content owner. 
     # + return - Successful response 
     remote isolated function insertGroups(Group payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? onBehalfOfContentOwner = ()) returns Group|error {
-        string  path = string `/v2/groups`;
+        string resourcePath = string `/v2/groups`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "onBehalfOfContentOwner": onBehalfOfContentOwner};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->post(path, request, targetType=Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Deletes a group.
@@ -205,12 +202,10 @@ public isolated client class Client {
     # + onBehalfOfContentOwner - This parameter can only be used in a properly authorized request. **Note:** This parameter is intended exclusively for YouTube content partners that own and manage many different YouTube channels. The `onBehalfOfContentOwner` parameter indicates that the request's authorization credentials identify a YouTube user who is acting on behalf of the content owner specified in the parameter value. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The account that the user authenticates with must be linked to the specified YouTube content owner. 
     # + return - Successful response 
     remote isolated function deleteGroups(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? id = (), string? onBehalfOfContentOwner = ()) returns http:Response|error {
-        string  path = string `/v2/groups`;
+        string resourcePath = string `/v2/groups`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "id": id, "onBehalfOfContentOwner": onBehalfOfContentOwner};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Retrieve your YouTube Analytics reports.
@@ -235,44 +230,10 @@ public isolated client class Client {
     # + startIndex - An index of the first entity to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter (one-based, inclusive).", minValue: 1 
     # + return - Successful response 
     remote isolated function queryReports(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? currency = (), string? dimensions = (), string? endDate = (), string? filters = (), string? ids = (), boolean? includeHistoricalChannelData = (), int? maxResults = (), string? metrics = (), string? sort = (), string? startDate = (), int? startIndex = ()) returns QueryResponse|error {
-        string  path = string `/v2/reports`;
+        string resourcePath = string `/v2/reports`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "currency": currency, "dimensions": dimensions, "endDate": endDate, "filters": filters, "ids": ids, "includeHistoricalChannelData": includeHistoricalChannelData, "maxResults": maxResults, "metrics": metrics, "sort": sort, "startDate": startDate, "startIndex": startIndex};
-        path = path + check getPathForQueryParam(queryParam);
-        QueryResponse response = check self.clientEp-> get(path, targetType = QueryResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        QueryResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

@@ -1421,15 +1421,6 @@ paths:
       operationId: deleteWebhooks
       summary: 'Deletes webhooks'
       description: Deletes webhooks by list of webhookKeys
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-        description: List of webhookKeys to delete
-        required: true
       responses:
         '202':
           description: Accepted
@@ -1546,15 +1537,6 @@ paths:
       operationId: deleteUserSubscriptions
       summary: 'Deletes user subscriptions'
       description: Deletes user subscriptions by list of userSubscriptionKeys
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-        description: List of userSubscriptionKeys to delete
-        required: true
       responses:
         '202':
           description: Accepted

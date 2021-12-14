@@ -40,33 +40,34 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Create a marketing event
     #
     # + payload - The details of the marketing event to create 
     # + return - successful operation 
     remote isolated function createMarketingEvent(MarketingEventCreateRequestParams payload) returns MarketingEventDefaultResponse|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MarketingEventDefaultResponse response = check self.clientEp->post(path, request, targetType=MarketingEventDefaultResponse);
+        request.setPayload(jsonBody, "application/json");
+        MarketingEventDefaultResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete multiple marketing events
     #
     # + payload - The details of the marketing events to delete 
     # + return - An error occurred. 
-    remote isolated function posteventsDelete(BatchInputMarketingEventExternalUniqueIdentifier payload) returns Error|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/delete`;
+    remote isolated function posteventsDelete(BatchInputMarketingEventExternalUniqueIdentifier payload) returns http:Response|error {
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/delete`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Error response = check self.clientEp->post(path, request, targetType=Error);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Search for marketing events
@@ -74,10 +75,10 @@ public isolated client class Client {
     # + q - The partial event id to search for 
     # + return - successful operation 
     remote isolated function eventsSearch(string q) returns CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/search`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/search`;
         map<anydata> queryParam = {"q": q, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
-        CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging response = check self.clientEp-> get(path, targetType = CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or update multiple marketing events
@@ -85,13 +86,13 @@ public isolated client class Client {
     # + payload - The details of the marketing events to upsert 
     # + return - successful operation 
     remote isolated function eventsCreateOrUpsert(BatchInputMarketingEventCreateRequestParams payload) returns BatchResponseMarketingEventPublicDefaultResponse|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/upsert`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/upsert`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchResponseMarketingEventPublicDefaultResponse response = check self.clientEp->post(path, request, targetType=BatchResponseMarketingEventPublicDefaultResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchResponseMarketingEventPublicDefaultResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a marketing event
@@ -100,10 +101,10 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + return - successful operation 
     remote isolated function getEventsExternaleventid(string externalEventId, string externalAccountId) returns MarketingEventPublicReadResponse|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
-        MarketingEventPublicReadResponse response = check self.clientEp-> get(path, targetType = MarketingEventPublicReadResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MarketingEventPublicReadResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or update a marketing event
@@ -112,13 +113,13 @@ public isolated client class Client {
     # + payload - The details of the marketing event to upsert 
     # + return - successful operation 
     remote isolated function updateEventsExternaleventid(string externalEventId, MarketingEventCreateRequestParams payload) returns MarketingEventPublicDefaultResponse|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MarketingEventPublicDefaultResponse response = check self.clientEp->put(path, request, targetType=MarketingEventPublicDefaultResponse);
+        request.setPayload(jsonBody, "application/json");
+        MarketingEventPublicDefaultResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a marketing event
@@ -127,10 +128,10 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + return - No content 
     remote isolated function deleteEventsExternaleventid(string externalEventId, string externalAccountId) returns http:Response|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a marketing event
@@ -140,13 +141,13 @@ public isolated client class Client {
     # + payload - The details of the marketing event to update 
     # + return - successful operation 
     remote isolated function updateEvents(string externalEventId, string externalAccountId, MarketingEventUpdateRequestParams payload) returns MarketingEventPublicDefaultResponse|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MarketingEventPublicDefaultResponse response = check self.clientEp->patch(path, request, targetType=MarketingEventPublicDefaultResponse);
+        request.setPayload(jsonBody, "application/json");
+        MarketingEventPublicDefaultResponse response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Mark a marketing event as cancelled
@@ -155,12 +156,12 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + return - successful operation 
     remote isolated function eventsExternaleventidCancel(string externalEventId, string externalAccountId) returns MarketingEventDefaultResponse|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/cancel`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/cancel`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        MarketingEventDefaultResponse response = check self.clientEp-> post(path, request, targetType = MarketingEventDefaultResponse);
+        MarketingEventDefaultResponse response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Record
@@ -170,14 +171,14 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + payload - The details of the contacts to subscribe to the event 
     # + return - An error occurred. 
-    remote isolated function externaleventidSubscriberstateEmailUpsert(string externalEventId, string subscriberState, string externalAccountId, BatchInputMarketingEventEmailSubscriber payload) returns Error|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/${subscriberState}/email-upsert`;
+    remote isolated function externaleventidSubscriberstateEmailUpsert(string externalEventId, string subscriberState, string externalAccountId, BatchInputMarketingEventEmailSubscriber payload) returns http:Response|error {
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/${subscriberState}/email-upsert`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Error response = check self.clientEp->post(path, request, targetType=Error);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Record
@@ -187,14 +188,14 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + payload - The details of the contacts to subscribe to the event 
     # + return - An error occurred. 
-    remote isolated function eventsExternaleventidSubscriberstateUpsert(string externalEventId, string subscriberState, string externalAccountId, BatchInputMarketingEventSubscriber payload) returns Error|error {
-        string  path = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/${subscriberState}/upsert`;
+    remote isolated function eventsExternaleventidSubscriberstateUpsert(string externalEventId, string subscriberState, string externalAccountId, BatchInputMarketingEventSubscriber payload) returns http:Response|error {
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/${subscriberState}/upsert`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Error response = check self.clientEp->post(path, request, targetType=Error);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieve the application settings
@@ -202,10 +203,10 @@ public isolated client class Client {
     # + appId - The id of the application to retrieve the settings for. 
     # + return - successful operation 
     remote isolated function getAppidSettings(int appId) returns EventDetailSettings|error {
-        string  path = string `/marketing/v3/marketing-events-beta/${appId}/settings`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/${appId}/settings`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
-        EventDetailSettings response = check self.clientEp-> get(path, targetType = EventDetailSettings);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        EventDetailSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update the application settings
@@ -214,13 +215,13 @@ public isolated client class Client {
     # + payload - The new application settings 
     # + return - successful operation 
     remote isolated function postAppidSettings(int appId, EventDetailSettingsUrl payload) returns EventDetailSettings|error {
-        string  path = string `/marketing/v3/marketing-events-beta/${appId}/settings`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/${appId}/settings`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EventDetailSettings response = check self.clientEp->post(path, request, targetType=EventDetailSettings);
+        request.setPayload(jsonBody, "application/json");
+        EventDetailSettings response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

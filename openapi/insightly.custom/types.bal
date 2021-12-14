@@ -97,7 +97,7 @@ public type APICustomFieldOption record {
 
 public type APICustomField record {
     string? FIELD_NAME?;
-    record  { }  FIELD_VALUE?;
+    record {} FIELD_VALUE?;
 };
 
 public type CustomObjectsRecords1 record {

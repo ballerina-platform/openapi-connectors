@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -67,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://docs.googleapis.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Creates a blank document using the title given in the request. Other fields in the request, including any provided content, are ignored. Returns the created document.
     #
@@ -79,18 +78,17 @@ public isolated client class Client {
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
     # + return - Successful response 
     remote isolated function createDocument(Document payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Document|error {
-        string  path = string `/v1/documents`;
+        string resourcePath = string `/v1/documents`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Document response = check self.clientEp->post(path, request, targetType=Document);
+        request.setPayload(jsonBody, "application/json");
+        Document response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets the latest version of the specified document.
     #
-    # + documentId - The ID of the document to retrieve. 
     # + xgafv - V1 error format. 
     # + alt - Data format for response. 
     # + callback - JSONP 
@@ -98,18 +96,18 @@ public isolated client class Client {
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + documentId - The ID of the document to retrieve. 
     # + suggestionsViewMode - The suggestions view mode to apply to the document. This allows viewing the document with all suggestions inline, accepted or rejected. If one is not specified, DEFAULT_FOR_CURRENT_ACCESS is used. 
     # + return - Successful response 
     remote isolated function getDocument(string documentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? suggestionsViewMode = ()) returns Document|error {
-        string  path = string `/v1/documents/${documentId}`;
+        string resourcePath = string `/v1/documents/${documentId}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "suggestionsViewMode": suggestionsViewMode};
-        path = path + check getPathForQueryParam(queryParam);
-        Document response = check self.clientEp-> get(path, targetType = Document);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Document response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Applies one or more updates to the document. Each request is validated before being applied. If any request is not valid, then the entire request will fail and nothing will be applied. Some requests have replies to give you some information about how they are applied. Other requests do not need to return information; these each return an empty reply. The order of replies matches that of the requests. For example, suppose you call batchUpdate with four updates, and only the third one returns information. The response would have two empty replies, the reply to the third request, and another empty reply, in that order. Because other users may be editing the document, the document might not exactly reflect your changes: your changes may be altered with respect to collaborator changes. If there are no collaborators, the document should reflect your changes. In any case, the updates in your request are guaranteed to be applied together atomically.
     #
-    # + documentId - The ID of the document to update. 
     # + xgafv - V1 error format. 
     # + alt - Data format for response. 
     # + callback - JSONP 
@@ -117,49 +115,16 @@ public isolated client class Client {
     # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
     # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
     # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + documentId - The ID of the document to update. 
     # + return - Successful response 
     remote isolated function batchUpdateDocuments(string documentId, BatchUpdateDocumentRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchUpdateDocumentResponse|error {
-        string  path = string `/v1/documents/${documentId}:batchUpdate`;
+        string resourcePath = string `/v1/documents/${documentId}:batchUpdate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchUpdateDocumentResponse response = check self.clientEp->post(path, request, targetType=BatchUpdateDocumentResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchUpdateDocumentResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

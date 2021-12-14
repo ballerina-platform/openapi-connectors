@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://graph.instagram.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieves information about a media object.
     #
@@ -72,11 +73,11 @@ public isolated client class Client {
     # + fields - A comma-separated list of Fields you want returned. 
     # + return - Success 
     remote isolated function getMediaInfo(string igMediaId, string[]? fields = ()) returns MediaFieldsObject|error {
-        string path = string `/${igMediaId}`;
+        string resourcePath = string `/${igMediaId}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        MediaFieldsObject response = check self.clientEp->get(path, targetType = MediaFieldsObject);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        MediaFieldsObject response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Getting Comments on a Media Object.
@@ -84,8 +85,8 @@ public isolated client class Client {
     # + igMediaId - ID of the image, video, or album. 
     # + return - Success 
     remote isolated function getMediaComments(string igMediaId) returns Comments|error {
-        string path = string `/${igMediaId}/comments`;
-        Comments response = check self.clientEp->get(path, targetType = Comments);
+        string resourcePath = string `/${igMediaId}/comments`;
+        Comments response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creating a Comment on a Media Object
@@ -94,12 +95,12 @@ public isolated client class Client {
     # + message - The text to be included in the comment. 
     # + return - Success 
     remote isolated function createComment(string igMediaId, string message) returns Comment|error {
-        string path = string `/${igMediaId}/comments`;
+        string resourcePath = string `/${igMediaId}/comments`;
         map<anydata> queryParam = {"message": message};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Comment response = check self.clientEp-> post(path, request, targetType = Comment);
+        Comment response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Get insights data on an IG Media object.
@@ -108,11 +109,11 @@ public isolated client class Client {
     # + metric - A comma-separated list of Metrics you want returned. 
     # + return - Success 
     remote isolated function getMediaInsights(string igMediaId, string[]? metric = ()) returns MediaMetrics|error {
-        string path = string `/${igMediaId}/insights`;
+        string resourcePath = string `/${igMediaId}/insights`;
         map<anydata> queryParam = {"metric": metric};
         map<Encoding> queryParamEncoding = {"metric": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        MediaMetrics response = check self.clientEp->get(path, targetType = MediaMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        MediaMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns data about another Instagram Business or Creator IG User. 
@@ -125,8 +126,8 @@ public isolated client class Client {
     # + fieldset - A comma-separated list of Fields you want returned. 
     # + return - Success 
     remote isolated function getUserData(string igUserId, string username, string fieldset) returns BussinessDiscoveryData|error {
-        string path = string `/${igUserId}?fields=business_discovery.username(${username})${fieldset}`;
-        BussinessDiscoveryData response = check self.clientEp->get(path, targetType = BussinessDiscoveryData);
+        string resourcePath = string `/${igUserId}?fields=business_discovery.username(${username})${fieldset}`;
+        BussinessDiscoveryData response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns insights on an IG User.
@@ -138,11 +139,11 @@ public isolated client class Client {
     # + until - Used in conjunction with {since} to define a Range. If you omit since and until, the API defaults to a 2 day range - yesterday through today. 
     # + return - Success 
     remote isolated function getUserInsights(string igUserId, string period, int since, int until, string[]? metric = ()) returns UserMetrics|error {
-        string path = string `/${igUserId}/insights`;
+        string resourcePath = string `/${igUserId}/insights`;
         map<anydata> queryParam = {"metric": metric, "period": period, "since": since, "until": until};
         map<Encoding> queryParamEncoding = {"metric": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        UserMetrics response = check self.clientEp->get(path, targetType = UserMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        UserMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all IG Media objects on an IG User.
@@ -150,8 +151,8 @@ public isolated client class Client {
     # + igUserId - ID of an IG User who calls the function. 
     # + return - Success 
     remote isolated function getUserMedia(string igUserId) returns Media|error {
-        string path = string `/${igUserId}/media`;
-        Media response = check self.clientEp->get(path, targetType = Media);
+        string resourcePath = string `/${igUserId}/media`;
+        Media response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns Fields and Edges on an IG Hashtag.
@@ -160,11 +161,11 @@ public isolated client class Client {
     # + fields - A comma-separated list of Fields and Edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getHashtagFields(string igHashtagId, string[]? fields = ()) returns HashtagResponse|error {
-        string path = string `/${igHashtagId}`;
+        string resourcePath = string `/${igHashtagId}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        HashtagResponse response = check self.clientEp->get(path, targetType = HashtagResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        HashtagResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of the most recently published photo and video IG Media objects published with a specific hashtag.
@@ -174,11 +175,11 @@ public isolated client class Client {
     # + fields - A comma-separated list of Fields you want returned. 
     # + return - Success 
     remote isolated function getRecentHashtagMedia(string igHashtagId, string userId, string[]? fields = ()) returns Media|error {
-        string path = string `/${igHashtagId}/recent_media`;
+        string resourcePath = string `/${igHashtagId}/recent_media`;
         map<anydata> queryParam = {"user_id": userId, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Media response = check self.clientEp->get(path, targetType = Media);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Media response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the ID of an IG Hashtag.
@@ -187,12 +188,12 @@ public isolated client class Client {
     # + q - The hashtag name to query. 
     # + return - Success 
     remote isolated function searchHashtag(string userId, string q) returns Hashtags|error {
-        string path = string `/ig_hashtag_search`;
+        string resourcePath = string `/ig_hashtag_search`;
         map<anydata> queryParam = {"user_id": userId, "q": q};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Hashtags response = check self.clientEp-> post(path, request, targetType = Hashtags);
+        Hashtags response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
 }

@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get fields and edges on an image, video, or album.
     #
@@ -47,11 +48,11 @@ public isolated client class Client {
     # + fields - A list of fields and edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getMedia(string mediaId, string[]? fields = ()) returns MediaFieldsObject|error {
-        string path = string `/${mediaId}`;
+        string resourcePath = string `/${mediaId}`;
         map<anydata> queryParam = {"fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        MediaFieldsObject response = check self.clientEp->get(path, targetType = MediaFieldsObject);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        MediaFieldsObject response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of images and videos on an album..
@@ -60,11 +61,11 @@ public isolated client class Client {
     # + fields - A list of fields and edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getAlbumMedia(string albumId, string[]? fields = ()) returns Media|error {
-        string path = string `/${albumId}/children`;
+        string resourcePath = string `/${albumId}/children`;
         map<anydata> queryParam = {"fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Media response = check self.clientEp->get(path, targetType = Media);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Media response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a collection of Media on a User.
@@ -76,11 +77,11 @@ public isolated client class Client {
     # + until - A Unix timestamp or strtotime data value that points to the end of a range of time-based data. 
     # + return - Success 
     remote isolated function getUserMedia(string apiVersion, string userId, string[]? fields = (), string? since = (), string? until = ()) returns Media|error {
-        string path = string `/${apiVersion}/${userId}/media`;
+        string resourcePath = string `/${apiVersion}/${userId}/media`;
         map<anydata> queryParam = {"fields": fields, "since": since, "until": until, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Media response = check self.clientEp->get(path, targetType = Media);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Media response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get fields and edges on the User whose Instagram User Access Token is being used in the query.
@@ -88,11 +89,11 @@ public isolated client class Client {
     # + fields - A list of fields and edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getMyFields(string[]? fields = ()) returns UserFieldsObject|error {
-        string path = string `/me`;
+        string resourcePath = string `/me`;
         map<anydata> queryParam = {"fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        UserFieldsObject response = check self.clientEp->get(path, targetType = UserFieldsObject);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        UserFieldsObject response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get fields and edges on a User.
@@ -102,11 +103,11 @@ public isolated client class Client {
     # + fields - A list of fields and edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getUserFields(string apiVersion, string userId, string[]? fields = ()) returns UserFieldsObject|error {
-        string path = string `/${apiVersion}/${userId}`;
+        string resourcePath = string `/${apiVersion}/${userId}`;
         map<anydata> queryParam = {"fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        UserFieldsObject response = check self.clientEp->get(path, targetType = UserFieldsObject);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        UserFieldsObject response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

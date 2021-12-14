@@ -35,10 +35,11 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "//api.ote-godaddy.com/") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.ote-godaddy.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Lists all abuse tickets ids that match user provided filters
     #
@@ -52,26 +53,26 @@ public isolated client class Client {
     # + offset - The earliest result set record number to pull abuse tickets for 
     # + return - Success 
     remote isolated function getTickets(string? 'type = (), boolean closed = false, string? sourceDomainOrIp = (), string? target = (), string? createdStart = (), string? createdEnd = (), int 'limit = 100, int offset = 0) returns AbuseTicketList|error {
-        string  path = string `/v1/abuse/tickets`;
+        string resourcePath = string `/v1/abuse/tickets`;
         map<anydata> queryParam = {"type": 'type, "closed": closed, "sourceDomainOrIp": sourceDomainOrIp, "target": target, "createdStart": createdStart, "createdEnd": createdEnd, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AbuseTicketList response = check self.clientEp-> get(path, accHeaders, targetType = AbuseTicketList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AbuseTicketList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a new abuse ticket.
     #
     # + payload - The endpoint which allows the Reporter to create a new abuse ticket 
     # + return - No response was specified 
-    remote isolated function createTicket(AbuseTicketCreate payload) returns http:Response|error {
-        string  path = string `/v1/abuse/tickets`;
+    remote isolated function createTicket(AbuseTicketCreate payload) returns AbuseTicketId|error? {
+        string resourcePath = string `/v1/abuse/tickets`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        AbuseTicketId? response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Returns the abuse ticket data for a given ticket id.
@@ -79,10 +80,10 @@ public isolated client class Client {
     # + ticketId - A unique abuse ticket identifier 
     # + return - Success 
     remote isolated function getTicketInfo(string ticketId) returns AbuseTicket|error {
-        string  path = string `/v1/abuse/tickets/${ticketId}`;
+        string resourcePath = string `/v1/abuse/tickets/${ticketId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AbuseTicket response = check self.clientEp-> get(path, accHeaders, targetType = AbuseTicket);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AbuseTicket response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

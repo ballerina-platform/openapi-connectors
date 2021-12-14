@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -61,171 +59,138 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials. 
     # Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://language.googleapis.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Finds named entities (currently proper names and common nouns) in the text along with entity types, salience, mentions for each entity, and other properties.
     #
-    # + payload - AnalyzeEntities request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + payload - AnalyzeEntities request 
+    # + return - Successful response 
     remote isolated function analyzeentitiesDocuments(AnalyzeEntitiesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeEntitiesResponse|error {
-        string  path = string `/v1/documents:analyzeEntities`;
+        string resourcePath = string `/v1/documents:analyzeEntities`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AnalyzeEntitiesResponse response = check self.clientEp->post(path, request, targetType=AnalyzeEntitiesResponse);
+        request.setPayload(jsonBody, "application/json");
+        AnalyzeEntitiesResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Finds entities, similar to AnalyzeEntities in the text and analyzes sentiment associated with each entity and its mentions.
     #
-    # + payload - AnalyzeEntitySentiment request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + payload - AnalyzeEntitySentiment request 
+    # + return - Successful response 
     remote isolated function analyzeentitysentimentDocuments(AnalyzeEntitySentimentRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeEntitySentimentResponse|error {
-        string  path = string `/v1/documents:analyzeEntitySentiment`;
+        string resourcePath = string `/v1/documents:analyzeEntitySentiment`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AnalyzeEntitySentimentResponse response = check self.clientEp->post(path, request, targetType=AnalyzeEntitySentimentResponse);
+        request.setPayload(jsonBody, "application/json");
+        AnalyzeEntitySentimentResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Analyzes the sentiment of the provided text.
     #
-    # + payload - AnalyzeSentiment request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + payload - AnalyzeSentiment request 
+    # + return - Successful response 
     remote isolated function analyzesentimentDocuments(AnalyzeSentimentRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeSentimentResponse|error {
-        string  path = string `/v1/documents:analyzeSentiment`;
+        string resourcePath = string `/v1/documents:analyzeSentiment`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AnalyzeSentimentResponse response = check self.clientEp->post(path, request, targetType=AnalyzeSentimentResponse);
+        request.setPayload(jsonBody, "application/json");
+        AnalyzeSentimentResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Analyzes the syntax of the text and provides sentence boundaries and tokenization along with part of speech tags, dependency trees, and other properties.
     #
-    # + payload - AnalyzeSyntax request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + payload - AnalyzeSyntax request 
+    # + return - Successful response 
     remote isolated function analyzesyntaxDocuments(AnalyzeSyntaxRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnalyzeSyntaxResponse|error {
-        string  path = string `/v1/documents:analyzeSyntax`;
+        string resourcePath = string `/v1/documents:analyzeSyntax`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AnalyzeSyntaxResponse response = check self.clientEp->post(path, request, targetType=AnalyzeSyntaxResponse);
+        request.setPayload(jsonBody, "application/json");
+        AnalyzeSyntaxResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # A convenience method that provides all the features that analyzeSentiment, analyzeEntities, and analyzeSyntax provide in one call.
     #
-    # + payload - AnnotateText request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + payload - AnnotateText request 
+    # + return - Successful response 
     remote isolated function annotatetextDocuments(AnnotateTextRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AnnotateTextResponse|error {
-        string  path = string `/v1/documents:annotateText`;
+        string resourcePath = string `/v1/documents:annotateText`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AnnotateTextResponse response = check self.clientEp->post(path, request, targetType=AnnotateTextResponse);
+        request.setPayload(jsonBody, "application/json");
+        AnnotateTextResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Classifies a document into categories.
     #
-    # + payload - ClassifyText request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + payload - ClassifyText request 
+    # + return - Successful response 
     remote isolated function classifytextDocuments(ClassifyTextRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ClassifyTextResponse|error {
-        string  path = string `/v1/documents:classifyText`;
+        string resourcePath = string `/v1/documents:classifyText`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ClassifyTextResponse response = check self.clientEp->post(path, request, targetType=ClassifyTextResponse);
+        request.setPayload(jsonBody, "application/json");
+        ClassifyTextResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Create a pending order for certificate
     #
@@ -47,13 +48,13 @@ public isolated client class Client {
     # + payload - The certificate order information 
     # + return - Request was successful 
     remote isolated function certificateCreate(CertificateCreate payload, string xMarketId = "Default locale for shopper account") returns CertificateIdentifier|error {
-        string  path = string `/v1/certificates`;
+        string resourcePath = string `/v1/certificates`;
         map<any> headerValues = {"X-Market-Id": xMarketId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CertificateIdentifier response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CertificateIdentifier);
+        request.setPayload(jsonBody, "application/json");
+        CertificateIdentifier response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Validate a pending order for certificate
@@ -62,13 +63,13 @@ public isolated client class Client {
     # + payload - The certificate order info 
     # + return - Request validated successfully 
     remote isolated function certificateValidate(CertificateCreate payload, string xMarketId = "Default locale for shopper account") returns http:Response|error {
-        string  path = string `/v1/certificates/validate`;
+        string resourcePath = string `/v1/certificates/validate`;
         map<any> headerValues = {"X-Market-Id": xMarketId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve certificate details
@@ -76,10 +77,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to lookup 
     # + return - Certificate details retrieved 
     remote isolated function certificateGet(string certificateId) returns Certificate|error {
-        string  path = string `/v1/certificates/${certificateId}`;
+        string resourcePath = string `/v1/certificates/${certificateId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Certificate response = check self.clientEp-> get(path, accHeaders, targetType = Certificate);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Certificate response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all certificate actions
@@ -87,10 +88,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to register for callback 
     # + return - Action retrieval successful 
     remote isolated function certificateActionRetrieve(string certificateId) returns ArrayOfCertificateAction|error {
-        string  path = string `/v1/certificates/${certificateId}/actions`;
+        string resourcePath = string `/v1/certificates/${certificateId}/actions`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ArrayOfCertificateAction response = check self.clientEp-> get(path, accHeaders, targetType = ArrayOfCertificateAction);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ArrayOfCertificateAction response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Resend an email
@@ -99,12 +100,12 @@ public isolated client class Client {
     # + emailId - Email id for email to resend 
     # + return - Email sent successfully 
     remote isolated function certificateResendEmail(string certificateId, string emailId) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/email/${emailId}/resend`;
+        string resourcePath = string `/v1/certificates/${certificateId}/email/${emailId}/resend`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Add alternate email address
@@ -113,12 +114,12 @@ public isolated client class Client {
     # + emailAddress - Specific email address to resend email 
     # + return - Alternate email address added and emails re-sent 
     remote isolated function certificateAlternateEmailAddress(string certificateId, string emailAddress) returns CertificateEmailHistory|error {
-        string  path = string `/v1/certificates/${certificateId}/email/resend/${emailAddress}`;
+        string resourcePath = string `/v1/certificates/${certificateId}/email/resend/${emailAddress}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        CertificateEmailHistory response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = CertificateEmailHistory);
+        CertificateEmailHistory response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Resend email to email address
@@ -128,12 +129,12 @@ public isolated client class Client {
     # + emailAddress - Specific email address to resend email 
     # + return - Email sent successfully 
     remote isolated function certificateResendEmailAddress(string certificateId, string emailId, string emailAddress) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/email/${emailId}/resend/${emailAddress}`;
+        string resourcePath = string `/v1/certificates/${certificateId}/email/${emailId}/resend/${emailAddress}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve email history
@@ -141,10 +142,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to retrieve email history 
     # + return - Email history retrieval successful 
     remote isolated function certificateEmailHistory(string certificateId) returns CertificateEmailHistory|error {
-        string  path = string `/v1/certificates/${certificateId}/email/history`;
+        string resourcePath = string `/v1/certificates/${certificateId}/email/history`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CertificateEmailHistory response = check self.clientEp-> get(path, accHeaders, targetType = CertificateEmailHistory);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CertificateEmailHistory response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve system stateful action callback url
@@ -152,10 +153,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to register for stateful action callback 
     # + return - Callback registered 
     remote isolated function certificateCallbackGet(string certificateId) returns CertificateCallback|error {
-        string  path = string `/v1/certificates/${certificateId}/callback`;
+        string resourcePath = string `/v1/certificates/${certificateId}/callback`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CertificateCallback response = check self.clientEp-> get(path, accHeaders, targetType = CertificateCallback);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CertificateCallback response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Register of certificate action callback
@@ -164,14 +165,14 @@ public isolated client class Client {
     # + callbackUrl - Callback url registered/replaced to receive stateful actions 
     # + return - Callback replaced/registered 
     remote isolated function certificateCallbackReplace(string certificateId, string callbackUrl) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/callback`;
+        string resourcePath = string `/v1/certificates/${certificateId}/callback`;
         map<anydata> queryParam = {"callbackUrl": callbackUrl};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Unregister system callback
@@ -179,10 +180,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to unregister callback 
     # + return - Callback removed 
     remote isolated function certificateCallbackDelete(string certificateId) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/callback`;
+        string resourcePath = string `/v1/certificates/${certificateId}/callback`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Cancel a pending certificate
@@ -190,12 +191,12 @@ public isolated client class Client {
     # + certificateId - Certificate id to cancel 
     # + return - Certificate order has been canceled 
     remote isolated function certificateCancel(string certificateId) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/cancel`;
+        string resourcePath = string `/v1/certificates/${certificateId}/cancel`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Download certificate
@@ -203,10 +204,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to download 
     # + return - Certificate retrieved 
     remote isolated function certificateDownload(string certificateId) returns CertificateBundle|error {
-        string  path = string `/v1/certificates/${certificateId}/download`;
+        string resourcePath = string `/v1/certificates/${certificateId}/download`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CertificateBundle response = check self.clientEp-> get(path, accHeaders, targetType = CertificateBundle);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CertificateBundle response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Reissue active certificate
@@ -215,13 +216,13 @@ public isolated client class Client {
     # + payload - The reissue request info 
     # + return - Reissue request created 
     remote isolated function certificateReissue(string certificateId, CertificateReissue payload) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/reissue`;
+        string resourcePath = string `/v1/certificates/${certificateId}/reissue`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Renew active certificate
@@ -230,13 +231,13 @@ public isolated client class Client {
     # + payload - The renew request info 
     # + return - Renew request created 
     remote isolated function certificateRenew(string certificateId, CertificateRenew payload) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/renew`;
+        string resourcePath = string `/v1/certificates/${certificateId}/renew`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Revoke active certificate
@@ -245,13 +246,13 @@ public isolated client class Client {
     # + payload - The certificate revocation request 
     # + return - Certificate Revoked 
     remote isolated function certificateRevoke(string certificateId, CertificateRevoke payload) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/revoke`;
+        string resourcePath = string `/v1/certificates/${certificateId}/revoke`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Site seal
@@ -261,12 +262,12 @@ public isolated client class Client {
     # + locale - Determine locale for text displayed in seal image and verification page. If seal doesn't exist, default values are used if params not present. If seal does exist, default values will not be used to update unless params present. 
     # + return - Site seal retrieved 
     remote isolated function certificateSitesealGet(string certificateId, string theme = "LIGHT", string locale = "en") returns CertificateSiteSeal|error {
-        string  path = string `/v1/certificates/${certificateId}/siteSeal`;
+        string resourcePath = string `/v1/certificates/${certificateId}/siteSeal`;
         map<anydata> queryParam = {"theme": theme, "locale": locale};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CertificateSiteSeal response = check self.clientEp-> get(path, accHeaders, targetType = CertificateSiteSeal);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CertificateSiteSeal response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Check Domain Control
@@ -274,12 +275,12 @@ public isolated client class Client {
     # + certificateId - Certificate id to lookup 
     # + return - Domain control was successful 
     remote isolated function certificateVerifydomaincontrol(string certificateId) returns http:Response|error {
-        string  path = string `/v1/certificates/${certificateId}/verifyDomainControl`;
+        string resourcePath = string `/v1/certificates/${certificateId}/verifyDomainControl`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Search for certificate details by entitlement
@@ -288,12 +289,12 @@ public isolated client class Client {
     # + latest - Fetch only the most recent certificate 
     # + return - Certificate details retrieved 
     remote isolated function certificateGetEntitlement(string entitlementId, boolean latest = true) returns Certificate[]|error {
-        string  path = string `/v2/certificates`;
+        string resourcePath = string `/v2/certificates`;
         map<anydata> queryParam = {"entitlementId": entitlementId, "latest": latest};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Certificate[] response = check self.clientEp-> get(path, accHeaders, targetType = CertificateArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Certificate[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Download certificate by entitlement
@@ -301,12 +302,12 @@ public isolated client class Client {
     # + entitlementId - Entitlement id to download 
     # + return - Certificate retrieved 
     remote isolated function certificateDownloadEntitlement(string entitlementId) returns CertificateBundle|error {
-        string  path = string `/v2/certificates/download`;
+        string resourcePath = string `/v2/certificates/download`;
         map<anydata> queryParam = {"entitlementId": entitlementId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CertificateBundle response = check self.clientEp-> get(path, accHeaders, targetType = CertificateBundle);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CertificateBundle response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve customer's certificates
@@ -316,12 +317,12 @@ public isolated client class Client {
     # + 'limit - Maximum number of items to return 
     # + return - Customer certificate information retrieved. 
     remote isolated function getCustomerCertificatesByCustomerId(string customerId, int? offset = (), int? 'limit = ()) returns CertificateSummariesV2|error {
-        string  path = string `/v2/customers/${customerId}/certificates`;
+        string resourcePath = string `/v2/customers/${customerId}/certificates`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CertificateSummariesV2 response = check self.clientEp-> get(path, accHeaders, targetType = CertificateSummariesV2);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CertificateSummariesV2 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve individual certificate details
@@ -330,10 +331,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to lookup 
     # + return - Certificate details retrieved 
     remote isolated function getCertificateDetailByCertIdentifier(string customerId, string certificateId) returns CertificateDetailV2|error {
-        string  path = string `/v2/customers/${customerId}/certificates/${certificateId}`;
+        string resourcePath = string `/v2/customers/${customerId}/certificates/${certificateId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CertificateDetailV2 response = check self.clientEp-> get(path, accHeaders, targetType = CertificateDetailV2);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CertificateDetailV2 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve domain verification status
@@ -342,10 +343,10 @@ public isolated client class Client {
     # + certificateId - Certificate id to lookup 
     # + return - Domain verification status list for specified certificateId. 
     remote isolated function getDomainInformationByCertificateId(string customerId, string certificateId) returns DomainVerificationSummary[]|error {
-        string  path = string `/v2/customers/${customerId}/certificates/${certificateId}/domainVerifications`;
+        string resourcePath = string `/v2/customers/${customerId}/certificates/${certificateId}/domainVerifications`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DomainVerificationSummary[] response = check self.clientEp-> get(path, accHeaders, targetType = DomainVerificationSummaryArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DomainVerificationSummary[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve detailed information for supplied domain
@@ -355,10 +356,10 @@ public isolated client class Client {
     # + domain - A valid domain name in the certificate request 
     # + return - Retrieve detailed information for supplied domain, including domain verification details and Certificate Authority Authorization (CAA) verification details. 
     remote isolated function getDomainDetailsByDomain(string customerId, string certificateId, string domain) returns DomainVerificationDetail|error {
-        string  path = string `/v2/customers/${customerId}/certificates/${certificateId}/domainVerifications/${domain}`;
+        string resourcePath = string `/v2/customers/${customerId}/certificates/${certificateId}/domainVerifications/${domain}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DomainVerificationDetail response = check self.clientEp-> get(path, accHeaders, targetType = DomainVerificationDetail);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DomainVerificationDetail response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves the external account binding for the specified customer
@@ -366,10 +367,10 @@ public isolated client class Client {
     # + customerId - An identifier for a customer 
     # + return - Acme key identifier and HMAC key for the external account binding. Directory URI is also provided for making ACME requests. 
     remote isolated function getAcmeExternalAccountBinding(string customerId) returns ExternalAccountBinding|error {
-        string  path = string `/v2/customers/${customerId}/certificates/acme/externalAccountBinding`;
+        string resourcePath = string `/v2/customers/${customerId}/certificates/acme/externalAccountBinding`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ExternalAccountBinding response = check self.clientEp-> get(path, accHeaders, targetType = ExternalAccountBinding);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ExternalAccountBinding response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

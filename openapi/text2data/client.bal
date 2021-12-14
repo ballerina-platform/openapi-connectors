@@ -41,13 +41,14 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Test api response without api key
     #
     # + return - OK 
     remote isolated function analyzeGet() returns DocumentResult|error {
-        string path = string `/v3/Analyze`;
-        DocumentResult response = check self.clientEp->get(path, targetType = DocumentResult);
+        string resourcePath = string `/v3/Analyze`;
+        DocumentResult response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Sentiment analysis service
@@ -55,19 +56,19 @@ public isolated client class Client {
     # + payload - Document payload in form of text, json or xml. 
     # + return - OK 
     remote isolated function analyzePost(Document payload) returns DocumentResult|error {
-        string path = string `/v3/Analyze`;
+        string resourcePath = string `/v3/Analyze`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DocumentResult response = check self.clientEp->post(path, request, targetType = DocumentResult);
+        request.setPayload(jsonBody, "application/json");
+        DocumentResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Test api response without api key
     #
     # + return - OK 
     remote isolated function categorizeGet() returns DocumentResult|error {
-        string path = string `/v3/Categorize`;
-        DocumentResult response = check self.clientEp->get(path, targetType = DocumentResult);
+        string resourcePath = string `/v3/Categorize`;
+        DocumentResult response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Document categorization service
@@ -75,19 +76,19 @@ public isolated client class Client {
     # + payload - Document payload in form of text, json or xml. 
     # + return - OK 
     remote isolated function categorizePost(Document payload) returns DocumentResult|error {
-        string path = string `/v3/Categorize`;
+        string resourcePath = string `/v3/Categorize`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DocumentResult response = check self.clientEp->post(path, request, targetType = DocumentResult);
+        request.setPayload(jsonBody, "application/json");
+        DocumentResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Test api response without api key
     #
     # + return - OK 
     remote isolated function extractGet() returns DocumentResult|error {
-        string path = string `/v3/Extract`;
-        DocumentResult response = check self.clientEp->get(path, targetType = DocumentResult);
+        string resourcePath = string `/v3/Extract`;
+        DocumentResult response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Document extraction service
@@ -95,11 +96,11 @@ public isolated client class Client {
     # + payload - Document payload in form of text, json or xml. 
     # + return - OK 
     remote isolated function extractPost(Document payload) returns DocumentResult|error {
-        string path = string `/v3/Extract`;
+        string resourcePath = string `/v3/Extract`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DocumentResult response = check self.clientEp->post(path, request, targetType = DocumentResult);
+        request.setPayload(jsonBody, "application/json");
+        DocumentResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

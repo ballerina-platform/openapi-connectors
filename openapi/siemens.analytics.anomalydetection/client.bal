@@ -65,17 +65,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Anomaly Detection batch reasoning
     #
     # + payload - Request data to launch reasoning job. 
     # + return - Accepted 
     remote isolated function detectAnomaliesbatchreasoning(SubmitReasoningRequest payload) returns ReasoningJobInfo|error {
-        string  path = string `/detectAnomaliesJobs`;
+        string resourcePath = string `/detectAnomaliesJobs`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReasoningJobInfo response = check self.clientEp->post(path, request, targetType=ReasoningJobInfo);
+        request.setPayload(jsonBody, "application/json");
+        ReasoningJobInfo response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get job status.
@@ -83,8 +84,8 @@ public isolated client class Client {
     # + id - ID of the job to get status for. 
     # + return - OK 
     remote isolated function getJobStatus(string id) returns ReasoningJobInfo|error {
-        string  path = string `/detectAnomaliesJobs/${id}`;
-        ReasoningJobInfo response = check self.clientEp-> get(path, targetType = ReasoningJobInfo);
+        string resourcePath = string `/detectAnomaliesJobs/${id}`;
+        ReasoningJobInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Cancel job.
@@ -92,10 +93,10 @@ public isolated client class Client {
     # + id - ID of the job to get status for. 
     # + return - Accepted 
     remote isolated function canceljob(string id) returns http:Response|error {
-        string  path = string `/detectAnomaliesJobs/${id}/cancel`;
+        string resourcePath = string `/detectAnomaliesJobs/${id}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Anomaly Detection batch model training
@@ -103,11 +104,11 @@ public isolated client class Client {
     # + payload - Request data to launch training job 
     # + return - Accepted 
     remote isolated function detectAnomalyBatchModelTraining(SubmitTrainingRequest payload) returns TrainingJobInfo|error {
-        string  path = string `/trainModelJobs`;
+        string resourcePath = string `/trainModelJobs`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TrainingJobInfo response = check self.clientEp->post(path, request, targetType=TrainingJobInfo);
+        request.setPayload(jsonBody, "application/json");
+        TrainingJobInfo response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get job status.
@@ -115,8 +116,8 @@ public isolated client class Client {
     # + id - ID of the job to get status for. 
     # + return - OK 
     remote isolated function getJobStatusTrainModelJobs(string id) returns TrainingJobInfo|error {
-        string  path = string `/trainModelJobs/${id}`;
-        TrainingJobInfo response = check self.clientEp-> get(path, targetType = TrainingJobInfo);
+        string resourcePath = string `/trainModelJobs/${id}`;
+        TrainingJobInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Cancel job.
@@ -124,10 +125,10 @@ public isolated client class Client {
     # + id - ID of the job to get status for. 
     # + return - Accepted 
     remote isolated function cancelJobTrainModelJob(string id) returns http:Response|error {
-        string  path = string `/trainModelJobs/${id}/cancel`;
+        string resourcePath = string `/trainModelJobs/${id}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Train model
@@ -139,13 +140,13 @@ public isolated client class Client {
     # + payload - An array containing the time series items. Data to train a model. Data must contain 10 variables at max. Each timeseries item must have equal number of variables. 
     # + return - Created 
     remote isolated function trainModel(float epsilon, int minPointsPerCluster, Timeseries[] payload, string distanceMeasureAlgorithm = "EUCLIDEAN", string name = "model") returns Model|error {
-        string  path = string `/models`;
+        string resourcePath = string `/models`;
         map<anydata> queryParam = {"epsilon": epsilon, "minPointsPerCluster": minPointsPerCluster, "distanceMeasureAlgorithm": distanceMeasureAlgorithm, "name": name};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Model response = check self.clientEp->post(path, request, targetType=Model);
+        request.setPayload(jsonBody, "application/json");
+        Model response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Anomaly detection
@@ -154,13 +155,13 @@ public isolated client class Client {
     # + payload - An array containing the time series items. Data to performs detection on. Data must contain 10 variables at max. Each timeseries item must have equal number of variables. Variables must be the same as the ones used to train the model (the same number of variables and the same names). 
     # + return - OK 
     remote isolated function detectAnomalies(string modelID, Timeseries[] payload) returns Anomaly[]|error {
-        string  path = string `/detectanomalies`;
+        string resourcePath = string `/detectanomalies`;
         map<anydata> queryParam = {"modelID": modelID};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Anomaly[] response = check self.clientEp->post(path, request, targetType=AnomalyArr);
+        request.setPayload(jsonBody, "application/json");
+        Anomaly[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Train model in direct integration with IoT time series
@@ -175,12 +176,12 @@ public isolated client class Client {
     # + to - End of the time range to be retrieved (exclusive). 
     # + return - Created 
     remote isolated function trainModelDirectIntegration(float epsilon, int minPointsPerCluster, string assetId, string aspectName, string 'from, string to, string distanceMeasureAlgorithm = "EUCLIDEAN", string name = "model") returns Model|error {
-        string  path = string `/modelsDirect`;
+        string resourcePath = string `/modelsDirect`;
         map<anydata> queryParam = {"epsilon": epsilon, "minPointsPerCluster": minPointsPerCluster, "distanceMeasureAlgorithm": distanceMeasureAlgorithm, "name": name, "assetId": assetId, "aspectName": aspectName, "from": 'from, "to": to};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Model response = check self.clientEp-> post(path, request, targetType = Model);
+        Model response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Anomaly detection in direct integration with IoT time series
@@ -192,12 +193,12 @@ public isolated client class Client {
     # + to - End of the time range to be retrieved (exclusive). 
     # + return - OK 
     remote isolated function detectAnomaliesDirectIntegration(string modelID, string assetId, string aspectName, string 'from, string to) returns Anomaly[]|error {
-        string  path = string `/detectanomaliesDirect`;
+        string resourcePath = string `/detectanomaliesDirect`;
         map<anydata> queryParam = {"modelID": modelID, "assetId": assetId, "aspectName": aspectName, "from": 'from, "to": to};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Anomaly[] response = check self.clientEp-> post(path, request, targetType = AnomalyArr);
+        Anomaly[] response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Get model
@@ -208,8 +209,8 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getModel(string id) returns Model|error {
-        string  path = string `/models/${id}`;
-        Model response = check self.clientEp-> get(path, targetType = Model);
+        string resourcePath = string `/models/${id}`;
+        Model response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete model
@@ -220,8 +221,8 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function deleteModel(string id) returns http:Response|error {
-        string  path = string `/models/${id}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/models/${id}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

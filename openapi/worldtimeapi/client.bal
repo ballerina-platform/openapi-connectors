@@ -16,11 +16,8 @@
 
 import ballerina/http;
 
-# This is a generated connector for [WorldTimeAPI v0.6.1](http://worldtimeapi.org/) OpenAPI Specification. 
-# [WorldTime API](http://worldtimeapi.org/pages/faqs#what-is-it) is a simple "microservice" which returns the local-time 
-# for a given timezone in both unixtime and ISO8601 format. The worldTimeAPI connector supports to get the current time 
-# based on a request with a timezone and additional information including whether that timezone is currently in Daylight 
-# Savings Time, when DST starts and ends, the UTC offset, etc.
+# This is a generated connector for [WorldTimeAPI v0.6.1](http://worldtimeapi.org/) OpenAPI Specification.
+# [WorldTime API](http://worldtimeapi.org/pages/faqs#what-is-it) is a simple "microservice" which returns the local-time for a given timezone in both unixtime and ISO8601 format. The worldTimeAPI connector supports to get the current time based on a request with a timezone and additional information including whether that timezone is currently in Daylight Savings Time, when DST starts and ends, the UTC offset, etc.
 @display {label: "World Time API", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
@@ -28,121 +25,122 @@ public isolated client class Client {
     # The connector initialization doesn't require setting the API credentials.
     # World Time API data is simple and free to access. Follow [this link](http://worldtimeapi.org/) for more details.
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "http://worldtimeapi.org/api/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # a listing of all timezones.
     #
-    # + return - the list of available timezones in JSON format
+    # + return - the list of available timezones in JSON format 
     remote isolated function listTimezones() returns ListJsonResponse|error {
-        string  path = string `/timezone`;
-        ListJsonResponse response = check self.clientEp-> get(path, targetType = ListJsonResponse);
+        string resourcePath = string `/timezone`;
+        ListJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # a listing of all timezones.
     #
-    # + return - the list of available timezones in plain text
+    # + return - the list of available timezones in plain text 
     remote isolated function listTimezonesAsText() returns ListTextResponse|error {
-        string  path = string `/timezone.txt`;
-        ListTextResponse response = check self.clientEp-> get(path, targetType = ListTextResponse);
+        string resourcePath = string `/timezone.txt`;
+        ListTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # a listing of all timezones available for that area.
     #
-    # + area - Area
-    # + return - the list of available timezones in JSON format
+    # + area - Area 
+    # + return - the list of available timezones in JSON format 
     remote isolated function getTimezoneByArea(string area) returns ListJsonResponse|error {
-        string  path = string `/timezone/${area}`;
-        ListJsonResponse response = check self.clientEp-> get(path, targetType = ListJsonResponse);
+        string resourcePath = string `/timezone/${area}`;
+        ListJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # a listing of all timezones available for that area.
     #
-    # + area - Area
-    # + return - the list of available timezones in plain text
+    # + area - Area 
+    # + return - the list of available timezones in plain text 
     remote isolated function getTimezoneByAreaAsText(string area) returns ListTextResponse|error {
-        string  path = string `/timezone/${area}.txt`;
-        ListTextResponse response = check self.clientEp-> get(path, targetType = ListTextResponse);
+        string resourcePath = string `/timezone/${area}.txt`;
+        ListTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time for a timezone.
     #
-    # + area - Area
-    # + location - location
-    # + return - the current time for the timezone requested in JSON format
+    # + area - Area 
+    # + location - location 
+    # + return - the current time for the timezone requested in JSON format 
     remote isolated function getCurrentTime(string area, string location) returns DateTimeJsonResponse|error {
-        string  path = string `/timezone/${area}/${location}`;
-        DateTimeJsonResponse response = check self.clientEp-> get(path, targetType = DateTimeJsonResponse);
+        string resourcePath = string `/timezone/${area}/${location}`;
+        DateTimeJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time for a timezone.
     #
-    # + area - Area
-    # + location - Location
-    # + return - the current time for the timezone requested in plain text
+    # + area - Area 
+    # + location - Location 
+    # + return - the current time for the timezone requested in plain text 
     remote isolated function getCurrentTimeAsText(string area, string location) returns DateTimeTextResponse|error {
-        string  path = string `/timezone/${area}/${location}.txt`;
-        DateTimeTextResponse response = check self.clientEp-> get(path, targetType = DateTimeTextResponse);
+        string resourcePath = string `/timezone/${area}/${location}.txt`;
+        DateTimeTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time for a timezone.
     #
-    # + area - Area
-    # + location - Location
-    # + region - Region
-    # + return - the current time for the timezone requested in JSON format
+    # + area - Area 
+    # + location - Location 
+    # + region - Region 
+    # + return - the current time for the timezone requested in JSON format 
     remote isolated function getCurrentTimeByRegion(string area, string location, string region) returns DateTimeJsonResponse|error {
-        string  path = string `/timezone/${area}/${location}/${region}`;
-        DateTimeJsonResponse response = check self.clientEp-> get(path, targetType = DateTimeJsonResponse);
+        string resourcePath = string `/timezone/${area}/${location}/${region}`;
+        DateTimeJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time for a timezone.
     #
-    # + area - Area
-    # + location - Location
-    # + region - Region
-    # + return - the current time for the timezone requested in plain text
+    # + area - Area 
+    # + location - Location 
+    # + region - Region 
+    # + return - the current time for the timezone requested in plain text 
     remote isolated function getCurrentTimeByRegionAsText(string area, string location, string region) returns DateTimeTextResponse|error {
-        string  path = string `/timezone/${area}/${location}/${region}.txt`;
-        DateTimeTextResponse response = check self.clientEp-> get(path, targetType = DateTimeTextResponse);
+        string resourcePath = string `/timezone/${area}/${location}/${region}.txt`;
+        DateTimeTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time based on the ip of the request. note: this is a "best guess" obtained from open-source data.
     #
-    # + return - the current time for the timezone requested in JSON format
+    # + return - the current time for the timezone requested in JSON format 
     remote isolated function getCurrentTimeBasedOnIp() returns DateTimeJsonResponse|error {
-        string  path = string `/ip`;
-        DateTimeJsonResponse response = check self.clientEp-> get(path, targetType = DateTimeJsonResponse);
+        string resourcePath = string `/ip`;
+        DateTimeJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time based on the ip of the request. note: this is a "best guess" obtained from open-source data.
     #
-    # + return - the current time for the timezone requested in plain text
+    # + return - the current time for the timezone requested in plain text 
     remote isolated function getCurrentTimeBasedOnIpAsText() returns DateTimeTextResponse|error {
-        string  path = string `/ip.txt`;
-        DateTimeTextResponse response = check self.clientEp-> get(path, targetType = DateTimeTextResponse);
+        string resourcePath = string `/ip.txt`;
+        DateTimeTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time based on the ip of the request. note: this is a "best guess" obtained from open-source data.
     #
-    # + ipv4 - IPv4 address
-    # + return - the current time for the timezone requested in JSON format
+    # + ipv4 - IPv4 address 
+    # + return - the current time for the timezone requested in JSON format 
     remote isolated function getCurrentTimeBasedOnIpv4(string ipv4) returns DateTimeJsonResponse|error {
-        string  path = string `/ip/${ipv4}`;
-        DateTimeJsonResponse response = check self.clientEp-> get(path, targetType = DateTimeJsonResponse);
+        string resourcePath = string `/ip/${ipv4}`;
+        DateTimeJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # request the current time based on the ip of the request. note: this is a "best guess" obtained from open-source data.
     #
-    # + ipv4 - IPv4 address
-    # + return - the current time for the timezone requested in plain text
+    # + ipv4 - IPv4 address 
+    # + return - the current time for the timezone requested in plain text 
     remote isolated function getCurrentTimeBasedOnIpv4AsText(string ipv4) returns DateTimeTextResponse|error {
-        string  path = string `/ip/${ipv4}.txt`;
-        DateTimeTextResponse response = check self.clientEp-> get(path, targetType = DateTimeTextResponse);
+        string resourcePath = string `/ip/${ipv4}.txt`;
+        DateTimeTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

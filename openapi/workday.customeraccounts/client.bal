@@ -64,6 +64,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieves a single customer invoice payment remittance line instance.
     #
@@ -71,8 +72,8 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePaymentRemittanceLine(string id, string subresourceID) returns ViewRemittanceDetails|error {
-        string path = string `/payments/${id}/remittanceDetails/${subresourceID}`;
-        ViewRemittanceDetails response = check self.clientEp->get(path, targetType = ViewRemittanceDetails);
+        string resourcePath = string `/payments/${id}/remittanceDetails/${subresourceID}`;
+        ViewRemittanceDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single customer invoice payment instance.
@@ -80,8 +81,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePaymentInstance(string id) returns ViewCustomerPayment|error {
-        string path = string `/payments/${id}`;
-        ViewCustomerPayment response = check self.clientEp->get(path, targetType = ViewCustomerPayment);
+        string resourcePath = string `/payments/${id}`;
+        ViewCustomerPayment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single customer instance.
@@ -89,8 +90,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSingleCustomerInstance(string id) returns CustomerView|error {
-        string path = string `/customers/${id}`;
-        CustomerView response = check self.clientEp->get(path, targetType = CustomerView);
+        string resourcePath = string `/customers/${id}`;
+        CustomerView response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single customer invoice or adjustment instance.
@@ -98,8 +99,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoiceOrAdjustmentInstance(string id) returns CustomerInvoice|error {
-        string path = string `/invoices/${id}`;
-        CustomerInvoice response = check self.clientEp->get(path, targetType = CustomerInvoice);
+        string resourcePath = string `/invoices/${id}`;
+        CustomerInvoice response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single customer invoice PDF instance.
@@ -107,19 +108,19 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePDFInstance(string id) returns string|error {
-        string path = string `/invoicePDFs/${id}`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/invoicePDFs/${id}`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates customer invoice payments.
     #
     # + return - Resource created. 
     remote isolated function createInvoicePayment(CreateCustomerPayment payload) returns CreateCustomerPayment|error {
-        string path = string `/payments`;
+        string resourcePath = string `/payments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateCustomerPayment response = check self.clientEp->post(path, request, targetType = CreateCustomerPayment);
+        request.setPayload(jsonBody, "application/json");
+        CreateCustomerPayment response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves a collection of customer invoices and adjustments.
@@ -137,11 +138,11 @@ public isolated client class Client {
     # + transactionType - The transaction type of this customer transaction. Use the string "invoice" or "adjustment" to filter to retrieve either only invoices or adjustments. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfInvoices(string[]? billToCustomer = (), string[]? company = (), string? fromDueDate = (), string? fromInvoiceDate = (), string[]? invoiceStatus = (), int? 'limit = (), int? offset = (), string[]? paymentStatus = (), string? toDueDate = (), string? toInvoiceDate = (), string? transactionType = ()) returns InlineResponse200|error {
-        string path = string `/invoices`;
+        string resourcePath = string `/invoices`;
         map<anydata> queryParam = {"billToCustomer": billToCustomer, "company": company, "fromDueDate": fromDueDate, "fromInvoiceDate": fromInvoiceDate, "invoiceStatus": invoiceStatus, "limit": 'limit, "offset": offset, "paymentStatus": paymentStatus, "toDueDate": toDueDate, "toInvoiceDate": toInvoiceDate, "transactionType": transactionType};
         map<Encoding> queryParamEncoding = {"billToCustomer": {style: FORM, explode: true}, "company": {style: FORM, explode: true}, "invoiceStatus": {style: FORM, explode: true}, "paymentStatus": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single customer invoice print run.
@@ -150,8 +151,8 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePrintRun(string id, string subresourceID) returns PrintRun|error {
-        string path = string `/invoices/${id}/printRuns/${subresourceID}`;
-        PrintRun response = check self.clientEp->get(path, targetType = PrintRun);
+        string resourcePath = string `/invoices/${id}/printRuns/${subresourceID}`;
+        PrintRun response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of customer invoice print runs for the specified customer invoice or adjustment.
@@ -161,10 +162,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePrintRunForSpecifiedInvoice(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2001|error {
-        string path = string `/invoices/${id}/printRuns`;
+        string resourcePath = string `/invoices/${id}/printRuns`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of customers.
@@ -174,10 +175,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCustomerCollection(int? 'limit = (), string? name = (), int? offset = ()) returns InlineResponse2002|error {
-        string path = string `/customers`;
+        string resourcePath = string `/customers`;
         map<anydata> queryParam = {"limit": 'limit, "name": name, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp->get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates customer invoice payment remittance lines.
@@ -185,11 +186,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createCustomerInvoice(string id, CreateRemittanceDetails payload) returns CreateRemittanceDetails|error {
-        string path = string `/payments/${id}/remittanceDetails`;
+        string resourcePath = string `/payments/${id}/remittanceDetails`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateRemittanceDetails response = check self.clientEp->post(path, request, targetType = CreateRemittanceDetails);
+        request.setPayload(jsonBody, "application/json");
+        CreateRemittanceDetails response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

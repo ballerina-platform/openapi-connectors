@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Returns 15 tickets of the company in the order of their last activity. Only tickets that are not archived are returned.
     #
@@ -62,12 +63,12 @@ public isolated client class Client {
     # + totalOnly - Can be used in conjunction with any other parameters to return only the total number of tickets. Accepts any truthy value. For example total_only=true. Defaults to false. 
     # + return - An object with a property tickets which is an array of Ticket objects. 
     remote isolated function listTickets(string accept = "application/json", int? perPage = (), int? page = (), string? archived = (), boolean? spam = (), boolean? trash = (), boolean? replies = (), int? maxReplies = (), string? assignedUser = (), string? assignedTeam = (), boolean? starred = (), string? label = (), string? since = (), string? until = (), string? sortBy = (), string? requesterEmails = (), boolean? totalOnly = ()) returns Tickets|error {
-        string path = string `/tickets`;
+        string resourcePath = string `/tickets`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "archived": archived, "spam": spam, "trash": trash, "replies": replies, "max_replies": maxReplies, "assigned_user": assignedUser, "assigned_team": assignedTeam, "starred": starred, "label": label, "since": since, "until": until, "sort_by": sortBy, "requester_emails": requesterEmails, "total_only": totalOnly, "auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Tickets response = check self.clientEp->get(path, accHeaders, targetType = Tickets);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Tickets response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a ticket for the company.
@@ -76,15 +77,15 @@ public isolated client class Client {
     # + payload - The data required to create a ticket. 
     # + return - Created ticket 
     remote isolated function createTicket(CreateTicketRequest payload, string accept = "application/json") returns CreatedTicket|error {
-        string path = string `/tickets`;
+        string resourcePath = string `/tickets`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreatedTicket response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CreatedTicket);
+        request.setPayload(jsonBody, "application/json");
+        CreatedTicket response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the ticket specified by the id.
@@ -93,12 +94,12 @@ public isolated client class Client {
     # + id - The ticket ID 
     # + return - A ticket object 
     remote isolated function getTicket(string id, string accept = "application/json") returns TicketObject|error {
-        string path = string `/tickets/${id}`;
+        string resourcePath = string `/tickets/${id}`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TicketObject response = check self.clientEp->get(path, accHeaders, targetType = TicketObject);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TicketObject response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Deletes a trashed ticket.
@@ -107,12 +108,12 @@ public isolated client class Client {
     # + id - The ticket ID 
     # + return - An empty body if the ticket was successfully deleted. 
     remote isolated function deleteTrashedTicket(string id, string accept = "application/json") returns http:Response|error {
-        string path = string `/tickets/${id}`;
+        string resourcePath = string `/tickets/${id}`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Archives an unarchived ticket specified by ticket_id.
@@ -121,14 +122,14 @@ public isolated client class Client {
     # + ticketId - The ticket ID 
     # + return - An empty body if the ticket was successfully archived. 
     remote isolated function archiveTicket(string ticketId, string accept = "application/json") returns http:Response|error {
-        string path = string `/tickets/${ticketId}/archive`;
+        string resourcePath = string `/tickets/${ticketId}/archive`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Trashes' an un-trashed ticket specified by ticket_id.
@@ -137,14 +138,14 @@ public isolated client class Client {
     # + ticketId - The ticket ID 
     # + return - An empty body if the ticket was successfully trashed. 
     remote isolated function trashTicket(string ticketId, string accept = "application/json") returns http:Response|error {
-        string path = string `/tickets/${ticketId}/trash`;
+        string resourcePath = string `/tickets/${ticketId}/trash`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Assign a ticket to a user. If the ticket is already assigned to a team, then the given user must be a member of that team.
@@ -154,15 +155,15 @@ public isolated client class Client {
     # + payload - The data required to assign a ticket to a user. 
     # + return - An object with a property user_assignment. 
     remote isolated function assignUser(string ticketId, AssignUserRequest payload, string accept = "application/json") returns AssignedUserObject|error {
-        string path = string `/tickets/${ticketId}/user_assignment`;
+        string resourcePath = string `/tickets/${ticketId}/user_assignment`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AssignedUserObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = AssignedUserObject);
+        request.setPayload(jsonBody, "application/json");
+        AssignedUserObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the user specified by id.
@@ -172,12 +173,12 @@ public isolated client class Client {
     # + maxTickets - Specify the maximum number of recent tickets you want to retrieve that this user created. If false returns all tickets. 
     # + return - A user object 
     remote isolated function getUser(string id, string accept = "application/json", string? maxTickets = ()) returns GetUserObject|error {
-        string path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         map<anydata> queryParam = {"max_tickets": maxTickets, "auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetUserObject response = check self.clientEp->get(path, accHeaders, targetType = GetUserObject);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetUserObject response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves all users of the company.
@@ -188,12 +189,12 @@ public isolated client class Client {
     # + 'type - Specifies the type of the users you want to get. The type must be one of these: user, customer_group. Defaults to user. 
     # + return - An object with a property users which is an array of User objects. 
     remote isolated function listUsers(string accept = "application/json", boolean? withInvited = (), string? withRoles = (), string? 'type = ()) returns Users|error {
-        string path = string `/users`;
+        string resourcePath = string `/users`;
         map<anydata> queryParam = {"with_invited": withInvited, "with_roles": withRoles, "type": 'type, "auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Users response = check self.clientEp->get(path, accHeaders, targetType = Users);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Users response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves all the replies of the ticket with id ticket_id.
@@ -202,12 +203,12 @@ public isolated client class Client {
     # + ticketId - The ticket ID 
     # + return - An object with a property replies which is an array of Reply objects. 
     remote isolated function listReplies(string ticketId, string accept = "application/json") returns Replies|error {
-        string path = string `/tickets/${ticketId}/replies`;
+        string resourcePath = string `/tickets/${ticketId}/replies`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Replies response = check self.clientEp->get(path, accHeaders, targetType = Replies);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Replies response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Posts a reply to the ticket with id ticket_id.
@@ -217,15 +218,15 @@ public isolated client class Client {
     # + payload - The data required to create a ticket. 
     # + return - Created reply 
     remote isolated function createReply(string ticketId, CreateReplyRequest payload, string accept = "application/json") returns CreatedReply|error {
-        string path = string `/tickets/${ticketId}/replies`;
+        string resourcePath = string `/tickets/${ticketId}/replies`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreatedReply response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CreatedReply);
+        request.setPayload(jsonBody, "application/json");
+        CreatedReply response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the reply for ticket specified by the ticket_id with id.
@@ -235,12 +236,12 @@ public isolated client class Client {
     # + id - The reply ID 
     # + return - A reply object 
     remote isolated function getReply(string ticketId, string id, string accept = "application/json") returns ReplyObject|error {
-        string path = string `/tickets/${ticketId}/replies/${id}`;
+        string resourcePath = string `/tickets/${ticketId}/replies/${id}`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ReplyObject response = check self.clientEp->get(path, accHeaders, targetType = ReplyObject);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ReplyObject response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Adds the label with {label_name} to the ticket with id ticket_id
@@ -250,14 +251,14 @@ public isolated client class Client {
     # + labelName - The label name 
     # + return - Created reply 
     remote isolated function createLabel(string ticketId, string labelName, string accept = "application/json") returns CreatedLabel|error {
-        string path = string `/tickets/${ticketId}/labels/${labelName}`;
+        string resourcePath = string `/tickets/${ticketId}/labels/${labelName}`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        CreatedLabel response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CreatedLabel);
+        CreatedLabel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Removes label from a ticket.
@@ -267,12 +268,12 @@ public isolated client class Client {
     # + labelName - The label name 
     # + return - An empty body if the label was successfully removed. 
     remote isolated function removeLabel(string ticketId, string labelName, string accept = "application/json") returns http:Response|error {
-        string path = string `/tickets/${ticketId}/labels/${labelName}`;
+        string resourcePath = string `/tickets/${ticketId}/labels/${labelName}`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves all the custom labels of a company.
@@ -280,12 +281,12 @@ public isolated client class Client {
     # + accept - All API requests must have a Accept header set to application/json. 
     # + return - An object with a property labels which is an array of Label objects. 
     remote isolated function listLabels(string accept = "application/json") returns Labels|error {
-        string path = string `/labels`;
+        string resourcePath = string `/labels`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Labels response = check self.clientEp->get(path, accHeaders, targetType = Labels);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Labels response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves all the comments of the ticket with id.
@@ -294,12 +295,12 @@ public isolated client class Client {
     # + ticketId - The ticket ID 
     # + return - An object with a property comments which is an array of Comment objects. 
     remote isolated function listComments(string ticketId, string accept = "application/json") returns Comments|error {
-        string path = string `/tickets/${ticketId}/comments`;
+        string resourcePath = string `/tickets/${ticketId}/comments`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Comments response = check self.clientEp->get(path, accHeaders, targetType = Comments);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Comments response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Posts a comment to the ticket with id.
@@ -309,15 +310,15 @@ public isolated client class Client {
     # + payload - The data required to create a comment. 
     # + return - Created comment 
     remote isolated function createComment(string ticketId, CreateCommentRequest payload, string accept = "application/json") returns CreatedComment|error {
-        string path = string `/tickets/${ticketId}/comments`;
+        string resourcePath = string `/tickets/${ticketId}/comments`;
         map<anydata> queryParam = {"auth_token": self.apiKeyConfig.authToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreatedComment response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CreatedComment);
+        request.setPayload(jsonBody, "application/json");
+        CreatedComment response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

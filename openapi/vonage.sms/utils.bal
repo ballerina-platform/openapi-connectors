@@ -207,39 +207,3 @@ isolated function getEncodedUri(string value) returns string {
         return value;
     }
 }
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + encodingMap - Details on serialization mechanism
-# + return - Returns generated Path or error at failure of client initialization
-isolated function getPathForQueryParam(map<anydata> queryParam, map<Encoding> encodingMap = {}) returns string|error {
-    string[] param = [];
-    if (queryParam.length() > 0) {
-        param.push("?");
-        foreach var [key, value] in queryParam.entries() {
-            if value is () {
-                _ = queryParam.remove(key);
-                continue;
-            }
-            Encoding encodingData = encodingMap.hasKey(key) ? encodingMap.get(key) : defaultEncoding;
-            if (value is SimpleBasicType) {
-                param.push(key, "=", getEncodedUri(value.toString()));
-            } else if (value is SimpleBasicType[]) {
-                param.push(getSerializedArray(key, value, encodingData.style, encodingData.explode));
-            } else if (value is record {}) {
-                if (encodingData.style == DEEPOBJECT) {
-                    param.push(getDeepObjectStyleRequest(key, value));
-                } else {
-                    param.push(getFormStyleRequest(key, value, encodingData.explode));
-                }
-            } else {
-                param.push(key, "=", value.toString());
-            }
-            param.push("&");
-        }
-        _ = param.pop();
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}

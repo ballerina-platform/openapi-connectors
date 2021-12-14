@@ -298,16 +298,16 @@ paths:
           schema:
             type: string
           style: simple
-      requestBody:
-        content:
-          application/json:
-            example:
-              wa_ids:
-                - <Recipient WA-ID, from Contacts API>
-            schema:
-              $ref: "#/components/schemas/Group-Admin-Request-Body"
-        description: "Required parameters"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       example:
+      #         wa_ids:
+      #           - <Recipient WA-ID, from Contacts API>
+      #       schema:
+      #         $ref: "#/components/schemas/Group-Admin-Request-Body"
+      #   description: "Required parameters"
+      #   required: true
       responses:
         "200":
           description: "HTTP response or else an error"
@@ -397,16 +397,16 @@ paths:
           schema:
             type: string
           style: simple
-      requestBody:
-        content:
-          application/json:
-            example:
-              wa_ids:
-                - "{{Recipient-WA-ID}}"
-            schema:
-              $ref: "#/components/schemas/Remove-Group-Participant-Request-Body"
-        description: "Required parameters"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       example:
+      #         wa_ids:
+      #           - "{{Recipient-WA-ID}}"
+      #       schema:
+      #         $ref: "#/components/schemas/Remove-Group-Participant-Request-Body"
+      #   description: "Required parameters"
+      #   required: true
       responses:
         "200":
           description: "HTTP response or else an error"

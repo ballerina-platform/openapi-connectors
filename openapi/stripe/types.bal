@@ -305,7 +305,7 @@ public type GetInvoicesUpcomingRequestBody record {
     boolean? clear_usage?;
     boolean? deleted?;
     string? id?;
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     string? price?;
     RecurringPriceData1? price_data?;
     int? quantity?;
@@ -1207,7 +1207,7 @@ public type InvoicesInvoiceBody record {
     # Footer to be displayed on the invoice.
     string? footer?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     # The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://stripe.com/docs/billing/invoices/connect) documentation for details.
     string|string? on_behalf_of?;
     # Configuration settings for the PaymentIntent that is generated when the invoice is finalized.
@@ -2136,8 +2136,8 @@ public type SetupAttemptPaymentMethodDetails record {
 };
 
 public type PaymentMethodOptions record {
-    record{string? preferred_language?;}|string? bancontact?;
-    record{string? request_three_d_secure?;}|string? card?;
+    record {string? preferred_language?;}|string? bancontact?;
+    record {string? request_three_d_secure?;}|string? card?;
 };
 
 # A list of returns that have taken place for this order.
@@ -2990,7 +2990,7 @@ public type InvoiceItemPreviewParams record {
     boolean? discountable?;
     DiscountsDataParam|string? discounts?;
     string? invoiceitem?;
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     Period1? period?;
     string? price?;
     OneTimePriceData? price_data?;
@@ -3078,7 +3078,7 @@ public type InvoicesPaymentMethodOptions record {
 
 # Default invoice settings for this customer.
 public type CustomerParam record {
-    record{string? name;string? value;}[]|string? custom_fields?;
+    record {string? name; string? value;}[]|string? custom_fields?;
     string? default_payment_method?;
     string? footer?;
 };
@@ -3198,7 +3198,7 @@ public type V1InvoicesBody record {
     # Footer to be displayed on the invoice.
     string? footer?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     # The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the [Invoices with Connect](https://stripe.com/docs/billing/invoices/connect) documentation for details.
     string? on_behalf_of?;
     # Configuration settings for the PaymentIntent that is generated when the invoice is finalized.
@@ -3422,7 +3422,7 @@ public type SubscriptionSchedulesScheduleBody record {
     # Specifies which fields in the response should be expanded.
     string[]? expand?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     # List representing phases of the subscription schedule. Each phase can be customized to have different durations, plans, and coupons. If there are multiple phases, the `end_date` of one phase will always equal the `start_date` of the next phase. Note that past phases can be omitted.
     PhaseConfigurationParams1[]? phases?;
     # If the update changes the current phase, indicates if the changes should be prorated. Possible values are `create_prorations` or `none`, and the default value is `create_prorations`.
@@ -3588,7 +3588,7 @@ public type PaymentMethodsPaymentMethodBody record {
     # Specifies which fields in the response should be expanded.
     string[]? expand?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-    record{}|string? metadata?;
+    record {}|string? metadata?;
 };
 
 public type Created1 RangeQuerySpecs|int?;
@@ -3663,11 +3663,11 @@ public type SourceRedirectFlow record {
 };
 
 public type SubscriptionItemUpdateParams record {
-    record{int? usage_gte;}|string? billing_thresholds?;
+    record {int? usage_gte;}|string? billing_thresholds?;
     boolean? clear_usage?;
     boolean? deleted?;
     string? id?;
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     string? price?;
     RecurringPriceData1? price_data?;
     int? quantity?;
@@ -3887,7 +3887,7 @@ public type PhaseConfigurationParams record {
     decimal? application_fee_percent?;
     AutomaticTaxConfig3? automatic_tax?;
     string? billing_cycle_anchor?;
-    record{int? amount_gte?;boolean? reset_billing_cycle_anchor?;}|string? billing_thresholds?;
+    record {int? amount_gte?; boolean? reset_billing_cycle_anchor?;}|string? billing_thresholds?;
     string? collection_method?;
     string? coupon?;
     string? default_payment_method?;
@@ -5296,7 +5296,7 @@ public type V1SubscriptionSchedulesBody record {
     # Migrate an existing subscription to be managed by a subscription schedule. If this parameter is set, a subscription schedule will be created using the subscription's item(s), set to auto-renew using the subscription's interval. When using this parameter, other parameters (such as phase values) cannot be set. To create a subscription schedule with other modifications, we recommend making two separate API calls.
     string? from_subscription?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     # List representing phases of the subscription schedule. Each phase can be customized to have different durations, plans, and coupons. If there are multiple phases, the `end_date` of one phase will always equal the `start_date` of the next phase.
     PhaseConfigurationParams[]? phases?;
     # When the subscription schedule starts. We recommend using `now` so that it starts the subscription immediately. You can also use a Unix timestamp to backdate the subscription so that it starts on a past date, or set a future date for the subscription to start on.
@@ -5940,7 +5940,7 @@ public type CustomersCustomerBody record {
     # Default invoice settings for this customer.
     CustomerParam1? invoice_settings?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     # The customer's full name or business name.
     string? name?;
     # The sequence to be used on the customer's next invoice. Defaults to 1.
@@ -6512,7 +6512,7 @@ public type SubscriptionsSubscriptionExposedIdBody record {
     # Either `now` or `unchanged`. Setting the value to `now` resets the subscription's billing cycle anchor to the current time. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
     string? billing_cycle_anchor?;
     # Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
-    record{int? amount_gte?;boolean? reset_billing_cycle_anchor?;}|string? billing_thresholds?;
+    record {int? amount_gte?; boolean? reset_billing_cycle_anchor?;}|string? billing_thresholds?;
     # A timestamp at which the subscription should cancel. If set to a date before the current period ends, this will cause a proration if prorations have been enabled using `proration_behavior`. If set during a future period, this will always cause a proration for that period.
     int|string? cancel_at?;
     # Boolean indicating whether this subscription should cancel at the end of the current period.
@@ -6534,11 +6534,11 @@ public type SubscriptionsSubscriptionExposedIdBody record {
     # A list of up to 20 subscription items, each with an attached price.
     SubscriptionItemUpdateParams[]? items?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
-    record{}|string? metadata?;
+    record {}|string? metadata?;
     # Indicates if a customer is on or off-session while an invoice payment is attempted.
     boolean? off_session?;
     # If specified, payment collection for this subscription will be paused.
-    record{string? behavior;int? resumes_at?;}|string? pause_collection?;
+    record {string? behavior; int? resumes_at?;}|string? pause_collection?;
     # Use `allow_incomplete` to transition the subscription to `status=past_due` if a payment is required but cannot be paid. This allows you to manage scenarios where additional user actions are needed to pay a subscription's invoice. For example, SCA regulation may require 3DS authentication to complete payment. See the [SCA Migration Guide](https://stripe.com/docs/billing/migration/strong-customer-authentication) for Billing to learn more. This is the default behavior.
     # 
     # Use `default_incomplete` to transition the subscription to `status=past_due` when payment is required and await explicit confirmation of the invoice's payment intent. This allows simpler management of scenarios where additional user actions are needed to pay a subscription’s invoice. Such as failed payments, [SCA regulation](https://stripe.com/docs/billing/migration/strong-customer-authentication), or collecting a mandate for a bank debit payment method.
@@ -6550,7 +6550,7 @@ public type SubscriptionsSubscriptionExposedIdBody record {
     # Payment settings to pass to invoices created by the subscription.
     PaymentSettings2? payment_settings?;
     # Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval.
-    record{string? interval;int? interval_count?;}|string? pending_invoice_item_interval?;
+    record {string? interval; int? interval_count?;}|string? pending_invoice_item_interval?;
     # The promotion code to apply to this subscription. A promotion code applied to a subscription will only affect invoices created for that particular subscription.
     string? promotion_code?;
     # Determines how to handle [prorations](https://stripe.com/docs/subscriptions/billing-cycle#prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. Valid values are `create_prorations`, `none`, or `always_invoice`.
@@ -6562,7 +6562,7 @@ public type SubscriptionsSubscriptionExposedIdBody record {
     # If set, the proration will be calculated as though the subscription was updated at the given time. This can be used to apply exactly the same proration that was previewed with [upcoming invoice](https://stripe.com/docs/api#retrieve_customer_invoice) endpoint. It can also be used to implement custom proration logic, such as prorating by day instead of by second, by providing the time that you wish to use for proration calculations.
     int? proration_date?;
     # If specified, the funds from the subscription's invoices will be transferred to the destination and the ID of the resulting transfers will be found on the resulting charges. This will be unset if you POST an empty value.
-    record{decimal? amount_percent?;string? destination;}|string? transfer_data?;
+    record {decimal? amount_percent?; string? destination;}|string? transfer_data?;
     # Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. This will always overwrite any trials that might apply via a subscribed plan. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. The special value `now` can be provided to end the customer's trial immediately. Can be at most two years from `billing_cycle_anchor`.
     string|int? trial_end?;
     # Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed.

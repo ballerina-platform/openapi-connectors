@@ -66,6 +66,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List all the groups of a tenant.
     #
@@ -74,10 +75,10 @@ public isolated client class Client {
     # + startIndex - The starting index of the search results when paginated. Index starts with 1. 
     # + return - OK 
     remote isolated function listGroups(string? filter = (), decimal count = 100.0, decimal startIndex = 1.0) returns ScimGroupSearchResults|error {
-        string  path = string `/Groups`;
+        string resourcePath = string `/Groups`;
         map<anydata> queryParam = {"filter": filter, "count": count, "startIndex": startIndex};
-        path = path + check getPathForQueryParam(queryParam);
-        ScimGroupSearchResults response = check self.clientEp-> get(path, targetType = ScimGroupSearchResults);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ScimGroupSearchResults response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create group
@@ -85,11 +86,11 @@ public isolated client class Client {
     # + payload - Details of group 
     # + return - Created 
     remote isolated function createGroup(ScimGroupPost payload) returns ScimGroup|error {
-        string  path = string `/Groups`;
+        string resourcePath = string `/Groups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScimGroup response = check self.clientEp->post(path, request, targetType=ScimGroup);
+        request.setPayload(jsonBody, "application/json");
+        ScimGroup response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get group
@@ -97,8 +98,8 @@ public isolated client class Client {
     # + id - Id of group 
     # + return - OK 
     remote isolated function getGroup(string id) returns ScimGroup|error {
-        string  path = string `/Groups/${id}`;
-        ScimGroup response = check self.clientEp-> get(path, targetType = ScimGroup);
+        string resourcePath = string `/Groups/${id}`;
+        ScimGroup response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update group.
@@ -107,11 +108,11 @@ public isolated client class Client {
     # + payload - New details 
     # + return - OK 
     remote isolated function updateGroup(string id, ScimGroupPost payload) returns ScimGroup|error {
-        string  path = string `/Groups/${id}`;
+        string resourcePath = string `/Groups/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScimGroup response = check self.clientEp->put(path, request, targetType=ScimGroup);
+        request.setPayload(jsonBody, "application/json");
+        ScimGroup response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete group
@@ -119,8 +120,8 @@ public isolated client class Client {
     # + id - Id of the group 
     # + return - OK 
     remote isolated function deleteGroup(string id) returns ScimGroup|error {
-        string  path = string `/Groups/${id}`;
-        ScimGroup response = check self.clientEp-> delete(path, targetType = ScimGroup);
+        string resourcePath = string `/Groups/${id}`;
+        ScimGroup response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List members of a group
@@ -128,8 +129,8 @@ public isolated client class Client {
     # + id - Id of group 
     # + return - OK 
     remote isolated function listGroupMembers(string id) returns ScimGroupMemberList|error {
-        string  path = string `/Groups/${id}/members`;
-        ScimGroupMemberList response = check self.clientEp-> get(path, targetType = ScimGroupMemberList);
+        string resourcePath = string `/Groups/${id}/members`;
+        ScimGroupMemberList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add member to a group
@@ -138,11 +139,11 @@ public isolated client class Client {
     # + payload - Details of the new member 
     # + return - Created 
     remote isolated function addMemberToGroup(string id, ScimGroupMember payload) returns ScimGroupMember|error {
-        string  path = string `/Groups/${id}/members`;
+        string resourcePath = string `/Groups/${id}/members`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScimGroupMember response = check self.clientEp->post(path, request, targetType=ScimGroupMember);
+        request.setPayload(jsonBody, "application/json");
+        ScimGroupMember response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete member from a group
@@ -151,8 +152,8 @@ public isolated client class Client {
     # + memberId - Id of member 
     # + return - OK 
     remote isolated function removeMemberFromGroup(string id, string memberId) returns ScimGroupMember|error {
-        string  path = string `/Groups/${id}/members/${memberId}`;
-        ScimGroupMember response = check self.clientEp-> delete(path, targetType = ScimGroupMember);
+        string resourcePath = string `/Groups/${id}/members/${memberId}`;
+        ScimGroupMember response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List of users of a tenant.
@@ -166,10 +167,10 @@ public isolated client class Client {
     # + subtenant - Filter for subtenant users 
     # + return - OK 
     remote isolated function list(string? filter = (), string? attributes = (), string? sortBy = (), string sortOrder = "ascending", decimal count = 100.0, decimal startIndex = 1.0, string? subtenant = ()) returns ScimUserResponseSearchResults|error {
-        string  path = string `/Users`;
+        string resourcePath = string `/Users`;
         map<anydata> queryParam = {"filter": filter, "attributes": attributes, "sortBy": sortBy, "sortOrder": sortOrder, "count": count, "startIndex": startIndex, "subtenant": subtenant};
-        path = path + check getPathForQueryParam(queryParam);
-        ScimUserResponseSearchResults response = check self.clientEp-> get(path, targetType = ScimUserResponseSearchResults);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ScimUserResponseSearchResults response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create user
@@ -177,11 +178,11 @@ public isolated client class Client {
     # + payload - Details of user 
     # + return - Created 
     remote isolated function create(ScimUserPost payload) returns ScimUserPostResponse|error {
-        string  path = string `/Users`;
+        string resourcePath = string `/Users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScimUserPostResponse response = check self.clientEp->post(path, request, targetType=ScimUserPostResponse);
+        request.setPayload(jsonBody, "application/json");
+        ScimUserPostResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get user
@@ -189,8 +190,8 @@ public isolated client class Client {
     # + id - Id of user 
     # + return - OK 
     remote isolated function get(string id) returns ScimUserResponse|error {
-        string  path = string `/Users/${id}`;
-        ScimUserResponse response = check self.clientEp-> get(path, targetType = ScimUserResponse);
+        string resourcePath = string `/Users/${id}`;
+        ScimUserResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update user
@@ -199,11 +200,11 @@ public isolated client class Client {
     # + payload - New details 
     # + return - OK 
     remote isolated function update(string id, ScimUserPut payload) returns ScimUserResponse|error {
-        string  path = string `/Users/${id}`;
+        string resourcePath = string `/Users/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScimUserResponse response = check self.clientEp->put(path, request, targetType=ScimUserResponse);
+        request.setPayload(jsonBody, "application/json");
+        ScimUserResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete user
@@ -211,16 +212,16 @@ public isolated client class Client {
     # + id - Id of user 
     # + return - OK 
     remote isolated function delete(string id) returns ScimUserResponse|error {
-        string  path = string `/Users/${id}`;
-        ScimUserResponse response = check self.clientEp-> delete(path, targetType = ScimUserResponse);
+        string resourcePath = string `/Users/${id}`;
+        ScimUserResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get list of groups starting with the prefix "mdsp:" in which the user is a member.
     #
     # + return - OK 
     remote isolated function getUserRoles() returns Group[]|error {
-        string  path = string `/Users/me`;
-        Group[] response = check self.clientEp-> get(path, targetType = GroupArr);
+        string resourcePath = string `/Users/me`;
+        Group[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get OAuth client details
@@ -228,8 +229,8 @@ public isolated client class Client {
     # + id - Id of your client. It must be the same as the `client_id` claim in the bearer token. 
     # + return - OK 
     remote isolated function getProviderOAuthClient(string id) returns OAuthClient|error {
-        string  path = string `/provider/oauth/clients/${id}`;
-        OAuthClient response = check self.clientEp-> get(path, targetType = OAuthClient);
+        string resourcePath = string `/provider/oauth/clients/${id}`;
+        OAuthClient response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update OAuth client's secret
@@ -239,13 +240,13 @@ public isolated client class Client {
     # + payload - Parameters of the new secret. 
     # + return - Secret has been changed successfully. 
     remote isolated function updateSecret(string id, ChangeSecretRequest payload, string? currentSecret = ()) returns ChangedSecretResponse|error {
-        string  path = string `/provider/oauth/clients/${id}/secrets`;
+        string resourcePath = string `/provider/oauth/clients/${id}/secrets`;
         map<any> headerValues = {"Current-Secret": currentSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ChangedSecretResponse response = check self.clientEp->put(path, request, headers = accHeaders, targetType=ChangedSecretResponse);
+        request.setPayload(jsonBody, "application/json");
+        ChangedSecretResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Add new OAuth client's secret
@@ -255,13 +256,13 @@ public isolated client class Client {
     # + payload - Parameters of the new secret. 
     # + return - Secret has been added successfully. 
     remote isolated function createSecret(string id, ChangeSecretRequest payload, string? currentSecret = ()) returns ChangedSecretResponse|error {
-        string  path = string `/provider/oauth/clients/${id}/secrets`;
+        string resourcePath = string `/provider/oauth/clients/${id}/secrets`;
         map<any> headerValues = {"Current-Secret": currentSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ChangedSecretResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ChangedSecretResponse);
+        request.setPayload(jsonBody, "application/json");
+        ChangedSecretResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete old OAuth client's secret
@@ -270,10 +271,10 @@ public isolated client class Client {
     # + currentSecret - Required, unless your have `prv.oc.sec.admin` scope. It is used to make sure the requestor has permission to modify the given client's secret. 
     # + return - Older secret has been removed successfully. 
     remote isolated function deleteSecret(string id, string? currentSecret = ()) returns http:Response|error {
-        string  path = string `/provider/oauth/clients/${id}/secrets`;
+        string resourcePath = string `/provider/oauth/clients/${id}/secrets`;
         map<any> headerValues = {"Current-Secret": currentSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
 }

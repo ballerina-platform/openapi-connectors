@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -46,14 +46,25 @@ public type NumberDetailsUpdate record {
     # The associated system type for your SMPP client
     string moSmppSysType?;
     # Specify whether inbound voice calls on your number are forwarded
+    # to a SIP or a telephone number.  This must be used with the
+    # `voiceCallbackValue` parameter. If set, `sip` or `tel` are
+    # prioritized over the Voice capability in your Application.
+    # 
+    # *Note: The `app` value is deprecated and will be removed in future.*
     string voiceCallbackType?;
     # A SIP URI or telephone number. Must be used with the `voiceCallbackType` parameter.
     string voiceCallbackValue?;
     # A webhook URI for Vonage to send a request to when a call ends
     string voiceStatusCallback?;
     # <strong>DEPRECATED</strong> - We recommend that you use `app_id` instead.
+    # 
+    # Specifies the Messages webhook type (always `app`) associated with this
+    # number and must be used with the `messagesCallbackValue` parameter.
     string messagesCallbackType?;
     # <strong>DEPRECATED</strong> - We recommend that you use `app_id` instead.
+    # 
+    # Specifies the Application ID of your Messages application.
+    # It must be used with the `messagesCallbackType` parameter.
     string messagesCallbackValue?;
 };
 
@@ -88,7 +99,6 @@ public type NumberDetails record {
 };
 
 # The two character country code in ISO 3166-1 alpha-2 format
-#
 public type Country string;
 
 public type Unauthorized record {

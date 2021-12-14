@@ -26,7 +26,7 @@ public type OneTimePaymentInput record {
     # The start date of the Coverage Period for the payment, which enables Workday Payroll or Payroll Integration to associate dates with the one-time payment for Fair Labor Standards Act (FLSA) reporting requirements.
     string? coverageStartDate?;
     # Amount of compensation payment
-    record  { }  paymentAmount?;
+    record {} paymentAmount?;
     # The end date of the Coverage Period for the payment, which enables Workday Payroll or Payroll Integration to associate dates with the one-time payment for Fair Labor Standards Act (FLSA) reporting requirements.
     string? coverageEndDate?;
     # Additional information for this compensation payment
@@ -46,8 +46,8 @@ public type OneTimePaymentInput record {
 
 public type CreateScorecardProfiles record {
     # The ~goals~ for the Compensation Scorecard.
-    CreateGoals[]? profileScorecardGoals?;
-    EligibilityRule? eligibilityRule?;
+    CreateGoals[]? profileScorecardGoals;
+    EligibilityRule? eligibilityRule;
     # Id of the instance
     string? id?;
 };
@@ -92,9 +92,9 @@ public type PaymentCurrency record {
 public type CreateScorecardResults record {
     # The ~goal~ name of the scorecard criteria result.
     string? scorecardName?;
-    ScoreCardID? scorecardID?;
+    ScoreCardID? scorecardID;
     # Scorecard Result Evaluation Date
-    string? evaluationDate?;
+    string? evaluationDate;
     # A preview of the instance
     string? descriptor?;
     # Id of the instance
@@ -151,9 +151,9 @@ public type ScoreCardGoals record {
     # Replaces the description of the Compensation Scorecard Goal as of the specified effectiveDate.  Deletes the description if a description exists as of the specified effectiveDate and this field is not included in the PUT.
     string? goalDescription?;
     # Replaces the weight of the Compensation Scorecard ~Goal~ as of the specified effectiveDate.  [Weight should be entered as 0.9 for a goalWeight of 90%]
-    int? goalWeight?;
+    int? goalWeight;
     # Replaces the name of the Compensation Scorecard Goal as of the specified effectiveDate.
-    string? goalName?;
+    string? goalName;
     # Id of the instance
     string? id?;
 };
@@ -169,11 +169,11 @@ public type InstanceModelReference record {
 
 public type CreateScoreCard record {
     # The Effective Date of the Compensation Scorecard in format YYYY-MM-DD
-    string? effectiveDate?;
+    string? effectiveDate;
     # The name of the Compensation Scorecard.
-    string? scorecardName?;
+    string? scorecardName;
     # The ~goals~ for the Compensation Scorecard.
-    CreateGoals[]? defaultScorecardGoals?;
+    CreateGoals[]? defaultScorecardGoals;
     # The profiles for the Compensation Scorecard.
     CreateScorecardProfiles[]? scorecardProfiles?;
     # Indicates whether the Scorecard is inactive using a value of true/false.
@@ -202,15 +202,15 @@ public type EditScoreCards record {
     # Replaces the inactive status of the Compensation Scorecard as of the specified effectiveDate.  Default value: false.
     boolean? inactive?;
     # The Effective Date of the updates to the Compensation Scorecard.  Date must be entered in format: YYYY-MM-DD.
-    string? effectiveDate?;
+    string? effectiveDate;
     # Replaces the description of the Compensation Scorecard as of the specified effectiveDate.  Deletes the description if a description exists as of the specified effectiveDate and this field is not included in the PUT.
     string? scorecardDescription?;
     # Replaces the array of Profile Scorecard Goals and Eligibility Rules as of the specified effectiveDate.  Creates a new array if one does not exist.  Deletes the array if one exists as of the specified effectiveDate and the array is not included in the PUT.
     ScorecardProfiles[]? scorecardProfiles?;
     # Replaces the array of Default Scorecard Goal fields as of the specified effectiveDate.
-    ScoreCardGoals[]? defaultScorecardGoals?;
+    ScoreCardGoals[]? defaultScorecardGoals;
     # Replaces the name of the Compensation Scorecard as of the specified effectiveDate.
-    string? scorecardName?;
+    string? scorecardName;
     # Id of the instance
     string? id?;
 };
@@ -268,9 +268,9 @@ public type CreateGoals record {
     # The description of the Compensation Scorecard Goal
     string? goalDescription?;
     # The weight given to the Compensation Scorecard Goal. [90% will be displayed as 0.9]
-    int? goalWeight?;
+    int? goalWeight;
     # The name of the Compensation Scorecard Goal.
-    string? goalName?;
+    string? goalName;
     # Id of the instance
     string? id?;
 };
@@ -299,9 +299,9 @@ public type ScoreGoal record {
 };
 
 public type ScorecardProfiles record {
-    EligibilityRule? eligibilityRule?;
+    EligibilityRule? eligibilityRule;
     # Replaces the array of Profile Scorecard Goal fields as of the specified effectiveDate.  Creates a new array if one does not exist.  Deletes the array if one exists as of the specified effectiveDate and the scorecardProfiles array is not included in the PUT.
-    ScoreCardGoals[]? profileScorecardGoals?;
+    ScoreCardGoals[]? profileScorecardGoals;
     # Id of the instance
     string? id?;
 };
@@ -378,11 +378,16 @@ public type FacetsModelReferenceInner record {
     # The alias used to select the facet
     string? facetParameter?;
     # the facet values
-    record  { # The number of instances returned by this facet
-        int? count?; # wid / id / reference id
-        string? id; # A description of the facet
-        string? descriptor?; # A link to the instance
-        string? href?;} []? values?;
+    record {
+        # The number of instances returned by this facet
+        int? count?;
+        # wid / id / reference id
+        string? id;
+        # A description of the facet
+        string? descriptor?;
+        # A link to the instance
+        string? href?;
+    }[]? values?;
 };
 
 public type Location record {

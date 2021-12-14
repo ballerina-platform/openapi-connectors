@@ -17,7 +17,6 @@
 public type AssetTypeArr AssetType[];
 
 # See Asset Status Codes.
-#
 public type AssetStatusQueryParam string;
 
 public type BookDepreciationSetting record {
@@ -178,5 +177,4 @@ public type Error record {
 };
 
 # See Asset Status Codes.
-#
 public type AssetStatus string;

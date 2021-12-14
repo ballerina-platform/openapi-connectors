@@ -42,6 +42,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get alias
     #
@@ -49,12 +50,12 @@ public isolated client class Client {
     # + aliasName - alias value (without `/` at the beginning) 
     # + return - Alias model or **null** 
     remote isolated function getAlias(string aliasName, string domainName = "short.fyi") returns AliasModel|error {
-        string  path = string `/aliases`;
+        string resourcePath = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AliasModel response = check self.clientEp-> get(path, accHeaders, targetType = AliasModel);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AliasModel response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update alias
@@ -64,15 +65,15 @@ public isolated client class Client {
     # + payload - alias properties you wish to be updated 
     # + return - Empty response 
     remote isolated function updateAlias(string aliasName, CreateAliasModel payload, string domainName = "short.fyi") returns http:Response|error {
-        string  path = string `/aliases`;
+        string resourcePath = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create alias
@@ -82,15 +83,15 @@ public isolated client class Client {
     # + payload - alias properties 
     # + return - Response contains aliasName, domainName and full generated short link 
     remote isolated function createAlias(CreateAliasModel payload, string domainName = "short.fyi", string aliasName = "@rnd") returns CreateAliasResponseModel|error {
-        string  path = string `/aliases`;
+        string resourcePath = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateAliasResponseModel response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CreateAliasResponseModel);
+        request.setPayload(jsonBody, "application/json");
+        CreateAliasResponseModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete alias
@@ -99,12 +100,12 @@ public isolated client class Client {
     # + aliasName - alias (without `/` at the beginning) 
     # + return - Empty response 
     remote isolated function deleteAlias(string aliasName, string domainName = "short.fyi") returns http:Response|error {
-        string  path = string `/aliases`;
+        string resourcePath = string `/aliases`;
         map<anydata> queryParam = {"domainName": domainName, "aliasName": aliasName};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get aliases by domain
@@ -114,12 +115,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return per request 
     # + return - returns Array of aliases with lastId 
     remote isolated function getAliases(string domainName = "short.fyi", string? continueFrom = (), int 'limit = 1000) returns GetAliasesModel|error {
-        string  path = string `/aliases/all`;
+        string resourcePath = string `/aliases/all`;
         map<anydata> queryParam = {"domainName": domainName, "continueFrom": continueFrom, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetAliasesModel response = check self.clientEp-> get(path, accHeaders, targetType = GetAliasesModel);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetAliasesModel response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get clicks
@@ -128,12 +129,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return per request 
     # + return - returns Array of Click models, also returns lastId 
     remote isolated function getClicks(string? continueFrom = (), int 'limit = 1000) returns GetClicksModel|error {
-        string  path = string `/clicks`;
+        string resourcePath = string `/clicks`;
         map<anydata> queryParam = {"continueFrom": continueFrom, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetClicksModel response = check self.clientEp-> get(path, accHeaders, targetType = GetClicksModel);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetClicksModel response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

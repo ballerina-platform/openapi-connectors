@@ -65,13 +65,14 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List phone numbers.
     #
     # + return - Returns list of phone numbers 
     remote isolated function listPhoneNumbers() returns PhoneNumbers|error {
-        string  path = string `/api/v2/channels/voice/phone_numbers.json`;
-        PhoneNumbers response = check self.clientEp-> get(path, targetType = PhoneNumbers);
+        string resourcePath = string `/api/v2/channels/voice/phone_numbers.json`;
+        PhoneNumbers response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create phone number (This endpoint is not available for trial accounts).
@@ -79,11 +80,11 @@ public isolated client class Client {
     # + payload - The information for create phone number request 
     # + return - Returns detail of phone number created 
     remote isolated function createPhoneNumber(PhoneNumberInfo payload) returns PhoneNumber|error {
-        string  path = string `/api/v2/channels/voice/phone_numbers.json`;
+        string resourcePath = string `/api/v2/channels/voice/phone_numbers.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PhoneNumber response = check self.clientEp->post(path, request, targetType=PhoneNumber);
+        request.setPayload(jsonBody, "application/json");
+        PhoneNumber response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Search for available phone numbers (This endpoint is not available for trial accounts).
@@ -94,10 +95,10 @@ public isolated client class Client {
     # + tollFree - Whether the number should be toll-free or local 
     # + return - Returns available phone numbers 
     remote isolated function searchAvailablePhoneNumbers(string country, string? areaCode = (), string? contains = (), boolean? tollFree = ()) returns PhoneNumber|error {
-        string  path = string `/api/v2/channels/voice/phone_numbers/search.json`;
+        string resourcePath = string `/api/v2/channels/voice/phone_numbers/search.json`;
         map<anydata> queryParam = {"country": country, "area_code": areaCode, "contains": contains, "toll_free": tollFree};
-        path = path + check getPathForQueryParam(queryParam);
-        PhoneNumber response = check self.clientEp-> get(path, targetType = PhoneNumber);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PhoneNumber response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Show phone number.
@@ -105,8 +106,8 @@ public isolated client class Client {
     # + phoneNumberId - ID of a phone number 
     # + return - Returns phone number by id 
     remote isolated function showPhoneNumber(string phoneNumberId) returns PhoneNumber|error {
-        string  path = string `/api/v2/channels/voice/phone_numbers/${phoneNumberId}.json`;
-        PhoneNumber response = check self.clientEp-> get(path, targetType = PhoneNumber);
+        string resourcePath = string `/api/v2/channels/voice/phone_numbers/${phoneNumberId}.json`;
+        PhoneNumber response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete phone number by id.
@@ -114,16 +115,16 @@ public isolated client class Client {
     # + phoneNumberId - ID of a phone number 
     # + return - Returns detail of phone number deleted 
     remote isolated function deletePhoneNumberById(string phoneNumberId) returns PhoneNumber|error {
-        string  path = string `/api/v2/channels/voice/phone_numbers/${phoneNumberId}.json`;
-        PhoneNumber response = check self.clientEp-> delete(path, targetType = PhoneNumber);
+        string resourcePath = string `/api/v2/channels/voice/phone_numbers/${phoneNumberId}.json`;
+        PhoneNumber response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List greeting categories.
     #
     # + return - Returns list of greeting categories 
     remote isolated function listGreetingCategories() returns GreetingCategories|error {
-        string  path = string `/api/v2/channels/voice/greeting_categories.json`;
-        GreetingCategories response = check self.clientEp-> get(path, targetType = GreetingCategories);
+        string resourcePath = string `/api/v2/channels/voice/greeting_categories.json`;
+        GreetingCategories response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Show greeting category.
@@ -131,16 +132,16 @@ public isolated client class Client {
     # + greetingCategoriesId - ID of the greeting category 
     # + return - Returns greeting category by id 
     remote isolated function showGreetingCategory(string greetingCategoriesId) returns GreetingCategory|error {
-        string  path = string `/api/v2/channels/voice/greeting_categories/${greetingCategoriesId}.json`;
-        GreetingCategory response = check self.clientEp-> get(path, targetType = GreetingCategory);
+        string resourcePath = string `/api/v2/channels/voice/greeting_categories/${greetingCategoriesId}.json`;
+        GreetingCategory response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List greetings.
     #
     # + return - Returns list of greetings 
     remote isolated function listGreetings() returns Greetings|error {
-        string  path = string `/api/v2/channels/voice/greetings.json`;
-        Greetings response = check self.clientEp-> get(path, targetType = Greetings);
+        string resourcePath = string `/api/v2/channels/voice/greetings.json`;
+        Greetings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create greeting.
@@ -148,11 +149,11 @@ public isolated client class Client {
     # + payload - The information for create greeting request 
     # + return - Returns detail of greeting created 
     remote isolated function createGreeting(GreetingInfo payload) returns Greeting|error {
-        string  path = string `/api/v2/channels/voice/greetings.json`;
+        string resourcePath = string `/api/v2/channels/voice/greetings.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Greeting response = check self.clientEp->post(path, request, targetType=Greeting);
+        request.setPayload(jsonBody, "application/json");
+        Greeting response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Show greeting.
@@ -160,8 +161,8 @@ public isolated client class Client {
     # + greetingsId - ID of a greeting 
     # + return - Returns greeting by id 
     remote isolated function showGreeting(string greetingsId) returns Greeting|error {
-        string  path = string `/api/v2/channels/voice/greetings/${greetingsId}.json`;
-        Greeting response = check self.clientEp-> get(path, targetType = Greeting);
+        string resourcePath = string `/api/v2/channels/voice/greetings/${greetingsId}.json`;
+        Greeting response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete greeting by id.
@@ -169,8 +170,8 @@ public isolated client class Client {
     # + greetingsId - ID of a greeting 
     # + return - Returns detail of greeting deleted 
     remote isolated function deleteGreetingById(string greetingsId) returns Greeting|error {
-        string  path = string `/api/v2/channels/voice/greetings/${greetingsId}.json`;
-        Greeting response = check self.clientEp-> delete(path, targetType = Greeting);
+        string resourcePath = string `/api/v2/channels/voice/greetings/${greetingsId}.json`;
+        Greeting response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

@@ -14,10 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Mute conference participant payload
-public type MuteUnmuteConferenceParticipantRequest record {
-};
-
 # The type of device and number or endpoint to call.
 public type Destination record {
     # Can be of `number` for PSTN endpoints or of `username` for data endpoints.
@@ -241,7 +237,7 @@ public type GetquerynumberRate record {
 
 public type UpdateNumbers record {
     # The phone number or list of numbers in E.164 format.
-    string[] numbers?;
+    string[100] numbers?;
     # indicates the application where the number(s) will be assigned. If empty, the application key that is used to sign the request will be used.
     string applicationkey?;
     # indicates the DID capability that needs to be assigned to the chosen application. Valid values are 'voice' and 'sms'. Please note that the DID needs to support the selected capability.

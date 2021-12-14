@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -27,23 +27,24 @@ public isolated client class Client {
     # Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
     # Some operations may require passing the token as a parameter.
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://rest.nexmo.com/sms") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Send an SMS
     #
-    # + payload - New Message
-    # + return - Success
+    # + payload - New Message 
+    # + return - Success 
     remote isolated function sendAnSms(NewMessage payload) returns InlineResponse200|error {
-        string  path = string `/json`;
+        string resourcePath = string `/json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse200 response = check self.clientEp->post(path, request, targetType=InlineResponse200);
+        string encodedRequestBody = createFormURLEncodedRequestBody(payload);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

@@ -40,18 +40,19 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Likes a playlist.
     #
     # + playlistId - SoundCloud playlist id 
     # + return - Success 
     remote isolated function likePlaylist(int playlistId) returns json|error {
-        string  path = string `/likes/playlists/${playlistId}`;
+        string resourcePath = string `/likes/playlists/${playlistId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = json);
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Unlikes a playlist.
@@ -59,10 +60,10 @@ public isolated client class Client {
     # + playlistId - SoundCloud playlist id 
     # + return - Success 
     remote isolated function unlikePlaylist(int playlistId) returns json|error {
-        string  path = string `/likes/playlists/${playlistId}`;
+        string resourcePath = string `/likes/playlists/${playlistId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> delete(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Likes a track.
@@ -70,12 +71,12 @@ public isolated client class Client {
     # + trackId - SoundCloud Track id 
     # + return - Success 
     remote isolated function likeTrack(int trackId) returns json|error {
-        string  path = string `/likes/tracks/${trackId}`;
+        string resourcePath = string `/likes/tracks/${trackId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = json);
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Unlikes a track.
@@ -83,20 +84,20 @@ public isolated client class Client {
     # + trackId - SoundCloud Track id 
     # + return - Success 
     remote isolated function unlikeTrack(int trackId) returns json|error {
-        string  path = string `/likes/tracks/${trackId}`;
+        string resourcePath = string `/likes/tracks/${trackId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> delete(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Returns the authenticated user’s information.
     #
     # + return - Success 
     remote isolated function getUserDetail() returns CompleteUser|error {
-        string  path = string `/me`;
+        string resourcePath = string `/me`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CompleteUser response = check self.clientEp-> get(path, accHeaders, targetType = CompleteUser);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CompleteUser response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns the authenticated user's activities.
@@ -105,13 +106,13 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function getActivities(string[]? access = (), int 'limit = 50) returns Activities|error {
-        string  path = string `/me/activities`;
+        string resourcePath = string `/me/activities`;
         map<anydata> queryParam = {"access": access, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Activities response = check self.clientEp-> get(path, accHeaders, targetType = Activities);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Activities response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Recent the authenticated user's activities.
@@ -120,13 +121,13 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function getOwnActivities(string[]? access = (), int 'limit = 50) returns Activities|error {
-        string  path = string `/me/activities/all/own`;
+        string resourcePath = string `/me/activities/all/own`;
         map<anydata> queryParam = {"access": access, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Activities response = check self.clientEp-> get(path, accHeaders, targetType = Activities);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Activities response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns the authenticated user's recent track related activities.
@@ -135,13 +136,13 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function getRecentTrackRelatedActivities(string[]? access = (), int 'limit = 50) returns Activities|error {
-        string  path = string `/me/activities/tracks`;
+        string resourcePath = string `/me/activities/tracks`;
         map<anydata> queryParam = {"access": access, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Activities response = check self.clientEp-> get(path, accHeaders, targetType = Activities);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Activities response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of the authenticated user's connected social accounts.
@@ -152,12 +153,12 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function listConnectedSocialAccounts(int 'limit = 50, @deprecated int offset = 0) returns Connections|error {
-        string  path = string `/me/connections`;
+        string resourcePath = string `/me/connections`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Connections response = check self.clientEp-> get(path, accHeaders, targetType = Connections);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Connections response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns the authenticated user's connected social account.
@@ -165,10 +166,10 @@ public isolated client class Client {
     # + connectionId - SoundCloud connection id 
     # + return - Success 
     remote isolated function getConnectionByID(int connectionId) returns Connection|error {
-        string  path = string `/me/connections/${connectionId}`;
+        string resourcePath = string `/me/connections/${connectionId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Connection response = check self.clientEp-> get(path, accHeaders, targetType = Connection);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Connection response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of users who are following the authenticated user.
@@ -176,12 +177,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function getFollowers(int 'limit = 50) returns InlineResponse200|error {
-        string  path = string `/me/followers`;
+        string resourcePath = string `/me/followers`;
         map<anydata> queryParam = {"limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of users who are followed by the authenticated user.
@@ -192,12 +193,12 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function listFollowings(int 'limit = 50, @deprecated int offset = 0) returns InlineResponse200|error {
-        string  path = string `/me/followings`;
+        string resourcePath = string `/me/followings`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of recent tracks from users followed by the authenticated user.
@@ -209,26 +210,26 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function listRecentTracks(string[]? access = (), int 'limit = 50, @deprecated int offset = 0) returns TracksList|error {
-        string  path = string `/me/followings/tracks`;
+        string resourcePath = string `/me/followings/tracks`;
         map<anydata> queryParam = {"access": access, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TracksList response = check self.clientEp-> get(path, accHeaders, targetType = TracksList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TracksList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Follows a user.
     #
     # + userId - SoundCloud User id 
     # + return - Success 
-    remote isolated function followUser(int userId) returns json|error {
-        string  path = string `/me/followings/${userId}`;
+    remote isolated function followUser(int userId) returns User|json|error {
+        string resourcePath = string `/me/followings/${userId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = json);
+        User|json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Deletes a user who is followed by the authenticated user.
@@ -236,10 +237,10 @@ public isolated client class Client {
     # + userId - SoundCloud User id 
     # + return - Success 
     remote isolated function deleteFollowing(int userId) returns json|error {
-        string  path = string `/me/followings/${userId}`;
+        string resourcePath = string `/me/followings/${userId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> delete(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of favorites or liked tracks of the authenticated user.
@@ -248,12 +249,12 @@ public isolated client class Client {
     # + linkedPartitioning - Returns paginated collection of items (recommended, returning a list without pagination is deprecated and should not be used) 
     # + return - Success 
     remote isolated function listLikedTracks(int 'limit = 50, boolean? linkedPartitioning = ()) returns InlineResponse2001|error {
-        string  path = string `/me/likes/tracks`;
+        string resourcePath = string `/me/likes/tracks`;
         map<anydata> queryParam = {"limit": 'limit, "linked_partitioning": linkedPartitioning};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns user’s playlists (sets).
@@ -261,12 +262,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function listPlaylist(int 'limit = 50) returns PlaylistsArray|error {
-        string  path = string `/me/playlists`;
+        string resourcePath = string `/me/playlists`;
         map<anydata> queryParam = {"limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PlaylistsArray response = check self.clientEp-> get(path, accHeaders, targetType = PlaylistsArray);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PlaylistsArray response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of user's tracks.
@@ -275,12 +276,12 @@ public isolated client class Client {
     # + linkedPartitioning - Returns paginated collection of items (recommended, returning a list without pagination is deprecated and should not be used) 
     # + return - Success 
     remote isolated function listTracks(int 'limit = 50, boolean? linkedPartitioning = ()) returns InlineResponse2001|error {
-        string  path = string `/me/tracks`;
+        string resourcePath = string `/me/tracks`;
         map<anydata> queryParam = {"limit": 'limit, "linked_partitioning": linkedPartitioning};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Performs a playlist search based on a query
@@ -294,13 +295,13 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function searchPlaylist(string q, string[]? access = (), int 'limit = 50, boolean? linkedPartitioning = (), @deprecated int offset = 0) returns InlineResponse2002|error {
-        string  path = string `/playlists`;
+        string resourcePath = string `/playlists`;
         map<anydata> queryParam = {"q": q, "access": access, "limit": 'limit, "linked_partitioning": linkedPartitioning, "offset": offset};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2002 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2002);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a playlist.
@@ -308,13 +309,13 @@ public isolated client class Client {
     # + payload - Create Playlist request 
     # + return - Success 
     remote isolated function createPlaylist(CreateUpdatePlaylistRequest payload) returns InlineResponse201|error {
-        string  path = string `/playlists`;
+        string resourcePath = string `/playlists`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Returns a playlist.
@@ -324,13 +325,13 @@ public isolated client class Client {
     # + access - Filters content by level of access the user (logged in or anonymous) has to the track. The result list will include only tracks with the specified access. Include all options if you'd like to see all possible tracks. See `Track#access` schema for more details. 
     # + return - Success 
     remote isolated function getPlaylist(int playlistId, string? secretToken = (), string[]? access = ()) returns Playlist|error {
-        string  path = string `/playlists/${playlistId}`;
+        string resourcePath = string `/playlists/${playlistId}`;
         map<anydata> queryParam = {"secret_token": secretToken, "access": access};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Playlist response = check self.clientEp-> get(path, accHeaders, targetType = Playlist);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Playlist response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Updates a playlist.
@@ -339,13 +340,13 @@ public isolated client class Client {
     # + payload - Playlist payload 
     # + return - Success 
     remote isolated function updatePlaylist(int playlistId, CreateUpdatePlaylistRequest payload) returns InlineResponse201|error {
-        string  path = string `/playlists/${playlistId}`;
+        string resourcePath = string `/playlists/${playlistId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->put(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Deletes a playlist.
@@ -353,10 +354,10 @@ public isolated client class Client {
     # + playlistId - SoundCloud playlist id 
     # + return - Success 
     remote isolated function deletePlaylist(int playlistId) returns http:Response|error {
-        string  path = string `/playlists/${playlistId}`;
+        string resourcePath = string `/playlists/${playlistId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Returns a collection of playlist's reposters.
@@ -365,12 +366,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function listReposts(int playlistId, int 'limit = 50) returns MetaUsers|error {
-        string  path = string `/playlists/${playlistId}/reposters`;
+        string resourcePath = string `/playlists/${playlistId}/reposters`;
         map<anydata> queryParam = {"limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MetaUsers response = check self.clientEp-> get(path, accHeaders, targetType = MetaUsers);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MetaUsers response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns tracks under a playlist.
@@ -381,13 +382,13 @@ public isolated client class Client {
     # + linkedPartitioning - Returns paginated collection of items (recommended, returning a list without pagination is deprecated and should not be used) 
     # + return - Success 
     remote isolated function getTracksUnderPlaylist(int playlistId, string? secretToken = (), string[]? access = (), boolean? linkedPartitioning = ()) returns InlineResponse2001|error {
-        string  path = string `/playlists/${playlistId}/tracks`;
+        string resourcePath = string `/playlists/${playlistId}/tracks`;
         map<anydata> queryParam = {"secret_token": secretToken, "access": access, "linked_partitioning": linkedPartitioning};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Reposts a playlist as the authenticated user
@@ -395,12 +396,12 @@ public isolated client class Client {
     # + playlistId - SoundCloud playlist id 
     # + return - Created 
     remote isolated function repostPlaylist(int playlistId) returns http:Response|error {
-        string  path = string `/reposts/playlists/${playlistId}`;
+        string resourcePath = string `/reposts/playlists/${playlistId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Removes a repost on a playlist as the authenticated user
@@ -408,10 +409,10 @@ public isolated client class Client {
     # + playlistId - SoundCloud playlist id 
     # + return - Success 
     remote isolated function deleteRepost(int playlistId) returns http:Response|error {
-        string  path = string `/reposts/playlists/${playlistId}`;
+        string resourcePath = string `/reposts/playlists/${playlistId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Reposts a track as the authenticated user
@@ -419,12 +420,12 @@ public isolated client class Client {
     # + trackId - SoundCloud Track id 
     # + return - Created 
     remote isolated function repostTrackByTrackID(int trackId) returns http:Response|error {
-        string  path = string `/reposts/tracks/${trackId}`;
+        string resourcePath = string `/reposts/tracks/${trackId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Removes a repost on a track as the authenticated user
@@ -432,23 +433,23 @@ public isolated client class Client {
     # + trackId - SoundCloud Track id 
     # + return - Success 
     remote isolated function deleteRepostOnTrack(int trackId) returns http:Response|error {
-        string  path = string `/reposts/tracks/${trackId}`;
+        string resourcePath = string `/reposts/tracks/${trackId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Resolves soundcloud.com URLs to Resource URLs to use with the API.
     #
     # + url - SoundCloud URL 
     # + return - Found 
-    remote isolated function resolveSoundCloudURLToResourceURL(string url) returns Found|error {
-        string  path = string `/resolve`;
+    remote isolated function resolveSoundCloudURLToResourceURL(string url) returns http:Response|error {
+        string resourcePath = string `/resolve`;
         map<anydata> queryParam = {"url": url};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Found response = check self.clientEp-> get(path, accHeaders, targetType = Found);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Performs a track search based on a query
@@ -465,13 +466,13 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function searchTracks(string q, string? ids = (), string? genres = (), string? tags = (), string[]? access = (), int 'limit = 50, boolean? linkedPartitioning = (), @deprecated int offset = 0) returns InlineResponse2001|error {
-        string  path = string `/tracks`;
+        string resourcePath = string `/tracks`;
         map<anydata> queryParam = {"q": q, "ids": ids, "genres": genres, "tags": tags, "access": access, "limit": 'limit, "linked_partitioning": linkedPartitioning, "offset": offset};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a track.
@@ -480,12 +481,12 @@ public isolated client class Client {
     # + secretToken - A secret token to fetch private playlists/tracks 
     # + return - Success 
     remote isolated function getTrackByID(int trackId, string? secretToken = ()) returns Track|error {
-        string  path = string `/tracks/${trackId}`;
+        string resourcePath = string `/tracks/${trackId}`;
         map<anydata> queryParam = {"secret_token": secretToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Track response = check self.clientEp-> get(path, accHeaders, targetType = Track);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Track response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Deletes a track.
@@ -493,10 +494,10 @@ public isolated client class Client {
     # + trackId - SoundCloud Track id 
     # + return - Success 
     remote isolated function deleteTrack(int trackId) returns http:Response|error {
-        string  path = string `/tracks/${trackId}`;
+        string resourcePath = string `/tracks/${trackId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Returns the comments posted on the track(track_id).
@@ -509,12 +510,12 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function getCommentsOnTrack(int trackId, int 'limit = 50, boolean? linkedPartitioning = (), @deprecated int offset = 0) returns InlineResponse2003|error {
-        string  path = string `/tracks/${trackId}/comments`;
+        string resourcePath = string `/tracks/${trackId}/comments`;
         map<anydata> queryParam = {"limit": 'limit, "linked_partitioning": linkedPartitioning, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2003 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2003);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns the newly created comment on success
@@ -523,13 +524,13 @@ public isolated client class Client {
     # + payload - Body of a comment 
     # + return - Success 
     remote isolated function addComment(int trackId, TrackIdCommentsBody payload) returns Comment|error {
-        string  path = string `/tracks/${trackId}/comments`;
+        string resourcePath = string `/tracks/${trackId}/comments`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Comment response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Comment);
+        request.setPayload(jsonBody, "application/json; charset=utf-8");
+        Comment response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Returns a list of users who have favorited or liked the track.
@@ -541,12 +542,12 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function getLikedUsersOfTrack(int trackId, int 'limit = 50, @deprecated int offset = 0) returns UsersList|error {
-        string  path = string `/tracks/${trackId}/favoriters`;
+        string resourcePath = string `/tracks/${trackId}/favoriters`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UsersList response = check self.clientEp-> get(path, accHeaders, targetType = UsersList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UsersList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns all related tracks of track on SoundCloud.
@@ -560,13 +561,13 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function listRelatedTracksOfTrack(int trackId, string[]? access = (), int 'limit = 50, boolean? linkedPartitioning = (), @deprecated int offset = 0) returns InlineResponse2001|error {
-        string  path = string `/tracks/${trackId}/related`;
+        string resourcePath = string `/tracks/${trackId}/related`;
         map<anydata> queryParam = {"access": access, "limit": 'limit, "linked_partitioning": linkedPartitioning, "offset": offset};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a collection of track's reposters.
@@ -575,12 +576,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function getRepostCollection(int trackId, int 'limit = 50) returns MetaUsers|error {
-        string  path = string `/tracks/${trackId}/reposters`;
+        string resourcePath = string `/tracks/${trackId}/reposters`;
         map<anydata> queryParam = {"limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MetaUsers response = check self.clientEp-> get(path, accHeaders, targetType = MetaUsers);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MetaUsers response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a track's streamable URLs
@@ -589,12 +590,12 @@ public isolated client class Client {
     # + secretToken - A secret token to fetch private playlists/tracks 
     # + return - Success 
     remote isolated function getStreambleURL(int trackId, string? secretToken = ()) returns Streams|error {
-        string  path = string `/tracks/${trackId}/streams`;
+        string resourcePath = string `/tracks/${trackId}/streams`;
         map<anydata> queryParam = {"secret_token": secretToken};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Streams response = check self.clientEp-> get(path, accHeaders, targetType = Streams);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Streams response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Performs a user search based on a query
@@ -608,12 +609,12 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function searchUser(string q, string? ids = (), int 'limit = 50, boolean? linkedPartitioning = (), @deprecated int offset = 0) returns InlineResponse200|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         map<anydata> queryParam = {"q": q, "ids": ids, "limit": 'limit, "linked_partitioning": linkedPartitioning, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a user.
@@ -621,10 +622,10 @@ public isolated client class Client {
     # + userId - SoundCloud User id 
     # + return - Success 
     remote isolated function getUserByID(int userId) returns CompleteUser|error {
-        string  path = string `/users/${userId}`;
+        string resourcePath = string `/users/${userId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CompleteUser response = check self.clientEp-> get(path, accHeaders, targetType = CompleteUser);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CompleteUser response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of user's comments.
@@ -636,12 +637,12 @@ public isolated client class Client {
     # + offset -
     # + return - Success 
     remote isolated function listUserComments(int userId, int 'limit = 50, @deprecated int offset = 0) returns CommentsList|error {
-        string  path = string `/users/${userId}/comments`;
+        string resourcePath = string `/users/${userId}/comments`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CommentsList response = check self.clientEp-> get(path, accHeaders, targetType = CommentsList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CommentsList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of user’s followers.
@@ -650,12 +651,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function listFollowers(int userId, int 'limit = 50) returns InlineResponse200|error {
-        string  path = string `/users/${userId}/followers`;
+        string resourcePath = string `/users/${userId}/followers`;
         map<anydata> queryParam = {"limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of user’s followings.
@@ -664,12 +665,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function listUserFollowings(int userId, int 'limit = 50) returns InlineResponse200|error {
-        string  path = string `/users/${userId}/followings`;
+        string resourcePath = string `/users/${userId}/followings`;
         map<anydata> queryParam = {"limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of user's liked tracks.
@@ -680,13 +681,13 @@ public isolated client class Client {
     # + linkedPartitioning - Returns paginated collection of items (recommended, returning a list without pagination is deprecated and should not be used) 
     # + return - Success 
     remote isolated function listUserLikedTracks(int userId, string[]? access = (), int 'limit = 50, boolean? linkedPartitioning = ()) returns InlineResponse2001|error {
-        string  path = string `/users/${userId}/likes/tracks`;
+        string resourcePath = string `/users/${userId}/likes/tracks`;
         map<anydata> queryParam = {"access": access, "limit": 'limit, "linked_partitioning": linkedPartitioning};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of user's playlists.
@@ -697,13 +698,13 @@ public isolated client class Client {
     # + linkedPartitioning - Returns paginated collection of items (recommended, returning a list without pagination is deprecated and should not be used) 
     # + return - Success 
     remote isolated function listUserPlaylist(int userId, string[]? access = (), int 'limit = 50, boolean? linkedPartitioning = ()) returns InlineResponse2002|error {
-        string  path = string `/users/${userId}/playlists`;
+        string resourcePath = string `/users/${userId}/playlists`;
         map<anydata> queryParam = {"access": access, "limit": 'limit, "linked_partitioning": linkedPartitioning};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2002 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2002);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns a list of user's tracks.
@@ -714,13 +715,13 @@ public isolated client class Client {
     # + linkedPartitioning - Returns paginated collection of items (recommended, returning a list without pagination is deprecated and should not be used) 
     # + return - Success 
     remote isolated function listUserTracks(int userId, string[]? access = (), int 'limit = 50, boolean? linkedPartitioning = ()) returns InlineResponse2001|error {
-        string  path = string `/users/${userId}/tracks`;
+        string resourcePath = string `/users/${userId}/tracks`;
         map<anydata> queryParam = {"access": access, "limit": 'limit, "linked_partitioning": linkedPartitioning};
         map<Encoding> queryParamEncoding = {"access": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Returns list of user's links added to their profile (website, facebook, instagram).
@@ -729,12 +730,12 @@ public isolated client class Client {
     # + 'limit - Number of results to return in the collection. 
     # + return - Success 
     remote isolated function listUserLinks(int userId, int 'limit = 50) returns WebProfiles|error {
-        string  path = string `/users/${userId}/web-profiles`;
+        string resourcePath = string `/users/${userId}/web-profiles`;
         map<anydata> queryParam = {"limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        WebProfiles response = check self.clientEp-> get(path, accHeaders, targetType = WebProfiles);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        WebProfiles response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

@@ -24,23 +24,11 @@ info:
 servers:
   - url: https://rest.nexmo.com/sms
 paths:
-  /{format}:
+  /json:
     post:
       operationId: send-an-sms
       summary: Send an SMS
       description: Send an outbound SMS from your Vonage account
-      parameters:
-        - name: format
-          description: The format of the response
-          in: path
-          required: true
-          schema:
-            example: json
-            type: string
-            enum:
-              - json
-              - xml
-            default: json
       requestBody:
         description: New Message
         required: true

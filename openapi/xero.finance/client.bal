@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -67,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.xero.com/finance.xro/1.0") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get cash validation
     #
@@ -76,12 +75,12 @@ public isolated client class Client {
     # + beginDate - Date, yyyy-MM-dd. If no parameter is provided, the aggregate results will be drawn from the user’s total history. The ‘begin date’ will return transactions based on the accounting date entered by the user. Transactions after the beginDate will be included. The user has discretion as to which accounting period the transaction relates to. 
     # + return - Success 
     remote isolated function getCashValidation(string xeroTenantId, string? balanceDate = (), string? asAtSystemDate = (), string? beginDate = ()) returns CashValidationResponse[]|error {
-        string  path = string `/CashValidation`;
+        string resourcePath = string `/CashValidation`;
         map<anydata> queryParam = {"balanceDate": balanceDate, "asAtSystemDate": asAtSystemDate, "beginDate": beginDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CashValidationResponse[] response = check self.clientEp-> get(path, accHeaders, targetType = CashValidationResponseArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CashValidationResponse[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get account usage
@@ -91,12 +90,12 @@ public isolated client class Client {
     # + endMonth - Date, yyyy-MM. If no parameter is provided, the current month will be used. Account usage for up to 12 months prior to this date will be returned. 
     # + return - Success 
     remote isolated function getAccountUsage(string xeroTenantId, string? startMonth = (), string? endMonth = ()) returns AccountUsageResponse|error {
-        string  path = string `/AccountingActivities/AccountUsage`;
+        string resourcePath = string `/AccountingActivities/AccountUsage`;
         map<anydata> queryParam = {"startMonth": startMonth, "endMonth": endMonth};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountUsageResponse response = check self.clientEp-> get(path, accHeaders, targetType = AccountUsageResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountUsageResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get lock history
@@ -105,12 +104,12 @@ public isolated client class Client {
     # + endDate - Date, yyyy-MM-dd. If no parameter is provided, the current date will be used. Lock History for up to 12 months before this date will be returned. 
     # + return - Success 
     remote isolated function getLockHistory(string xeroTenantId, string? endDate = ()) returns LockHistoryResponse|error {
-        string  path = string `/AccountingActivities/LockHistory`;
+        string resourcePath = string `/AccountingActivities/LockHistory`;
         map<anydata> queryParam = {"endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LockHistoryResponse response = check self.clientEp-> get(path, accHeaders, targetType = LockHistoryResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LockHistoryResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get report history
@@ -119,12 +118,12 @@ public isolated client class Client {
     # + endDate - Date, yyyy-MM-dd. If no parameter is provided, the current date will be used. Reports published up to 12 months before this date will be returned. 
     # + return - Success 
     remote isolated function getReportHistory(string xeroTenantId, string? endDate = ()) returns ReportHistoryResponse|error {
-        string  path = string `/AccountingActivities/ReportHistory`;
+        string resourcePath = string `/AccountingActivities/ReportHistory`;
         map<anydata> queryParam = {"endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ReportHistoryResponse response = check self.clientEp-> get(path, accHeaders, targetType = ReportHistoryResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ReportHistoryResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get user activities
@@ -133,12 +132,12 @@ public isolated client class Client {
     # + dataMonth - Date, yyyy-MM. If no parameter is provided, the month immediately previous to the current month will be used. The user activities for the specified month will be returned. 
     # + return - Success 
     remote isolated function getUserActivities(string xeroTenantId, string? dataMonth = ()) returns UserActivitiesResponse|error {
-        string  path = string `/AccountingActivities/UserActivities`;
+        string resourcePath = string `/AccountingActivities/UserActivities`;
         map<anydata> queryParam = {"dataMonth": dataMonth};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserActivitiesResponse response = check self.clientEp-> get(path, accHeaders, targetType = UserActivitiesResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserActivitiesResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Balance Sheet report
@@ -147,12 +146,12 @@ public isolated client class Client {
     # + balanceDate - Specifies the date for balance sheet report. Format yyyy-MM-dd. If no parameter is provided, the current date will be used. 
     # + return - Success 
     remote isolated function getFinancialStatementBalanceSheet(string xeroTenantId, string? balanceDate = ()) returns BalanceSheetResponse|error {
-        string  path = string `/FinancialStatements/BalanceSheet`;
+        string resourcePath = string `/FinancialStatements/BalanceSheet`;
         map<anydata> queryParam = {"balanceDate": balanceDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BalanceSheetResponse response = check self.clientEp-> get(path, accHeaders, targetType = BalanceSheetResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BalanceSheetResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Cash flow report
@@ -162,12 +161,12 @@ public isolated client class Client {
     # + endDate - Date e.g. yyyy-MM-dd. Specifies the end date for cash flow report. If no parameter is provided, the current date will be used. 
     # + return - Success 
     remote isolated function getFinancialStatementCashflow(string xeroTenantId, string? startDate = (), string? endDate = ()) returns CashflowResponse|error {
-        string  path = string `/FinancialStatements/Cashflow`;
+        string resourcePath = string `/FinancialStatements/Cashflow`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CashflowResponse response = check self.clientEp-> get(path, accHeaders, targetType = CashflowResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CashflowResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Profit & Loss report
@@ -177,12 +176,12 @@ public isolated client class Client {
     # + endDate - Date e.g. yyyy-MM-dd. Specifies the end date for profit and loss report. If no parameter is provided, the current date will be used. 
     # + return - Success 
     remote isolated function getFinancialStatementProfitAndLoss(string xeroTenantId, string? startDate = (), string? endDate = ()) returns ProfitAndLossResponse|error {
-        string  path = string `/FinancialStatements/ProfitAndLoss`;
+        string resourcePath = string `/FinancialStatements/ProfitAndLoss`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProfitAndLossResponse response = check self.clientEp-> get(path, accHeaders, targetType = ProfitAndLossResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProfitAndLossResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Trial Balance report
@@ -191,60 +190,12 @@ public isolated client class Client {
     # + endDate - Date e.g. yyyy-MM-dd. Specifies the end date for trial balance report. If no parameter is provided, the current date will be used. 
     # + return - Success 
     remote isolated function getFinancialStatementTrialBalance(string xeroTenantId, string? endDate = ()) returns TrialBalanceResponse|error {
-        string  path = string `/FinancialStatements/TrialBalance`;
+        string resourcePath = string `/FinancialStatements/TrialBalance`;
         map<anydata> queryParam = {"endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TrialBalanceResponse response = check self.clientEp-> get(path, accHeaders, targetType = TrialBalanceResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TrialBalanceResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

@@ -101,17 +101,17 @@ public type CustomerInvoice record {
     # The type of customer invoice document, either Invoice or Adjustment.
     string? transactionType?;
     # The tax amount that you withhold from the customer invoice.
-    record  { }  withholdingAmount?;
+    record {} withholdingAmount?;
     Company? company?;
     BillToCustomer? billToCustomer?;
     # A flag when set to true, places the invoices into collections.
     boolean? inCollection?;
     # The total of all invoice line amounts minus the total Tax amount minus the Prepaid Utilization amount. This calculation doesn't deduct the withholding tax. This is the value printed on the customer invoice and can be positive or negative.
-    record  { }  netAmount?;
+    record {} netAmount?;
     # The amount you dispute on a customer invoice.
-    record  { }  disputeAmount?;
+    record {} disputeAmount?;
     # The amount due for the customer invoice. The value can be positive or negative.
-    record  { }  dueAmount?;
+    record {} dueAmount?;
     InvoiceType? invoiceType?;
     # The purchase order number specified on the customer invoice.
     string? poNumber?;
@@ -119,7 +119,7 @@ public type CustomerInvoice record {
     RelatedAdjustmentDisplay[]? relatedAdjustments?;
     AdjustmentReason? adjustmentReason?;
     # The total tax amount for the document with sign.
-    record  { }  taxAmount?;
+    record {} taxAmount?;
     # The date you place the customer invoice in dispute.
     string? disputeDate?;
     RelatedInvoice? relatedInvoice?;
@@ -136,9 +136,9 @@ public type CustomerInvoice record {
     DisputeReasonDisplay[]? disputeReasons?;
     InvoiceStatus? invoiceStatus?;
     # Total retention amount from invoice lines.
-    record  { }  retentionAmount?;
+    record {} retentionAmount?;
     # The total amount for the customer invoice including tax. The amount can be positive or negative. When the reporting transaction is not an instance of a customer invoice, the amount value is zero.
-    record  { }  totalAmount?;
+    record {} totalAmount?;
     # The customer invoice number.
     string? invoiceNumber?;
     # Id of the instance
@@ -186,7 +186,7 @@ public type CountryDisplay record {
 
 public type CustomerView record {
     # The maximum credit limit for the customer.
-    record  { }  creditLimit?;
+    record {} creditLimit?;
     # The name of the customer.
     string? name?;
     # The customer satisfaction score.
@@ -201,7 +201,7 @@ public type CustomerView record {
     # The primary phone number of the customer.
     string? primaryPhone?;
     # The total customer balance due in the customer currency, as of the report run time. Workday calculates the total balance by adding the amount of all approved and uncanceled customer invoices and subtracting the total amount of all approved and uncanceled customer payments. The customer currency can be the default currency for the tenant, or the currency you define for a given customer.
-    record  { }  totalBalance?;
+    record {} totalBalance?;
     Category? category?;
     # Id of the instance
     string? id?;
@@ -231,7 +231,7 @@ public type CreateCustomerPayment record {
     # The transaction number for the reporting transaction.
     string? transactionNumber?;
     # The amount of the customer payment in transaction currency.
-    record  { }  amount?;
+    record {} amount?;
     TypeRef? 'type?;
     # The date the customer payment was made.
     string? date?;
@@ -261,7 +261,7 @@ public type InlineResponse200 record {
 
 public type CreateRemittanceDetails record {
     # The amount to pay specified on the invoice line of the customer payment.
-    record  { }  amountToPay?;
+    record {} amountToPay?;
     Invoice? invoice?;
     BillToCustomerRef? billToCustomer?;
     # Id of the instance
@@ -390,9 +390,14 @@ public type FacetsModelReferenceInner record {
     # The alias used to select the facet
     string? facetParameter?;
     # the facet values
-    record  { # The number of instances returned by this facet
-        int? count?; # wid / id / reference id
-        string? id; # A description of the facet
-        string? descriptor?; # A link to the instance
-        string? href?;} []? values?;
+    record {
+        # The number of instances returned by this facet
+        int? count?;
+        # wid / id / reference id
+        string? id;
+        # A description of the facet
+        string? descriptor?;
+        # A link to the instance
+        string? href?;
+    }[]? values?;
 };

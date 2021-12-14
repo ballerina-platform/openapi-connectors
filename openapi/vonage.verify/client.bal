@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # This is a generated connector for [Vonage Verify API v1.1.7](https://nexmo-api-specification.herokuapp.com/verify) OpenAPI specification.
 # The Verify API helps you to implement 2FA (two-factor authentication) in your applications.
@@ -26,110 +24,78 @@ public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization doesn't require setting the API credentials. 
-    # Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
+    # Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication). 
     # Some operations may require passing the token as a parameter.
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.nexmo.com/verify") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Request a Verification
     #
-    # + payload - Verify Request
-    # + return - OK
+    # + payload - Verify Request 
+    # + return - OK 
     remote isolated function verifyRequest(VerifyRequest payload) returns InlineResponse200|error {
-        string  path = string `/json`;
+        string resourcePath = string `/json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
-        InlineResponse200 response = check self.clientEp->post(path, request, targetType=InlineResponse200);
+        string encodedRequestBody = createFormURLEncodedRequestBody(payload);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Verify Check
     #
-    # + payload - Check Request
-    # + return - OK
+    # + payload - Check Request 
+    # + return - OK 
     remote isolated function verifyCheck(CheckRequest payload) returns InlineResponse2001|error {
-        string  path = string `/check/json`;
+        string resourcePath = string `/check/json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
-        InlineResponse2001 response = check self.clientEp->post(path, request, targetType=InlineResponse2001);
+        string encodedRequestBody = createFormURLEncodedRequestBody(payload);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        InlineResponse2001 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Verify Search
     #
-    # + apiKey - API Key
-    # + apiSecret - API Secret
-    # + requestId - The `request_id` you received in the Verify Request Response. Required if `request_ids` not provided.
-    # + requestIds - More than one `request_id`. Each `request_id` is a new parameter in the Verify Search request. Required if `request_id` not provided.
-    # + return - OK
+    # + apiKey - API Key 
+    # + apiSecret - API Secret 
+    # + requestId - The `request_id` you received in the Verify Request Response. Required if `request_ids` not provided. 
+    # + requestIds - More than one `request_id`. Each `request_id` is a new parameter in the Verify Search request. Required if `request_id` not provided. 
+    # + return - OK 
     remote isolated function verifySearch(string apiKey, string apiSecret, string requestId, string[]? requestIds = ()) returns InlineResponse2002|error {
-        string  path = string `/search/json`;
+        string resourcePath = string `/search/json`;
         map<anydata> queryParam = {"api_key": apiKey, "api_secret": apiSecret, "request_id": requestId, "request_ids": requestIds};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        map<Encoding> queryParamEncoding = {"request_ids": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Verify Control
     #
-    # + payload - Control Request
-    # + return - OK
+    # + payload - Control Request 
+    # + return - OK 
     remote isolated function verifyControl(ControlRequest payload) returns InlineResponse2003|error {
-        string  path = string `/control/json`;
+        string resourcePath = string `/control/json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
-        InlineResponse2003 response = check self.clientEp->post(path, request, targetType=InlineResponse2003);
+        string encodedRequestBody = createFormURLEncodedRequestBody(payload);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        InlineResponse2003 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # PSD2 (Payment Services Directive 2) Request
     #
-    # + payload - PSD2 (Payment Services Directive 2) Request
-    # + return - OK
+    # + payload - PSD2 (Payment Services Directive 2) Request 
+    # + return - OK 
     remote isolated function verifyRequestWithPSD2(Psd2Request payload) returns InlineResponse200|error {
-        string  path = string `/psd2/json`;
+        string resourcePath = string `/psd2/json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setJsonPayload(jsonBody);
-        InlineResponse200 response = check self.clientEp->post(path, request, targetType=InlineResponse200);
+        string encodedRequestBody = createFormURLEncodedRequestBody(payload);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

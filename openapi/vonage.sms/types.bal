@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -124,7 +124,7 @@ public type SMS record {
 # Message sent
 public type SMSXml record {
     # Array of Messages
-    Message[] messages?;
+    record {int count?;} messages?;
 };
 
 # Error
@@ -147,6 +147,10 @@ public type InboundMessage record {
     # The message body for this inbound message.
     string text;
     # Possible values are:
+    # 
+    #   - `text` - standard text.
+    #   - `unicode` - URLencoded   unicode  . This is valid for standard GSM, Arabic, Chinese, double-encoded characters and so on.
+    #   - `binary` - a binary message.
     string 'type;
     # The first word in the message body. Converted to upper case.
     string keyword;
@@ -170,7 +174,7 @@ public type InboundMessage record {
     string udh?;
 };
 
-public type  InlineResponse200 SMS;
+public type InlineResponse200 SMS;
 
 public type ErrorMessage record {
     # The error status of the message

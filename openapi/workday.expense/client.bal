@@ -52,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [WorkDay Expense REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 # This API enables applications to access operations to extend the functionality of Workday Expenses.
-@display {label: "Workday Expense", iconPath: "icon.png"}
+@display {label: "Workday Expense", iconPath: "“icon.png”"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
@@ -64,14 +64,15 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieves a single instance of an expense item.
     #
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getExpenseItemInstance(string id) returns ExpenseItemsServiceRepresentation|error {
-        string path = string `/expenseItems/${id}`;
-        ExpenseItemsServiceRepresentation response = check self.clientEp->get(path, targetType = ExpenseItemsServiceRepresentation);
+        string resourcePath = string `/expenseItems/${id}`;
+        ExpenseItemsServiceRepresentation response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single instance of an Expense Report.
@@ -79,8 +80,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getExpenseReportInstance(string id) returns ReportServiceRepresentation|error {
-        string path = string `/reports/${id}`;
-        ReportServiceRepresentation response = check self.clientEp->get(path, targetType = ReportServiceRepresentation);
+        string resourcePath = string `/reports/${id}`;
+        ReportServiceRepresentation response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single instance of a Quick Expense.
@@ -88,8 +89,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getQuickExpenseInstance(string id) returns ExpenseEntryServiceRepresentation|error {
-        string path = string `/entries/${id}`;
-        ExpenseEntryServiceRepresentation response = check self.clientEp->get(path, targetType = ExpenseEntryServiceRepresentation);
+        string resourcePath = string `/entries/${id}`;
+        ExpenseEntryServiceRepresentation response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing Quick Expense instance.
@@ -97,11 +98,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating file. 
     remote isolated function updateQuickExpenseInstance(string id, EntryServicePUTRepresentation payload) returns EntryServicePUTRepresentation|error {
-        string path = string `/entries/${id}`;
+        string resourcePath = string `/entries/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntryServicePUTRepresentation response = check self.clientEp->put(path, request, targetType = EntryServicePUTRepresentation);
+        request.setPayload(jsonBody, "application/json");
+        EntryServicePUTRepresentation response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes a Quick Expense with the specified WID.
@@ -113,8 +114,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Deleting resource. 
     remote isolated function deleteQuickExpenseByID(string id) returns http:Response|error {
-        string path = string `/entries/${id}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/entries/${id}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Partially updates an existing Quick Expense with the specified WID for the fields provided in the request body.
@@ -128,11 +129,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating file. 
     remote isolated function updateQuickExpenseByID(string id, EntryServicePUTRepresentation payload) returns EntryServicePUTRepresentation|error {
-        string path = string `/entries/${id}`;
+        string resourcePath = string `/entries/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntryServicePUTRepresentation response = check self.clientEp->patch(path, request, targetType = EntryServicePUTRepresentation);
+        request.setPayload(jsonBody, "application/json");
+        EntryServicePUTRepresentation response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Retrieves a collection of expense reports.
@@ -145,11 +146,11 @@ public isolated client class Client {
     # + toDate - Creation Date label to be used for REST API 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfExpenseReports(string? expenseReportMemo = (), string[]? expenseReportStatus = (), string? fromDate = (), int? 'limit = (), int? offset = (), string? toDate = ()) returns InlineResponse200|error {
-        string path = string `/reports`;
+        string resourcePath = string `/reports`;
         map<anydata> queryParam = {"expenseReportMemo": expenseReportMemo, "expenseReportStatus": expenseReportStatus, "fromDate": fromDate, "limit": 'limit, "offset": offset, "toDate": toDate};
         map<Encoding> queryParamEncoding = {"expenseReportStatus": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an expense report.
@@ -164,14 +165,14 @@ public isolated client class Client {
     # + toDate - Creation Date label to be used for REST API 
     # + return - Resource created. 
     remote isolated function createExpenseReport(ReportPostServiceRepresentation payload, string? expenseReportMemo = (), string[]? expenseReportStatus = (), string? fromDate = (), string? toDate = ()) returns ReportPostServiceRepresentation|error {
-        string path = string `/reports`;
+        string resourcePath = string `/reports`;
         map<anydata> queryParam = {"expenseReportMemo": expenseReportMemo, "expenseReportStatus": expenseReportStatus, "fromDate": fromDate, "toDate": toDate};
         map<Encoding> queryParamEncoding = {"expenseReportStatus": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReportPostServiceRepresentation response = check self.clientEp->post(path, request, targetType = ReportPostServiceRepresentation);
+        request.setPayload(jsonBody, "application/json");
+        ReportPostServiceRepresentation response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Creates a collection of expense report lines.
@@ -179,11 +180,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createCollectionExpenseReportLines(string id, PostExpenseReportLineRepresentation payload) returns PostExpenseReportLineRepresentation|error {
-        string path = string `/reports/${id}/lines`;
+        string resourcePath = string `/reports/${id}/lines`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PostExpenseReportLineRepresentation response = check self.clientEp->post(path, request, targetType = PostExpenseReportLineRepresentation);
+        request.setPayload(jsonBody, "application/json");
+        PostExpenseReportLineRepresentation response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Submit the Expense Report for approval.
@@ -195,11 +196,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function submitExpenseReportApproval(string id, SubmitExpenseReportRepresentation payload) returns SubmitExpenseReportRepresentation|error {
-        string path = string `/reports/${id}/submit`;
+        string resourcePath = string `/reports/${id}/submit`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SubmitExpenseReportRepresentation response = check self.clientEp->post(path, request, targetType = SubmitExpenseReportRepresentation);
+        request.setPayload(jsonBody, "application/json");
+        SubmitExpenseReportRepresentation response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves a collection of Quick Expenses.
@@ -212,10 +213,10 @@ public isolated client class Client {
     # + toDate - Date of Expense Entry 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfQuickExpenses(string? entryType = (), string? expenseEntryStatus = (), string? fromDate = (), int? 'limit = (), int? offset = (), string? toDate = ()) returns InlineResponse2001|error {
-        string path = string `/entries`;
+        string resourcePath = string `/entries`;
         map<anydata> queryParam = {"entryType": entryType, "expenseEntryStatus": expenseEntryStatus, "fromDate": fromDate, "limit": 'limit, "offset": offset, "toDate": toDate};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a Quick Expense instance. In the request body, you must specify the required TransactionDate field.
@@ -232,13 +233,13 @@ public isolated client class Client {
     # + toDate - Date of Expense Entry 
     # + return - Resource created. 
     remote isolated function createQuickExpenseInstance(EntryServiceRepresentation payload, string? entryType = (), string? expenseEntryStatus = (), string? fromDate = (), string? toDate = ()) returns EntryServiceRepresentation|error {
-        string path = string `/entries`;
+        string resourcePath = string `/entries`;
         map<anydata> queryParam = {"entryType": entryType, "expenseEntryStatus": expenseEntryStatus, "fromDate": fromDate, "toDate": toDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntryServiceRepresentation response = check self.clientEp->post(path, request, targetType = EntryServiceRepresentation);
+        request.setPayload(jsonBody, "application/json");
+        EntryServiceRepresentation response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Creates new attachments for the existing expense entry.
@@ -246,11 +247,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createsNewAttachmentsForExpenseEntry(string id, ExpenseEntryImage payload) returns ExpenseEntryImage|error {
-        string path = string `/entries/${id}/attachments`;
+        string resourcePath = string `/entries/${id}/attachments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ExpenseEntryImage response = check self.clientEp->post(path, request, targetType = ExpenseEntryImage);
+        request.setPayload(jsonBody, "application/json");
+        ExpenseEntryImage response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves a collection of expense items.
@@ -261,10 +262,10 @@ public isolated client class Client {
     # + searchString - Request string used to retrieve the Expense Items 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionOfItems(boolean? disallowFixedItems = (), int? 'limit = (), int? offset = (), string? searchString = ()) returns InlineResponse2002|error {
-        string path = string `/expenseItems`;
+        string resourcePath = string `/expenseItems`;
         map<anydata> queryParam = {"disallowFixedItems": disallowFixedItems, "limit": 'limit, "offset": offset, "searchString": searchString};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp->get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

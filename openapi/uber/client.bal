@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -64,6 +62,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.uber.com/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Product Types
     #
@@ -71,10 +70,10 @@ public isolated client class Client {
     # + longitude - Longitude component of location. 
     # + return - An array of products 
     remote isolated function getProducts(float latitude, float longitude) returns Product[]|error {
-        string  path = string `/products`;
+        string resourcePath = string `/products`;
         map<anydata> queryParam = {"latitude": latitude, "longitude": longitude};
-        path = path + check getPathForQueryParam(queryParam);
-        Product[] response = check self.clientEp-> get(path, targetType = ProductArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Product[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Price Estimates
@@ -85,10 +84,10 @@ public isolated client class Client {
     # + endLongitude - Longitude component of end location. 
     # + return - An array of price estimates by product 
     remote isolated function getPrices(float startLatitude, float startLongitude, float endLatitude, float endLongitude) returns PriceEstimate[]|error {
-        string  path = string `/estimates/price`;
+        string resourcePath = string `/estimates/price`;
         map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, "end_latitude": endLatitude, "end_longitude": endLongitude};
-        path = path + check getPathForQueryParam(queryParam);
-        PriceEstimate[] response = check self.clientEp-> get(path, targetType = PriceEstimateArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PriceEstimate[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Time Estimates
@@ -99,18 +98,18 @@ public isolated client class Client {
     # + productId - Unique identifier representing a specific product for a given latitude & longitude. 
     # + return - An array of products 
     remote isolated function getTimes(float startLatitude, float startLongitude, string? customerUuid = (), string? productId = ()) returns Product[]|error {
-        string  path = string `/estimates/time`;
+        string resourcePath = string `/estimates/time`;
         map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, "customer_uuid": customerUuid, "product_id": productId};
-        path = path + check getPathForQueryParam(queryParam);
-        Product[] response = check self.clientEp-> get(path, targetType = ProductArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Product[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # User Profile
     #
     # + return - Profile information for a user 
     remote isolated function getUser() returns Profile|error {
-        string  path = string `/me`;
-        Profile response = check self.clientEp-> get(path, targetType = Profile);
+        string resourcePath = string `/me`;
+        Profile response = check self.clientEp->get(resourcePath);
         return response;
     }
     # User Activity
@@ -119,44 +118,10 @@ public isolated client class Client {
     # + 'limit - Number of items to retrieve. Default is 5, maximum is 100. 
     # + return - History information for the given user 
     remote isolated function history(int? offset = (), int? 'limit = ()) returns Activities|error {
-        string  path = string `/history`;
+        string resourcePath = string `/history`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
-        Activities response = check self.clientEp-> get(path, targetType = Activities);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Activities response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

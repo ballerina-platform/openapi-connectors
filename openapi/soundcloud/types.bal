@@ -144,7 +144,7 @@ public type InlineResponse201 record {
     int user_id?;
 };
 
-public type  InlineResponse200 Users|UsersList;
+public type InlineResponse200 Users|UsersList;
 
 public type CreateupdateplaylistrequestPlaylist record {
     # Description of the playlist
@@ -333,7 +333,7 @@ public type ActivitiesCollection record {
     # Created timestamp.
     string created_at?;
     # Origin.
-    record {} origin?;
+    Track|Playlist origin?;
     # Type of activity (track).
     string 'type?;
 };
@@ -668,16 +668,16 @@ public type TooManyRequests record {
     string spam_warning_urn?;
 };
 
-public type  InlineResponse2001 Tracks|TracksList;
+public type InlineResponse2001 Tracks|TracksList;
 
 public type Playlists record {
     Playlist[] collection?;
     string next_href?;
 };
 
-public type  InlineResponse2003 Comments|CommentsList;
+public type InlineResponse2003 Comments|CommentsList;
 
-public type  InlineResponse2002 Playlists|PlaylistsArray;
+public type InlineResponse2002 Playlists|PlaylistsArray;
 
 public type TrackIdCommentsBody record {
     TrackstrackIdcommentsComment comment?;
@@ -772,7 +772,6 @@ public type Track record {
     string waveform_url?;
 };
 
-# User's links added to their profile
 # User's links added to their profile
 public type WebProfiles WebprofilesInner[];
 

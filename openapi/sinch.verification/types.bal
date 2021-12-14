@@ -1,3 +1,6 @@
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License.
 // You may obtain a copy of the License at
@@ -137,7 +140,7 @@ public type VerificationResultEvent record {
     string custom?;
 };
 
-public type  VerificationRequestEventResponse SMSRequestEventResponse|FlashCallRequestEventResponse|CalloutRequestEventResponse;
+public type VerificationRequestEventResponse SMSRequestEventResponse|FlashCallRequestEventResponse|CalloutRequestEventResponse;
 
 # Specifies the type of endpoint that will be verified and the particular endpoint. `number` is currently the only supported endpoint type.
 public type Identity record {
@@ -147,7 +150,7 @@ public type Identity record {
     string endpoint;
 };
 
-public type  VerificationReportRequestResource SmsVerificationReportRequest|FlashcallVerificationReportRequest;
+public type VerificationReportRequestResource SmsVerificationReportRequest|FlashcallVerificationReportRequest;
 
 # Contains information about the FlashCall verification.
 public type FlashcallverificationreportrequestFlashcall record {
@@ -155,9 +158,9 @@ public type FlashcallverificationreportrequestFlashcall record {
     string cli;
 };
 
-public type  InitiateVerificationResponse SMSInitiateVerificationResponse|FlashCallInitiateVerificationResponse|CalloutInitiateVerificationResponse|DataInitiateVerificationResponse;
+public type InitiateVerificationResponse SMSInitiateVerificationResponse|FlashCallInitiateVerificationResponse|CalloutInitiateVerificationResponse|DataInitiateVerificationResponse;
 
-public type  VerificationResultEventResponse SMSRequestEventResponse|FlashCallRequestEventResponse|CalloutRequestEventResponse;
+public type VerificationResultEventResponse SMSRequestEventResponse|FlashCallRequestEventResponse|CalloutRequestEventResponse;
 
 public type DataInitiateVerificationResponse record {
     # Verification identifier used to query for status.

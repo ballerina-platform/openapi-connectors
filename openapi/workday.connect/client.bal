@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Secured by: Set Up: Message Templates
     # 
@@ -73,8 +74,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getMessageTemplateByID(string id) returns MessageTemplateDetailRef|error {
-        string path = string `/messageTemplates/${id}`;
-        MessageTemplateDetailRef response = check self.clientEp->get(path, targetType = MessageTemplateDetailRef);
+        string resourcePath = string `/messageTemplates/${id}`;
+        MessageTemplateDetailRef response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Secured by: Set Up: Message Templates
@@ -84,11 +85,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function createMessageTemplateByID(string id, MessageTemplateDetailRef payload) returns MessageTemplateDetailRef|error {
-        string path = string `/messageTemplates/${id}`;
+        string resourcePath = string `/messageTemplates/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageTemplateDetailRef response = check self.clientEp->put(path, request, targetType = MessageTemplateDetailRef);
+        request.setPayload(jsonBody, "application/json");
+        MessageTemplateDetailRef response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Secured by: Set Up: Message Templates
@@ -98,11 +99,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function updateMessageTemplateByID(string id, MessageTemplateDetailRef payload) returns MessageTemplateDetailRef|error {
-        string path = string `/messageTemplates/${id}`;
+        string resourcePath = string `/messageTemplates/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageTemplateDetailRef response = check self.clientEp->patch(path, request, targetType = MessageTemplateDetailRef);
+        request.setPayload(jsonBody, "application/json");
+        MessageTemplateDetailRef response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Secured by: Administer Communications, Set Up: Message Templates
@@ -113,21 +114,21 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getNotificationTypes(int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string path = string `/notificationTypes`;
+        string resourcePath = string `/notificationTypes`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Secured by: Administer Communications
     #
     # + return - Resource created. 
     remote isolated function sendMessage(MessageDetail payload) returns MessageDetail|error {
-        string path = string `/sendMessage`;
+        string resourcePath = string `/sendMessage`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageDetail response = check self.clientEp->post(path, request, targetType = MessageDetail);
+        request.setPayload(jsonBody, "application/json");
+        MessageDetail response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Secured by: Administer Communications, Set Up: Message Templates
@@ -137,8 +138,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getNotificationTypeByID(string id) returns NotificationCategoryDetail|error {
-        string path = string `/notificationTypes/${id}`;
-        NotificationCategoryDetail response = check self.clientEp->get(path, targetType = NotificationCategoryDetail);
+        string resourcePath = string `/notificationTypes/${id}`;
+        NotificationCategoryDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Secured by: Set Up: Message Templates
@@ -152,10 +153,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getMessageTemplate(boolean? inactive = (), int? 'limit = (), string? name = (), string? notificationType = (), int? offset = ()) returns InlineResponse2001|error {
-        string path = string `/messageTemplates`;
+        string resourcePath = string `/messageTemplates`;
         map<anydata> queryParam = {"inactive": inactive, "limit": 'limit, "name": name, "notificationType": notificationType, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Secured by: Set Up: Message Templates
@@ -167,13 +168,13 @@ public isolated client class Client {
     # + notificationType - Notification Type indicates where the template can be used. 
     # + return - Resource created. 
     remote isolated function createMessageTemplate(MessageTemplateDetailRef payload, boolean? inactive = (), string? name = (), string? notificationType = ()) returns MessageTemplateDetailRef|error {
-        string path = string `/messageTemplates`;
+        string resourcePath = string `/messageTemplates`;
         map<anydata> queryParam = {"inactive": inactive, "name": name, "notificationType": notificationType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageTemplateDetailRef response = check self.clientEp->post(path, request, targetType = MessageTemplateDetailRef);
+        request.setPayload(jsonBody, "application/json");
+        MessageTemplateDetailRef response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

@@ -73,18 +73,18 @@ public type ChangePointDetectResponse record {
     # isChangePoint contains change point properties for each input point. True means an anomaly either negative or positive has been detected. The index of the array is consistent with the input series.
     boolean[] isChangePoint;
     # the change point confidence of each point
-    decimal[] confidenceScores;
+    float[] confidenceScores;
 };
 
 public type EntireDetectResponse record {
     # Frequency extracted from the series, zero means no recurrent pattern has been found.
     int period;
     # ExpectedValues contain expected value for each input point. The index of the array is consistent with the input series.
-    decimal[] expectedValues;
+    float[] expectedValues;
     # UpperMargins contain upper margin of each input point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - marginScale)*upperMargin. Anomalies in response can be filtered by upperBoundary and lowerBoundary. By adjusting marginScale value, less significant anomalies can be filtered in client side. The index of the array is consistent with the input series.
-    decimal[] upperMargins;
+    float[] upperMargins;
     # LowerMargins contain lower margin of each input point. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - marginScale)*lowerMargin. Points between the boundary can be marked as normal ones in client side. The index of the array is consistent with the input series.
-    decimal[] lowerMargins;
+    float[] lowerMargins;
     # IsAnomaly contains anomaly properties for each input point. True means an anomaly either negative or positive has been detected. The index of the array is consistent with the input series.
     boolean[] isAnomaly;
     # IsNegativeAnomaly contains anomaly status in negative direction for each input point. True means a negative anomaly has been detected. A negative anomaly means the point is detected as an anomaly and its real value is smaller than the expected one. The index of the array is consistent with the input series.

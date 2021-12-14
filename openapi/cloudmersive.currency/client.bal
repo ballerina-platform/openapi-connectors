@@ -40,17 +40,18 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get a list of available currencies and corresponding countries
     #
     # + return - OK 
     remote isolated function currencyExchangeGetAvailableCurrencies() returns AvailableCurrencyResponse|error {
-        string  path = string `/currency/exchange-rates/list-available`;
+        string resourcePath = string `/currency/exchange-rates/list-available`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        AvailableCurrencyResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = AvailableCurrencyResponse);
+        AvailableCurrencyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Converts a price from the source currency into the destination currency
@@ -60,13 +61,13 @@ public isolated client class Client {
     # + payload - Input price, such as 19.99 in source currency 
     # + return - OK 
     remote isolated function currencyExchangeConvertCurrency(string 'source, string destination, decimal payload) returns ConvertedCurrencyResult|error {
-        string  path = string `/currency/exchange-rates/convert/${'source}/to/${destination}`;
+        string resourcePath = string `/currency/exchange-rates/convert/${'source}/to/${destination}`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ConvertedCurrencyResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ConvertedCurrencyResult);
+        request.setPayload(jsonBody, "application/json");
+        ConvertedCurrencyResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Gets the exchange rate from the source currency into the destination currency
@@ -75,12 +76,12 @@ public isolated client class Client {
     # + destination - Destination currency three-digit code (ISO 4217), e.g. USD, EUR, etc. 
     # + return - OK 
     remote isolated function currencyExchangeGetExchangeRate(string 'source, string destination) returns ExchangeRateResult|error {
-        string  path = string `/currency/exchange-rates/get/${'source}/to/${destination}`;
+        string resourcePath = string `/currency/exchange-rates/get/${'source}/to/${destination}`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ExchangeRateResult response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = ExchangeRateResult);
+        ExchangeRateResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

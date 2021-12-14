@@ -40,18 +40,19 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Scan a website for malicious content and threats
     #
     # + return - OK 
     remote isolated function scanWebsite(WebsiteScanRequest payload) returns WebsiteScanResult|error {
-        string  path = string `/virus/scan/website`;
+        string resourcePath = string `/virus/scan/website`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        WebsiteScanResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=WebsiteScanResult);
+        request.setPayload(jsonBody, "application/json");
+        WebsiteScanResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Scan an Azure Blob for viruses
@@ -61,12 +62,12 @@ public isolated client class Client {
     # + blobPath - Path to the blob within the container, such as 'hello.pdf' or '/folder/subfolder/world.pdf' 
     # + return - OK 
     remote isolated function scanCloudStorageScanAzureBlob(string connectionString, string containerName, string blobPath) returns CloudStorageVirusScanResult|error {
-        string  path = string `/virus/scan/cloud-storage/azure-blob/single`;
+        string resourcePath = string `/virus/scan/cloud-storage/azure-blob/single`;
         map<any> headerValues = {"connectionString": connectionString, "containerName": containerName, "blobPath": blobPath, "Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        CloudStorageVirusScanResult response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = CloudStorageVirusScanResult);
+        CloudStorageVirusScanResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Advanced Scan an Azure Blob for viruses
@@ -82,12 +83,12 @@ public isolated client class Client {
     # + restrictFileTypes - Specify a restricted set of file formats to allow as clean as a comma-separated list of file formats, such as .pdf,.docx,.png would allow only PDF, PNG and Word document files.  All files must pass content verification against this list of file formats, if they do not, then the result will be returned as CleanResult=false.  Set restrictFileTypes parameter to null or empty string to disable; default is disabled. 
     # + return - OK 
     remote isolated function scanCloudStorageScanAzureBlobAdvanced(string connectionString, string containerName, string blobPath, boolean? allowExecutables = (), boolean? allowInvalidFiles = (), boolean? allowScripts = (), boolean? allowPasswordProtectedFiles = (), boolean? allowMacros = (), string? restrictFileTypes = ()) returns CloudStorageAdvancedVirusScanResult|error {
-        string  path = string `/virus/scan/cloud-storage/azure-blob/single/advanced`;
+        string resourcePath = string `/virus/scan/cloud-storage/azure-blob/single/advanced`;
         map<any> headerValues = {"connectionString": connectionString, "containerName": containerName, "blobPath": blobPath, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, "Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        CloudStorageAdvancedVirusScanResult response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = CloudStorageAdvancedVirusScanResult);
+        CloudStorageAdvancedVirusScanResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Scan an AWS S3 file for viruses
@@ -99,12 +100,12 @@ public isolated client class Client {
     # + keyName - Key name (also called file name) of the file in S3 that you wish to scan for viruses 
     # + return - OK 
     remote isolated function scanCloudStorageScanAwsS3file(string accessKey, string secretKey, string bucketRegion, string bucketName, string keyName) returns CloudStorageVirusScanResult|error {
-        string  path = string `/virus/scan/cloud-storage/aws-s3/single`;
+        string resourcePath = string `/virus/scan/cloud-storage/aws-s3/single`;
         map<any> headerValues = {"accessKey": accessKey, "secretKey": secretKey, "bucketRegion": bucketRegion, "bucketName": bucketName, "keyName": keyName, "Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        CloudStorageVirusScanResult response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = CloudStorageVirusScanResult);
+        CloudStorageVirusScanResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Advanced Scan an AWS S3 file for viruses
@@ -122,12 +123,12 @@ public isolated client class Client {
     # + restrictFileTypes - Specify a restricted set of file formats to allow as clean as a comma-separated list of file formats, such as .pdf,.docx,.png would allow only PDF, PNG and Word document files.  All files must pass content verification against this list of file formats, if they do not, then the result will be returned as CleanResult=false.  Set restrictFileTypes parameter to null or empty string to disable; default is disabled. 
     # + return - OK 
     remote isolated function scanCloudStorageScanAwsS3fileAdvanced(string accessKey, string secretKey, string bucketRegion, string bucketName, string keyName, boolean? allowExecutables = (), boolean? allowInvalidFiles = (), boolean? allowScripts = (), boolean? allowPasswordProtectedFiles = (), boolean? allowMacros = (), string? restrictFileTypes = ()) returns CloudStorageAdvancedVirusScanResult|error {
-        string  path = string `/virus/scan/cloud-storage/aws-s3/single/advanced`;
+        string resourcePath = string `/virus/scan/cloud-storage/aws-s3/single/advanced`;
         map<any> headerValues = {"accessKey": accessKey, "secretKey": secretKey, "bucketRegion": bucketRegion, "bucketName": bucketName, "keyName": keyName, "allowExecutables": allowExecutables, "allowInvalidFiles": allowInvalidFiles, "allowScripts": allowScripts, "allowPasswordProtectedFiles": allowPasswordProtectedFiles, "allowMacros": allowMacros, "restrictFileTypes": restrictFileTypes, "Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        CloudStorageAdvancedVirusScanResult response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = CloudStorageAdvancedVirusScanResult);
+        CloudStorageAdvancedVirusScanResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

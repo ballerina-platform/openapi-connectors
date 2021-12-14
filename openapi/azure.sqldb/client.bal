@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://management.azure.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Completes the restore operation on a managed database.
     #
@@ -75,13 +76,13 @@ public isolated client class Client {
     # + payload - The definition for completing the restore of this managed database. 
     # + return - Successfully issued complete restore request. 
     remote isolated function completeRestoreManagedDatabases(string locationName, string operationId, string subscriptionId, string apiVersion, CompleteDatabaseRestoreDefinition payload) returns http:Response|error {
-        string  path = string `/subscriptions/${subscriptionId}/providers/Microsoft.Sql/locations/${locationName}/managedDatabaseRestoreAzureAsyncOperation/${operationId}/completeRestore`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/providers/Microsoft.Sql/locations/${locationName}/managedDatabaseRestoreAzureAsyncOperation/${operationId}/completeRestore`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a list of managed databases.
@@ -92,10 +93,10 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + return - Successfully retrieved the list of databases. 
     remote isolated function listManagedDatabasesByInstance(string resourceGroupName, string managedInstanceName, string subscriptionId, string apiVersion) returns ManagedDatabaseListResult|error {
-        string  path = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        ManagedDatabaseListResult response = check self.clientEp-> get(path, targetType = ManagedDatabaseListResult);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ManagedDatabaseListResult response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a managed database.
@@ -107,10 +108,10 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + return - Successfully retrieved the specified managed database. 
     remote isolated function getManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion) returns ManagedDatabase|error {
-        string  path = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        ManagedDatabase response = check self.clientEp-> get(path, targetType = ManagedDatabase);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ManagedDatabase response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new database or updates an existing database.
@@ -122,14 +123,14 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + payload - The requested database resource state. 
     # + return - Successfully updated the database. 
-    remote isolated function createOrUpdateManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion, ManagedDatabase payload) returns ManagedDatabase|error {
-        string  path = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+    remote isolated function createOrUpdateManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion, ManagedDatabase payload) returns ManagedDatabase|error? {
+        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ManagedDatabase response = check self.clientEp->put(path, request, targetType=ManagedDatabase);
+        request.setPayload(jsonBody, "application/json");
+        ManagedDatabase? response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes a managed database.
@@ -141,10 +142,10 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + return - Successfully deleted the managed database. 
     remote isolated function deleteManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion) returns http:Response|error {
-        string  path = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Updates an existing database.
@@ -156,14 +157,14 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + payload - The requested database resource state. 
     # + return - Successfully updated the database. 
-    remote isolated function updateManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion, ManagedDatabaseUpdate payload) returns ManagedDatabase|error {
-        string  path = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+    remote isolated function updateManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion, ManagedDatabaseUpdate payload) returns ManagedDatabase|error? {
+        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ManagedDatabase response = check self.clientEp->patch(path, request, targetType=ManagedDatabase);
+        request.setPayload(jsonBody, "application/json");
+        ManagedDatabase? response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
 }

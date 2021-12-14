@@ -279,7 +279,6 @@ public type JsonWebKey record {
 };
 
 # A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-#
 public type DeletedSecretBundle record {
     *SecretBundle;
 };
@@ -365,13 +364,11 @@ public type BackupSecretResult record {
 };
 
 # A deleted SAS definition bundle consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-#
 public type DeletedSasDefinitionBundle record {
     *SasDefinitionBundle;
 };
 
 # A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
-#
 public type DeletedKeyBundle record {
     *KeyBundle;
 };
@@ -383,7 +380,6 @@ public type KeyVaultError record {
 };
 
 # The deleted SAS definition item containing metadata about the deleted SAS definition.
-#
 public type DeletedSasDefinitionItem record {
     *SasDefinitionItem;
 };
@@ -395,7 +391,6 @@ public type Action record {
 };
 
 # The deleted certificate item containing metadata about the deleted certificate.
-#
 public type DeletedCertificateItem record {
     *CertificateItem;
 };
@@ -413,7 +408,6 @@ public type SasDefinitionAttributes record {
 };
 
 # The deleted key item containing the deleted key metadata and information about deletion.
-#
 public type DeletedKeyItem record {
     *KeyItem;
 };
@@ -459,7 +453,6 @@ public type SasDefinitionCreateParameters record {
 };
 
 # A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-#
 public type DeletedCertificateBundle record {
     *CertificateBundle;
 };
@@ -575,7 +568,6 @@ public type DeletedCertificateListResult record {
 };
 
 # The deleted storage account item containing metadata about the deleted storage account.
-#
 public type DeletedStorageAccountItem record {
     *StorageAccountItem;
 };
@@ -653,7 +645,6 @@ public type KeyProperties record {
 };
 
 # The certificate management attributes.
-#
 public type CertificateAttributes record {
     *Attributes;
 };
@@ -687,7 +678,6 @@ public type IssuerParameters record {
 };
 
 # The attributes of a key managed by the key vault service.
-#
 public type KeyAttributes record {
     *Attributes;
 };
@@ -773,7 +763,6 @@ public type CertificateOperation record {
 };
 
 # The deleted secret item containing metadata about the deleted secret.
-#
 public type DeletedSecretItem record {
     *SecretItem;
 };
@@ -787,7 +776,6 @@ public type DeletedSecretListResult record {
 };
 
 # A deleted storage account bundle consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-#
 public type DeletedStorageBundle record {
     *StorageBundle;
 };
@@ -855,7 +843,6 @@ public type CertificateItem record {
 };
 
 # The secret management attributes.
-#
 public type SecretAttributes record {
     *Attributes;
 };

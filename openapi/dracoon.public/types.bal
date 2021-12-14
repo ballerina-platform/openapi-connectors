@@ -14,37 +14,71 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type ThirdPartyDependenciesDataArr ThirdPartyDependenciesData[];
-
 # Node information (Node can be a room, folder or file)
 public type Node record {
     # &#128640; Since v4.15.0
+    # 
+    # Auth parent room ID
     int authParentId?;
     # Version of last change in this node or a node further down the tree.
     int branchVersion?;
     # &#128679; Deprecated since v4.10.0
+    # 
+    # Child nodes list (if requested)
+    # 
+    # (for rooms / folders only)
     Node[] children?;
     # Classification ID:
+    # 
+    # * `1` - public
+    # 
+    # * `2` - internal
+    # 
+    # * `3` - confidential
+    # 
+    # * `4` - strictly confidential
     int classification?;
     # &#128679; Deprecated since v4.2.0
+    # 
+    # Number of admins (for rooms only)
     int cntAdmins?;
     # &#128679; Deprecated since v4.11.0
+    # 
+    # Number of direct children
+    # 
+    # (no recursion; for rooms / folders only)
     int cntChildren?;
     # Returns the number of comments of this node.
     int cntComments?;
     # Number of deleted versions of this file / folder
+    # 
+    # (for rooms / folders only)
     int cntDeletedVersions?;
     # Returns the number of Download Shares of this node.
     int cntDownloadShares?;
     # &#128640; Since v4.11.0
+    # 
+    # Amount of direct child files where this node is the parent node
+    # 
+    # (no recursion; for rooms / folders only)
     int cntFiles?;
     # &#128640; Since v4.11.0
+    # 
+    # Amount of direct child folders where this node is the parent node
+    # 
+    # (no recursion; for rooms / folders only)
     int cntFolders?;
     # &#128640; Since v4.11.0
+    # 
+    # Amount of direct child rooms where this node is the parent node
+    # 
+    # (no recursion; for rooms only)
     int cntRooms?;
     # Returns the number of Upload Shares of this node.
     int cntUploadShares?;
     # &#128679; Deprecated since v4.2.0
+    # 
+    # Number of users (for rooms only)
     int cntUsers?;
     # Creation date
     string createdAt?;
@@ -59,14 +93,22 @@ public type Node record {
     # Is activities log active (for rooms only)
     boolean hasActivitiesLog?;
     # &#128679; Deprecated since v4.10.0
+    # 
+    # Is recycle bin active (for rooms only)
+    # 
+    # Recycle bin is always on (disabling is not possible).
     boolean hasRecycleBin?;
     # MD5 hash of file
     string hash?;
     # Node ID
     int id;
     # Inherit permissions from parent room
+    # 
+    # (default: `false` if `parentId` is `0`; otherwise: `true`)
     boolean inheritPermissions?;
     # &#128640; Since v4.11.0
+    # 
+    # Determines whether node is browsable by client (for rooms only)
     boolean isBrowsable?;
     # Encryption state
     boolean isEncrypted?;
@@ -83,6 +125,8 @@ public type Node record {
     # Parent node ID (room or folder)
     int parentId?;
     # Parent node path
+    # 
+    # `/` if node is a root node (room)
     string parentPath?;
     # Node permissions
     NodePermissions permissions?;
@@ -93,8 +137,12 @@ public type Node record {
     # Node size in byte
     int size?;
     # &#128640; Since v4.22.0
+    # 
+    # Time the node was created on external file system
     string timestampCreation?;
     # &#128640; Since v4.22.0
+    # 
+    # Time the content of a node was last modified on external file system
     string timestampModification?;
     # Node type
     string 'type;
@@ -104,23 +152,37 @@ public type Node record {
     UserInfo updatedBy?;
 };
 
+public type AccessKeyUploadIdBody record {
+    string file?;
+};
+
 # Room information
 public type RoomData record {
     # &#128679; Deprecated since v4.10.0
+    # 
+    # List of rooms, where this room is a parent (if exist)
     RoomData[] children?;
     # &#128679; Deprecated since v4.2.0
+    # 
+    # Number of admins (for rooms only)
     int cntAdmins?;
     # Returns the number of Download Shares of this node.
     int cntDownloadShares?;
     # Returns the number of Upload Shares of this node.
     int cntUploadShares?;
     # &#128679; Deprecated since v4.2.0
+    # 
+    # Number of users (for rooms only)
     int cntUsers?;
     # Expiration date
     string createdAt?;
     # User information
     UserInfo createdBy?;
     # &#128679; Deprecated since v4.10.0
+    # 
+    # Is recycle bin active (for rooms only)
+    # 
+    # Recycle bin is always on (disabling is not possible).
     boolean hasRecycleBin;
     # Room ID
     int id;
@@ -161,6 +223,8 @@ public type NodePermissions record {
     # User / Group may permanently remove files / folders from the recycle bin.
     boolean deleteRecycleBin;
     # User / Group may grant all of the above permissions to other users and groups independently,
+    # 
+    # may update room metadata and create / update / delete subordinary rooms, has all permissions.
     boolean manage;
     # User / Group may create Download Shares for files and containers view all previously created Download Shares in this room.
     boolean manageDownloadShare;
@@ -183,6 +247,8 @@ public type OpenIdAuthInfo record {
 # Request model for creating an upload channel
 public type CreateShareUploadChannelRequest record {
     # &#128640; Since v4.15.0
+    # 
+    # Upload direct to S3
     boolean directS3Upload?;
     # File name
     string name;
@@ -191,8 +257,16 @@ public type CreateShareUploadChannelRequest record {
     # File size in byte
     int size?;
     # &#128640; Since v4.22.0
+    # 
+    # Time the node was created on external file system
+    # 
+    # (default: current server datetime in UTC format)
     string timestampCreation?;
     # &#128640; Since v4.22.0
+    # 
+    # Time the content of a node was last modified on external file system
+    # 
+    # (default: current server datetime in UTC format)
     string timestampModification?;
 };
 
@@ -219,6 +293,14 @@ public type AuthMethod record {
     # Is enabled
     boolean isEnabled;
     # Authentication methods:
+    # 
+    # * `basic`
+    # 
+    # * `active_directory`
+    # 
+    # * `radius`
+    # 
+    # * `openid`
     string name;
     # Priority (smaller values have higher priority)
     int priority;
@@ -247,16 +329,38 @@ public type S3FileUploadPart record {
 # System information (default language and authentication methods)
 public type SystemInfo record {
     # &#128679; Deprecated since v4.13.0
+    # 
+    # Authentication methods:
+    # 
+    # * `sql`
+    # 
+    # * `active_directory`
+    # 
+    # * `radius`
+    # 
+    # * `openid`
+    # 
+    # use `authData` instead
     AuthMethod[] authMethods;
     # &#128640; Since v4.13.0
+    # 
+    # Defines if login fields should be hidden
     boolean hideLoginInputFields;
     # System default language
+    # 
+    # cf. [RFC 5646](https://tools.ietf.org/html/rfc5646)
     string languageDefault;
     # &#128640; Since v4.15.0
+    # 
+    # Determines whether S3 direct upload is enforced or not
     boolean s3EnforceDirectUpload;
     # &#128640; Since v4.14.0
+    # 
+    # List of S3 Hosts for CSP header
     string[] s3Hosts;
     # &#128640; Since v4.21.0
+    # 
+    # Defines if S3 is used as storage backend
     boolean useS3Storage;
 };
 
@@ -283,22 +387,48 @@ public type UserFileKey record {
 # User information
 public type UserInfo record {
     # &#128640; Since v4.11.0
+    # 
+    # Avatar UUID
     string avatarUuid;
     # &#128679; Deprecated since v4.11.0
+    # 
+    # Display name
+    # 
+    # use other fields from `UserInfo` instead to combine a display name
     string displayName?;
     # &#128640; Since v4.11.0
+    # 
+    # Email 
     string email?;
     # &#128640; Since v4.11.0
+    # 
+    # User first name (mandatory if `userType` is `internal`)
     string firstName;
     # Unique identifier for the user
     int id;
     # &#128640; Since v4.11.0
+    # 
+    # User last name (mandatory if `userType` is `internal`)
     string lastName;
     # &#128679; Deprecated since v4.18.0
+    # 
+    # Job title
     string title?;
     # &#128640; Since v4.13.0
+    # 
+    # Username (only returned for `internal` users)
     string userName;
     # &#128640; Since v4.11.0
+    # 
+    # User type:
+    # 
+    # * `internal` - ordinary DRACOON user
+    # 
+    # * `external` - external user without DRACOON account
+    # 
+    # * `system` - system user (non human &#128125;)
+    # 
+    # * `deleted` - deleted DRACOON user
     string userType;
 };
 
@@ -313,6 +443,9 @@ public type ActiveDirectory record {
 };
 
 # List of user file keys
+# 
+# # Deprecated
+@deprecated
 public type UserFileKeyList record {
     # List of user file keys
     UserFileKey[] items?;
@@ -353,12 +486,16 @@ public type OpenIdProvider record {
     # Is available for all customers
     boolean isGlobalAvailable;
     # Issuer identifier of the IDP
+    # 
+    # The value is a case sensitive URL.
     string issuer;
     # Name of the claim which is used for the user mapping.
     string mappingClaim;
     # Name of the IDP
     string name;
     # URL of the user management UI.
+    # 
+    # Use empty string to remove.
     string userManagementUrl?;
 };
 
@@ -367,6 +504,8 @@ public type PublicDownloadTokenGenerateResponse record {
     # Download URL
     string downloadUrl?;
     # &#128679; Deprecated since v4.3.0
+    # 
+    # Download token
     string token;
 };
 
@@ -387,6 +526,14 @@ public type S3ShareUploadStatus record {
     # File size in byte
     int size?;
     # S3 file upload status:
+    # 
+    # * `transfer` - upload in progress
+    # 
+    # * `finishing` - completing file upload
+    # 
+    # * `done` - file upload successully done
+    # 
+    # * `error` - an error occurred while file upload
     string status;
 };
 
@@ -409,8 +556,12 @@ public type CompleteS3ShareUploadRequest record {
 # Public key container
 public type PublicKeyContainer record {
     # &#128640; Since v4.24.0
+    # 
+    # Creation date
     string createdAt?;
     # &#128640; Since v4.24.0
+    # 
+    # Created by user
     int createdBy?;
     # Expiration date
     string expireAt?;
@@ -435,6 +586,8 @@ public type PublicDownloadShare record {
     # File name
     string fileName;
     # &#128640; Since v4.11.0
+    # 
+    # Determines whether Download Share has a limit for amount of downloads
     boolean hasDownloadLimit;
     # Encryption state
     boolean isEncrypted?;
@@ -443,6 +596,10 @@ public type PublicDownloadShare record {
     # Downloads limit reached
     boolean limitReached;
     # &#128640; Since v4.11.0
+    # 
+    # * `application/zip` (for folders and rooms)
+    # 
+    # * actual file media type (for files only)
     string mediaType;
     # Share display name (alias name)
     string name?;
@@ -461,6 +618,8 @@ public type FileKey record {
     # Encryption key
     string 'key;
     # Authentication tag
+    # 
+    # (needed with authenticated encryption)
     string tag;
     # Version
     string 'version;
@@ -477,6 +636,8 @@ public type SoftwareVersionData record {
     # Build date
     string buildDate;
     # &#128640; Since v4.24.0
+    # 
+    # Determines if the DRACOON Core is deployed in the cloud environment
     boolean isDracoonCloud?;
     # REST API version
     string restApiVersion;
@@ -486,15 +647,15 @@ public type SoftwareVersionData record {
     string sdsServerVersion;
 };
 
-public type Body1 record {
-    string file?;
-};
-
 # Private key container
 public type PrivateKeyContainer record {
     # &#128640; Since v4.24.0
+    # 
+    # Creation date
     string createdAt?;
     # &#128640; Since v4.24.0
+    # 
+    # Created by user
     int createdBy?;
     # Expiration date
     string expireAt?;
@@ -511,6 +672,8 @@ public type GeneratePresignedUrlsRequest record {
     # Last part number of a range of requested presigned URLs
     int lastPartNumber;
     # `Content-Length` header size for each presigned URL (in bytes)
+    # 
+    # *MUST* be >= 5 MB except the last part.
     int size;
 };
 
@@ -537,8 +700,12 @@ public type PublicUploadShare record {
     # Creation date
     string createdAt;
     # &#128640; Since v4.11.0
+    # 
+    # Creator name
     string creatorName;
     # &#128640; Since v4.11.0
+    # 
+    # Creator username
     string creatorUsername?;
     # Expiration date
     string expireAt?;
@@ -547,8 +714,12 @@ public type PublicUploadShare record {
     # Is share protected by password
     boolean isProtected;
     # &#128679; Deprecated since v4.2.0
+    # 
+    # Maximal total size of uploaded files (in bytes)
     float maxSize?;
     # &#128679; Deprecated since v4.2.0
+    # 
+    # Maximal amount of files to upload
     int maxSlots;
     # Share display name (alias name)
     string name?;
@@ -569,6 +740,8 @@ public type PublicUploadShare record {
 # Upload channel information
 public type CreateShareUploadChannelResponse record {
     # &#128679; Deprecated since v4.3.0
+    # 
+    # Upload token
     string token?;
     # Upload (channel) ID
     string uploadId;

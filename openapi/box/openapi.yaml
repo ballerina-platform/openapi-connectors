@@ -13886,12 +13886,12 @@ components:
                 - $ref: '#/components/schemas/LegalHoldPolicy--Mini'
                 - description: The policy that the legal hold policy assignment is part of
             assigned_to:
-              allOf:
-                - oneOf:
-                    - $ref: '#/components/schemas/File'
-                    - $ref: '#/components/schemas/Folder'
-                    - $ref: '#/components/schemas/WebLink'
-                - description: The item that the the legal hold policy is assigned to. Includes type and ID.
+              # allOf:
+                oneOf:
+                  - $ref: '#/components/schemas/File'
+                  - $ref: '#/components/schemas/Folder'
+                  - $ref: '#/components/schemas/WebLink'
+                description: The item that the the legal hold policy is assigned to. Includes type and ID.
             assigned_by:
               allOf:
                 - $ref: '#/components/schemas/User--Mini'

@@ -1,3 +1,6 @@
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License.
 // You may obtain a copy of the License at
@@ -62,17 +65,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://verificationapi-v1.sinch.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Start verification
     #
     # + payload - Start verification request payload. 
     # + return - A successful response. 
     remote isolated function startVerification(InitiateVerificationResource payload) returns InitiateVerificationResponse|error {
-        string  path = string `/verification/v1/verifications`;
+        string resourcePath = string `/verification/v1/verifications`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InitiateVerificationResponse response = check self.clientEp->post(path, request, targetType=InitiateVerificationResponse);
+        request.setPayload(jsonBody, "application/json");
+        InitiateVerificationResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Report back on a started verification
@@ -82,11 +86,11 @@ public isolated client class Client {
     # + payload - Verification report request payload. 
     # + return - A successful response. 
     remote isolated function reportVerificationByIdentity(string 'type, string endpoint, VerificationReportRequestResource payload) returns VerificationResponse|error {
-        string  path = string `/verification/v1/verifications/${'type}/${endpoint}`;
+        string resourcePath = string `/verification/v1/verifications/${'type}/${endpoint}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        VerificationResponse response = check self.clientEp->put(path, request, targetType=VerificationResponse);
+        request.setPayload(jsonBody, "application/json");
+        VerificationResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get verification by ID
@@ -94,8 +98,8 @@ public isolated client class Client {
     # + id - The ID of the verification. 
     # + return - A sucessful response. 
     remote isolated function verificationStatusById(string id) returns VerificationResponse|error {
-        string  path = string `/verification/v1/verifications/id/${id}`;
-        VerificationResponse response = check self.clientEp-> get(path, targetType = VerificationResponse);
+        string resourcePath = string `/verification/v1/verifications/id/${id}`;
+        VerificationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Report back on a started verification
@@ -104,11 +108,11 @@ public isolated client class Client {
     # + payload - Verification report request resource payload. 
     # + return - A sucessful response. 
     remote isolated function reportVerificationById(string id, VerificationReportRequestResource payload) returns VerificationResponse|error {
-        string  path = string `/verification/v1/verifications/id/${id}`;
+        string resourcePath = string `/verification/v1/verifications/id/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        VerificationResponse response = check self.clientEp->put(path, request, targetType=VerificationResponse);
+        request.setPayload(jsonBody, "application/json");
+        VerificationResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get verification by Identity
@@ -118,8 +122,8 @@ public isolated client class Client {
     # + method - The method of the verification. 
     # + return - A sucessful response. 
     remote isolated function verificationStatusByIdentity(string 'type, string endpoint, string method) returns VerificationResponse|error {
-        string  path = string `/verification/v1/verifications/${method}/${'type}/${endpoint}`;
-        VerificationResponse response = check self.clientEp-> get(path, targetType = VerificationResponse);
+        string resourcePath = string `/verification/v1/verifications/${method}/${'type}/${endpoint}`;
+        VerificationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get verification by Reference
@@ -127,8 +131,8 @@ public isolated client class Client {
     # + reference - The custom reference of the verification. 
     # + return - A sucessful response. 
     remote isolated function verificationStatusByReference(string reference) returns VerificationResponse|error {
-        string  path = string `/verification/v1/verifications/reference/${reference}`;
-        VerificationResponse response = check self.clientEp-> get(path, targetType = VerificationResponse);
+        string resourcePath = string `/verification/v1/verifications/reference/${reference}`;
+        VerificationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
     # All requests on the Who Hosts This API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `key`. API Keys available at https://www.who-hosts-this.com/API
-    string key;
+    string 'key;
 |};
 
 # This is a generated connector for [Who Hosts This API v0.0.1](https://www.who-hosts-this.com/Documentation) OpenAPI specification.
@@ -40,26 +40,27 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Discover the hosting provider for a web site
     #
     # + url - The url of the page to check 
     # + return - Status of the detection and list of any found hosting providers 
     remote isolated function discoverHostingProvider(string url) returns json|error {
-        string  path = string `/Detect`;
-        map<anydata> queryParam = {"url": url, "key": self.apiKeyConfig.key};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        string resourcePath = string `/Detect`;
+        map<anydata> queryParam = {"url": url, "key": self.apiKeyConfig.'key};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # View usage details for the current billing period
     #
     # + return - Status of the detection and list of any found hosting providers 
     remote isolated function listHostingProvider() returns json|error {
-        string  path = string `/Status`;
-        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        string resourcePath = string `/Status`;
+        map<anydata> queryParam = {"key": self.apiKeyConfig.'key};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

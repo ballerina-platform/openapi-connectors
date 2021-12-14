@@ -198,7 +198,7 @@ public type LocationDataJobView record {
 
 public type BusinessProcessParameters2 record {
     OverallBusinessProcess? overallBusinessProcess?;
-    Action? action?;
+    Action? action;
     # Returns a null.
     string? comment?;
     # Returns the comments for the current business process.
@@ -600,11 +600,16 @@ public type FacetsModelReferenceInner record {
     # The alias used to select the facet
     string? facetParameter?;
     # the facet values
-    record  { # The number of instances returned by this facet
-        int? count?; # wid / id / reference id
-        string? id; # A description of the facet
-        string? descriptor?; # A link to the instance
-        string? href?;} []? values?;
+    record {
+        # The number of instances returned by this facet
+        int? count?;
+        # wid / id / reference id
+        string? id;
+        # A description of the facet
+        string? descriptor?;
+        # A link to the instance
+        string? href?;
+    }[]? values?;
 };
 
 public type Location record {

@@ -21,7 +21,7 @@ public type ErrorModelReference record {
 
 public type ReportServiceRepresentation record {
     # Total Amount for the Expense Report
-    record  { }  totalAmount?;
+    record {} totalAmount?;
     ExpenseReportStatus? expenseReportStatus?;
     # Creation Date label to be used for REST API
     string? creationDate?;
@@ -129,12 +129,12 @@ public type EntryServicePUTRepresentation record {
     # CRF for Entries REST operation to expose Attachment related to Optical Character Recognition
     ExpenseEntryImage[]? attachments?;
     # Amount for Expense Entry
-    record  { }  amount?;
+    record {} amount?;
     # Expense Merchant Name
     string? merchant?;
     ExpenseItem? expenseItem?;
     # Date of Expense Entry
-    string? date?;
+    string? date;
     # Memo for the Entry
     string? memo?;
     Image? image?;
@@ -179,7 +179,7 @@ public type PostExpenseReportLineRepresentation record {
     QuickExpense? quickExpense?;
     CreditCardTransaction? creditCardTransaction?;
     # Total amount to be reimbursed to the requestee
-    record  { }  totalAmount?;
+    record {} totalAmount?;
     # Id of the instance
     string? id?;
     # A preview of the instance
@@ -192,7 +192,7 @@ public type EntryServiceRepresentation record {
     # Boolean value indicating whether the Mobile Expense has an OCR image.
     boolean? hasOCRReceipt?;
     # Amount for Expense Entry
-    record  { }  amount?;
+    record {} amount?;
     ScanStatus? scanStatus?;
     # Memo for the Entry
     string? memo?;
@@ -223,7 +223,7 @@ public type ItemValues record {
 public type ExpenseEntryServiceRepresentation record {
     ExpenseEntryStatus? expenseEntryStatus?;
     # Amount for Expense Entry
-    record  { }  amount?;
+    record {} amount?;
     # Memo for the Entry
     string? memo?;
     EntryType? entryType?;

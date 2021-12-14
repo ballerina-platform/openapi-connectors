@@ -678,12 +678,12 @@ paths:
       summary: Un-assign number
       description: Un-assign a number from an application.
       operationId: Configuration_UnassignNumber
-      requestBody:
-        description: Unassign numbers payload.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/unassignNumbers'
+      # requestBody:
+      #   description: Unassign numbers payload.
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/unassignNumbers'
       responses:
         '204':
           description: No content

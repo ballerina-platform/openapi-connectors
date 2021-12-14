@@ -16,6 +16,7 @@
 
 public type LegalEntity record {
     *LegalEntityUpdate;
+    PeppolIdentifier[] peppol_identifiers?;
 };
 
 # The invoice to send.  Provide either invoice, or invoiceData, but not both.
@@ -163,7 +164,7 @@ public type AllowanceCharge record {
     # Tax
     Tax tax;
     # An array of taxes, duties and fees for this allowance or charge. At this moment, only a single Tax item is allowed. When used, the 'tax' element must be empty.
-    Tax[] taxes_duties_fees?;
+    Tax[1] taxes_duties_fees?;
 };
 
 # The different ways to send the invoice to the recipient. The publicIdentifiers are used to send via the Peppol network, if the recipient is not registered on the Peppol network, the invoice will be sent to the email addresses in the emails property. This property is only mandatory when sending the invoice data using the <<_openapi_invoice>> property, not when sending using the <<_openapi_invoicedata>> property, in which case this information will be extracted from the <<_openapi_invoicedata>> object. If you do specify an <<_openapi_invoicerecipient>> object and an <<_openapi_invoicedata>> object, the data from the two will be merged.
@@ -191,6 +192,9 @@ public type Tax record {
     # The amount of tax. Mandatory if taxSystem == 'tax_line_amounts'. However, it is best to use taxSystem tax_line_percentages and provide only the percentage, not the actual amount. The amount is then provided at the invoice level, in the taxSubtotals element.
     decimal amount?;
     # The optional category code for the tax. This is not mandatory, but highly recommended. If not provided, it will be automatically derived from the country/percentage in combination with the invoice taxPointDate (which defaults to the issueDate), but there are situations in which this fails and the category needs to be specified explicitly. In particular, there are multiple categories available for 0%. The allowed values depend on the country of the tax.
+    # ++++
+    # <ul><li>AU/NZ:<ul><li>standard (S)</li><li>zero_rated (Z - 0%)</li><li>exempt (E - 0%)</li><li>export (G - 0%)</li><li>outside_scope (O - 0%)</li></ul></li><li>EU:<ul><li>standard (S)</li><li>zero_rated (Z - 0%)</li><li>reverse_charge (AE - 0%)</li><li>intra_community (K - 0%)</li><li>exempt (E - 0%)</li><li>export (G - 0%)</li><li>outside_scope (O - 0%)</li></ul></li><li>SG:<ul><li>standard (SR)</li><li>deemed_supply (DS)</li><li>srca_s (SRCA-S)</li><li>srca_c (SRCA-C - 0%)</li><li>zero_rated (ZR - 0%)</li><li>regulation33_exempt (ES33 - 0%)</li><li>nonregulation33_exempt (ESN33 - 0%)</li><li>outside_scope (OS - 0%)</li><li>not_registered (NG - 0%)</li></ul></li><li>MY:<ul><li>sales_tax (S), also 0%</li><li>sales_tax_work (SW)</li><li>service_tax (SV), also 0%</li><li>service_tax_import (SVI)</li><li>sales_export_market (EEM)</li><li>sales_special_area (ESP)</li><li>sales_designated_area (EDA)</li><li>exemption_schedule_a (ESA)</li><li>exemption_schedule_b (ESB)</li><li>exemption_schedule_c_a (ESC-A)</li><li>exemption_schedule_c_b (ESC-B)</li><li>exemption_schedule_c_c (ESC-C)</li><li>exemption_service_tax (ESV)</li></ul></li></ul>
+    # ++++
     string category?;
     # An ISO 3166-1 alpha-2 country code.
     Country country;
@@ -217,7 +221,6 @@ public type RoutingIdentifier record {
 };
 
 # The ISO 4217 currency code.
-#
 public type CurrencyCode string;
 
 public type PurchaseInvoiceInvoiceLine record {
@@ -358,8 +361,6 @@ public type PurchaseinvoiceParty record {
 };
 
 # A list of public identifiers that uniquely identify this customer.
-#
-# + PublicIdentifier - A list of public identifiers that uniquely identify this customer.
 public type PublicIdentifiers PublicIdentifier[];
 
 public type PurchaseInvoiceSender record {
@@ -470,13 +471,13 @@ public type InvoiceLine record {
     # Tax
     Tax tax?;
     # An array of taxes, duties and fees for this invoice line. At this moment, only a single Tax item is allowed. When used, the 'tax' element must be empty.
-    Tax[] taxes_duties_fees?;
+    Tax[1] taxes_duties_fees?;
 };
 
 # The invoice you want Storecove to process, with some meta-data.
 public type InvoiceSubmission record {
     # An array of attachments. You may provide up to 10 attchments, but the total size must not exceed 10MB after Base64 encoding.
-    Attachment[] attachments?;
+    Attachment[10] attachments?;
     # Whether or not to create a primary image (PDF) if one is not provided.
     boolean createPrimaryImage?;
     # DEPRECATED. Use attachments.
@@ -537,6 +538,9 @@ public type PaymentMeans record {
     # The bank branch code. Not required for IBAN numbers. Often referred to as Swift or Bic code.
     string branche_code?;
     # How the invoice has been / will be paid. The code determines which type of PaymentMeans is used and which fields are mandatory.
+    # ++++
+    # <ul>    <li>        <strong>credit_transfer</strong><br/>        The amount is to be transfered into a bank account. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                The account number. For New Zealand, this should hold the full 16 digit bank account number. <strong>Mandatory</strong>.            </li>            <li>                <strong>branche_code</strong><br/>                In case of an IBAN, the account alone number is sufficient. In other cases, like a BBAN, a BIC code or other additional identifier is required. For Australia, the BSB goes here. Optional.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>        </ul>    </li>    <br/>    <li>        <strong>direct_debit</strong><br/>        Direct debit. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                The account number from which the funds will be debited. <strong>Mandatory</strong>.            </li>            <li>                <strong>mandate</strong><br/>                The direct debit mandate id. Optional.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>        </ul>    </li>    <br/>    <li>        <strong>card, bank_card (bank_card is deprecated)</strong><br/>        E.g. credit or debit card. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                The card number, but never more than the last four digits. <strong>Mandatory</strong>.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>            <li>                <strong>network</strong><br/>                The payment network, e.g. VISA, SEPA. Optional, but recommended since a default of "N/A" may be used if not provided.            </li>        </ul>    </li>    <br/>    <li>        <strong>online_payment_service</strong><br/>        E.g. Paypal. The invoice will have been prepaid. Relevant additional fields:<br/>        <ul>            <li>                <strong>network</strong><br/>                The payment network, e.g. PayPal. <strong>Mandatory</strong>.            </li>        </ul>    </li>    <br/>    <li>        <strong>standing_agreement</strong><br/>        The payment means has been agreed out of band. Relevant additional fields: none.    </li>    <br/>    <li>        <strong>aunz_npp_payid, aunz_npp (aunz_npp is deprecated)</strong><br/>        Australia/New Zealand New Payments Platform. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                PayID. May be an email address, ABN, mobile phone number etc. <strong>Mandatory</strong>.            </li>        </ul>    </li>    <br/>    <li>        <strong>aunz_npp_payto</strong><br/>        Australia/New Zealand New Payments Platform. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                Account number. <strong>Mandatory</strong>.            </li>            <li>                <strong>mandate</strong><br/>                Mandate/direct debit authority reference/PayTo Agreement. <strong>Mandatory</strong>.            </li>        </ul>    </li>    <br/>    <li>        <strong>aunz_bpay</strong><br/>        Australia/New Zealand New Payments Platform. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                Biller code. <strong>Mandatory</strong>.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>        </ul>    </li>    <br/>    <li>        <strong>aunz_postbillpay</strong><br/>        Australia/New Zealand New Payments Platform. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                Biller code. <strong>Mandatory.</strong>.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>        </ul>    </li>    <br/>    <li>        <strong>aunz_uri</strong><br/>        Australia/New Zealand URI. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                Payment URI. <strong>Mandatory.</strong>.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>        </ul>    </li>    <br/>    <li>        <strong>se_bankgiro</strong><br/>        Swedish Bankgiro. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                The account number from which the funds will be debited, 7 or 8 digits. <strong>Mandatory</strong>.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>        </ul>        <br/>    </li>    <br/>    <li>        <strong>se_plusgiro</strong><br/>        Swedish Plusgiro. Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                The account number from which the funds will be debited, 2 - 8 digits. <strong>Mandatory</strong>.            </li>            <li>                <strong>holder</strong><br/>                The account holder name. Optional.            </li>        </ul>        <br/>    </li>    <br/>    <li>        <strong>sg_giro</strong><br/>        Singapore GIRO-system (direct debit). Relevant additional fields: none.    </li>    <br/>    <li>        <strong>sg_card</strong><br/>        Singapore CreditCard payment. Relevant additional fields: none.    </li>    <br/>    <li>        <strong>sg_paynow</strong><br/>        Singapore PayNow Corporate.  Relevant additional fields:<br/>        <ul>            <li>                <strong>account</strong><br/>                The UEN, format: UENxxxxxxxxxx. <strong>Mandatory</strong>.            </li>        </ul>    </li></ul>
+    # ++++
     string code;
     # The name of the account holder.
     string holder?;
@@ -575,12 +579,9 @@ public type PurchaseInvoiceSenderBillingContact record {
 };
 
 # An ISO 3166-1 alpha-2 country code.
-#
 public type Country string;
 
 # A list of electronic routing identifiers. These are the identifiers used on the Peppol network or for other destinations.
-#
-# + RoutingIdentifier - A list of electronic routing identifiers. These are the identifiers used on the Peppol network or for other destinations.
 public type EIdentifiers RoutingIdentifier[];
 
 public type PurchaseInvoicePaymentMeans record {
@@ -673,7 +674,7 @@ public type LegalEntityCreate record {
 # The document you want Storecove to send, with some meta-data.
 public type DocumentSubmission record {
     # An array of attachments. You may provide up to 10 attchments, but the total size must not exceed 10MB after Base64 encoding.
-    Attachment[] attachments?;
+    Attachment[10] attachments?;
     # Whether or not to create a primary image (PDF) if one is not provided.
     boolean createPrimaryImage?;
     # The document to send.

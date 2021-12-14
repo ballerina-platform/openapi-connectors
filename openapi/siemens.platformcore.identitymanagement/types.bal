@@ -113,8 +113,6 @@ public type ScimGroupMember record {
 
 # Epoch (milliseconds) of the moment the client secret was introduced. Array contains creation times in ascending order.
 # Most of the time it should contain only one item, except during secret rotation - in that case, two items will be there.
-# Epoch (milliseconds) of the moment the client secret was introduced. Array contains creation times in ascending order.
-# Most of the time it should contain only one item, except during secret rotation - in that case, two items will be there.
 public type ClientSecretCreationTimes int[];
 
 public type NameResponse record {

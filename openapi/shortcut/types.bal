@@ -239,7 +239,7 @@ public type History record {
     # The ID of the primary entity that has changed, if applicable.
     int? primary_id?;
     # An array of objects affected by the change. Reference objects provide basic information for the entities reference in the history actions. Some have specific fields, but they always contain an id, entity_type, and a name.
-    HistoryReferenceBranch|HistoryReferenceCommit|HistoryReferenceEpic|HistoryReferenceGroup|HistoryReferenceIteration|HistoryReferenceLabel|HistoryReferenceProject|HistoryReferenceStory|HistoryReferenceStoryTask|HistoryReferenceWorkflowState|HistoryReferenceGeneral[]? references?;
+    (HistoryReferenceBranch|HistoryReferenceCommit|HistoryReferenceEpic|HistoryReferenceGroup|HistoryReferenceIteration|HistoryReferenceLabel|HistoryReferenceProject|HistoryReferenceStory|HistoryReferenceStoryTask|HistoryReferenceWorkflowState|HistoryReferenceGeneral?)[]? references?;
     # An array of actions that were performed for the change.
     record {}[]? actions;
     # The ID of the member who performed the change.
@@ -732,7 +732,7 @@ public type Workflow record {
     # A string description of this resource.
     string? entity_type;
     # An array of IDs of projects within the Workflow.
-    decimal[]? project_ids;
+    float[]? project_ids;
     # A map of the states in this Workflow.
     WorkflowState[]? states;
     # The name of the workflow.

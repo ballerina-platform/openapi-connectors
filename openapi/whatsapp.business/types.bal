@@ -123,12 +123,10 @@ public type GroupAdminRequestBody record {
 };
 
 # The media object containing a document.
-#
-public type  Document DocumentById|DocumentByProvider;
+public type Document DocumentById|DocumentByProvider;
 
 # The media object containing an image.
-#
-public type  Image ImageById|ImageByProvider;
+public type Image ImageById|ImageByProvider;
 
 # Video by ID
 public type VideoById record {
@@ -219,6 +217,7 @@ public type UserLoginResponseItem record {
     # Token expiration timestamp. By default, this is 7 days.
     string expires_after?;
     # Authentication token to be used for all other WhatsApp Business API calls. The token must be sent in the authorization header in the format:
+    # Authorization: Bearer <authentication-token>
     string token?;
 };
 
@@ -233,6 +232,7 @@ public type AudioByProvider record {
 # Represents application settings.
 public type ApplicationSettings record {
     # Backoff delay for a failed callback in milliseconds
+    # This setting is used to configure the amount of time the backoff delays before retrying a failed callback. The backoff delay increases linearly by this value each time a callback fails to get a HTTPS 200 OK response. The backoff delay is capped by the max_callback_backoff_delay_ms setting.
     string callback_backoff_delay_ms?;
     # Stores callbacks on disk until they are successfully acknowledged by the Webhook or not. Restart required.
     boolean callback_persist?;
@@ -245,6 +245,7 @@ public type ApplicationSettings record {
     # Set to valid WhatsApp Group with users who wish to see alerts for critical errors and messages.
     string on_call_pager?;
     # When true, removes messages from the local database after they are delivered to or read by the recipient. When false, saves all messages on local storage until they are explicitly deleted.
+    # When messages are sent, they are stored in a local database. This database is used as the application's history. Since the business keeps its own history, you can specify whether you want message pass_through or not. Restart required.
     boolean pass_through?;
     # Receive a notification that a message is sent to server. When true, you will receive a message indicating that a message has been sent. If false (default), you will not receive notification.
     boolean sent_status?;
@@ -255,7 +256,6 @@ public type ApplicationSettings record {
 };
 
 # Represents group invite response
-#
 public type GroupInviteResponse record {
     *Response;
     # Group invite list
@@ -265,14 +265,19 @@ public type GroupInviteResponse record {
 # Represents business profile
 public type BusinessProfile record {
     # Address of the business
+    # Maximum of 256 characters
     string address;
     # Description of the business
+    # Maximum of 256 characters
     string description;
     # Email address to contact the business
+    # Maximum of 128 characters
     string email;
     # Industry of the business
+    # Maximum of 128 characters
     string vertical;
     # URLs associated with business (e.g., website, Facebook page, Instagram)
+    # Maximum of 2 websites with a maximum of 256 characters each
     string[] websites;
 };
 
@@ -349,7 +354,6 @@ public type DocumentById record {
 };
 
 # Represents detailed user response.
-#
 public type DetailedUserResponse record {
     *Response;
     # Detailed user response item list
@@ -383,7 +387,6 @@ public type UpdateGroupInfoRequestBody record {
 };
 
 # Represents group response
-#
 public type GroupResponse record {
     *Response;
     # Group information list
@@ -459,8 +462,7 @@ public type WebhookContactProfile record {
 };
 
 # The media object containing audio
-#
-public type  Audio AudioById|AudioByProvider;
+public type Audio AudioById|AudioByProvider;
 
 # Represents email.
 public type Email record {
@@ -473,6 +475,7 @@ public type Email record {
 # Profile about
 public type ProfileAbout record {
     # Text to display in your profile's About section
+    # The max length for the string is 139 characters.
     string text;
 };
 
@@ -483,7 +486,6 @@ public type ProfileAboutSettingsProfile record {
 };
 
 # Represents groups response
-#
 public type GroupsResponse record {
     *Response;
     # Group list
@@ -610,8 +612,11 @@ public type SendMessageRequestBody record {
     # Represents location.
     Location location?;
     # Specifying preview_url in the request is optional when not including a URL in your message.
+    # To include a URL preview, set preview_url to true in the message body and make sure the URL begins with http:// or https://. For more information, see the Sending URLs in Text Messages section.
     boolean preview_url?;
     # Determines whether the recipient is an individual or a group
+    # Specifying recipient_type in the request is optional when the value is individual.
+    # However, recipient_type is required when using group. If sending a text message to a group, see the Sending Group Messages documentation.
     string recipient_type?;
     # Text
     Text text?;
@@ -626,7 +631,6 @@ public type SendMessageRequestBody record {
 };
 
 # type of the message
-#
 public type MessageType string;
 
 # The containing element for the message content — Indicates that the message is highly structured. Parameters contained within provide the structure.
@@ -644,19 +648,20 @@ public type Hsm record {
 # Represents group information.
 public type GroupInfo record {
     # Group administrators
+    # Lists IDs of the creator of the group and any administrators added
     string[] admins?;
     # Group creation time
     int creation_time?;
     # ID of the creator of this group
     string creator?;
     # Participants of the group
+    # This is an array of all the IDs of the participants in the group. Initially, this will be the creator of the group.
     string[] participants?;
     # Subject of the group
     string subject?;
 };
 
 # Represents message response
-#
 public type MessageResponse record {
     *Response;
     # Message list
@@ -700,11 +705,9 @@ public type GetProfileAboutResponse record {
 };
 
 # The media object containing a video
-#
-public type  Video VideoById|VideoByProvider;
+public type Video VideoById|VideoByProvider;
 
 # Check contact response
-#
 public type CheckContactResponse record {
     *Response;
     # Contact list
@@ -756,7 +759,6 @@ public type Language record {
 };
 
 # Represents user login response
-#
 public type UserLoginResponse record {
     *Response;
     # User login response item list
@@ -876,7 +878,6 @@ public type Response record {
 };
 
 # Represents user response
-#
 public type UserResponse record {
     *Response;
     # User response item list
@@ -896,7 +897,6 @@ public type UpdateUserRequestBody record {
 };
 
 # Represents user role
-#
 public type UserRole string;
 
 # Check contact
@@ -910,7 +910,6 @@ public type CheckContact record {
 };
 
 # Represents get business profile response
-#
 public type GetBusinessProfileResponse record {
     *Response;
     # Represents business settings

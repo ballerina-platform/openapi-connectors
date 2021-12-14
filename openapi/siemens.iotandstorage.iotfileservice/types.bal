@@ -62,7 +62,7 @@ public type Error record {
     string message?;
 };
 
-public type BulkDeleteAssetsArray BulkDeleteAsset[];
+public type BulkDeleteAssetsArray BulkDeleteAsset[1];
 
 public type BulkDeleteAsset record {
     # Unique identifier for asset instance
@@ -99,7 +99,7 @@ public type BulkDeleteJobResponse record {
     string timestamp;
     # overall status of the job
     string status;
-    AssetStatus[] assets;
+    AssetStatus[1] assets;
 };
 
 public type AssetStatus record {

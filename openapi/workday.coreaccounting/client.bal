@@ -65,13 +65,14 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieves the details on all currencies in your tenant.
     #
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAllCurrencies() returns InlineResponse200|error {
-        string path = string `/currencies`;
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        string resourcePath = string `/currencies`;
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves the details of a specified currency.
@@ -79,8 +80,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCurrencyByID(string id) returns CurrencySummary|error {
-        string path = string `/currencies/${id}`;
-        CurrencySummary response = check self.clientEp->get(path, targetType = CurrencySummary);
+        string resourcePath = string `/currencies/${id}`;
+        CurrencySummary response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves the ledger account and resulting worktags of a specified account posting rule.
@@ -90,11 +91,11 @@ public isolated client class Client {
     # + dimensionValue - The Workday IDs or reference IDs for the dimension value of the account posting rule condition. The reference ID uses the dimensionValue=sampleRefIdType=value format format. Example: dimensionValue=Fund_ID=F03.1.3. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getLedgerAccountByPostingRule(string? accountPostingRuleSet = (), string? accountPostingRuleType = (), string[]? dimensionValue = ()) returns InlineResponse2001|error {
-        string path = string `/evaluateAccountPostingRules`;
+        string resourcePath = string `/evaluateAccountPostingRules`;
         map<anydata> queryParam = {"accountPostingRuleSet": accountPostingRuleSet, "accountPostingRuleType": accountPostingRuleType, "dimensionValue": dimensionValue};
         map<Encoding> queryParamEncoding = {"dimensionValue": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

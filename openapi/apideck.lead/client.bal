@@ -57,6 +57,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # List leads
     #
@@ -68,12 +69,12 @@ public isolated client class Client {
     # + 'limit - Number of records to return 
     # + return - Leads 
     remote isolated function leadsAll(string xApideckConsumerId, string xApideckAppId, boolean raw = true, string? xApideckServiceId = (), string? cursor = (), int 'limit = 20) returns InlineResponse200|error {
-        string  path = string `/lead/leads`;
+        string resourcePath = string `/lead/leads`;
         map<anydata> queryParam = {"raw": raw, "cursor": cursor, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create lead
@@ -85,15 +86,15 @@ public isolated client class Client {
     # + payload - Lead information 
     # + return - Lead created 
     remote isolated function leadsAdd(string xApideckConsumerId, string xApideckAppId, Lead payload, boolean raw = true, string? xApideckServiceId = ()) returns InlineResponse201|error {
-        string  path = string `/lead/leads`;
+        string resourcePath = string `/lead/leads`;
         map<anydata> queryParam = {"raw": raw};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get lead
@@ -105,12 +106,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Lead 
     remote isolated function leadsOne(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns InlineResponse2001|error {
-        string  path = string `/lead/leads/${id}`;
+        string resourcePath = string `/lead/leads/${id}`;
         map<anydata> queryParam = {"raw": raw};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete lead
@@ -122,12 +123,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Lead deleted 
     remote isolated function leadsDelete(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns InlineResponse201|error {
-        string  path = string `/lead/leads/${id}`;
+        string resourcePath = string `/lead/leads/${id}`;
         map<anydata> queryParam = {"raw": raw};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse201 response = check self.clientEp-> delete(path, accHeaders, targetType = InlineResponse201);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse201 response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update lead
@@ -140,15 +141,15 @@ public isolated client class Client {
     # + payload - Lead information 
     # + return - Lead updated 
     remote isolated function leadsUpdate(string id, string xApideckConsumerId, string xApideckAppId, Lead payload, string? xApideckServiceId = (), boolean raw = true) returns InlineResponse201|error {
-        string  path = string `/lead/leads/${id}`;
+        string resourcePath = string `/lead/leads/${id}`;
         map<anydata> queryParam = {"raw": raw};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

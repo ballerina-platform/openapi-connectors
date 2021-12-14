@@ -245,7 +245,7 @@ public type CustomField record {
     # ID
     string id;
     # Custom value
-    string|decimal|boolean|string[] value?;
+    string|decimal|boolean|string[]? value?;
 };
 
 public type InlineResponse2001 record {

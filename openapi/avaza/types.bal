@@ -758,6 +758,11 @@ public type CompanyList record {
     int? PageSize?;
 };
 
+public type ExpenseAttachmentBody record {
+    # Upload software package
+    string? File;
+};
+
 public type CreditNote record {
     int? TransactionID?;
     string? TransactionPrefix?;
@@ -951,6 +956,7 @@ public type NewInvoice record {
     # If not specified it will use today's date. The date should be specified as local date.
     string? DateIssued?;
     #  "If left blank we will set it to customer default. If specified then it must match one of your existing pre configured payment term periods. Your account starts with:
+    # (-1 --- Custom, 0 --- Upon Receipt, 7 --- 7 Days, 15 --- 15 Days, 30 --- 30 Days, 45 --- 45 Days, 60 --- 60 Days)
     int? PaymentTerms?;
     # It will be auto calculated based on the payment term and issue date. Due Date must be greater than or equal to Issue Date. If the Due Date is specified then Payment Terms will be set to -1 (Custom)
     string? DueDate?;
@@ -1358,11 +1364,6 @@ public type CurrencyList record {
 
 public type UserList record {
     UserDetails[]? Users?;
-};
-
-public type Body record {
-    # Upload software package
-    string? File;
 };
 
 public type ExpenseCategoryList record {

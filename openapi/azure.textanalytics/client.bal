@@ -42,6 +42,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get healthcare analysis job status and results
     #
@@ -51,12 +52,12 @@ public isolated client class Client {
     # + showStats - (Optional) if set to true, response will contain request and document level statistics. 
     # + return - OK 
     remote isolated function healthStatus(string jobId, int top = 20, int skip = 0, boolean? showStats = ()) returns HealthcareJobState|error {
-        string  path = string `/entities/health/jobs/${jobId}`;
+        string resourcePath = string `/entities/health/jobs/${jobId}`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "showStats": showStats, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        HealthcareJobState response = check self.clientEp-> get(path, accHeaders, targetType = HealthcareJobState);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        HealthcareJobState response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Cancel healthcare prediction job
@@ -64,12 +65,12 @@ public isolated client class Client {
     # + jobId - Format - uuid. Job ID 
     # + return - Cancel Job request has been received. 
     remote isolated function cancelHealthJob(string jobId) returns http:Response|error {
-        string  path = string `/entities/health/jobs/${jobId}`;
+        string resourcePath = string `/entities/health/jobs/${jobId}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Detect Language
@@ -80,15 +81,15 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze for language endpoint. 
     # + return - A successful call results in the detected language with the highest probability for each valid document 
     remote isolated function languages(LanguageBatchInput payload, string? modelVersion = (), boolean? showStats = (), boolean? loggingOptOut = ()) returns LanguageResult|error {
-        string  path = string `/languages`;
+        string resourcePath = string `/languages`;
         map<anydata> queryParam = {"model-version": modelVersion, "showStats": showStats, "loggingOptOut": loggingOptOut, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LanguageResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LanguageResult);
+        request.setPayload(jsonBody, "application/json");
+        LanguageResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Entities containing personal information
@@ -102,16 +103,16 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze. 
     # + return - A successful call results in a list of entities containing personal information returned for each valid document 
     remote isolated function entitiesRecognitionPii(MultiLanguageBatchInput payload, string? modelVersion = (), boolean? showStats = (), boolean? loggingOptOut = (), string? domain = (), string stringIndexType = "TextElement_v8", string[]? piiCategories = ()) returns PiiResult|error {
-        string  path = string `/entities/recognition/pii`;
+        string resourcePath = string `/entities/recognition/pii`;
         map<anydata> queryParam = {"model-version": modelVersion, "showStats": showStats, "loggingOptOut": loggingOptOut, "domain": domain, "stringIndexType": stringIndexType, "piiCategories": piiCategories, "subscription-key": self.apiKeyConfig.subscriptionKey};
         map<Encoding> queryParamEncoding = {"piiCategories": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PiiResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PiiResult);
+        request.setPayload(jsonBody, "application/json");
+        PiiResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get analysis status and results
@@ -122,12 +123,12 @@ public isolated client class Client {
     # + skip - (Optional) Set the number of elements to offset in the response. When both $top and $skip are specified, $skip is applied first. 
     # + return - Analysis job status and metadata. 
     remote isolated function analyzeStatus(string jobId, boolean? showStats = (), int top = 20, int skip = 0) returns AnalyzeJobState|error {
-        string  path = string `/analyze/jobs/${jobId}`;
+        string resourcePath = string `/analyze/jobs/${jobId}`;
         map<anydata> queryParam = {"showStats": showStats, "$top": top, "$skip": skip, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AnalyzeJobState response = check self.clientEp-> get(path, accHeaders, targetType = AnalyzeJobState);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AnalyzeJobState response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Key Phrases
@@ -138,15 +139,15 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze. 
     # + return - A successful response results in 0 or more key phrases identified in each valid document 
     remote isolated function keyPhrases(MultiLanguageBatchInput payload, string? modelVersion = (), boolean? showStats = (), boolean? loggingOptOut = ()) returns KeyPhraseResult|error {
-        string  path = string `/keyPhrases`;
+        string resourcePath = string `/keyPhrases`;
         map<anydata> queryParam = {"model-version": modelVersion, "showStats": showStats, "loggingOptOut": loggingOptOut, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        KeyPhraseResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=KeyPhraseResult);
+        request.setPayload(jsonBody, "application/json");
+        KeyPhraseResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Linked entities from a well known knowledge base
@@ -158,15 +159,15 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze. 
     # + return - A successful call results in a list of recognized entities with links to a well known knowledge base returned for each valid document 
     remote isolated function entitiesLinking(MultiLanguageBatchInput payload, string? modelVersion = (), boolean? showStats = (), boolean? loggingOptOut = (), string stringIndexType = "TextElement_v8") returns EntityLinkingResult|error {
-        string  path = string `/entities/linking`;
+        string resourcePath = string `/entities/linking`;
         map<anydata> queryParam = {"model-version": modelVersion, "showStats": showStats, "loggingOptOut": loggingOptOut, "stringIndexType": stringIndexType, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntityLinkingResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=EntityLinkingResult);
+        request.setPayload(jsonBody, "application/json");
+        EntityLinkingResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Named Entity Recognition
@@ -178,15 +179,15 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze. 
     # + return - A successful call results in a list of recognized entities returned for each valid document. 
     remote isolated function entitiesRecognitionGeneral(MultiLanguageBatchInput payload, string? modelVersion = (), boolean? showStats = (), boolean? loggingOptOut = (), string stringIndexType = "TextElement_v8") returns EntitiesResult|error {
-        string  path = string `/entities/recognition/general`;
+        string resourcePath = string `/entities/recognition/general`;
         map<anydata> queryParam = {"model-version": modelVersion, "showStats": showStats, "loggingOptOut": loggingOptOut, "stringIndexType": stringIndexType, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntitiesResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=EntitiesResult);
+        request.setPayload(jsonBody, "application/json");
+        EntitiesResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Sentiment
@@ -199,15 +200,15 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze. 
     # + return - A successful call results in a document sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and Neutral) 
     remote isolated function sentiment(MultiLanguageBatchInput payload, string? modelVersion = (), boolean? showStats = (), boolean? loggingOptOut = (), boolean? opinionMining = (), string stringIndexType = "TextElement_v8") returns SentimentResponse|error {
-        string  path = string `/sentiment`;
+        string resourcePath = string `/sentiment`;
         map<anydata> queryParam = {"model-version": modelVersion, "showStats": showStats, "loggingOptOut": loggingOptOut, "opinionMining": opinionMining, "stringIndexType": stringIndexType, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SentimentResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SentimentResponse);
+        request.setPayload(jsonBody, "application/json");
+        SentimentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Submit analysis job
@@ -215,15 +216,15 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze and tasks to execute. 
     # + return - A successful call results with an Operation-Location header used to check the status of the analysis job. 
     remote isolated function analyze(AnalyzeBatchInput payload) returns http:Response|error {
-        string  path = string `/analyze`;
+        string resourcePath = string `/analyze`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Submit healthcare analysis job
@@ -234,15 +235,15 @@ public isolated client class Client {
     # + payload - Collection of documents to analyze. 
     # + return - Accepted - call results in a link where the status of the submitted job can be checked via the GET operation. 
     remote isolated function health(MultiLanguageBatchInput payload, string? modelVersion = (), string stringIndexType = "TextElement_v8", boolean? loggingOptOut = ()) returns http:Response|error {
-        string  path = string `/entities/health/jobs`;
+        string resourcePath = string `/entities/health/jobs`;
         map<anydata> queryParam = {"model-version": modelVersion, "stringIndexType": stringIndexType, "loggingOptOut": loggingOptOut, "subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

@@ -157,10 +157,9 @@ public type LinksEnablerulelink record {
     *BeezupCommonLink3;
 };
 
-# Get the conditions of your next contract
 public type NextContractInfo record {
     *ContractInfo;
-    NextContractInfoLinks links?;
+    NextContractInfoLinks links;
 };
 
 # JWT token to access Zendesk restricted help center
@@ -228,7 +227,6 @@ public type BillingPeriodList record {
 };
 
 # The column mapping list between a channel and a catalog
-# The column mapping list between a channel and a catalog
 public type ChannelCatalogColumnMappingList ChannelCatalogColumnMapping[];
 
 # Indicate the http method to use on this link
@@ -244,7 +242,8 @@ public type TrackedOrders record {
 
 # Describes a filter on a product's column.
 # The key is the column identifier of your catalog or a custom column.
-public type AdditionalAnalyticsProductColumnFilters record {};
+public type AdditionalAnalyticsProductColumnFilters record {
+};
 
 # The request to configure a catalog column
 public type ConfigureCatalogColumnCatalogRequest record {
@@ -273,7 +272,8 @@ public type LinksGetchannelcatalogmarketplacepropertieslink record {
     *BeezupCommonLink3;
 };
 
-public type LinkParameter3Types record {};
+public type LinkParameter3Types record {
+};
 
 public type ChannelCatalogMarketplaceBooleanSetting record {
     *ChannelCatalogMarketplaceSetting;
@@ -286,7 +286,7 @@ public type OrderIdentifierWithETag record {
     # ETag value to identify the order.\
     # This information is required for the operation GetOrder and ChangeOrder.\
     # For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3
-    Etag etag?;
+    Etag etag;
 };
 
 # Describe the prorata info based on your previous invoice
@@ -444,7 +444,7 @@ public type BeezupCommonUsererrormessageArguments record {
     # The key of the parameter
     string name;
     # The value of the parameter. Depending to the type.
-    record  { }  value;
+    record {} value;
 };
 
 # The channel identifier
@@ -510,9 +510,9 @@ public type StandardOffers record {
 public type ProfilePictureInfoWithDefault record {
     *ProfilePictureInfo;
     # Indicate the url of your picture profil based on your initials
-    InitialsProfilePictureUrl initialsProfilePictureUrl?;
+    InitialsProfilePictureUrl initialsProfilePictureUrl;
     # Indicate the url of your picture profil based on gravatar
-    GravatarProfilePictureUrl gravatarProfilePictureUrl?;
+    GravatarProfilePictureUrl gravatarProfilePictureUrl;
 };
 
 public type SubscriptionIndex record {
@@ -697,16 +697,16 @@ public type LOVLink3 record {
 };
 
 # The channel category path
-# The channel category path
 public type BeezupCommonChannelcategorypath string[];
 
 # The key is the channel column identifier
-public type ProductOverridesWithCatalogValues record {};
+public type ProductOverridesWithCatalogValues record {
+};
 
 public type ReportByDayGlobalByChannel record {
     *ReportByDayGlobalAllChannels;
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel?;
+    BeezupCommonChannelbasicinfo 'channel;
 };
 
 # Indicate the duplicate product sku strategy.
@@ -763,7 +763,8 @@ public type StoreShares record {
 };
 
 # The key is the OrderMetaInfo.
-public type OrderHarvestErrors record {};
+public type OrderHarvestErrors record {
+};
 
 # The time zone identifier based on the list of values /v2/user/lov/BeezUPTimeZone
 public type BeezUPTimeZoneId int;
@@ -869,7 +870,7 @@ public type BeezupCommonLinkparameterproperty3 record {
     # The label corresponding to the link parameter property. This label is automatically translated based on the Accept-Language http header.
     string label?;
     # The value of the parameter. It can be an integer a string or an object.
-    record  { }  value?;
+    record {} value?;
     boolean required?;
     # The value type of the parameter
     BeezupCommonParametertype 'type;
@@ -953,22 +954,21 @@ public type PersonalInfo record {
     BeezUPTimeZoneId beezUPTimeZoneId;
 };
 
-# The channel catalog
 public type ChannelCatalog record {
     *BeezupCommonChannelbasicinfo;
     # Indicates if the channel catalog is enable
-    boolean enabled?;
+    boolean enabled;
     # Indicates if this channel catalog is related to a marketplace
-    boolean isMarketplace?;
+    boolean isMarketplace;
     # The channel catalog identifier
-    BeezupCommonChannelcatalogid channelCatalogId?;
+    BeezupCommonChannelcatalogid channelCatalogId;
     # The store identifier
-    BeezupCommonStoreid storeId?;
+    BeezupCommonStoreid storeId;
     # Represents the general settings of your channel catalog
-    GeneralSettings generalSettings?;
+    GeneralSettings generalSettings;
     # Indicate the default configuration of the cost on this channel.
-    ChannelCostSettings channelCostSettings?;
-    ChannelCategorySettings channelCategorySettings?;
+    ChannelCostSettings channelCostSettings;
+    ChannelCategorySettings channelCategorySettings;
     # If this property is not indicated please force the user to configure the cost settings.
     # Defines the cost type you have on this channel with the cost value.
     CostSettings costSettings?;
@@ -980,11 +980,11 @@ public type ChannelCatalog record {
     # The URL <a href="https://en.wikipedia.org/wiki/URL">https://en.wikipedia.org/wiki/URL</a>
     BeezupCommonHttpurl exportUrl?;
     # Channel Catalog State
-    ChannelCatalogState state?;
+    ChannelCatalogState state;
     # The channel type list related to the channel
-    string[] types?;
+    string[] types;
     # Indicates the actions you can do on a channel catalog
-    ChannelCatalogLinks links?;
+    ChannelCatalogLinks links;
 };
 
 public type ReportByProductResponse record {
@@ -1016,7 +1016,8 @@ public type ClickIncludedAndVariablePrice record {
 };
 
 # The channel category column overrides
-public type ChannelCategoryColumnOverrides record {};
+public type ChannelCategoryColumnOverrides record {
+};
 
 public type OrderIdentifier record {
     # The technical code of the marketplace.
@@ -1199,9 +1200,9 @@ public type LinksRunrulelink record {
 
 public type OrderWithLinks record {
     *Order;
-    OrderLinks links?;
+    OrderLinks links;
     # Contains the authorized change actions for an order
-    OrderTransitionLinks transitionLinks?;
+    OrderTransitionLinks transitionLinks;
 };
 
 public type ReportByCategory record {
@@ -1490,10 +1491,11 @@ public type ImportationReporting record {
 };
 
 # The key is the channel column identifier
-public type ProductOverrides record {};
+public type ProductOverrides record {
+};
 
 public type ClearMerchantOrderInfoListRequest record {
-    OrderIdentifier[] orders;
+    OrderIdentifier[100] orders;
 };
 
 public type LinksCatalogDeletecustomcolumnlink record {
@@ -1513,10 +1515,9 @@ public type ImportationsResponse record {
     ImportationReporting[] importations?;
 };
 
-# The catalog column detected during the first parsing step
 public type DetectedCatalogColumn record {
     *CatalogColumn;
-    DetectedCatalogColumnLinks links?;
+    DetectedCatalogColumnLinks links;
 };
 
 public type LinksDeletechannelcataloglink record {
@@ -1560,7 +1561,7 @@ public type OptimiseRequest record {
 
 public type ErrorResponseMessagePaymentRequired record {
     *BeezupCommonErrorresponsemessage;
-    ErrorResponseMessagePaymentRequiredLinks links?;
+    ErrorResponseMessagePaymentRequiredLinks links;
 };
 
 public type LinksGetchannelcatalogcategorieslink record {
@@ -1741,7 +1742,6 @@ public type ExclusionFilter record {
 };
 
 # The column mapping list between a channel and a catalog
-# The column mapping list between a channel and a catalog
 public type ChannelCatalogColumnMappingListWithName ChannelCatalogColumnMappingWithName[];
 
 public type ChannelCategorySettings record {
@@ -1893,20 +1893,19 @@ public type ChannelFirstLevelCategory record {
     ChannelCategory[] subCategories?;
 };
 
-# The channel catalog product information
 public type ChannelCatalogProductInfo record {
     *BeezupCommonProductbasicinfo;
     # The key is the channel column identifier
-    ProductOverridesWithCatalogValues overrides?;
+    ProductOverridesWithCatalogValues overrides;
     # Indicates if the product has been disabled or not
-    boolean disabled?;
+    boolean disabled;
     # Indicates if the product's category has been NOT mapped to a channel category
-    boolean uncategorized?;
+    boolean uncategorized;
     # Indicates if the product has been excluded by a exclusion filter
-    boolean excluded?;
+    boolean excluded;
     ExclusionFilterName[] excludedBy?;
     # Indicates the differents actions you can do on a channel product
-    ChannelCatalogProductInfoLinks links?;
+    ChannelCatalogProductInfoLinks links;
 };
 
 public type ReportByProduct record {
@@ -2024,7 +2023,7 @@ public type BeezupCommonLinkparameter3 record {
     # The label corresponding to the link parameter. This label is automatically translated based on the Accept-Language http header.
     string label?;
     # The value of the parameter. It can be an integer a string or an object.
-    record  { }  value?;
+    record {} value?;
     boolean required?;
     # * path: if the parameter must be pass in the path uri
     # * header: if the parameter must be passed in http header
@@ -2066,7 +2065,7 @@ public type ReportByProductRequest record {
     *PaginationRequestParameters;
     ProductColumnsToDisplay productColumnsToDisplay?;
     # You can filter on the product state.
-    ProductStateFilter productState?;
+    ProductStateFilter productState;
     AnalyticsProductColumnFilters analyticsProductColumnFilters?;
 };
 
@@ -2297,7 +2296,7 @@ public type ContractInfo record {
 public type ReportByDayByChannel record {
     *ReportByDayAllChannels;
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel?;
+    BeezupCommonChannelbasicinfo 'channel;
 };
 
 # The message contains the offer identifier required to execute this operation
@@ -2362,7 +2361,7 @@ public type Rule record {
 public type StoreAlertPropertyInfo record {
     *StoreAlertProperty;
     # The property name of the alert
-    string propertyName?;
+    string propertyName;
     # The regular expression related to the alert property
     string propertyValidationExpression?;
 };
@@ -2423,7 +2422,8 @@ public type LinksGetruleslink record {
 };
 
 # The key is the StoreId.
-public type ReportByDayPerStoreResponse record {};
+public type ReportByDayPerStoreResponse record {
+};
 
 public type ReportByCommonResponseLinks record {
     LinksOptimisealllink enableAllProducts?;
@@ -2677,10 +2677,9 @@ public type OrderHistory record {
     string lastModificationUtcDate?;
 };
 
-# Describe in details all informations related to an order. All properties with the prefix order_ are translated in the list of values /user/lov/OrderMetaInfoOrderDetails.
 public type Order record {
     *OrderHeader;
-    OrderLinks links?;
+    OrderLinks links;
     # Useful to identify the origin of the order. For example in Amazon.
     string order_MarketPlaceChannel?;
     # The total tax of this order
@@ -2777,9 +2776,9 @@ public type Order record {
     string order_OrderSourceUri?;
     # Technical information: The url to the source of this order items. We received this information from the marketplace.
     string order_OrderItemsSourceUri?;
-    OrderItem[] orderItems?;
+    OrderItem[] orderItems;
     # Contains the authorized change actions for an order
-    OrderTransitionLinks transitionLinks?;
+    OrderTransitionLinks transitionLinks;
 };
 
 public type ErrorResponseMessage record {
@@ -2852,7 +2851,7 @@ public type LinksImportationDeletecustomcolumnlink record {
 public type ChannelCatalogColumnMappingWithName record {
     *ChannelCatalogColumnMapping;
     # The channel column name
-    BeezupCommonChannelcolumnname channelColumnName?;
+    BeezupCommonChannelcolumnname channelColumnName;
     # The BeezUP column name
     BeezupCommonBeezupcolumnname channelBeezUPColumnName?;
     # The catalog column named by the user (catalog or custom column)
@@ -2911,7 +2910,7 @@ public type LinksOptimisebycategorylink record {
 
 public type OrderHeaderWithLinks record {
     *OrderHeader;
-    OrderHeaderLinks links?;
+    OrderHeaderLinks links;
 };
 
 # The channel catalog marketplace settings to save
@@ -2965,7 +2964,7 @@ public type GetProductsRequest record {
     BeezupCommonPagenumber pageNumber;
     # Indicate the item count per page
     BeezupCommonPagesize pageSize;
-    BeezupCommonCatalogcolumnid[] columnIdList?;
+    BeezupCommonCatalogcolumnid[5] columnIdList?;
     # Search for existing products or not. If null you will received both.
     boolean exists?;
     # Filter with a list of product identifier
@@ -3084,14 +3083,13 @@ public type LinksConfigurechannelcatalogcolumnmappingslink record {
 public type AutomaticTransitionInfo record {
     *AutomaticTransition;
     # In an marketplace technical code like CDiscount you can have several marketplaces like GO SPORT, etc. We identify them by a business code.
-    BeezupCommonMarketplacebusinesscode marketplaceBusinessCode?;
+    BeezupCommonMarketplacebusinesscode marketplaceBusinessCode;
     # BeezUP order status. Unified for all marketplaces.
-    BeezUPOrderStatus beezUPOrderStatus?;
-    BusinessOperationType businessOperationType?;
+    BeezUPOrderStatus beezUPOrderStatus;
+    BusinessOperationType businessOperationType;
     AutomaticTransitionInfoLinks links?;
 };
 
-# Contains the authorized change actions for an order
 # Contains the authorized change actions for an order
 public type OrderTransitionLinks LinksChangeorderlink[];
 
@@ -3248,14 +3246,15 @@ public type LinksGetlegacytrackingchannelcatalogslink record {
 # The BeezUP column name
 public type BeezupCommonBeezupcolumnname string;
 
-public type ProductColumnsToDisplay BeezupCommonCatalogcolumnid[];
+public type ProductColumnsToDisplay BeezupCommonCatalogcolumnid[1];
 
 public type LinksCatalogGetcustomcolumnexpressionlink record {
     *BeezupCommonLink3;
 };
 
 # Product overrides compatibilites list
-public type ProductOverridesCopyResponse record {};
+public type ProductOverridesCopyResponse record {
+};
 
 # Indicate which direction to order results by
 public type OrderByDirection string;
@@ -3271,7 +3270,7 @@ public type ChangeCustomColumnExpressionRequest record {
 public type SetMerchantOrderInfoListRequestItem record {
     *OrderIdentifier;
     # The order merchant identifier
-    OrderMerchantorderid order_MerchantOrderId?;
+    OrderMerchantorderid order_MerchantOrderId;
 };
 
 # Indicate the order count per page
@@ -3428,9 +3427,9 @@ public type LinksImportationConfigureremainingcatalogcolumnslink record {
 public type OrderListRequest record {
     *OrderListRequestWithoutPagination;
     # Indicate the order count per page
-    PageSize pageSize?;
+    PageSize pageSize;
     # Indicates the page number
-    PageNumber pageNumber?;
+    PageNumber pageNumber;
 };
 
 public type LinksGetcustomerindexlink record {
@@ -3502,7 +3501,8 @@ public type ProductErrorCode record {
 };
 
 # The key is the alert identifier (alertId)
-public type SaveStoreAlertsRequest record {};
+public type SaveStoreAlertsRequest record {
+};
 
 public type SaveStoreAlertRequest record {
     # Is the alert enable ?
@@ -3537,7 +3537,6 @@ public type ExternallinksGetchannelcatalogmarketplacesettingslink record {
 };
 
 # The store's sectors based on the list of values /user/lov/ParamSector
-# The store's sectors based on the list of values /user/lov/ParamSector
 public type StoreSectors StoreSector[];
 
 public type LinksGetchannelcatalogproductvalueoverridecopylink record {
@@ -3556,7 +3555,7 @@ public type LinkParameter3 record {
     # The label corresponding to the link parameter. This label is automatically translated based on the Accept-Language http header.
     string label?;
     # The value of the parameter. It can be an integer a string or an object.
-    record  { }  value?;
+    record {} value?;
     boolean required?;
     # * path: if the parameter must be pass in the path uri
     # * header: if the parameter must be passed in http header
@@ -3587,7 +3586,6 @@ public type Processing boolean;
 # Indicate the url of your picture profil based on your initials
 public type InitialsProfilePictureUrl string;
 
-# Product Errors
 # Product Errors
 public type ProductErrors ProductError[];
 
@@ -4104,7 +4102,8 @@ public type ReportByCategoryResponse record {
 };
 
 # List of lov link. The key is the list name.
-public type UserLovLinks record {};
+public type UserLovLinks record {
+};
 
 # The list of Order report exportations.\
 # The paginationResult properties can be null if the list is empty.
@@ -4150,7 +4149,6 @@ public type LinksGetstorereportbychannellink record {
     *BeezupCommonLink3;
 };
 
-# The catalog category path
 # The catalog category path
 public type BeezupCommonCatalogcategorypath string[];
 
@@ -4275,7 +4273,7 @@ public type CategoryList record {
 
 public type OrderListFullLinks record {
     *OrderListLinks;
-    LinksGetorderlistfulllink self?;
+    LinksGetorderlistfulllink self;
 };
 
 public type ImportAlreadyInProgressResponse record {
@@ -4442,7 +4440,7 @@ public type FilterOperator record {
 
 public type OrderListLightLinks record {
     *OrderListLinks;
-    LinksGetorderlistlightlink self?;
+    LinksGetorderlistlightlink self;
 };
 
 public type UserFriendInfo record {
@@ -4778,7 +4776,8 @@ public type LinksSetmerchantorderinfolistlink record {
 };
 
 # All properties with the prefix order_ are translated in the list of values /user/lov#OrderMetaInfoPosted
-public type ChangeOrderRequest record {};
+public type ChangeOrderRequest record {
+};
 
 public type BonusType string;
 
@@ -4831,11 +4830,11 @@ public type AccountId int;
 public type TrackedOrderProduct record {
     *BeezupCommonProductbasicinfo;
     # The product's unit price for the order
-    decimal unitPrice?;
+    decimal unitPrice;
     # The quantity of this product for the order
-    decimal quantity?;
+    decimal quantity;
     # The product's margin for the order
-    decimal margin?;
+    decimal margin;
 };
 
 # Indicates the origin of the operation
@@ -4873,14 +4872,12 @@ public type AnalyticsIndexLinks record {
 public type ChannelCategoryChannelCode string;
 
 # The exclusion filter list
-# The exclusion filter list
 public type ExclusionFilters ExclusionFilter[];
 
 public type LinksReenablechannelcatalogcategorymappinglink record {
     *BeezupCommonLink3;
 };
 
-# Get Importation Products Report Request Error Codes
 # Get Importation Products Report Request Error Codes
 public type GetImportationProductsReportRequestErrorCodes GetImportationProductsReportRequestErrorCode[];
 
@@ -4959,7 +4956,8 @@ public type Offer record {
     OfferLinks links?;
 };
 
-public type ImportationsPerStoreResponse record {};
+public type ImportationsPerStoreResponse record {
+};
 
 # Your last name
 public type LastName string;
@@ -5110,7 +5108,8 @@ public type UpdateStoreRequest record {
 };
 
 # The key is the column identifier
-public type ProductValues record {};
+public type ProductValues record {
+};
 
 public type SuccessSummary record {
     string successCode?;
@@ -5157,14 +5156,14 @@ public type SetMerchantOrderInfoListRequest record {
     OrderMerchantecommercesoftwarename order_MerchantECommerceSoftwareName;
     # The e-commece software version of the merchant
     OrderMerchantecommercesoftwareversion order_MerchantECommerceSoftwareVersion;
-    SetMerchantOrderInfoListRequestItem[] orders;
+    SetMerchantOrderInfoListRequestItem[100] orders;
 };
 
 public type LinkParameterProperty3 record {
     # The label corresponding to the link parameter property. This label is automatically translated based on the Accept-Language http header.
     string label?;
     # The value of the parameter. It can be an integer a string or an object.
-    record  { }  value?;
+    record {} value?;
     boolean required?;
     # The value type of the parameter
     ParameterType 'type;
@@ -5281,7 +5280,7 @@ public type LinksCatalogComputeexpressionlink record {
 public type ReportFilterParameters record {
     *ReportFilterCommonParameters;
     # The report type
-    ReportType reportType?;
+    ReportType reportType;
     ProductColumnsToDisplay productColumnsToDisplay?;
     # You can filter on the product state.
     ProductStateFilter productState?;
@@ -5307,7 +5306,8 @@ public type AnalyticsProductColumnFilter record {
 };
 
 # a dictionary string/object
-public type UserErrorMessageArguments record {};
+public type UserErrorMessageArguments record {
+};
 
 # In case of CPC_ByCategory or CPA_ByCategory cost type, you have to indicate the cost value.
 public type ChannelCatalogCategoryCostValue decimal;
@@ -5334,7 +5334,7 @@ public type OrderListDateSearchType string;
 public type OptimiseAllRequest record {
     *OrderedReportFilterCommonParameters;
     # The report type
-    ReportType reportType?;
+    ReportType reportType;
     ProductColumnsToDisplay productColumnsToDisplay?;
     # You can filter on the product state.
     ProductStateFilter productState?;
@@ -5354,7 +5354,8 @@ public type LinksGetorderv3link record {
 };
 
 # List of lov link. The key is the list name.
-public type PublicLovLinks record {};
+public type PublicLovLinks record {
+};
 
 public type CreateContractResponseLinks record {
     LinksCreatecontractlink self?;
@@ -5529,10 +5530,9 @@ public type ChannelInfo record {
     ChannelinfoTechnicalcontact technicalContact?;
 };
 
-# Get the conditions of your current contract
 public type CurrentContractInfo record {
     *ContractInfo;
-    CurrentContractInfoLinks links?;
+    CurrentContractInfoLinks links;
 };
 
 public type LinksClearmerchantorderinfolink record {
@@ -5641,7 +5641,8 @@ public type ClickIncludedAndAdditionalClickPrice record {
 
 # Describe a filter on a product's column.
 # The key is the column identifier of your catalog or a custom column.
-public type BeezupCommonAdditionalproductfilters record {};
+public type BeezupCommonAdditionalproductfilters record {
+};
 
 public type ContractsLinks record {
     LinksGetcontractslink self?;
@@ -5749,7 +5750,8 @@ public type CopyOptimisationRequest record {
 };
 
 # The restricted values. The key will be the restricted value identifier (format:guid) and the value will be the restriced value
-public type ChannelColumnRestrictedValues record {};
+public type ChannelColumnRestrictedValues record {
+};
 
 public type ChannelCatalogMarketplacePropertyGroup record {
     # Indicate the code identifier of the group
@@ -5791,7 +5793,6 @@ public type ImportationCustomColumn record {
 };
 
 # Your company accounting emails
-# Your company accounting emails
 public type AccountingEmails BeezupCommonEmail[];
 
 public type CatalogIndexLOVLinks record {
@@ -5823,10 +5824,10 @@ public type ProductErrorCodes ProductErrorCode[];
 
 public type OrderLinks record {
     *OrderHeaderLinks;
-    LinksGetorderhistorylink history?;
-    LinksHarvestorderlink harvest?;
-    LinksSetmerchantorderinfolink setMerchantInfo?;
-    LinksClearmerchantorderinfolink clearMerchantInfo?;
+    LinksGetorderhistorylink history;
+    LinksHarvestorderlink harvest;
+    LinksSetmerchantorderinfolink setMerchantInfo;
+    LinksClearmerchantorderinfolink clearMerchantInfo;
 };
 
 public type LinksDeletestorelink record {

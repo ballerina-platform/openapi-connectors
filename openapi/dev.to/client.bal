@@ -54,6 +54,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Published articles
     #
@@ -68,10 +69,10 @@ public isolated client class Client {
     # + collectionId - Adding this will allow the client to return the list of articles belonging to the requested collection, ordered by ascending publication date. 
     # + return - A list of articles 
     remote isolated function getArticles(int page = 1, int perPage = 30, string? tag = (), string? tags = (), string? tagsExclude = (), string? username = (), string? state = (), int? top = (), int? collectionId = ()) returns ArticleIndex[]|error {
-        string  path = string `/articles`;
+        string resourcePath = string `/articles`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "tag": tag, "tags": tags, "tags_exclude": tagsExclude, "username": username, "state": state, "top": top, "collection_id": collectionId};
-        path = path + check getPathForQueryParam(queryParam);
-        ArticleIndex[] response = check self.clientEp-> get(path, targetType = ArticleIndexArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ArticleIndex[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new article
@@ -79,13 +80,13 @@ public isolated client class Client {
     # + payload - Article to create 
     # + return - A newly created article 
     remote isolated function createArticle(ArticleCreate payload) returns ArticleShow|error {
-        string  path = string `/articles`;
+        string resourcePath = string `/articles`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ArticleShow response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ArticleShow);
+        request.setPayload(jsonBody, "application/json");
+        ArticleShow response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Published articles sorted by publish date
@@ -94,10 +95,10 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of articles sorted by descending publish date 
     remote isolated function getLatestArticles(int page = 1, int perPage = 30) returns ArticleIndex[]|error {
-        string  path = string `/articles/latest`;
+        string resourcePath = string `/articles/latest`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
-        ArticleIndex[] response = check self.clientEp-> get(path, targetType = ArticleIndexArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ArticleIndex[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # User's articles
@@ -106,12 +107,12 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of published articles 
     remote isolated function getUserArticles(int page = 1, int perPage = 30) returns ArticleMe[]|error {
-        string  path = string `/articles/me`;
+        string resourcePath = string `/articles/me`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ArticleMe[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # User's all articles
@@ -120,12 +121,12 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of articles 
     remote isolated function getUserAllArticles(int page = 1, int perPage = 30) returns ArticleMe[]|error {
-        string  path = string `/articles/me/all`;
+        string resourcePath = string `/articles/me/all`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ArticleMe[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # User's published articles
@@ -134,12 +135,12 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of published articles 
     remote isolated function getUserPublishedArticles(int page = 1, int perPage = 30) returns ArticleMe[]|error {
-        string  path = string `/articles/me/published`;
+        string resourcePath = string `/articles/me/published`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ArticleMe[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # User's unpublished articles
@@ -148,12 +149,12 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of articles 
     remote isolated function getUserUnpublishedArticles(int page = 1, int perPage = 30) returns ArticleMe[]|error {
-        string  path = string `/articles/me/unpublished`;
+        string resourcePath = string `/articles/me/unpublished`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ArticleMe[] response = check self.clientEp-> get(path, accHeaders, targetType = ArticleMeArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ArticleMe[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # A published article by ID
@@ -161,8 +162,8 @@ public isolated client class Client {
     # + id - Id of the article 
     # + return - An article 
     remote isolated function getArticleById(int id) returns ArticleShow|error {
-        string  path = string `/articles/${id}`;
-        ArticleShow response = check self.clientEp-> get(path, targetType = ArticleShow);
+        string resourcePath = string `/articles/${id}`;
+        ArticleShow response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an article
@@ -171,13 +172,13 @@ public isolated client class Client {
     # + payload - Article params for the update. 
     # + return - The updated article 
     remote isolated function updateArticle(int id, ArticleUpdate payload) returns ArticleShow|error {
-        string  path = string `/articles/${id}`;
+        string resourcePath = string `/articles/${id}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ArticleShow response = check self.clientEp->put(path, request, headers = accHeaders, targetType=ArticleShow);
+        request.setPayload(jsonBody, "application/json");
+        ArticleShow response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # A published article by path
@@ -186,8 +187,8 @@ public isolated client class Client {
     # + slug - Slug of the article. 
     # + return - An article 
     remote isolated function getArticleByPath(string username, string slug) returns ArticleShow|error {
-        string  path = string `/articles/${username}/${slug}`;
-        ArticleShow response = check self.clientEp-> get(path, targetType = ArticleShow);
+        string resourcePath = string `/articles/${username}/${slug}`;
+        ArticleShow response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Comments
@@ -196,10 +197,10 @@ public isolated client class Client {
     # + pId - Podcast Episode identifier. 
     # + return - A list of threads of comments 
     remote isolated function getCommentsByArticleId(int? aId = (), int? pId = ()) returns Comment[]|error {
-        string  path = string `/comments`;
+        string resourcePath = string `/comments`;
         map<anydata> queryParam = {"a_id": aId, "p_id": pId};
-        path = path + check getPathForQueryParam(queryParam);
-        Comment[] response = check self.clientEp-> get(path, targetType = CommentArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Comment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Comment
@@ -207,8 +208,8 @@ public isolated client class Client {
     # + id - Comment identifier. 
     # + return - A comment and its descendants 
     remote isolated function getCommentById(string id) returns Comment|error {
-        string  path = string `/comments/${id}`;
-        Comment response = check self.clientEp-> get(path, targetType = Comment);
+        string resourcePath = string `/comments/${id}`;
+        Comment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Followers
@@ -218,22 +219,22 @@ public isolated client class Client {
     # + sort - Specifies the sort order for the `created_at` param of the follow relationship. To sort by newest followers first (descending order) specify `?sort=-created_at`. 
     # + return - A list of followers 
     remote isolated function getFollowers(int page = 1, int perPage = 80, string sort = "created_at") returns Follower[]|error {
-        string  path = string `/followers/users`;
+        string resourcePath = string `/followers/users`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Follower[] response = check self.clientEp-> get(path, accHeaders, targetType = FollowerArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Follower[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Followed tags
     #
     # + return - A list of followed tags 
     remote isolated function getFollowedTags() returns FollowedTag[]|error {
-        string  path = string `/follows/tags`;
+        string resourcePath = string `/follows/tags`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FollowedTag[] response = check self.clientEp-> get(path, accHeaders, targetType = FollowedTagArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FollowedTag[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Published listings
@@ -243,10 +244,10 @@ public isolated client class Client {
     # + category - Using this parameter will return listings belonging to the requested category. 
     # + return - A list of listings 
     remote isolated function getListings(int page = 1, int perPage = 30, string? category = ()) returns Listing[]|error {
-        string  path = string `/listings`;
+        string resourcePath = string `/listings`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "category": category};
-        path = path + check getPathForQueryParam(queryParam);
-        Listing[] response = check self.clientEp-> get(path, targetType = ListingArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Listing[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new listing
@@ -254,13 +255,13 @@ public isolated client class Client {
     # + payload - Listing to create 
     # + return - A newly created Listing 
     remote isolated function createListing(ListingCreate payload) returns Listing|error {
-        string  path = string `/listings`;
+        string resourcePath = string `/listings`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Listing response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Listing);
+        request.setPayload(jsonBody, "application/json");
+        Listing response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Published listings by category
@@ -270,10 +271,10 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of listings 
     remote isolated function getListingsByCategory(ListingCategory category, int page = 1, int perPage = 30) returns Listing[]|error {
-        string  path = string `/listings/category/${category}`;
+        string resourcePath = string `/listings/category/${category}`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
-        Listing[] response = check self.clientEp-> get(path, targetType = ListingArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Listing[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # A listing
@@ -281,10 +282,10 @@ public isolated client class Client {
     # + id - Id of the listing 
     # + return - A listing 
     remote isolated function getListingById(int id) returns Listing|error {
-        string  path = string `/listings/${id}`;
+        string resourcePath = string `/listings/${id}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Listing response = check self.clientEp-> get(path, accHeaders, targetType = Listing);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Listing response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update a listing
@@ -293,13 +294,13 @@ public isolated client class Client {
     # + payload - Listing params for the update. 
     # + return - The updated article 
     remote isolated function updateListing(int id, ListingUpdate payload) returns ArticleShow|error {
-        string  path = string `/listings/${id}`;
+        string resourcePath = string `/listings/${id}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ArticleShow response = check self.clientEp->put(path, request, headers = accHeaders, targetType=ArticleShow);
+        request.setPayload(jsonBody, "application/json");
+        ArticleShow response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # An organization
@@ -307,8 +308,8 @@ public isolated client class Client {
     # + username - Username of the organization 
     # + return - An organization 
     remote isolated function getOrganization(string username) returns Organization|error {
-        string  path = string `/organizations/${username}`;
-        Organization response = check self.clientEp-> get(path, targetType = Organization);
+        string resourcePath = string `/organizations/${username}`;
+        Organization response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Organization's Articles
@@ -318,10 +319,10 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of users belonging to the organization 
     remote isolated function getOrgArticles(string username, int page = 1, int perPage = 30) returns ArticleIndex[]|error {
-        string  path = string `/organizations/${username}/articles`;
+        string resourcePath = string `/organizations/${username}/articles`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
-        ArticleIndex[] response = check self.clientEp-> get(path, targetType = ArticleIndexArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ArticleIndex[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Organization's listings
@@ -332,10 +333,10 @@ public isolated client class Client {
     # + category - Using this parameter will return listings belonging to the requested category. 
     # + return - A list of listings belonging to the organization 
     remote isolated function getOrgListings(string username, int page = 1, int perPage = 30, string? category = ()) returns json[]|error {
-        string  path = string `/organizations/${username}/listings`;
+        string resourcePath = string `/organizations/${username}/listings`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "category": category};
-        path = path + check getPathForQueryParam(queryParam);
-        json[] response = check self.clientEp-> get(path, targetType = jsonArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Organization's users
@@ -345,10 +346,10 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of users belonging to the organization 
     remote isolated function getOrgUsers(string username, int page = 1, int perPage = 30) returns User[]|error {
-        string  path = string `/organizations/${username}/users`;
+        string resourcePath = string `/organizations/${username}/users`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
-        User[] response = check self.clientEp-> get(path, targetType = UserArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        User[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Published podcast episodes
@@ -358,10 +359,10 @@ public isolated client class Client {
     # + username - Using this parameter will retrieve episodes belonging to a specific podcast. 
     # + return - A list of podcast episodes 
     remote isolated function getPodcastEpisodes(int page = 1, int perPage = 30, string? username = ()) returns PodcastEpisode[]|error {
-        string  path = string `/podcast_episodes`;
+        string resourcePath = string `/podcast_episodes`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "username": username};
-        path = path + check getPathForQueryParam(queryParam);
-        PodcastEpisode[] response = check self.clientEp-> get(path, targetType = PodcastEpisodeArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PodcastEpisode[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # User or organization profile picture
@@ -369,8 +370,8 @@ public isolated client class Client {
     # + username - Username of the user or organization 
     # + return - The profile image 
     remote isolated function getProfileImage(string username) returns ProfileImage|error {
-        string  path = string `/profile_images/${username}`;
-        ProfileImage response = check self.clientEp-> get(path, targetType = ProfileImage);
+        string resourcePath = string `/profile_images/${username}`;
+        ProfileImage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # User's reading list
@@ -379,12 +380,12 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - The reading list with a overwiew of the article 
     remote isolated function getReadinglist(int page = 1, int perPage = 30) returns ReadingList[]|error {
-        string  path = string `/readinglist`;
+        string resourcePath = string `/readinglist`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ReadingList[] response = check self.clientEp-> get(path, accHeaders, targetType = ReadingListArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ReadingList[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Tags
@@ -393,20 +394,20 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of tags 
     remote isolated function getTags(int page = 1, int perPage = 10) returns Tag[]|error {
-        string  path = string `/tags`;
+        string resourcePath = string `/tags`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
-        Tag[] response = check self.clientEp-> get(path, targetType = TagArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Tag[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # The authenticated user
     #
     # + return - A user 
     remote isolated function getUserMe() returns User|error {
-        string  path = string `/users/me`;
+        string resourcePath = string `/users/me`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        User response = check self.clientEp-> get(path, accHeaders, targetType = User);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        User response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # A user
@@ -415,10 +416,10 @@ public isolated client class Client {
     # + url - Username of the user 
     # + return - A user 
     remote isolated function getUser(string id, string? url = ()) returns User|error {
-        string  path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         map<anydata> queryParam = {"url": url};
-        path = path + check getPathForQueryParam(queryParam);
-        User response = check self.clientEp-> get(path, targetType = User);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Articles with a video
@@ -427,20 +428,20 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of video articles 
     remote isolated function getArticlesWithVideo(int page = 1, int perPage = 24) returns ArticleVideo[]|error {
-        string  path = string `/videos`;
+        string resourcePath = string `/videos`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
-        ArticleVideo[] response = check self.clientEp-> get(path, targetType = ArticleVideoArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ArticleVideo[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Webhooks
     #
     # + return - A list of webhooks 
     remote isolated function getWebhooks() returns WebhookIndex[]|error {
-        string  path = string `/webhooks`;
+        string resourcePath = string `/webhooks`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        WebhookIndex[] response = check self.clientEp-> get(path, accHeaders, targetType = WebhookIndexArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        WebhookIndex[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new webhook
@@ -448,13 +449,13 @@ public isolated client class Client {
     # + payload - Webhook to create 
     # + return - A newly created webhook 
     remote isolated function createWebhook(WebhookCreate payload) returns WebhookShow|error {
-        string  path = string `/webhooks`;
+        string resourcePath = string `/webhooks`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        WebhookShow response = check self.clientEp->post(path, request, headers = accHeaders, targetType=WebhookShow);
+        request.setPayload(jsonBody, "application/json");
+        WebhookShow response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # A webhook endpoint
@@ -462,10 +463,10 @@ public isolated client class Client {
     # + id - Id of the webhook 
     # + return - A webhook endpoint 
     remote isolated function getWebhookById(int id) returns WebhookShow|error {
-        string  path = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${id}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        WebhookShow response = check self.clientEp-> get(path, accHeaders, targetType = WebhookShow);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        WebhookShow response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # A webhook endpoint
@@ -473,10 +474,10 @@ public isolated client class Client {
     # + id - Id of the webhook 
     # + return - A successful deletion 
     remote isolated function deleteWebhook(int id) returns http:Response|error {
-        string  path = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${id}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
 }

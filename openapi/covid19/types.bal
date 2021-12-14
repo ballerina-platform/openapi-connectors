@@ -214,7 +214,7 @@ public type CovidJHUCountries CovidJHUCountry[];
 
 public type VaccineStatesCoverage VaccineStateCoverage[];
 
-public type  VaccineCoverage SimpleVaccineTimeline|FullVaccineTimeline;
+public type VaccineCoverage SimpleVaccineTimeline|FullVaccineTimeline;
 
 public type CovidHistoricalUSCounties string[];
 

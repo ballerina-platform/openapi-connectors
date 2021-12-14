@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Access current weather data for any location. **Note**: All parameters are optional, but you must provide at least one parameter. Calling the API by city ID (using the `id` parameter) will provide the most precise location results.
     #
@@ -54,10 +55,10 @@ public isolated client class Client {
     # + return - Current weather data of the given location 
     @display {label: "Current Weather"}
     remote isolated function getCurretWeatherData(@display {label: "CityName or StateCode or CountryCode"} string? q = (), @display {label: "City Id"} string? id = (), @display {label: "Latitude"} string? lat = (), @display {label: "Longitude"} string? lon = (), @display {label: "Zip Code"} string? zip = (), @display {label: "Units"} string units = "imperial", @display {label: "Language"} string lang = "en", @display {label: "Mode"} string mode = "json") returns CurrentWeatherData|error {
-        string  path = string `/weather`;
+        string resourcePath = string `/weather`;
         map<anydata> queryParam = {"q": q, "id": id, "lat": lat, "lon": lon, "zip": zip, "units": units, "lang": lang, "mode": mode, "appid": self.apiKeyConfig.appid};
-        path = path + check getPathForQueryParam(queryParam);
-        CurrentWeatherData response = check self.clientEp-> get(path, targetType = CurrentWeatherData);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CurrentWeatherData response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Access to current weather, minute forecast for 1 hour, hourly forecast for 48 hours, daily forecast for 7 days and government weather alerts.
@@ -70,10 +71,10 @@ public isolated client class Client {
     # + return - Weather forecast of the given location 
     @display {label: "Weather Forecast"}
     remote isolated function getWeatherForecast(@display {label: "Latitude"} string lat, @display {label: "Longtitude"} string lon, @display {label: "Exclude"} string? exclude = (), @display {label: "Units"} string? units = (), @display {label: "Language"} string? lang = ()) returns WeatherForecast|error {
-        string  path = string `/onecall`;
+        string resourcePath = string `/onecall`;
         map<anydata> queryParam = {"lat": lat, "lon": lon, "exclude": exclude, "units": units, "lang": lang, "appid": self.apiKeyConfig.appid};
-        path = path + check getPathForQueryParam(queryParam);
-        WeatherForecast response = check self.clientEp-> get(path, targetType = WeatherForecast);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WeatherForecast response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Returns a list of news sources or blogs
     #
@@ -49,10 +50,10 @@ public isolated client class Client {
     # + return - Record containing list of news sources 
     @display {label: "List News Sources"}
     remote isolated function listSources(@display {label: "Language"} string? language = (), @display {label: "Country"} string? country = (), @display {label: "Category"} string? category = ()) returns WSNewsSourcesResponse|error {
-        string  path = string `/sources`;
+        string resourcePath = string `/sources`;
         map<anydata> queryParam = {"language": language, "country": country, "category": category, "apiKey": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        WSNewsSourcesResponse response = check self.clientEp-> get(path, targetType = WSNewsSourcesResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WSNewsSourcesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of top headlines
@@ -66,10 +67,10 @@ public isolated client class Client {
     # + return - Record containing list of top headlines 
     @display {label: "List Top Headlines"}
     remote isolated function listTopHeadlines(@display {label: "Keyword"} string? q = (), @display {label: "Sources"} string? sources = (), @display {label: "Country"} string? country = (), @display {label: "Category"} string? category = (), @display {label: "Page Number"} int? page = (), @display {label: "Page Size"} int pageSize = 20) returns WSNewsTopHeadlineResponse|error {
-        string  path = string `/top-headlines`;
+        string resourcePath = string `/top-headlines`;
         map<anydata> queryParam = {"q": q, "sources": sources, "country": country, "category": category, "page": page, "pageSize": pageSize, "apiKey": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        WSNewsTopHeadlineResponse response = check self.clientEp-> get(path, targetType = WSNewsTopHeadlineResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WSNewsTopHeadlineResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns list of articles
@@ -88,10 +89,10 @@ public isolated client class Client {
     # + return - Record containing list of articles 
     @display {label: "List Articles"}
     remote isolated function listArticles(@display {label: "Page Number"} int page, @display {label: "Page Size"} int pageSize, @display {label: "Keyword"} string? q = (), @display {label: "Title Keyword"} string? qInTitle = (), @display {label: "Sources"} string? sources = (), @display {label: "Domains To Include"} string? domains = (), @display {label: "Domains To Exclude"} string? excludeDomains = (), @display {label: "From"} string? 'from = (), @display {label: "To"} string? to = (), @display {label: "Language"} string? language = (), @display {label: "Sort By"} string? sortBy = ()) returns WSNewsTopHeadlineResponse|error {
-        string  path = string `/everything`;
+        string resourcePath = string `/everything`;
         map<anydata> queryParam = {"q": q, "qInTitle": qInTitle, "sources": sources, "domains": domains, "excludeDomains": excludeDomains, "from": 'from, "to": to, "language": language, "sortBy": sortBy, "page": page, "pageSize": pageSize, "apiKey": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        WSNewsTopHeadlineResponse response = check self.clientEp-> get(path, targetType = WSNewsTopHeadlineResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WSNewsTopHeadlineResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

@@ -48,9 +48,16 @@ public type RetrievalreminderHook record {
 };
 
 public type TicketupdatedData record {
-    record {*Ticket; *TicketCreatedBlock; *TicketSubscriptionData; # Ticket modified date
-        string? modified?; UserStructure? modified_by?; # Ticket last comment date
-        string? last_comment?;}[]? tickets?;
+    record {
+        *Ticket;
+        *TicketCreatedBlock;
+        *TicketSubscriptionData;
+        # Ticket modified date
+        string? modified?;
+        UserStructure? modified_by?;
+        # Ticket last comment date
+        string? last_comment?;
+    }[]? tickets?;
 };
 
 public type SignaturegeneratedHook record {
@@ -96,11 +103,19 @@ public type CommentSubscriptionData record {
 };
 
 public type LeadrestoredeventinfoData record {
-    record {*ShortLeadSubscription; # Date and time of creation (ISO 8601)
-        string? restoredAt?; UserStructure? restoredBy?;} lead?;
+    record {
+        *ShortLeadSubscription;
+        # Date and time of creation (ISO 8601)
+        string? restoredAt?;
+        UserStructure? restoredBy?;
+    } lead?;
     # 'leads' property is passed when 'Multiple at once' feature is enabled
-    record {*ShortLeadSubscription; # Date and time of creation (ISO 8601)
-        string? restoredAt?; UserStructure? restoredBy?;}[]? leads?;
+    record {
+        *ShortLeadSubscription;
+        # Date and time of creation (ISO 8601)
+        string? restoredAt?;
+        UserStructure? restoredBy?;
+    }[]? leads?;
 };
 
 public type ChargebackReplyResponse record {
@@ -164,11 +179,19 @@ public type LeaddeletedeventinfoHook record {
 };
 
 public type LeadupdatedeventinfoData record {
-    record {*FullLeadSubscription; # Date and time of creation (ISO 8601)
-        string? updated_at?; UserStructure? updated_by?;} lead?;
+    record {
+        *FullLeadSubscription;
+        # Date and time of creation (ISO 8601)
+        string? updated_at?;
+        UserStructure? updated_by?;
+    } lead?;
     # 'leads' property is passed when 'Multiple at once' feature is enabled
-    record {*FullLeadSubscription; # Date and time of creation (ISO 8601)
-        string? updated_at?; UserStructure? updated_by?;}[]? leads?;
+    record {
+        *FullLeadSubscription;
+        # Date and time of creation (ISO 8601)
+        string? updated_at?;
+        UserStructure? updated_by?;
+    }[]? leads?;
 };
 
 public type SubscriptionCommentEdited record {
@@ -274,11 +297,21 @@ public type ShortLeadSubscription record {
 };
 
 public type TicketresolvedData record {
-    record {# Ticket created date
-        string? created?; UserStructure? created_by?; # Ticket modified date
-        string? modified?; UserStructure? modified_by?; # Ticket last comment date
-        string? last_comment?; # Ticket resolved date
-        string? resolved?; UserStructure? resolved_by?; *Ticket; *TicketSubscriptionData;}[]? tickets?;
+    record {
+        # Ticket created date
+        string? created?;
+        UserStructure? created_by?;
+        # Ticket modified date
+        string? modified?;
+        UserStructure? modified_by?;
+        # Ticket last comment date
+        string? last_comment?;
+        # Ticket resolved date
+        string? resolved?;
+        UserStructure? resolved_by?;
+        *Ticket;
+        *TicketSubscriptionData;
+    }[]? tickets?;
 };
 
 public type ApiUpdated record {
@@ -330,7 +363,6 @@ public type SignatureSubscription record {
     SignaturesubscriptionSigners[]? signers?;
 };
 
-# Assigned users
 # Assigned users
 public type UserListStructure UserStructure[]?;
 
@@ -467,12 +499,21 @@ public type DisputedetailsresponseFiles record {
 };
 
 public type TicketcommentedData record {
-    record {# Comment id
-        int? id?; # Ticket id
-        int? ticketId?; # Comment text
-        string? comment?; # Comment created date
-        string? created?; UserStructure? createdBy?; # Comment modified date
-        string? modified?; UserStructure? modified_by?; *CommentSubscriptionData;}[]? comments?;
+    record {
+        # Comment id
+        int? id?;
+        # Ticket id
+        int? ticketId?;
+        # Comment text
+        string? comment?;
+        # Comment created date
+        string? created?;
+        UserStructure? createdBy?;
+        # Comment modified date
+        string? modified?;
+        UserStructure? modified_by?;
+        *CommentSubscriptionData;
+    }[]? comments?;
 };
 
 public type UserStructure record {
@@ -514,19 +555,45 @@ public type TurboappdeclinedHook record {
 };
 
 public type LeadstatusupdatedeventinfoData record {
-    record {*FullLeadSubscription; record  { # Status ID
-            int? id?; # Status Name
-            string? name?;}  previousStatus?; record  { # Status ID
-            int? id?; # Status Name
-            string? name?;}  newStatus?; # Date and time of creation (ISO 8601)
-        string? statusUpdatedAt?; UserStructure? statusUpdatedBy?; UserStructure? salesRep?;} lead?;
+    record {
+        *FullLeadSubscription;
+        record {
+            # Status ID
+            int? id?;
+            # Status Name
+            string? name?;
+        } previousStatus?;
+        record {
+            # Status ID
+            int? id?;
+            # Status Name
+            string? name?;
+        } newStatus?;
+        # Date and time of creation (ISO 8601)
+        string? statusUpdatedAt?;
+        UserStructure? statusUpdatedBy?;
+        UserStructure? salesRep?;
+    } lead?;
     # 'leads' property is passed when 'Multiple at once' feature is enabled
-    record {*FullLeadSubscription; record  { # Status ID
-            int? id?; # Status Name
-            string? name?;}  previousStatus?; record  { # Status ID
-            int? id?; # Status Name
-            string? name?;}  newStatus?; # Date and time of creation (ISO 8601)
-        string? statusUpdatedAt?; UserStructure? statusUpdatedBy?; UserStructure? salesRep?;}[]? leads?;
+    record {
+        *FullLeadSubscription;
+        record {
+            # Status ID
+            int? id?;
+            # Status Name
+            string? name?;
+        } previousStatus?;
+        record {
+            # Status ID
+            int? id?;
+            # Status Name
+            string? name?;
+        } newStatus?;
+        # Date and time of creation (ISO 8601)
+        string? statusUpdatedAt?;
+        UserStructure? statusUpdatedBy?;
+        UserStructure? salesRep?;
+    }[]? leads?;
 };
 
 public type LeadRestoredEventInfo record {
@@ -673,8 +740,11 @@ public type TicketCreatedBlock record {
 };
 
 public type ChargebackreminderData record {
-    record {*ChargebackReplyResponse; # Case due in days
-        int? due_in?;}[]? chargebacks?;
+    record {
+        *ChargebackReplyResponse;
+        # Case due in days
+        int? due_in?;
+    }[]? chargebacks?;
 };
 
 public type TicketPriority record {
@@ -1086,8 +1156,11 @@ public type TicketCreated record {
 };
 
 public type RetrievalreminderData record {
-    record {*RetrievalsReplyResponse; # Case due in days
-        int? due_in?;}[]? retrievals?;
+    record {
+        *RetrievalsReplyResponse;
+        # Case due in days
+        int? due_in?;
+    }[]? retrievals?;
 };
 
 public type TurboAppApproved record {
@@ -1096,17 +1169,37 @@ public type TurboAppApproved record {
 };
 
 public type LeadnoteaddedeventinfoData record {
-    record {*ShortLeadSubscription; record  { # Note ID
-            int? id?; # Note text
-            string? name?; # Whether The Note Is Pinned
-            boolean? pinned?; string[]? images?; # Date and time of creation (ISO 8601)
-            string? createdAt?; UserStructure? createdBy?;}  note?;} lead?;
+    record {
+        *ShortLeadSubscription;
+        record {
+            # Note ID
+            int? id?;
+            # Note text
+            string? name?;
+            # Whether The Note Is Pinned
+            boolean? pinned?;
+            string[]? images?;
+            # Date and time of creation (ISO 8601)
+            string? createdAt?;
+            UserStructure? createdBy?;
+        } note?;
+    } lead?;
     # 'leads' property is passed when 'Multiple at once' feature is enabled
-    record {*ShortLeadSubscription; record  { # Note ID
-            int? id?; # Note text
-            string? name?; # Whether The Note Is Pinned
-            boolean? pinned?; string[]? images?; # Date and time of creation (ISO 8601)
-            string? createdAt?; UserStructure? createdBy?;}  note?;}[]? leads?;
+    record {
+        *ShortLeadSubscription;
+        record {
+            # Note ID
+            int? id?;
+            # Note text
+            string? name?;
+            # Whether The Note Is Pinned
+            boolean? pinned?;
+            string[]? images?;
+            # Date and time of creation (ISO 8601)
+            string? createdAt?;
+            UserStructure? createdBy?;
+        } note?;
+    }[]? leads?;
 };
 
 public type LeaddeletedeventinfoData record {
@@ -1166,19 +1259,39 @@ public type ChargebackupdatedHook record {
 };
 
 public type LeaddocumentuploadedeventinfoData record {
-    record {*ShortLeadSubscription; record  { # Document ID
-            int? id?; # Document label
-            string? label?; # Filename
-            string? filename?; # File url
-            string? file?; # Date and time of uploading (ISO 8601)
-            string? uploadedAt?; UserStructure? uploadedBy?;}  document?;} lead?;
+    record {
+        *ShortLeadSubscription;
+        record {
+            # Document ID
+            int? id?;
+            # Document label
+            string? label?;
+            # Filename
+            string? filename?;
+            # File url
+            string? file?;
+            # Date and time of uploading (ISO 8601)
+            string? uploadedAt?;
+            UserStructure? uploadedBy?;
+        } document?;
+    } lead?;
     # 'leads' property is passed when 'Multiple at once' feature is enabled
-    record {*ShortLeadSubscription; record  { # Document ID
-            int? id?; # Document label
-            string? label?; # Filename
-            string? filename?; # File url
-            string? file?; # Date and time of uploading (ISO 8601)
-            string? uploaded_at?; UserStructure? uploaded_by?;}  document?;}[]? leads?;
+    record {
+        *ShortLeadSubscription;
+        record {
+            # Document ID
+            int? id?;
+            # Document label
+            string? label?;
+            # Filename
+            string? filename?;
+            # File url
+            string? file?;
+            # Date and time of uploading (ISO 8601)
+            string? uploaded_at?;
+            UserStructure? uploaded_by?;
+        } document?;
+    }[]? leads?;
 };
 
 public type TurboappdeclinedDataActivationStatus record {

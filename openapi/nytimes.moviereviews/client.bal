@@ -41,16 +41,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get movie reviews that are critics' picks. You can either specify the reviewer name or use "all", "full-time", or "part-time".
     #
     # + resourceType - all | full-time | part-time | [reviewer-name] Specify all to get all Times reviewers, or specify full-time or part-time to get that subset. Specify a reviewer's name to get details about a particular reviewer. 
     # + return - An array of Movie Critics 
     remote isolated function criticsPicks(string resourceType) returns InlineResponse200|error {
-        string  path = string `/critics/${resourceType}.json`;
+        string resourcePath = string `/critics/${resourceType}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search for movie reviews. Supports filtering by Critics' Pick.
@@ -64,10 +65,10 @@ public isolated client class Client {
     # + 'order - Sets the sort order of the results. Results ordered by-title are in ascending alphabetical order. Results ordered by one of the date parameters are in reverse chronological order. If you do not specify a sort order, the results will be ordered by publication-date. 
     # + return - An array of Movies 
     remote isolated function searchMovieReviews(string? query = (), string? criticsPick = (), string? reviewer = (), string? publicationDate = (), string? openingDate = (), int offset = 20, string? 'order = ()) returns InlineResponse2001|error {
-        string  path = string `/reviews/search.json`;
+        string resourcePath = string `/reviews/search.json`;
         map<anydata> queryParam = {"query": query, "critics-pick": criticsPick, "reviewer": reviewer, "publication-date": publicationDate, "opening-date": openingDate, "offset": offset, "order": 'order, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get movie reviews. Can filter to only return Critics' Picks. Supports ordering results by-publication-date or by-opening-date. Use offset to paginate thru results, 20 at a time.
@@ -77,10 +78,10 @@ public isolated client class Client {
     # + 'order - Sets the sort order of the results. Results ordered by-title are in ascending alphabetical order. Results ordered by one of the date parameters are in reverse chronological order. If you do not specify a sort order, the results will be ordered by publication-date. 
     # + return - An array of Movies 
     remote isolated function getMovieReviews(string resourceType, int offset = 20, string 'order = "by-publication-date") returns InlineResponse2001|error {
-        string  path = string `/reviews/${resourceType}.json`;
+        string resourcePath = string `/reviews/${resourceType}.json`;
         map<anydata> queryParam = {"offset": offset, "order": 'order, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

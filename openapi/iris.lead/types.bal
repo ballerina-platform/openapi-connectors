@@ -39,6 +39,21 @@ public type CategoryWithStatuses record {
     BriefStatusInfo[]? statuses?;
 };
 
+public type LeadidTasksBody record {
+    # Priority
+    string? priority;
+    # Date in ISO 8601 format (Y-m-d\TH:i:sP)
+    string? date;
+    # End date in ISO 8601 format (Y-m-d\TH:i:sP)
+    string? date_end;
+    # Task description
+    string? text;
+    # Task set by user (user Id)
+    string? set_by;
+    # Task set for user (user Id)
+    string? set_for;
+};
+
 public type CampaignActivity record {
     # Activity Id
     int? id?;
@@ -80,6 +95,11 @@ public type InlineResponse20025Data record {
     string? modified?;
 };
 
+public type LeadidUsersBody record {
+    # User Id
+    int? user;
+};
+
 public type InlineResponse20035Tab record {
     int? id?;
     string? name?;
@@ -110,6 +130,12 @@ public type LeadfieldOptionsCopy record {
     record {} to?;
 };
 
+public type LeadsFieldsBody record {
+    *LeadField;
+    # Flag for overriding existing special field
+    boolean? override?;
+};
+
 public type InlineResponse20018Fields record {
     # Field Id
     string? id?;
@@ -118,6 +144,8 @@ public type InlineResponse20018Fields record {
     # Field value
     string? value?;
 };
+
+public type SmsTemplateidBody record {int? fieldId?;}|record {string? phone?;}?;
 
 public type Apiv1leadsFields record {
     # Field Id
@@ -133,6 +161,19 @@ public type LeadFieldOrder record {
     int? value;
     # Type of changing order position
     string? 'type?;
+};
+
+public type LeadidAppointmentsBody record {
+    # Date in format ISO 8601 (Y-m-d\TH:i:sP)
+    string? date;
+    # End date in format ISO 8601 (Y-m-d\TH:i:sP)
+    string? date_end;
+    # Task description
+    string? text;
+    # Task set by user (User Id)
+    string? set_by;
+    # Task set for user (User Id)
+    string? set_for;
 };
 
 public type LeadAppointment record {
@@ -227,6 +268,19 @@ public type InlineResponse20018Details record {
     InlineResponse20018Fields[]? fields?;
 };
 
+public type LeadsLeadidBody record {
+    # Campaign Id
+    int? campaign?;
+    # Status Id
+    int? status?;
+    # Source Id
+    int? 'source?;
+    # Group Id
+    int? 'group?;
+    # Lead fields
+    Apiv1leadsFields[]? fields?;
+};
+
 public type StatusActivity record {
     # Activity Id
     int? id?;
@@ -310,6 +364,21 @@ public type InlineResponse20028 record {
     string? message?;
 };
 
+public type V1LeadsBody record {
+    # Campaign Id
+    int? campaign?;
+    # Status Id
+    int? status;
+    # Source Id
+    int? 'source?;
+    # Group Id
+    int? 'group?;
+    # Ids of users to assign to a new lead
+    int[]? users?;
+    # Lead fields
+    Apiv1leadsFields[]? fields;
+};
+
 public type InlineResponse20030 record {
     InlineResponse20030Data[]? data?;
     Links? links?;
@@ -390,6 +459,20 @@ public type InlineResponse20042 record {
     string? receiver?;
 };
 
+public type EmailsTemplateidBody record {
+    # Lead Field Id with email address
+    int? fieldId?;
+    # Object with template placeholders
+    record {} placeholders?;
+}|record {
+    # Recipient Email
+    string? email?;
+    # Recipient Name
+    string? name?;
+    # Object with template placeholders
+    record {} placeholders?;
+}?;
+
 public type InlineResponse20045 record {
     DeletionActivity[]? data?;
     Links? links?;
@@ -439,11 +522,6 @@ public type InlineResponse20048 record {
     Meta? meta?;
 };
 
-public type Body8 record {
-    # User Id
-    int? user;
-};
-
 # ZIP Code autofill properties
 public type LeadfieldOptionsZipcodeAutocomplete record {
     # City fields
@@ -452,19 +530,6 @@ public type LeadfieldOptionsZipcodeAutocomplete record {
     record {} state?;
     # Zipcode fields
     record {} zipcode?;
-};
-
-public type Body6 record {
-    # Date in format ISO 8601 (Y-m-d\TH:i:sP)
-    string? date;
-    # End date in format ISO 8601 (Y-m-d\TH:i:sP)
-    string? date_end;
-    # Task description
-    string? text;
-    # Task set by user (User Id)
-    string? set_by;
-    # Task set for user (User Id)
-    string? set_for;
 };
 
 public type BriefLeadInfo record {
@@ -485,60 +550,11 @@ public type BriefLeadInfo record {
     string? modified?;
 };
 
-public type Body7 record {
-    # Priority
-    string? priority;
-    # Date in ISO 8601 format (Y-m-d\TH:i:sP)
-    string? date;
-    # End date in ISO 8601 format (Y-m-d\TH:i:sP)
-    string? date_end;
-    # Task description
-    string? text;
-    # Task set by user (user Id)
-    string? set_by;
-    # Task set for user (user Id)
-    string? set_for;
-};
-
-public type Body4 record {
-    *LeadField;
-    # Flag for overriding existing special field
-    boolean? override?;
-};
-
-public type Body5 record {
-    # Tab Id
-    int? tab;
-    # Note text
-    string? note;
-    # Pin to top?
-    string? sticky;
-};
-
-public type Body2 record {
-    # Campaign Id
-    int? campaign?;
-    # Status Id
-    int? status?;
-    # Source Id
-    int? 'source?;
-    # Group Id
-    int? 'group?;
-    # Lead fields
-    Apiv1leadsFields[]? fields?;
-};
-
 public type BriefStatusInfo record {
     # Status Id
     int? id?;
     # Status name
     string? name?;
-};
-
-public type Body3 record {
-    *LeadField;
-    # Flag for overriding existing special field
-    boolean? override?;
 };
 
 public type BriefUserInfo record {
@@ -578,21 +594,6 @@ public type BriefUserInfoWithClass record {
     string? 'class?;
 };
 
-public type Body1 record {
-    # Campaign Id
-    int? campaign?;
-    # Status Id
-    int? status;
-    # Source Id
-    int? 'source?;
-    # Group Id
-    int? 'group?;
-    # Ids of users to assign to a new lead
-    int[]? users?;
-    # Lead fields
-    Apiv1leadsFields[]? fields;
-};
-
 public type InlineResponse20055 record {
     # A list of lead statuses
     CategoryWithStatuses[]? data?;
@@ -612,10 +613,6 @@ public type LeadfieldOptionsDropdown record {
     # Value
     string? value?;
 };
-
-public type  Body12 record {}|record {};
-
-public type  Body11 record {}|record {};
 
 public type InlineResponse20024Data record {
     # Template Id
@@ -676,11 +673,26 @@ public type InlineResponse20024Values record {
     string? value?;
 };
 
+public type LeadidNotesBody record {
+    # Tab Id
+    int? tab;
+    # Note text
+    string? note;
+    # Pin to top?
+    string? sticky;
+};
+
 public type BriefCategoryInfo record {
     # Status category Id
     int? id?;
     # Status category name
     string? name?;
+};
+
+public type FieldsFieldidBody record {
+    *LeadField;
+    # Flag for overriding existing special field
+    boolean? override?;
 };
 
 public type Links record {

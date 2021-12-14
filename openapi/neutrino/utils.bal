@@ -16,12 +16,18 @@
 
 import ballerina/url;
 
+type SimpleBasicType string|boolean|int|float|decimal;
+
 # Represents encoding mechanism details.
 type Encoding record {
     # Defines how multiple values are delimited
     string style = FORM;
     # Specifies whether arrays and objects should generate as separate fields
     boolean explode = true;
+    # Specifies the custom content type
+    string contentType?;
+    # Specifies the custom headers
+    map<any> headers?;
 };
 
 enum EncodingStyle {
@@ -30,8 +36,6 @@ enum EncodingStyle {
     SPACEDELIMITED,
     PIPEDELIMITED
 }
-
-type SimpleBasicType string|boolean|int|float|decimal;
 
 final Encoding & readonly defaultEncoding = {};
 
@@ -213,6 +217,14 @@ isolated function getMapForHeaders(map<any> headerParam) returns map<string|stri
     foreach var [key, value] in headerParam.entries() {
         if value is string || value is string[] {
             headerMap[key] = value;
+        } else if value is int[] {
+            string[] stringArray = [];
+            foreach int intValue in value {
+                stringArray.push(intValue.toString());
+            }
+            headerMap[key] = stringArray;
+        } else if value is SimpleBasicType {
+            headerMap[key] = value.toString();
         }
     }
     return headerMap;

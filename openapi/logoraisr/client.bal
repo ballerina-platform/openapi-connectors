@@ -40,36 +40,37 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets preview image of uploaded file
     #
     # + fileId - Id of the file for which the preview_img_url is generated. 
     # + return - Returns preview response or an error 
     remote isolated function readPreviews(string fileId) returns PreviewResponse|error {
-        string  path = string `/previews/${fileId}/`;
+        string resourcePath = string `/previews/${fileId}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PreviewResponse response = check self.clientEp-> get(path, accHeaders, targetType = PreviewResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PreviewResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets process list.
     #
     # + return - Returns process detail or an error 
     remote isolated function listProcesses() returns Process|error {
-        string  path = string `/processes/`;
+        string resourcePath = string `/processes/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Process response = check self.clientEp-> get(path, accHeaders, targetType = Process);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Process response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets user project list.
     #
     # + return - Returns user project list or an error 
     remote isolated function listProjects() returns Project|error {
-        string  path = string `/projects/`;
+        string resourcePath = string `/projects/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Project response = check self.clientEp-> get(path, accHeaders, targetType = Project);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Project response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a new project.
@@ -77,13 +78,13 @@ public isolated client class Client {
     # + payload - Project details 
     # + return - Returns project response or an error 
     remote isolated function createProject(ProjectRequest payload) returns ProjectResponse|error {
-        string  path = string `/projects/`;
+        string resourcePath = string `/projects/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProjectResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ProjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        ProjectResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Gets project details.
@@ -91,20 +92,20 @@ public isolated client class Client {
     # + projectNumber - Number of the project. 
     # + return - Returns project details or an error 
     remote isolated function readProjects(string projectNumber) returns Project|error {
-        string  path = string `/projects/${projectNumber}/`;
+        string resourcePath = string `/projects/${projectNumber}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Project response = check self.clientEp-> get(path, accHeaders, targetType = Project);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Project response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets user report list.
     #
     # + return - Returns user report list or an error 
     remote isolated function getReports() returns Report|error {
-        string  path = string `/reports/`;
+        string resourcePath = string `/reports/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Report response = check self.clientEp-> get(path, accHeaders, targetType = Report);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Report response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a new report.
@@ -112,13 +113,13 @@ public isolated client class Client {
     # + payload - Report request details 
     # + return - Returns report response or an error 
     remote isolated function createReport(ReportRequest payload) returns ReportResponse|error {
-        string  path = string `/reports/`;
+        string resourcePath = string `/reports/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReportResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ReportResponse);
+        request.setPayload(jsonBody, "application/json");
+        ReportResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Gets report details.
@@ -126,10 +127,10 @@ public isolated client class Client {
     # + reportNumber - Report number 
     # + return - Returns report detail or an error 
     remote isolated function readReports(string reportNumber) returns Report|error {
-        string  path = string `/reports/${reportNumber}/`;
+        string resourcePath = string `/reports/${reportNumber}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Report response = check self.clientEp-> get(path, accHeaders, targetType = Report);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Report response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets the result from image processing
@@ -137,10 +138,10 @@ public isolated client class Client {
     # + resultFileId - Id of the result_file for which the result_file_url is generated. 
     # + return - Returns result from image processing or an error 
     remote isolated function readResults(string resultFileId) returns ResultResponse|error {
-        string  path = string `/results/${resultFileId}/`;
+        string resourcePath = string `/results/${resultFileId}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultResponse response = check self.clientEp-> get(path, accHeaders, targetType = ResultResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

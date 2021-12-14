@@ -283,16 +283,22 @@ public type EventsBody record {
 
 public type InlineResponse2003 record {
     # Data
-    record {*Event; # Attributes
-        record  { string role?; int created_at?; int updated_at?; string timezone?; string first_name?; string last_name?; string email?; string avatar_link?; record  { string event_id?; string created_at?; string updated_at?; record  { string id?; string 'type?; int 'order?; string required?;} [] fields?;} [] registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;}  attributes?;}[] data;
+    record {
+        *Event;
+        # Attributes
+        record {string role?; int created_at?; int updated_at?; string timezone?; string first_name?; string last_name?; string email?; string avatar_link?; record {string event_id?; string created_at?; string updated_at?; record {string id?; string 'type?; int 'order?; string required?;}[] fields?;}[] registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;} attributes?;
+    }[] data;
     # Metadata
     Meta meta?;
 };
 
 public type InlineResponse2002 record {
     # Data
-    record {*Event; # Attributes
-        record  { string event_type_id?; string status?; string timezone?; string room_link?; int attendees_count?; int duration?; int estimated_started_at?; int started_at?; int ended_at?; int canceled_at?; int created_at?; int updated_at?; int registrants_count?;}  attributes?;}[] data;
+    record {
+        *Event;
+        # Attributes
+        record {string event_type_id?; string status?; string timezone?; string room_link?; int attendees_count?; int duration?; int estimated_started_at?; int started_at?; int ended_at?; int canceled_at?; int created_at?; int updated_at?; int registrants_count?;} attributes?;
+    }[] data;
     # Metadata
     Meta meta?;
 };

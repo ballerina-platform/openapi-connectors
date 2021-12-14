@@ -14,8 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type DisputeFileArr DisputeFile[];
-
 public type Meta record {
     # The current page number of a data set
     int? current_page?;
@@ -138,6 +136,27 @@ public type InlineResponse2007 record {
     Retrieval[]? data?;
     Links? links?;
     Meta? meta?;
+};
+
+public type MerchantsMerchantnumberBody record {
+    # Merchant name
+    string? name?;
+    # Merchant open date (YYYY-MM-DD)
+    string? opened?;
+    # Merchant closed date (YYYY-MM-DD)
+    string? closed?;
+    # Processor name
+    string? processor?;
+    # Data source name
+    string? datasource?;
+    # Group name
+    string? 'group?;
+    # Is VIM?
+    string? vim?;
+    # Merchant status
+    string? status?;
+    # Merchant active flag
+    string? active?;
 };
 
 public type DisputedetailsresponseMessages record {
@@ -434,8 +453,11 @@ public type InlineResponse2003TotalsDeposits record {
 };
 
 public type InlineResponse200 record {
-    record {*BriefMerchantInfo; # List of Lead IDs
-        int[]? leads?;}[]? data?;
+    record {
+        *BriefMerchantInfo;
+        # List of Lead IDs
+        int[]? leads?;
+    }[]? data?;
     Links? links?;
     Meta? meta?;
 };
@@ -459,27 +481,6 @@ public type MonetarybatchTransactions record {
     string? invoice_number?;
     # Is a transaction rejected?
     boolean? void_reject_chargeback?;
-};
-
-public type Body record {
-    # Merchant name
-    string? name?;
-    # Merchant open date (YYYY-MM-DD)
-    string? opened?;
-    # Merchant closed date (YYYY-MM-DD)
-    string? closed?;
-    # Processor name
-    string? processor?;
-    # Data source name
-    string? datasource?;
-    # Group name
-    string? 'group?;
-    # Is VIM?
-    string? vim?;
-    # Merchant status
-    string? status?;
-    # Merchant active flag
-    string? active?;
 };
 
 public type RetrievalsreplyresponseRetrieval record {

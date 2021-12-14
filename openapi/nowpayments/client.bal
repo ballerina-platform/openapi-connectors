@@ -41,41 +41,42 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # 3. Get estimated price
     #
     # + return - 3. Get estimated price 
     remote isolated function getEstimatedPrice(string? amount = (), string? currencyFrom = (), string? currencyTo = ()) returns ApproximatePrice|error {
-        string  path = string `/v1/estimate`;
+        string resourcePath = string `/v1/estimate`;
         map<anydata> queryParam = {"amount": amount, "currency_from": currencyFrom, "currency_to": currencyTo};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApproximatePrice response = check self.clientEp-> get(path, accHeaders, targetType = ApproximatePrice);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApproximatePrice response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # 6. Get the minimum payment amount
     #
     # + return - 6. Get the minimum payment amount 
     remote isolated function getTheMinimumPaymentAmount(string? currencyFrom = (), string? currencyTo = ()) returns MinimumPayment|error {
-        string  path = string `/v1/min-amount`;
+        string resourcePath = string `/v1/min-amount`;
         map<anydata> queryParam = {"currency_from": currencyFrom, "currency_to": currencyTo};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MinimumPayment response = check self.clientEp-> get(path, accHeaders, targetType = MinimumPayment);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MinimumPayment response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # 7. Get list of payments
     #
     # + return - 7.Get list of payments 
     remote isolated function getListOfPayments(string? 'limit = (), string? page = (), string? sortBy = (), string? orderBy = (), string? dateFrom = (), string? dateTo = ()) returns PaymentListResponse|error {
-        string  path = string `/v1/payment/`;
+        string resourcePath = string `/v1/payment/`;
         map<anydata> queryParam = {"limit": 'limit, "page": page, "sortBy": sortBy, "orderBy": orderBy, "dateFrom": dateFrom, "dateTo": dateTo};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PaymentListResponse response = check self.clientEp-> get(path, accHeaders, targetType = PaymentListResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PaymentListResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

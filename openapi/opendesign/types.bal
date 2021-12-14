@@ -126,6 +126,13 @@ public type InlineResponse429 record {
     RateLimitReachedError _error;
 };
 
+public type DesignsUploadBody record {
+    # A multipart file upload field.
+    MultipartFilePart file;
+    # The design file format. (This is not needed when the format can be inferred from the file extension.)
+    DesignImportFormatEnum format?;
+};
+
 public type InlineResponse4041 record {
     DesignNotFoundError|DesignExportNotFoundError _error;
 };
@@ -325,13 +332,6 @@ public type InlineResponse2011 record {
     DesignExport[] exports;
 };
 
-public type Body record {
-    # A multipart file upload field.
-    MultipartFilePart file;
-    # The design file format. (This is not needed when the format can be inferred from the file extension.)
-    DesignImportFormatEnum format?;
-};
-
 public type DesignSummary record {
     # The list of pages within the paged (`has_pages=true`) design file.
     Page[] pages?;
@@ -353,6 +353,15 @@ public type DesignSummary record {
     boolean has_pages;
 };
 
+public type DesignsLinkBody record {
+    # A publicly accessible URL of the design file to import.
+    string url;
+    # The design file format. (This is not needed when the format can be inferred from the file extension.)
+    DesignImportFormatEnum format?;
+    # Name of the design. (When no name is provided, the server infers the name from the URL.)
+    string? design_name?;
+};
+
 # The provided file format is not valid or supported.
 public type DesignNotProcessedError record {
     # Error code
@@ -361,24 +370,6 @@ public type DesignNotProcessedError record {
     string message;
     # The URL of a documentation web page with more info about the error.
     ErrorDocsUrl docs_url?;
-};
-
-public type Body2 record {
-    # Name of the design.
-    string? design_name?;
-    # An access token from Figma.
-    string figma_token;
-    # ID of the file in Figma.
-    string figma_filekey;
-    # Frame IDs to sync. When not specified, all frames are included.
-    FigmaFrameId[] figma_ids?;
-    # Design file exports to intiate automatically with the import. (Only Sketch is supported currently as the target format.)
-    DesignsfigmalinkExports[] exports?;
-};
-
-public type Body3 record {
-    # The target design file format of a export. (Only Sketch is supported currently.)
-    DesignExportTargetFormatEnum format;
 };
 
 # The rate limit for the operation has been reached.
@@ -402,6 +393,24 @@ public type InvalidFormatError record {
     string message;
     # The URL of a documentation web page with more info about the error.
     ErrorDocsUrl docs_url?;
+};
+
+public type DesignsFigmalinkBody record {
+    # Name of the design.
+    string? design_name?;
+    # An access token from Figma.
+    string figma_token;
+    # ID of the file in Figma.
+    string figma_filekey;
+    # Frame IDs to sync. When not specified, all frames are included.
+    FigmaFrameId[] figma_ids?;
+    # Design file exports to intiate automatically with the import. (Only Sketch is supported currently as the target format.)
+    DesignsfigmalinkExports[] exports?;
+};
+
+public type DesignIdExportsBody record {
+    # The target design file format of a export. (Only Sketch is supported currently.)
+    DesignExportTargetFormatEnum format;
 };
 
 public type InlineResponse406 record {
@@ -447,19 +456,10 @@ public type InlineResponse2001 record {
     Design[] designs;
 };
 
-public type Body1 record {
-    # A publicly accessible URL of the design file to import.
-    string url;
-    # The design file format. (This is not needed when the format can be inferred from the file extension.)
-    DesignImportFormatEnum format?;
-    # Name of the design. (When no name is provided, the server infers the name from the URL.)
-    string? design_name?;
-};
-
 # Descriptor for a design
-public type  InlineResponse2003 DesignSummary|DesignProcessing;
+public type InlineResponse2003 DesignSummary|DesignProcessing;
 
-public type  InlineResponse2002 Design|DesignProcessing;
+public type InlineResponse2002 Design|DesignProcessing;
 
 public type InlineResponse2005 record {
     # The list of artboards within the design file.
@@ -471,4 +471,4 @@ public type InlineResponse2004 record {
     Page[] pages;
 };
 
-public type  AuthTokenError NoAuthTokenError|InvalidAuthTokenError|InactiveAccountError;
+public type AuthTokenError NoAuthTokenError|InvalidAuthTokenError|InactiveAccountError;

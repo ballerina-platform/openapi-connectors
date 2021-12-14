@@ -41,6 +41,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Best Seller List
     #
@@ -57,10 +58,10 @@ public isolated client class Client {
     # + sortOrder - Sets the sort order of the result set 
     # + return - Best seller list 
     remote isolated function getListsFormat(string format, string? list = (), int? weeksOnList = (), string? bestsellersDate = (), string? date = (), string? isbn = (), string? publishedDate = (), int? rank = (), int? rankLastWeek = (), int? offset = (), string? sortOrder = ()) returns InlineResponse200|error {
-        string  path = string `/lists.${format}`;
+        string resourcePath = string `/lists.${format}`;
         map<anydata> queryParam = {"list": list, "weeks-on-list": weeksOnList, "bestsellers-date": bestsellersDate, "date": date, "isbn": isbn, "published-date": publishedDate, "rank": rank, "rank-last-week": rankLastWeek, "offset": offset, "sort-order": sortOrder, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Best Seller History List
@@ -74,10 +75,10 @@ public isolated client class Client {
     # + title - The title of the best seller When searching, you can specify a portion of a title or a full title. 
     # + return - Best seller history list 
     remote isolated function getListsBestSellersHistoryJson(string? ageGroup = (), string? author = (), string? contributor = (), string? isbn = (), string? price = (), string? publisher = (), string? title = ()) returns InlineResponse2001|error {
-        string  path = string `/lists/best-sellers/history.json`;
+        string resourcePath = string `/lists/best-sellers/history.json`;
         map<anydata> queryParam = {"age-group": ageGroup, "author": author, "contributor": contributor, "isbn": isbn, "price": price, "publisher": publisher, "title": title, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Best Seller List Names
@@ -85,10 +86,10 @@ public isolated client class Client {
     # + format - Type format 
     # + return - Best seller list names 
     remote isolated function getListsNamesFormat(string format) returns InlineResponse2002|error {
-        string  path = string `/lists/names.${format}`;
+        string resourcePath = string `/lists/names.${format}`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Best Seller List Overview
@@ -97,10 +98,10 @@ public isolated client class Client {
     # + publishedDate - The best-seller list publication date. YYYY-MM-DD You do not have to specify the exact date the list was published. The service will search forward (into the future) for the closest publication date to the date you specify. For example, a request for lists/overview/2013-05-22 will retrieve the list that was published on 05-26. If you do not include a published_date, the current week's best-sellers lists will be returned. 
     # + return - Best seller list overview 
     remote isolated function getListsOverviewFormat(string format, string? publishedDate = ()) returns InlineResponse2003|error {
-        string  path = string `/lists/overview.${format}`;
+        string resourcePath = string `/lists/overview.${format}`;
         map<anydata> queryParam = {"published_date": publishedDate, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Best Seller List by Date
@@ -118,10 +119,10 @@ public isolated client class Client {
     # + sortOrder - The default is ASC (ascending). The sort-order parameter is used with the sort-by parameter — for details, see each request type. 
     # + return - Best seller list by date 
     remote isolated function getListsDateListJson(string date, string list, int? isbn = (), string? listName = (), string? publishedDate = (), string? bestsellersDate = (), int? weeksOnList = (), string? rank = (), int? rankLastWeek = (), int? offset = (), string? sortOrder = ()) returns InlineResponse2004|error {
-        string  path = string `/lists/${date}/${list}.json`;
+        string resourcePath = string `/lists/${date}/${list}.json`;
         map<anydata> queryParam = {"isbn": isbn, "list-name": listName, "published-date": publishedDate, "bestsellers-date": bestsellersDate, "weeks-on-list": weeksOnList, "rank": rank, "rank-last-week": rankLastWeek, "offset": offset, "sort-order": sortOrder, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2004 response = check self.clientEp-> get(path, targetType = InlineResponse2004);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2004 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Reviews
@@ -132,10 +133,10 @@ public isolated client class Client {
     # + author - You’ll need to enter the author’s first and last name, separated by a space. This space will be converted into the characters %20. 
     # + return - Reviews 
     remote isolated function getReviewsFormat(string format, int? isbn = (), string? title = (), string? author = ()) returns InlineResponse2005|error {
-        string  path = string `/reviews.${format}`;
+        string resourcePath = string `/reviews.${format}`;
         map<anydata> queryParam = {"isbn": isbn, "title": title, "author": author, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2005 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

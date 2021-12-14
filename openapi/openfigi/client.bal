@@ -40,19 +40,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Allows mapping from third-party identifiers to FIGIs.
     #
     # + payload - A list of third-party identifiers and extra filters. 
     # + return - A list of FIGIs and their metadata. 
     remote isolated function mapIdentifiers(BulkMappingJob payload) returns BulkMappingJobResult|error {
-        string  path = string `/mapping`;
+        string resourcePath = string `/mapping`;
         map<any> headerValues = {"X-OPENFIGI-APIKEY": self.apiKeyConfig.xOpenfigiApikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BulkMappingJobResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BulkMappingJobResult);
+        request.setPayload(jsonBody, "application/json");
+        BulkMappingJobResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get values for enum-like fields.
@@ -60,10 +61,10 @@ public isolated client class Client {
     # + 'key - Key of MappingJob for which to get possible values. 
     # + return - The list of values. 
     remote isolated function getValues(string 'key) returns Values|error {
-        string  path = string `/mapping/values/${'key}`;
+        string resourcePath = string `/mapping/values/${'key}`;
         map<any> headerValues = {"X-OPENFIGI-APIKEY": self.apiKeyConfig.xOpenfigiApikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Values response = check self.clientEp-> get(path, accHeaders, targetType = Values);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Values response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

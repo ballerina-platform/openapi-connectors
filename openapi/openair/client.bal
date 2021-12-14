@@ -51,8 +51,7 @@ public type ClientConfig record {|
 |};
 
 # This is a generated connector for [OpenAir API v1.0](https://www.openair.com/download/OpenAirRESTAPIGuide.pdf) OpenAPI specification.
-# The OpenAir REST API provides an interface for integration applications to exchange information with [OpenAir](https://docs.oracle.com/cloud/openair/index.html). 
-# OpenAir REST API currently supports the following resources: Expense reports, Receipts, Attachments, Job codes, Contacts
+# The OpenAir REST API provides an interface for integration applications to exchange information with [OpenAir](https://docs.oracle.com/cloud/openair/index.html). OpenAir REST API currently supports the following resources: Expense reports, Receipts, Attachments, Job codes, Contacts 
 @display {label: "openair", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
@@ -66,13 +65,14 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieves the list of contacts.
     #
     # + return - An OpenAir type record or an error 
     remote isolated function getContacts() returns OpenAirResponse|error {
-        string  path = string `/contacts/`;
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        string resourcePath = string `/contacts/`;
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new contact record
@@ -82,21 +82,21 @@ public isolated client class Client {
     # + payload - A contact is a person working for, or associated with a customer 
     # + return - An OpenAir type record or an error 
     remote isolated function addContact(Contact payload, string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/contacts/`;
+        string resourcePath = string `/contacts/`;
         map<anydata> queryParam = {"fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->post(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Discover the methods available
     #
     # + return - Includes the OpenAPI 3.0 endpoint reference for the resource endpoint 
     remote isolated function discoverMethods() returns http:Response|error {
-        string  path = string `/contacts/`;
-        http:Response response = check self.clientEp-> options(path, targetType = http:Response);
+        string resourcePath = string `/contacts/`;
+        http:Response response = check self.clientEp->options(resourcePath);
         return response;
     }
     # Retrieves the contact record with the specified internal ID
@@ -105,10 +105,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the contact returned 
     # + return - An OpenAir type record or an error 
     remote isolated function getContactByID(int id, string? fields = ()) returns OpenAirResponse|error {
-        string  path = string `/contacts/${id}`;
+        string resourcePath = string `/contacts/${id}`;
         map<anydata> queryParam = {"fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the contact record with the specified internal ID
@@ -119,13 +119,13 @@ public isolated client class Client {
     # + payload - If set to any value other than 0 (zero), the response will include the contact updated. Otherwise, the response will include only the internal ID of the contact updated 
     # + return - An OpenAir type record or an error 
     remote isolated function updateContact(int id, Contact payload, string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/contacts/${id}`;
+        string resourcePath = string `/contacts/${id}`;
         map<anydata> queryParam = {"fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->put(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the contact record with the specified internal ID
@@ -133,8 +133,8 @@ public isolated client class Client {
     # + id - The internal id of the contact 
     # + return - An OpenAir type record or an error 
     remote isolated function deleteContact(int id) returns OpenAirResponse|error {
-        string  path = string `/contacts/${id}`;
-        OpenAirResponse response = check self.clientEp-> delete(path, targetType = OpenAirResponse);
+        string resourcePath = string `/contacts/${id}`;
+        OpenAirResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get the list of Expense Report
@@ -146,10 +146,10 @@ public isolated client class Client {
     # + q - A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria 
     # + return - An OpenAir type record or an error 
     remote isolated function getListOfExpenseReports(string? expand = (), string? fields = (), int? 'limit = (), int? offset = (), string? q = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/`;
+        string resourcePath = string `/expense-reports/`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "limit": 'limit, "offset": offset, "q": q};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves the expense report with the specified internal
@@ -159,10 +159,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned 
     # + return - An OpenAir type record or an error 
     remote isolated function getExpenseReport(int id, string? expand = (), string? fields = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/${id}`;
+        string resourcePath = string `/expense-reports/${id}`;
         map<anydata> queryParam = {"expand": expand, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an Expense Report
@@ -174,13 +174,13 @@ public isolated client class Client {
     # + payload - An object including valid key-value pairs for the fields to be updated 
     # + return - An OpenAir type record or an error 
     remote isolated function updateExpneseReport(int id, string fields, boolean returnObject, ExpenseReport payload, string? expand = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/${id}`;
+        string resourcePath = string `/expense-reports/${id}`;
         map<anydata> queryParam = {"expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->put(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes e the expense report record with the specified internal ID
@@ -188,8 +188,8 @@ public isolated client class Client {
     # + id - The internal id of the contact 
     # + return - An OpenAir type record or an error with ID and a message 
     remote isolated function deleteExpenseReports(int id) returns InlineResponse200|error {
-        string  path = string `/expense-reports/${id}`;
-        InlineResponse200 response = check self.clientEp-> delete(path, targetType = InlineResponse200);
+        string resourcePath = string `/expense-reports/${id}`;
+        InlineResponse200 response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Inserts an Overlapping Expense Report
@@ -200,13 +200,13 @@ public isolated client class Client {
     # + payload - An expense report is a collection of expense items (receipts) that employees can use in OpenAir to claim reimbursement 
     # + return - An OpenAir type record or an error 
     remote isolated function insertOverlappingExpenseReport(ExpenseReport payload, string? expand = (), string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/overlapping/`;
+        string resourcePath = string `/expense-reports/overlapping/`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->post(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # retrieve the collection of receipts in the expense report with the specified internal ID
@@ -219,10 +219,10 @@ public isolated client class Client {
     # + q - A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria 
     # + return - An OpenAir type record or an error 
     remote isolated function getListOfReceiptsInExpenseReport(int id, string? expand = (), string? fields = (), int? 'limit = (), int? offset = (), string? q = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/${id}/receipts/`;
+        string resourcePath = string `/expense-reports/${id}/receipts/`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "limit": 'limit, "offset": offset, "q": q};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a Receipt associated with an Expense Report
@@ -233,10 +233,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned  
     # + return - An OpenAir type record or an error 
     remote isolated function getReceiptForExpenseReport(int id, int ticketId, string? expand = (), string? fields = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/${id}/receipts/${ticketId}`;
+        string resourcePath = string `/expense-reports/${id}/receipts/${ticketId}`;
         map<anydata> queryParam = {"expand": expand, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the List of Attachments Associated with an Expense Report
@@ -249,10 +249,10 @@ public isolated client class Client {
     # + q - A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria 
     # + return - An OpenAir type record or an error 
     remote isolated function getAttachmentListWithExpenseReport(int id, string? expand = (), string? fields = (), int? 'limit = (), int? offset = (), string? q = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/${id}/attachments`;
+        string resourcePath = string `/expense-reports/${id}/attachments`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "limit": 'limit, "offset": offset, "q": q};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add an Attachment to an Expense Report
@@ -263,13 +263,13 @@ public isolated client class Client {
     # + payload - This method accepts application/json content types 
     # + return - An OpenAir type record or an error 
     remote isolated function addAttachmentToExpenseReport(int id, AttachmentTypeJson payload, string? expand = (), string? fields = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/${id}/attachments`;
+        string resourcePath = string `/expense-reports/${id}/attachments`;
         map<anydata> queryParam = {"expand": expand, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->post(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the attachment record with the specified attachment ID associated with the expense report with the specified internal ID
@@ -280,10 +280,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned  
     # + return - An OpenAir type record or an error 
     remote isolated function getAttachmentByIDWithExpenseReport(int id, int attachmentId, string? expand = (), string? fields = ()) returns OpenAirResponse|error {
-        string  path = string `/expense-reports/${id}/attachments/${attachmentId}`;
+        string resourcePath = string `/expense-reports/${id}/attachments/${attachmentId}`;
         map<anydata> queryParam = {"expand": expand, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # delete the attachment with the specified attachment ID associated with the expense report with the specified internal ID, or clear the association between the workspace document with the specified attachment ID and the expense report with the specified internal ID
@@ -292,16 +292,16 @@ public isolated client class Client {
     # + attachmentId - The internal id of the attachment 
     # + return - A successful or failed request returns a JSON object 
     remote isolated function deleteAttachmentOfExpenseReport(int id, int attachmentId) returns InlineResponse2001|error {
-        string  path = string `/expense-reports/${id}/attachments/${attachmentId}`;
-        InlineResponse2001 response = check self.clientEp-> delete(path, targetType = InlineResponse2001);
+        string resourcePath = string `/expense-reports/${id}/attachments/${attachmentId}`;
+        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Retrieves the list of job codes
     #
     # + return - An OpenAir type record or an error 
     remote isolated function getJobs() returns OpenAirResponse|error {
-        string  path = string `/job-codes/`;
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        string resourcePath = string `/job-codes/`;
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new job code record
@@ -311,13 +311,13 @@ public isolated client class Client {
     # + payload - The JobCode object to be created 
     # + return - An OpenAir type record or an error 
     remote isolated function addJob(JobCode payload, string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/job-codes/`;
+        string resourcePath = string `/job-codes/`;
         map<anydata> queryParam = {"fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->post(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the job code record with the specified internal ID
@@ -326,10 +326,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the job code returned 
     # + return - An OpenAir type record or an error 
     remote isolated function getJobById(int id, string? fields = ()) returns OpenAirResponse|error {
-        string  path = string `/job-codes/${id}`;
+        string resourcePath = string `/job-codes/${id}`;
         map<anydata> queryParam = {"fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update the job code record with the specified internal ID
@@ -340,13 +340,13 @@ public isolated client class Client {
     # + payload - An object including valid key-value pairs for the fields to be updated 
     # + return - An OpenAir type record or an error 
     remote isolated function updateJobCodeById(int id, JobCode payload, string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/job-codes/${id}`;
+        string resourcePath = string `/job-codes/${id}`;
         map<anydata> queryParam = {"fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->put(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the job code record with the specified internal ID
@@ -354,8 +354,8 @@ public isolated client class Client {
     # + id - The internal id of the job code 
     # + return - An OpenAir type record or an error 
     remote isolated function deleteJob(int id) returns OpenAirResponse|error {
-        string  path = string `/job-codes/${id}`;
-        OpenAirResponse response = check self.clientEp-> delete(path, targetType = OpenAirResponse);
+        string resourcePath = string `/job-codes/${id}`;
+        OpenAirResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Retrieves a list of receipts
@@ -367,10 +367,10 @@ public isolated client class Client {
     # + q - A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria 
     # + return - An OpenAir type record or an error 
     remote isolated function getReceipts(string? expand = (), string? fields = (), int? 'limit = (), int? offset = (), string? q = ()) returns OpenAirResponse|error {
-        string  path = string `/receipts/`;
+        string resourcePath = string `/receipts/`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "limit": 'limit, "offset": offset, "q": q};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new receipt
@@ -381,13 +381,13 @@ public isolated client class Client {
     # + payload - An expense report is a collection of expense items (receipts) that employees can use in OpenAir to claim reimbursement 
     # + return - An OpenAir type record or an error with ID and a message 
     remote isolated function insertReceipt(Receipts payload, string? expand = (), string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/receipts/`;
+        string resourcePath = string `/receipts/`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->post(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves a receipt with the specified internal ID.
@@ -397,10 +397,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned   
     # + return - An OpenAir type record or an error 
     remote isolated function getReceiptById(int id, string fields, string? expand = ()) returns OpenAirResponse|error {
-        string  path = string `/receipts/${id}`;
+        string resourcePath = string `/receipts/${id}`;
         map<anydata> queryParam = {"expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the receipt with the specified internal ID
@@ -412,13 +412,13 @@ public isolated client class Client {
     # + payload - An object including valid key-value pairs for the fields to be updated 
     # + return - An OpenAir type record or an error 
     remote isolated function updateReceipt(int id, Receipts payload, string? expand = (), string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/receipts/${id}`;
+        string resourcePath = string `/receipts/${id}`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->put(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Gets the List of Attachments Associated with a Receipt
@@ -431,10 +431,10 @@ public isolated client class Client {
     # + q - A URL-encoded query expression used to filter the resource collection and return the objects matching the specified search criteria                   
     # + return - An OpenAir type record or an error 
     remote isolated function getListOfAttachmentsOfReceipt(int id, string? expand = (), string? fields = (), int? 'limit = (), int? offset = (), string? q = ()) returns OpenAirResponse|error {
-        string  path = string `/receipts/${id}/attachments`;
+        string resourcePath = string `/receipts/${id}/attachments`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "limit": 'limit, "offset": offset, "q": q};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add an attachment to the receipt with the specified internal ID
@@ -446,13 +446,13 @@ public isolated client class Client {
     # + payload - This method accepts application/json content types 
     # + return - An OpenAir type record or an error 
     remote isolated function addAttachmentReceipt(int id, AttachmentTypeJson payload, string? expand = (), string? fields = (), boolean? returnObject = ()) returns OpenAirResponse|error {
-        string  path = string `/receipts/${id}/attachments`;
+        string resourcePath = string `/receipts/${id}/attachments`;
         map<anydata> queryParam = {"expand": expand, "fields": fields, "return_object": returnObject};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OpenAirResponse response = check self.clientEp->post(path, request, targetType=OpenAirResponse);
+        request.setPayload(jsonBody, "application/json");
+        OpenAirResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets an Attachment Associated with a Receipt
@@ -463,10 +463,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of attributes to include in the response. If not specified, the response includes all attributes for the expense report returned                       
     # + return - An OpenAir type record or an error 
     remote isolated function getAttachmentOfReceipt(int id, int attachmentId, string? expand = (), string? fields = ()) returns OpenAirResponse|error {
-        string  path = string `/receipts/${id}/attachments/${attachmentId}`;
+        string resourcePath = string `/receipts/${id}/attachments/${attachmentId}`;
         map<anydata> queryParam = {"expand": expand, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenAirResponse response = check self.clientEp-> get(path, targetType = OpenAirResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenAirResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an Attachment Associated with a Receipt
@@ -475,8 +475,8 @@ public isolated client class Client {
     # + attachmentId - The internal id of the attachment 
     # + return - An OpenAir type record or an error 
     remote isolated function deleteAttachmentOfReceipt(int id, int attachmentId) returns OpenAirResponse|error {
-        string  path = string `/receipts/${id}/attachments/${attachmentId}`;
-        OpenAirResponse response = check self.clientEp-> delete(path, targetType = OpenAirResponse);
+        string resourcePath = string `/receipts/${id}/attachments/${attachmentId}`;
+        OpenAirResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Full-text search
     #
@@ -62,12 +63,12 @@ public isolated client class Client {
     # + safeMode - Whether or not to exclude podcasts/episodes with explicit language. 1 is yes and 0 is no. It works only when **type** is *episode* or *podcast*. 
     # + return - OK 
     remote isolated function search(string q, int sortByDate = 0, string 'type = "episode", int offset = 0, int lenMin = 0, int? lenMax = (), int? episodeCountMin = (), int? episodeCountMax = (), string? genreIds = (), int? publishedBefore = (), int publishedAfter = 0, string onlyIn = "title,description,author,audio", string? language = (), string? region = (), string? ocid = (), string? ncid = (), int safeMode = 0) returns SearchResponse|error {
-        string  path = string `/search`;
+        string resourcePath = string `/search`;
         map<anydata> queryParam = {"q": q, "sort_by_date": sortByDate, "type": 'type, "offset": offset, "len_min": lenMin, "len_max": lenMax, "episode_count_min": episodeCountMin, "episode_count_max": episodeCountMax, "genre_ids": genreIds, "published_before": publishedBefore, "published_after": publishedAfter, "only_in": onlyIn, "language": language, "region": region, "ocid": ocid, "ncid": ncid, "safe_mode": safeMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SearchResponse response = check self.clientEp-> get(path, accHeaders, targetType = SearchResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SearchResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Typeahead search
@@ -78,12 +79,12 @@ public isolated client class Client {
     # + safeMode - Whether or not to exclude podcasts/episodes with explicit language. 1 is yes and 0 is no. It works only when **show_podcasts** is *1*. 
     # + return - OK 
     remote isolated function typeahead(string q, int showPodcasts = 0, int showGenres = 0, int safeMode = 0) returns TypeaheadResponse|error {
-        string  path = string `/typeahead`;
+        string resourcePath = string `/typeahead`;
         map<anydata> queryParam = {"q": q, "show_podcasts": showPodcasts, "show_genres": showGenres, "safe_mode": safeMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TypeaheadResponse response = check self.clientEp-> get(path, accHeaders, targetType = TypeaheadResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TypeaheadResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch a list of best podcasts by genre
@@ -96,12 +97,12 @@ public isolated client class Client {
     # + safeMode - Whether or not to exclude podcasts with explicit language. 1 is yes, and 0 is no. 
     # + return - OK 
     remote isolated function getBestPodcasts(string? genreId = (), int? page = (), string region = "us", string? publisherRegion = (), string? language = (), int safeMode = 0) returns BestPodcastsResponse|error {
-        string  path = string `/best_podcasts`;
+        string resourcePath = string `/best_podcasts`;
         map<anydata> queryParam = {"genre_id": genreId, "page": page, "region": region, "publisher_region": publisherRegion, "language": language, "safe_mode": safeMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BestPodcastsResponse response = check self.clientEp-> get(path, accHeaders, targetType = BestPodcastsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BestPodcastsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch detailed meta data and episodes for a podcast by id
@@ -111,12 +112,12 @@ public isolated client class Client {
     # + sort - How do you want to sort the episodes of this podcast? 
     # + return - OK 
     remote isolated function getPodcastById(string id, int? nextEpisodePubDate = (), string sort = "recent_first") returns PodcastFull|error {
-        string  path = string `/podcasts/${id}`;
+        string resourcePath = string `/podcasts/${id}`;
         map<anydata> queryParam = {"next_episode_pub_date": nextEpisodePubDate, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PodcastFull response = check self.clientEp-> get(path, accHeaders, targetType = PodcastFull);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PodcastFull response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request to delete a podcast
@@ -125,12 +126,12 @@ public isolated client class Client {
     # + reason - The reason why this podcast should be deleted, e.g., copyright violation, the podcaster wants to delete it... You can put "testing" here to indicate that you are testing this endpoint, so we will not actually delete the podcast. 
     # + return - OK 
     remote isolated function deletePodcastById(string id, string? reason = ()) returns DeletePodcastResponse|error {
-        string  path = string `/podcasts/${id}`;
+        string resourcePath = string `/podcasts/${id}`;
         map<anydata> queryParam = {"reason": reason};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DeletePodcastResponse response = check self.clientEp-> delete(path, accHeaders, targetType = DeletePodcastResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DeletePodcastResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Fetch detailed meta data for an episode by id
@@ -139,12 +140,12 @@ public isolated client class Client {
     # + showTranscript - To include the transcript of this episode or not? If it is 1, then include the transcript in the **transcript** field. The default value is 0 - we don't include transcript by default, because 1) it would make the response data very big, thus slow response time; 2) less than 1% of episodes have transcripts. The transcript field is available only in the PRO/ENTERPRISE plan. 
     # + return - OK 
     remote isolated function getEpisodeById(string id, int showTranscript = 0) returns EpisodeFull|error {
-        string  path = string `/episodes/${id}`;
+        string resourcePath = string `/episodes/${id}`;
         map<anydata> queryParam = {"show_transcript": showTranscript};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EpisodeFull response = check self.clientEp-> get(path, accHeaders, targetType = EpisodeFull);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EpisodeFull response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Batch fetch basic meta data for episodes
@@ -152,14 +153,13 @@ public isolated client class Client {
     # + payload - Get episodes batch payload 
     # + return - OK 
     remote isolated function getEpisodesInBatch(GetEpisodesInBatchForm payload) returns GetEpisodesInBatchResponse|error {
-        string  path = string `/episodes`;
+        string resourcePath = string `/episodes`;
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        GetEpisodesInBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GetEpisodesInBatchResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        GetEpisodesInBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Batch fetch basic meta data for podcasts
@@ -167,14 +167,13 @@ public isolated client class Client {
     # + payload - Get podcasts batch payload 
     # + return - OK 
     remote isolated function getPodcastsInBatch(GetPodcastsInBatchForm payload) returns GetPodcastsInBatchResponse|error {
-        string  path = string `/podcasts`;
+        string resourcePath = string `/podcasts`;
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        GetPodcastsInBatchResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GetPodcastsInBatchResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        GetPodcastsInBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Fetch a curated list of podcasts by id
@@ -182,10 +181,10 @@ public isolated client class Client {
     # + id - id for a specific curated list of podcasts. You can get the id from the response of `GET /search?type=curated` or `GET /curated_podcasts`. 
     # + return - OK 
     remote isolated function getCuratedPodcastById(string id) returns CuratedListFull|error {
-        string  path = string `/curated_podcasts/${id}`;
+        string resourcePath = string `/curated_podcasts/${id}`;
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CuratedListFull response = check self.clientEp-> get(path, accHeaders, targetType = CuratedListFull);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CuratedListFull response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch a list of podcast genres
@@ -193,42 +192,42 @@ public isolated client class Client {
     # + topLevelOnly - Just show top level genres? If 1, yes, just show top level genres. If 0, no, show all genres. 
     # + return - OK 
     remote isolated function getGenres(int topLevelOnly = 0) returns GetGenresResponse|error {
-        string  path = string `/genres`;
+        string resourcePath = string `/genres`;
         map<anydata> queryParam = {"top_level_only": topLevelOnly};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetGenresResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetGenresResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetGenresResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch a list of supported countries/regions for best podcasts
     #
     # + return - OK 
     remote isolated function getRegions() returns GetRegionsResponse|error {
-        string  path = string `/regions`;
+        string resourcePath = string `/regions`;
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetRegionsResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetRegionsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetRegionsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch a list of supported languages for podcasts
     #
     # + return - OK 
     remote isolated function getLanguages() returns GetLanguagesResponse|error {
-        string  path = string `/languages`;
+        string resourcePath = string `/languages`;
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetLanguagesResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetLanguagesResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetLanguagesResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch a random podcast episode
     #
     # + return - OK 
     remote isolated function justListen() returns EpisodeSimple|error {
-        string  path = string `/just_listen`;
+        string resourcePath = string `/just_listen`;
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EpisodeSimple response = check self.clientEp-> get(path, accHeaders, targetType = EpisodeSimple);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EpisodeSimple response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch curated lists of podcasts
@@ -236,12 +235,12 @@ public isolated client class Client {
     # + page - Page number of curated lists. 
     # + return - OK 
     remote isolated function getCuratedPodcasts(int page = 1) returns GetCuratedPodcastsResponse|error {
-        string  path = string `/curated_podcasts`;
+        string resourcePath = string `/curated_podcasts`;
         map<anydata> queryParam = {"page": page};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetCuratedPodcastsResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetCuratedPodcastsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetCuratedPodcastsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch recommendations for a podcast
@@ -250,12 +249,12 @@ public isolated client class Client {
     # + safeMode - Whether or not to exclude podcasts with explicit language. 1 is yes, and 0 is no. 
     # + return - OK 
     remote isolated function getPodcastRecommendations(string id, int safeMode = 0) returns GetPodcastRecommendationsResponse|error {
-        string  path = string `/podcasts/${id}/recommendations`;
+        string resourcePath = string `/podcasts/${id}/recommendations`;
         map<anydata> queryParam = {"safe_mode": safeMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetPodcastRecommendationsResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetPodcastRecommendationsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetPodcastRecommendationsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch recommendations for an episode
@@ -264,12 +263,12 @@ public isolated client class Client {
     # + safeMode - Whether or not to exclude podcasts with explicit language. 1 is yes, and 0 is no. 
     # + return - OK 
     remote isolated function getEpisodeRecommendations(string id, int safeMode = 0) returns GetEpisodeRecommendationsResponse|error {
-        string  path = string `/episodes/${id}/recommendations`;
+        string resourcePath = string `/episodes/${id}/recommendations`;
         map<anydata> queryParam = {"safe_mode": safeMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetEpisodeRecommendationsResponse response = check self.clientEp-> get(path, accHeaders, targetType = GetEpisodeRecommendationsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetEpisodeRecommendationsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Submit a podcast to Listen Notes database
@@ -277,14 +276,13 @@ public isolated client class Client {
     # + payload - Submit podcast payload 
     # + return - OK 
     remote isolated function submitPodcast(SubmitPodcastForm payload) returns SubmitPodcastResponse|error {
-        string  path = string `/podcasts/submit`;
+        string resourcePath = string `/podcasts/submit`;
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        SubmitPodcastResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SubmitPodcastResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        SubmitPodcastResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Fetch a playlist's info and items (i.e., episodes or podcasts).
@@ -295,12 +293,12 @@ public isolated client class Client {
     # + sort - How do you want to sort playlist items? 
     # + return - OK 
     remote isolated function getPlaylistById(string id, string 'type = "episode_list", int lastTimestampMs = 0, string sort = "recent_added_first") returns PlaylistResponse|error {
-        string  path = string `/playlists/${id}`;
+        string resourcePath = string `/playlists/${id}`;
         map<anydata> queryParam = {"type": 'type, "last_timestamp_ms": lastTimestampMs, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PlaylistResponse response = check self.clientEp-> get(path, accHeaders, targetType = PlaylistResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PlaylistResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fetch a list of your playlists.
@@ -309,12 +307,12 @@ public isolated client class Client {
     # + page - Page number of playlists. 
     # + return - OK 
     remote isolated function getPlaylists(string sort = "recent_added_first", int page = 1) returns PlaylistsResponse|error {
-        string  path = string `/playlists`;
+        string resourcePath = string `/playlists`;
         map<anydata> queryParam = {"sort": sort, "page": page};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-ListenAPI-Key": self.apiKeyConfig.xListenapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PlaylistsResponse response = check self.clientEp-> get(path, accHeaders, targetType = PlaylistsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PlaylistsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

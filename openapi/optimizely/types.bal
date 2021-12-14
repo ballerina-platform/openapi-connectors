@@ -1109,9 +1109,9 @@ public type ImpressionsUsage record {
 # A value with statistical context
 public type Datapoint record {
     # The confidence interval measures the uncertainty around improvement. It starts out wide and shrinks as more data comes in. Significance means that the confidence interval is completely above or completely below 0. If the result is significant and positive, the confidence interval will be above 0. If the result is significant and negative, confidence interval will be below 0. If the result is inconclusive, confidence interval includes 0
-    decimal[] confidence_interval?;
+    float[2] confidence_interval?;
     # The confidence interval with bounds that are scaled by the baseline conversion rate.
-    decimal[] confidence_interval_scaled?;
+    float[2] confidence_interval_scaled?;
     # End of epoch
     boolean end_of_epoch?;
     # Indicates that this is the best performing variant for this metric. Also referred to as the 'Winner'
@@ -1549,7 +1549,7 @@ public type ScheduledJob record {
     # The type of job to be performed
     string job_type;
     # An object describing how the output of the job should be communicated
-    record  { }  output_channels?;
+    record {} output_channels?;
     # The project that the job is associated with
     int project_id;
 };
@@ -1557,7 +1557,7 @@ public type ScheduledJob record {
 public type Error record {
     string code?;
     string message?;
-    record  { }  messages?;
+    record {} messages?;
     string uuid?;
 };
 
@@ -1568,7 +1568,7 @@ public type Change record {
     boolean async?;
     ChangeAttribute attributes?;
     # Configuration properties for the extension
-    record  { }  config?;
+    record {} config?;
     CSSAttribute css?;
     # A list of dependent change IDs that must happen before this change
     string[] dependencies?;
@@ -1587,7 +1587,7 @@ public type Change record {
     # Whether or not to preserve parameters from original request when redirecting to new destination URL. Required for changes of type 'redirect'. For redirects using `destination_function`, `preserve_parameters` must be false.
     boolean preserve_parameters?;
     # A directive to place the DOM element(s) matched by 'selector' to the position of the element matched by 'insertSelector', with the relation specified by 'operator'. The supplied example moves element matched by 'selector' above the element of class .greyBox
-    record  { }  rearrange?;
+    record {} rearrange?;
     # CSS selector to determine where changes are applied. Required for changes of type 'attribute', 'insert_html', and 'insert_image'
     string selector?;
     # The path to the change payload on the CDN. Only present if 'async' is True.
@@ -1651,7 +1651,7 @@ public type FeatureEnvironment record {
     # Whether the Environment this set of Rollout Rules applies to is the primary Environment
     boolean is_primary?;
     # Rollout Rules allow you to define groups of users and a percentage of those users that will see a Feature by default. You are currently limited to a single rollout rule. Audience IDs sent in any environment must always match that of the primary environment.
-    RolloutRule[] rollout_rules;
+    RolloutRule[1] rollout_rules;
 };
 
 public type ExperimentSummary record {
@@ -1737,7 +1737,7 @@ public type ScheduledJobUpdate record {
     # The type of job to be performed
     string job_type?;
     # An object describing how the output of the job should be communicated
-    record  { }  output_channels?;
+    record {} output_channels?;
     # The project that the job is associated with
     int project_id?;
 };

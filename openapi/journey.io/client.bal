@@ -40,57 +40,58 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Link web activity to user
     #
     # + return - Object was created 
     remote isolated function link(LinkBody payload) returns InlineResponse201|error {
-        string  path = string `/link`;
+        string resourcePath = string `/link`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Push event
     #
     # + return - Object was created 
     remote isolated function trackJourneyEvent(EventsBody payload) returns InlineResponse201|error {
-        string  path = string `/events`;
+        string resourcePath = string `/events`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create or update user
     #
     # + return - Object was created 
     remote isolated function upsertUser(UsersUpsertBody payload) returns InlineResponse201|error {
-        string  path = string `/users/upsert`;
+        string resourcePath = string `/users/upsert`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create or update account
     #
     # + return - Object was created 
     remote isolated function upsertAccount(AccountsUpsertBody payload) returns InlineResponse201|error {
-        string  path = string `/accounts/upsert`;
+        string resourcePath = string `/accounts/upsert`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Add user to account
@@ -98,37 +99,34 @@ public isolated client class Client {
     # + accountId - Unique identifier for the account in your database 
     # + return - Object was created 
     remote isolated function addUserToAccount(string accountId, AccountidUsersBody payload) returns InlineResponse201|error {
-        string  path = string `/accounts/${accountId}/users`;
+        string resourcePath = string `/accounts/${accountId}/users`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Remove user from account
     #
     # + accountId - Unique identifier for the account in your database 
     # + return - Object was created 
-    remote isolated function removeUserFromAccount(string accountId, AccountidUsersBody1 payload) returns InlineResponse201|error {
-        string  path = string `/accounts/${accountId}/users`;
+    remote isolated function removeUserFromAccount(string accountId) returns InlineResponse201|error {
+        string resourcePath = string `/accounts/${accountId}/users`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->delete(path, request, headers = accHeaders, targetType=InlineResponse201);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse201 response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Validate API key
     #
     # + return - Key validation 
     remote isolated function getValidity() returns InlineResponse200|error {
-        string  path = string `/validate`;
+        string resourcePath = string `/validate`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get snippet for a website
@@ -136,12 +134,12 @@ public isolated client class Client {
     # + domain - The domain you want to receive a snippet for 
     # + return - Snippet 
     remote isolated function getTrackingSnippet(string domain) returns InlineResponse2001|error {
-        string  path = string `/tracking/snippet`;
+        string resourcePath = string `/tracking/snippet`;
         map<anydata> queryParam = {"domain": domain};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

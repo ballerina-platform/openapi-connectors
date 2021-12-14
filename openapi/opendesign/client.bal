@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/http;
+import ballerina/mime;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -65,64 +66,67 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.opendesign.dev") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Auth Token Check
     #
     # + return - Returns info about the token. 
     remote isolated function checkToken() returns InlineResponse200|error {
-        string  path = string `/token`;
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        string resourcePath = string `/token`;
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Design File Upload
     #
     # + payload - Upload information 
     # + return - Returns the created design entity. 
-    remote isolated function postDesignUpload(Body payload) returns InlineResponse201|error {
-        string  path = string `/designs/upload`;
+    remote isolated function postDesignUpload(DesignsUploadBody payload) returns InlineResponse201|error {
+        string resourcePath = string `/designs/upload`;
         http:Request request = new;
-        InlineResponse201 response = check self.clientEp->post(path, request, targetType=InlineResponse201);
+        mime:Entity[] bodyParts = check createBodyParts(payload);
+        request.setBodyParts(bodyParts);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # URL-Based Design File Import
     #
     # + payload - Design link information 
     # + return - Returns the created design entity. 
-    remote isolated function postDesignLink(Body1 payload) returns InlineResponse201|error {
-        string  path = string `/designs/link`;
+    remote isolated function postDesignLink(DesignsLinkBody payload) returns InlineResponse201|error {
+        string resourcePath = string `/designs/link`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, targetType=InlineResponse201);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Figma Design File Import
     #
     # + payload - Figma design information 
     # + return - Returns the created design entity or its processing status (in case a export was requested). 
-    remote isolated function postDesignFigmaLink(Body2 payload) returns InlineResponse2011|error {
-        string  path = string `/designs/figma-link`;
+    remote isolated function postDesignFigmaLink(DesignsFigmalinkBody payload) returns InlineResponse2011|error {
+        string resourcePath = string `/designs/figma-link`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse2011 response = check self.clientEp->post(path, request, targetType=InlineResponse2011);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse2011 response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Design List
     #
     # + return - Returns a list of design entities 
     remote isolated function getDesignList() returns InlineResponse2001|error {
-        string  path = string `/designs`;
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        string resourcePath = string `/designs`;
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Design Info
     #
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns the design entity or its processing status. 
-    remote isolated function getDesign(string designId) returns InlineResponse2002|error {
-        string  path = string `/designs/${designId}`;
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+    remote isolated function getDesign(string designId) returns DesignProcessing|InlineResponse2002|error {
+        string resourcePath = string `/designs/${designId}`;
+        DesignProcessing|InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Start Design Export
@@ -130,12 +134,12 @@ public isolated client class Client {
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + payload - Design export target 
     # + return - Returns the started design export task entity. 
-    remote isolated function postDesignExport(string designId, Body3 payload) returns DesignExport|error {
-        string  path = string `/designs/${designId}/exports`;
+    remote isolated function postDesignExport(string designId, DesignIdExportsBody payload) returns DesignExport|error {
+        string resourcePath = string `/designs/${designId}/exports`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DesignExport response = check self.clientEp->post(path, request, targetType=DesignExport);
+        request.setPayload(jsonBody, "application/json");
+        DesignExport response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Design Export Info
@@ -144,17 +148,17 @@ public isolated client class Client {
     # + exportId - An identifier of a export task of an imported design file. 
     # + return - Returns the design export task entity. 
     remote isolated function getDesignExport(string designId, string exportId) returns DesignExport|error {
-        string  path = string `/designs/${designId}/exports/${exportId}`;
-        DesignExport response = check self.clientEp-> get(path, targetType = DesignExport);
+        string resourcePath = string `/designs/${designId}/exports/${exportId}`;
+        DesignExport response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Design Summary
     #
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns an extended design entity with the complete page and artboard entity lists or the processing status of the design. 
-    remote isolated function getDesignSummary(string designId) returns InlineResponse2003|error {
-        string  path = string `/designs/${designId}/summary`;
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+    remote isolated function getDesignSummary(string designId) returns DesignProcessing|InlineResponse2003|error {
+        string resourcePath = string `/designs/${designId}/summary`;
+        DesignProcessing|InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Page List
@@ -162,8 +166,8 @@ public isolated client class Client {
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns a page entity list. 
     remote isolated function getDesignPageList(string designId) returns InlineResponse2004|error {
-        string  path = string `/designs/${designId}/pages`;
-        InlineResponse2004 response = check self.clientEp-> get(path, targetType = InlineResponse2004);
+        string resourcePath = string `/designs/${designId}/pages`;
+        InlineResponse2004 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Artboard List
@@ -171,8 +175,8 @@ public isolated client class Client {
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns a artboard entity list. 
     remote isolated function getDesignArtboardList(string designId) returns InlineResponse2005|error {
-        string  path = string `/designs/${designId}/artboards`;
-        InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
+        string resourcePath = string `/designs/${designId}/artboards`;
+        InlineResponse2005 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

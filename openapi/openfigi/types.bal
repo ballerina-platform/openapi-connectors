@@ -14,9 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type MappingJobResult record {
-    *MappingJobResultFigiList;
-};
+public type MappingJobResult MappingJobResultFigiList;
 
 public type BulkMappingJobResult MappingJobResult[];
 
@@ -88,12 +86,10 @@ public type MappingJobResultFigiList record {
 public type BulkMappingJob MappingJob[];
 
 # At least one entry should be non-null.
-# At least one entry should be non-null.
-public type NullableNumberInterval decimal[]?;
+public type NullableNumberInterval decimal[2]?;
 
 # At least one entry should be non-null.
-# At least one entry should be non-null.
-public type NullableDateInterval string[]?;
+public type NullableDateInterval string[2]?;
 
 public type MappingJobResultFigiNotFound record {
     string warning?;

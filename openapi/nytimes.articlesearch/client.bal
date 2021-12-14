@@ -41,6 +41,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Article Search
     #
@@ -56,10 +57,10 @@ public isolated client class Client {
     # + facetFilter - When set to true, facet counts will respect any applied filters (fq, date range, etc.) in addition to the main query term. To filter facet counts, specifying at least one facet_field is required. To learn more about using facets, see Using Facets. 
     # + return - The docs requested by the article search. 
     remote isolated function articleSearch(string? q = (), string? fq = (), string? beginDate = (), string? endDate = (), string? sort = (), string? fl = (), boolean hl = false, int page = 0, string? facetField = (), boolean facetFilter = false) returns InlineResponse200|error {
-        string  path = string `/articlesearch.json`;
+        string resourcePath = string `/articlesearch.json`;
         map<anydata> queryParam = {"q": q, "fq": fq, "begin_date": beginDate, "end_date": endDate, "sort": sort, "fl": fl, "hl": hl, "page": page, "facet_field": facetField, "facet_filter": facetFilter, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

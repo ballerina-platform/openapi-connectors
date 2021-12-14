@@ -38,6 +38,8 @@ public type AddActionForwardRequest record {
     string 'type;
 };
 
+public type VerificationVerifyBody VerifyEmailRequest|VerifySmsRequest;
+
 public type AddActionCombineRequest record {
     string[] list;
     string name;
@@ -77,7 +79,7 @@ public type Trigger record {
 
 public type SetWorkflowRequest record {
     string id?;
-    KeyValuePair[] pairs?;
+    (KeyValuePair)[] pairs?;
 };
 
 public type AddWorkflowRequest record {
@@ -88,13 +90,15 @@ public type AddWorkflowRequest record {
     string trigger?;
 };
 
+public type VerificationsBody AddEmailVerificationRequest|AddSmsVerificationRequest;
+
 public type KeyValuePair record {
     string 'key;
     string value;
 };
 
 public type GetAllActionsResponse record {
-    ActionSend|ActionCombine[] list;
+    (ActionSend|ActionCombine)[] list;
 };
 
 public type VerificationEmail record {
@@ -131,7 +135,7 @@ public type AddAddressRequest record {
 };
 
 public type GetAllWorkspacesResponse record {
-    Workspace[] list;
+    (Workspace)[] list;
 };
 
 public type AddactionwebhookrequestConfigOpts record {
@@ -168,7 +172,7 @@ public type MailscriptEmailInput record {
 };
 
 public type GetAllVerificationsResponse record {
-    VerificationEmail|VerificationSms[] list;
+    (VerificationEmail|VerificationSms)[] list;
 };
 
 public type UpdateUserRequest record {
@@ -220,7 +224,7 @@ public type AddactionwebhookrequestConfig record {
 };
 
 public type GetAllAddressesResponse record {
-    Address[] list;
+    (Address)[] list;
 };
 
 public type InlineResponse200 record {
@@ -252,10 +256,14 @@ public type ActionSend record {
     string owner;
 };
 
+public type ActionsBody AddActionCombineRequest|AddActionSmsRequest|AddActionWebhookRequest|AddActionDaemonRequest|AddActionSendRequest|AddActionForwardRequest|AddActionForwardRequest|AddActionReplyRequest|AddActionReplyAllRequest|AddActionAliasRequest;
+
 public type CheckDomainVerify record {
     string domain;
     boolean success;
 };
+
+public type ActionsActionBody AddActionCombineRequest|AddActionSmsRequest|AddActionWebhookRequest|AddActionDaemonRequest|AddActionSendRequest|AddActionForwardRequest|AddActionForwardRequest|AddActionReplyRequest|AddActionReplyAllRequest|AddActionAliasRequest;
 
 public type AddactionsendrequestConfig record {
     string 'from;
@@ -268,7 +276,7 @@ public type AddactionsendrequestConfig record {
 };
 
 public type GetAllWorkflowsResponse record {
-    Workflow[] list;
+    (Workflow)[] list;
 };
 
 public type DomainResponse record {
@@ -298,8 +306,6 @@ public type VerificationSms record {
     string verifiedBy?;
 };
 
-public type  Body AddActionCombineRequest|AddActionSmsRequest|AddActionWebhookRequest|AddActionDaemonRequest|AddActionSendRequest|AddActionForwardRequest|AddActionForwardRequest|AddActionReplyRequest|AddActionReplyAllRequest|AddActionAliasRequest;
-
 public type Integration record {
     string createdAt;
     string id;
@@ -307,17 +313,13 @@ public type Integration record {
 };
 
 public type GetAllInputsResponse record {
-    MailscriptEmailInput[] list;
+    (MailscriptEmailInput)[] list;
 };
 
 public type CriteriaOperand record {
     string[] and?;
     string[] or?;
 };
-
-public type  Body2 AddEmailVerificationRequest|AddSmsVerificationRequest;
-
-public type  Body3 VerifyEmailRequest|VerifySmsRequest;
 
 public type AddActionSendRequest record {
     AddactionsendrequestConfig config;
@@ -336,11 +338,11 @@ public type GetAllDomainsResponse record {
 };
 
 public type GetAllIntegrationsResponse record {
-    Integration[] list;
+    (Integration)[] list;
 };
 
 public type GetAllKeysResponse record {
-    Key[] list;
+    (Key)[] list;
 };
 
 public type AddActionAliasRequest record {
@@ -362,7 +364,7 @@ public type ErrorResponse record {
 };
 
 public type GetAllTriggersResponse record {
-    Trigger[] list;
+    (Trigger)[] list;
 };
 
 public type AddActionDaemonRequest record {
@@ -389,8 +391,6 @@ public type AddactiondaemonrequestConfig record {
     string body;
     string daemon?;
 };
-
-public type  Body1 AddActionCombineRequest|AddActionSmsRequest|AddActionWebhookRequest|AddActionDaemonRequest|AddActionSendRequest|AddActionForwardRequest|AddActionForwardRequest|AddActionReplyRequest|AddActionReplyAllRequest|AddActionAliasRequest;
 
 public type AddSmsVerificationRequest record {
     string sms;

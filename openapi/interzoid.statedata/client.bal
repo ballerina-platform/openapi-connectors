@@ -41,16 +41,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets a two-letter abbreviation for a state or province name data
     #
     # + state - State (or province) name from which to retrieve the two letter abbreviation. 
     # + return - State (or province) standardized two-letter abbreviation 
     remote isolated function getstateabbreviation(string state) returns StateData|error {
-        string  path = string `/getstateabbreviation`;
+        string resourcePath = string `/getstateabbreviation`;
         map<anydata> queryParam = {"state": state, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        StateData response = check self.clientEp-> get(path, targetType = StateData);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        StateData response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

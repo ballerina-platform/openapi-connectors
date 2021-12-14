@@ -22,6 +22,10 @@ public type DestinationStatus record {
     string status?;
 };
 
+# A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); } The JSON representation for `Empty` is empty JSON object `{}`.
+public type Empty record {
+};
+
 # A feature description of the product. For more information, see https://support.google.com/manufacturers/answer/6124116#featuredesc.
 public type FeatureDescription record {
     # A short description of the feature.

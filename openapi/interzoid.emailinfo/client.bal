@@ -41,16 +41,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets email validation information for an email address
     #
     # + email - Email address to retrieve validation information 
     # + return - Email validation and demographic information 
     remote isolated function getEmailInfo(string email) returns EmailInfo|error {
-        string  path = string `/getemailinfo`;
+        string resourcePath = string `/getemailinfo`;
         map<anydata> queryParam = {"email": email, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        EmailInfo response = check self.clientEp-> get(path, targetType = EmailInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        EmailInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

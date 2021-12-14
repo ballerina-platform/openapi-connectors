@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -61,348 +59,311 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials. 
     # Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://tasks.googleapis.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Clears all completed tasks from the specified task list. The affected tasks will be marked as 'hidden' and no longer be returned by default when retrieving all tasks for a task list.
     #
-    # + tasklist - Task list identifier.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + return - Successful response 
     remote isolated function clearTasks(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/clear`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/clear`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns all tasks in the specified task list.
     #
-    # + tasklist - Task list identifier.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + completedMax - Upper bound for a task's completion date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by completion date.
-    # + completedMin - Lower bound for a task's completion date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by completion date.
-    # + dueMax - Upper bound for a task's due date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by due date.
-    # + dueMin - Lower bound for a task's due date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by due date.
-    # + maxResults - Maximum number of task lists returned on one page. Optional. The default is 20 (max allowed: 100).
-    # + pageToken - Token specifying the result page to return. Optional.
-    # + showCompleted - Flag indicating whether completed tasks are returned in the result. Optional. The default is True. Note that showHidden must also be True to show tasks completed in first party clients, such as the web UI and Google's mobile apps.
-    # + showDeleted - Flag indicating whether deleted tasks are returned in the result. Optional. The default is False.
-    # + showHidden - Flag indicating whether hidden tasks are returned in the result. Optional. The default is False.
-    # + updatedMin - Lower bound for a task's last modification time (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by last modification time.
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + completedMax - Upper bound for a task's completion date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by completion date. 
+    # + completedMin - Lower bound for a task's completion date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by completion date. 
+    # + dueMax - Upper bound for a task's due date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by due date. 
+    # + dueMin - Lower bound for a task's due date (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by due date. 
+    # + maxResults - Maximum number of task lists returned on one page. Optional. The default is 20 (max allowed: 100). 
+    # + pageToken - Token specifying the result page to return. Optional. 
+    # + showCompleted - Flag indicating whether completed tasks are returned in the result. Optional. The default is True. Note that showHidden must also be True to show tasks completed in first party clients, such as the web UI and Google's mobile apps. 
+    # + showDeleted - Flag indicating whether deleted tasks are returned in the result. Optional. The default is False. 
+    # + showHidden - Flag indicating whether hidden tasks are returned in the result. Optional. The default is False. 
+    # + updatedMin - Lower bound for a task's last modification time (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by last modification time. 
+    # + return - Successful response 
     remote isolated function listTasks(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? completedMax = (), string? completedMin = (), string? dueMax = (), string? dueMin = (), int? maxResults = (), string? pageToken = (), boolean? showCompleted = (), boolean? showDeleted = (), boolean? showHidden = (), string? updatedMin = ()) returns Tasks|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/tasks`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "completedMax": completedMax, "completedMin": completedMin, "dueMax": dueMax, "dueMin": dueMin, "maxResults": maxResults, "pageToken": pageToken, "showCompleted": showCompleted, "showDeleted": showDeleted, "showHidden": showHidden, "updatedMin": updatedMin};
-        path = path + check getPathForQueryParam(queryParam);
-        Tasks response = check self.clientEp-> get(path, targetType = Tasks);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Tasks response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new task on the specified task list.
     #
-    # + tasklist - Task list identifier.
-    # + payload - Task request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + parent - Parent task identifier. If the task is created at the top level, this parameter is omitted. Optional.
-    # + previous - Previous sibling task identifier. If the task is created at the first position among its siblings, this parameter is omitted. Optional.
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + parent - Parent task identifier. If the task is created at the top level, this parameter is omitted. Optional. 
+    # + previous - Previous sibling task identifier. If the task is created at the first position among its siblings, this parameter is omitted. Optional. 
+    # + payload - Task request 
+    # + return - Successful response 
     remote isolated function insertTasks(string tasklist, Task payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? parent = (), string? previous = ()) returns Task|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/tasks`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "parent": parent, "previous": previous};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Task response = check self.clientEp->post(path, request, targetType=Task);
+        request.setPayload(jsonBody, "application/json");
+        Task response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified task.
     #
-    # + tasklist - Task list identifier.
-    # + task - Task identifier.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + task - Task identifier. 
+    # + return - Successful response 
     remote isolated function getTasks(string tasklist, string task, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Task|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
-        Task response = check self.clientEp-> get(path, targetType = Task);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Task response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the specified task.
     #
-    # + tasklist - Task list identifier.
-    # + task - Task identifier.
-    # + payload - Task request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + task - Task identifier. 
+    # + payload - Task request 
+    # + return - Successful response 
     remote isolated function updateTasks(string tasklist, string task, Task payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Task|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Task response = check self.clientEp->put(path, request, targetType=Task);
+        request.setPayload(jsonBody, "application/json");
+        Task response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the specified task from the task list.
     #
-    # + tasklist - Task list identifier.
-    # + task - Task identifier.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + task - Task identifier. 
+    # + return - Successful response 
     remote isolated function deleteTasks(string tasklist, string task, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Updates the specified task. This method supports patch semantics.
     #
-    # + tasklist - Task list identifier.
-    # + task - Task identifier.
-    # + payload - Task request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + task - Task identifier. 
+    # + payload - Task request 
+    # + return - Successful response 
     remote isolated function patchTasks(string tasklist, string task, Task payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Task|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Task response = check self.clientEp->patch(path, request, targetType=Task);
+        request.setPayload(jsonBody, "application/json");
+        Task response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Moves the specified task to another position in the task list. This can include putting it as a child task under a new parent and/or move it to a different position among its sibling tasks.
     #
-    # + tasklist - Task list identifier.
-    # + task - Task identifier.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + parent - New parent task identifier. If the task is moved to the top level, this parameter is omitted. Optional.
-    # + previous - New previous sibling task identifier. If the task is moved to the first position among its siblings, this parameter is omitted. Optional.
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + task - Task identifier. 
+    # + parent - New parent task identifier. If the task is moved to the top level, this parameter is omitted. Optional. 
+    # + previous - New previous sibling task identifier. If the task is moved to the first position among its siblings, this parameter is omitted. Optional. 
+    # + return - Successful response 
     remote isolated function moveTasks(string tasklist, string task, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? parent = (), string? previous = ()) returns Task|error {
-        string  path = string `/tasks/v1/lists/${tasklist}/tasks/${task}/move`;
+        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}/move`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "parent": parent, "previous": previous};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Task response = check self.clientEp-> post(path, request, targetType = Task);
+        Task response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns all the authenticated user's task lists.
     #
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + maxResults - Maximum number of task lists returned on one page. Optional. The default is 20 (max allowed: 100).
-    # + pageToken - Token specifying the result page to return. Optional.
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + maxResults - Maximum number of task lists returned on one page. Optional. The default is 20 (max allowed: 100). 
+    # + pageToken - Token specifying the result page to return. Optional. 
+    # + return - Successful response 
     remote isolated function listTasklists(string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxResults = (), string? pageToken = ()) returns TaskLists|error {
-        string  path = string `/tasks/v1/users/@me/lists`;
+        string resourcePath = string `/tasks/v1/users/@me/lists`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxResults": maxResults, "pageToken": pageToken};
-        path = path + check getPathForQueryParam(queryParam);
-        TaskLists response = check self.clientEp-> get(path, targetType = TaskLists);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        TaskLists response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new task list and adds it to the authenticated user's task lists.
     #
-    # + payload - TaskList request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + payload - TaskList request 
+    # + return - Successful response 
     remote isolated function insertTasklists(TaskList payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TaskList|error {
-        string  path = string `/tasks/v1/users/@me/lists`;
+        string resourcePath = string `/tasks/v1/users/@me/lists`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaskList response = check self.clientEp->post(path, request, targetType=TaskList);
+        request.setPayload(jsonBody, "application/json");
+        TaskList response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the authenticated user's specified task list.
     #
-    # + tasklist - Task list identifier.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + return - Successful response 
     remote isolated function getTasklists(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TaskList|error {
-        string  path = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
-        TaskList response = check self.clientEp-> get(path, targetType = TaskList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        TaskList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the authenticated user's specified task list.
     #
-    # + tasklist - Task list identifier.
-    # + payload - TaskList request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + payload - TaskList request 
+    # + return - Successful response 
     remote isolated function updateTasklists(string tasklist, TaskList payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TaskList|error {
-        string  path = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaskList response = check self.clientEp->put(path, request, targetType=TaskList);
+        request.setPayload(jsonBody, "application/json");
+        TaskList response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the authenticated user's specified task list.
     #
-    # + tasklist - Task list identifier.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + return - Successful response 
     remote isolated function deleteTasklists(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string  path = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Updates the authenticated user's specified task list. This method supports patch semantics.
     #
-    # + tasklist - Task list identifier.
-    # + payload - TaskList request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + tasklist - Task list identifier. 
+    # + payload - TaskList request 
+    # + return - Successful response 
     remote isolated function patchTasklists(string tasklist, TaskList payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TaskList|error {
-        string  path = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaskList response = check self.clientEp->patch(path, request, targetType=TaskList);
+        request.setPayload(jsonBody, "application/json");
+        TaskList response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

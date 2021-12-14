@@ -107,6 +107,13 @@ public type PublicImportMetadata record {
     string[] fileIds;
 };
 
+public type V3ImportsBody record {
+    # A list of files containing the data to import
+    string files?;
+    # JSON formatted metadata about the import. This includes a name for the import and the column mappings for each file. See the overview tab for more on the required format.
+    string importRequest?;
+};
+
 public type CollectionResponsePublicImportErrorForwardPaging record {
     PublicImportError[] results;
     ForwardPaging paging?;
@@ -117,7 +124,7 @@ public type PublicImportResponse record {
     # The status of the import.
     string state;
     # Import request in JSON
-    record  { }  importRequestJson?;
+    record {} importRequestJson?;
     # Created date/time
     string createdAt;
     # An object detailing a summary of the import record outputs
@@ -135,11 +142,4 @@ public type PublicImportResponse record {
 public type NextPage record {
     string after;
     string link?;
-};
-
-public type Body record {
-    # A list of files containing the data to import
-    string files?;
-    # JSON formatted metadata about the import. This includes a name for the import and the column mappings for each file. See the overview tab for more on the required format.
-    string importRequest?;
 };

@@ -15,7 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -66,48 +65,61 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.getgo.com/G2M/rest") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get organizer by email / Get all organizers
     #
     # + email - The email address of the organizer 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getOrganizersAllOrByEmail(string? email = ()) returns Organizer[]|error {
-        string  path = string `/organizers`;
+        string resourcePath = string `/organizers`;
         map<anydata> queryParam = {"email": email};
-        path = path + check getPathForQueryParam(queryParam);
-        Organizer[] response = check self.clientEp-> get(path, targetType = OrganizerArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Organizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create organizer
     #
     # + payload - The details of the organizer to be created 
     # + return - Created 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function createOrganizer(OrganizerReq payload) returns OrganizerShort[]|error {
-        string  path = string `/organizers`;
+        string resourcePath = string `/organizers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrganizerShort[] response = check self.clientEp->post(path, request, targetType=OrganizerShortArr);
+        request.setPayload(jsonBody, "application/json");
+        OrganizerShort[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete organizer by email
     #
     # + email - The email address of the organizer 
     # + return - No Content 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function deleteOrganizerByEmail(string email) returns http:Response|error {
-        string  path = string `/organizers`;
+        string resourcePath = string `/organizers`;
         map<anydata> queryParam = {"email": email};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get organizer
     #
     # + organizerKey - The key of the organizer 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getOrganizer(int organizerKey) returns Organizer[]|error {
-        string  path = string `/organizers/${organizerKey}`;
-        Organizer[] response = check self.clientEp-> get(path, targetType = OrganizerArr);
+        string resourcePath = string `/organizers/${organizerKey}`;
+        Organizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update organizer
@@ -115,21 +127,27 @@ public isolated client class Client {
     # + organizerKey - The key of the organizer 
     # + payload - The organizer's status 
     # + return - No Content 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function updateOrganizer(int organizerKey, OrganizerStatus payload) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}`;
+        string resourcePath = string `/organizers/${organizerKey}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete organizer
     #
     # + organizerKey - The key of the organizer 
     # + return - No Content 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function deleteOrganizer(int organizerKey) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/organizers/${organizerKey}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get attendees by organizer
@@ -139,10 +157,10 @@ public isolated client class Client {
     # + endDate - A required end of date range in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getAttendeesByOrganizer(int organizerKey, string startDate, string endDate) returns AttendeeByOrganizer[]|error {
-        string  path = string `/organizers/${organizerKey}/attendees`;
+        string resourcePath = string `/organizers/${organizerKey}/attendees`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        AttendeeByOrganizer[] response = check self.clientEp-> get(path, targetType = AttendeeByOrganizerArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        AttendeeByOrganizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get historical meetings by organizer
@@ -152,10 +170,10 @@ public isolated client class Client {
     # + endDate - Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getHistoricalMeetingsByOrganizer(int organizerKey, string startDate, string endDate) returns HistoricalMeeting[]|error {
-        string  path = string `/organizers/${organizerKey}/historicalMeetings`;
+        string resourcePath = string `/organizers/${organizerKey}/historicalMeetings`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        HistoricalMeeting[] response = check self.clientEp-> get(path, targetType = HistoricalMeetingArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        HistoricalMeeting[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get upcoming meetings by organizer
@@ -163,8 +181,8 @@ public isolated client class Client {
     # + organizerKey - The key of the organizer 
     # + return - OK 
     remote isolated function getUpcomingMeetingsByOrganizer(int organizerKey) returns UpcomingMeeting[]|error {
-        string  path = string `/organizers/${organizerKey}/upcomingMeetings`;
-        UpcomingMeeting[] response = check self.clientEp-> get(path, targetType = UpcomingMeetingArr);
+        string resourcePath = string `/organizers/${organizerKey}/upcomingMeetings`;
+        UpcomingMeeting[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get meetings by organizer
@@ -175,11 +193,14 @@ public isolated client class Client {
     # + startDate - If history is 'true', required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z 
     # + endDate - If history is 'true', required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getMeetingsByOrganizer(int organizerKey, boolean? scheduled = (), boolean? history = (), string? startDate = (), string? endDate = ()) returns MeetingByOrganizer[]|error {
-        string  path = string `/organizers/${organizerKey}/meetings`;
+        string resourcePath = string `/organizers/${organizerKey}/meetings`;
         map<anydata> queryParam = {"scheduled": scheduled, "history": history, "startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        MeetingByOrganizer[] response = check self.clientEp-> get(path, targetType = MeetingByOrganizerArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MeetingByOrganizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete meeting session by session id
@@ -188,8 +209,8 @@ public isolated client class Client {
     # + sessionId - The session ID 
     # + return - No Content 
     remote isolated function deleteSessionById(int organizerKey, int sessionId) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/sessions/${sessionId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/organizers/${organizerKey}/sessions/${sessionId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Remove attendee list of a meeting session
@@ -198,8 +219,8 @@ public isolated client class Client {
     # + sessionId - The session ID 
     # + return - No Content 
     remote isolated function deleteSessionAttendeesById(int organizerKey, int sessionId) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/sessions/${sessionId}/attendees`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/organizers/${organizerKey}/sessions/${sessionId}/attendees`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Delete recordings of a meeting session
@@ -208,16 +229,19 @@ public isolated client class Client {
     # + sessionId - The session ID 
     # + return - No Content 
     remote isolated function deleteSessionRecordingsById(int organizerKey, int sessionId) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/sessions/${sessionId}/recordings`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/organizers/${organizerKey}/sessions/${sessionId}/recordings`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get groups
     #
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getGroups() returns Group[]|error {
-        string  path = string `/groups`;
-        Group[] response = check self.clientEp-> get(path, targetType = GroupArr);
+        string resourcePath = string `/groups`;
+        Group[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get attendees by group
@@ -227,10 +251,10 @@ public isolated client class Client {
     # + endDate - End of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getAttendeesByGroup(int groupKey, string? startDate = (), string? endDate = ()) returns AttendeeByGroup[]|error {
-        string  path = string `/groups/${groupKey}/attendees`;
+        string resourcePath = string `/groups/${groupKey}/attendees`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        AttendeeByGroup[] response = check self.clientEp-> get(path, targetType = AttendeeByGroupArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        AttendeeByGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get historical meetings by group
@@ -240,10 +264,10 @@ public isolated client class Client {
     # + endDate - Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getHistoricalMeetingsByGroup(int groupKey, string startDate, string endDate) returns HistoricalMeetingByGroup[]|error {
-        string  path = string `/groups/${groupKey}/historicalMeetings`;
+        string resourcePath = string `/groups/${groupKey}/historicalMeetings`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        HistoricalMeetingByGroup[] response = check self.clientEp-> get(path, targetType = HistoricalMeetingByGroupArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        HistoricalMeetingByGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get upcoming meetings by group
@@ -251,8 +275,8 @@ public isolated client class Client {
     # + groupKey - The key of the group 
     # + return - OK 
     remote isolated function getUpcomingMeetingsByGroup(int groupKey) returns UpcomingMeetingByGroup[]|error {
-        string  path = string `/groups/${groupKey}/upcomingMeetings`;
-        UpcomingMeetingByGroup[] response = check self.clientEp-> get(path, targetType = UpcomingMeetingByGroupArr);
+        string resourcePath = string `/groups/${groupKey}/upcomingMeetings`;
+        UpcomingMeetingByGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get meetings by group
@@ -263,20 +287,26 @@ public isolated client class Client {
     # + startDate - If history=true, required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z 
     # + endDate - If history=true, required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getMeetingsByGroup(int groupKey, boolean? scheduled = (), boolean? history = (), string? startDate = (), string? endDate = ()) returns HistoryMeetingByGroup[]|error {
-        string  path = string `/groups/${groupKey}/meetings`;
+        string resourcePath = string `/groups/${groupKey}/meetings`;
         map<anydata> queryParam = {"scheduled": scheduled, "history": history, "startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        HistoryMeetingByGroup[] response = check self.clientEp-> get(path, targetType = HistoryMeetingByGroupArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        HistoryMeetingByGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get organizers by group
     #
     # + groupKey - The key of the group 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getOrganizersByGroup(int groupKey) returns OrganizerByGroup[]|error {
-        string  path = string `/groups/${groupKey}/organizers`;
-        OrganizerByGroup[] response = check self.clientEp-> get(path, targetType = OrganizerByGroupArr);
+        string resourcePath = string `/groups/${groupKey}/organizers`;
+        OrganizerByGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create organizer in group
@@ -284,12 +314,15 @@ public isolated client class Client {
     # + groupKey - The key of the group 
     # + payload - The details of the organizer to be created 
     # + return - Created 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function createOrganizerInGroup(int groupKey, OrganizerReq payload) returns OrganizerShort[]|error {
-        string  path = string `/groups/${groupKey}/organizers`;
+        string resourcePath = string `/groups/${groupKey}/organizers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrganizerShort[] response = check self.clientEp->post(path, request, targetType=OrganizerShortArr);
+        request.setPayload(jsonBody, "application/json");
+        OrganizerShort[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get historical meetings
@@ -298,18 +331,18 @@ public isolated client class Client {
     # + endDate - Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getHistoricalMeetings(string startDate, string endDate) returns HistoricalMeeting[]|error {
-        string  path = string `/historicalMeetings`;
+        string resourcePath = string `/historicalMeetings`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        HistoricalMeeting[] response = check self.clientEp-> get(path, targetType = HistoricalMeetingArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        HistoricalMeeting[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get upcoming meetings
     #
     # + return - OK 
     remote isolated function getUpcomingMeetings() returns UpcomingMeeting[]|error {
-        string  path = string `/upcomingMeetings`;
-        UpcomingMeeting[] response = check self.clientEp-> get(path, targetType = UpcomingMeetingArr);
+        string resourcePath = string `/upcomingMeetings`;
+        UpcomingMeeting[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get meetings
@@ -319,11 +352,14 @@ public isolated client class Client {
     # + startDate - If history=true, required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z 
     # + endDate - If history=true, required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getMeetings(boolean? scheduled = (), boolean? history = (), string? startDate = (), string? endDate = ()) returns MeetingHistory[]|error {
-        string  path = string `/meetings`;
+        string resourcePath = string `/meetings`;
         map<anydata> queryParam = {"scheduled": scheduled, "history": history, "startDate": startDate, "endDate": endDate};
-        path = path + check getPathForQueryParam(queryParam);
-        MeetingHistory[] response = check self.clientEp-> get(path, targetType = MeetingHistoryArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MeetingHistory[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create meeting
@@ -331,11 +367,11 @@ public isolated client class Client {
     # + payload - The meeting details 
     # + return - Created 
     remote isolated function createMeeting(MeetingReqCreate payload) returns MeetingCreated[]|error {
-        string  path = string `/meetings`;
+        string resourcePath = string `/meetings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MeetingCreated[] response = check self.clientEp->post(path, request, targetType=MeetingCreatedArr);
+        request.setPayload(jsonBody, "application/json");
+        MeetingCreated[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get meeting
@@ -343,8 +379,8 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - OK 
     remote isolated function getMeeting(int meetingId) returns MeetingById[]|error {
-        string  path = string `/meetings/${meetingId}`;
-        MeetingById[] response = check self.clientEp-> get(path, targetType = MeetingByIdArr);
+        string resourcePath = string `/meetings/${meetingId}`;
+        MeetingById[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update meeting
@@ -353,11 +389,11 @@ public isolated client class Client {
     # + payload - The meeting details 
     # + return - No Content 
     remote isolated function updateMeeting(int meetingId, MeetingReqUpdate payload) returns http:Response|error {
-        string  path = string `/meetings/${meetingId}`;
+        string resourcePath = string `/meetings/${meetingId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete meeting
@@ -365,8 +401,8 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - No Content 
     remote isolated function deleteMeeting(int meetingId) returns http:Response|error {
-        string  path = string `/meetings/${meetingId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/meetings/${meetingId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Start meeting
@@ -374,8 +410,8 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - OK 
     remote isolated function startMeeting(int meetingId) returns StartUrl|error {
-        string  path = string `/meetings/${meetingId}/start`;
-        StartUrl response = check self.clientEp-> get(path, targetType = StartUrl);
+        string resourcePath = string `/meetings/${meetingId}/start`;
+        StartUrl response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get attendees by meeting
@@ -383,42 +419,8 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - OK 
     remote isolated function getAttendeesByMeetings(int meetingId) returns AttendeeByMeeting[]|error {
-        string  path = string `/meetings/${meetingId}/attendees`;
-        AttendeeByMeeting[] response = check self.clientEp-> get(path, targetType = AttendeeByMeetingArr);
+        string resourcePath = string `/meetings/${meetingId}/attendees`;
+        AttendeeByMeeting[] response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

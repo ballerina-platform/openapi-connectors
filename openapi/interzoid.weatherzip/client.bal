@@ -41,16 +41,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets current weather information for a US zip code
     #
     # + zip - Zip code for weather information 
     # + return - Current weather information for zip code 
     remote isolated function getweatherzipcode(string zip) returns WeatherData|error {
-        string  path = string `/getweatherzipcode`;
+        string resourcePath = string `/getweatherzipcode`;
         map<anydata> queryParam = {"zip": zip, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        WeatherData response = check self.clientEp-> get(path, targetType = WeatherData);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WeatherData response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # List
     #
@@ -50,38 +51,38 @@ public isolated client class Client {
     # + archived - Whether to return only results that have been archived. 
     # + return - successful operation 
     remote isolated function getPage(int 'limit = 10, string? after = (), string[]? properties = (), string[]? associations = (), boolean archived = false) returns CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error {
-        string  path = string `/crm/v3/objects/feedback_submissions`;
+        string resourcePath = string `/crm/v3/objects/feedback_submissions`;
         map<anydata> queryParam = {"limit": 'limit, "after": after, "properties": properties, "associations": associations, "archived": archived, "hapikey": self.apiKeyConfig.hapikey};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check self.clientEp-> get(path, targetType = CollectionResponseSimplePublicObjectWithAssociationsForwardPaging);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Read a batch of feedback submissions by internal ID, or unique property values
     #
     # + archived - Whether to return only results that have been archived. 
     # + return - successful operation 
-    remote isolated function batchReadReadBatch(BatchReadInputSimplePublicObjectId payload, boolean archived = false) returns BatchResponseSimplePublicObject|error {
-        string  path = string `/crm/v3/objects/feedback_submissions/batch/read`;
+    remote isolated function batchReadReadBatch(BatchReadInputSimplePublicObjectId payload, boolean archived = false) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+        string resourcePath = string `/crm/v3/objects/feedback_submissions/batch/read`;
         map<anydata> queryParam = {"archived": archived, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchResponseSimplePublicObject response = check self.clientEp->post(path, request, targetType=BatchResponseSimplePublicObject);
+        request.setPayload(jsonBody, "application/json");
+        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Filter, Sort, and Search CRM Objects
     #
     # + return - successful operation 
     remote isolated function doSearch(PublicObjectSearchRequest payload) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {
-        string  path = string `/crm/v3/objects/feedback_submissions/search`;
+        string resourcePath = string `/crm/v3/objects/feedback_submissions/search`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check self.clientEp->post(path, request, targetType=CollectionResponseWithTotalSimplePublicObjectForwardPaging);
+        request.setPayload(jsonBody, "application/json");
+        CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read
@@ -93,11 +94,11 @@ public isolated client class Client {
     # + idProperty - The name of a property whose values are unique for this object type 
     # + return - successful operation 
     remote isolated function getById(string feedbackSubmissionId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
-        string  path = string `/crm/v3/objects/feedback_submissions/${feedbackSubmissionId}`;
+        string resourcePath = string `/crm/v3/objects/feedback_submissions/${feedbackSubmissionId}`;
         map<anydata> queryParam = {"properties": properties, "associations": associations, "archived": archived, "idProperty": idProperty, "hapikey": self.apiKeyConfig.hapikey};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        SimplePublicObjectWithAssociations response = check self.clientEp-> get(path, targetType = SimplePublicObjectWithAssociations);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SimplePublicObjectWithAssociations response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List associations of a feedback submission by type
@@ -108,10 +109,10 @@ public isolated client class Client {
     # + 'limit - The maximum number of results to display per page. 
     # + return - successful operation 
     remote isolated function associationsGetAll(string feedbackSubmissionId, string toObjectType, string? after = (), int 'limit = 500) returns CollectionResponseAssociatedIdForwardPaging|error {
-        string  path = string `/crm/v3/objects/feedback_submissions/${feedbackSubmissionId}/associations/${toObjectType}`;
+        string resourcePath = string `/crm/v3/objects/feedback_submissions/${feedbackSubmissionId}/associations/${toObjectType}`;
         map<anydata> queryParam = {"after": after, "limit": 'limit, "hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
-        CollectionResponseAssociatedIdForwardPaging response = check self.clientEp-> get(path, targetType = CollectionResponseAssociatedIdForwardPaging);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CollectionResponseAssociatedIdForwardPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

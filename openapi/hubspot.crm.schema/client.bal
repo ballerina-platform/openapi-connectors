@@ -14,9 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -51,6 +49,7 @@ public type ClientConfig record {|
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
 |};
+
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
 # The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object's type, properties, and associations. The schema can be uniquely identified by its **object type ID**.
 @display {label: "HubSpot CRM Schema", iconPath: "icon.png"}
@@ -60,140 +59,104 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials.
     # Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get all schemas
     #
-    # + archived - Whether to return only results that have been archived.
-    # + return - successful operation
+    # + archived - Whether to return only results that have been archived. 
+    # + return - successful operation 
     remote isolated function getAll(boolean archived = false) returns CollectionResponseObjectSchemaNoPaging|error {
-        string  path = string `/crm/v3/schemas`;
+        string resourcePath = string `/crm/v3/schemas`;
         map<anydata> queryParam = {"archived": archived};
-        path = path + check getPathForQueryParam(queryParam);
-        CollectionResponseObjectSchemaNoPaging response = check self.clientEp-> get(path, targetType = CollectionResponseObjectSchemaNoPaging);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CollectionResponseObjectSchemaNoPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new schema
     #
-    # + payload - Object schema definition, including properties and associations.
-    # + return - successful operation
+    # + payload - Object schema definition, including properties and associations. 
+    # + return - successful operation 
     remote isolated function create(ObjectSchemaEgg payload) returns ObjectSchema|error {
-        string  path = string `/crm/v3/schemas`;
+        string resourcePath = string `/crm/v3/schemas`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ObjectSchema response = check self.clientEp->post(path, request, targetType=ObjectSchema);
+        request.setPayload(jsonBody, "application/json");
+        ObjectSchema response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get an existing schema
     #
-    # + objectType - Fully qualified name or object type ID of your schema.
-    # + return - successful operation
+    # + objectType - Fully qualified name or object type ID of your schema. 
+    # + return - successful operation 
     remote isolated function getById(string objectType) returns ObjectSchema|error {
-        string  path = string `/crm/v3/schemas/${objectType}`;
-        ObjectSchema response = check self.clientEp-> get(path, targetType = ObjectSchema);
+        string resourcePath = string `/crm/v3/schemas/${objectType}`;
+        ObjectSchema response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a schema
     #
-    # + objectType - Fully qualified name or object type ID of your schema.
-    # + archived - Whether to return only results that have been archived.
-    # + return - No content
+    # + objectType - Fully qualified name or object type ID of your schema. 
+    # + archived - Whether to return only results that have been archived. 
+    # + return - No content 
     remote isolated function archive(string objectType, boolean archived = false) returns http:Response|error {
-        string  path = string `/crm/v3/schemas/${objectType}`;
+        string resourcePath = string `/crm/v3/schemas/${objectType}`;
         map<anydata> queryParam = {"archived": archived};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a schema
     #
-    # + objectType - Fully qualified name or object type ID of your schema.
-    # + payload - Attributes to update in your schema.
-    # + return - successful operation
+    # + objectType - Fully qualified name or object type ID of your schema. 
+    # + payload - Attributes to update in your schema. 
+    # + return - successful operation 
     remote isolated function update(string objectType, ObjectTypeDefinitionPatch payload) returns ObjectTypeDefinition|error {
-        string  path = string `/crm/v3/schemas/${objectType}`;
+        string resourcePath = string `/crm/v3/schemas/${objectType}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ObjectTypeDefinition response = check self.clientEp->patch(path, request, targetType=ObjectTypeDefinition);
+        request.setPayload(jsonBody, "application/json");
+        ObjectTypeDefinition response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Create an association
     #
-    # + objectType - Fully qualified name or object type ID of your schema.
-    # + payload - Attributes that define the association.
-    # + return - successful operation
+    # + objectType - Fully qualified name or object type ID of your schema. 
+    # + payload - Attributes that define the association. 
+    # + return - successful operation 
     remote isolated function associationsCreateassociation(string objectType, AssociationDefinitionEgg payload) returns AssociationDefinition|error {
-        string  path = string `/crm/v3/schemas/${objectType}/associations`;
+        string resourcePath = string `/crm/v3/schemas/${objectType}/associations`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AssociationDefinition response = check self.clientEp->post(path, request, targetType=AssociationDefinition);
+        request.setPayload(jsonBody, "application/json");
+        AssociationDefinition response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Remove an association
     #
-    # + objectType - Fully qualified name or object type ID of your schema.
-    # + associationIdentifier - Unique ID of the association to remove.
-    # + return - No content
+    # + objectType - Fully qualified name or object type ID of your schema. 
+    # + associationIdentifier - Unique ID of the association to remove. 
+    # + return - No content 
     remote isolated function associationsArchiveassociation(string objectType, string associationIdentifier) returns http:Response|error {
-        string  path = string `/crm/v3/schemas/${objectType}/associations/${associationIdentifier}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/crm/v3/schemas/${objectType}/associations/${associationIdentifier}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Purge schemas
     #
-    # + objectType - Fully qualified name or object type ID of your schema.
-    # + return - No content
+    # + objectType - Fully qualified name or object type ID of your schema. 
+    # + return - No content 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function purge(string objectType) returns http:Response|error {
-        string  path = string `/crm/v3/schemas/${objectType}/purge`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/crm/v3/schemas/${objectType}/purge`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

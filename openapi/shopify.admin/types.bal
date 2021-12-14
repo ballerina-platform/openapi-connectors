@@ -956,7 +956,6 @@ public type ClientDetails record {
 };
 
 # An ordered list of stacked discount applications.
-# An ordered list of stacked discount applications.
 public type DiscountApplications DiscountApplication[]?;
 
 # A list of products

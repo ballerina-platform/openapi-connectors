@@ -427,7 +427,7 @@ public type CredentialOptions record {
     string cidrs?;
     boolean global?;
     string name?;
-    record {} secret?;
+    AWSCredentialFields|MiradoreCredentialFields secret?;
     string 'type?;
 };
 

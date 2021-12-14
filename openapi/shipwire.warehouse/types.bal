@@ -199,7 +199,7 @@ public type CarrierResources record {
     # A link used to fetch the next set or page of items in the API response.
     string next?;
     # Items
-    record{}[] items?;
+    record {}[] items?;
 };
 
 public type ResourcedimensionvaluesDimensions record {

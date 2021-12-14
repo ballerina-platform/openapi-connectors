@@ -103,7 +103,7 @@ public type TokenRequest record {
 
 public type SendmessagesrequestFilters record {
     string[] tags?;
-    record{}[] attributes?;
+    record {}[] attributes?;
 };
 
 # Represent an API pagination error

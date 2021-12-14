@@ -65,14 +65,15 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.freshbooks.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List all clients
     #
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function listClients(string accountId) returns ClientListResponse|error {
-        string path = string `/accounting/account/${accountId}/users/clients`;
-        ClientListResponse response = check self.clientEp->get(path, targetType = ClientListResponse);
+        string resourcePath = string `/accounting/account/${accountId}/users/clients`;
+        ClientListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new client
@@ -81,11 +82,11 @@ public isolated client class Client {
     # + payload - New client data 
     # + return - Success 
     remote isolated function createClient(string accountId, ClientCreateObject payload) returns ClientObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/users/clients`;
+        string resourcePath = string `/accounting/account/${accountId}/users/clients`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ClientObjectResponse response = check self.clientEp->post(path, request, targetType = ClientObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        ClientObjectResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a single client with the parameter associated with clientId.
@@ -94,8 +95,8 @@ public isolated client class Client {
     # + clientId - Client ID. 
     # + return - Success 
     remote isolated function getClient(string accountId, string clientId) returns ClientObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/users/clients/${clientId}`;
-        ClientObjectResponse response = check self.clientEp->get(path, targetType = ClientObjectResponse);
+        string resourcePath = string `/accounting/account/${accountId}/users/clients/${clientId}`;
+        ClientObjectResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Upadate a client
@@ -105,11 +106,11 @@ public isolated client class Client {
     # + payload - Updated client data 
     # + return - Success 
     remote isolated function updateClient(string accountId, string clientId, ClientCreateObject payload) returns ClientObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/users/clients/${clientId}`;
+        string resourcePath = string `/accounting/account/${accountId}/users/clients/${clientId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ClientObjectResponse response = check self.clientEp->put(path, request, targetType = ClientObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        ClientObjectResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get an entire list of estimates that exist within your account.
@@ -117,8 +118,8 @@ public isolated client class Client {
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function listEstimates(string accountId) returns EstimateListResponse|error {
-        string path = string `/accounting/account/${accountId}/estimates/estimates`;
-        EstimateListResponse response = check self.clientEp->get(path, targetType = EstimateListResponse);
+        string resourcePath = string `/accounting/account/${accountId}/estimates/estimates`;
+        EstimateListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a single estimate
@@ -127,8 +128,8 @@ public isolated client class Client {
     # + estimateId - Estimate ID. 
     # + return - Success 
     remote isolated function getEstimate(string accountId, string estimateId) returns EstimateObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/estimates/estimates/${estimateId}`;
-        EstimateObjectResponse response = check self.clientEp->get(path, targetType = EstimateObjectResponse);
+        string resourcePath = string `/accounting/account/${accountId}/estimates/estimates/${estimateId}`;
+        EstimateObjectResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an estimate
@@ -138,11 +139,11 @@ public isolated client class Client {
     # + payload - Updated estimate data 
     # + return - Success 
     remote isolated function updateEstimate(string accountId, string estimateId, EstimateUpdateObject payload) returns EstimateObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/estimates/estimates/${estimateId}`;
+        string resourcePath = string `/accounting/account/${accountId}/estimates/estimates/${estimateId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EstimateObjectResponse response = check self.clientEp->put(path, request, targetType = EstimateObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        EstimateObjectResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get all expenses
@@ -150,8 +151,8 @@ public isolated client class Client {
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function listExpenses(string accountId) returns ExpenseListResponse|error {
-        string path = string `/accounting/account/${accountId}/expenses/expenses`;
-        ExpenseListResponse response = check self.clientEp->get(path, targetType = ExpenseListResponse);
+        string resourcePath = string `/accounting/account/${accountId}/expenses/expenses`;
+        ExpenseListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new expense
@@ -160,11 +161,11 @@ public isolated client class Client {
     # + payload - New expense data 
     # + return - Success 
     remote isolated function createExpense(string accountId, ExpenseCreateObject payload) returns ExpenseObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/expenses/expenses`;
+        string resourcePath = string `/accounting/account/${accountId}/expenses/expenses`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ExpenseObjectResponse response = check self.clientEp->post(path, request, targetType = ExpenseObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        ExpenseObjectResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a single expense
@@ -173,8 +174,8 @@ public isolated client class Client {
     # + expenseId - Expense ID. 
     # + return - Success 
     remote isolated function getExpense(string accountId, string expenseId) returns ExpenseObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/expenses/expenses/${expenseId}`;
-        ExpenseObjectResponse response = check self.clientEp->get(path, targetType = ExpenseObjectResponse);
+        string resourcePath = string `/accounting/account/${accountId}/expenses/expenses/${expenseId}`;
+        ExpenseObjectResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an expense
@@ -184,11 +185,11 @@ public isolated client class Client {
     # + payload - Updated expense data 
     # + return - Success 
     remote isolated function updateExpense(string accountId, string expenseId, ExpenseUpdateObject payload) returns ExpenseObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/expenses/expenses/${expenseId}`;
+        string resourcePath = string `/accounting/account/${accountId}/expenses/expenses/${expenseId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ExpenseObjectResponse response = check self.clientEp->put(path, request, targetType = ExpenseObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        ExpenseObjectResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get all invoices
@@ -196,8 +197,8 @@ public isolated client class Client {
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function listInvoices(string accountId) returns InvoiceListResponse|error {
-        string path = string `/accounting/account/${accountId}/invoices/invoices`;
-        InvoiceListResponse response = check self.clientEp->get(path, targetType = InvoiceListResponse);
+        string resourcePath = string `/accounting/account/${accountId}/invoices/invoices`;
+        InvoiceListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new invoice
@@ -206,11 +207,11 @@ public isolated client class Client {
     # + payload - New invoice data 
     # + return - Success 
     remote isolated function createInvoice(string accountId, InvoiceCreateObject payload) returns InvoiceObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/invoices/invoices`;
+        string resourcePath = string `/accounting/account/${accountId}/invoices/invoices`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InvoiceObjectResponse response = check self.clientEp->post(path, request, targetType = InvoiceObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        InvoiceObjectResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a single invoice
@@ -219,8 +220,8 @@ public isolated client class Client {
     # + invoiceId - Invoice ID. 
     # + return - Success 
     remote isolated function getInvoice(string accountId, string invoiceId) returns InvoiceObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/invoices/invoices/${invoiceId}`;
-        InvoiceObjectResponse response = check self.clientEp->get(path, targetType = InvoiceObjectResponse);
+        string resourcePath = string `/accounting/account/${accountId}/invoices/invoices/${invoiceId}`;
+        InvoiceObjectResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an invoice
@@ -230,11 +231,11 @@ public isolated client class Client {
     # + payload - Updated invoice data 
     # + return - Success 
     remote isolated function updateInvoice(string accountId, string invoiceId, InvoiceUpdateObject payload) returns InvoiceObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/invoices/invoices/${invoiceId}`;
+        string resourcePath = string `/accounting/account/${accountId}/invoices/invoices/${invoiceId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InvoiceObjectResponse response = check self.clientEp->put(path, request, targetType = InvoiceObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        InvoiceObjectResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get time entries
@@ -252,10 +253,10 @@ public isolated client class Client {
     # + identityId - Matches entries logged against a specific teammate or user 
     # + return - Success 
     remote isolated function listTimeEntries(string businessId, boolean? billable = (), boolean? billed = (), int? clientId = (), boolean? includeDeleted = (), boolean? team = (), boolean? includeUnlogged = (), boolean? startedFrom = (), boolean? startedTo = (), boolean? updatedSince = (), boolean? identityId = ()) returns TimeEntryListResponse|error {
-        string path = string `/timetracking/business/${businessId}/time_entries`;
+        string resourcePath = string `/timetracking/business/${businessId}/time_entries`;
         map<anydata> queryParam = {"billable": billable, "billed": billed, "client_id": clientId, "include_deleted": includeDeleted, "team": team, "include_unlogged": includeUnlogged, "started_from": startedFrom, "started_to": startedTo, "updated_since": updatedSince, "identity_id": identityId};
-        path = path + check getPathForQueryParam(queryParam);
-        TimeEntryListResponse response = check self.clientEp->get(path, targetType = TimeEntryListResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        TimeEntryListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new time entry
@@ -264,11 +265,11 @@ public isolated client class Client {
     # + payload - New time entries data 
     # + return - Success 
     remote isolated function createTimeEntry(string businessId, TimeEntryCreateObject payload) returns TimeEntryObjectResponse|error {
-        string path = string `/timetracking/business/${businessId}/time_entries`;
+        string resourcePath = string `/timetracking/business/${businessId}/time_entries`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TimeEntryObjectResponse response = check self.clientEp->post(path, request, targetType = TimeEntryObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        TimeEntryObjectResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update a time entry
@@ -278,11 +279,11 @@ public isolated client class Client {
     # + payload - Updated time entry data 
     # + return - Success 
     remote isolated function updateTimeEntry(string businessId, string timeEntryId, TimeEntryUpdateObject payload) returns TimeEntryObjectResponse|error {
-        string path = string `/timetracking/business/${businessId}/time_entries/${timeEntryId}`;
+        string resourcePath = string `/timetracking/business/${businessId}/time_entries/${timeEntryId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TimeEntryObjectResponse response = check self.clientEp->put(path, request, targetType = TimeEntryObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        TimeEntryObjectResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a time entry
@@ -291,8 +292,8 @@ public isolated client class Client {
     # + timeEntryId - Time entry ID. 
     # + return - Success 
     remote isolated function deleteTimeEntry(string businessId, string timeEntryId) returns http:Response|error {
-        string path = string `/timetracking/business/${businessId}/time_entries/${timeEntryId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/timetracking/business/${businessId}/time_entries/${timeEntryId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Create a new project
@@ -301,11 +302,11 @@ public isolated client class Client {
     # + payload - New project data 
     # + return - Success 
     remote isolated function createProject(string businessId, ProjectCreateObject payload) returns ProjectObjectResponse|error {
-        string path = string `/projects/business/${businessId}/projects`;
+        string resourcePath = string `/projects/business/${businessId}/projects`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProjectObjectResponse response = check self.clientEp->post(path, request, targetType = ProjectObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        ProjectObjectResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get details of all taxes
@@ -313,8 +314,8 @@ public isolated client class Client {
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function listTaxes(string accountId) returns TaxListResponse|error {
-        string path = string `/accounting/account/${accountId}/taxes/taxes`;
-        TaxListResponse response = check self.clientEp->get(path, targetType = TaxListResponse);
+        string resourcePath = string `/accounting/account/${accountId}/taxes/taxes`;
+        TaxListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new tax
@@ -323,11 +324,11 @@ public isolated client class Client {
     # + payload - New tax data 
     # + return - Success 
     remote isolated function createTax(string accountId, TaxCreateObject payload) returns TaxObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/taxes/taxes`;
+        string resourcePath = string `/accounting/account/${accountId}/taxes/taxes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaxObjectResponse response = check self.clientEp->post(path, request, targetType = TaxObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        TaxObjectResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a single tax details
@@ -336,8 +337,8 @@ public isolated client class Client {
     # + taxId - Tax ID. 
     # + return - Success 
     remote isolated function getTax(string accountId, string taxId) returns TaxObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/taxes/taxes/${taxId}`;
-        TaxObjectResponse response = check self.clientEp->get(path, targetType = TaxObjectResponse);
+        string resourcePath = string `/accounting/account/${accountId}/taxes/taxes/${taxId}`;
+        TaxObjectResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a tax
@@ -347,11 +348,11 @@ public isolated client class Client {
     # + payload - Updated tax entry data 
     # + return - Success 
     remote isolated function updateTax(string accountId, string taxId, TaxUpdateObject payload) returns TaxObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/taxes/taxes/${taxId}`;
+        string resourcePath = string `/accounting/account/${accountId}/taxes/taxes/${taxId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaxObjectResponse response = check self.clientEp->put(path, request, targetType = TaxObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        TaxObjectResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a tax
@@ -360,8 +361,8 @@ public isolated client class Client {
     # + taxId - Tax ID. 
     # + return - Success 
     remote isolated function deleteTax(string accountId, string taxId) returns http:Response|error {
-        string path = string `/accounting/account/${accountId}/taxes/taxes/${taxId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/accounting/account/${accountId}/taxes/taxes/${taxId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get details of all expense categories
@@ -369,8 +370,8 @@ public isolated client class Client {
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function listExpenseCategories(string accountId) returns ExpenseCategoryListResponse|error {
-        string path = string `/accounting/account/${accountId}/expenses/categories`;
-        ExpenseCategoryListResponse response = check self.clientEp->get(path, targetType = ExpenseCategoryListResponse);
+        string resourcePath = string `/accounting/account/${accountId}/expenses/categories`;
+        ExpenseCategoryListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a single expense category details
@@ -379,8 +380,8 @@ public isolated client class Client {
     # + categoryId - Category ID. 
     # + return - Success 
     remote isolated function getExpenseCategory(string accountId, string categoryId) returns ExpenseCategoryObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/expenses/categories/${categoryId}`;
-        ExpenseCategoryObjectResponse response = check self.clientEp->get(path, targetType = ExpenseCategoryObjectResponse);
+        string resourcePath = string `/accounting/account/${accountId}/expenses/categories/${categoryId}`;
+        ExpenseCategoryObjectResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get details of all payments
@@ -388,8 +389,8 @@ public isolated client class Client {
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function listPayments(string accountId) returns PaymemtListResponse|error {
-        string path = string `/accounting/account/${accountId}/payments/payments`;
-        PaymemtListResponse response = check self.clientEp->get(path, targetType = PaymemtListResponse);
+        string resourcePath = string `/accounting/account/${accountId}/payments/payments`;
+        PaymemtListResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add a payment to a specific invoice
@@ -398,11 +399,11 @@ public isolated client class Client {
     # + payload - New payment data 
     # + return - Success 
     remote isolated function makePayment(string accountId, PaymemtCreateObject payload) returns PaymemtObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/payments/payments`;
+        string resourcePath = string `/accounting/account/${accountId}/payments/payments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PaymemtObjectResponse response = check self.clientEp->post(path, request, targetType = PaymemtObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        PaymemtObjectResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a single payment details
@@ -411,8 +412,8 @@ public isolated client class Client {
     # + paymentId - Payment ID. 
     # + return - Success 
     remote isolated function getPayment(string accountId, string paymentId) returns PaymemtObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/payments/payments/${paymentId}`;
-        PaymemtObjectResponse response = check self.clientEp->get(path, targetType = PaymemtObjectResponse);
+        string resourcePath = string `/accounting/account/${accountId}/payments/payments/${paymentId}`;
+        PaymemtObjectResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a payment
@@ -422,11 +423,11 @@ public isolated client class Client {
     # + payload - Updated tax entry data 
     # + return - Success 
     remote isolated function updatePayment(string accountId, string paymentId, PaymemtCreateObject payload) returns PaymemtObjectResponse|error {
-        string path = string `/accounting/account/${accountId}/payments/payments/${paymentId}`;
+        string resourcePath = string `/accounting/account/${accountId}/payments/payments/${paymentId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PaymemtObjectResponse response = check self.clientEp->put(path, request, targetType = PaymemtObjectResponse);
+        request.setPayload(jsonBody, "application/json");
+        PaymemtObjectResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
 }

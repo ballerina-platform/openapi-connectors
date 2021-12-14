@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.prodpad.com/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get list of feedbacks
     #
@@ -86,11 +87,11 @@ public isolated client class Client {
     # + externalUrl - Filter feedback to return the feedback associated with a specific external url. An example of an external url is that of a record in a CRM or a ticket in a customer support application 
     # + return - Success response. 
     remote isolated function getFeedbacks(string? groupBy = (), string? state = (), int? page = (), int? size = (), string? company = (), string? companyCountry = (), string? companySize = (), string? companyValue = (), string? customer = (), string? product = (), string? persona = (), string? jobRole = (), string[]? tags = (), boolean? hasIdeas = (), string? externalId = (), string? externalUrl = ()) returns FeedbackList|error {
-        string  path = string `/feedbacks`;
+        string resourcePath = string `/feedbacks`;
         map<anydata> queryParam = {"group_by": groupBy, "state": state, "page": page, "size": size, "company": company, "company_country": companyCountry, "company_size": companySize, "company_value": companyValue, "customer": customer, "product": product, "persona": persona, "job_role": jobRole, "tags": tags, "has_ideas": hasIdeas, "external_id": externalId, "external_url": externalUrl};
         map<Encoding> queryParamEncoding = {"tags": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        FeedbackList response = check self.clientEp-> get(path, targetType = FeedbackList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        FeedbackList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new feedback.
@@ -98,11 +99,11 @@ public isolated client class Client {
     # + payload - Post body for the feedback. 
     # + return - Success response. 
     remote isolated function postFeedbacks(FeedbackPost payload) returns ContactLinkWithFeedback|error {
-        string  path = string `/feedbacks`;
+        string resourcePath = string `/feedbacks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ContactLinkWithFeedback response = check self.clientEp->post(path, request, targetType=ContactLinkWithFeedback);
+        request.setPayload(jsonBody, "application/json");
+        ContactLinkWithFeedback response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a piece of feedback.
@@ -110,8 +111,8 @@ public isolated client class Client {
     # + id - Feedback ID. 
     # + return - Success response. 
     remote isolated function getFeedback(int id) returns ContactLinkWithFeedback|error {
-        string  path = string `/feedbacks/${id}`;
-        ContactLinkWithFeedback response = check self.clientEp-> get(path, targetType = ContactLinkWithFeedback);
+        string resourcePath = string `/feedbacks/${id}`;
+        ContactLinkWithFeedback response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Edit an existing piece of feedback.
@@ -120,11 +121,11 @@ public isolated client class Client {
     # + payload - Edits of the feedback. 
     # + return - Success response. 
     remote isolated function putFeedback(int id, FeedbackPut payload) returns http:Response|error {
-        string  path = string `/feedbacks/${id}`;
+        string resourcePath = string `/feedbacks/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get all ideas associated with a feedback
@@ -132,8 +133,8 @@ public isolated client class Client {
     # + id - Feedback ID 
     # + return - Success response 
     remote isolated function getFeedbackIdeas(int id) returns Idea[]|error {
-        string  path = string `/feedbacks/${id}/ideas`;
-        Idea[] response = check self.clientEp-> get(path, targetType = IdeaArr);
+        string resourcePath = string `/feedbacks/${id}/ideas`;
+        Idea[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of contacts
@@ -151,11 +152,11 @@ public isolated client class Client {
     # + size - Number of results per page. 
     # + return - Success response. 
     remote isolated function getContacts(string? company = (), string? persona = (), string? jobRole = (), string[]? tags = (), string? name = (), string? externalId = (), string? externalUrl = (), string? email = (), boolean feedbacks = false, int? page = (), int? size = ()) returns ContactList|error {
-        string  path = string `/contacts`;
+        string resourcePath = string `/contacts`;
         map<anydata> queryParam = {"company": company, "persona": persona, "job_role": jobRole, "tags": tags, "name": name, "external_id": externalId, "external_url": externalUrl, "email": email, "feedbacks": feedbacks, "page": page, "size": size};
         map<Encoding> queryParamEncoding = {"tags": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        ContactList response = check self.clientEp-> get(path, targetType = ContactList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ContactList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new contact
@@ -163,11 +164,11 @@ public isolated client class Client {
     # + payload - New contact details 
     # + return - Success response 
     remote isolated function postContacts(ContactPost payload) returns Contact|error {
-        string  path = string `/contacts`;
+        string resourcePath = string `/contacts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Contact response = check self.clientEp->post(path, request, targetType=Contact);
+        request.setPayload(jsonBody, "application/json");
+        Contact response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a contact
@@ -176,10 +177,10 @@ public isolated client class Client {
     # + feedbacks - Whether to include the feedback provided by the contact in the response or not. 
     # + return - Success response. 
     remote isolated function getContact(string id, boolean feedbacks = true) returns InlineResponse200|error {
-        string  path = string `/contacts/${id}`;
+        string resourcePath = string `/contacts/${id}`;
         map<anydata> queryParam = {"feedbacks": feedbacks};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Edit a contact.
@@ -188,11 +189,11 @@ public isolated client class Client {
     # + payload - Edits to the contact. 
     # + return - Success response. 
     remote isolated function putContact(string id, ContactPost payload) returns Contact|error {
-        string  path = string `/contacts/${id}`;
+        string resourcePath = string `/contacts/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Contact response = check self.clientEp->put(path, request, targetType=Contact);
+        request.setPayload(jsonBody, "application/json");
+        Contact response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get a list of companies.
@@ -210,11 +211,11 @@ public isolated client class Client {
     # + page - The page of results to return (size is always 100). 
     # + return - Success response. 
     remote isolated function getCompanies(string? country = (), string? size = (), string? value = (), string? city = (), string[]? tags = (), string? name = (), string? externalId = (), string? externalUrl = (), boolean contacts = true, boolean feedbacks = true, int? page = ()) returns CompanyList|error {
-        string  path = string `/companies`;
+        string resourcePath = string `/companies`;
         map<anydata> queryParam = {"country": country, "size": size, "value": value, "city": city, "tags": tags, "name": name, "external_id": externalId, "external_url": externalUrl, "contacts": contacts, "feedbacks": feedbacks, "page": page};
         map<Encoding> queryParamEncoding = {"tags": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        CompanyList response = check self.clientEp-> get(path, targetType = CompanyList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CompanyList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new company
@@ -222,11 +223,11 @@ public isolated client class Client {
     # + payload - Post body request with the company details used to create a new company. 
     # + return - Success response. 
     remote isolated function postCompanies(CompanyPost payload) returns Company|error {
-        string  path = string `/companies`;
+        string resourcePath = string `/companies`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Company response = check self.clientEp->post(path, request, targetType=Company);
+        request.setPayload(jsonBody, "application/json");
+        Company response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a company
@@ -234,8 +235,8 @@ public isolated client class Client {
     # + id - UUID of the company to fetch. 
     # + return - Success response. 
     remote isolated function getCompany(string id) returns Company|error {
-        string  path = string `/companies/${id}`;
-        Company response = check self.clientEp-> get(path, targetType = Company);
+        string resourcePath = string `/companies/${id}`;
+        Company response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Edit a company.
@@ -244,19 +245,19 @@ public isolated client class Client {
     # + payload - Changes to be made to a company. 
     # + return - Success response. 
     remote isolated function putCompany(string id, CompanyPost payload) returns Company|error {
-        string  path = string `/companies/${id}`;
+        string resourcePath = string `/companies/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Company response = check self.clientEp->put(path, request, targetType=Company);
+        request.setPayload(jsonBody, "application/json");
+        Company response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get the job roles for the account.
     #
     # + return - Success response. 
     remote isolated function getJobRoles() returns JobRoleList|error {
-        string  path = string `/jobroles`;
-        JobRoleList response = check self.clientEp-> get(path, targetType = JobRoleList);
+        string resourcePath = string `/jobroles`;
+        JobRoleList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of ideas.
@@ -273,11 +274,11 @@ public isolated client class Client {
     # + size - The number of results per page 
     # + return - Success response. 
     remote isolated function getIdeas(string[]? tags = (), string? product = (), string? persona = (), string? status = (), string? state = (), string? externalId = (), string? externalUrl = (), boolean? withfeedback = (), int page = 1, int size = 20) returns IdeaList|error {
-        string  path = string `/ideas`;
+        string resourcePath = string `/ideas`;
         map<anydata> queryParam = {"tags": tags, "product": product, "persona": persona, "status": status, "state": state, "external_id": externalId, "external_url": externalUrl, "withfeedback": withfeedback, "page": page, "size": size};
         map<Encoding> queryParamEncoding = {"tags": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        IdeaList response = check self.clientEp-> get(path, targetType = IdeaList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        IdeaList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new idea.
@@ -285,11 +286,11 @@ public isolated client class Client {
     # + payload - Idea to add to the account 
     # + return - Success response. 
     remote isolated function postIdeas(IdeaPost payload) returns Idea|error {
-        string  path = string `/ideas`;
+        string resourcePath = string `/ideas`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Idea response = check self.clientEp->post(path, request, targetType=Idea);
+        request.setPayload(jsonBody, "application/json");
+        Idea response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get an idea.
@@ -299,10 +300,10 @@ public isolated client class Client {
     # + byProjectId - Whether the ID represents the project_id instead of the numeric ID. 
     # + return - Success response. 
     remote isolated function getIdeaByID(int id, boolean expand = false, boolean byProjectId = false) returns InlineResponse2001|error {
-        string  path = string `/ideas/${id}`;
+        string resourcePath = string `/ideas/${id}`;
         map<anydata> queryParam = {"expand": expand, "by_project_id": byProjectId};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Edit an existing idea.
@@ -311,11 +312,11 @@ public isolated client class Client {
     # + payload - Edits to an idea 
     # + return - Success response. 
     remote isolated function putIdea(int id, IdeaPut payload) returns http:Response|error {
-        string  path = string `/ideas/${id}`;
+        string resourcePath = string `/ideas/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get thoughts on an idea
@@ -323,8 +324,8 @@ public isolated client class Client {
     # + id - Numeric ID of the idea. 
     # + return - Success response. 
     remote isolated function getIdeaVotes(int id) returns IdeaThoughts|error {
-        string  path = string `/ideas/${id}/votes`;
-        IdeaThoughts response = check self.clientEp-> get(path, targetType = IdeaThoughts);
+        string resourcePath = string `/ideas/${id}/votes`;
+        IdeaThoughts response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add a new thought to ideas. This is an alias for POST /votes.
@@ -333,11 +334,11 @@ public isolated client class Client {
     # + payload - New vote to be added. 
     # + return - Success response. 
     remote isolated function postIdeaVotes(int id, ThoughtPost payload) returns ThoughtPostResponse|error {
-        string  path = string `/ideas/${id}/votes`;
+        string resourcePath = string `/ideas/${id}/votes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ThoughtPostResponse response = check self.clientEp->post(path, request, targetType=ThoughtPostResponse);
+        request.setPayload(jsonBody, "application/json");
+        ThoughtPostResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update workflow status of idea.
@@ -346,11 +347,11 @@ public isolated client class Client {
     # + payload - New workflow status of the idea. 
     # + return - Success response. 
     remote isolated function postIdeaStatus(int id, IdeaStatusChangePost payload) returns IdeaStatusChangeResponse|error {
-        string  path = string `/ideas/${id}/statuses`;
+        string resourcePath = string `/ideas/${id}/statuses`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        IdeaStatusChangeResponse response = check self.clientEp->post(path, request, targetType=IdeaStatusChangeResponse);
+        request.setPayload(jsonBody, "application/json");
+        IdeaStatusChangeResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a list of user stories associated to the idea.
@@ -358,8 +359,8 @@ public isolated client class Client {
     # + id - Numeric ID of the idea. 
     # + return - Success response. 
     remote isolated function getIdeaUserstories(int id) returns UserStories|error {
-        string  path = string `/ideas/${id}/userstories`;
-        UserStories response = check self.clientEp-> get(path, targetType = UserStories);
+        string resourcePath = string `/ideas/${id}/userstories`;
+        UserStories response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get comments for an idea.
@@ -367,8 +368,8 @@ public isolated client class Client {
     # + id - Numeric ID of the idea. 
     # + return - Success response. 
     remote isolated function getIdeaComments(int id) returns CommentList|error {
-        string  path = string `/ideas/${id}/comments`;
-        CommentList response = check self.clientEp-> get(path, targetType = CommentList);
+        string resourcePath = string `/ideas/${id}/comments`;
+        CommentList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a specific comment on an idea.
@@ -377,8 +378,8 @@ public isolated client class Client {
     # + commentId - Numeric ID of the comment. 
     # + return - Success response. 
     remote isolated function putIdeaComment(int id, int commentId) returns InlineResponse2002|error {
-        string  path = string `/ideas/${id}/comments/${commentId}`;
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        string resourcePath = string `/ideas/${id}/comments/${commentId}`;
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get feedback associated to an idea.
@@ -386,8 +387,8 @@ public isolated client class Client {
     # + id - Numeric ID of the idea. 
     # + return - Success response. 
     remote isolated function getIdeaFeedback(int id) returns FeedbackList|error {
-        string  path = string `/ideas/${id}/feedback`;
-        FeedbackList response = check self.clientEp-> get(path, targetType = FeedbackList);
+        string resourcePath = string `/ideas/${id}/feedback`;
+        FeedbackList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get ideas linked to an idea.
@@ -395,24 +396,24 @@ public isolated client class Client {
     # + id - Numeric ID of the idea. 
     # + return - Success response. 
     remote isolated function getIdeaRelatedIdeas(int id) returns RelatedIdeas|error {
-        string  path = string `/ideas/${id}/ideas`;
-        RelatedIdeas response = check self.clientEp-> get(path, targetType = RelatedIdeas);
+        string resourcePath = string `/ideas/${id}/ideas`;
+        RelatedIdeas response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the user stories in an account.
     #
     # + return - Success response. 
     remote isolated function getUserStories() returns UserStoryList|error {
-        string  path = string `/userstories`;
-        UserStoryList response = check self.clientEp-> get(path, targetType = UserStoryList);
+        string resourcePath = string `/userstories`;
+        UserStoryList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the thoughts.
     #
     # + return - Success response. 
     remote isolated function getThoughts() returns ThoughtList|error {
-        string  path = string `/votes`;
-        ThoughtList response = check self.clientEp-> get(path, targetType = ThoughtList);
+        string resourcePath = string `/votes`;
+        ThoughtList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new thought on an idea.
@@ -420,19 +421,19 @@ public isolated client class Client {
     # + payload - New thought to be added 
     # + return - Success response. 
     remote isolated function postThoughts(ThoughtPost payload) returns ThoughtPostResponse|error {
-        string  path = string `/votes`;
+        string resourcePath = string `/votes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ThoughtPostResponse response = check self.clientEp->post(path, request, targetType=ThoughtPostResponse);
+        request.setPayload(jsonBody, "application/json");
+        ThoughtPostResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a list of Personas
     #
     # + return - Success response. 
     remote isolated function getPersonas() returns PersonaList|error {
-        string  path = string `/personas`;
-        PersonaList response = check self.clientEp-> get(path, targetType = PersonaList);
+        string resourcePath = string `/personas`;
+        PersonaList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a persona.
@@ -440,8 +441,8 @@ public isolated client class Client {
     # + id - Numeric ID of the persona. 
     # + return - Success response. 
     remote isolated function getPersona(int id) returns Persona|error {
-        string  path = string `/personas/${id}`;
-        Persona response = check self.clientEp-> get(path, targetType = Persona);
+        string resourcePath = string `/personas/${id}`;
+        Persona response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List products.
@@ -449,10 +450,10 @@ public isolated client class Client {
     # + 'group - Whether the returned list is grouped by product lines or not. 
     # + return - Success response. 
     remote isolated function getProducts(boolean 'group = false) returns InlineResponse2003|error {
-        string  path = string `/products`;
+        string resourcePath = string `/products`;
         map<anydata> queryParam = {"group": 'group};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a product.
@@ -460,8 +461,8 @@ public isolated client class Client {
     # + id - Numeric ID of the product. 
     # + return - Success response. 
     remote isolated function getProduct(int id) returns Product|error {
-        string  path = string `/products/${id}`;
-        Product response = check self.clientEp-> get(path, targetType = Product);
+        string resourcePath = string `/products/${id}`;
+        Product response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a product roadmap
@@ -469,16 +470,16 @@ public isolated client class Client {
     # + id - Numeric ID of the product. 
     # + return - Success response. 
     remote isolated function getProductRoadmap(int id) returns Roadmap|error {
-        string  path = string `/products/${id}/roadmap`;
-        Roadmap response = check self.clientEp-> get(path, targetType = Roadmap);
+        string resourcePath = string `/products/${id}/roadmap`;
+        Roadmap response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of the roadmaps.
     #
     # + return - Success response. 
     remote isolated function getRoadmaps() returns RoadmapList|error {
-        string  path = string `/roadmaps`;
-        RoadmapList response = check self.clientEp-> get(path, targetType = RoadmapList);
+        string resourcePath = string `/roadmaps`;
+        RoadmapList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get an individual roadmap.
@@ -486,8 +487,8 @@ public isolated client class Client {
     # + id - Numeric ID of the roadmap. 
     # + return - Success response. 
     remote isolated function getRoadmap(int id) returns Roadmap|error {
-        string  path = string `/roadmaps/${id}`;
-        Roadmap response = check self.clientEp-> get(path, targetType = Roadmap);
+        string resourcePath = string `/roadmaps/${id}`;
+        Roadmap response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create roadmap card.
@@ -496,11 +497,11 @@ public isolated client class Client {
     # + payload - Details of roadmap card. 
     # + return - Success response. 
     remote isolated function postRoadmapCard(int id, RoadmapCardPost payload) returns RoadmapCardPostResponse|error {
-        string  path = string `/roadmaps/${id}/cards`;
+        string resourcePath = string `/roadmaps/${id}/cards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RoadmapCardPostResponse response = check self.clientEp->post(path, request, targetType=RoadmapCardPostResponse);
+        request.setPayload(jsonBody, "application/json");
+        RoadmapCardPostResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a roadmap card.
@@ -509,8 +510,8 @@ public isolated client class Client {
     # + cardid - Numeric ID of the card. 
     # + return - Success response. 
     remote isolated function getRoadmapCard(int id, int cardid) returns RoadmapCardColumn|error {
-        string  path = string `/roadmaps/${id}/cards/${cardid}`;
-        RoadmapCardColumn response = check self.clientEp-> get(path, targetType = RoadmapCardColumn);
+        string resourcePath = string `/roadmaps/${id}/cards/${cardid}`;
+        RoadmapCardColumn response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Edit a roadmap card.
@@ -520,19 +521,19 @@ public isolated client class Client {
     # + payload - The card details to change. 
     # + return - Success response. 
     remote isolated function putRoadmapCard(int id, int cardid, RoadmapCardPost payload) returns RoadmapCardColumn|error {
-        string  path = string `/roadmaps/${id}/cards/${cardid}`;
+        string resourcePath = string `/roadmaps/${id}/cards/${cardid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RoadmapCardColumn response = check self.clientEp->put(path, request, targetType=RoadmapCardColumn);
+        request.setPayload(jsonBody, "application/json");
+        RoadmapCardColumn response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get list of objectives.
     #
     # + return - Success response. 
     remote isolated function getObjectives() returns ObjectiveList|error {
-        string  path = string `/objectives`;
-        ObjectiveList response = check self.clientEp-> get(path, targetType = ObjectiveList);
+        string resourcePath = string `/objectives`;
+        ObjectiveList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new objective.
@@ -540,11 +541,11 @@ public isolated client class Client {
     # + payload - Objective details. 
     # + return - Success response. 
     remote isolated function postObjectives(ObjectivePost payload) returns Objective|error {
-        string  path = string `/objectives`;
+        string resourcePath = string `/objectives`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Objective response = check self.clientEp->post(path, request, targetType=Objective);
+        request.setPayload(jsonBody, "application/json");
+        Objective response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get an objective.
@@ -552,8 +553,8 @@ public isolated client class Client {
     # + id - UUID of the objective. 
     # + return - Success response. 
     remote isolated function getObjective(string id) returns Objective|error {
-        string  path = string `/objectives/${id}`;
-        Objective response = check self.clientEp-> get(path, targetType = Objective);
+        string resourcePath = string `/objectives/${id}`;
+        Objective response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Edit an objective.
@@ -562,19 +563,19 @@ public isolated client class Client {
     # + payload - Details of objective to be changed. 
     # + return - Success response. 
     remote isolated function putObjective(string id, ObjectivePost payload) returns Objective|error {
-        string  path = string `/objectives/${id}`;
+        string resourcePath = string `/objectives/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Objective response = check self.clientEp->put(path, request, targetType=Objective);
+        request.setPayload(jsonBody, "application/json");
+        Objective response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get a list of tags.
     #
     # + return - Success response. 
     remote isolated function getTags() returns TagList|error {
-        string  path = string `/tags`;
-        TagList response = check self.clientEp-> get(path, targetType = TagList);
+        string resourcePath = string `/tags`;
+        TagList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a tag.
@@ -582,16 +583,16 @@ public isolated client class Client {
     # + id - Numeric ID of the tag. 
     # + return - Success response. 
     remote isolated function getTag(int id) returns Tag|error {
-        string  path = string `/tags/${id}`;
-        Tag response = check self.clientEp-> get(path, targetType = Tag);
+        string resourcePath = string `/tags/${id}`;
+        Tag response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of workflow statuses.
     #
     # + return - Success response. 
     remote isolated function getStatuses() returns StatusList|error {
-        string  path = string `/statuses`;
-        StatusList response = check self.clientEp-> get(path, targetType = StatusList);
+        string resourcePath = string `/statuses`;
+        StatusList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a workflow status.
@@ -599,8 +600,8 @@ public isolated client class Client {
     # + id - Numeric ID of the workflow status. 
     # + return - Success response. 
     remote isolated function getStatus(int id) returns Status|error {
-        string  path = string `/statuses/${id}`;
-        Status response = check self.clientEp-> get(path, targetType = Status);
+        string resourcePath = string `/statuses/${id}`;
+        Status response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search across ideas, products, personas and feedback.
@@ -611,18 +612,18 @@ public isolated client class Client {
     # + 'type - Limit the search results to ideas, products, personas or feedback. Default is all. 
     # + return - Success response. 
     remote isolated function getSearch(string q, int? page = (), int? size = (), string? 'type = ()) returns SearchResults|error {
-        string  path = string `/search`;
+        string resourcePath = string `/search`;
         map<anydata> queryParam = {"q": q, "page": page, "size": size, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        SearchResults response = check self.clientEp-> get(path, targetType = SearchResults);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SearchResults response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of users.
     #
     # + return - Success response. 
     remote isolated function getUsers() returns UserList|error {
-        string  path = string `/users`;
-        UserList response = check self.clientEp-> get(path, targetType = UserList);
+        string resourcePath = string `/users`;
+        UserList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new user.
@@ -630,11 +631,11 @@ public isolated client class Client {
     # + payload - User details. 
     # + return - Success response. 
     remote isolated function postUsers(UserPost payload) returns User|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        User response = check self.clientEp->post(path, request, targetType=User);
+        request.setPayload(jsonBody, "application/json");
+        User response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a user.
@@ -642,8 +643,8 @@ public isolated client class Client {
     # + id - Numeric ID of the user. 
     # + return - Success response. 
     remote isolated function getUser(int id) returns User|error {
-        string  path = string `/user/${id}`;
-        User response = check self.clientEp-> get(path, targetType = User);
+        string resourcePath = string `/user/${id}`;
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

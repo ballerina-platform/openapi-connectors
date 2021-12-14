@@ -858,8 +858,8 @@ public type BackupCloudberryComputerConfig record {
     string EngineVersion?;
     string Edition?;
     string BackupUserEmail?;
-    record  { } [] License?;
-    record  { } [] EngineSettings?;
+    record {}[] License?;
+    record {}[] EngineSettings?;
 };
 
 public type WindowsUpdateHistoryEntry record {
@@ -1569,7 +1569,7 @@ public type BackupCloudberryComputerPlan record {
     string PlanType?;
     string Name?;
     string DateModified?;
-    record  { } [] PlanContent?;
+    record {}[] PlanContent?;
 };
 
 # This class represents a brand that you can configure for your organization.  Each organization supports having 0, 1 or multiple brands, each of which
@@ -1740,6 +1740,10 @@ public type File record {
     string RelatedItemName?;
 };
 
+public type V1FilesBody record {
+    string file;
+};
+
 public type IntParameter record {
     int MinValue?;
     int MaxValue?;
@@ -1839,10 +1843,6 @@ public type AgentStatus record {
 public type ComputerMetadata record {
     SimpleParameterList Parameters;
     string ComputerID?;
-};
-
-public type Body record {
-    string file;
 };
 
 public type NameValuePair record {

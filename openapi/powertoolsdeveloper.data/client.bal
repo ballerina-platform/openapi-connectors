@@ -43,19 +43,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Data - JSON to HTML Table
     #
     # + payload - Input json conversion parameters 
     # + return - OK 
     remote isolated function jsonToHtml(InputJsonConversionHTML payload) returns OutputString|error {
-        string  path = string `/JSONtoHTML`;
+        string resourcePath = string `/JSONtoHTML`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Data - JSON to CSV
@@ -63,13 +64,13 @@ public isolated client class Client {
     # + payload - Input json conversion parameters 
     # + return - OK 
     remote isolated function jsonToCsv(InputJsonConversionCSV payload) returns OutputString|error {
-        string  path = string `/JSONtoCSV`;
+        string resourcePath = string `/JSONtoCSV`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Data - JSON to XML
@@ -77,13 +78,13 @@ public isolated client class Client {
     # + payload - Input json conversion parameters 
     # + return - OK 
     remote isolated function jsonToXml(InputJsonConversionXML payload) returns OutputString|error {
-        string  path = string `/JSONtoXML`;
+        string resourcePath = string `/JSONtoXML`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Data - CSV to JSON
@@ -91,13 +92,13 @@ public isolated client class Client {
     # + payload - Input CSV conversion parameters 
     # + return - OK 
     remote isolated function csvToJson(InputCsvConversionJSON payload) returns OutputString|error {
-        string  path = string `/CSVtoJSON`;
+        string resourcePath = string `/CSVtoJSON`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Data - XML to JSON
@@ -105,13 +106,13 @@ public isolated client class Client {
     # + payload - Input XML conversion parameters 
     # + return - OK 
     remote isolated function xmlToJson(InputXmlConversionJSON payload) returns OutputString|error {
-        string  path = string `/XMLtoJSON`;
+        string resourcePath = string `/XMLtoJSON`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Data - Query JSON
@@ -119,13 +120,13 @@ public isolated client class Client {
     # + payload - Input data query parameters 
     # + return - OK 
     remote isolated function queryJson(InputDataQuery payload) returns OutputString|error {
-        string  path = string `/QueryJSON`;
+        string resourcePath = string `/QueryJSON`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Data - Query XML
@@ -133,13 +134,13 @@ public isolated client class Client {
     # + payload - Input data query parameters 
     # + return - OK 
     remote isolated function queryXml(InputDataQuery payload) returns OutputString|error {
-        string  path = string `/QueryXML`;
+        string resourcePath = string `/QueryXML`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

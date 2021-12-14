@@ -118,7 +118,7 @@ public type SendemailrequestAsm record {
     # The unsubscribe group to associate with this email.
     int group_id;
     # An array containing the unsubscribe groups that you would like to be displayed on the unsubscribe preferences page.
-    int[] groups_to_display?;
+    int[25] groups_to_display?;
 };
 
 public type PostSubusersRequest record {
@@ -166,7 +166,7 @@ public type SendEmailRequest record {
     # This ID represents a batch of emails to be sent at the same time. Including a batch_id in your request allows you include this email in that batch, and also enables you to cancel or pause the delivery of that batch. For more information, see https://sendgrid.com/docs/API_Reference/Web_API_v3/cancel_schedule_send.html 
     string batch_id?;
     # An array of category names for this message. Each category name may not exceed 255 characters. 
-    string[] categories?;
+    string[10] categories?;
     # An array in which you may specify the content of your email. You can include multiple mime types of content, but you must specify at least one mime type. To include more than one mime type, simply add another object to the array containing the `type` and `value` parameters.
     SendemailrequestContent[] content;
     # Values that are specific to the entire send that will be carried along with the email and its activity data. Substitutions will not be made on custom arguments, so any string that is entered into this parameter will be assumed to be the custom argument that you would like to be used. This parameter is overridden by personalizations[x].custom_args if that parameter has been defined. Total custom args size may not exceed 10,000 bytes.
@@ -180,7 +180,7 @@ public type SendEmailRequest record {
     # A collection of different mail settings that you can use to specify how you would like this email to be handled.
     SendemailrequestMailSettings mail_settings?;
     # An array of messages and their metadata. Each object within personalizations can be thought of as an envelope - it defines who should receive an individual message and how that message should be handled.
-    SendemailrequestPersonalizations[] personalizations;
+    SendemailrequestPersonalizations[1000] personalizations;
     # Email details
     EmailObject reply_to?;
     # An object of key/value pairs that define block sections of code to be used as substitutions.
@@ -215,6 +215,7 @@ public type UpdateAlertbyIdResponse record {
 # Alert Object
 public type PostAlertsRequest record {
     # The email address the alert will be sent to.
+    # Example: test@example.com
     string? email_to;
     # Required for stats_notification. How frequently the alert will be sent. Example: daily
     string frequency?;
@@ -234,6 +235,7 @@ public type EmailObject record {
 
 public type UpdateAlertbyIdRequest record {
     # The new email address you want your alert to be sent to.
+    # Example: test@example.com
     string email_to?;
     # The new frequency at which to send the stats_notification alert. Example: monthly
     string frequency?;
@@ -261,9 +263,9 @@ public type AlertResponse record {
 
 public type SendemailrequestPersonalizations record {
     # An array of recipients who will receive a blind carbon copy of your email. Each object within this array may contain the name, but must always contain the email, of a recipient.
-    EmailObject[] bcc?;
+    EmailObject[1000] bcc?;
     # An array of recipients who will receive a copy of your email. Each object within this array may contain the name, but must always contain the email, of a recipient.
-    EmailObject[] cc?;
+    EmailObject[1000] cc?;
     # Values that are specific to this personalization that will be carried along with the email and its activity data. Substitutions will not be made on custom arguments, so any string that is entered into this parameter will be assumed to be the custom argument that you would like to be used. May not exceed 10,000 bytes.
     record {} custom_args?;
     # A collection of JSON key/value pairs allowing you to specify specific handling instructions for your email. You may not overwrite the following headers: x-sg-id, x-sg-eid, received, dkim-signature, Content-Type, Content-Transfer-Encoding, To, From, Subject, Reply-To, CC, BCC
@@ -275,7 +277,7 @@ public type SendemailrequestPersonalizations record {
     # A collection of key/value pairs following the pattern "substitution_tag":"value to substitute". All are assumed to be strings. These substitutions will apply to the text and html content of the body of your email, in addition to the `subject` and `reply-to` parameters.
     record {} substitutions?;
     # An array of recipients. Each object within this array may contain the name, but must always contain the email, of a recipient.
-    EmailObject[] to;
+    EmailObject[1000] to;
 };
 
 # Allows you to track whether a recipient clicked a link in your email.

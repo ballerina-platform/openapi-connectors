@@ -209,7 +209,7 @@ public type ShippingAddressList record {
 
 public type AccountCreate record {
     # The unique identifier of the account. This cannot be changed once the account is created.
-    string code?;
+    string code;
     AccountAcquisitionUpdate acquisition?;
     ShippingAddressCreate[] shipping_addresses?;
     *AccountUpdate;
@@ -461,7 +461,7 @@ public type AccountPurchase record {
     # Optional, but if present allows an existing account to be used and updated as part of the purchase.
     string id?;
     # The unique identifier of the account. This cannot be changed once the account is created.
-    string code?;
+    string code;
     AccountAcquisitionUpdate acquisition?;
     *AccountUpdate;
 };
@@ -747,9 +747,9 @@ public type SubscriptionChangeBillingInfo record {
 public type CouponCreate record {
     *CouponUpdate;
     # The code the customer enters to redeem the coupon.
-    string code?;
+    string code;
     # The type of discount provided by the coupon (how the amount discounted is calculated)
-    string discount_type?;
+    string discount_type;
     # The percent of the price discounted by the coupon.  Required if `discount_type` is `percent`.
     int discount_percent?;
     # Description of the unit of time the coupon is for. Used with `free_trial_amount` to determine the duration of time the coupon is for.  Required if `discount_type` is `free_trial`.
@@ -801,7 +801,12 @@ public type CouponCreate record {
 };
 
 public type AccountAcquisitionUpdate record {
-    record {}[] cost?;
+    record {
+        # 3-letter ISO 4217 currency code.
+        string currency?;
+        # The amount of the corresponding currency used to acquire the account.
+        float amount?;
+    } cost?;
     # The channel through which the account was acquired.
     string 'channel?;
     # An arbitrary subchannel string representing a distinction/subcategory within a broader channel.
@@ -1652,7 +1657,6 @@ public type CouponUpdate record {
 };
 
 # The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
-# The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
 public type CustomFields CustomField[];
 
 public type SubscriptionChangeCreate record {
@@ -2049,7 +2053,7 @@ public type Coupon record {
     # On a bulk coupon, the template from which unique coupon codes are generated.
     string unique_code_template?;
     # Will be populated when the Coupon being returned is a `UniqueCouponCode`.
-    record {} unique_coupon_code?;
+    record {*UniqueCouponCode;} unique_coupon_code?;
     # - "single_use" coupons applies to the first invoice only.
     # - "temporal" coupons will apply to invoices for the duration determined by the `temporal_unit` and `temporal_amount` attributes.
     string duration?;

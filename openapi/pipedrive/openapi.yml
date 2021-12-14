@@ -31094,19 +31094,19 @@ paths:
           required: true
           schema:
             type: integer
-      requestBody:
-        description: DeleteRoleAssignment request
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              title: deleteRoleAssignment
-              type: object
-              required:
-                - user_id
-              properties:
-                user_id:
-                  type: integer
-                  description: ID of the user
+      # requestBody:
+      #   description: DeleteRoleAssignment request
+      #   content:
+      #     application/x-www-form-urlencoded:
+      #       schema:
+      #         title: deleteRoleAssignment
+      #         type: object
+      #         required:
+      #           - user_id
+      #         properties:
+      #           user_id:
+      #             type: integer
+      #             description: ID of the user
       responses:
         '200':
           description: Delete assignment from a role
@@ -34237,21 +34237,21 @@ paths:
           required: true
           schema:
             type: integer
-      requestBody:
-        description: DeleteTeamUser request
-        content:
-          application/json:
-            schema:
-              title: deleteTeamUserRequest
-              type: object
-              required:
-                - users
-              properties:
-                users:
-                  type: array
-                  items:
-                    type: integer
-                  description: List of User IDs
+      # requestBody:
+      #   description: DeleteTeamUser request
+      #   content:
+      #     application/json:
+      #       schema:
+      #         title: deleteTeamUserRequest
+      #         type: object
+      #         required:
+      #           - users
+      #         properties:
+      #           users:
+      #             type: array
+      #             items:
+      #               type: integer
+      #             description: List of User IDs
       responses:
         '200':
           description: A list of user IDs within a team
@@ -35473,19 +35473,19 @@ paths:
           required: true
           schema:
             type: integer
-      requestBody:
-        description: DeleteUserRoleAssignment request
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              title: deleteUserRoleAssignmentRequest
-              type: object
-              required:
-                - role_id
-              properties:
-                role_id:
-                  type: integer
-                  description: ID of the role
+      # requestBody:
+      #   description: DeleteUserRoleAssignment request
+      #   content:
+      #     application/x-www-form-urlencoded:
+      #       schema:
+      #         title: deleteUserRoleAssignmentRequest
+      #         type: object
+      #         required:
+      #           - role_id
+      #         properties:
+      #           role_id:
+      #             type: integer
+      #             description: ID of the role
       responses:
         '200':
           description: Delete assignment from a role
@@ -37390,13 +37390,13 @@ components:
           title: relationshipOrganizationInfoItem
           allOf:
             - $ref: "#/components/schemas/RelationshipOrganizationInfoItem1"
-            - $ref: "#/components/schemas/RelationshipOrganizationInfoItem1"
+            - $ref: "#/components/schemas/RelationshipOrganizationInfoItem2"
         rel_linked_org_id:
           type: object
           title: relationshipOrganizationInfoItem
           allOf:
             - $ref: "#/components/schemas/RelationshipOrganizationInfoItem1"
-            - $ref: "#/components/schemas/RelationshipOrganizationInfoItem1"
+            - $ref: "#/components/schemas/RelationshipOrganizationInfoItem2"
         add_time:
           type: string
           description: The creation date and time of the Relationship
@@ -37455,7 +37455,7 @@ components:
           type: object
           allOf:
             - $ref: "#/components/schemas/PictureId1"
-            - $ref: "#/components/schemas/PictureId1"
+            - $ref: "#/components/schemas/PictureId2"
         country_code:
           type: string
           description: The country code of the Organization

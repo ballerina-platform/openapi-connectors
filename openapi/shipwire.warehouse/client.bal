@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -68,6 +66,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.shipwire.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get warehouses
     #
@@ -81,10 +80,10 @@ public isolated client class Client {
     # + 'type - Filter by type ("SHIPWIRE", "SHIPWIRE_ANYWHERE") 
     # + return - OK 
     remote isolated function getWarehouses(int? id = (), string? externalId = (), string? name = (), int? vendorId = (), string? vendorExternalId = (), string? country = (), string? generatesLabels = (), string? 'type = ()) returns GetWarehousesResponse|error {
-        string  path = string `/api/v3.1/warehouses`;
+        string resourcePath = string `/api/v3.1/warehouses`;
         map<anydata> queryParam = {"id": id, "externalId": externalId, "name": name, "vendorId": vendorId, "vendorExternalId": vendorExternalId, "country": country, "generatesLabels": generatesLabels, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        GetWarehousesResponse response = check self.clientEp-> get(path, targetType = GetWarehousesResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GetWarehousesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new warehouse
@@ -92,11 +91,11 @@ public isolated client class Client {
     # + payload - Create a new warehouse request 
     # + return - OK 
     remote isolated function postWarehouse(CreateANewWarehouseRequest payload) returns CreateANewWarehouseResponse|error {
-        string  path = string `/api/v3.1/warehouses`;
+        string resourcePath = string `/api/v3.1/warehouses`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateANewWarehouseResponse response = check self.clientEp->post(path, request, targetType=CreateANewWarehouseResponse);
+        request.setPayload(jsonBody, "application/json");
+        CreateANewWarehouseResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a warehouse
@@ -104,8 +103,8 @@ public isolated client class Client {
     # + id - The warehouse id or external id. 
     # + return - OK 
     remote isolated function getWarehousesById(string id) returns GetAWarehouseResponse|error {
-        string  path = string `/api/v3.1/warehouses/${id}`;
-        GetAWarehouseResponse response = check self.clientEp-> get(path, targetType = GetAWarehouseResponse);
+        string resourcePath = string `/api/v3.1/warehouses/${id}`;
+        GetAWarehouseResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a warehouse
@@ -114,11 +113,11 @@ public isolated client class Client {
     # + payload - Update a warehouse request 
     # + return - Create a new warehouse response 
     remote isolated function putWarehousesById(string id, UpdateAWarehouseRequest payload) returns CreateANewWarehouseResponse|error {
-        string  path = string `/api/v3.1/warehouses/${id}`;
+        string resourcePath = string `/api/v3.1/warehouses/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateANewWarehouseResponse response = check self.clientEp->put(path, request, targetType=CreateANewWarehouseResponse);
+        request.setPayload(jsonBody, "application/json");
+        CreateANewWarehouseResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Retire a warehouse
@@ -126,10 +125,10 @@ public isolated client class Client {
     # + id - Warehouse id or external id 
     # + return - Retire a warehouse response 
     remote isolated function postWarehousesRetireById(string id) returns RetireAWarehouseResponse|error {
-        string  path = string `/api/v3.1/warehouses/${id}/retire`;
+        string resourcePath = string `/api/v3.1/warehouses/${id}/retire`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        RetireAWarehouseResponse response = check self.clientEp-> post(path, request, targetType = RetireAWarehouseResponse);
+        RetireAWarehouseResponse response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Get containers associated with a warehouse
@@ -137,8 +136,8 @@ public isolated client class Client {
     # + id - The warehouse id or external id. 
     # + return - Get containers associated with a warehouse response 
     remote isolated function getWarehousesContainersById(string id) returns GetContainersAssociatedWithAWarehouseResponse|error {
-        string  path = string `/api/v3.1/warehouses/${id}/containers`;
-        GetContainersAssociatedWithAWarehouseResponse response = check self.clientEp-> get(path, targetType = GetContainersAssociatedWithAWarehouseResponse);
+        string resourcePath = string `/api/v3.1/warehouses/${id}/containers`;
+        GetContainersAssociatedWithAWarehouseResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get carriers associated with a warehouse
@@ -146,8 +145,8 @@ public isolated client class Client {
     # + id - The warehouse id or external id. 
     # + return - Get carriers response 
     remote isolated function getWarehousesCarriersById(string id) returns GetCarriersResponse|error {
-        string  path = string `/api/v3.1/warehouses/${id}/carriers`;
-        GetCarriersResponse response = check self.clientEp-> get(path, targetType = GetCarriersResponse);
+        string resourcePath = string `/api/v3.1/warehouses/${id}/carriers`;
+        GetCarriersResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add carriers to a warehouse
@@ -156,11 +155,11 @@ public isolated client class Client {
     # + payload - Add carrier request 
     # + return - Get carriers response 
     remote isolated function addCarriersByIdToWarehouse(string id, AddCarrierRequest payload) returns GetCarriersResponse|error {
-        string  path = string `/api/v3.1/warehouses/${id}/addCarriers`;
+        string resourcePath = string `/api/v3.1/warehouses/${id}/addCarriers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GetCarriersResponse response = check self.clientEp->post(path, request, targetType=GetCarriersResponse);
+        request.setPayload(jsonBody, "application/json");
+        GetCarriersResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Remove carriers to a warehouse
@@ -169,45 +168,11 @@ public isolated client class Client {
     # + payload - Remove carrier request 
     # + return - Get carriers response 
     remote isolated function removeCarriersByIdToWarehouse(string id, RemoveCarrierRequest payload) returns GetCarriersResponse|error {
-        string  path = string `/api/v3.1/warehouses/${id}/removeCarriers`;
+        string resourcePath = string `/api/v3.1/warehouses/${id}/removeCarriers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GetCarriersResponse response = check self.clientEp->post(path, request, targetType=GetCarriersResponse);
+        request.setPayload(jsonBody, "application/json");
+        GetCarriersResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

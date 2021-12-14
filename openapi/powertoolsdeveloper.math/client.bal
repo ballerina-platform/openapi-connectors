@@ -43,19 +43,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Math - Calculate average
     #
     # + payload - Series calculation parameters 
     # + return - OK 
     remote isolated function calculateAverage(InputCalculateSeries payload) returns OutputNumber|error {
-        string  path = string `/CalculateAverage`;
+        string resourcePath = string `/CalculateAverage`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate median
@@ -63,13 +64,13 @@ public isolated client class Client {
     # + payload - Series calculation parameters 
     # + return - OK 
     remote isolated function calculateMedian(InputCalculateSeries payload) returns OutputNumber|error {
-        string  path = string `/CalculateMedian`;
+        string resourcePath = string `/CalculateMedian`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate minimum or maximum
@@ -77,13 +78,13 @@ public isolated client class Client {
     # + payload - Series calculation parameters 
     # + return - OK 
     remote isolated function calculateMinMax(InputCalculateMinMax payload) returns OutputNumber|error {
-        string  path = string `/CalculateMinMax`;
+        string resourcePath = string `/CalculateMinMax`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate sum
@@ -91,13 +92,13 @@ public isolated client class Client {
     # + payload - Series calculation parameters 
     # + return - OK 
     remote isolated function calculateSum(InputCalculateSeries payload) returns OutputNumber|error {
-        string  path = string `/CalculateSum`;
+        string resourcePath = string `/CalculateSum`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate power
@@ -105,13 +106,13 @@ public isolated client class Client {
     # + payload - Power calculation parameters 
     # + return - OK 
     remote isolated function calculatePower(InputCalculatePower payload) returns OutputNumber|error {
-        string  path = string `/CalculatePower`;
+        string resourcePath = string `/CalculatePower`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate variance
@@ -119,13 +120,13 @@ public isolated client class Client {
     # + payload - Series calculation parameters 
     # + return - OK 
     remote isolated function calculateVariance(InputCalculateSeries payload) returns OutputNumber|error {
-        string  path = string `/CalculateVariance`;
+        string resourcePath = string `/CalculateVariance`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Addition
@@ -133,13 +134,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateAddition(InputCalculateNumbers payload) returns OutputNumber|error {
-        string  path = string `/CalculateAddition`;
+        string resourcePath = string `/CalculateAddition`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Subtraction
@@ -147,13 +148,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateSubtraction(InputCalculateNumbers payload) returns OutputNumber|error {
-        string  path = string `/CalculateSubtraction`;
+        string resourcePath = string `/CalculateSubtraction`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Multiplication
@@ -161,13 +162,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateMultiplication(InputCalculateNumbers payload) returns OutputNumber|error {
-        string  path = string `/CalculateMultiplication`;
+        string resourcePath = string `/CalculateMultiplication`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Division
@@ -175,13 +176,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateDivision(InputCalculateNumbers payload) returns OutputNumber|error {
-        string  path = string `/CalculateDivision`;
+        string resourcePath = string `/CalculateDivision`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Modulo
@@ -189,13 +190,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateModulo(InputCalculateNumbers payload) returns OutputNumber|error {
-        string  path = string `/CalculateModulo`;
+        string resourcePath = string `/CalculateModulo`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Nth Root
@@ -203,13 +204,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateNthRoot(InputCalculateNumbers payload) returns OutputNumber|error {
-        string  path = string `/CalculateNthRoot`;
+        string resourcePath = string `/CalculateNthRoot`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Square Root
@@ -217,13 +218,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateSquareRoot(InputCalculateNumber payload) returns OutputNumber|error {
-        string  path = string `/CalculateSquareRoot`;
+        string resourcePath = string `/CalculateSquareRoot`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Logarithm
@@ -231,13 +232,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateLogarithm(InputCalculateNumber payload) returns OutputNumber|error {
-        string  path = string `/CalculateLogarithm`;
+        string resourcePath = string `/CalculateLogarithm`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Sine
@@ -245,13 +246,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateSine(InputCalculateNumber payload) returns OutputNumber|error {
-        string  path = string `/CalculateSine`;
+        string resourcePath = string `/CalculateSine`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Cosine
@@ -259,13 +260,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateCosine(InputCalculateNumber payload) returns OutputNumber|error {
-        string  path = string `/CalculateCosine`;
+        string resourcePath = string `/CalculateCosine`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Tangent
@@ -273,13 +274,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateTangent(InputCalculateNumber payload) returns OutputNumber|error {
-        string  path = string `/CalculateTangent`;
+        string resourcePath = string `/CalculateTangent`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate Absolute
@@ -287,13 +288,13 @@ public isolated client class Client {
     # + payload - Number calculation parameters 
     # + return - OK 
     remote isolated function calculateAbsolute(InputCalculateNumber payload) returns OutputNumber|error {
-        string  path = string `/CalculateAbsolute`;
+        string resourcePath = string `/CalculateAbsolute`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert angle
@@ -301,13 +302,13 @@ public isolated client class Client {
     # + payload - Input convert angle parameters 
     # + return - OK 
     remote isolated function convertAngle(InputConvertAngle payload) returns OutputNumber|error {
-        string  path = string `/ConvertAngle`;
+        string resourcePath = string `/ConvertAngle`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert area
@@ -315,13 +316,13 @@ public isolated client class Client {
     # + payload - Input convert area parameters 
     # + return - OK 
     remote isolated function convertArea(InputConvertArea payload) returns OutputNumber|error {
-        string  path = string `/ConvertArea`;
+        string resourcePath = string `/ConvertArea`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert distance
@@ -329,13 +330,13 @@ public isolated client class Client {
     # + payload - Input convert distance parameters 
     # + return - OK 
     remote isolated function convertDistance(InputConvertDistance payload) returns OutputNumber|error {
-        string  path = string `/ConvertDistance`;
+        string resourcePath = string `/ConvertDistance`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert duration
@@ -343,13 +344,13 @@ public isolated client class Client {
     # + payload - Input convert duration parameters 
     # + return - OK 
     remote isolated function convertDuration(InputConvertDuration payload) returns OutputNumber|error {
-        string  path = string `/ConvertDuration`;
+        string resourcePath = string `/ConvertDuration`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert energy
@@ -357,13 +358,13 @@ public isolated client class Client {
     # + payload - Input convert energy parameters 
     # + return - OK 
     remote isolated function convertEnergy(InputConvertEnergy payload) returns OutputNumber|error {
-        string  path = string `/ConvertEnergy`;
+        string resourcePath = string `/ConvertEnergy`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert power
@@ -371,13 +372,13 @@ public isolated client class Client {
     # + payload - Input convert power parameters 
     # + return - OK 
     remote isolated function convertPower(InputConvertPower payload) returns OutputNumber|error {
-        string  path = string `/ConvertPower`;
+        string resourcePath = string `/ConvertPower`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert speed
@@ -385,13 +386,13 @@ public isolated client class Client {
     # + payload - Input convert speed parameters 
     # + return - OK 
     remote isolated function convertSpeed(InputConvertSpeed payload) returns OutputNumber|error {
-        string  path = string `/ConvertSpeed`;
+        string resourcePath = string `/ConvertSpeed`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert temperature
@@ -399,13 +400,13 @@ public isolated client class Client {
     # + payload - Input convert temperature parameters 
     # + return - OK 
     remote isolated function convertTemperature(InputConvertTemperature payload) returns OutputNumber|error {
-        string  path = string `/ConvertTemperature`;
+        string resourcePath = string `/ConvertTemperature`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert volume
@@ -413,13 +414,13 @@ public isolated client class Client {
     # + payload - Input convert volume parameters 
     # + return - OK 
     remote isolated function convertVolume(InputConvertVolume payload) returns OutputNumber|error {
-        string  path = string `/ConvertVolume`;
+        string resourcePath = string `/ConvertVolume`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Convert weight
@@ -427,13 +428,13 @@ public isolated client class Client {
     # + payload - Input convert weight parameters 
     # + return - OK 
     remote isolated function convertWeight(InputConvertWeight payload) returns OutputNumber|error {
-        string  path = string `/ConvertWeight`;
+        string resourcePath = string `/ConvertWeight`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Random number
@@ -441,13 +442,13 @@ public isolated client class Client {
     # + payload - Input number range parameters 
     # + return - OK 
     remote isolated function randomNumber(InputNumberRange payload) returns OutputNumber|error {
-        string  path = string `/RandomNumber`;
+        string resourcePath = string `/RandomNumber`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Round number
@@ -455,13 +456,13 @@ public isolated client class Client {
     # + payload - Numeric calculation parameters 
     # + return - OK 
     remote isolated function roundNumber(InputCalculateNumber payload) returns OutputNumber|error {
-        string  path = string `/RoundNumber`;
+        string resourcePath = string `/RoundNumber`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Math - Calculate standard deviation
@@ -469,13 +470,13 @@ public isolated client class Client {
     # + payload - Series calculation parameters 
     # + return - OK 
     remote isolated function standardDeviation(InputCalculateSeries payload) returns OutputNumber|error {
-        string  path = string `/StandardDeviation`;
+        string resourcePath = string `/StandardDeviation`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

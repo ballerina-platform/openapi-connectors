@@ -117,6 +117,13 @@ public type Category record {
     boolean is_transfer?;
 };
 
+public type InstitutionsIdBody record {
+    # A new title for the institution.
+    string title?;
+    # A new currency code for the institution.
+    string currency_code?;
+};
+
 public type CategoryRule record {
     Category category?;
     # The unique identifier of the category rule.
@@ -127,20 +134,6 @@ public type CategoryRule record {
     string created_at?;
     # When the category rule was last updated.
     string updated_at?;
-};
-
-public type Body12 record {
-    # The new title of the attachment. If the title is blank or not provided, the server will derive a title from the file name.
-    string title?;
-};
-
-public type Body11 record {
-    # The keyword/s to match the transaction payees.
-    string payee_matches;
-    # Apply the created category rule to all uncategorised transactions.
-    boolean apply_to_uncategorised?;
-    # Apply the created category rule to all transactions.
-    boolean apply_to_all?;
 };
 
 public type Attachment record {
@@ -164,7 +157,12 @@ public type Attachment record {
     string updated_at?;
 };
 
-public type Body10 record {
+public type IdAccountsBody record {
+    # List the account objects in their new display order.
+    Account[] accounts;
+};
+
+public type IdCategoriesBody record {
     # A title for the category.
     string title;
     # A CSS-style hex colour for the category.
@@ -211,12 +209,12 @@ public type TransactionAccount record {
     string 'type?;
 };
 
-public type Body14 record {
+public type IdAttachmentsBody1 record {
     # The unique identifier of the attachment.
     int attachment_id?;
 };
 
-public type Body13 record {
+public type IdAttachmentsBody record {
     # The title of the attachment. If the title is blank or not provided, the title will derived from the file name.
     string title?;
     # The file name of the attachment.
@@ -225,22 +223,13 @@ public type Body13 record {
     string file_data?;
 };
 
-# Update information
-public type Body record {
-    # A new email address for the user.
-    string email?;
-    # A new name for the user.
-    string name?;
-    # A new time zone for the user.
-    string time_zone?;
-    # The day of the week the user wishes their calendars to start on. A number between 0 and 6, where 0 is Sunday and 6 is Saturday.
-    int week_start_day?;
-    # Whether the user is a beta user, and wishes to try out new features.
-    boolean beta_user?;
-    # A new base currency code for the user.
-    string base_currency_code?;
-    # Whether the user wishes to have all monetary values converted to their base currency.
-    boolean always_show_base_currency?;
+public type CategoriesIdBody record {
+    # A new title for the category.
+    string title?;
+    # A new CSS-style hex colour for the category.
+    string colour?;
+    # The unique identifier of a parent category for the category, making this category a child of that category.
+    int parent_id?;
 };
 
 public type AttachmentContentTypeMeta record {
@@ -273,7 +262,7 @@ public type BudgetAnalysis record {
     Period[] periods?;
 };
 
-public type Body8 record {
+public type IdTransactionsBody record {
     # The payee/merchant of the transaction.
     string payee;
     # The amount of the transaction. A positive amount is a credit, and a negative amount is a debit.
@@ -294,21 +283,12 @@ public type Body8 record {
     string cheque_number?;
 };
 
-public type Body9 record {
-    # A new title for the category.
+public type AttachmentsIdBody record {
+    # The new title of the attachment. If the title is blank or not provided, the server will derive a title from the file name.
     string title?;
-    # A new CSS-style hex colour for the category.
-    string colour?;
-    # The unique identifier of a parent category for the category, making this category a child of that category.
-    int parent_id?;
 };
 
-public type Body6 record {
-    # The unique identifier of a new institution for the transaction account.
-    int institution_id?;
-};
-
-public type Body7 record {
+public type TransactionsIdBody record {
     # A new memo for the transaction.
     string memo?;
     # A new cheque number for the transaction.
@@ -327,34 +307,11 @@ public type Body7 record {
     string note?;
 };
 
-public type Body4 record {
-    # List the account objects in their new display order.
-    Account[] accounts;
-};
-
-public type Body5 record {
-    # The ID of the institution to create this account in.
-    int institution_id;
-    # A title for the account.
-    string title;
-    # A currency code for the account.
-    string currency_code;
-    # The type of the account.
-    string 'type;
-};
-
-public type Body2 record {
+public type IdInstitutionsBody record {
     # A title for the institution.
     string title;
     # A currency code for the institution.
     string currency_code;
-};
-
-public type Body3 record {
-    # A new title for the account.
-    string title?;
-    # A new currency code for the account.
-    string currency_code?;
 };
 
 public type Period record {
@@ -385,6 +342,26 @@ public type Period record {
 public type Error record {
     # A message describing the error that occurred.
     string _error?;
+};
+
+public type IdCategoryRulesBody record {
+    # The keyword/s to match the transaction payees.
+    string payee_matches;
+    # Apply the created category rule to all uncategorised transactions.
+    boolean apply_to_uncategorised?;
+    # Apply the created category rule to all transactions.
+    boolean apply_to_all?;
+};
+
+public type IdAccountsBody1 record {
+    # The ID of the institution to create this account in.
+    int institution_id;
+    # A title for the account.
+    string title;
+    # A currency code for the account.
+    string currency_code;
+    # The type of the account.
+    string 'type;
 };
 
 public type Scenario record {
@@ -466,11 +443,34 @@ public type Transaction record {
     string status?;
 };
 
-public type Body1 record {
-    # A new title for the institution.
+# Update information
+public type UsersIdBody record {
+    # A new email address for the user.
+    string email?;
+    # A new name for the user.
+    string name?;
+    # A new time zone for the user.
+    string time_zone?;
+    # The day of the week the user wishes their calendars to start on. A number between 0 and 6, where 0 is Sunday and 6 is Saturday.
+    int week_start_day?;
+    # Whether the user is a beta user, and wishes to try out new features.
+    boolean beta_user?;
+    # A new base currency code for the user.
+    string base_currency_code?;
+    # Whether the user wishes to have all monetary values converted to their base currency.
+    boolean always_show_base_currency?;
+};
+
+public type AccountsIdBody record {
+    # A new title for the account.
     string title?;
-    # A new currency code for the institution.
+    # A new currency code for the account.
     string currency_code?;
+};
+
+public type TransactionAccountsIdBody record {
+    # The unique identifier of a new institution for the transaction account.
+    int institution_id?;
 };
 
 public type AttachmentVariants record {
@@ -479,4 +479,3 @@ public type AttachmentVariants record {
     # The url of the thumb version of the attachment
     string thumb_url?;
 };
-

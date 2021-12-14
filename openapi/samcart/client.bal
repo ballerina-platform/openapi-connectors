@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Retrieve all charges
     #
@@ -51,12 +52,12 @@ public isolated client class Client {
     # + dir - The direction to paginate the next set of data. If dir is prev the page will return a data set before the offset otherwise the data set will be after the offset. Default value is next if not provided. 
     # + return - Successful operation. Response will return an array of 0 or more charges 
     remote isolated function getCharges(string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = (), int? offset = (), int? 'limit = (), string? dir = ()) returns InlineResponse200|error {
-        string  path = string `/charges`;
+        string resourcePath = string `/charges`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode, "offset": offset, "limit": 'limit, "dir": dir};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a charge
@@ -67,12 +68,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation 
     remote isolated function getByChargeId(int id, string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = ()) returns ChargeService|error {
-        string  path = string `/charges/${id}`;
+        string resourcePath = string `/charges/${id}`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChargeService response = check self.clientEp-> get(path, accHeaders, targetType = ChargeService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChargeService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all refunds on a charge
@@ -80,10 +81,10 @@ public isolated client class Client {
     # + id - The SamCart ID for the charge 
     # + return - Successful operation. Response will return an array of 0 or more refunds 
     remote isolated function getMultipleRefundsByChargeId(int id) returns RefundService[]|error {
-        string  path = string `/charges/${id}/refunds`;
+        string resourcePath = string `/charges/${id}/refunds`;
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RefundService[] response = check self.clientEp-> get(path, accHeaders, targetType = RefundServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RefundService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a refund on a charge
@@ -92,10 +93,10 @@ public isolated client class Client {
     # + refundId - The SamCart ID for the refund 
     # + return - Successful operation 
     remote isolated function getRefundByChargeId(int id, int refundId) returns RefundService|error {
-        string  path = string `/charges/${id}/refunds/${refundId}`;
+        string resourcePath = string `/charges/${id}/refunds/${refundId}`;
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RefundService response = check self.clientEp-> get(path, accHeaders, targetType = RefundService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RefundService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all customers
@@ -107,12 +108,12 @@ public isolated client class Client {
     # + dir - The direction to paginate the next set of data. If dir is prev the page will return a data set before the offset otherwise the data set will be after the offset. Default value is next if not provided. 
     # + return - Successful operation. Response will return an array of 0 or more customers 
     remote isolated function getCustomers(string? createdAtMin = (), string? createdAtMax = (), int? offset = (), int? 'limit = (), string? dir = ()) returns InlineResponse2001|error {
-        string  path = string `/customers`;
+        string resourcePath = string `/customers`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "offset": offset, "limit": 'limit, "dir": dir};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a customer
@@ -122,12 +123,12 @@ public isolated client class Client {
     # + createdAtMax - Filter by UTC created at date at or before given date 
     # + return - Successful operation 
     remote isolated function getByCustomerId(int id, string? createdAtMin = (), string? createdAtMax = ()) returns CustomerService|error {
-        string  path = string `/customers/${id}`;
+        string resourcePath = string `/customers/${id}`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomerService response = check self.clientEp-> get(path, accHeaders, targetType = CustomerService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all addresses for a customer
@@ -135,10 +136,10 @@ public isolated client class Client {
     # + id - The SamCart ID for the customer 
     # + return - Successful operation. Response will return an array of 0 or more addresses 
     remote isolated function getAddressesByCustomerId(int id) returns AddressService[]|error {
-        string  path = string `/customers/${id}/addresses`;
+        string resourcePath = string `/customers/${id}/addresses`;
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AddressService[] response = check self.clientEp-> get(path, accHeaders, targetType = AddressServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AddressService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all charges for a customer
@@ -149,12 +150,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation. Response will return an array of 0 or more charges 
     remote isolated function getChargesByCustomerId(int id, string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = ()) returns ChargeService[]|error {
-        string  path = string `/customers/${id}/charges`;
+        string resourcePath = string `/customers/${id}/charges`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChargeService[] response = check self.clientEp-> get(path, accHeaders, targetType = ChargeServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChargeService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all orders for a customer
@@ -165,12 +166,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation. Response will return an array of 0 or more orders 
     remote isolated function getOrdersByCustomerId(int id, string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = ()) returns OrderService[]|error {
-        string  path = string `/customers/${id}/orders`;
+        string resourcePath = string `/customers/${id}/orders`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderService[] response = check self.clientEp-> get(path, accHeaders, targetType = OrderServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all subscriptions for a customer
@@ -187,12 +188,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation. Response will return an array of 0 or more subscriptions 
     remote isolated function getSubscriptionsByCustomerId(int id, string? createdAtMin = (), string? createdAtMax = (), string? rebillingAtMin = (), string? rebillingAtMax = (), string? canceledAtMin = (), string? canceledAtMax = (), string? status = (), string? 'type = (), boolean? testMode = ()) returns SubscriptionService[]|error {
-        string  path = string `/customers/${id}/subscriptions`;
+        string resourcePath = string `/customers/${id}/subscriptions`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "rebilling_at_min": rebillingAtMin, "rebilling_at_max": rebillingAtMax, "canceled_at_min": canceledAtMin, "canceled_at_max": canceledAtMax, "status": status, "type": 'type, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionService[] response = check self.clientEp-> get(path, accHeaders, targetType = SubscriptionServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all failed charges
@@ -205,12 +206,12 @@ public isolated client class Client {
     # + dir - The direction to paginate the next set of data. If dir is prev the page will return a data set before the offset otherwise the data set will be after the offset. Default value is next if not provided. 
     # + return - Successful operation. Response will return an array of 0 or more failed charges 
     remote isolated function getFailedCharges(string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = (), int? offset = (), int? 'limit = (), string? dir = ()) returns InlineResponse2002|error {
-        string  path = string `/failed-charges`;
+        string resourcePath = string `/failed-charges`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode, "offset": offset, "limit": 'limit, "dir": dir};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2002 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2002);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a failed charge
@@ -221,12 +222,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation 
     remote isolated function getByFailedChargeId(int id, string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = ()) returns FailedChargeService|error {
-        string  path = string `/failed-charges/${id}`;
+        string resourcePath = string `/failed-charges/${id}`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FailedChargeService response = check self.clientEp-> get(path, accHeaders, targetType = FailedChargeService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FailedChargeService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all orders
@@ -239,12 +240,12 @@ public isolated client class Client {
     # + dir - The direction to paginate the next set of data. If dir is prev the page will return a data set before the offset otherwise the data set will be after the offset. Default value is next if not provided. 
     # + return - Successful operation. Response will return an array of 0 or more orders 
     remote isolated function getOrders(string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = (), int? offset = (), int? 'limit = (), string? dir = ()) returns InlineResponse2003|error {
-        string  path = string `/orders`;
+        string resourcePath = string `/orders`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode, "offset": offset, "limit": 'limit, "dir": dir};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2003 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2003);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve an order
@@ -255,12 +256,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation 
     remote isolated function getByOrderId(int id, string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = ()) returns OrderService|error {
-        string  path = string `/orders/${id}`;
+        string resourcePath = string `/orders/${id}`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderService response = check self.clientEp-> get(path, accHeaders, targetType = OrderService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all charges on an order
@@ -271,12 +272,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation. Response will return an array of 0 or more charges 
     remote isolated function getChargesByOrderId(int id, string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = ()) returns ChargeService[]|error {
-        string  path = string `/orders/${id}/charges`;
+        string resourcePath = string `/orders/${id}/charges`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChargeService[] response = check self.clientEp-> get(path, accHeaders, targetType = ChargeServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChargeService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve customer on an order
@@ -284,10 +285,10 @@ public isolated client class Client {
     # + id - The SamCart ID for the order 
     # + return - Successful operation 
     remote isolated function getCustomerByOrderId(int id) returns CustomerService|error {
-        string  path = string `/orders/${id}/customer`;
+        string resourcePath = string `/orders/${id}/customer`;
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomerService response = check self.clientEp-> get(path, accHeaders, targetType = CustomerService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all subscriptions on an order
@@ -304,12 +305,12 @@ public isolated client class Client {
     # + 'type - Filter subscriptions by type 
     # + return - Successful operation. Response will return an array of 0 or more subscriptions 
     remote isolated function getSubscriptionsByOrderId(int id, string? createdAtMin = (), string? createdAtMax = (), string? rebillingAtMin = (), string? rebillingAtMax = (), string? canceledAtMin = (), string? canceledAtMax = (), boolean? testMode = (), string? status = (), string? 'type = ()) returns SubscriptionService[]|error {
-        string  path = string `/orders/${id}/subscriptions`;
+        string resourcePath = string `/orders/${id}/subscriptions`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "rebilling_at_min": rebillingAtMin, "rebilling_at_max": rebillingAtMax, "canceled_at_min": canceledAtMin, "canceled_at_max": canceledAtMax, "test_mode": testMode, "status": status, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionService[] response = check self.clientEp-> get(path, accHeaders, targetType = SubscriptionServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all products
@@ -324,12 +325,12 @@ public isolated client class Client {
     # + dir - The direction to paginate the next set of data. If dir is prev the page will return a data set before the offset otherwise the data set will be after the offset. Default value is next if not provided. 
     # + return - Successful operation. Response will return an array of 0 or more products 
     remote isolated function getProducts(string? createdAtMin = (), string? createdAtMax = (), string? status = (), string? productCategory = (), string? pricingType = (), int? offset = (), int? 'limit = (), string? dir = ()) returns InlineResponse2004|error {
-        string  path = string `/products`;
+        string resourcePath = string `/products`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "status": status, "product_category": productCategory, "pricing_type": pricingType, "offset": offset, "limit": 'limit, "dir": dir};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2004 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2004);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2004 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a product
@@ -342,12 +343,12 @@ public isolated client class Client {
     # + pricingType - Filter product by pricing type 
     # + return - Successful operation 
     remote isolated function getByProductId(int id, string? createdAtMin = (), string? createdAtMax = (), string? status = (), string? productCategory = (), string? pricingType = ()) returns ProductService|error {
-        string  path = string `/products/${id}`;
+        string resourcePath = string `/products/${id}`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "status": status, "product_category": productCategory, "pricing_type": pricingType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProductService response = check self.clientEp-> get(path, accHeaders, targetType = ProductService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProductService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all subscriptions
@@ -366,12 +367,12 @@ public isolated client class Client {
     # + dir - The direction to paginate the next set of data. If dir is prev the page will return a data set before the offset otherwise the data set will be after the offset. Default value is next if not provided. 
     # + return - Successful operation. Response will return an array of 0 or more subscriptions 
     remote isolated function getSubscriptions(string? createdAtMin = (), string? createdAtMax = (), string? rebillingAtMin = (), string? rebillingAtMax = (), string? canceledAtMin = (), string? canceledAtMax = (), boolean? testMode = (), string? status = (), string? 'type = (), int? offset = (), int? 'limit = (), string? dir = ()) returns InlineResponse2005|error {
-        string  path = string `/subscriptions`;
+        string resourcePath = string `/subscriptions`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "rebilling_at_min": rebillingAtMin, "rebilling_at_max": rebillingAtMax, "canceled_at_min": canceledAtMin, "canceled_at_max": canceledAtMax, "test_mode": testMode, "status": status, "type": 'type, "offset": offset, "limit": 'limit, "dir": dir};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2005 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2005);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2005 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a subscription
@@ -388,12 +389,12 @@ public isolated client class Client {
     # + 'type - Filter subscriptions by type 
     # + return - Successful operation 
     remote isolated function getSubscriptionById(int id, string? createdAtMin = (), string? createdAtMax = (), string? rebillingAtMin = (), string? rebillingAtMax = (), string? canceledAtMin = (), string? canceledAtMax = (), boolean? testMode = (), string? status = (), string? 'type = ()) returns SubscriptionService|error {
-        string  path = string `/subscriptions/${id}`;
+        string resourcePath = string `/subscriptions/${id}`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "rebilling_at_min": rebillingAtMin, "rebilling_at_max": rebillingAtMax, "canceled_at_min": canceledAtMin, "canceled_at_max": canceledAtMax, "test_mode": testMode, "status": status, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionService response = check self.clientEp-> get(path, accHeaders, targetType = SubscriptionService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve charges on a subscription
@@ -404,12 +405,12 @@ public isolated client class Client {
     # + testMode - Filter by test mode 
     # + return - Successful operation. Response will return an array of 0 or more charges 
     remote isolated function getChargesBySubscriptionID(int id, string? createdAtMin = (), string? createdAtMax = (), boolean? testMode = ()) returns ChargeService[]|error {
-        string  path = string `/subscriptions/${id}/charges`;
+        string resourcePath = string `/subscriptions/${id}/charges`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax, "test_mode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChargeService[] response = check self.clientEp-> get(path, accHeaders, targetType = ChargeServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChargeService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a customer on a subscription
@@ -417,10 +418,10 @@ public isolated client class Client {
     # + id - The SamCart ID for the subscription 
     # + return - Successful operation 
     remote isolated function getCustomerBySubscriptionID(int id) returns CustomerService|error {
-        string  path = string `/subscriptions/${id}/customer`;
+        string resourcePath = string `/subscriptions/${id}/customer`;
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomerService response = check self.clientEp-> get(path, accHeaders, targetType = CustomerService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a subscription's history
@@ -430,12 +431,12 @@ public isolated client class Client {
     # + createdAtMax - Filter by UTC created at date at or before given date 
     # + return - Successful operation. Response will return an array of 0 or more history entries 
     remote isolated function getHistoriesBySubscriptionID(int id, string? createdAtMin = (), string? createdAtMax = ()) returns SubscriptionHistoryService[]|error {
-        string  path = string `/subscriptions/${id}/history`;
+        string resourcePath = string `/subscriptions/${id}/history`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionHistoryService[] response = check self.clientEp-> get(path, accHeaders, targetType = SubscriptionHistoryServiceArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionHistoryService[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve a plan for a subscription
@@ -445,12 +446,12 @@ public isolated client class Client {
     # + createdAtMax - Filter by UTC created at date at or before given date 
     # + return - Successful operation 
     remote isolated function getPlanBySubscriptionID(int id, string? createdAtMin = (), string? createdAtMax = ()) returns SubscriptionPlanService|error {
-        string  path = string `/subscriptions/${id}/plan`;
+        string resourcePath = string `/subscriptions/${id}/plan`;
         map<anydata> queryParam = {"created_at_min": createdAtMin, "created_at_max": createdAtMax};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"sc-api": self.apiKeyConfig.scApi};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionPlanService response = check self.clientEp-> get(path, accHeaders, targetType = SubscriptionPlanService);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionPlanService response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

@@ -42,6 +42,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Retrieves a list of customers.
     #
@@ -55,12 +56,12 @@ public isolated client class Client {
     # + fields - Show only certain fields, specified by a comma-separated list of field names. 
     # + return - List of customers 
     remote isolated function getCustomers(string? ids = (), string? sinceId = (), string? createdAtMin = (), string? createdAtMax = (), string? updatedAtMin = (), string? updatedAtMax = (), int? 'limit = (), string? fields = ()) returns CustomerList|error {
-        string path = string `/admin/api/2021-10/customers.json`;
+        string resourcePath = string `/admin/api/2021-10/customers.json`;
         map<anydata> queryParam = {"ids": ids, "since_id": sinceId, "created_at_min": createdAtMin, "created_at_max": createdAtMax, "updated_at_min": updatedAtMin, "updated_at_max": updatedAtMax, "limit": 'limit, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomerList response = check self.clientEp->get(path, accHeaders, targetType = CustomerList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a customer.
@@ -68,13 +69,13 @@ public isolated client class Client {
     # + payload - The Customer object to be created. 
     # + return - Created customer 
     remote isolated function createCustomer(CreateCustomer payload) returns CustomerObject|error {
-        string path = string `/admin/api/2021-10/customers.json`;
+        string resourcePath = string `/admin/api/2021-10/customers.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CustomerObject);
+        request.setPayload(jsonBody, "application/json");
+        CustomerObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves a single customer.
@@ -83,12 +84,12 @@ public isolated client class Client {
     # + fields - Show only certain fields, specified by a comma-separated list of field names. 
     # + return - Requested customer 
     remote isolated function getCustomer(string customerId, string? fields = ()) returns CustomerObject|error {
-        string path = string `/admin/api/2021-10/customers/${customerId}.json`;
+        string resourcePath = string `/admin/api/2021-10/customers/${customerId}.json`;
         map<anydata> queryParam = {"fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomerObject response = check self.clientEp->get(path, accHeaders, targetType = CustomerObject);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerObject response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Updates a customer.
@@ -97,13 +98,13 @@ public isolated client class Client {
     # + payload - The Customer object to be updated. 
     # + return - Updated customer 
     remote isolated function updateCustomer(string customerId, UpdateCustomer payload) returns CustomerObject|error {
-        string path = string `/admin/api/2021-10/customers/${customerId}.json`;
+        string resourcePath = string `/admin/api/2021-10/customers/${customerId}.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerObject response = check self.clientEp->put(path, request, headers = accHeaders, targetType = CustomerObject);
+        request.setPayload(jsonBody, "application/json");
+        CustomerObject response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Searches for customers that match a supplied query.
@@ -114,12 +115,12 @@ public isolated client class Client {
     # + fields - Show only certain fields, specified by a comma-separated list of field names. 
     # + return - List of customers 
     remote isolated function searchCustomers(string? query = (), string? 'order = (), int? 'limit = (), string? fields = ()) returns CustomerList|error {
-        string path = string `/admin/api/2021-10/customers/search.json`;
+        string resourcePath = string `/admin/api/2021-10/customers/search.json`;
         map<anydata> queryParam = {"query": query, "order": 'order, "limit": 'limit, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomerList response = check self.clientEp->get(path, accHeaders, targetType = CustomerList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves a list of products.
@@ -144,12 +145,12 @@ public isolated client class Client {
     # + presentmentCurrencies - Return presentment prices in only certain currencies, specified by a comma-separated list of ISO 4217 currency codes. 
     # + return - List of products 
     remote isolated function getProducts(string? ids = (), int? 'limit = (), string? sinceId = (), string? title = (), string? vendor = (), string? 'handle = (), string? productType = (), string? status = (), string? collectionId = (), string? createdAtMin = (), string? createdAtMax = (), string? updatedAtMin = (), string? updatedAtMax = (), string? publishedAtMin = (), string? publishedAtMax = (), string? publishedStatus = (), string? fields = (), string? presentmentCurrencies = ()) returns ProductList|error {
-        string path = string `/admin/api/2021-10/products.json`;
+        string resourcePath = string `/admin/api/2021-10/products.json`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "since_id": sinceId, "title": title, "vendor": vendor, "handle": 'handle, "product_type": productType, "status": status, "collection_id": collectionId, "created_at_min": createdAtMin, "created_at_max": createdAtMax, "updated_at_min": updatedAtMin, "updated_at_max": updatedAtMax, "published_at_min": publishedAtMin, "published_at_max": publishedAtMax, "published_status": publishedStatus, "fields": fields, "presentment_currencies": presentmentCurrencies};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProductList response = check self.clientEp->get(path, accHeaders, targetType = ProductList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProductList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a new product.
@@ -157,13 +158,13 @@ public isolated client class Client {
     # + payload - The Product object to be created. 
     # + return - Created product 
     remote isolated function createProduct(CreateProduct payload) returns ProductObject|error {
-        string path = string `/admin/api/2021-10/products.json`;
+        string resourcePath = string `/admin/api/2021-10/products.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProductObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ProductObject);
+        request.setPayload(jsonBody, "application/json");
+        ProductObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves a single product.
@@ -172,12 +173,12 @@ public isolated client class Client {
     # + fields - A comma-separated list of fields to include in the response. 
     # + return - Requested product 
     remote isolated function getProduct(string productId, string? fields = ()) returns ProductObject|error {
-        string path = string `/admin/api/2021-10/products/${productId}.json`;
+        string resourcePath = string `/admin/api/2021-10/products/${productId}.json`;
         map<anydata> queryParam = {"fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProductObject response = check self.clientEp->get(path, accHeaders, targetType = ProductObject);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProductObject response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Updates a product and its variants and images.
@@ -186,13 +187,13 @@ public isolated client class Client {
     # + payload - The Product object to be updated. 
     # + return - Updated product 
     remote isolated function updateProduct(string productId, UpdateProduct payload) returns ProductObject|error {
-        string path = string `/admin/api/2021-10/products/${productId}.json`;
+        string resourcePath = string `/admin/api/2021-10/products/${productId}.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProductObject response = check self.clientEp->put(path, request, headers = accHeaders, targetType = ProductObject);
+        request.setPayload(jsonBody, "application/json");
+        ProductObject response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves a list of product variants.
@@ -204,12 +205,12 @@ public isolated client class Client {
     # + sinceId - Restrict results to after the specified ID 
     # + return - List of product variants 
     remote isolated function getProductVariants(string productId, string? fields = (), int? 'limit = (), string? presentmentCurrencies = (), string? sinceId = ()) returns ProductVariantList|error {
-        string path = string `/admin/api/2021-10/products/${productId}/variants.json`;
+        string resourcePath = string `/admin/api/2021-10/products/${productId}/variants.json`;
         map<anydata> queryParam = {"fields": fields, "limit": 'limit, "presentment_currencies": presentmentCurrencies, "since_id": sinceId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProductVariantList response = check self.clientEp->get(path, accHeaders, targetType = ProductVariantList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProductVariantList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a new product variant.
@@ -218,13 +219,13 @@ public isolated client class Client {
     # + payload - The Product variant object to be created. 
     # + return - Created product variant 
     remote isolated function createProductVariant(string productId, CreateProductVariant payload) returns ProductVariantObject|error {
-        string path = string `/admin/api/2021-10/products/${productId}/variants.json`;
+        string resourcePath = string `/admin/api/2021-10/products/${productId}/variants.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProductVariantObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ProductVariantObject);
+        request.setPayload(jsonBody, "application/json");
+        ProductVariantObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves a single product variant by ID.
@@ -233,12 +234,12 @@ public isolated client class Client {
     # + fields - A comma-separated list of fields to include in the response 
     # + return - Requested product variant 
     remote isolated function getProductVariant(string variantId, string? fields = ()) returns ProductVariantObject|error {
-        string path = string `/admin/api/2021-10/variants/${variantId}.json`;
+        string resourcePath = string `/admin/api/2021-10/variants/${variantId}.json`;
         map<anydata> queryParam = {"fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProductVariantObject response = check self.clientEp->get(path, accHeaders, targetType = ProductVariantObject);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProductVariantObject response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Updates an existing product variant.
@@ -247,13 +248,13 @@ public isolated client class Client {
     # + payload - The Product variant object to be updated. 
     # + return - Updated product variant 
     remote isolated function updateProductVariant(string variantId, UpdateProductVariant payload) returns ProductVariantObject|error {
-        string path = string `/admin/api/2021-10/variants/${variantId}.json`;
+        string resourcePath = string `/admin/api/2021-10/variants/${variantId}.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProductVariantObject response = check self.clientEp->put(path, request, headers = accHeaders, targetType = ProductVariantObject);
+        request.setPayload(jsonBody, "application/json");
+        ProductVariantObject response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves a list of orders that meet the specified criteria.
@@ -274,12 +275,12 @@ public isolated client class Client {
     # + fields - Retrieve only certain fields, specified by a comma-separated list of fields names. 
     # + return - List of orders 
     remote isolated function getOrders(string? ids = (), int? 'limit = (), int? sinceId = (), string? createdAtMin = (), string? createdAtMax = (), string? updatedAtMin = (), string? updatedAtMax = (), string? processedAtMin = (), string? processedAtMax = (), string? attributionAppId = (), string? status = (), string? financialStatus = (), string? fulfillmentStatus = (), string? fields = ()) returns OrderList|error {
-        string path = string `/admin/api/2021-10/orders.json`;
+        string resourcePath = string `/admin/api/2021-10/orders.json`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "since_id": sinceId, "created_at_min": createdAtMin, "created_at_max": createdAtMax, "updated_at_min": updatedAtMin, "updated_at_max": updatedAtMax, "processed_at_min": processedAtMin, "processed_at_max": processedAtMax, "attribution_app_id": attributionAppId, "status": status, "financial_status": financialStatus, "fulfillment_status": fulfillmentStatus, "fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderList response = check self.clientEp->get(path, accHeaders, targetType = OrderList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates an order. By default, product inventory is not claimed.
@@ -287,13 +288,13 @@ public isolated client class Client {
     # + payload - The Order object to be created. 
     # + return - Created order 
     remote isolated function createOrder(CreateOrder payload) returns OrderObject|error {
-        string path = string `/admin/api/2021-10/orders.json`;
+        string resourcePath = string `/admin/api/2021-10/orders.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderObject);
+        request.setPayload(jsonBody, "application/json");
+        OrderObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves a specific order.
@@ -302,12 +303,12 @@ public isolated client class Client {
     # + fields - A comma-separated list of fields to include in the response. 
     # + return - Requested order 
     remote isolated function getOrder(string orderId, string? fields = ()) returns OrderObject|error {
-        string path = string `/admin/api/2021-10/orders/${orderId}.json`;
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}.json`;
         map<anydata> queryParam = {"fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderObject response = check self.clientEp->get(path, accHeaders, targetType = OrderObject);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderObject response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Updates an existing order.
@@ -316,13 +317,13 @@ public isolated client class Client {
     # + payload - The Order object to be updated. 
     # + return - Updated order 
     remote isolated function updateOrder(string orderId, UpdateOrder payload) returns OrderObject|error {
-        string path = string `/admin/api/2021-10/orders/${orderId}.json`;
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderObject response = check self.clientEp->put(path, request, headers = accHeaders, targetType = OrderObject);
+        request.setPayload(jsonBody, "application/json");
+        OrderObject response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves fulfillments associated with an order.
@@ -337,12 +338,12 @@ public isolated client class Client {
     # + updatedAtMin - Show fulfillments last updated after date (format: 2014-04-25T16:15:47-04:00). 
     # + return - List of order fulfillments 
     remote isolated function getOrderFulfillments(string orderId, string? createdAtMax = (), string? createdAtMin = (), string? fields = (), int? 'limit = (), string? sinceId = (), string? updatedAtMax = (), string? updatedAtMin = ()) returns OrderFulfillmentsList|error {
-        string path = string `/admin/api/2021-10/orders/${orderId}/fulfillments.json`;
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/fulfillments.json`;
         map<anydata> queryParam = {"created_at_max": createdAtMax, "created_at_min": createdAtMin, "fields": fields, "limit": 'limit, "since_id": sinceId, "updated_at_max": updatedAtMax, "updated_at_min": updatedAtMin};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderFulfillmentsList response = check self.clientEp->get(path, accHeaders, targetType = OrderFulfillmentsList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderFulfillmentsList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a fulfillment for the specified order and line items. The fulfillment's status depends on the line items in the order: If the line items in the fulfillment use a manual or custom fulfillment service, then the status of the returned fulfillment will be set immediately. If the line items use an external fulfillment service, then they will be queued for fulfillment and the status will be set to pending until the external fulfillment service has been invoked. A fulfillment might then transition to open, which implies it is being processed by the service, before transitioning to success when the items have shipped. If you don't specify line item IDs, then all unfulfilled and partially fulfilled line items for the order will be fulfilled. However, if an order is refunded or if any of its individual line items are refunded, then the order can't be fulfilled. All line items being fulfilled must have the same fulfillment service. Note If you are using this endpoint with a Partner development store or a trial store, then you can create no more than 5 new fulfillments per minute. About tracking urls If you're creating a fulfillment for a supported carrier, then you can send the tracking_company and tracking_numbers fields, and Shopify will generate the tracking_url for you. If you're creating a fulfillment for an unsupported carrier (not in the tracking_company list), then send the tracking_company, tracking_numbers, and tracking_urls fields. Note If you send an unsupported carrier without a tracking URL, then Shopify will still try to generate a valid tracking URL by using pattern matching on the tracking number. However, Shopify does not validate the tracking URL, so you should make sure that your tracking URL is correct for the order and fulfillment.
@@ -351,13 +352,13 @@ public isolated client class Client {
     # + payload - The Order fulfillment object to be created. 
     # + return - Created order fulfillment 
     remote isolated function createOrderFulfillment(string orderId, CreateOrderFulfillment payload) returns OrderFulfillmentObject|error {
-        string path = string `/admin/api/2021-10/orders/${orderId}/fulfillments.json`;
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/fulfillments.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderFulfillmentObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderFulfillmentObject);
+        request.setPayload(jsonBody, "application/json");
+        OrderFulfillmentObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Creates a draft order.
@@ -367,15 +368,15 @@ public isolated client class Client {
     # + payload - The Draft order object to be created. 
     # + return - Created draft order. 
     remote isolated function createDraftOrder(CreateDraftOrder payload, string? customerId = (), boolean? useCustomerDefaultAddress = ()) returns DraftOrderObject|error {
-        string path = string `/admin/api/2021-10/draft_orders.json`;
+        string resourcePath = string `/admin/api/2021-10/draft_orders.json`;
         map<anydata> queryParam = {"customer_id": customerId, "use_customer_default_address": useCustomerDefaultAddress};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DraftOrderObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = DraftOrderObject);
+        request.setPayload(jsonBody, "application/json");
+        DraftOrderObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Creates a transaction for an order.
@@ -385,15 +386,15 @@ public isolated client class Client {
     # + payload - The Transaction object to be created. 
     # + return - Created transaction. 
     remote isolated function createTransactionForOrder(string orderId, CreateTransaction payload, string? 'source = ()) returns TransactionObject|error {
-        string path = string `/admin/api/2021-10/orders/${orderId}/transactions.json`;
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/transactions.json`;
         map<anydata> queryParam = {"source": 'source};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TransactionObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = TransactionObject);
+        request.setPayload(jsonBody, "application/json");
+        TransactionObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Creates a refund.
@@ -402,13 +403,13 @@ public isolated client class Client {
     # + payload - The Refund object to be created. 
     # + return - Created refund. 
     remote isolated function createRefundForOrder(string orderId, CreateRefund payload) returns RefundObject|error {
-        string path = string `/admin/api/2021-10/orders/${orderId}/refunds.json`;
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/refunds.json`;
         map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RefundObject response = check self.clientEp->post(path, request, headers = accHeaders, targetType = RefundObject);
+        request.setPayload(jsonBody, "application/json");
+        RefundObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

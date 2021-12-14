@@ -14,8 +14,6 @@ info:
 
     Create a [ServiceNow instance](https://developer.servicenow.com/dev.do) and obtain tokens by following
     [this guide](https://docs.servicenow.com/bundle/quebec-platform-administration/page/administer/security/task/t_SettingUpOAuth.html).
-servers:
-- url: https://<YOUR_INSTANCE>.service-now.com
 security:
 - Bearer: []
 paths:

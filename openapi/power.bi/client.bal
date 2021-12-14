@@ -65,13 +65,14 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.powerbi.com/v1.0/myorg/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Returns a list of datasets from **"My Workspace"**.
     #
     # + return - OK 
     remote isolated function datasetsGetdatasets() returns Datasets|error {
-        string path = string `/datasets`;
-        Datasets response = check self.clientEp->get(path, targetType = Datasets);
+        string resourcePath = string `/datasets`;
+        Datasets response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new dataset on **"My Workspace"**.
@@ -80,13 +81,13 @@ public isolated client class Client {
     # + payload - Dataset definition to create 
     # + return - Created 
     remote isolated function datasetsPostdataset(CreateDatasetRequest payload, string? defaultRetentionPolicy = ()) returns Dataset|error {
-        string path = string `/datasets`;
+        string resourcePath = string `/datasets`;
         map<anydata> queryParam = {"defaultRetentionPolicy": defaultRetentionPolicy};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Dataset response = check self.clientEp->post(path, request, targetType = Dataset);
+        request.setPayload(jsonBody, "application/json");
+        Dataset response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified dataset from **"My Workspace"**.
@@ -94,8 +95,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdataset(string datasetId) returns Dataset|error {
-        string path = string `/datasets/${datasetId}`;
-        Dataset response = check self.clientEp->get(path, targetType = Dataset);
+        string resourcePath = string `/datasets/${datasetId}`;
+        Dataset response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes the specified dataset from **"My Workspace"**.
@@ -103,8 +104,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDeletedataset(string datasetId) returns http:Response|error {
-        string path = string `/datasets/${datasetId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/datasets/${datasetId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns a list of tables tables within the specified dataset from **"My Workspace"**.
@@ -112,8 +113,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGettables(string datasetId) returns Tables|error {
-        string path = string `/datasets/${datasetId}/tables`;
-        Tables response = check self.clientEp->get(path, targetType = Tables);
+        string resourcePath = string `/datasets/${datasetId}/tables`;
+        Tables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the metadata and schema for the specified table within the specified dataset from **"My Workspace"**.
@@ -123,11 +124,11 @@ public isolated client class Client {
     # + payload - Table name and columns to update existing table 
     # + return - OK 
     remote isolated function datasetsPuttable(string datasetId, string tableName, Table payload) returns Table|error {
-        string path = string `/datasets/${datasetId}/tables/${tableName}`;
+        string resourcePath = string `/datasets/${datasetId}/tables/${tableName}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Table response = check self.clientEp->put(path, request, targetType = Table);
+        request.setPayload(jsonBody, "application/json");
+        Table response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Adds new data rows to the specified table within the specified dataset from **"My Workspace"**.
@@ -137,11 +138,11 @@ public isolated client class Client {
     # + payload - The request message 
     # + return - OK 
     remote isolated function datasetsPostrows(string datasetId, string tableName, PostRowsRequest payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/tables/${tableName}/rows`;
+        string resourcePath = string `/datasets/${datasetId}/tables/${tableName}/rows`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Deletes all rows from the specified table within the specified dataset from **"My Workspace"**.
@@ -150,8 +151,8 @@ public isolated client class Client {
     # + tableName - The table name 
     # + return - OK 
     remote isolated function datasetsDeleterows(string datasetId, string tableName) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/tables/${tableName}/rows`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/datasets/${datasetId}/tables/${tableName}/rows`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns the refresh history of the specified dataset from **"My Workspace"**.
@@ -160,10 +161,10 @@ public isolated client class Client {
     # + top - The requested number of entries in the refresh history. If not provided, the default is all available entries. 
     # + return - OK 
     remote isolated function datasetsGetrefreshhistory(string datasetId, int? top = ()) returns Refreshes|error {
-        string path = string `/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/datasets/${datasetId}/refreshes`;
         map<anydata> queryParam = {"$top": top};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshes response = check self.clientEp->get(path, targetType = Refreshes);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshes response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Triggers a refresh for the specified dataset from **"My Workspace"**.
@@ -172,11 +173,11 @@ public isolated client class Client {
     # + payload - Refresh request 
     # + return - Accepted 
     remote isolated function datasetsRefreshdataset(string datasetId, RefreshRequest payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/datasets/${datasetId}/refreshes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the refresh schedule of the specified dataset from **"My Workspace"**.
@@ -184,8 +185,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetrefreshschedule(string datasetId) returns RefreshSchedule|error {
-        string path = string `/datasets/${datasetId}/refreshSchedule`;
-        RefreshSchedule response = check self.clientEp->get(path, targetType = RefreshSchedule);
+        string resourcePath = string `/datasets/${datasetId}/refreshSchedule`;
+        RefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the refresh schedule for the specified dataset from **"My Workspace"**.
@@ -194,11 +195,11 @@ public isolated client class Client {
     # + payload - Update Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdaterefreshschedule(string datasetId, RefreshScheduleRequest payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/refreshSchedule`;
+        string resourcePath = string `/datasets/${datasetId}/refreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Returns the refresh schedule of a specified DirectQuery or LiveConnection dataset from **"My Workspace"**.
@@ -206,8 +207,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdirectqueryrefreshschedule(string datasetId) returns DirectQueryRefreshSchedule|error {
-        string path = string `/datasets/${datasetId}/directQueryRefreshSchedule`;
-        DirectQueryRefreshSchedule response = check self.clientEp->get(path, targetType = DirectQueryRefreshSchedule);
+        string resourcePath = string `/datasets/${datasetId}/directQueryRefreshSchedule`;
+        DirectQueryRefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the refresh schedule for the specified DirectQuery or LiveConnection dataset from **"My Workspace"**.
@@ -216,11 +217,11 @@ public isolated client class Client {
     # + payload - Patch DirectQuery or LiveConnection Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdatedirectqueryrefreshschedule(string datasetId, DirectQueryRefreshScheduleRequest payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/directQueryRefreshSchedule`;
+        string resourcePath = string `/datasets/${datasetId}/directQueryRefreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Returns a list of parameters for the specified dataset from **"My Workspace"**.
@@ -228,8 +229,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetparameters(string datasetId) returns MashupParameters|error {
-        string path = string `/datasets/${datasetId}/parameters`;
-        MashupParameters response = check self.clientEp->get(path, targetType = MashupParameters);
+        string resourcePath = string `/datasets/${datasetId}/parameters`;
+        MashupParameters response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the parameters values for the specified dataset from **"My Workspace"**.
@@ -238,11 +239,11 @@ public isolated client class Client {
     # + payload - Update mashup parameter request 
     # + return - OK 
     remote isolated function datasetsUpdateparameters(string datasetId, UpdateMashupParametersRequest payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/Default.UpdateParameters`;
+        string resourcePath = string `/datasets/${datasetId}/Default.UpdateParameters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of datasources for the specified dataset from **"My Workspace"**.
@@ -250,8 +251,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasources(string datasetId) returns Datasources|error {
-        string path = string `/datasets/${datasetId}/datasources`;
-        Datasources response = check self.clientEp->get(path, targetType = Datasources);
+        string resourcePath = string `/datasets/${datasetId}/datasources`;
+        Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the datasources of the specified dataset from **"My Workspace"**.
@@ -260,11 +261,11 @@ public isolated client class Client {
     # + payload - Update datasource request 
     # + return - OK 
     remote isolated function datasetsUpdatedatasources(string datasetId, UpdateDatasourcesRequest payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/Default.UpdateDatasources`;
+        string resourcePath = string `/datasets/${datasetId}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Updates all connections for the specified dataset from **"My Workspace"**. This API only supports SQL DirectQuery datasets.<h3>Note: This API is deprecated and no longer supported</h3>
@@ -276,11 +277,11 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function datasetsSetalldatasetconnections(string datasetId, ConnectionDetails payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/Default.SetAllConnections`;
+        string resourcePath = string `/datasets/${datasetId}/Default.SetAllConnections`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Binds the specified dataset from **"My Workspace"** to the specified gateway with (optional) given set of datasource Ids. This only supports the On-Premises Data Gateway.
@@ -289,11 +290,11 @@ public isolated client class Client {
     # + payload - The bind to gateway request 
     # + return - OK 
     remote isolated function datasetsBindtogateway(string datasetId, BindToGatewayRequest payload) returns http:Response|error {
-        string path = string `/datasets/${datasetId}/Default.BindToGateway`;
+        string resourcePath = string `/datasets/${datasetId}/Default.BindToGateway`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of gateway datasources for the specified dataset from **"My Workspace"**.
@@ -301,8 +302,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetgatewaydatasources(string datasetId) returns GatewayDatasources|error {
-        string path = string `/datasets/${datasetId}/Default.GetBoundGatewayDatasources`;
-        GatewayDatasources response = check self.clientEp->get(path, targetType = GatewayDatasources);
+        string resourcePath = string `/datasets/${datasetId}/Default.GetBoundGatewayDatasources`;
+        GatewayDatasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of gateways which the specified dataset from **"My Workspace"** can be bound to.
@@ -310,26 +311,26 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDiscovergateways(string datasetId) returns Gateways|error {
-        string path = string `/datasets/${datasetId}/Default.DiscoverGateways`;
-        Gateways response = check self.clientEp->get(path, targetType = Gateways);
+        string resourcePath = string `/datasets/${datasetId}/Default.DiscoverGateways`;
+        Gateways response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Refreshes user permissions in Power BI.
     #
     # + return - OK 
     remote isolated function usersRefreshuserpermissions() returns http:Response|error {
-        string path = string `/RefreshUserPermissions`;
+        string resourcePath = string `/RefreshUserPermissions`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of imports from **"My Workspace"**.
     #
     # + return - OK 
     remote isolated function importsGetimports() returns Imports|error {
-        string path = string `/imports`;
-        Imports response = check self.clientEp->get(path, targetType = Imports);
+        string resourcePath = string `/imports`;
+        Imports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates new content on **"My Workspace"** from PBIX (Power BI Desktop), JSON, XLSX (Excel), RDL or file path in OneDrive for Business.
@@ -340,13 +341,13 @@ public isolated client class Client {
     # + payload - The import to post 
     # + return - OK 
     remote isolated function importsPostimport(string datasetDisplayName, ImportInfo payload, string? nameConflict = (), boolean? skipReport = ()) returns Import|error {
-        string path = string `/imports`;
+        string resourcePath = string `/imports`;
         map<anydata> queryParam = {"datasetDisplayName": datasetDisplayName, "nameConflict": nameConflict, "skipReport": skipReport};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Import response = check self.clientEp->post(path, request, targetType = Import);
+        request.setPayload(jsonBody, "application/json");
+        Import response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified import from **"My Workspace"**.
@@ -354,26 +355,26 @@ public isolated client class Client {
     # + importId - The import id 
     # + return - OK 
     remote isolated function importsGetimport(string importId) returns Import|error {
-        string path = string `/imports/${importId}`;
-        Import response = check self.clientEp->get(path, targetType = Import);
+        string resourcePath = string `/imports/${importId}`;
+        Import response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a temporary blob storage to be used to import large .pbix files larger than 1 GB and up to 10 GB.
     #
     # + return - OK 
     remote isolated function importsCreatetemporaryuploadlocation() returns TemporaryUploadLocation|error {
-        string path = string `/imports/createTemporaryUploadLocation`;
+        string resourcePath = string `/imports/createTemporaryUploadLocation`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        TemporaryUploadLocation response = check self.clientEp-> post(path, request, targetType = TemporaryUploadLocation);
+        TemporaryUploadLocation response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of reports from **"My Workspace"**.
     #
     # + return - OK 
     remote isolated function reportsGetreports() returns Reports|error {
-        string path = string `/reports`;
-        Reports response = check self.clientEp->get(path, targetType = Reports);
+        string resourcePath = string `/reports`;
+        Reports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified report from **"My Workspace"**.
@@ -381,8 +382,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetreport(string reportId) returns Report|error {
-        string path = string `/reports/${reportId}`;
-        Report response = check self.clientEp->get(path, targetType = Report);
+        string resourcePath = string `/reports/${reportId}`;
+        Report response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes the specified report from **"My Workspace"**.
@@ -390,8 +391,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsDeletereport(string reportId) returns http:Response|error {
-        string path = string `/reports/${reportId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/reports/${reportId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Clones the specified report from **"My Workspace"**.
@@ -400,11 +401,11 @@ public isolated client class Client {
     # + payload - Clone report parameters 
     # + return - OK 
     remote isolated function reportsClonereport(string reportId, CloneReportRequest payload) returns Report|error {
-        string path = string `/reports/${reportId}/Clone`;
+        string resourcePath = string `/reports/${reportId}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Report response = check self.clientEp->post(path, request, targetType = Report);
+        request.setPayload(jsonBody, "application/json");
+        Report response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Exports the specified report from **"My Workspace"** to a .pbix file.
@@ -412,8 +413,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - Exported File 
     remote isolated function reportsExportreport(string reportId) returns string|error {
-        string path = string `/reports/${reportId}/Export`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/reports/${reportId}/Export`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the specified report from **"My Workspace"** to have the same content as the report in the request body.
@@ -422,11 +423,11 @@ public isolated client class Client {
     # + payload - UpdateReportContent parameters 
     # + return - OK 
     remote isolated function reportsUpdatereportcontent(string reportId, UpdateReportContentRequest payload) returns Report|error {
-        string path = string `/reports/${reportId}/UpdateReportContent`;
+        string resourcePath = string `/reports/${reportId}/UpdateReportContent`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Report response = check self.clientEp->post(path, request, targetType = Report);
+        request.setPayload(jsonBody, "application/json");
+        Report response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Rebinds the specified report from **"My Workspace"** to the requested dataset.
@@ -435,11 +436,11 @@ public isolated client class Client {
     # + payload - Rebind report parameters 
     # + return - OK 
     remote isolated function reportsRebindreport(string reportId, RebindReportRequest payload) returns http:Response|error {
-        string path = string `/reports/${reportId}/Rebind`;
+        string resourcePath = string `/reports/${reportId}/Rebind`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of pages within the specified report from **"My Workspace"**.
@@ -447,8 +448,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetpages(string reportId) returns Pages|error {
-        string path = string `/reports/${reportId}/pages`;
-        Pages response = check self.clientEp->get(path, targetType = Pages);
+        string resourcePath = string `/reports/${reportId}/pages`;
+        Pages response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified page within the specified report from **"My Workspace"**.
@@ -457,8 +458,8 @@ public isolated client class Client {
     # + pageName - The page name 
     # + return - OK 
     remote isolated function reportsGetpage(string reportId, string pageName) returns Page|error {
-        string path = string `/reports/${reportId}/pages/${pageName}`;
-        Page response = check self.clientEp->get(path, targetType = Page);
+        string resourcePath = string `/reports/${reportId}/pages/${pageName}`;
+        Page response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of datasources for the specified RDL report from **"My Workspace"**.
@@ -466,8 +467,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetdatasources(string reportId) returns Datasources|error {
-        string path = string `/reports/${reportId}/datasources`;
-        Datasources response = check self.clientEp->get(path, targetType = Datasources);
+        string resourcePath = string `/reports/${reportId}/datasources`;
+        Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the datasources of the specified paginated report from **"My Workspace"**. (Preview)
@@ -476,11 +477,11 @@ public isolated client class Client {
     # + payload - Update RDL datasources request 
     # + return - OK 
     remote isolated function reportsUpdatedatasources(string reportId, UpdateRdlDatasourcesRequest payload) returns http:Response|error {
-        string path = string `/reports/${reportId}/Default.UpdateDatasources`;
+        string resourcePath = string `/reports/${reportId}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Exports the specified report from **"My Workspace"** to the requested format.
@@ -489,11 +490,11 @@ public isolated client class Client {
     # + payload - Export to file request parameters 
     # + return - Accepted 
     remote isolated function reportsExporttofile(string reportId, ExportReportRequest payload) returns Export|error {
-        string path = string `/reports/${reportId}/ExportTo`;
+        string resourcePath = string `/reports/${reportId}/ExportTo`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Export response = check self.clientEp->post(path, request, targetType = Export);
+        request.setPayload(jsonBody, "application/json");
+        Export response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the status of the Export to file job from **"My Workspace"**.
@@ -502,8 +503,8 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - OK 
     remote isolated function reportsGetexporttofilestatus(string reportId, string exportId) returns Export|error {
-        string path = string `/reports/${reportId}/exports/${exportId}`;
-        Export response = check self.clientEp->get(path, targetType = Export);
+        string resourcePath = string `/reports/${reportId}/exports/${exportId}`;
+        Export response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the file of the Export to file job of the specified report from **"My Workspace"**.
@@ -512,16 +513,16 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - The exported file 
     remote isolated function reportsGetfileofexporttofile(string reportId, string exportId) returns string|error {
-        string path = string `/reports/${reportId}/exports/${exportId}/file`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/reports/${reportId}/exports/${exportId}/file`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dashboards from **"My Workspace"**.
     #
     # + return - OK 
     remote isolated function dashboardsGetdashboards() returns Dashboards|error {
-        string path = string `/dashboards`;
-        Dashboards response = check self.clientEp->get(path, targetType = Dashboards);
+        string resourcePath = string `/dashboards`;
+        Dashboards response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new empty dashboard on **"My Workspace"**.
@@ -529,11 +530,11 @@ public isolated client class Client {
     # + payload - Add dashboard parameters 
     # + return - OK 
     remote isolated function dashboardsAdddashboard(AddDashboardRequest payload) returns Dashboard|error {
-        string path = string `/dashboards`;
+        string resourcePath = string `/dashboards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Dashboard response = check self.clientEp->post(path, request, targetType = Dashboard);
+        request.setPayload(jsonBody, "application/json");
+        Dashboard response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified dashboard from **"My Workspace"**.
@@ -541,8 +542,8 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGetdashboard(string dashboardId) returns Dashboard|error {
-        string path = string `/dashboards/${dashboardId}`;
-        Dashboard response = check self.clientEp->get(path, targetType = Dashboard);
+        string resourcePath = string `/dashboards/${dashboardId}`;
+        Dashboard response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of tiles within the specified dashboard from **"My Workspace"**.
@@ -550,8 +551,8 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGettiles(string dashboardId) returns Tiles|error {
-        string path = string `/dashboards/${dashboardId}/tiles`;
-        Tiles response = check self.clientEp->get(path, targetType = Tiles);
+        string resourcePath = string `/dashboards/${dashboardId}/tiles`;
+        Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified tile within the specified dashboard from **"My Workspace"**.
@@ -560,8 +561,8 @@ public isolated client class Client {
     # + tileId - The tile id 
     # + return - OK 
     remote isolated function dashboardsGettile(string dashboardId, string tileId) returns Tile|error {
-        string path = string `/dashboards/${dashboardId}/tiles/${tileId}`;
-        Tile response = check self.clientEp->get(path, targetType = Tile);
+        string resourcePath = string `/dashboards/${dashboardId}/tiles/${tileId}`;
+        Tile response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Clones the specified tile from **"My Workspace"**.
@@ -571,11 +572,11 @@ public isolated client class Client {
     # + payload - Clone tile parameters 
     # + return - OK 
     remote isolated function dashboardsClonetile(string dashboardId, string tileId, CloneTileRequest payload) returns Tile|error {
-        string path = string `/dashboards/${dashboardId}/tiles/${tileId}/Clone`;
+        string resourcePath = string `/dashboards/${dashboardId}/tiles/${tileId}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Tile response = check self.clientEp->post(path, request, targetType = Tile);
+        request.setPayload(jsonBody, "application/json");
+        Tile response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of datasets from the specified workspace.
@@ -583,8 +584,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function datasetsGetdatasetsingroup(string groupId) returns Datasets|error {
-        string path = string `/groups/${groupId}/datasets`;
-        Datasets response = check self.clientEp->get(path, targetType = Datasets);
+        string resourcePath = string `/groups/${groupId}/datasets`;
+        Datasets response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new dataset in the specified workspace.
@@ -594,13 +595,13 @@ public isolated client class Client {
     # + payload - Create dataset parameters 
     # + return - Created 
     remote isolated function datasetsPostdatasetingroup(string groupId, CreateDatasetRequest payload, string? defaultRetentionPolicy = ()) returns Dataset|error {
-        string path = string `/groups/${groupId}/datasets`;
+        string resourcePath = string `/groups/${groupId}/datasets`;
         map<anydata> queryParam = {"defaultRetentionPolicy": defaultRetentionPolicy};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Dataset response = check self.clientEp->post(path, request, targetType = Dataset);
+        request.setPayload(jsonBody, "application/json");
+        Dataset response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of upstream dataflows for datasets from the specified workspace.
@@ -608,8 +609,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function datasetsGetdatasettodataflowslinksingroup(string groupId) returns DatasetToDataflowLinksResponse|error {
-        string path = string `/groups/${groupId}/datasets/upstreamDataflows`;
-        DatasetToDataflowLinksResponse response = check self.clientEp->get(path, targetType = DatasetToDataflowLinksResponse);
+        string resourcePath = string `/groups/${groupId}/datasets/upstreamDataflows`;
+        DatasetToDataflowLinksResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified dataset from the specified workspace.
@@ -618,8 +619,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasetingroup(string groupId, string datasetId) returns Dataset|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}`;
-        Dataset response = check self.clientEp->get(path, targetType = Dataset);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}`;
+        Dataset response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes the specified dataset from the specified workspace.
@@ -628,8 +629,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDeletedatasetingroup(string groupId, string datasetId) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns a list of tables within the specified dataset from the specified workspace.
@@ -638,8 +639,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGettablesingroup(string groupId, string datasetId) returns Tables|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/tables`;
-        Tables response = check self.clientEp->get(path, targetType = Tables);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables`;
+        Tables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the metadata and schema for the specified table, within the specified dataset, from the specified workspace.
@@ -650,11 +651,11 @@ public isolated client class Client {
     # + payload - The request message 
     # + return - OK 
     remote isolated function datasetsPuttableingroup(string groupId, string datasetId, string tableName, Table payload) returns Table|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Table response = check self.clientEp->put(path, request, targetType = Table);
+        request.setPayload(jsonBody, "application/json");
+        Table response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Adds new data rows to the specified table, within the specified dataset, from the specified workspace.
@@ -665,11 +666,11 @@ public isolated client class Client {
     # + payload - The request message 
     # + return - OK 
     remote isolated function datasetsPostrowsingroup(string groupId, string datasetId, string tableName, PostRowsRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}/rows`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}/rows`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Deletes all rows from the specified table, within the specified dataset, from the specified workspace.
@@ -679,8 +680,8 @@ public isolated client class Client {
     # + tableName - The table name 
     # + return - OK 
     remote isolated function datasetsDeleterowsingroup(string groupId, string datasetId, string tableName) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}/rows`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}/rows`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns the refresh history of the specified dataset from the specified workspace.
@@ -690,10 +691,10 @@ public isolated client class Client {
     # + top - The requested number of entries in the refresh history. If not provided, the default is all available entries. 
     # + return - OK 
     remote isolated function datasetsGetrefreshhistoryingroup(string groupId, string datasetId, int? top = ()) returns Refreshes|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshes`;
         map<anydata> queryParam = {"$top": top};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshes response = check self.clientEp->get(path, targetType = Refreshes);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshes response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Triggers a refresh for the specified dataset from the specified workspace.
@@ -703,11 +704,11 @@ public isolated client class Client {
     # + payload - Refresh request 
     # + return - Accepted 
     remote isolated function datasetsRefreshdatasetingroup(string groupId, string datasetId, RefreshRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the refresh schedule of the specified dataset from the specified workspace.
@@ -716,8 +717,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetrefreshscheduleingroup(string groupId, string datasetId) returns RefreshSchedule|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/refreshSchedule`;
-        RefreshSchedule response = check self.clientEp->get(path, targetType = RefreshSchedule);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshSchedule`;
+        RefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the refresh schedule for the specified dataset from the specified workspace.
@@ -727,11 +728,11 @@ public isolated client class Client {
     # + payload - Update Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdaterefreshscheduleingroup(string groupId, string datasetId, RefreshScheduleRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/refreshSchedule`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Returns the refresh schedule of a specified DirectQuery or LiveConnection dataset from the specified workspace.
@@ -740,8 +741,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdirectqueryrefreshscheduleingroup(string groupId, string datasetId) returns DirectQueryRefreshSchedule|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/directQueryRefreshSchedule`;
-        DirectQueryRefreshSchedule response = check self.clientEp->get(path, targetType = DirectQueryRefreshSchedule);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/directQueryRefreshSchedule`;
+        DirectQueryRefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the refresh schedule for the specified DirectQuery or LiveConnection dataset from the specified workspace.
@@ -751,11 +752,11 @@ public isolated client class Client {
     # + payload - Patch DirectQuery or LiveConnection Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdatedirectqueryrefreshscheduleingroup(string groupId, string datasetId, DirectQueryRefreshScheduleRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/directQueryRefreshSchedule`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/directQueryRefreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Returns a list of parameters for the specified dataset from the specified workspace.
@@ -764,8 +765,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetparametersingroup(string groupId, string datasetId) returns MashupParameters|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/parameters`;
-        MashupParameters response = check self.clientEp->get(path, targetType = MashupParameters);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/parameters`;
+        MashupParameters response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the parameters values for the specified dataset from the specified workspace.
@@ -775,11 +776,11 @@ public isolated client class Client {
     # + payload - Update mashup parameter request 
     # + return - OK 
     remote isolated function datasetsUpdateparametersingroup(string groupId, string datasetId, UpdateMashupParametersRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/Default.UpdateParameters`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.UpdateParameters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of datasources for the specified dataset from the specified workspace.
@@ -788,8 +789,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasourcesingroup(string groupId, string datasetId) returns Datasources|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/datasources`;
-        Datasources response = check self.clientEp->get(path, targetType = Datasources);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/datasources`;
+        Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the datasources of the specified dataset from the specified workspace.
@@ -799,11 +800,11 @@ public isolated client class Client {
     # + payload - Update datasource request 
     # + return - OK 
     remote isolated function datasetsUpdatedatasourcesingroup(string groupId, string datasetId, UpdateDatasourcesRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/Default.UpdateDatasources`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Updates all connections for the specified dataset from the specified workspace. This API only supports SQL DirectQuery datasets.<h3>Note: This API is deprecated and no longer supported</h3>
@@ -816,11 +817,11 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function datasetsSetalldatasetconnectionsingroup(string groupId, string datasetId, ConnectionDetails payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/Default.SetAllConnections`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.SetAllConnections`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Binds the specified dataset from the specified workspace to the specified gateway with (optional) given set of datasource Ids. This only supports the On-Premises Data Gateway.
@@ -830,11 +831,11 @@ public isolated client class Client {
     # + payload - The bind to gateway request 
     # + return - OK 
     remote isolated function datasetsBindtogatewayingroup(string groupId, string datasetId, BindToGatewayRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/Default.BindToGateway`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.BindToGateway`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of gateway datasources for the specified dataset from the specified workspace.
@@ -843,8 +844,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetgatewaydatasourcesingroup(string groupId, string datasetId) returns GatewayDatasources|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/Default.GetBoundGatewayDatasources`;
-        GatewayDatasources response = check self.clientEp->get(path, targetType = GatewayDatasources);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.GetBoundGatewayDatasources`;
+        GatewayDatasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of gateways that the specified dataset from the specified workspace can be bound to.
@@ -853,8 +854,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDiscovergatewaysingroup(string groupId, string datasetId) returns Gateways|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/Default.DiscoverGateways`;
-        Gateways response = check self.clientEp->get(path, targetType = Gateways);
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.DiscoverGateways`;
+        Gateways response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Transfers ownership over the specified dataset to the current authorized user.
@@ -863,10 +864,10 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsTakeoveringroup(string groupId, string datasetId) returns http:Response|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/Default.TakeOver`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.TakeOver`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of imports from the specified workspace.
@@ -874,8 +875,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function importsGetimportsingroup(string groupId) returns Imports|error {
-        string path = string `/groups/${groupId}/imports`;
-        Imports response = check self.clientEp->get(path, targetType = Imports);
+        string resourcePath = string `/groups/${groupId}/imports`;
+        Imports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates new content on the specified workspace from PBIX (Power BI Desktop), JSON, XLSX (Excel), RDL, or file path in OneDrive for Business.
@@ -887,13 +888,13 @@ public isolated client class Client {
     # + payload - The import to post 
     # + return - OK 
     remote isolated function importsPostimportingroup(string groupId, string datasetDisplayName, ImportInfo payload, string? nameConflict = (), boolean? skipReport = ()) returns Import|error {
-        string path = string `/groups/${groupId}/imports`;
+        string resourcePath = string `/groups/${groupId}/imports`;
         map<anydata> queryParam = {"datasetDisplayName": datasetDisplayName, "nameConflict": nameConflict, "skipReport": skipReport};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Import response = check self.clientEp->post(path, request, targetType = Import);
+        request.setPayload(jsonBody, "application/json");
+        Import response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified import from the specified workspace.
@@ -902,8 +903,8 @@ public isolated client class Client {
     # + importId - The import id 
     # + return - OK 
     remote isolated function importsGetimportingroup(string groupId, string importId) returns Import|error {
-        string path = string `/groups/${groupId}/imports/${importId}`;
-        Import response = check self.clientEp->get(path, targetType = Import);
+        string resourcePath = string `/groups/${groupId}/imports/${importId}`;
+        Import response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a temporary blob storage to be used to import large .pbix files larger than 1 GB and up to 10 GB.
@@ -911,10 +912,10 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function importsCreatetemporaryuploadlocationingroup(string groupId) returns TemporaryUploadLocation|error {
-        string path = string `/groups/${groupId}/imports/createTemporaryUploadLocation`;
+        string resourcePath = string `/groups/${groupId}/imports/createTemporaryUploadLocation`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        TemporaryUploadLocation response = check self.clientEp-> post(path, request, targetType = TemporaryUploadLocation);
+        TemporaryUploadLocation response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of reports from the specified workspace.
@@ -922,8 +923,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function reportsGetreportsingroup(string groupId) returns Reports|error {
-        string path = string `/groups/${groupId}/reports`;
-        Reports response = check self.clientEp->get(path, targetType = Reports);
+        string resourcePath = string `/groups/${groupId}/reports`;
+        Reports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified report from the specified workspace.
@@ -932,8 +933,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetreportingroup(string groupId, string reportId) returns Report|error {
-        string path = string `/groups/${groupId}/reports/${reportId}`;
-        Report response = check self.clientEp->get(path, targetType = Report);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}`;
+        Report response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes the specified report from the specified workspace.
@@ -942,8 +943,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsDeletereportingroup(string groupId, string reportId) returns http:Response|error {
-        string path = string `/groups/${groupId}/reports/${reportId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Clones the specified report from the specified workspace.
@@ -953,11 +954,11 @@ public isolated client class Client {
     # + payload - Clone report parameters 
     # + return - OK 
     remote isolated function reportsClonereportingroup(string groupId, string reportId, CloneReportRequest payload) returns Report|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/Clone`;
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Report response = check self.clientEp->post(path, request, targetType = Report);
+        request.setPayload(jsonBody, "application/json");
+        Report response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Exports the specified report from the specified workspace to a .pbix file.
@@ -966,8 +967,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - Exported File 
     remote isolated function reportsExportreportingroup(string groupId, string reportId) returns string|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/Export`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Export`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the specified report from the specified workspace to have the same content as the specified report in the request body.
@@ -977,11 +978,11 @@ public isolated client class Client {
     # + payload - UpdateReportContent parameters 
     # + return - OK 
     remote isolated function reportsUpdatereportcontentingroup(string groupId, string reportId, UpdateReportContentRequest payload) returns Report|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/UpdateReportContent`;
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/UpdateReportContent`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Report response = check self.clientEp->post(path, request, targetType = Report);
+        request.setPayload(jsonBody, "application/json");
+        Report response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Rebinds the specified report from the specified workspace to the requested dataset.
@@ -991,11 +992,11 @@ public isolated client class Client {
     # + payload - Rebind report parameters 
     # + return - OK 
     remote isolated function reportsRebindreportingroup(string groupId, string reportId, RebindReportRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/Rebind`;
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Rebind`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of pages within the specified report from the specified workspace.
@@ -1004,8 +1005,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetpagesingroup(string groupId, string reportId) returns Pages|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/pages`;
-        Pages response = check self.clientEp->get(path, targetType = Pages);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/pages`;
+        Pages response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified page within the specified report from the specified workspace.
@@ -1015,8 +1016,8 @@ public isolated client class Client {
     # + pageName - The page name 
     # + return - OK 
     remote isolated function reportsGetpageingroup(string groupId, string reportId, string pageName) returns Page|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/pages/${pageName}`;
-        Page response = check self.clientEp->get(path, targetType = Page);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/pages/${pageName}`;
+        Page response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of datasources for the specified RDL report from the specified workspace.
@@ -1025,8 +1026,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetdatasourcesingroup(string groupId, string reportId) returns Datasources|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/datasources`;
-        Datasources response = check self.clientEp->get(path, targetType = Datasources);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/datasources`;
+        Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the datasources of the specified paginated report from the specified workspace. (Preview)
@@ -1036,11 +1037,11 @@ public isolated client class Client {
     # + payload - Update RDL datasources request 
     # + return - OK 
     remote isolated function reportsUpdatedatasourcesingroup(string groupId, string reportId, UpdateRdlDatasourcesRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/Default.UpdateDatasources`;
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Exports the specified report from the specified workspace to the requested format.
@@ -1050,11 +1051,11 @@ public isolated client class Client {
     # + payload - Export to file request parameters 
     # + return - Accepted 
     remote isolated function reportsExporttofileingroup(string groupId, string reportId, ExportReportRequest payload) returns Export|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/ExportTo`;
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/ExportTo`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Export response = check self.clientEp->post(path, request, targetType = Export);
+        request.setPayload(jsonBody, "application/json");
+        Export response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the status of the Export to file job from the specified workspace.
@@ -1064,8 +1065,8 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - OK 
     remote isolated function reportsGetexporttofilestatusingroup(string groupId, string reportId, string exportId) returns Export|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/exports/${exportId}`;
-        Export response = check self.clientEp->get(path, targetType = Export);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/exports/${exportId}`;
+        Export response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the file of the Export to file job of the specified report from the specified group.
@@ -1075,8 +1076,8 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - The exported file 
     remote isolated function reportsGetfileofexporttofileingroup(string groupId, string reportId, string exportId) returns string|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/exports/${exportId}/file`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/exports/${exportId}/file`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dashboards from the specified workspace.
@@ -1084,8 +1085,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function dashboardsGetdashboardsingroup(string groupId) returns Dashboards|error {
-        string path = string `/groups/${groupId}/dashboards`;
-        Dashboards response = check self.clientEp->get(path, targetType = Dashboards);
+        string resourcePath = string `/groups/${groupId}/dashboards`;
+        Dashboards response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new empty dashboard on the specified workspace.
@@ -1094,11 +1095,11 @@ public isolated client class Client {
     # + payload - Add dashboard parameters 
     # + return - OK 
     remote isolated function dashboardsAdddashboardingroup(string groupId, AddDashboardRequest payload) returns Dashboard|error {
-        string path = string `/groups/${groupId}/dashboards`;
+        string resourcePath = string `/groups/${groupId}/dashboards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Dashboard response = check self.clientEp->post(path, request, targetType = Dashboard);
+        request.setPayload(jsonBody, "application/json");
+        Dashboard response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified dashboard from the specified workspace.
@@ -1107,8 +1108,8 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGetdashboardingroup(string groupId, string dashboardId) returns Dashboard|error {
-        string path = string `/groups/${groupId}/dashboards/${dashboardId}`;
-        Dashboard response = check self.clientEp->get(path, targetType = Dashboard);
+        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}`;
+        Dashboard response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of tiles within the specified dashboard from the specified workspace.
@@ -1117,8 +1118,8 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGettilesingroup(string groupId, string dashboardId) returns Tiles|error {
-        string path = string `/groups/${groupId}/dashboards/${dashboardId}/tiles`;
-        Tiles response = check self.clientEp->get(path, targetType = Tiles);
+        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles`;
+        Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified tile within the specified dashboard from the specified workspace.
@@ -1128,8 +1129,8 @@ public isolated client class Client {
     # + tileId - The tile id 
     # + return - OK 
     remote isolated function dashboardsGettileingroup(string groupId, string dashboardId, string tileId) returns Tile|error {
-        string path = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}`;
-        Tile response = check self.clientEp->get(path, targetType = Tile);
+        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}`;
+        Tile response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Clones the specified tile from the specified workspace.
@@ -1140,11 +1141,11 @@ public isolated client class Client {
     # + payload - Clone tile parameters 
     # + return - OK 
     remote isolated function dashboardsClonetileingroup(string groupId, string dashboardId, string tileId, CloneTileRequest payload) returns Tile|error {
-        string path = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}/Clone`;
+        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Tile response = check self.clientEp->post(path, request, targetType = Tile);
+        request.setPayload(jsonBody, "application/json");
+        Tile response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generates an embed token to allow report creation on the specified workspace based on the specified dataset.<br/><br/>This API is relevant only to ['App owns data' embed scenario](https://docs.microsoft.com/power-bi/developer/embed-sample-for-customers). For more information about using this API, see [Considerations when generating an embed token](https://docs.microsoft.com/power-bi/developer/embedded/generate-embed-token).
@@ -1153,11 +1154,11 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function reportsGeneratetokenforcreateingroup(string groupId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string path = string `/groups/${groupId}/reports/GenerateToken`;
+        string resourcePath = string `/groups/${groupId}/reports/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EmbedToken response = check self.clientEp->post(path, request, targetType = EmbedToken);
+        request.setPayload(jsonBody, "application/json");
+        EmbedToken response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generates an embed token to view or edit the specified report from the specified workspace.<br/><br/>This API is relevant only to ['App owns data' embed scenario](https://docs.microsoft.com/power-bi/developer/embed-sample-for-customers). For more information about using this API, see [Considerations when generating an embed token](https://docs.microsoft.com/power-bi/developer/embedded/generate-embed-token).
@@ -1167,11 +1168,11 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function reportsGeneratetokeningroup(string groupId, string reportId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/GenerateToken`;
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EmbedToken response = check self.clientEp->post(path, request, targetType = EmbedToken);
+        request.setPayload(jsonBody, "application/json");
+        EmbedToken response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generates an embed token to [Embed Q&A](https://docs.microsoft.com/power-bi/developer/qanda) based on the specified dataset from the specified workspace.<br/><br/>This API is relevant only to ['App owns data' embed scenario](https://docs.microsoft.com/power-bi/developer/embed-sample-for-customers). For more information about using this API, see [Considerations when generating an embed token](https://docs.microsoft.com/power-bi/developer/embedded/generate-embed-token).
@@ -1181,11 +1182,11 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function datasetsGeneratetokeningroup(string groupId, string datasetId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string path = string `/groups/${groupId}/datasets/${datasetId}/GenerateToken`;
+        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EmbedToken response = check self.clientEp->post(path, request, targetType = EmbedToken);
+        request.setPayload(jsonBody, "application/json");
+        EmbedToken response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generates an embed token to view the specified dashboard from the specified workspace.<br/><br/>This API is relevant only to the ['App owns data' embed scenario](https://docs.microsoft.com/power-bi/developer/embed-sample-for-customers). For more information about using this API, see [Considerations when generating an embed token](https://docs.microsoft.com/power-bi/developer/embedded/generate-embed-token).
@@ -1195,11 +1196,11 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function dashboardsGeneratetokeningroup(string groupId, string dashboardId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string path = string `/groups/${groupId}/dashboards/${dashboardId}/GenerateToken`;
+        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EmbedToken response = check self.clientEp->post(path, request, targetType = EmbedToken);
+        request.setPayload(jsonBody, "application/json");
+        EmbedToken response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generates an embed token to view the specified tile from the specified workspace.<br/><br/>This API is relevant only to ['App owns data' embed scenario](https://docs.microsoft.com/power-bi/developer/embed-sample-for-customers). Generates an embed token to view the specified tile from the specified workspace.
@@ -1210,19 +1211,19 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function tilesGeneratetokeningroup(string groupId, string dashboardId, string tileId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string path = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}/GenerateToken`;
+        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EmbedToken response = check self.clientEp->post(path, request, targetType = EmbedToken);
+        request.setPayload(jsonBody, "application/json");
+        EmbedToken response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of installed apps.
     #
     # + return - OK 
     remote isolated function appsGetapps() returns Apps|error {
-        string path = string `/apps`;
-        Apps response = check self.clientEp->get(path, targetType = Apps);
+        string resourcePath = string `/apps`;
+        Apps response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified installed app.
@@ -1230,8 +1231,8 @@ public isolated client class Client {
     # + appId - The app id 
     # + return - OK 
     remote isolated function appsGetapp(string appId) returns App|error {
-        string path = string `/apps/${appId}`;
-        App response = check self.clientEp->get(path, targetType = App);
+        string resourcePath = string `/apps/${appId}`;
+        App response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of reports from the specified app.
@@ -1239,8 +1240,8 @@ public isolated client class Client {
     # + appId - The app id 
     # + return - OK 
     remote isolated function appsGetreports(string appId) returns Reports|error {
-        string path = string `/apps/${appId}/reports`;
-        Reports response = check self.clientEp->get(path, targetType = Reports);
+        string resourcePath = string `/apps/${appId}/reports`;
+        Reports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified report from the specified app.
@@ -1249,8 +1250,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function appsGetreport(string appId, string reportId) returns Report|error {
-        string path = string `/apps/${appId}/reports/${reportId}`;
-        Report response = check self.clientEp->get(path, targetType = Report);
+        string resourcePath = string `/apps/${appId}/reports/${reportId}`;
+        Report response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dashboards from the specified app.
@@ -1258,8 +1259,8 @@ public isolated client class Client {
     # + appId - The app id 
     # + return - OK 
     remote isolated function appsGetdashboards(string appId) returns Dashboards|error {
-        string path = string `/apps/${appId}/dashboards`;
-        Dashboards response = check self.clientEp->get(path, targetType = Dashboards);
+        string resourcePath = string `/apps/${appId}/dashboards`;
+        Dashboards response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified dashboard from the specified app.
@@ -1268,8 +1269,8 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function appsGetdashboard(string appId, string dashboardId) returns Dashboard|error {
-        string path = string `/apps/${appId}/dashboards/${dashboardId}`;
-        Dashboard response = check self.clientEp->get(path, targetType = Dashboard);
+        string resourcePath = string `/apps/${appId}/dashboards/${dashboardId}`;
+        Dashboard response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of tiles within the specified dashboard from the specified app.
@@ -1278,8 +1279,8 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function appsGettiles(string appId, string dashboardId) returns Tiles|error {
-        string path = string `/apps/${appId}/dashboards/${dashboardId}/tiles`;
-        Tiles response = check self.clientEp->get(path, targetType = Tiles);
+        string resourcePath = string `/apps/${appId}/dashboards/${dashboardId}/tiles`;
+        Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified tile within the specified dashboard from the specified app.
@@ -1289,8 +1290,8 @@ public isolated client class Client {
     # + tileId - The tile id 
     # + return - OK 
     remote isolated function appsGettile(string appId, string dashboardId, string tileId) returns Tile|error {
-        string path = string `/apps/${appId}/dashboards/${dashboardId}/tiles/${tileId}`;
-        Tile response = check self.clientEp->get(path, targetType = Tile);
+        string resourcePath = string `/apps/${appId}/dashboards/${dashboardId}/tiles/${tileId}`;
+        Tile response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Exports the specified dataflow definition to a .json file.
@@ -1299,8 +1300,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - Exported Json file 
     remote isolated function dataflowsGetdataflow(string groupId, string dataflowId) returns string|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes a dataflow from the CDS for Analytics storage, including its definition file and actual model.
@@ -1309,8 +1310,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsDeletedataflow(string groupId, string dataflowId) returns http:Response|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update dataflow properties, capabilities and settings.
@@ -1320,11 +1321,11 @@ public isolated client class Client {
     # + payload - Patch dataflow properties, capabilities and settings 
     # + return - OK 
     remote isolated function dataflowsUpdatedataflow(string groupId, string dataflowId, DataflowUpdateRequestMessage payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}`;
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Triggers a refresh for the specified dataflow. The only supported mail notification options are either in case of failure, or none. MailOnCompletion is not supported.
@@ -1335,13 +1336,13 @@ public isolated client class Client {
     # + payload - Refresh request 
     # + return - OK 
     remote isolated function dataflowsRefreshdataflow(string groupId, string dataflowId, RefreshRequest payload, string? processType = ()) returns http:Response|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}/refreshes`;
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/refreshes`;
         map<anydata> queryParam = {"processType": processType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of datasources for the specified dataflow.
@@ -1350,8 +1351,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetdataflowdatasources(string groupId, string dataflowId) returns Datasources|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}/datasources`;
-        Datasources response = check self.clientEp->get(path, targetType = Datasources);
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/datasources`;
+        Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of all dataflows from the specified workspace.
@@ -1359,8 +1360,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function dataflowsGetdataflows(string groupId) returns Dataflows|error {
-        string path = string `/groups/${groupId}/dataflows`;
-        Dataflows response = check self.clientEp->get(path, targetType = Dataflows);
+        string resourcePath = string `/groups/${groupId}/dataflows`;
+        Dataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of upstream dataflows for the specified dataflow.
@@ -1369,8 +1370,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetupstreamdataflowsingroup(string groupId, string dataflowId) returns DependentDataflows|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}/upstreamDataflows`;
-        DependentDataflows response = check self.clientEp->get(path, targetType = DependentDataflows);
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/upstreamDataflows`;
+        DependentDataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates or updates the specified dataflow refresh schedule configuration.
@@ -1380,11 +1381,11 @@ public isolated client class Client {
     # + payload - The dataflow refresh schedule to create or update 
     # + return - OK 
     remote isolated function dataflowsUpdaterefreshschedule(string groupId, string dataflowId, RefreshScheduleRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}/refreshSchedule`;
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/refreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Returns a list of transactions for the specified dataflow.
@@ -1393,8 +1394,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetdataflowtransactions(string groupId, string dataflowId) returns DataflowTransactions|error {
-        string path = string `/groups/${groupId}/dataflows/${dataflowId}/transactions`;
-        DataflowTransactions response = check self.clientEp->get(path, targetType = DataflowTransactions);
+        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/transactions`;
+        DataflowTransactions response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Attempts to Cancel the specified transactions.
@@ -1403,18 +1404,18 @@ public isolated client class Client {
     # + transactionId - The transaction id 
     # + return - OK 
     remote isolated function dataflowsCanceldataflowtransaction(string groupId, string transactionId) returns DataflowTransactionStatus|error {
-        string path = string `/groups/${groupId}/dataflows//transactions/${transactionId}/cancel`;
+        string resourcePath = string `/groups/${groupId}/dataflows//transactions/${transactionId}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        DataflowTransactionStatus response = check self.clientEp-> post(path, request, targetType = DataflowTransactionStatus);
+        DataflowTransactionStatus response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of gateways for which the user is an admin.
     #
     # + return - OK 
     remote isolated function gatewaysGetgateways() returns Gateways|error {
-        string path = string `/gateways`;
-        Gateways response = check self.clientEp->get(path, targetType = Gateways);
+        string resourcePath = string `/gateways`;
+        Gateways response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified gateway.
@@ -1422,8 +1423,8 @@ public isolated client class Client {
     # + gatewayId - The gateway id 
     # + return - OK 
     remote isolated function gatewaysGetgateway(string gatewayId) returns Gateway|error {
-        string path = string `/gateways/${gatewayId}`;
-        Gateway response = check self.clientEp->get(path, targetType = Gateway);
+        string resourcePath = string `/gateways/${gatewayId}`;
+        Gateway response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of datasources from the specified gateway.
@@ -1431,8 +1432,8 @@ public isolated client class Client {
     # + gatewayId - The gateway id 
     # + return - OK 
     remote isolated function gatewaysGetdatasources(string gatewayId) returns GatewayDatasources|error {
-        string path = string `/gateways/${gatewayId}/datasources`;
-        GatewayDatasources response = check self.clientEp->get(path, targetType = GatewayDatasources);
+        string resourcePath = string `/gateways/${gatewayId}/datasources`;
+        GatewayDatasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new datasource on the specified gateway.
@@ -1441,11 +1442,11 @@ public isolated client class Client {
     # + payload - The datasource requested to create 
     # + return - Created 
     remote isolated function gatewaysCreatedatasource(string gatewayId, PublishDatasourceToGatewayRequest payload) returns GatewayDatasource|error {
-        string path = string `/gateways/${gatewayId}/datasources`;
+        string resourcePath = string `/gateways/${gatewayId}/datasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GatewayDatasource response = check self.clientEp->post(path, request, targetType = GatewayDatasource);
+        request.setPayload(jsonBody, "application/json");
+        GatewayDatasource response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified datasource from the specified gateway.
@@ -1454,8 +1455,8 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysGetdatasource(string gatewayId, string datasourceId) returns GatewayDatasource|error {
-        string path = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
-        GatewayDatasource response = check self.clientEp->get(path, targetType = GatewayDatasource);
+        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
+        GatewayDatasource response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes the specified datasource from the specified gateway.
@@ -1464,8 +1465,8 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysDeletedatasource(string gatewayId, string datasourceId) returns http:Response|error {
-        string path = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Updates the credentials of the specified datasource from the specified gateway.
@@ -1475,11 +1476,11 @@ public isolated client class Client {
     # + payload - The update datasource request 
     # + return - OK 
     remote isolated function gatewaysUpdatedatasource(string gatewayId, string datasourceId, UpdateDatasourceRequest payload) returns http:Response|error {
-        string path = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
+        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Checks the connectivity status of the specified datasource from the specified gateway.
@@ -1488,8 +1489,8 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysGetdatasourcestatus(string gatewayId, string datasourceId) returns http:Response|error {
-        string path = string `/gateways/${gatewayId}/datasources/${datasourceId}/status`;
-        http:Response response = check self.clientEp->get(path, targetType = http:Response);
+        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/status`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of users who have access to the specified datasource.
@@ -1498,8 +1499,8 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysGetdatasourceusers(string gatewayId, string datasourceId) returns DatasourceUsers|error {
-        string path = string `/gateways/${gatewayId}/datasources/${datasourceId}/users`;
-        DatasourceUsers response = check self.clientEp->get(path, targetType = DatasourceUsers);
+        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/users`;
+        DatasourceUsers response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Grants or updates the permissions required to use the specified datasource for the specified user.
@@ -1509,11 +1510,11 @@ public isolated client class Client {
     # + payload - The add user to datasource request 
     # + return - OK 
     remote isolated function gatewaysAdddatasourceuser(string gatewayId, string datasourceId, DatasourceUser payload) returns http:Response|error {
-        string path = string `/gateways/${gatewayId}/datasources/${datasourceId}/users`;
+        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Removes the specified user from the specified datasource.
@@ -1523,8 +1524,8 @@ public isolated client class Client {
     # + emailAdress - The user's email address or the service principal object id 
     # + return - OK 
     remote isolated function gatewaysDeletedatasourceuser(string gatewayId, string datasourceId, string emailAdress) returns http:Response|error {
-        string path = string `/gateways/${gatewayId}/datasources/${datasourceId}/users/${emailAdress}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/users/${emailAdress}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns a list of workspaces the user has access to.
@@ -1534,10 +1535,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function groupsGetgroups(string? filter = (), int? top = (), int? skip = ()) returns Groups|error {
-        string path = string `/groups`;
+        string resourcePath = string `/groups`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Groups response = check self.clientEp->get(path, targetType = Groups);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Groups response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates new workspace.
@@ -1546,13 +1547,13 @@ public isolated client class Client {
     # + payload - Create group request parameters 
     # + return - OK 
     remote isolated function groupsCreategroup(GroupCreationRequest payload, boolean? workspaceV2 = ()) returns Group|error {
-        string path = string `/groups`;
+        string resourcePath = string `/groups`;
         map<anydata> queryParam = {"workspaceV2": workspaceV2};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->post(path, request, targetType = Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Deletes the specified workspace.
@@ -1560,8 +1561,8 @@ public isolated client class Client {
     # + groupId - The workspace id to delete 
     # + return - OK 
     remote isolated function groupsDeletegroup(string groupId) returns http:Response|error {
-        string path = string `/groups/${groupId}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/groups/${groupId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns a list of users that have access to the specified workspace.
@@ -1569,8 +1570,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function groupsGetgroupusers(string groupId) returns GroupUsers|error {
-        string path = string `/groups/${groupId}/users`;
-        GroupUsers response = check self.clientEp->get(path, targetType = GroupUsers);
+        string resourcePath = string `/groups/${groupId}/users`;
+        GroupUsers response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update the specified user permissions to the specified workspace.
@@ -1579,11 +1580,11 @@ public isolated client class Client {
     # + payload - Details of user access right 
     # + return - OK 
     remote isolated function groupsUpdategroupuser(string groupId, GroupUser payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/users`;
+        string resourcePath = string `/groups/${groupId}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Grants the specified user permissions to the specified workspace.
@@ -1592,11 +1593,11 @@ public isolated client class Client {
     # + payload - Details of user access right 
     # + return - OK 
     remote isolated function groupsAddgroupuser(string groupId, GroupUser payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/users`;
+        string resourcePath = string `/groups/${groupId}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Deletes the specified user permissions from the specified workspace.
@@ -1605,16 +1606,16 @@ public isolated client class Client {
     # + user - The email address of the user or the service principal object id to delete 
     # + return - OK 
     remote isolated function groupsDeleteuseringroup(string groupId, string user) returns http:Response|error {
-        string path = string `/groups/${groupId}/users/${user}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/groups/${groupId}/users/${user}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns a list of capacities the user has access to.
     #
     # + return - OK 
     remote isolated function capacitiesGetcapacities() returns Capacities|error {
-        string path = string `/capacities`;
-        Capacities response = check self.clientEp->get(path, targetType = Capacities);
+        string resourcePath = string `/capacities`;
+        Capacities response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the current state of the specified capacity workloads, if a workload is enabled also returns the maximum memory percentage that the workload can consume.
@@ -1622,8 +1623,8 @@ public isolated client class Client {
     # + capacityId - The capacity Id 
     # + return - OK 
     remote isolated function capacitiesGetworkloads(string capacityId) returns Workloads|error {
-        string path = string `/capacities/${capacityId}/Workloads`;
-        Workloads response = check self.clientEp->get(path, targetType = Workloads);
+        string resourcePath = string `/capacities/${capacityId}/Workloads`;
+        Workloads response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the current state of a workload and if the workload is enabled also returns the maximum memory percentage that the workload can consume.
@@ -1632,8 +1633,8 @@ public isolated client class Client {
     # + workloadName - The name of the workload 
     # + return - OK 
     remote isolated function capacitiesGetworkload(string capacityId, string workloadName) returns Workload|error {
-        string path = string `/capacities/${capacityId}/Workloads/${workloadName}`;
-        Workload response = check self.clientEp->get(path, targetType = Workload);
+        string resourcePath = string `/capacities/${capacityId}/Workloads/${workloadName}`;
+        Workload response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Changes the state of a specific workload to Enabled or Disabled. When enabling a workload the maximum memory percentage that the workload can consume must be set.
@@ -1643,11 +1644,11 @@ public isolated client class Client {
     # + payload - Patch workload parameters 
     # + return - OK 
     remote isolated function capacitiesPatchworkload(string capacityId, string workloadName, PatchWorkloadRequest payload) returns http:Response|error {
-        string path = string `/capacities/${capacityId}/Workloads/${workloadName}`;
+        string resourcePath = string `/capacities/${capacityId}/Workloads/${workloadName}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Returns a list of refreshables for all capacities of which the user has access to.
@@ -1658,10 +1659,10 @@ public isolated client class Client {
     # + skip - Skips the first n results. Use with top to fetch results beyond the first 1000. 
     # + return - OK 
     remote isolated function capacitiesGetrefreshables(int top, string? expand = (), string? filter = (), int? skip = ()) returns Refreshables|error {
-        string path = string `/capacities/refreshables`;
+        string resourcePath = string `/capacities/refreshables`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshables response = check self.clientEp->get(path, targetType = Refreshables);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of refreshables for the specified capacity the user has access to
@@ -1673,10 +1674,10 @@ public isolated client class Client {
     # + skip - Skips the first n results. Use with top to fetch results beyond the first 1000. 
     # + return - OK 
     remote isolated function capacitiesGetrefreshablesforcapacity(string capacityId, int top, string? expand = (), string? filter = (), int? skip = ()) returns Refreshables|error {
-        string path = string `/capacities/${capacityId}/refreshables`;
+        string resourcePath = string `/capacities/${capacityId}/refreshables`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshables response = check self.clientEp->get(path, targetType = Refreshables);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified refreshable for the specified capacity the user has access to
@@ -1686,10 +1687,10 @@ public isolated client class Client {
     # + expand - Expands related entities inline, receives a comma-separated list of data types. Supported: capacities and groups 
     # + return - OK 
     remote isolated function capacitiesGetrefreshableforcapacity(string capacityId, string refreshableId, string? expand = ()) returns Refreshables|error {
-        string path = string `/capacities/${capacityId}/refreshables/${refreshableId}`;
+        string resourcePath = string `/capacities/${capacityId}/refreshables/${refreshableId}`;
         map<anydata> queryParam = {"$expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshables response = check self.clientEp->get(path, targetType = Refreshables);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Assigns **"My Workspace"** to the specified capacity.
@@ -1697,11 +1698,11 @@ public isolated client class Client {
     # + payload - Assign to capacity parameters 
     # + return - OK 
     remote isolated function groupsAssignmyworkspacetocapacity(AssignToCapacityRequest payload) returns http:Response|error {
-        string path = string `/AssignToCapacity`;
+        string resourcePath = string `/AssignToCapacity`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Assigns the specified workspace to the specified capacity.
@@ -1710,19 +1711,19 @@ public isolated client class Client {
     # + payload - Assign to capacity parameters 
     # + return - OK 
     remote isolated function groupsAssigntocapacity(string groupId, AssignToCapacityRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/AssignToCapacity`;
+        string resourcePath = string `/groups/${groupId}/AssignToCapacity`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets the status of **"My Workspace"** assignment to capacity operation.
     #
     # + return - OK 
     remote isolated function groupsCapacityassignmentstatusmyworkspace() returns WorkspaceCapacityAssignmentStatus|error {
-        string path = string `/CapacityAssignmentStatus`;
-        WorkspaceCapacityAssignmentStatus response = check self.clientEp->get(path, targetType = WorkspaceCapacityAssignmentStatus);
+        string resourcePath = string `/CapacityAssignmentStatus`;
+        WorkspaceCapacityAssignmentStatus response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the status of the assignment to capacity operation of the specified workspace.
@@ -1730,16 +1731,16 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function groupsCapacityassignmentstatus(string groupId) returns WorkspaceCapacityAssignmentStatus|error {
-        string path = string `/groups/${groupId}/CapacityAssignmentStatus`;
-        WorkspaceCapacityAssignmentStatus response = check self.clientEp->get(path, targetType = WorkspaceCapacityAssignmentStatus);
+        string resourcePath = string `/groups/${groupId}/CapacityAssignmentStatus`;
+        WorkspaceCapacityAssignmentStatus response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of available features for the user
     #
     # + return - OK 
     remote isolated function availablefeaturesGetavailablefeatures() returns AvailableFeatures|error {
-        string path = string `/availableFeatures`;
-        AvailableFeatures response = check self.clientEp->get(path, targetType = AvailableFeatures);
+        string resourcePath = string `/availableFeatures`;
+        AvailableFeatures response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified available feature for user by name.
@@ -1747,16 +1748,16 @@ public isolated client class Client {
     # + featureName - The feature name 
     # + return - OK 
     remote isolated function availablefeaturesGetavailablefeaturebyname(string featureName) returns AvailableFeature|error {
-        string path = string `/availableFeatures(featureName='${featureName}')`;
-        AvailableFeature response = check self.clientEp->get(path, targetType = AvailableFeature);
+        string resourcePath = string `/availableFeatures(featureName='${featureName}')`;
+        AvailableFeature response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dataflow storage accounts the user has access to.
     #
     # + return - OK 
     remote isolated function dataflowstorageaccountsGetdataflowstorageaccounts() returns DataflowStorageAccounts|error {
-        string path = string `/dataflowStorageAccounts`;
-        DataflowStorageAccounts response = check self.clientEp->get(path, targetType = DataflowStorageAccounts);
+        string resourcePath = string `/dataflowStorageAccounts`;
+        DataflowStorageAccounts response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Assigns the specified workspace to the specified dataflow storage account.
@@ -1765,11 +1766,11 @@ public isolated client class Client {
     # + payload - Assign to Power BI dataflow storage account parameters 
     # + return - OK 
     remote isolated function groupsAssigntodataflowstorage(string groupId, AssignToDataflowStorageRequest payload) returns http:Response|error {
-        string path = string `/groups/${groupId}/AssignToDataflowStorage`;
+        string resourcePath = string `/groups/${groupId}/AssignToDataflowStorage`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Initiate a call to receive metadata for the requested list of workspaces. (Preview)
@@ -1779,13 +1780,13 @@ public isolated client class Client {
     # + payload - Required workspace IDs to get info for 
     # + return - Accepted 
     remote isolated function workspaceinfoPostworkspaceinfo(RequiredWorkspaces payload, boolean? lineage = (), boolean? datasourceDetails = ()) returns ScanRequest|error {
-        string path = string `/admin/workspaces/getInfo`;
+        string resourcePath = string `/admin/workspaces/getInfo`;
         map<anydata> queryParam = {"lineage": lineage, "datasourceDetails": datasourceDetails};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScanRequest response = check self.clientEp->post(path, request, targetType = ScanRequest);
+        request.setPayload(jsonBody, "application/json");
+        ScanRequest response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets scan status for the specified scan. (Preview)
@@ -1793,8 +1794,8 @@ public isolated client class Client {
     # + scanId - The scan id 
     # + return - OK 
     remote isolated function workspaceinfoGetscanstatus(string scanId) returns ScanRequest|error {
-        string path = string `/admin/workspaces/scanStatus/${scanId}`;
-        ScanRequest response = check self.clientEp->get(path, targetType = ScanRequest);
+        string resourcePath = string `/admin/workspaces/scanStatus/${scanId}`;
+        ScanRequest response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets scan result for the specified scan (should be called only after getting status Succeeded in the scan status API). Scan result will be available for up to 24 hours. (Preview)
@@ -1802,8 +1803,8 @@ public isolated client class Client {
     # + scanId - The scan id 
     # + return - OK 
     remote isolated function workspaceinfoGetscanresult(string scanId) returns WorkspaceInfoResponse|error {
-        string path = string `/admin/workspaces/scanResult/${scanId}`;
-        WorkspaceInfoResponse response = check self.clientEp->get(path, targetType = WorkspaceInfoResponse);
+        string resourcePath = string `/admin/workspaces/scanResult/${scanId}`;
+        WorkspaceInfoResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a list of workspace IDs in the organization. When using modifiedSince, returns only the IDs of workspaces that had changed since the time specified in the modifiedSince parameter. If not provided, returns a list of all workspace IDs in the organization. modifiedSince parameter should range from 30 minutes to 30 days ago. Notice changes can take up to 30 minutes to take effect. (Preview)
@@ -1811,10 +1812,10 @@ public isolated client class Client {
     # + modifiedSince - Last modified date​ (must be in ISO 8601 compliant UTC format) 
     # + return - OK 
     remote isolated function workspaceinfoGetmodifiedworkspaces(string? modifiedSince = ()) returns ModifiedWorkspaces|error {
-        string path = string `/admin/workspaces/modified`;
+        string resourcePath = string `/admin/workspaces/modified`;
         map<anydata> queryParam = {"modifiedSince": modifiedSince};
-        path = path + check getPathForQueryParam(queryParam);
-        ModifiedWorkspaces response = check self.clientEp->get(path, targetType = ModifiedWorkspaces);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ModifiedWorkspaces response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Assigns the provided workspaces to the specified capacity.
@@ -1822,11 +1823,11 @@ public isolated client class Client {
     # + payload - Admin assign workspaces capacity parameters 
     # + return - OK 
     remote isolated function capacitiesAssignworkspacestocapacity(AssignWorkspacesToCapacityRequest payload) returns http:Response|error {
-        string path = string `/admin/capacities/AssignWorkspaces`;
+        string resourcePath = string `/admin/capacities/AssignWorkspaces`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Unassigns the provided workspaces from capacity.
@@ -1834,11 +1835,11 @@ public isolated client class Client {
     # + payload - Admin assign workspaces to shared capacity parameters 
     # + return - OK 
     remote isolated function capacitiesUnassignworkspacesfromcapacity(UnassignWorkspacesCapacityRequest payload) returns http:Response|error {
-        string path = string `/admin/capacities/UnassignWorkspaces`;
+        string resourcePath = string `/admin/capacities/UnassignWorkspaces`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of datasets for the organization.
@@ -1848,10 +1849,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function datasetsGetdatasetsasadmin(string? filter = (), int? top = (), int? skip = ()) returns Datasets|error {
-        string path = string `/admin/datasets`;
+        string resourcePath = string `/admin/datasets`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Datasets response = check self.clientEp->get(path, targetType = Datasets);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Datasets response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of datasources for the specified dataset.
@@ -1859,8 +1860,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasourcesasadmin(string datasetId) returns Datasources|error {
-        string path = string `/admin/datasets/${datasetId}/datasources`;
-        Datasources response = check self.clientEp->get(path, targetType = Datasources);
+        string resourcePath = string `/admin/datasets/${datasetId}/datasources`;
+        Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of workspaces for the organization.
@@ -1871,10 +1872,10 @@ public isolated client class Client {
     # + skip - Skips the first n results. Use with top to fetch results beyond the first 5000. 
     # + return - OK 
     remote isolated function groupsGetgroupsasadmin(int top, string? expand = (), string? filter = (), int? skip = ()) returns Groups|error {
-        string path = string `/admin/groups`;
+        string resourcePath = string `/admin/groups`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Groups response = check self.clientEp->get(path, targetType = Groups);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Groups response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the specified workspace properties.
@@ -1883,11 +1884,11 @@ public isolated client class Client {
     # + payload - The properties to update 
     # + return - OK 
     remote isolated function groupsUpdategroupasadmin(string groupId, Group payload) returns http:Response|error {
-        string path = string `/admin/groups/${groupId}`;
+        string resourcePath = string `/admin/groups/${groupId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Grants user permissions to the specified workspace.
@@ -1896,11 +1897,11 @@ public isolated client class Client {
     # + payload - Details of user access right 
     # + return - OK 
     remote isolated function groupsAdduserasadmin(string groupId, GroupUser payload) returns http:Response|error {
-        string path = string `/admin/groups/${groupId}/users`;
+        string resourcePath = string `/admin/groups/${groupId}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Removes user permissions to the specified workspace.
@@ -1909,8 +1910,8 @@ public isolated client class Client {
     # + user - The user principal name (UPN) of the user to remove (usually the user's email). 
     # + return - OK 
     remote isolated function groupsDeleteuserasadmin(string groupId, string user) returns http:Response|error {
-        string path = string `/admin/groups/${groupId}/users/${user}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/admin/groups/${groupId}/users/${user}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Restores a deleted workspace.
@@ -1919,11 +1920,11 @@ public isolated client class Client {
     # + payload - Details of the group restore request 
     # + return - OK 
     remote isolated function groupsRestoredeletedgroupasadmin(string groupId, GroupRestoreRequest payload) returns http:Response|error {
-        string path = string `/admin/groups/${groupId}/restore`;
+        string resourcePath = string `/admin/groups/${groupId}/restore`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of upstream dataflows for the specified dataflow.
@@ -1932,8 +1933,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetupstreamdataflowsingroupasadmin(string groupId, string dataflowId) returns DependentDataflows|error {
-        string path = string `/admin/groups/${groupId}/dataflows/${dataflowId}/upstreamDataflows`;
-        DependentDataflows response = check self.clientEp->get(path, targetType = DependentDataflows);
+        string resourcePath = string `/admin/groups/${groupId}/dataflows/${dataflowId}/upstreamDataflows`;
+        DependentDataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dashboards from the specified workspace.
@@ -1944,10 +1945,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function dashboardsGetdashboardsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = ()) returns Dashboards|error {
-        string path = string `/admin/groups/${groupId}/dashboards`;
+        string resourcePath = string `/admin/groups/${groupId}/dashboards`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Dashboards response = check self.clientEp->get(path, targetType = Dashboards);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Dashboards response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of reports from the specified workspace.
@@ -1958,10 +1959,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function reportsGetreportsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = ()) returns Reports|error {
-        string path = string `/admin/groups/${groupId}/reports`;
+        string resourcePath = string `/admin/groups/${groupId}/reports`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Reports response = check self.clientEp->get(path, targetType = Reports);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Reports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of datasets from the specified workspace.
@@ -1973,10 +1974,10 @@ public isolated client class Client {
     # + expand - Expands related entities inline 
     # + return - OK 
     remote isolated function datasetsGetdatasetsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = (), string? expand = ()) returns Datasets|error {
-        string path = string `/admin/groups/${groupId}/datasets`;
+        string resourcePath = string `/admin/groups/${groupId}/datasets`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
-        Datasets response = check self.clientEp->get(path, targetType = Datasets);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Datasets response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of upstream dataflows for datasets from the specified workspace.
@@ -1984,8 +1985,8 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function datasetsGetdatasettodataflowslinksingroupasadmin(string groupId) returns DatasetToDataflowLinksResponse|error {
-        string path = string `/admin/groups/${groupId}/datasets/upstreamDataflows`;
-        DatasetToDataflowLinksResponse response = check self.clientEp->get(path, targetType = DatasetToDataflowLinksResponse);
+        string resourcePath = string `/admin/groups/${groupId}/datasets/upstreamDataflows`;
+        DatasetToDataflowLinksResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dataflows from the specified workspace.
@@ -1996,10 +1997,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function dataflowsGetdataflowsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = ()) returns Dataflows|error {
-        string path = string `/admin/groups/${groupId}/dataflows`;
+        string resourcePath = string `/admin/groups/${groupId}/dataflows`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Dataflows response = check self.clientEp->get(path, targetType = Dataflows);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Dataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of reports for the organization.
@@ -2009,10 +2010,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function reportsGetreportsasadmin(string? filter = (), int? top = (), int? skip = ()) returns Reports|error {
-        string path = string `/admin/reports`;
+        string resourcePath = string `/admin/reports`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Reports response = check self.clientEp->get(path, targetType = Reports);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Reports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dashboards for the organization.
@@ -2023,10 +2024,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function dashboardsGetdashboardsasadmin(string? expand = (), string? filter = (), int? top = (), int? skip = ()) returns Dashboards|error {
-        string path = string `/admin/dashboards`;
+        string resourcePath = string `/admin/dashboards`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Dashboards response = check self.clientEp->get(path, targetType = Dashboards);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Dashboards response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of tiles within the specified dashboard.
@@ -2034,8 +2035,8 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGettilesasadmin(string dashboardId) returns Tiles|error {
-        string path = string `/admin/dashboards/${dashboardId}/tiles`;
-        Tiles response = check self.clientEp->get(path, targetType = Tiles);
+        string resourcePath = string `/admin/dashboards/${dashboardId}/tiles`;
+        Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of imports for the organization.
@@ -2046,18 +2047,18 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function importsGetimportsasadmin(string? expand = (), string? filter = (), int? top = (), int? skip = ()) returns Imports|error {
-        string path = string `/admin/imports`;
+        string resourcePath = string `/admin/imports`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Imports response = check self.clientEp->get(path, targetType = Imports);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Imports response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the encryption keys for the tenant.
     #
     # + return - OK 
     remote isolated function adminGetpowerbiencryptionkeys() returns TenantKeys|error {
-        string path = string `/admin/tenantKeys`;
-        TenantKeys response = check self.clientEp->get(path, targetType = TenantKeys);
+        string resourcePath = string `/admin/tenantKeys`;
+        TenantKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds an encryption key for Power BI workspaces assigned to a capacity.
@@ -2065,11 +2066,11 @@ public isolated client class Client {
     # + payload - Tenant key information 
     # + return - OK 
     remote isolated function adminAddpowerbiencryptionkey(TenantKeyCreationRequest payload) returns TenantKey|error {
-        string path = string `/admin/tenantKeys`;
+        string resourcePath = string `/admin/tenantKeys`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TenantKey response = check self.clientEp->post(path, request, targetType = TenantKey);
+        request.setPayload(jsonBody, "application/json");
+        TenantKey response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Rotate the encryption key for Power BI workspaces assigned to a capacity.
@@ -2078,11 +2079,11 @@ public isolated client class Client {
     # + payload - Tenant key information 
     # + return - OK 
     remote isolated function adminRotatepowerbiencryptionkey(string tenantKeyId, TenantKeyRotationRequest payload) returns TenantKey|error {
-        string path = string `/admin/tenantKeys/${tenantKeyId}/Default.Rotate`;
+        string resourcePath = string `/admin/tenantKeys/${tenantKeyId}/Default.Rotate`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TenantKey response = check self.clientEp->post(path, request, targetType = TenantKey);
+        request.setPayload(jsonBody, "application/json");
+        TenantKey response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of capacities for the organization.
@@ -2090,10 +2091,10 @@ public isolated client class Client {
     # + expand - Expands related entities inline 
     # + return - OK 
     remote isolated function adminGetcapacitiesasadmin(string? expand = ()) returns Capacities|error {
-        string path = string `/admin/capacities`;
+        string resourcePath = string `/admin/capacities`;
         map<anydata> queryParam = {"$expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
-        Capacities response = check self.clientEp->get(path, targetType = Capacities);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Capacities response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Changes the specific capacity information. Currently, only supports changing the capacity encryption key
@@ -2102,11 +2103,11 @@ public isolated client class Client {
     # + payload - Patch capacity information 
     # + return - OK 
     remote isolated function adminPatchcapacityasadmin(string capacityId, CapacityPatchRequest payload) returns http:Response|error {
-        string path = string `/admin/capacities/${capacityId}`;
+        string resourcePath = string `/admin/capacities/${capacityId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Returns a list of refreshables for the organization within a capacity
@@ -2117,10 +2118,10 @@ public isolated client class Client {
     # + skip - Skips the first n results. Use with top to fetch results beyond the first 1000. 
     # + return - OK 
     remote isolated function adminGetrefreshables(int top, string? expand = (), string? filter = (), int? skip = ()) returns Refreshables|error {
-        string path = string `/admin/capacities/refreshables`;
+        string resourcePath = string `/admin/capacities/refreshables`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshables response = check self.clientEp->get(path, targetType = Refreshables);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of refreshables for the specified capacity the user has access to
@@ -2132,10 +2133,10 @@ public isolated client class Client {
     # + skip - Skips the first n results. Use with top to fetch results beyond the first 1000. 
     # + return - OK 
     remote isolated function adminGetrefreshablesforcapacity(string capacityId, int top, string? expand = (), string? filter = (), int? skip = ()) returns Refreshables|error {
-        string path = string `/admin/capacities/${capacityId}/refreshables`;
+        string resourcePath = string `/admin/capacities/${capacityId}/refreshables`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshables response = check self.clientEp->get(path, targetType = Refreshables);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified refreshable for the specified capacity the user has access to
@@ -2145,10 +2146,10 @@ public isolated client class Client {
     # + expand - Expands related entities inline, receives a comma-separated list of data types. Supported: capacities and groups 
     # + return - OK 
     remote isolated function adminGetrefreshableforcapacity(string capacityId, string refreshableId, string? expand = ()) returns Refreshables|error {
-        string path = string `/admin/capacities/${capacityId}/refreshables/${refreshableId}`;
+        string resourcePath = string `/admin/capacities/${capacityId}/refreshables/${refreshableId}`;
         map<anydata> queryParam = {"$expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
-        Refreshables response = check self.clientEp->get(path, targetType = Refreshables);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Refreshables response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dataflows for the organization.
@@ -2158,10 +2159,10 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function dataflowsGetdataflowsasadmin(string? filter = (), int? top = (), int? skip = ()) returns Dataflows|error {
-        string path = string `/admin/dataflows`;
+        string resourcePath = string `/admin/dataflows`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
-        path = path + check getPathForQueryParam(queryParam);
-        Dataflows response = check self.clientEp->get(path, targetType = Dataflows);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Dataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Exports the specified dataflow definition to a .json file.
@@ -2169,8 +2170,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - Exported Json file 
     remote isolated function dataflowsExportdataflowasadmin(string dataflowId) returns string|error {
-        string path = string `/admin/dataflows/${dataflowId}/export`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/admin/dataflows/${dataflowId}/export`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of datasources for the specified dataflow.
@@ -2178,8 +2179,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetdataflowdatasourcesasadmin(string dataflowId) returns Datasources|error {
-        string path = string `/admin/dataflows/${dataflowId}/datasources`;
-        Datasources response = check self.clientEp->get(path, targetType = Datasources);
+        string resourcePath = string `/admin/dataflows/${dataflowId}/datasources`;
+        Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Generates an embed token for multiple reports, datasets and target workspaces. Reports and datasets do not have to be related. The binding of a report to a dataset can be done during embedding. Creating a report can only be done in workspaces specified in *targetWrokspaces*.<br/><br/>This API is relevant only to ['App owns data' embed scenario](https://docs.microsoft.com/power-bi/developer/embed-sample-for-customers). For more information about using this API, see [Considerations when generating an embed token](https://docs.microsoft.com/power-bi/developer/embedded/generate-embed-token).
@@ -2187,11 +2188,11 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function embedtokenGeneratetoken(GenerateTokenRequestV2 payload) returns EmbedToken|error {
-        string path = string `/GenerateToken`;
+        string resourcePath = string `/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EmbedToken response = check self.clientEp->post(path, request, targetType = EmbedToken);
+        request.setPayload(jsonBody, "application/json");
+        EmbedToken response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of audit activity events for a tenant.
@@ -2202,10 +2203,10 @@ public isolated client class Client {
     # + filter - Filters the results based on a boolean condition, using 'Activity', 'UserId', or both properties. Supports only 'eq' and 'and' operators. 
     # + return - OK 
     remote isolated function adminGetactivityevents(string? startDateTime = (), string? endDateTime = (), string? continuationToken = (), string? filter = ()) returns ActivityEventResponse|error {
-        string path = string `/admin/activityevents`;
+        string resourcePath = string `/admin/activityevents`;
         map<anydata> queryParam = {"startDateTime": startDateTime, "endDateTime": endDateTime, "continuationToken": continuationToken, "$filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
-        ActivityEventResponse response = check self.clientEp->get(path, targetType = ActivityEventResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ActivityEventResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Remove sensitivity labels from artifacts by artifact ID.
@@ -2213,11 +2214,11 @@ public isolated client class Client {
     # + payload - Composite of artifact Id lists per Type. 
     # + return - OK 
     remote isolated function informationprotectionRemovelabelsasadmin(InformationProtectionArtifactsChangeLabel payload) returns InformationProtectionChangeLabelResponse|error {
-        string path = string `/admin/informationprotection/removeLabels`;
+        string resourcePath = string `/admin/informationprotection/removeLabels`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InformationProtectionChangeLabelResponse response = check self.clientEp->post(path, request, targetType = InformationProtectionChangeLabelResponse);
+        request.setPayload(jsonBody, "application/json");
+        InformationProtectionChangeLabelResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Set sensitivity labels on content in Power BI by artifact ID.
@@ -2225,11 +2226,11 @@ public isolated client class Client {
     # + payload - Set label details. 
     # + return - OK 
     remote isolated function informationprotectionSetlabelsasadmin(InformationProtectionChangeLabelDetails payload) returns InformationProtectionChangeLabelResponse|error {
-        string path = string `/admin/informationprotection/setLabels`;
+        string resourcePath = string `/admin/informationprotection/setLabels`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InformationProtectionChangeLabelResponse response = check self.clientEp->post(path, request, targetType = InformationProtectionChangeLabelResponse);
+        request.setPayload(jsonBody, "application/json");
+        InformationProtectionChangeLabelResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Generates an installation ticket for Template Apps automated install flow.
@@ -2237,11 +2238,11 @@ public isolated client class Client {
     # + payload - Create Install Ticket parameters 
     # + return - OK 
     remote isolated function templateappsCreateinstallticket(CreateInstallTicketRequest payload) returns InstallTicket|error {
-        string path = string `/CreateTemplateAppInstallTicket`;
+        string resourcePath = string `/CreateTemplateAppInstallTicket`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InstallTicket response = check self.clientEp->post(path, request, targetType = InstallTicket);
+        request.setPayload(jsonBody, "application/json");
+        InstallTicket response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Transfers ownership over the specified paginated report datasources to the current authorized user.
@@ -2250,10 +2251,10 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsTakeoveringroup(string groupId, string reportId) returns http:Response|error {
-        string path = string `/groups/${groupId}/reports/${reportId}/Default.TakeOver`;
+        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Default.TakeOver`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
 }

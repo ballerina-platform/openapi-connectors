@@ -40,16 +40,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Auto-Emojify
     #
     # + text - Text of the post 
     # + return - OK 
     remote isolated function autoEmojify(string text) returns json|error {
-        string  path = string `/v1/emoji/auto-emojify`;
+        string resourcePath = string `/v1/emoji/auto-emojify`;
         map<anydata> queryParam = {"text": text, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Emoji Suggestions
@@ -57,10 +58,10 @@ public isolated client class Client {
     # + text - Text of the post 
     # + return - OK 
     remote isolated function emojiSuggestions(string text) returns json|error {
-        string  path = string `/v1/emoji/suggestions`;
+        string resourcePath = string `/v1/emoji/suggestions`;
         map<anydata> queryParam = {"text": text, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Animate Image
@@ -69,10 +70,10 @@ public isolated client class Client {
     # + 'type - URL of the company 
     # + return - OK 
     remote isolated function animateImage(string url, string 'type) returns json|error {
-        string  path = string `/v1/images/animate`;
+        string resourcePath = string `/v1/images/animate`;
         map<anydata> queryParam = {"url": url, "type": 'type, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Company Logo
@@ -80,10 +81,10 @@ public isolated client class Client {
     # + domain - URL of the company 
     # + return - Successful response 
     remote isolated function companyLogo(string domain) returns http:Response|error {
-        string  path = string `/v1/images/logo`;
+        string resourcePath = string `/v1/images/logo`;
         map<anydata> queryParam = {"domain": domain, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Text to Image
@@ -107,20 +108,20 @@ public isolated client class Client {
     # + showQuoteMark - showing/hiding quote mark 
     # + return - OK 
     remote isolated function textToImage(string quote, string author, int fontSize, string quoteFont, string quoteFontColor, string authorFont, string authorFontColor, int enableHighlight, string highlightColor, string bgType, string backgroundColor, string gradientType, string gradientColor1, string gradientColor2, string brandLogo, string animation, int? showQuoteMark = ()) returns json|error {
-        string  path = string `/v1/images/quote`;
+        string resourcePath = string `/v1/images/quote`;
         map<anydata> queryParam = {"quote": quote, "author": author, "fontSize": fontSize, "quoteFont": quoteFont, "quoteFontColor": quoteFontColor, "authorFont": authorFont, "authorFontColor": authorFontColor, "enableHighlight": enableHighlight, "highlightColor": highlightColor, "bgType": bgType, "backgroundColor": backgroundColor, "gradientType": gradientType, "gradientColor1": gradientColor1, "gradientColor2": gradientColor2, "brandLogo": brandLogo, "animation": animation, "showQuoteMark": showQuoteMark, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List of CTAs
     #
     # + return - OK 
     remote isolated function listOfCtas() returns json|error {
-        string  path = string `/v1/link/cta`;
+        string resourcePath = string `/v1/link/cta`;
         map<anydata> queryParam = {"client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Shorten Link
@@ -129,10 +130,10 @@ public isolated client class Client {
     # + cta - cta id 
     # + return - OK 
     remote isolated function shortenLink(string url, int cta) returns json|error {
-        string  path = string `/v1/link/short-link`;
+        string resourcePath = string `/v1/link/short-link`;
         map<anydata> queryParam = {"url": url, "cta": cta, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Trending Hashtags
@@ -141,10 +142,10 @@ public isolated client class Client {
     # + latin - Restrict results only to hashtags with latin characters 
     # + return - OK 
     remote isolated function trendingHashtags(string green = "1", string latin = "1") returns json|error {
-        string  path = string `/v1/search/trending`;
+        string resourcePath = string `/v1/search/trending`;
         map<anydata> queryParam = {"green": green, "latin": latin, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Auto-Hashtag
@@ -154,10 +155,10 @@ public isolated client class Client {
     # + hashtagPosition - Position of hashtags: end => at the end, auto => anywhere 
     # + return - OK 
     remote isolated function autoHashtag(string post, int maxHashtags = 2, string hashtagPosition = "auto") returns json|error {
-        string  path = string `/v1/stats/auto-hashtag`;
+        string resourcePath = string `/v1/stats/auto-hashtag`;
         map<anydata> queryParam = {"post": post, "maxHashtags": maxHashtags, "hashtagPosition": hashtagPosition, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Hashtag Suggestions
@@ -165,10 +166,10 @@ public isolated client class Client {
     # + text - Topic 
     # + return - OK 
     remote isolated function hashtagSuggestions(string text) returns json|error {
-        string  path = string `/v1/stats/hashtag-suggestions`;
+        string resourcePath = string `/v1/stats/hashtag-suggestions`;
         map<anydata> queryParam = {"text": text, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Hashtag History
@@ -176,10 +177,10 @@ public isolated client class Client {
     # + hashtag - Hashtag without # mark 
     # + return - OK 
     remote isolated function hashtagHistory(string hashtag) returns json|error {
-        string  path = string `/v1/stats/history/${hashtag}`;
+        string resourcePath = string `/v1/stats/history/${hashtag}`;
         map<anydata> queryParam = {"client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Hashtag Stats
@@ -187,10 +188,10 @@ public isolated client class Client {
     # + tags - Hashtag(s) without # mark 
     # + return - OK 
     remote isolated function hashtagStats(string tags) returns json|error {
-        string  path = string `/v1/stats/multiple-hashtags`;
+        string resourcePath = string `/v1/stats/multiple-hashtags`;
         map<anydata> queryParam = {"tags": tags, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Hashtags cleaner
@@ -198,10 +199,10 @@ public isolated client class Client {
     # + post - post 
     # + return - OK 
     remote isolated function hashtagsCleaner(string post) returns json|error {
-        string  path = string `/v2/instagram/hashtags-cleaner`;
+        string resourcePath = string `/v2/instagram/hashtags-cleaner`;
         map<anydata> queryParam = {"post": post, "client_id": self.apiKeyConfig.clientId};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

@@ -67,17 +67,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://app.staging.shippit.com/api/3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create an Order
     #
     # + payload - Passes an Order object under the `order` field. 
     # + return - Successful order response 
     remote isolated function createOrder(OrderRequest payload) returns OrderResponse|error {
-        string  path = string `/orders`;
+        string resourcePath = string `/orders`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderResponse response = check self.clientEp->post(path, request, targetType=OrderResponse);
+        request.setPayload(jsonBody, "application/json");
+        OrderResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Cancel an Order
@@ -85,10 +86,8 @@ public isolated client class Client {
     # + trackingNumber - The tracking number of the Order. 
     # + return - Returns the Order with state = `cancelled` 
     remote isolated function cancelOrder(string trackingNumber) returns OrderDeleteResponse|error {
-        string  path = string `/orders/${trackingNumber}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        OrderDeleteResponse response = check self.clientEp-> delete(path, request, targetType = OrderDeleteResponse);
+        string resourcePath = string `/orders/${trackingNumber}`;
+        OrderDeleteResponse response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get Label information for an Order
@@ -96,8 +95,8 @@ public isolated client class Client {
     # + trackingNumber - The tracking number of the Order. 
     # + return - Returns an Order and related label information. 
     remote isolated function getOrderLabel(string trackingNumber) returns LabelResponse|error {
-        string  path = string `/orders/${trackingNumber}/label`;
-        LabelResponse response = check self.clientEp-> get(path, targetType = LabelResponse);
+        string resourcePath = string `/orders/${trackingNumber}/label`;
+        LabelResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Track Order
@@ -105,8 +104,8 @@ public isolated client class Client {
     # + trackingNumber - The tracking number of the Order 
     # + return - Returns tracking info related to the Order 
     remote isolated function trackOrder(string trackingNumber) returns TrackingResponse|error {
-        string  path = string `/orders/${trackingNumber}/tracking`;
-        TrackingResponse response = check self.clientEp-> get(path, targetType = TrackingResponse);
+        string resourcePath = string `/orders/${trackingNumber}/tracking`;
+        TrackingResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Quote
@@ -114,19 +113,19 @@ public isolated client class Client {
     # + payload - Quote request 
     # + return - Successful quote response 
     remote isolated function getQuote(QuoteRequest payload) returns QuoteResponse|error {
-        string  path = string `/quotes`;
+        string resourcePath = string `/quotes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        QuoteResponse response = check self.clientEp->post(path, request, targetType=QuoteResponse);
+        request.setPayload(jsonBody, "application/json");
+        QuoteResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Merchant settings
     #
     # + return - Returns an object representing your merchant account settings. 
     remote isolated function getMerchant() returns MerchantResponse|error {
-        string  path = string `/merchant`;
-        MerchantResponse response = check self.clientEp-> get(path, targetType = MerchantResponse);
+        string resourcePath = string `/merchant`;
+        MerchantResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Merchant settings
@@ -134,11 +133,11 @@ public isolated client class Client {
     # + payload - Merchant request 
     # + return - The updated merchant account. 
     remote isolated function updateMerchant(MerchantRequest payload) returns MerchantResponse|error {
-        string  path = string `/merchant`;
+        string resourcePath = string `/merchant`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MerchantResponse response = check self.clientEp->patch(path, request, targetType=MerchantResponse);
+        request.setPayload(jsonBody, "application/json");
+        MerchantResponse response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Webhook
@@ -146,11 +145,11 @@ public isolated client class Client {
     # + payload - Updated status info about the Order sent by the webhook. 
     # + return - The response (success) the webhook expects from your application endpoint. 
     remote isolated function trackOrderHook(WebhookRequest payload) returns http:Response|error {
-        string  path = string `/webhook`;
+        string resourcePath = string `/webhook`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Book Order
@@ -158,11 +157,11 @@ public isolated client class Client {
     # + payload - An array of Order tracking numbers to book 
     # + return - Returns the status of the bookings at each courier. This API will validate that all of the requested orders are accurate and ready to be booked, if all of the orders sent in cannot be booked, the response will detail which orders cannot be found. If this response is received, none of the order numbers sent in will have been booked. If a manifest fails to be generated, the response will include an array of orders on each manifest which were not booked. 
     remote isolated function bookOrder(BookRequest payload) returns BookResponse|error {
-        string  path = string `/book`;
+        string resourcePath = string `/book`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BookResponse response = check self.clientEp->post(path, request, targetType=BookResponse);
+        request.setPayload(jsonBody, "application/json");
+        BookResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

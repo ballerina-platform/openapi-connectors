@@ -43,19 +43,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # DateTime - Get date and time information
     #
     # + payload - Input date time info parameters 
     # + return - OK 
     remote isolated function dateTimeInfo(InputDateTimeInfo payload) returns OutputDateInfo|error {
-        string  path = string `/DateTimeInfo`;
+        string resourcePath = string `/DateTimeInfo`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputDateInfo response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputDateInfo);
+        request.setPayload(jsonBody, "application/json");
+        OutputDateInfo response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # DateTime - DateTime difference
@@ -63,13 +64,13 @@ public isolated client class Client {
     # + payload - Input date time difference parameters 
     # + return - OK 
     remote isolated function dateTimeDifference(InputDateTimeDifference payload) returns OutputDateDifference|error {
-        string  path = string `/DateTimeDifference`;
+        string resourcePath = string `/DateTimeDifference`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputDateDifference response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputDateDifference);
+        request.setPayload(jsonBody, "application/json");
+        OutputDateDifference response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # DateTime - Format date and time
@@ -77,13 +78,13 @@ public isolated client class Client {
     # + payload - Input date time format parameters 
     # + return - OK 
     remote isolated function formatDateTime(InputDateTimeFormat payload) returns OutputString|error {
-        string  path = string `/FormatDateTime`;
+        string resourcePath = string `/FormatDateTime`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # DateTime - Get world time
@@ -91,13 +92,13 @@ public isolated client class Client {
     # + payload - Input date time conversion parameters 
     # + return - OK 
     remote isolated function worldTime(InputDateTimeConversion payload) returns OutputString|error {
-        string  path = string `/WorldTime`;
+        string resourcePath = string `/WorldTime`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

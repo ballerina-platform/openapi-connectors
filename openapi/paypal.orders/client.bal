@@ -66,6 +66,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Creates an order.
     #
@@ -76,13 +77,13 @@ public isolated client class Client {
     # + payload - The create order request 
     # + return - Created order details 
     remote isolated function createOrder(CreateOrderRequest payload, string? paypalRequestId = (), string? paypalPartnerAttributionId = (), string? paypalClientMetadataId = (), string? prefer = ()) returns CreatedOrderDetails|error {
-        string path = string `/v2/checkout/orders`;
+        string resourcePath = string `/v2/checkout/orders`;
         map<any> headerValues = {"PayPal-Request-Id": paypalRequestId, "PayPal-Partner-Attribution-Id": paypalPartnerAttributionId, "PayPal-Client-Metadata-Id": paypalClientMetadataId, "Prefer": prefer};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreatedOrderDetails response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CreatedOrderDetails);
+        request.setPayload(jsonBody, "application/json");
+        CreatedOrderDetails response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Shows details for an order, by ID.
@@ -91,10 +92,10 @@ public isolated client class Client {
     # + fields - A comma-separated list of fields that should be returned for the order. Valid filter field is payment_source. 
     # + return - Order details. 
     remote isolated function getOrder(string id, string? fields = ()) returns OrderDetails|error {
-        string path = string `/v2/checkout/orders/${id}`;
+        string resourcePath = string `/v2/checkout/orders/${id}`;
         map<anydata> queryParam = {"fields": fields};
-        path = path + check getPathForQueryParam(queryParam);
-        OrderDetails response = check self.clientEp->get(path, targetType = OrderDetails);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OrderDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an order with a CREATED or APPROVED status. You cannot update an order with the COMPLETED status. To make an update, you must provide a reference_id. If you omit this value with an order that contains only one purchase unit, PayPal sets the value to default which enables you to use the path: /purchase_units/@reference_id=='default'/{attribute-or-object}.
@@ -103,11 +104,11 @@ public isolated client class Client {
     # + payload - The update order request 
     # + return - An empty object in the JSON response body. 
     remote isolated function updateOrder(string id, UpdateOrderRequest payload) returns http:Response|error {
-        string path = string `/v2/checkout/orders/${id}`;
+        string resourcePath = string `/v2/checkout/orders/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Authorizes payment for an order. To successfully authorize payment for an order, the buyer must first approve the order or a valid payment_source must be provided in the request. A buyer can approve the order upon being redirected to the rel:approve URL that was returned in the HATEOAS links in the create order response.
@@ -120,13 +121,13 @@ public isolated client class Client {
     # + payload - The authorize order request 
     # + return - Authorized order details 
     remote isolated function authorizeOrder(string id, AuthorizeOrderRequest payload, string? paypalRequestId = (), string? prefer = (), string? paypalClientMetadataId = (), string? paypalAuthAssertion = ()) returns AuthorizedOrderDetails|error {
-        string path = string `/v2/checkout/orders/${id}/authorize`;
+        string resourcePath = string `/v2/checkout/orders/${id}/authorize`;
         map<any> headerValues = {"PayPal-Request-Id": paypalRequestId, "Prefer": prefer, "PayPal-Client-Metadata-Id": paypalClientMetadataId, "PayPal-Auth-Assertion": paypalAuthAssertion};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AuthorizedOrderDetails response = check self.clientEp->post(path, request, headers = accHeaders, targetType = AuthorizedOrderDetails);
+        request.setPayload(jsonBody, "application/json");
+        AuthorizedOrderDetails response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Captures payment for an order. To successfully capture payment for an order, the buyer must first approve the order or a valid payment_source must be provided in the request. A buyer can approve the order upon being redirected to the rel:approve URL that was returned in the HATEOAS links in the create order response.
@@ -139,13 +140,13 @@ public isolated client class Client {
     # + payload - The capture order request 
     # + return - Captured payment details 
     remote isolated function captureOrder(string id, CaptureOrderRequest payload, string? paypalRequestId = (), string? prefer = (), string? paypalClientMetadataId = (), string? paypalAuthAssertion = ()) returns CapturedPaymentDetails|error {
-        string path = string `/v2/checkout/orders/${id}/capture`;
+        string resourcePath = string `/v2/checkout/orders/${id}/capture`;
         map<any> headerValues = {"PayPal-Request-Id": paypalRequestId, "Prefer": prefer, "PayPal-Client-Metadata-Id": paypalClientMetadataId, "PayPal-Auth-Assertion": paypalAuthAssertion};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CapturedPaymentDetails response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CapturedPaymentDetails);
+        request.setPayload(jsonBody, "application/json");
+        CapturedPaymentDetails response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

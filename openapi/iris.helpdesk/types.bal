@@ -14,8 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type InlineResponse20060Arr InlineResponse20060[];
-
 public type Meta record {
     # The current page number of a data set
     int current_page?;

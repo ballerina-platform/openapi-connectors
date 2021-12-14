@@ -41,19 +41,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Send an SMS
     #
     # + payload - Request payload 
     # + return - Success. 
     remote isolated function sendSms(SmsBody payload) returns Sms|error {
-        string  path = string `/sms`;
+        string resourcePath = string `/sms`;
         map<any> headerValues = {"X-Mitto-API-Key": self.apiKeyConfig.xMittoApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Sms response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Sms);
+        request.setPayload(jsonBody, "application/json");
+        Sms response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Track Conversions
@@ -61,13 +62,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Success 
     remote isolated function trackConversions(SmsConvertedBody payload) returns http:Response|error {
-        string  path = string `/sms/converted`;
+        string resourcePath = string `/sms/converted`;
         map<any> headerValues = {"X-Mitto-API-Key": self.apiKeyConfig.xMittoApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send SMS in Bulk
@@ -75,13 +76,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Success. 
     remote isolated function sendBulkSms(SmsbulkBody payload) returns Smsbulk|error {
-        string  path = string `/smsbulk`;
+        string resourcePath = string `/smsbulk`;
         map<any> headerValues = {"X-Mitto-API-Key": self.apiKeyConfig.xMittoApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Smsbulk response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Smsbulk);
+        request.setPayload(jsonBody, "application/json");
+        Smsbulk response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Usage by Country
@@ -89,13 +90,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Success. 
     remote isolated function getUsageByCountry(UsageBycountryBody payload) returns Usage|error {
-        string  path = string `/usage/bycountry`;
+        string resourcePath = string `/usage/bycountry`;
         map<any> headerValues = {"X-Mitto-API-Key": self.apiKeyConfig.xMittoApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Usage response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Usage);
+        request.setPayload(jsonBody, "application/json");
+        Usage response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

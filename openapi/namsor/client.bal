@@ -40,16 +40,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # [USES 10 UNITS PER NAME] Infer the likely country of residence of a personal full name, or one surname. Assumes names as they are in the country of residence OR the country of origin.
     #
     # + personalNameFull - Personal full name 
     # + return - A origined name. 
     remote isolated function country(string personalNameFull) returns PersonalNameGeoOut|error {
-        string  path = string `/api2/json/country/${personalNameFull}`;
+        string resourcePath = string `/api2/json/country/${personalNameFull}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameGeoOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGeoOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameGeoOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely type of a proper noun (personal name, brand name, place name etc.)
@@ -57,10 +58,10 @@ public isolated client class Client {
     # + properNoun - The proper noun 
     # + return - A typed name. 
     remote isolated function nameType(string properNoun) returns ProperNounCategorizedOut|error {
-        string  path = string `/api2/json/nameType/${properNoun}`;
+        string resourcePath = string `/api2/json/nameType/${properNoun}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProperNounCategorizedOut response = check self.clientEp-> get(path, accHeaders, targetType = ProperNounCategorizedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProperNounCategorizedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Activate/deactivate an API Key.
@@ -69,10 +70,10 @@ public isolated client class Client {
     # + disabled - Disbled/Not disabled 
     # + return - Disabled the API Key. 
     remote isolated function disable(string 'source, boolean disabled) returns http:Response|error {
-        string  path = string `/api2/json/disable/${'source}/${disabled}`;
+        string resourcePath = string `/api2/json/disable/${'source}/${disabled}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [USES 10 UNITS PER NAME] Infer the likely country of origin of a personal name. Assumes names as they are in the country of origin. For US, CA, AU, NZ and other melting-pots : use 'diaspora' instead.
@@ -81,40 +82,40 @@ public isolated client class Client {
     # + lastName - Last name 
     # + return - A origined name. 
     remote isolated function origin(string firstName, string lastName) returns FirstLastNameOriginedOut|error {
-        string  path = string `/api2/json/origin/${firstName}/${lastName}`;
+        string resourcePath = string `/api2/json/origin/${firstName}/${lastName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameOriginedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameOriginedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameOriginedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the current software version
     #
     # + return - The current software version 
     remote isolated function softwareVersion() returns SoftwareVersionOut|error {
-        string  path = string `/api2/json/softwareVersion`;
+        string resourcePath = string `/api2/json/softwareVersion`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SoftwareVersionOut response = check self.clientEp-> get(path, accHeaders, targetType = SoftwareVersionOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SoftwareVersionOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Prints the current status of the classifiers. A classifier name in apiStatus corresponds to a service name in apiServices.
     #
     # + return - Available classifiers and status 
     remote isolated function apiStatus() returns APIClassifiersStatusOut|error {
-        string  path = string `/api2/json/apiStatus`;
+        string resourcePath = string `/api2/json/apiStatus`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        APIClassifiersStatusOut response = check self.clientEp-> get(path, accHeaders, targetType = APIClassifiersStatusOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        APIClassifiersStatusOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List of classification services and usage cost in Units per classification (default is 1=ONE Unit). Some API endpoints (ex. Corridor) combine multiple classifiers.
     #
     # + return - Available services 
     remote isolated function availableServices() returns APIServicesOut|error {
-        string  path = string `/api2/json/apiServices`;
+        string resourcePath = string `/api2/json/apiServices`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        APIServicesOut response = check self.clientEp-> get(path, accHeaders, targetType = APIServicesOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        APIServicesOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Print the taxonomy classes valid for the given classifier.
@@ -122,40 +123,40 @@ public isolated client class Client {
     # + classifierName - Name of the classifier 
     # + return - Available plans 
     remote isolated function taxonomyClasses(string classifierName) returns APIClassifierTaxonomyOut|error {
-        string  path = string `/api2/json/taxonomyClasses/${classifierName}`;
+        string resourcePath = string `/api2/json/taxonomyClasses/${classifierName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        APIClassifierTaxonomyOut response = check self.clientEp-> get(path, accHeaders, targetType = APIClassifierTaxonomyOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        APIClassifierTaxonomyOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Print current API usage.
     #
     # + return - Print current API usage. 
     remote isolated function apiUsage() returns APIPeriodUsageOut|error {
-        string  path = string `/api2/json/apiUsage`;
+        string resourcePath = string `/api2/json/apiUsage`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        APIPeriodUsageOut response = check self.clientEp-> get(path, accHeaders, targetType = APIPeriodUsageOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        APIPeriodUsageOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Print historical API usage.
     #
     # + return - Print historical API usage (NB. new output format form v2.0.15) 
     remote isolated function apiUsageHistory() returns APIUsageHistoryOut|error {
-        string  path = string `/api2/json/apiUsageHistory`;
+        string resourcePath = string `/api2/json/apiUsageHistory`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        APIUsageHistoryOut response = check self.clientEp-> get(path, accHeaders, targetType = APIUsageHistoryOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        APIUsageHistoryOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Print historical API usage (in an aggregated view, by service, by day/hour/min).
     #
     # + return - Print historical API usage. 
     remote isolated function apiUsageHistoryAggregate() returns APIUsageAggregatedOut|error {
-        string  path = string `/api2/json/apiUsageHistoryAggregate`;
+        string resourcePath = string `/api2/json/apiUsageHistoryAggregate`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        APIUsageAggregatedOut response = check self.clientEp-> get(path, accHeaders, targetType = APIUsageAggregatedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        APIUsageAggregatedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Activate/deactivate learning from a source.
@@ -164,10 +165,10 @@ public isolated client class Client {
     # + learnable - Learnable/non learnable. 
     # + return - Set learning from source. 
     remote isolated function learnable(string 'source, boolean learnable) returns http:Response|error {
-        string  path = string `/api2/json/learnable/${'source}/${learnable}`;
+        string resourcePath = string `/api2/json/learnable/${'source}/${learnable}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Activate/deactivate anonymization for a source.
@@ -176,10 +177,10 @@ public isolated client class Client {
     # + anonymized - Anonymized/non anonymized. 
     # + return - Anonymization of a source. 
     remote isolated function anonymize(string 'source, boolean anonymized) returns http:Response|error {
-        string  path = string `/api2/json/anonymize/${'source}/${anonymized}`;
+        string resourcePath = string `/api2/json/anonymize/${'source}/${anonymized}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely type of a proper noun (personal name, brand name, place name etc.)
@@ -188,10 +189,10 @@ public isolated client class Client {
     # + countryIso2 - ISO2 country code 
     # + return - A typed name. 
     remote isolated function nameTypeGeo(string properNoun, string countryIso2) returns ProperNounCategorizedOut|error {
-        string  path = string `/api2/json/nameTypeGeo/${properNoun}/${countryIso2}`;
+        string resourcePath = string `/api2/json/nameTypeGeo/${properNoun}/${countryIso2}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProperNounCategorizedOut response = check self.clientEp-> get(path, accHeaders, targetType = ProperNounCategorizedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProperNounCategorizedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely common type of up to 100 proper nouns (personal name, brand name, place name etc.)
@@ -199,13 +200,13 @@ public isolated client class Client {
     # + payload - A list of proper names 
     # + return - A list of commonTypeized names. 
     remote isolated function nameTypeBatch(BatchNameIn payload) returns BatchProperNounCategorizedOut|error {
-        string  path = string `/api2/json/nameTypeBatch`;
+        string resourcePath = string `/api2/json/nameTypeBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchProperNounCategorizedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchProperNounCategorizedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchProperNounCategorizedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely common type of up to 100 proper nouns (personal name, brand name, place name etc.)
@@ -213,13 +214,13 @@ public isolated client class Client {
     # + payload - A list of proper names 
     # + return - A list of commonTypeized names. 
     remote isolated function nameTypeGeoBatch(BatchNameGeoIn payload) returns BatchProperNounCategorizedOut|error {
-        string  path = string `/api2/json/nameTypeGeoBatch`;
+        string resourcePath = string `/api2/json/nameTypeGeoBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchProperNounCategorizedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchProperNounCategorizedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchProperNounCategorizedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 20 UNITS PER NAME COUPLE] Infer several classifications for a cross border interaction between names (ex. remit, travel, intl com)
@@ -232,10 +233,10 @@ public isolated client class Client {
     # + lastNameTo - End last name to filter 
     # + return - Two classified names. 
     remote isolated function corridor(string countryIso2From, string firstNameFrom, string lastNameFrom, string countryIso2To, string firstNameTo, string lastNameTo) returns CorridorOut|error {
-        string  path = string `/api2/json/corridor/${countryIso2From}/${firstNameFrom}/${lastNameFrom}/${countryIso2To}/${firstNameTo}/${lastNameTo}`;
+        string resourcePath = string `/api2/json/corridor/${countryIso2From}/${firstNameFrom}/${lastNameFrom}/${countryIso2To}/${firstNameTo}/${lastNameTo}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CorridorOut response = check self.clientEp-> get(path, accHeaders, targetType = CorridorOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CorridorOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [USES 20 UNITS PER NAME PAIR] Infer several classifications for up to 100 cross border interaction between names (ex. remit, travel, intl com)
@@ -243,13 +244,13 @@ public isolated client class Client {
     # + payload - A list of name pairs, with country code (nameFrom -> nameTo). 
     # + return - A list of classified name pairs. 
     remote isolated function corridorBatch(BatchCorridorIn payload) returns BatchCorridorOut|error {
-        string  path = string `/api2/json/corridorBatch`;
+        string resourcePath = string `/api2/json/corridorBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchCorridorOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchCorridorOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchCorridorOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of a name.
@@ -258,10 +259,10 @@ public isolated client class Client {
     # + lastName - Last name 
     # + return - A genderized name. 
     remote isolated function gender(string firstName, string lastName) returns FirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/gender/${firstName}/${lastName}`;
+        string resourcePath = string `/api2/json/gender/${firstName}/${lastName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of a name, given a local context (ISO2 country code).
@@ -271,10 +272,10 @@ public isolated client class Client {
     # + countryIso2 - ISO2 country code 
     # + return - A genderized name. 
     remote isolated function genderGeo(string firstName, string lastName, string countryIso2) returns FirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/genderGeo/${firstName}/${lastName}/${countryIso2}`;
+        string resourcePath = string `/api2/json/genderGeo/${firstName}/${lastName}/${countryIso2}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 names, each given a local context (ISO2 country code).
@@ -282,13 +283,13 @@ public isolated client class Client {
     # + payload - A list of names, with country code. 
     # + return - A list of genderized names. 
     remote isolated function genderGeoBatch(BatchFirstLastNameGeoIn payload) returns BatchFirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/genderGeoBatch`;
+        string resourcePath = string `/api2/json/genderGeoBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 names, detecting automatically the cultural context.
@@ -296,13 +297,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of genderized names. 
     remote isolated function genderBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/genderBatch`;
+        string resourcePath = string `/api2/json/genderBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of a full name, given a local context (ISO2 country code).
@@ -311,10 +312,10 @@ public isolated client class Client {
     # + countryIso2 - ISO2 country code 
     # + return - A genderized name. 
     remote isolated function genderFullGeo(string fullName, string countryIso2) returns PersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderFullGeo/${fullName}/${countryIso2}`;
+        string resourcePath = string `/api2/json/genderFullGeo/${fullName}/${countryIso2}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of a full name, ex. John H. Smith
@@ -322,10 +323,10 @@ public isolated client class Client {
     # + fullName - Full name 
     # + return - A genderized name. 
     remote isolated function genderFull(string fullName) returns PersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderFull/${fullName}`;
+        string resourcePath = string `/api2/json/genderFull/${fullName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 full names, detecting automatically the cultural context.
@@ -333,13 +334,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of genderized names. 
     remote isolated function genderFullBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderFullBatch`;
+        string resourcePath = string `/api2/json/genderFullBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 full names, with a given cultural context (country ISO2 code).
@@ -347,13 +348,13 @@ public isolated client class Client {
     # + payload - A list of personal names, with a country ISO2 code 
     # + return - A list of genderized names. 
     remote isolated function genderFullGeoBatch(BatchPersonalNameGeoIn payload) returns BatchPersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderFullGeoBatch`;
+        string resourcePath = string `/api2/json/genderFullGeoBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 10 UNITS PER NAME] Infer the likely country of origin of up to 100 names, detecting automatically the cultural context.
@@ -361,13 +362,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of genderized names. 
     remote isolated function originBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameOriginedOut|error {
-        string  path = string `/api2/json/originBatch`;
+        string resourcePath = string `/api2/json/originBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameOriginedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameOriginedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameOriginedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 10 UNITS PER NAME] Infer the likely country of residence of up to 100 personal full names, or surnames. Assumes names as they are in the country of residence OR the country of origin.
@@ -375,13 +376,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of genderized names. 
     remote isolated function countryBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGeoOut|error {
-        string  path = string `/api2/json/countryBatch`;
+        string resourcePath = string `/api2/json/countryBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameGeoOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameGeoOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameGeoOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 10 UNITS PER NAME] Infer a US resident's likely race/ethnicity according to US Census taxonomy W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino). Optionally add header X-OPTION-USRACEETHNICITY-TAXONOMY: USRACEETHNICITY-6CLASSES for two additional classes, AI_AN (American Indian or Alaskan Native) and PI (Pacific Islander).
@@ -390,10 +391,10 @@ public isolated client class Client {
     # + lastName - Last name 
     # + return - a US resident's likely race/ethnicity : W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usRaceEthnicity(string firstName, string lastName) returns FirstLastNameUSRaceEthnicityOut|error {
-        string  path = string `/api2/json/usRaceEthnicity/${firstName}/${lastName}`;
+        string resourcePath = string `/api2/json/usRaceEthnicity/${firstName}/${lastName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameUSRaceEthnicityOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameUSRaceEthnicityOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameUSRaceEthnicityOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [USES 10 UNITS PER NAME] Infer a US resident's likely race/ethnicity according to US Census taxonomy, using (optional) ZIP5 code info. Output is W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino). Optionally add header X-OPTION-USRACEETHNICITY-TAXONOMY: USRACEETHNICITY-6CLASSES for two additional classes, AI_AN (American Indian or Alaskan Native) and PI (Pacific Islander).
@@ -403,10 +404,10 @@ public isolated client class Client {
     # + zip5Code - 5-digit ZIP Code 
     # + return - a US resident's likely race/ethnicity : W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usRaceEthnicityZIP5(string firstName, string lastName, string zip5Code) returns FirstLastNameUSRaceEthnicityOut|error {
-        string  path = string `/api2/json/usRaceEthnicityZIP5/${firstName}/${lastName}/${zip5Code}`;
+        string resourcePath = string `/api2/json/usRaceEthnicityZIP5/${firstName}/${lastName}/${zip5Code}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameUSRaceEthnicityOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameUSRaceEthnicityOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameUSRaceEthnicityOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [USES 10 UNITS PER NAME] Infer up-to 100 US resident's likely race/ethnicity according to US Census taxonomy. Output is W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino). Optionally add header X-OPTION-USRACEETHNICITY-TAXONOMY: USRACEETHNICITY-6CLASSES for two additional classes, AI_AN (American Indian or Alaskan Native) and PI (Pacific Islander).
@@ -414,13 +415,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of US resident's likely race/ethnicity. W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usRaceEthnicityBatch(BatchFirstLastNameGeoIn payload) returns BatchFirstLastNameUSRaceEthnicityOut|error {
-        string  path = string `/api2/json/usRaceEthnicityBatch`;
+        string resourcePath = string `/api2/json/usRaceEthnicityBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameUSRaceEthnicityOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameUSRaceEthnicityOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameUSRaceEthnicityOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 10 UNITS PER NAME] Infer up-to 100 US resident's likely race/ethnicity according to US Census taxonomy, with (optional) ZIP code. Output is W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino). Optionally add header X-OPTION-USRACEETHNICITY-TAXONOMY: USRACEETHNICITY-6CLASSES for two additional classes, AI_AN (American Indian or Alaskan Native) and PI (Pacific Islander).
@@ -428,13 +429,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of US resident's likely race/ethnicity. W_NL (white, non latino), HL (hispano latino),  A (asian, non latino), B_NL (black, non latino), AI_AN (American Indian or Alaskan Native*) and PI (Pacific Islander*). *optionally 
     remote isolated function usZipRaceEthnicityBatch(BatchFirstLastNameGeoZippedIn payload) returns BatchFirstLastNameUSRaceEthnicityOut|error {
-        string  path = string `/api2/json/usZipRaceEthnicityBatch`;
+        string resourcePath = string `/api2/json/usZipRaceEthnicityBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameUSRaceEthnicityOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameUSRaceEthnicityOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameUSRaceEthnicityOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 20 UNITS PER NAME] Infer the likely ethnicity/diaspora of a personal name, given a country of residence ISO2 code (ex. US, CA, AU, NZ etc.)
@@ -444,10 +445,10 @@ public isolated client class Client {
     # + lastName - Last name 
     # + return - A diaspora / ethnicity for given name and geography. 
     remote isolated function diaspora(string countryIso2, string firstName, string lastName) returns FirstLastNameDiasporaedOut|error {
-        string  path = string `/api2/json/diaspora/${countryIso2}/${firstName}/${lastName}`;
+        string resourcePath = string `/api2/json/diaspora/${countryIso2}/${firstName}/${lastName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameDiasporaedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameDiasporaedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameDiasporaedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [USES 20 UNITS PER NAME] Infer the likely ethnicity/diaspora of up to 100 personal names, given a country of residence ISO2 code (ex. US, CA, AU, NZ etc.)
@@ -455,13 +456,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of diaspora / ethnicity given a name and residency. 
     remote isolated function diasporaBatch(BatchFirstLastNameGeoIn payload) returns BatchFirstLastNameDiasporaedOut|error {
-        string  path = string `/api2/json/diasporaBatch`;
+        string resourcePath = string `/api2/json/diasporaBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameDiasporaedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameDiasporaedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameDiasporaedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. John Smith or SMITH, John or SMITH; John. For better accuracy, provide a geographic context.
@@ -470,10 +471,10 @@ public isolated client class Client {
     # + countryIso2 - ISO2 country code 
     # + return - A origined name. 
     remote isolated function parseNameGeo(string nameFull, string countryIso2) returns PersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseName/${nameFull}/${countryIso2}`;
+        string resourcePath = string `/api2/json/parseName/${nameFull}/${countryIso2}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameParsedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. John Smith or SMITH, John or SMITH; John.
@@ -481,13 +482,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of parsed names. 
     remote isolated function parseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseNameBatch`;
+        string resourcePath = string `/api2/json/parseNameBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameParsedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameParsedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameParsedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. John Smith or SMITH, John or SMITH; John. Giving a local context improves precision. 
@@ -495,13 +496,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of parsed names. 
     remote isolated function parseNameGeoBatch(BatchPersonalNameGeoIn payload) returns BatchPersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseNameGeoBatch`;
+        string resourcePath = string `/api2/json/parseNameGeoBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameParsedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameParsedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameParsedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. 王晓明 -> 王(surname) 晓明(given name)
@@ -509,10 +510,10 @@ public isolated client class Client {
     # + chineseName - Chinese name 
     # + return - A origined name. 
     remote isolated function parseChineseName(string chineseName) returns PersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseChineseName/${chineseName}`;
+        string resourcePath = string `/api2/json/parseChineseName/${chineseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameParsedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. 王晓明 -> 王(surname) 晓明(given name).
@@ -520,13 +521,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of parsed names. 
     remote isolated function parseChineseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseChineseNameBatch`;
+        string resourcePath = string `/api2/json/parseChineseNameBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameParsedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameParsedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameParsedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Romanize the Chinese name to Pinyin, ex. 王晓明 -> Wang (surname) Xiaoming (given name)
@@ -534,10 +535,10 @@ public isolated client class Client {
     # + chineseName - Chinese name 
     # + return - A pinyin name. 
     remote isolated function pinyinChineseName(string chineseName) returns PersonalNameParsedOut|error {
-        string  path = string `/api2/json/pinyinChineseName/${chineseName}`;
+        string resourcePath = string `/api2/json/pinyinChineseName/${chineseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameParsedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Romanize a list of Chinese name to Pinyin, ex. 王晓明 -> Wang (surname) Xiaoming (given name).
@@ -545,13 +546,13 @@ public isolated client class Client {
     # + payload - A list of Chinese names 
     # + return - A list of Pinyin names. 
     remote isolated function pinyinChineseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
-        string  path = string `/api2/json/pinyinChineseNameBatch`;
+        string resourcePath = string `/api2/json/pinyinChineseNameBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameParsedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameParsedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameParsedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Return a score for matching Chinese name ex. 王晓明 with a romanized name ex. Wang Xiaoming
@@ -561,10 +562,10 @@ public isolated client class Client {
     # + chineseName - Chinese name 
     # + return - A romanized name. 
     remote isolated function chineseNameMatch(string chineseSurnameLatin, string chineseGivenNameLatin, string chineseName) returns NameMatchedOut|error {
-        string  path = string `/api2/json/chineseNameMatch/${chineseSurnameLatin}/${chineseGivenNameLatin}/${chineseName}`;
+        string resourcePath = string `/api2/json/chineseNameMatch/${chineseSurnameLatin}/${chineseGivenNameLatin}/${chineseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NameMatchedOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NameMatchedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Identify Chinese name candidates, based on the romanized name (firstName = chineseGivenName; lastName=chineseSurname), ex. Wang Xiaoming
@@ -572,13 +573,13 @@ public isolated client class Client {
     # + payload - A list of personal Chinese names in LATIN, firstName = chineseGivenName; lastName=chineseSurname 
     # + return - A list of genderized names. 
     remote isolated function chineseNameMatchBatch(BatchMatchPersonalFirstLastNameIn payload) returns BatchNameMatchedOut|error {
-        string  path = string `/api2/json/chineseNameMatchBatch`;
+        string resourcePath = string `/api2/json/chineseNameMatchBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchNameMatchedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchNameMatchedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchNameMatchedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of a Chinese name in LATIN (Pinyin).
@@ -587,10 +588,10 @@ public isolated client class Client {
     # + chineseGivenNameLatin - Chinese given name in latin 
     # + return - A genderized name. 
     remote isolated function genderChineseNamePinyin(string chineseSurnameLatin, string chineseGivenNameLatin) returns FirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/genderChineseNamePinyin/${chineseSurnameLatin}/${chineseGivenNameLatin}`;
+        string resourcePath = string `/api2/json/genderChineseNamePinyin/${chineseSurnameLatin}/${chineseGivenNameLatin}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 Chinese names in LATIN (Pinyin).
@@ -598,13 +599,13 @@ public isolated client class Client {
     # + payload - A list of names, with country code. 
     # + return - A list of genderized names. 
     remote isolated function genderChineseNamePinyinBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/genderChineseNamePinyinBatch`;
+        string resourcePath = string `/api2/json/genderChineseNamePinyinBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of a Chinese full name ex. 王晓明
@@ -612,10 +613,10 @@ public isolated client class Client {
     # + chineseName - Chinese name 
     # + return - A genderized name. 
     remote isolated function genderChineseName(string chineseName) returns PersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderChineseName/${chineseName}`;
+        string resourcePath = string `/api2/json/genderChineseName/${chineseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 full names ex. 王晓明
@@ -623,13 +624,13 @@ public isolated client class Client {
     # + payload - A list of personal names, with a country ISO2 code 
     # + return - A list of genderized names. 
     remote isolated function genderChineseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderChineseNameBatch`;
+        string resourcePath = string `/api2/json/genderChineseNameBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Identify Chinese name candidates, based on the romanized name ex. Wang Xiaoming
@@ -638,10 +639,10 @@ public isolated client class Client {
     # + chineseGivenNameLatin - Chinese given name in latin 
     # + return - A romanized name. 
     remote isolated function chineseNameCandidates(string chineseSurnameLatin, string chineseGivenNameLatin) returns NameMatchCandidatesOut|error {
-        string  path = string `/api2/json/chineseNameCandidates/${chineseSurnameLatin}/${chineseGivenNameLatin}`;
+        string resourcePath = string `/api2/json/chineseNameCandidates/${chineseSurnameLatin}/${chineseGivenNameLatin}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NameMatchCandidatesOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Identify Chinese name candidates, based on the romanized name (firstName = chineseGivenName; lastName=chineseSurname), ex. Wang Xiaoming
@@ -649,13 +650,13 @@ public isolated client class Client {
     # + payload - A list of personal Chinese names in LATIN, firstName = chineseGivenName; lastName=chineseSurname 
     # + return - A list of genderized names. 
     remote isolated function chineseNameCandidatesBatch(BatchFirstLastNameIn payload) returns BatchNameMatchCandidatesOut|error {
-        string  path = string `/api2/json/chineseNameCandidatesBatch`;
+        string resourcePath = string `/api2/json/chineseNameCandidatesBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchNameMatchCandidatesOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchNameMatchCandidatesOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchNameMatchCandidatesOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Identify Chinese name candidates, based on the romanized name ex. Wang Xiaoming - having a known gender ('male' or 'female')
@@ -665,10 +666,10 @@ public isolated client class Client {
     # + knownGender - Known gender 
     # + return - A romanized name. 
     remote isolated function chineseNameGenderCandidates(string chineseSurnameLatin, string chineseGivenNameLatin, string knownGender) returns NameMatchCandidatesOut|error {
-        string  path = string `/api2/json/chineseNameGenderCandidates/${chineseSurnameLatin}/${chineseGivenNameLatin}/${knownGender}`;
+        string resourcePath = string `/api2/json/chineseNameGenderCandidates/${chineseSurnameLatin}/${chineseGivenNameLatin}/${knownGender}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NameMatchCandidatesOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Identify Chinese name candidates, based on the romanized name (firstName = chineseGivenName; lastName=chineseSurname) ex. Wang Xiaoming.
@@ -676,13 +677,13 @@ public isolated client class Client {
     # + payload - A list of personal Chinese names in LATIN, firstName = chineseGivenName; lastName=chineseSurname 
     # + return - A list of genderized names. 
     remote isolated function chineseNameCandidatesGenderBatch(BatchFirstLastNameGenderIn payload) returns BatchNameMatchCandidatesOut|error {
-        string  path = string `/api2/json/chineseNameCandidatesGenderBatch`;
+        string resourcePath = string `/api2/json/chineseNameCandidatesGenderBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchNameMatchCandidatesOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchNameMatchCandidatesOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchNameMatchCandidatesOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. 山本 早苗 or Yamamoto Sanae
@@ -690,10 +691,10 @@ public isolated client class Client {
     # + japaneseName - Japanese name 
     # + return - A origined name. 
     remote isolated function parseJapaneseName(string japaneseName) returns PersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseJapaneseName/${japaneseName}`;
+        string resourcePath = string `/api2/json/parseJapaneseName/${japaneseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameParsedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. 山本 早苗 or Yamamoto Sanae 
@@ -701,13 +702,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of parsed names. 
     remote isolated function parseJapaneseNameBatch(BatchPersonalNameIn payload) returns BatchPersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseJapaneseNameBatch`;
+        string resourcePath = string `/api2/json/parseJapaneseNameBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameParsedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameParsedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameParsedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Identify japanese name candidates in KANJI, based on the romanized name ex. Yamamoto Sanae - and a known gender.
@@ -717,10 +718,10 @@ public isolated client class Client {
     # + knownGender - Known gender 
     # + return - A romanized name. 
     remote isolated function japaneseNameKanjiCandidates(string japaneseSurnameLatin, string japaneseGivenNameLatin, string knownGender) returns NameMatchCandidatesOut|error {
-        string  path = string `/api2/json/japaneseNameKanjiCandidates/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${knownGender}`;
+        string resourcePath = string `/api2/json/japaneseNameKanjiCandidates/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${knownGender}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NameMatchCandidatesOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Identify japanese name candidates in KANJI, based on the romanized name ex. Yamamoto Sanae
@@ -729,10 +730,10 @@ public isolated client class Client {
     # + japaneseGivenNameLatin - Japanese given name in latin 
     # + return - A romanized name. 
     remote isolated function japanesenamekanjicandidates1(string japaneseSurnameLatin, string japaneseGivenNameLatin) returns NameMatchCandidatesOut|error {
-        string  path = string `/api2/json/japaneseNameKanjiCandidates/${japaneseSurnameLatin}/${japaneseGivenNameLatin}`;
+        string resourcePath = string `/api2/json/japaneseNameKanjiCandidates/${japaneseSurnameLatin}/${japaneseGivenNameLatin}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NameMatchCandidatesOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Romanize japanese name, based on the name in Kanji.
@@ -741,10 +742,10 @@ public isolated client class Client {
     # + japaneseGivenNameKanji - Japanese given name in kanji 
     # + return - A romanized name. 
     remote isolated function japaneseNameLatinCandidates(string japaneseSurnameKanji, string japaneseGivenNameKanji) returns NameMatchCandidatesOut|error {
-        string  path = string `/api2/json/japaneseNameLatinCandidates/${japaneseSurnameKanji}/${japaneseGivenNameKanji}`;
+        string resourcePath = string `/api2/json/japaneseNameLatinCandidates/${japaneseSurnameKanji}/${japaneseGivenNameKanji}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NameMatchCandidatesOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchCandidatesOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NameMatchCandidatesOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Identify japanese name candidates in KANJI, based on the romanized name (firstName = japaneseGivenName; lastName=japaneseSurname), ex. Yamamoto Sanae
@@ -752,13 +753,13 @@ public isolated client class Client {
     # + payload - A list of personal japanese names in LATIN, firstName = japaneseGivenName; lastName=japaneseSurname 
     # + return - A list of genderized names. 
     remote isolated function japaneseNameKanjiCandidatesBatch(BatchFirstLastNameIn payload) returns BatchNameMatchCandidatesOut|error {
-        string  path = string `/api2/json/japaneseNameKanjiCandidatesBatch`;
+        string resourcePath = string `/api2/json/japaneseNameKanjiCandidatesBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchNameMatchCandidatesOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchNameMatchCandidatesOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchNameMatchCandidatesOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Identify japanese name candidates in KANJI, based on the romanized name (firstName = japaneseGivenName; lastName=japaneseSurname) with KNOWN gender, ex. Yamamoto Sanae
@@ -766,13 +767,13 @@ public isolated client class Client {
     # + payload - A list of personal japanese names in LATIN, firstName = japaneseGivenName; lastName=japaneseSurname and known gender 
     # + return - A list of genderized names. 
     remote isolated function japaneseNameGenderKanjiCandidatesBatch(BatchFirstLastNameGenderIn payload) returns BatchNameMatchCandidatesOut|error {
-        string  path = string `/api2/json/japaneseNameGenderKanjiCandidatesBatch`;
+        string resourcePath = string `/api2/json/japaneseNameGenderKanjiCandidatesBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchNameMatchCandidatesOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchNameMatchCandidatesOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchNameMatchCandidatesOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Romanize japanese names, based on the name in KANJI
@@ -780,13 +781,13 @@ public isolated client class Client {
     # + payload - A list of personal japanese names in KANJI, firstName = japaneseGivenName; lastName=japaneseSurname 
     # + return - A list of genderized names. 
     remote isolated function japaneseNameLatinCandidatesBatch(BatchFirstLastNameIn payload) returns BatchNameMatchCandidatesOut|error {
-        string  path = string `/api2/json/japaneseNameLatinCandidatesBatch`;
+        string resourcePath = string `/api2/json/japaneseNameLatinCandidatesBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchNameMatchCandidatesOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchNameMatchCandidatesOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchNameMatchCandidatesOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Return a score for matching Japanese name in KANJI ex. 山本 早苗 with a romanized name ex. Yamamoto Sanae
@@ -796,10 +797,10 @@ public isolated client class Client {
     # + japaneseName - Japanese name 
     # + return - A romanized name. 
     remote isolated function japaneseNameMatch(string japaneseSurnameLatin, string japaneseGivenNameLatin, string japaneseName) returns NameMatchedOut|error {
-        string  path = string `/api2/json/japaneseNameMatch/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${japaneseName}`;
+        string resourcePath = string `/api2/json/japaneseNameMatch/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${japaneseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NameMatchedOut response = check self.clientEp-> get(path, accHeaders, targetType = NameMatchedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NameMatchedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [CREDITS 1 UNIT] Feedback loop to better perform matching Japanese name in KANJI ex. 山本 早苗 with a romanized name ex. Yamamoto Sanae
@@ -809,10 +810,10 @@ public isolated client class Client {
     # + japaneseName - Japanese name 
     # + return - A romanized name. 
     remote isolated function japaneseNameMatchFeedbackLoop(string japaneseSurnameLatin, string japaneseGivenNameLatin, string japaneseName) returns FeedbackLoopOut|error {
-        string  path = string `/api2/json/japaneseNameMatchFeedbackLoop/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${japaneseName}`;
+        string resourcePath = string `/api2/json/japaneseNameMatchFeedbackLoop/${japaneseSurnameLatin}/${japaneseGivenNameLatin}/${japaneseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FeedbackLoopOut response = check self.clientEp-> get(path, accHeaders, targetType = FeedbackLoopOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FeedbackLoopOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Return a score for matching a list of Japanese names in KANJI ex. 山本 早苗 with romanized names ex. Yamamoto Sanae
@@ -820,13 +821,13 @@ public isolated client class Client {
     # + payload - A list of personal Japanese names in LATIN, firstName = japaneseGivenName; lastName=japaneseSurname 
     # + return - A list of matched names. 
     remote isolated function japaneseNameMatchBatch(BatchMatchPersonalFirstLastNameIn payload) returns BatchNameMatchedOut|error {
-        string  path = string `/api2/json/japaneseNameMatchBatch`;
+        string resourcePath = string `/api2/json/japaneseNameMatchBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchNameMatchedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchNameMatchedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchNameMatchedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of a Japanese name in LATIN (Pinyin).
@@ -835,10 +836,10 @@ public isolated client class Client {
     # + japaneseGivenName - Japanese given name 
     # + return - A genderized name. 
     remote isolated function genderJapaneseNamePinyin(string japaneseSurname, string japaneseGivenName) returns FirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/genderJapaneseName/${japaneseSurname}/${japaneseGivenName}`;
+        string resourcePath = string `/api2/json/genderJapaneseName/${japaneseSurname}/${japaneseGivenName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 Japanese names in LATIN (Pinyin).
@@ -846,13 +847,13 @@ public isolated client class Client {
     # + payload - A list of names, with country code. 
     # + return - A list of genderized names. 
     remote isolated function genderJapaneseNamePinyinBatch(BatchFirstLastNameIn payload) returns BatchFirstLastNameGenderedOut|error {
-        string  path = string `/api2/json/genderJapaneseNameBatch`;
+        string resourcePath = string `/api2/json/genderJapaneseNameBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely gender of a Japanese full name ex. 王晓明
@@ -860,10 +861,10 @@ public isolated client class Client {
     # + japaneseName - Japanese name 
     # + return - A genderized name. 
     remote isolated function genderJapaneseNameFull(string japaneseName) returns PersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderJapaneseNameFull/${japaneseName}`;
+        string resourcePath = string `/api2/json/genderJapaneseNameFull/${japaneseName}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameGenderedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameGenderedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameGenderedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Infer the likely gender of up to 100 full names
@@ -871,13 +872,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of genderized names. 
     remote isolated function genderJapaneseNameFullBatch(BatchPersonalNameIn payload) returns BatchPersonalNameGenderedOut|error {
-        string  path = string `/api2/json/genderJapaneseNameFullBatch`;
+        string resourcePath = string `/api2/json/genderJapaneseNameFullBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchPersonalNameGenderedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchPersonalNameGenderedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchPersonalNameGenderedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 11 UNITS PER NAME] Infer the likely country and phone prefix, given a personal name and formatted / unformatted phone number.
@@ -887,10 +888,10 @@ public isolated client class Client {
     # + phoneNumber - Phone number 
     # + return - A name with country and phone code. 
     remote isolated function phoneCode(string firstName, string lastName, string phoneNumber) returns FirstLastNamePhoneCodedOut|error {
-        string  path = string `/api2/json/phoneCode/${firstName}/${lastName}/${phoneNumber}`;
+        string resourcePath = string `/api2/json/phoneCode/${firstName}/${lastName}/${phoneNumber}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNamePhoneCodedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNamePhoneCodedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNamePhoneCodedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [USES 11 UNITS PER NAME] Infer the likely phone prefix, given a personal name and formatted / unformatted phone number, with a local context (ISO2 country of residence).
@@ -901,10 +902,10 @@ public isolated client class Client {
     # + countryIso2 - ISO2 country code 
     # + return - A name with country and phone code. 
     remote isolated function phoneCodeGeo(string firstName, string lastName, string phoneNumber, string countryIso2) returns FirstLastNamePhoneCodedOut|error {
-        string  path = string `/api2/json/phoneCodeGeo/${firstName}/${lastName}/${phoneNumber}/${countryIso2}`;
+        string resourcePath = string `/api2/json/phoneCodeGeo/${firstName}/${lastName}/${phoneNumber}/${countryIso2}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNamePhoneCodedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNamePhoneCodedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNamePhoneCodedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [CREDITS 1 UNIT] Feedback loop to better infer the likely phone prefix, given a personal name and formatted / unformatted phone number, with a local context (ISO2 country of residence).
@@ -916,10 +917,10 @@ public isolated client class Client {
     # + countryIso2 - ISO2 country code 
     # + return - A name with country and phone code. 
     remote isolated function phoneCodeGeoFeedbackLoop(string firstName, string lastName, string phoneNumber, string phoneNumberE164, string countryIso2) returns FirstLastNamePhoneCodedOut|error {
-        string  path = string `/api2/json/phoneCodeGeoFeedbackLoop/${firstName}/${lastName}/${phoneNumber}/${phoneNumberE164}/${countryIso2}`;
+        string resourcePath = string `/api2/json/phoneCodeGeoFeedbackLoop/${firstName}/${lastName}/${phoneNumber}/${phoneNumberE164}/${countryIso2}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FirstLastNamePhoneCodedOut response = check self.clientEp-> get(path, accHeaders, targetType = FirstLastNamePhoneCodedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FirstLastNamePhoneCodedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [USES 11 UNITS PER NAME] Infer the likely country and phone prefix, of up to 100 personal names, detecting automatically the local context given a name and formatted / unformatted phone number.
@@ -927,13 +928,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of genderized names. 
     remote isolated function phoneCodeBatch(BatchFirstLastNamePhoneNumberIn payload) returns BatchFirstLastNamePhoneCodedOut|error {
-        string  path = string `/api2/json/phoneCodeBatch`;
+        string resourcePath = string `/api2/json/phoneCodeBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNamePhoneCodedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNamePhoneCodedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNamePhoneCodedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [USES 11 UNITS PER NAME] Infer the likely country and phone prefix, of up to 100 personal names, with a local context (ISO2 country of residence).
@@ -941,13 +942,13 @@ public isolated client class Client {
     # + payload - A list of personal names 
     # + return - A list of genderized names. 
     remote isolated function phoneCodeGeoBatch(BatchFirstLastNamePhoneNumberGeoIn payload) returns BatchFirstLastNamePhoneCodedOut|error {
-        string  path = string `/api2/json/phoneCodeGeoBatch`;
+        string resourcePath = string `/api2/json/phoneCodeGeoBatch`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchFirstLastNamePhoneCodedOut response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BatchFirstLastNamePhoneCodedOut);
+        request.setPayload(jsonBody, "application/json");
+        BatchFirstLastNamePhoneCodedOut response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Infer the likely first/last name structure of a name, ex. John Smith or SMITH, John or SMITH; John. 
@@ -955,10 +956,10 @@ public isolated client class Client {
     # + nameFull - Full name to infer 
     # + return - A origined name. 
     remote isolated function parseName(string nameFull) returns PersonalNameParsedOut|error {
-        string  path = string `/api2/json/parseName/${nameFull}`;
+        string resourcePath = string `/api2/json/parseName/${nameFull}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PersonalNameParsedOut response = check self.clientEp-> get(path, accHeaders, targetType = PersonalNameParsedOut);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PersonalNameParsedOut response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

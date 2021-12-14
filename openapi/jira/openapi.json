@@ -3,7 +3,7 @@
     "info": {
       "x-ballerina-display" : {
          "label" : "Jira",
-         "iconPath" : "resources/jira.svg"
+         "iconPath" : "icon.png"
        },
        "title": "The Jira Cloud platform REST API",
        "description": "This is a generated connector for [Jira Cloud platform API](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. \nJira Cloud platform API provide capability to access Jira operations related to projects, issues and user related operations.",
@@ -1898,24 +1898,6 @@
                   }
                }
             ],
-            "requestBody": {
-               "description": "The request payload to bulk delete issue property.",
-               "content": {
-                  "application/json": {
-                     "schema": {
-                        "$ref": "#/components/schemas/IssueFilterForBulkPropertyDelete"
-                     },
-                     "example": {
-                        "entityIds": [
-                           10100,
-                           100010
-                        ],
-                        "currentValue": "deprecated value"
-                     }
-                  }
-               },
-               "required": true
-            },
             "responses": {
                "303": {
                   "description": "Returned if the request is successful."

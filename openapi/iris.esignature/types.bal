@@ -14,8 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type BriefApplicationInfoArr BriefApplicationInfo[];
-
 public type Meta record {
     # The current page number of a data set
     int current_page?;
@@ -39,7 +37,7 @@ public type ApplicationidGenerateBody record {
 };
 
 public type ApplicationidSendBody record {
-    Apiv1leadsleadidsignaturesapplicationidsendRecipients[] recipients?;
+    Apiv1leadsleadidsignaturesapplicationidsendRecipients[5] recipients?;
     # Expire the previously generated application
     boolean expire?;
 };

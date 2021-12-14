@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.optimizely.com/v2") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List Attributes
     #
@@ -73,10 +74,10 @@ public isolated client class Client {
     # + projectId - The ID of the Project you would like to list all Attributes for 
     # + return - Return all Attributes in the specified Project 
     remote isolated function listAttributes(int projectId, int perPage = 25, int page = 1) returns Attribute[]|error {
-        string  path = string `/attributes`;
+        string resourcePath = string `/attributes`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Attribute[] response = check self.clientEp-> get(path, targetType = AttributeArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Attribute[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an Attribute
@@ -84,11 +85,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a new Attribute 
     # + return - Successfully created the Attribute 
     remote isolated function createAttribute(Attribute payload) returns Attribute|error {
-        string  path = string `/attributes`;
+        string resourcePath = string `/attributes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attribute response = check self.clientEp->post(path, request, targetType=Attribute);
+        request.setPayload(jsonBody, "application/json");
+        Attribute response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read an Attribute
@@ -96,8 +97,8 @@ public isolated client class Client {
     # + attributeId - The Attribute ID of the Attribute you want to get 
     # + return - Successfully retrieved Attribute 
     remote isolated function getAttribute(int attributeId) returns Attribute|error {
-        string  path = string `/attributes/${attributeId}`;
-        Attribute response = check self.clientEp-> get(path, targetType = Attribute);
+        string resourcePath = string `/attributes/${attributeId}`;
+        Attribute response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete an Attribute
@@ -105,8 +106,8 @@ public isolated client class Client {
     # + attributeId - The ID of the Attribute you'd like to delete 
     # + return - Successfully deleted Attribute 
     remote isolated function deleteAttribute(int attributeId) returns http:Response|error {
-        string  path = string `/attributes/${attributeId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/attributes/${attributeId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update an Attribute
@@ -115,11 +116,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Attribute 
     # + return - Successfully updated the Attribute 
     remote isolated function updateAttribute(int attributeId, AttributeUpdate payload) returns Attribute|error {
-        string  path = string `/attributes/${attributeId}`;
+        string resourcePath = string `/attributes/${attributeId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attribute response = check self.clientEp->patch(path, request, targetType=Attribute);
+        request.setPayload(jsonBody, "application/json");
+        Attribute response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # List Audiences
@@ -129,10 +130,10 @@ public isolated client class Client {
     # + projectId - The Project ID of the Project you would like to list all Audiences for 
     # + return - Return all Audiences 
     remote isolated function listAudiences(int projectId, int perPage = 25, int page = 1) returns Audience[]|error {
-        string  path = string `/audiences`;
+        string resourcePath = string `/audiences`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Audience[] response = check self.clientEp-> get(path, targetType = AudienceArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Audience[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an Audience
@@ -140,11 +141,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create an Audience 
     # + return - Return the created Audience 
     remote isolated function createAudience(Audience payload) returns Audience|error {
-        string  path = string `/audiences`;
+        string resourcePath = string `/audiences`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Audience response = check self.clientEp->post(path, request, targetType=Audience);
+        request.setPayload(jsonBody, "application/json");
+        Audience response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read an Audience
@@ -152,8 +153,8 @@ public isolated client class Client {
     # + audienceId - The Audience ID of the Audience you want to get 
     # + return - Return Audience info 
     remote isolated function getAudience(int audienceId) returns Audience|error {
-        string  path = string `/audiences/${audienceId}`;
-        Audience response = check self.clientEp-> get(path, targetType = Audience);
+        string resourcePath = string `/audiences/${audienceId}`;
+        Audience response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an Audience
@@ -162,11 +163,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Audience 
     # + return - Return the created Audience 
     remote isolated function updateAudience(int audienceId, AudienceUpdate payload) returns Audience|error {
-        string  path = string `/audiences/${audienceId}`;
+        string resourcePath = string `/audiences/${audienceId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Audience response = check self.clientEp->patch(path, request, targetType=Audience);
+        request.setPayload(jsonBody, "application/json");
+        Audience response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Impressions Usage
@@ -182,11 +183,11 @@ public isolated client class Client {
     # + 'order - The property to sort by. 
     # + return - Return Impression Usage info for account 
     remote isolated function getImpressionsUsageRequest(int accountId, string usageDateFrom, string usageDateTo, int perPage = 25, int page = 1, string[] platforms = ["edge","fullstack","web"], string? query = (), string sort = "impression_count", string 'order = "desc") returns ImpressionsUsage[]|error {
-        string  path = string `/billing/usage/${accountId}`;
+        string resourcePath = string `/billing/usage/${accountId}`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "usage_date_from": usageDateFrom, "usage_date_to": usageDateTo, "platforms": platforms, "query": query, "sort": sort, "order": 'order};
         map<Encoding> queryParamEncoding = {"platforms": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        ImpressionsUsage[] response = check self.clientEp-> get(path, targetType = ImpressionsUsageArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ImpressionsUsage[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Impressions Usage Summary
@@ -194,8 +195,8 @@ public isolated client class Client {
     # + accountId - The account ID of the customer 
     # + return - Return Impression Usage Summary for account 
     remote isolated function getImpressionsUsageSummaryRequest(int accountId) returns ImpressionsUsageSummary|error {
-        string  path = string `/billing/usage/${accountId}/summary`;
-        ImpressionsUsageSummary response = check self.clientEp-> get(path, targetType = ImpressionsUsageSummary);
+        string resourcePath = string `/billing/usage/${accountId}/summary`;
+        ImpressionsUsageSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List Campaigns
@@ -205,10 +206,10 @@ public isolated client class Client {
     # + projectId - The Project ID of the Project you would like to list all Campaigns for 
     # + return - Return all Campaigns 
     remote isolated function listCampaigns(int projectId, int perPage = 25, int page = 1) returns Campaign[]|error {
-        string  path = string `/campaigns`;
+        string resourcePath = string `/campaigns`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Campaign[] response = check self.clientEp-> get(path, targetType = CampaignArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Campaign[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a Campaign
@@ -217,13 +218,13 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Project 
     # + return - Return the created Campaign 
     remote isolated function createCampaign(Campaign payload, string? action = ()) returns Campaign|error {
-        string  path = string `/campaigns`;
+        string resourcePath = string `/campaigns`;
         map<anydata> queryParam = {"action": action};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Campaign response = check self.clientEp->post(path, request, targetType=Campaign);
+        request.setPayload(jsonBody, "application/json");
+        Campaign response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a Campaign
@@ -231,8 +232,8 @@ public isolated client class Client {
     # + campaignId - The Campaign ID of the Campaign you want to get 
     # + return - Return Campaign info 
     remote isolated function getCampaign(int campaignId) returns Campaign|error {
-        string  path = string `/campaigns/${campaignId}`;
-        Campaign response = check self.clientEp-> get(path, targetType = Campaign);
+        string resourcePath = string `/campaigns/${campaignId}`;
+        Campaign response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a Campaign
@@ -240,8 +241,8 @@ public isolated client class Client {
     # + campaignId - The Campaign ID of the Campaign you want to delete 
     # + return - Deleted Campaign successfully 
     remote isolated function deleteCampaign(int campaignId) returns http:Response|error {
-        string  path = string `/campaigns/${campaignId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/campaigns/${campaignId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a Campaign
@@ -251,13 +252,13 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Campaign 
     # + return - Return the updated Campaign 
     remote isolated function updateCampaign(int campaignId, CampaignUpdate payload, string? action = ()) returns Campaign|error {
-        string  path = string `/campaigns/${campaignId}`;
+        string resourcePath = string `/campaigns/${campaignId}`;
         map<anydata> queryParam = {"action": action};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Campaign response = check self.clientEp->patch(path, request, targetType=Campaign);
+        request.setPayload(jsonBody, "application/json");
+        Campaign response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Campaign results
@@ -272,11 +273,11 @@ public isolated client class Client {
     # + attributeValue - UTF-8 encoded value correlating to attribute_id. If present, the attribute_id parameter must also be present. This parameter also requires attribute_id to be set, and cannot be sent with any other segmentation parameters, i.e. any parameters in [browser, device, source]. 
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - Return Campaign results 
-    remote isolated function getCampaignResults(int campaignId, string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns CampaignResults|error {
-        string  path = string `/campaigns/${campaignId}/results`;
+    remote isolated function getCampaignResults(int campaignId, string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns CampaignResults|error? {
+        string resourcePath = string `/campaigns/${campaignId}/results`;
         map<anydata> queryParam = {"start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
-        path = path + check getPathForQueryParam(queryParam);
-        CampaignResults response = check self.clientEp-> get(path, targetType = CampaignResults);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CampaignResults? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve changes for a project.
@@ -292,11 +293,11 @@ public isolated client class Client {
     # + page - Optional pagination argument that specifies the page to return. If you have 140 objects and you choose to return 100 objects per page you will be able to access the last 40 objects on page 2. The default value is 1. 
     # + return - Returns changes. 
     remote isolated function listChangeHistory(int projectId, int[]? id = (), string? startTime = (), string? endTime = (), string[]? user = (), string[]? entityType = (), string[]? entity = (), int perPage = 25, int page = 1) returns ChangeHistoryChange[]|error {
-        string  path = string `/changes`;
+        string resourcePath = string `/changes`;
         map<anydata> queryParam = {"project_id": projectId, "id": id, "start_time": startTime, "end_time": endTime, "user": user, "entity_type": entityType, "entity": entity, "per_page": perPage, "page": page};
         map<Encoding> queryParamEncoding = {"id": {style: FORM, explode: true}, "user": {style: FORM, explode: true}, "entity_type": {style: FORM, explode: true}, "entity": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        ChangeHistoryChange[] response = check self.clientEp-> get(path, targetType = ChangeHistoryChangeArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ChangeHistoryChange[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Environments by Project
@@ -306,10 +307,10 @@ public isolated client class Client {
     # + projectId - The ID of the project for which you would like to get Environments 
     # + return - Return all Environments in a specified Project 
     remote isolated function listEnvironments(int projectId, int perPage = 25, int page = 1) returns Environment[]|error {
-        string  path = string `/environments`;
+        string resourcePath = string `/environments`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Environment[] response = check self.clientEp-> get(path, targetType = EnvironmentArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Environment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an Environment
@@ -317,11 +318,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create an Environment 
     # + return - Return the created Environment 
     remote isolated function createEnvironment(Environment payload) returns Environment|error {
-        string  path = string `/environments`;
+        string resourcePath = string `/environments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Environment response = check self.clientEp->post(path, request, targetType=Environment);
+        request.setPayload(jsonBody, "application/json");
+        Environment response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read an Environment
@@ -329,8 +330,8 @@ public isolated client class Client {
     # + environmentId - The unique identifier for the Environment 
     # + return - Successfully retrieved the Environment 
     remote isolated function getEnvironment(int environmentId) returns Environment|error {
-        string  path = string `/environments/${environmentId}`;
-        Environment response = check self.clientEp-> get(path, targetType = Environment);
+        string resourcePath = string `/environments/${environmentId}`;
+        Environment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Archive an Environment
@@ -338,8 +339,8 @@ public isolated client class Client {
     # + environmentId - The ID of the Environment you'd like to archive 
     # + return - Successfully archived the Environment 
     remote isolated function deleteEnvironment(int environmentId) returns http:Response|error {
-        string  path = string `/environments/${environmentId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/environments/${environmentId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update an Environment
@@ -348,11 +349,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Environment 
     # + return - Successfully updated the Environment 
     remote isolated function updateEnvironment(int environmentId, EnvironmentUpdate payload) returns Environment|error {
-        string  path = string `/environments/${environmentId}`;
+        string resourcePath = string `/environments/${environmentId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Environment response = check self.clientEp->patch(path, request, targetType=Environment);
+        request.setPayload(jsonBody, "application/json");
+        Environment response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Read the datafile of an Environment
@@ -360,8 +361,8 @@ public isolated client class Client {
     # + environmentId - The Environment ID for the datafile you want to get. 
     # + return - Return Datafile for the Environment specified 
     remote isolated function getDatafile(int environmentId) returns json|error {
-        string  path = string `/environments/${environmentId}/datafile`;
-        json response = check self.clientEp-> get(path, targetType = json);
+        string resourcePath = string `/environments/${environmentId}/datafile`;
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List all Events
@@ -372,10 +373,10 @@ public isolated client class Client {
     # + includeClassic - Whether or not to include classic Events in the list of Events. If this parameter is not provided it will default to false 
     # + return - List of Events for the supplied Project ID 
     remote isolated function listEvents(int projectId, int perPage = 25, int page = 1, boolean includeClassic = false) returns Event[]|error {
-        string  path = string `/events`;
+        string resourcePath = string `/events`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId, "include_classic": includeClassic};
-        path = path + check getPathForQueryParam(queryParam);
-        Event[] response = check self.clientEp-> get(path, targetType = EventArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Event[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Event by ID
@@ -384,10 +385,10 @@ public isolated client class Client {
     # + includeClassic - Whether or not to return a classic Event if the specified event_id belongs to a classic Event. If this parameter is not provided it will default to false 
     # + return - Return Event specified by ID 
     remote isolated function getEvent(int eventId, boolean? includeClassic = ()) returns Event|error {
-        string  path = string `/events/${eventId}`;
+        string resourcePath = string `/events/${eventId}`;
         map<anydata> queryParam = {"include_classic": includeClassic};
-        path = path + check getPathForQueryParam(queryParam);
-        Event response = check self.clientEp-> get(path, targetType = Event);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Event response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List Experiments
@@ -399,10 +400,10 @@ public isolated client class Client {
     # + includeClassic - Whether or not to include classic Experiments in the list of Experiments. If this parameter is not provided it will default to false 
     # + return - Return all Experiments 
     remote isolated function listExperiments(int perPage = 25, int page = 1, int? projectId = (), int? campaignId = (), boolean includeClassic = false) returns Experiment[]|error {
-        string  path = string `/experiments`;
+        string resourcePath = string `/experiments`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId, "campaign_id": campaignId, "include_classic": includeClassic};
-        path = path + check getPathForQueryParam(queryParam);
-        Experiment[] response = check self.clientEp-> get(path, targetType = ExperimentArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Experiment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an Experiment
@@ -411,13 +412,13 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create an Experiment 
     # + return - Return the created Experiment 
     remote isolated function createExperiment(Experiment payload, string? action = ()) returns Experiment|error {
-        string  path = string `/experiments`;
+        string resourcePath = string `/experiments`;
         map<anydata> queryParam = {"action": action};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Experiment response = check self.clientEp->post(path, request, targetType=Experiment);
+        request.setPayload(jsonBody, "application/json");
+        Experiment response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read an Experiment
@@ -425,8 +426,8 @@ public isolated client class Client {
     # + experimentId - The Experiment ID of the Experiment you want to get 
     # + return - Return Experiment info 
     remote isolated function getExperiment(int experimentId) returns Experiment|error {
-        string  path = string `/experiments/${experimentId}`;
-        Experiment response = check self.clientEp-> get(path, targetType = Experiment);
+        string resourcePath = string `/experiments/${experimentId}`;
+        Experiment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete an Experiment
@@ -434,8 +435,8 @@ public isolated client class Client {
     # + experimentId - The Experiment ID of the Experiment you want to delete 
     # + return - Deleted Experiment successfully 
     remote isolated function deleteExperiment(int experimentId) returns http:Response|error {
-        string  path = string `/experiments/${experimentId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/experiments/${experimentId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update an Experiment
@@ -445,13 +446,13 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Experiment 
     # + return - Successfully updated Experiment 
     remote isolated function updateExperiment(int experimentId, ExperimentUpdate payload, string? action = ()) returns Experiment|error {
-        string  path = string `/experiments/${experimentId}`;
+        string resourcePath = string `/experiments/${experimentId}`;
         map<anydata> queryParam = {"action": action};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Experiment response = check self.clientEp->patch(path, request, targetType=Experiment);
+        request.setPayload(jsonBody, "application/json");
+        Experiment response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Experiment results
@@ -467,11 +468,11 @@ public isolated client class Client {
     # + attributeValue - UTF-8 encoded value correlating to attribute_id. If present, the attribute_id parameter must also be present. This parameter also requires attribute_id to be set, and cannot be sent with any other segmentation parameters, i.e. any parameters in [browser, device, source]. 
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - Return Experiment results 
-    remote isolated function getExperimentResults(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns ExperimentResults|error {
-        string  path = string `/experiments/${experimentId}/results`;
+    remote isolated function getExperimentResults(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns ExperimentResults|error? {
+        string resourcePath = string `/experiments/${experimentId}/results`;
         map<anydata> queryParam = {"baseline_variation_id": baselineVariationId, "start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
-        path = path + check getPathForQueryParam(queryParam);
-        ExperimentResults response = check self.clientEp-> get(path, targetType = ExperimentResults);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ExperimentResults? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Read all the Sections in a Multivariate Test
@@ -481,10 +482,10 @@ public isolated client class Client {
     # + experimentId - The Experiment ID of the Multivariate Test you want to get Sections for 
     # + return - Return Sections 
     remote isolated function getExperimentSections(int experimentId, int perPage = 25, int page = 1) returns Section[]|error {
-        string  path = string `/experiments/${experimentId}/sections`;
+        string resourcePath = string `/experiments/${experimentId}/sections`;
         map<anydata> queryParam = {"per_page": perPage, "page": page};
-        path = path + check getPathForQueryParam(queryParam);
-        Section[] response = check self.clientEp-> get(path, targetType = SectionArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Section[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new Section in a Multivariate Test
@@ -493,11 +494,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Section 
     # + return - Section Created 
     remote isolated function createSection(int experimentId, Section payload) returns Section|error {
-        string  path = string `/experiments/${experimentId}/sections`;
+        string resourcePath = string `/experiments/${experimentId}/sections`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Section response = check self.clientEp->post(path, request, targetType=Section);
+        request.setPayload(jsonBody, "application/json");
+        Section response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a Section of a Multivariate Test
@@ -506,8 +507,8 @@ public isolated client class Client {
     # + experimentId - The ID of the Multivariate Test the requested Section is part of 
     # + return - Return Section info 
     remote isolated function getSection(int sectionId, int experimentId) returns Section|error {
-        string  path = string `/experiments/${experimentId}/sections/${sectionId}`;
-        Section response = check self.clientEp-> get(path, targetType = Section);
+        string resourcePath = string `/experiments/${experimentId}/sections/${sectionId}`;
+        Section response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Archive a Section by ID
@@ -516,8 +517,8 @@ public isolated client class Client {
     # + experimentId - The ID of the Multivariate Test the requested Section is part of 
     # + return - Successfully archived Section 
     remote isolated function deleteSection(int sectionId, int experimentId) returns http:Response|error {
-        string  path = string `/experiments/${experimentId}/sections/${sectionId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/experiments/${experimentId}/sections/${sectionId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a Section by ID
@@ -527,11 +528,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Section 
     # + return - Successfully updated Section 
     remote isolated function updateSection(int sectionId, int experimentId, SectionUpdate payload) returns Section|error {
-        string  path = string `/experiments/${experimentId}/sections/${sectionId}`;
+        string resourcePath = string `/experiments/${experimentId}/sections/${sectionId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Section response = check self.clientEp->patch(path, request, targetType=Section);
+        request.setPayload(jsonBody, "application/json");
+        Section response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Experiment results time series
@@ -547,11 +548,11 @@ public isolated client class Client {
     # + attributeValue - UTF-8 encoded value correlating to attribute_id. If present, the attribute_id parameter must also be present. This parameter also requires attribute_id to be set, and cannot be sent with any other segmentation parameters, i.e. any parameters in [browser, device, source]. 
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - Return Experiment results time series 
-    remote isolated function getExperimentTimeseries(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns ExperimentTimeseries|error {
-        string  path = string `/experiments/${experimentId}/timeseries`;
+    remote isolated function getExperimentTimeseries(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns ExperimentTimeseries|error? {
+        string resourcePath = string `/experiments/${experimentId}/timeseries`;
         map<anydata> queryParam = {"baseline_variation_id": baselineVariationId, "start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
-        path = path + check getPathForQueryParam(queryParam);
-        ExperimentTimeseries response = check self.clientEp-> get(path, targetType = ExperimentTimeseries);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ExperimentTimeseries? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Campaign results as a CSV
@@ -567,10 +568,10 @@ public isolated client class Client {
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - <p>Return Campaign results in CSV format</p> <p>Name of the columns returned: 'Start Time (UTC)', 'End Time (UTC)', 'Is Baseline Variation', 'Metric Event Name', 'Metric Event ID', 'Metric Numerator Type', 'Metric Denominator Type', 'Metric Winning Direction', 'Numerator Value', 'Denominator Value', 'Metric Value', 'Improvement Status from Baseline', 'Improvement Value from Baseline', 'Statistical Significance', 'Is Improvement Significant', 'Confidence Interval - Low', 'Confidence Interval - High', 'Samples Remaining to Significance'</p> <p>(<a href="https://help.optimizely.com/Export_to_CSV_column_reference_for_campaigns_and_experiments">Column reference guide for CSV export</a>)</p> 
     remote isolated function getCampaignResultsCsv(int campaignId, string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns http:Response|error {
-        string  path = string `/export/campaigns/${campaignId}/results/csv`;
+        string resourcePath = string `/export/campaigns/${campaignId}/results/csv`;
         map<anydata> queryParam = {"start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get aws credentials to access enriched events dataset
@@ -578,10 +579,10 @@ public isolated client class Client {
     # + duration - Duration of the aws credentials token. Please use [H,h] for hours or [M,m] for minutes. Minimum is 15m and Maximum is 1h. Usage 1h. 
     # + return - Return aws credentials 
     remote isolated function getEnrichedEventsExportCredentials(string duration = "1h") returns E3Credentials|error {
-        string  path = string `/export/credentials`;
+        string resourcePath = string `/export/credentials`;
         map<anydata> queryParam = {"duration": duration};
-        path = path + check getPathForQueryParam(queryParam);
-        E3Credentials response = check self.clientEp-> get(path, targetType = E3Credentials);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        E3Credentials response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Experiment results as a CSV
@@ -598,10 +599,10 @@ public isolated client class Client {
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - <p>Return Experiment results in CSV format</p> <p>Name of the columns returned: 'Start time (UTC)', 'End time (UTC)', 'Variation Name', 'Variation ID', 'Is Baseline Variation', 'Metric Event Name', 'Metric Event ID', 'Metric Numerator Type', 'Metric Denominator Type', 'Metric Winning Direction', 'Numerator Value', 'Denominator Value', 'Metric Value', 'Improvement Status from Baseline', 'Improvement Value from Baseline', 'Statistical Significance', 'Is Improvement Significant', 'Confidence Interval - Low', 'Confidence Interval - High', 'Samples Remaining to Significance'</p> <p>(<a href="https://help.optimizely.com/Export_to_CSV_column_reference_for_campaigns_and_experiments">Column reference guide for CSV export</a>)</p> 
     remote isolated function getExperimentResultsCsv(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns http:Response|error {
-        string  path = string `/export/experiments/${experimentId}/results/csv`;
+        string resourcePath = string `/export/experiments/${experimentId}/results/csv`;
         map<anydata> queryParam = {"baseline_variation_id": baselineVariationId, "start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List Extensions
@@ -611,10 +612,10 @@ public isolated client class Client {
     # + projectId - The ID of the project you would like to list all extensions for 
     # + return - Return all extensions in the specified project 
     remote isolated function listExtensions(int projectId, int perPage = 25, int page = 1) returns Extension[]|error {
-        string  path = string `/extensions`;
+        string resourcePath = string `/extensions`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Extension[] response = check self.clientEp-> get(path, targetType = ExtensionArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Extension[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an Extension
@@ -622,11 +623,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create an extension 
     # + return - Return the created extension 
     remote isolated function createExtension(Extension payload) returns Extension|error {
-        string  path = string `/extensions`;
+        string resourcePath = string `/extensions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Extension response = check self.clientEp->post(path, request, targetType=Extension);
+        request.setPayload(jsonBody, "application/json");
+        Extension response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get an Extension
@@ -634,8 +635,8 @@ public isolated client class Client {
     # + extensionId - The ID of the extension you'd like to get 
     # + return - Return extension info 
     remote isolated function getExtension(int extensionId) returns Extension|error {
-        string  path = string `/extensions/${extensionId}`;
-        Extension response = check self.clientEp-> get(path, targetType = Extension);
+        string resourcePath = string `/extensions/${extensionId}`;
+        Extension response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Archive an Extension
@@ -643,8 +644,8 @@ public isolated client class Client {
     # + extensionId - The ID of the extension you'd like to archive 
     # + return - Successfully archived extension 
     remote isolated function deleteExtension(int extensionId) returns http:Response|error {
-        string  path = string `/extensions/${extensionId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/extensions/${extensionId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update an Extension
@@ -653,11 +654,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an extension 
     # + return - Return the updated extension 
     remote isolated function updateExtension(int extensionId, ExtensionUpdate payload) returns Extension|error {
-        string  path = string `/extensions/${extensionId}`;
+        string resourcePath = string `/extensions/${extensionId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Extension response = check self.clientEp->patch(path, request, targetType=Extension);
+        request.setPayload(jsonBody, "application/json");
+        Extension response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Features by Project
@@ -667,10 +668,10 @@ public isolated client class Client {
     # + projectId - The ID of the project for which you would like to get Features 
     # + return - Return all Features in a specified Project 
     remote isolated function listFeatures(int projectId, int perPage = 25, int page = 1) returns Feature[]|error {
-        string  path = string `/features`;
+        string resourcePath = string `/features`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Feature[] response = check self.clientEp-> get(path, targetType = FeatureArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Feature[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a Feature
@@ -678,11 +679,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a new Feature. Note this endpoint is incompatible with Full Stack Targeted Rollouts projects  
     # + return - Successfully created the Feature 
     remote isolated function createFeature(Feature payload) returns Feature|error {
-        string  path = string `/features`;
+        string resourcePath = string `/features`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Feature response = check self.clientEp->post(path, request, targetType=Feature);
+        request.setPayload(jsonBody, "application/json");
+        Feature response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a Feature
@@ -690,8 +691,8 @@ public isolated client class Client {
     # + featureId - The unique identifier for the Feature 
     # + return - Successfully retrieved the Feature 
     remote isolated function getFeature(int featureId) returns Feature|error {
-        string  path = string `/features/${featureId}`;
-        Feature response = check self.clientEp-> get(path, targetType = Feature);
+        string resourcePath = string `/features/${featureId}`;
+        Feature response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Archive a Feature
@@ -699,8 +700,8 @@ public isolated client class Client {
     # + featureId - The ID of the Feature you'd like to archive 
     # + return - Successfully archived the Feature 
     remote isolated function deleteFeature(int featureId) returns http:Response|error {
-        string  path = string `/features/${featureId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/features/${featureId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a Feature
@@ -709,11 +710,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Feature 
     # + return - Successfully updated the Feature 
     remote isolated function updateFeature(int featureId, FeatureUpdate payload) returns Feature|error {
-        string  path = string `/features/${featureId}`;
+        string resourcePath = string `/features/${featureId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Feature response = check self.clientEp->patch(path, request, targetType=Feature);
+        request.setPayload(jsonBody, "application/json");
+        Feature response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # List Exclusion Groups
@@ -723,10 +724,10 @@ public isolated client class Client {
     # + projectId - The ID of the Project you would like to list all Exclusion Groups for 
     # + return - Return all Exclusion Groups in the specified Project 
     remote isolated function listGroups(int projectId, int perPage = 25, int page = 1) returns Group[]|error {
-        string  path = string `/groups`;
+        string resourcePath = string `/groups`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Group[] response = check self.clientEp-> get(path, targetType = GroupArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Group[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an Exclusion Group
@@ -734,11 +735,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create an Exclusion Group 
     # + return - Return the created Exclusion Group 
     remote isolated function createGroup(Group payload) returns Group|error {
-        string  path = string `/groups`;
+        string resourcePath = string `/groups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->post(path, request, targetType=Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get an Exclusion Group
@@ -746,8 +747,8 @@ public isolated client class Client {
     # + groupId - The ID of the Exclusion Group you'd like to get 
     # + return - Return Exclusion Group info 
     remote isolated function getGroup(int groupId) returns Group|error {
-        string  path = string `/groups/${groupId}`;
-        Group response = check self.clientEp-> get(path, targetType = Group);
+        string resourcePath = string `/groups/${groupId}`;
+        Group response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Archive an Exclusion Group
@@ -755,8 +756,8 @@ public isolated client class Client {
     # + groupId - The ID of the Exclusion Group you'd like to archive 
     # + return - Successfully archived Exclusion Group 
     remote isolated function deleteGroup(int groupId) returns http:Response|error {
-        string  path = string `/groups/${groupId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/groups/${groupId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update an Exclusion Group
@@ -765,11 +766,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Exclusion Group 
     # + return - Return the updated Exclusion Group 
     remote isolated function updateGroup(int groupId, GroupUpdate payload) returns Group|error {
-        string  path = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${groupId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->patch(path, request, targetType=Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get list attributes by project
@@ -777,10 +778,10 @@ public isolated client class Client {
     # + projectId - The ID of the project for which you would like to get List Attributes 
     # + return - Return all List Attributes in the specified Project 
     remote isolated function listListAttributes(int projectId) returns ListAttribute[]|error {
-        string  path = string `/list_attributes`;
+        string resourcePath = string `/list_attributes`;
         map<anydata> queryParam = {"project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        ListAttribute[] response = check self.clientEp-> get(path, targetType = ListAttributeArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ListAttribute[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a List Attribute
@@ -788,11 +789,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a new List Attribute 
     # + return - Successfully created the List Attribute 
     remote isolated function createListAttribute(ListAttribute payload) returns ListAttribute|error {
-        string  path = string `/list_attributes`;
+        string resourcePath = string `/list_attributes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ListAttribute response = check self.clientEp->post(path, request, targetType=ListAttribute);
+        request.setPayload(jsonBody, "application/json");
+        ListAttribute response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a List Attribute
@@ -800,8 +801,8 @@ public isolated client class Client {
     # + listAttributeId - the unique identifier for the List Attribute 
     # + return - Successfully retrieved List Attribute 
     remote isolated function getListAttribute(int listAttributeId) returns ListAttribute|error {
-        string  path = string `/list_attributes/${listAttributeId}`;
-        ListAttribute response = check self.clientEp-> get(path, targetType = ListAttribute);
+        string resourcePath = string `/list_attributes/${listAttributeId}`;
+        ListAttribute response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Archive a List Attribute
@@ -809,8 +810,8 @@ public isolated client class Client {
     # + listAttributeId - The ID of the List Attribute you'd like to archive 
     # + return - Successfully archived List Attribute 
     remote isolated function archiveListAttribute(int listAttributeId) returns http:Response|error {
-        string  path = string `/list_attributes/${listAttributeId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/list_attributes/${listAttributeId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a List Attribute
@@ -819,11 +820,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a List Attribute 
     # + return - Successfully updated the List Attribute 
     remote isolated function updateListAttribute(int listAttributeId, ListAttributeUpdate payload) returns ListAttribute|error {
-        string  path = string `/list_attributes/${listAttributeId}`;
+        string resourcePath = string `/list_attributes/${listAttributeId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ListAttribute response = check self.clientEp->patch(path, request, targetType=ListAttribute);
+        request.setPayload(jsonBody, "application/json");
+        ListAttribute response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # List Pages
@@ -833,10 +834,10 @@ public isolated client class Client {
     # + projectId - The Project ID of the Project you would like to list all Pages for 
     # + return - Return Project Pages info 
     remote isolated function listPages(int projectId, int perPage = 25, int page = 1) returns Page[]|error {
-        string  path = string `/pages`;
+        string resourcePath = string `/pages`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
-        Page[] response = check self.clientEp-> get(path, targetType = PageArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Page[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a Page
@@ -844,11 +845,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Page 
     # + return - Return the created Page 
     remote isolated function createPage(Page payload) returns Page|error {
-        string  path = string `/pages`;
+        string resourcePath = string `/pages`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Page response = check self.clientEp->post(path, request, targetType=Page);
+        request.setPayload(jsonBody, "application/json");
+        Page response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a page
@@ -856,8 +857,8 @@ public isolated client class Client {
     # + pageId - The Page ID of the Page you want to get 
     # + return - Return Page info 
     remote isolated function getPage(int pageId) returns Page|error {
-        string  path = string `/pages/${pageId}`;
-        Page response = check self.clientEp-> get(path, targetType = Page);
+        string resourcePath = string `/pages/${pageId}`;
+        Page response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a Page
@@ -865,8 +866,8 @@ public isolated client class Client {
     # + pageId - The Page ID of the Page you want to delete 
     # + return - Successfully deleted the Page 
     remote isolated function deletePage(int pageId) returns http:Response|error {
-        string  path = string `/pages/${pageId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/pages/${pageId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a Page
@@ -875,11 +876,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Page 
     # + return - Return the updated Page 
     remote isolated function updatePage(int pageId, PageUpdate payload) returns Page|error {
-        string  path = string `/pages/${pageId}`;
+        string resourcePath = string `/pages/${pageId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Page response = check self.clientEp->patch(path, request, targetType=Page);
+        request.setPayload(jsonBody, "application/json");
+        Page response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Create an In-Page Event
@@ -888,11 +889,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create an In-Page Event 
     # + return - Return the created In-Page event 
     remote isolated function createInPageEvent(int pageId, InPageEvent payload) returns InPageEvent|error {
-        string  path = string `/pages/${pageId}/events`;
+        string resourcePath = string `/pages/${pageId}/events`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InPageEvent response = check self.clientEp->post(path, request, targetType=InPageEvent);
+        request.setPayload(jsonBody, "application/json");
+        InPageEvent response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete an In-Page Event
@@ -901,8 +902,8 @@ public isolated client class Client {
     # + eventId - The In-Page Event ID of the In-Page Event you want to delete 
     # + return - Successfully deleted In-Page event 
     remote isolated function deleteInPageEvent(int pageId, int eventId) returns http:Response|error {
-        string  path = string `/pages/${pageId}/events/${eventId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/pages/${pageId}/events/${eventId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update an In-Page Event
@@ -912,19 +913,19 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an In-Page Event 
     # + return - Successfully updated the In-Page event 
     remote isolated function updateInPageEvent(int pageId, int eventId, InPageEventUpdate payload) returns InPageEvent|error {
-        string  path = string `/pages/${pageId}/events/${eventId}`;
+        string resourcePath = string `/pages/${pageId}/events/${eventId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InPageEvent response = check self.clientEp->patch(path, request, targetType=InPageEvent);
+        request.setPayload(jsonBody, "application/json");
+        InPageEvent response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Plan & Usage information for all products
     #
     # + return - Return Plan & Usage information 
     remote isolated function getPlan() returns Plan|error {
-        string  path = string `/plan`;
-        Plan response = check self.clientEp-> get(path, targetType = Plan);
+        string resourcePath = string `/plan`;
+        Plan response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List Projects
@@ -933,10 +934,10 @@ public isolated client class Client {
     # + page - Optional pagination argument that specifies the page to return. If you have 140 objects and you choose to return 100 objects per page you will be able to access the last 40 objects on page 2. The default value is 1. 
     # + return - Return all Projects 
     remote isolated function listProjects(int perPage = 25, int page = 1) returns Project[]|error {
-        string  path = string `/projects`;
+        string resourcePath = string `/projects`;
         map<anydata> queryParam = {"per_page": perPage, "page": page};
-        path = path + check getPathForQueryParam(queryParam);
-        Project[] response = check self.clientEp-> get(path, targetType = ProjectArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Project[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a Project
@@ -944,11 +945,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Project 
     # + return - Return the created Project 
     remote isolated function createProject(Project payload) returns Project|error {
-        string  path = string `/projects`;
+        string resourcePath = string `/projects`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Project response = check self.clientEp->post(path, request, targetType=Project);
+        request.setPayload(jsonBody, "application/json");
+        Project response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a Project
@@ -956,8 +957,8 @@ public isolated client class Client {
     # + projectId - The Project ID of the Project you want to get 
     # + return - Return Project info 
     remote isolated function getProject(int projectId) returns Project|error {
-        string  path = string `/projects/${projectId}`;
-        Project response = check self.clientEp-> get(path, targetType = Project);
+        string resourcePath = string `/projects/${projectId}`;
+        Project response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a Project
@@ -966,11 +967,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Project 
     # + return - Return the updated Project 
     remote isolated function updateProject(int projectId, ProjectUpdate payload) returns Project|error {
-        string  path = string `/projects/${projectId}`;
+        string resourcePath = string `/projects/${projectId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Project response = check self.clientEp->patch(path, request, targetType=Project);
+        request.setPayload(jsonBody, "application/json");
+        Project response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Create a Custom Event
@@ -979,11 +980,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Custom Event 
     # + return - Return the created Custom Event 
     remote isolated function createCustomEvent(int projectId, CustomEvent payload) returns CustomEvent|error {
-        string  path = string `/projects/${projectId}/custom_events`;
+        string resourcePath = string `/projects/${projectId}/custom_events`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomEvent response = check self.clientEp->post(path, request, targetType=CustomEvent);
+        request.setPayload(jsonBody, "application/json");
+        CustomEvent response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete a Custom Event
@@ -992,8 +993,8 @@ public isolated client class Client {
     # + eventId - The Event ID of the Custom Event you'd like to delete 
     # + return - Successfully deleted Custom Event 
     remote isolated function deleteCustomEvent(int projectId, int eventId) returns http:Response|error {
-        string  path = string `/projects/${projectId}/custom_events/${eventId}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/projects/${projectId}/custom_events/${eventId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a Custom Event
@@ -1003,11 +1004,11 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Custom Event 
     # + return - Return the updated Event 
     remote isolated function updateCustomEvent(int projectId, int eventId, CustomEventUpdate payload) returns CustomEvent|error {
-        string  path = string `/projects/${projectId}/custom_events/${eventId}`;
+        string resourcePath = string `/projects/${projectId}/custom_events/${eventId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomEvent response = check self.clientEp->patch(path, request, targetType=CustomEvent);
+        request.setPayload(jsonBody, "application/json");
+        CustomEvent response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Download a CSV with all current catalog data
@@ -1016,8 +1017,8 @@ public isolated client class Client {
     # + catalogId - The Catalog ID of the Catalog you want to download 
     # + return - Return the CSV with correct headers to force download 
     remote isolated function getRecsCatalogCsv(string date, string catalogId) returns http:Response|error {
-        string  path = string `/recommendations/catalogs/${catalogId}/catalog/${date}`;
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        string resourcePath = string `/recommendations/catalogs/${catalogId}/catalog/${date}`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Download a CSV with all computed recommendations output data
@@ -1027,8 +1028,8 @@ public isolated client class Client {
     # + recommenderId - The Recommender ID of the Recommender you want to get output from 
     # + return - Return the CSV with correct headers to force download 
     remote isolated function getRecsOutputCsv(string date, string catalogId, string recommenderId) returns http:Response|error {
-        string  path = string `/recommendations/catalogs/${catalogId}/recommenders/${recommenderId}/${date}`;
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        string resourcePath = string `/recommendations/catalogs/${catalogId}/recommenders/${recommenderId}/${date}`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Download a CSV with summary stats data
@@ -1037,8 +1038,8 @@ public isolated client class Client {
     # + catalogId - The Catalog ID of the Catalog you want to download stats for 
     # + return - Return the CSV with correct headers to force download 
     remote isolated function getRecsStatsCsv(string date, string catalogId) returns http:Response|error {
-        string  path = string `/recommendations/catalogs/${catalogId}/stats/${date}`;
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        string resourcePath = string `/recommendations/catalogs/${catalogId}/stats/${date}`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List Subject Access Requests
@@ -1047,10 +1048,10 @@ public isolated client class Client {
     # + page - Optional pagination argument that specifies the page to return. If you have 140 objects and you choose to return 100 objects per page you will be able to access the last 40 objects on page 2. The default value is 1. 
     # + return - Return Subject Access Request info 
     remote isolated function listSarRequestsByAccount(int perPage = 25, int page = 1) returns SubjectAccessRequest[]|error {
-        string  path = string `/subject-access-requests`;
+        string resourcePath = string `/subject-access-requests`;
         map<anydata> queryParam = {"per_page": perPage, "page": page};
-        path = path + check getPathForQueryParam(queryParam);
-        SubjectAccessRequest[] response = check self.clientEp-> get(path, targetType = SubjectAccessRequestArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SubjectAccessRequest[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a Subject Access Request
@@ -1058,11 +1059,11 @@ public isolated client class Client {
     # + payload - A JSON string containing the fields needed to create a subject access request. 
     # + return - Return the created SubjectAccessRequest 
     remote isolated function createSarRequest(SubjectAccessRequest payload) returns SubjectAccessRequest|error {
-        string  path = string `/subject-access-requests`;
+        string resourcePath = string `/subject-access-requests`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SubjectAccessRequest response = check self.clientEp->post(path, request, targetType=SubjectAccessRequest);
+        request.setPayload(jsonBody, "application/json");
+        SubjectAccessRequest response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Subject Access Request
@@ -1070,8 +1071,8 @@ public isolated client class Client {
     # + requestId - The ID of the Subject Access Request 
     # + return - Return Subject Access Request info 
     remote isolated function getSarRequest(int requestId) returns SubjectAccessRequest|error {
-        string  path = string `/subject-access-requests/${requestId}`;
-        SubjectAccessRequest response = check self.clientEp-> get(path, targetType = SubjectAccessRequest);
+        string resourcePath = string `/subject-access-requests/${requestId}`;
+        SubjectAccessRequest response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

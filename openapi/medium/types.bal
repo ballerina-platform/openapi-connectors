@@ -36,7 +36,6 @@ public type User record {
 
 # list of contributors for a given publication
 public type ContributorResponse record {
-    #An array of Contributors
     Contributor[] data?;
 };
 
@@ -107,7 +106,6 @@ public type Contributor record {
 
 # Container object for publication list.
 public type PublicationResponse record {
-    #An array of Publications
     Publication[] data?;
 };
 

@@ -41,6 +41,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get Times tags.
     #
@@ -49,10 +50,10 @@ public isolated client class Client {
     # + max - Sets the maximum number of results 
     # + return - An array of tags 
     remote isolated function getTimesTags(string query, string? filter = (), int max = 10) returns TimesTags|error {
-        string  path = string `/timestags`;
+        string resourcePath = string `/timestags`;
         map<anydata> queryParam = {"query": query, "filter": filter, "max": max, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        TimesTags response = check self.clientEp-> get(path, targetType = TimesTags);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        TimesTags response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

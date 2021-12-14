@@ -87,7 +87,6 @@ public type Remark record {
     DocumentIdentifier DocumentIdentifier?;
 };
 
-# Data entry template.
 public type DataEntryTemplate record {
     *DataEntryTemplateIdentifier;
     # Application id
@@ -305,7 +304,6 @@ public type Application record {
     string Name?;
 };
 
-# Group.
 public type Group record {
     *GroupIdentifier;
     # Active directory LDAP path
@@ -364,7 +362,6 @@ public type CallbackExternalColumn record {
     int TargetFieldId?;
 };
 
-# CDRom jukebox device.
 public type CdromJukebox record {
     *Device;
     # Cache device
@@ -438,7 +435,6 @@ public type ArchiveApplications record {
     Archive Archive?;
 };
 
-# Retrieval template output field.
 public type RetrievalTemplateOutputField record {
     *FieldIdentifier;
     boolean CanSort?;
@@ -592,7 +588,6 @@ public type IndexFolderDocumentViewer record {
     string IndexViewerURL?;
 };
 
-# Retrieval template.
 public type RetrievalTemplate record {
     *RetrievalTemplateIdentifier;
     # Append next search result to existing results
@@ -625,7 +620,6 @@ public type FetchDocumentIndexReturn record {
     string Value?;
 };
 
-# Retrieval template input field.
 public type RetrievalTemplateInputField record {
     *Field;
     boolean CanCompare?;
@@ -661,8 +655,8 @@ public type RetrievalTemplateInputField record {
     boolean RightParenthesis?;
     # Field coordinates.
     FieldCoordinates RightParenthesisPosition?;
-    record  { }  Value1?;
-    record  { }  Value2?;
+    record {} Value1?;
+    record {} Value2?;
 };
 
 # Legal hold status.
@@ -784,7 +778,6 @@ public type PermissionItemDescriptionItem record {
     PermissionItem PermissionItem?;
 };
 
-# Keyfile device.
 public type Keyfile record {
     *Device;
     # Check that device employs the best practices
@@ -799,7 +792,6 @@ public type Keyfile record {
     Workstation WorkstationIdentifier?;
 };
 
-# Content server device.
 public type ContentServer record {
     *Device;
     # Application password
@@ -862,7 +854,7 @@ public type Setting record {
     # Setting name
     string Name?;
     # Setting value
-    record  { }  Value?;
+    record {} Value?;
 };
 
 # Work item form.
@@ -908,7 +900,7 @@ public type ApplicationArchiveAccess record {
 public type Icon record {
     string Description?;
     # Byte array for icon.
-    record  { }  Icon?;
+    record {} Icon?;
     # Tiff = 1, Ascii = 2, Bitmap = 3, Word = 4, Excel = 5, Powerpoint = 6, Windoc = 7, Unknown = 8, Exe = 9, LockedByCurrentUser = 100, Keywords = 101, Remarks = 102, LockedByOtherUser = 103, VersionsExist = 104, Expired = 105, Annotations = 106
     int Identifier?;
 };
@@ -927,7 +919,6 @@ public type SourceDocumentSecurityAccessItem record {
     boolean Value?;
 };
 
-# Cache device
 public type Cache record {
     *Device;
     # Activate cache after storing
@@ -979,7 +970,6 @@ public type Cache record {
     Workstation WorkstationIdentifier?;
 };
 
-# Functional security item.
 public type ApplicationField record {
     *Field;
     # Application identifier.
@@ -1000,7 +990,6 @@ public type Keywords record {
     SourceDocumentIdentifier SourceDocumentIdentifier?;
 };
 
-# File360 user
 public type User record {
     *UserIdentifier;
     # Annotation note defined for user, see User/Group administration
@@ -1129,11 +1118,10 @@ public type FieldCoordinates record {
     int Width?;
 };
 
-# Document identifier.
 public type DocumentIdentifier record {
     *SourceDocumentIdentifier;
     # Document suffix id
-    int Suffix?;
+    int Suffix;
 };
 
 # Workitems.
@@ -1247,7 +1235,7 @@ public type IndexFolderDocuments record {
 
 # Callback result.
 public type CallbackResultRows record {
-    record  { } [] Row?;
+    record {}[] Row?;
 };
 
 # Document format icon.

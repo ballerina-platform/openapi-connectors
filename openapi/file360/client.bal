@@ -33,16 +33,17 @@ public isolated client class Client {
     public isolated function init(string serviceUrl, http:ClientConfiguration clientConfig =  {}) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get a listing of archives and applications.
     #
     # + accesstype - Access Type, an OR'ed set of the following : No Access = 0, Retrieval Access = 1, Export Access = 2, Entry Access = 4, Import Access = 8, Update Access = 16, Delete Access = 32, Super Access (includes all above) = 65535 
     # + return - Applications archive pair array listing 
     remote isolated function applications(int accesstype) returns ArchiveApplications[]|error {
-        string path = string `/v1/applications`;
+        string resourcePath = string `/v1/applications`;
         map<anydata> queryParam = {"accesstype": accesstype};
-        path = path + check getPathForQueryParam(queryParam);
-        ArchiveApplications[] response = check self.clientEp->get(path, targetType = ArchiveApplicationsArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ArchiveApplications[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Logs on a user with the given credentials defined in the Authentication object.
@@ -50,19 +51,19 @@ public isolated client class Client {
     # + payload - Authentication information 
     # + return - Logged on user object. 
     remote isolated function logOn(Authentication payload) returns User|error {
-        string path = string `/v1/auth`;
+        string resourcePath = string `/v1/auth`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        User response = check self.clientEp->post(path, request, targetType = User);
+        request.setPayload(jsonBody, "application/json");
+        User response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Logs off the current user.
     #
     # + return - Logged off. 
     remote isolated function logOff() returns http:Response|error {
-        string path = string `/v1/auth`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/v1/auth`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Authenticates a user via OTDS, using the state and code, and logs that user onto File360.
@@ -71,10 +72,10 @@ public isolated client class Client {
     # + state - Authorization specific state value 
     # + return - Logged on user object. 
     remote isolated function logonOAuth(string code, string state) returns User|error {
-        string path = string `/v1/oauth`;
+        string resourcePath = string `/v1/oauth`;
         map<anydata> queryParam = {"code": code, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        User response = check self.clientEp->get(path, targetType = User);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Destroy the index data and the files for a document.
@@ -85,10 +86,10 @@ public isolated client class Client {
     # + priorversions - Destroy versions prior to the version listed in the version id parameter 
     # + return - Destroy document result. 
     remote isolated function destroyDocument(int masterId, int 'version, boolean allversions, boolean priorversions) returns SourceDocumentResult|error {
-        string path = string `/v1/document`;
+        string resourcePath = string `/v1/document`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version, "allversions": allversions, "priorversions": priorversions};
-        path = path + check getPathForQueryParam(queryParam);
-        SourceDocumentResult response = check self.clientEp->delete(path, targetType = SourceDocumentResult);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SourceDocumentResult response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get a list of devices for a document.
@@ -97,10 +98,10 @@ public isolated client class Client {
     # + versionId - Version id 
     # + return - Available devices for a document. 
     remote isolated function getDocumentDevices(int masterId, int versionId) returns AvailableDevices|error {
-        string path = string `/v1/document/devices`;
+        string resourcePath = string `/v1/document/devices`;
         map<anydata> queryParam = {"masterId": masterId, "versionId": versionId};
-        path = path + check getPathForQueryParam(queryParam);
-        AvailableDevices response = check self.clientEp->get(path, targetType = AvailableDevices);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        AvailableDevices response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the file information for the document.
@@ -109,10 +110,10 @@ public isolated client class Client {
     # + versionId - Version id 
     # + return - Files for the version of the document. 
     remote isolated function getDocumentFileInfo(int masterId, int versionId) returns FileInfo[]|error {
-        string path = string `/v1/document/files`;
+        string resourcePath = string `/v1/document/files`;
         map<anydata> queryParam = {"masterId": masterId, "versionId": versionId};
-        path = path + check getPathForQueryParam(queryParam);
-        FileInfo[] response = check self.clientEp->get(path, targetType = FileInfoArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        FileInfo[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the index data for a document.
@@ -123,10 +124,10 @@ public isolated client class Client {
     # + keyfileDocId - Keyfile public document id 
     # + return - An array with the index data for the document. 
     remote isolated function fetchDocumentIndex(int masterId, int 'version, int suffix, string keyfileDocId) returns FetchDocumentIndexReturn[]|error {
-        string path = string `/v1/document/index`;
+        string resourcePath = string `/v1/document/index`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version, "suffix": suffix, "keyfileDocId": keyfileDocId};
-        path = path + check getPathForQueryParam(queryParam);
-        FetchDocumentIndexReturn[] response = check self.clientEp->get(path, targetType = FetchDocumentIndexReturnArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        FetchDocumentIndexReturn[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update the index data for a document.
@@ -137,13 +138,13 @@ public isolated client class Client {
     # + payload - Data entry template with modified data entry fields 
     # + return - An identifier for the newly created document. 
     remote isolated function updateDocumentIndex(int masterId, int 'version, int suffix, DataEntryTemplate payload) returns DocumentIdentifier[]|error {
-        string path = string `/v1/document/index`;
+        string resourcePath = string `/v1/document/index`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version, "suffix": suffix};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DocumentIdentifier[] response = check self.clientEp->put(path, request, targetType = DocumentIdentifierArr);
+        request.setPayload(jsonBody, "application/json");
+        DocumentIdentifier[] response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Create a document.
@@ -153,13 +154,13 @@ public isolated client class Client {
     # + payload - List of files and index information 
     # + return - Indexed document and folder data. 
     remote isolated function createDocument(int indexDataId, int action, CreateDocumentinfo payload) returns IndexedDocument|error {
-        string path = string `/v1/document/index`;
+        string resourcePath = string `/v1/document/index`;
         map<anydata> queryParam = {"indexDataId": indexDataId, "action": action};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        IndexedDocument response = check self.clientEp->post(path, request, targetType = IndexedDocument);
+        request.setPayload(jsonBody, "application/json");
+        IndexedDocument response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete a document.
@@ -169,10 +170,10 @@ public isolated client class Client {
     # + suffix - Suffix 
     # + return - Delete document results. 
     remote isolated function deleteDocument(int masterId, int 'version, int suffix) returns DeleteDocumentResult|error {
-        string path = string `/v1/document/index`;
+        string resourcePath = string `/v1/document/index`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version, "suffix": suffix};
-        path = path + check getPathForQueryParam(queryParam);
-        DeleteDocumentResult response = check self.clientEp->delete(path, targetType = DeleteDocumentResult);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeleteDocumentResult response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get the keywords associated with a document.
@@ -180,10 +181,10 @@ public isolated client class Client {
     # + masterId - Master id 
     # + return - Keywords for a document. 
     remote isolated function getKeywords(int masterId) returns Keywords|error {
-        string path = string `/v1/document/keywords`;
+        string resourcePath = string `/v1/document/keywords`;
         map<anydata> queryParam = {"masterId": masterId};
-        path = path + check getPathForQueryParam(queryParam);
-        Keywords response = check self.clientEp->get(path, targetType = Keywords);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Keywords response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Put new keywords in a document.
@@ -191,11 +192,11 @@ public isolated client class Client {
     # + payload - New Keywords data. 
     # + return - Keywords for a document. 
     remote isolated function putKeywords(Keywords payload) returns Keywords|error {
-        string path = string `/v1/document/keywords`;
+        string resourcePath = string `/v1/document/keywords`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Keywords response = check self.clientEp->post(path, request, targetType = Keywords);
+        request.setPayload(jsonBody, "application/json");
+        Keywords response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the legal hold status for a document.
@@ -203,10 +204,10 @@ public isolated client class Client {
     # + masterId - Master id 
     # + return - Legal hold status for a document. The legal hold status object will be empty if the document is not on legal hold. 
     remote isolated function getLegalHold(int masterId) returns LegalHoldStatus|error {
-        string path = string `/v1/document/legalhold`;
+        string resourcePath = string `/v1/document/legalhold`;
         map<anydata> queryParam = {"masterId": masterId};
-        path = path + check getPathForQueryParam(queryParam);
-        LegalHoldStatus response = check self.clientEp->get(path, targetType = LegalHoldStatus);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        LegalHoldStatus response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Set the legal hold data for a document.
@@ -216,13 +217,13 @@ public isolated client class Client {
     # + payload - New legal hold status data. 
     # + return - Document identifier. 
     remote isolated function setLegalHold(int masterId, int 'version, LegalHoldStatus payload) returns SourceDocumentIdentifier|error {
-        string path = string `/v1/document/legalhold`;
+        string resourcePath = string `/v1/document/legalhold`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SourceDocumentIdentifier response = check self.clientEp->post(path, request, targetType = SourceDocumentIdentifier);
+        request.setPayload(jsonBody, "application/json");
+        SourceDocumentIdentifier response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Removes a document from legal hold .
@@ -230,10 +231,10 @@ public isolated client class Client {
     # + masterId - Master id 
     # + return - Document identifier. 
     remote isolated function removeLegalHold(int masterId) returns SourceDocumentIdentifier|error {
-        string path = string `/v1/document/legalhold`;
+        string resourcePath = string `/v1/document/legalhold`;
         map<anydata> queryParam = {"masterId": masterId};
-        path = path + check getPathForQueryParam(queryParam);
-        SourceDocumentIdentifier response = check self.clientEp->delete(path, targetType = SourceDocumentIdentifier);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SourceDocumentIdentifier response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get the remarks associated with a document.
@@ -242,10 +243,10 @@ public isolated client class Client {
     # + suffix - Suffix id 
     # + return - Remarks for a document. 
     remote isolated function getRemarks(int masterId, int suffix) returns Remark|error {
-        string path = string `/v1/document/remarks`;
+        string resourcePath = string `/v1/document/remarks`;
         map<anydata> queryParam = {"masterId": masterId, "suffix": suffix};
-        path = path + check getPathForQueryParam(queryParam);
-        Remark response = check self.clientEp->get(path, targetType = Remark);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Remark response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Put new remarks in a document.
@@ -253,11 +254,11 @@ public isolated client class Client {
     # + payload - New remark data. 
     # + return - Remarks for a document. 
     remote isolated function putRemarks(Remark payload) returns Remark|error {
-        string path = string `/v1/document/remarks`;
+        string resourcePath = string `/v1/document/remarks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Remark response = check self.clientEp->post(path, request, targetType = Remark);
+        request.setPayload(jsonBody, "application/json");
+        Remark response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Create a suffix for a document.
@@ -267,13 +268,13 @@ public isolated client class Client {
     # + payload - Data entry template. 
     # + return - Identifier for the new suffix entry. 
     remote isolated function createSuffix(int masterId, int 'version, DataEntryTemplate payload) returns DocumentIdentifier|error {
-        string path = string `/v1/document/suffix`;
+        string resourcePath = string `/v1/document/suffix`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DocumentIdentifier response = check self.clientEp->post(path, request, targetType = DocumentIdentifier);
+        request.setPayload(jsonBody, "application/json");
+        DocumentIdentifier response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Unlock a document.
@@ -281,10 +282,10 @@ public isolated client class Client {
     # + masterId - Master id 
     # + return - Identifier of unlocked document. 
     remote isolated function unlock(int masterId) returns SourceDocumentIdentifier|error {
-        string path = string `/v1/document/unlock`;
+        string resourcePath = string `/v1/document/unlock`;
         map<anydata> queryParam = {"masterId": masterId};
-        path = path + check getPathForQueryParam(queryParam);
-        SourceDocumentIdentifier response = check self.clientEp->delete(path, targetType = SourceDocumentIdentifier);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SourceDocumentIdentifier response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Create a new version for a document.
@@ -295,13 +296,13 @@ public isolated client class Client {
     # + payload - Collection of file identifiers 
     # + return - New document version identifier. 
     remote isolated function createVersion(int masterId, string versionLabel, int deviceId, DocumentCreateVersionFile[] payload) returns SourceDocumentIdentifier|error {
-        string path = string `/v1/document/version`;
+        string resourcePath = string `/v1/document/version`;
         map<anydata> queryParam = {"masterId": masterId, "versionLabel": versionLabel, "deviceId": deviceId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SourceDocumentIdentifier response = check self.clientEp->post(path, request, targetType = SourceDocumentIdentifier);
+        request.setPayload(jsonBody, "application/json");
+        SourceDocumentIdentifier response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a list of versions for a document.
@@ -309,10 +310,10 @@ public isolated client class Client {
     # + masterId - Master id 
     # + return - Versions for a document. 
     remote isolated function getVersions(int masterId) returns SourceDocumentIdentifier[]|error {
-        string path = string `/v1/document/versions`;
+        string resourcePath = string `/v1/document/versions`;
         map<anydata> queryParam = {"masterId": masterId};
-        path = path + check getPathForQueryParam(queryParam);
-        SourceDocumentIdentifier[] response = check self.clientEp->get(path, targetType = SourceDocumentIdentifierArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SourceDocumentIdentifier[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update document index data.
@@ -320,19 +321,19 @@ public isolated client class Client {
     # + payload - Index data change message 
     # + return - Changed documents results. 
     remote isolated function updateDocumentIndexes(DocumentIdentifierIndexDataChangeMessage payload) returns json|error {
-        string path = string `/v1/documents/index`;
+        string resourcePath = string `/v1/documents/index`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->put(path, request, targetType = json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get a list of error folders for user.
     #
     # + return - A collection of error folders. 
     remote isolated function getIndexErrorFolders() returns IndexFoldersMessage|error {
-        string path = string `/v1/errorfolders`;
-        IndexFoldersMessage response = check self.clientEp->get(path, targetType = IndexFoldersMessage);
+        string resourcePath = string `/v1/errorfolders`;
+        IndexFoldersMessage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update properties of an index folder.
@@ -341,13 +342,13 @@ public isolated client class Client {
     # + payload - Folder and data to update. 
     # + return - Updated index folder. 
     remote isolated function updateFolder(int action, IndexFolder payload) returns IndexFolder|error {
-        string path = string `/v1/folder`;
+        string resourcePath = string `/v1/folder`;
         map<anydata> queryParam = {"action": action};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        IndexFolder response = check self.clientEp->put(path, request, targetType = IndexFolder);
+        request.setPayload(jsonBody, "application/json");
+        IndexFolder response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete an indexing folder.
@@ -355,10 +356,10 @@ public isolated client class Client {
     # + folderId - Folder id. 
     # + return - Index folder deleted. 
     remote isolated function deleteFolder(int folderId) returns IndexFolder|error {
-        string path = string `/v1/folder`;
+        string resourcePath = string `/v1/folder`;
         map<anydata> queryParam = {"folderId": folderId};
-        path = path + check getPathForQueryParam(queryParam);
-        IndexFolder response = check self.clientEp->delete(path, targetType = IndexFolder);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        IndexFolder response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get the document information from a folder.
@@ -370,10 +371,10 @@ public isolated client class Client {
     # + isFolderShared - Is this index folder shared with other users or groups 
     # + return - Index folder document viewer information 
     remote isolated function getIndexFolderDocs(int folderId, int id, int prevDoc, int nextDoc, boolean isFolderShared) returns IndexFolderDocumentViewer|error {
-        string path = string `/v1/folder/document`;
+        string resourcePath = string `/v1/folder/document`;
         map<anydata> queryParam = {"folderId": folderId, "id": id, "prevDoc": prevDoc, "nextDoc": nextDoc, "isFolderShared": isFolderShared};
-        path = path + check getPathForQueryParam(queryParam);
-        IndexFolderDocumentViewer response = check self.clientEp->get(path, targetType = IndexFolderDocumentViewer);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        IndexFolderDocumentViewer response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a user folder document.
@@ -383,12 +384,12 @@ public isolated client class Client {
     # + applicationId - With archiveId, application id is used to find or created the user folder to place document 
     # + return - The destination folder, and the document created as part of a collection of documents 
     remote isolated function createUserFolderDocument(string sessionName, int archiveId, int applicationId) returns IndexFolderDocuments|error {
-        string path = string `/v1/folder/document`;
+        string resourcePath = string `/v1/folder/document`;
         map<anydata> queryParam = {"sessionName": sessionName, "archiveId": archiveId, "applicationId": applicationId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        IndexFolderDocuments response = check self.clientEp-> post(path, request, targetType = IndexFolderDocuments);
+        IndexFolderDocuments response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Delete a document in the user folder.
@@ -396,10 +397,10 @@ public isolated client class Client {
     # + indexDataId - The index id of the document in the folder.  Returned as part of the IndexFolderDocuments object. 
     # + return - Deleted index folder document. 
     remote isolated function deleteFolderDocument(int indexDataId) returns IndexFolderDocument|error {
-        string path = string `/v1/folder/document`;
+        string resourcePath = string `/v1/folder/document`;
         map<anydata> queryParam = {"indexDataId": indexDataId};
-        path = path + check getPathForQueryParam(queryParam);
-        IndexFolderDocument response = check self.clientEp->delete(path, targetType = IndexFolderDocument);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        IndexFolderDocument response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get a Brava composition id for a list of folder document files.
@@ -407,11 +408,11 @@ public isolated client class Client {
     # + payload - List of files in the folder document. 
     # + return - Brava composition id for a list of folder document files. 
     remote isolated function getIndexFolderDocCompID(IndexFolderDocumentFiles payload) returns IndexFolderDocumentViewer|error {
-        string path = string `/v1/folder/document/compid`;
+        string resourcePath = string `/v1/folder/document/compid`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        IndexFolderDocumentViewer response = check self.clientEp->post(path, request, targetType = IndexFolderDocumentViewer);
+        request.setPayload(jsonBody, "application/json");
+        IndexFolderDocumentViewer response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a list of files in a document.
@@ -420,10 +421,10 @@ public isolated client class Client {
     # + isFolderShared - Is this folder shared between users or groups 
     # + return - Folder document files. 
     remote isolated function getIndexFolderDocFiles(int indexId, int isFolderShared) returns FileInfo[]|error {
-        string path = string `/v1/folder/document/files`;
+        string resourcePath = string `/v1/folder/document/files`;
         map<anydata> queryParam = {"indexId": indexId, "isFolderShared": isFolderShared};
-        path = path + check getPathForQueryParam(queryParam);
-        FileInfo[] response = check self.clientEp->get(path, targetType = FileInfoArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        FileInfo[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of documents in a folder.
@@ -431,18 +432,18 @@ public isolated client class Client {
     # + folderId - Folder id 
     # + return - A collection of index folder documents. 
     remote isolated function getIndexFolderDocuments(int folderId) returns IndexFolderDocuments|error {
-        string path = string `/v1/folder/documents`;
+        string resourcePath = string `/v1/folder/documents`;
         map<anydata> queryParam = {"folderId": folderId};
-        path = path + check getPathForQueryParam(queryParam);
-        IndexFolderDocuments response = check self.clientEp->get(path, targetType = IndexFolderDocuments);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        IndexFolderDocuments response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of data entry folders.
     #
     # + return - A collection of data entry folders. 
     remote isolated function getIndexFolders() returns IndexFoldersMessage|error {
-        string path = string `/v1/folders`;
-        IndexFoldersMessage response = check self.clientEp->get(path, targetType = IndexFoldersMessage);
+        string resourcePath = string `/v1/folders`;
+        IndexFoldersMessage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Log a client message to the Web Server debug log.
@@ -450,19 +451,19 @@ public isolated client class Client {
     # + payload - Log message information. 
     # + return - Message logged. 
     remote isolated function log(LogMessage payload) returns http:Response|error {
-        string path = string `/v1/log`;
+        string resourcePath = string `/v1/log`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the status of the RESTAPI server.
     #
     # + return - Status returned. 
     remote isolated function status() returns ServerStatus[]|error {
-        string path = string `/v1/status`;
-        ServerStatus[] response = check self.clientEp->get(path, targetType = ServerStatusArr);
+        string resourcePath = string `/v1/status`;
+        ServerStatus[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Route documents to a user or group.
@@ -473,13 +474,13 @@ public isolated client class Client {
     # + payload - Routing details 
     # + return - Identifier for the Route just created. 
     remote isolated function routeDocuments(string title, int templateId, RoutingDetails payload, string? comment = ()) returns int|error {
-        string path = string `/v1/route`;
+        string resourcePath = string `/v1/route`;
         map<anydata> queryParam = {"title": title, "comment": comment, "templateId": templateId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        int response = check self.clientEp->post(path, request, targetType = int);
+        request.setPayload(jsonBody, "application/json");
+        int response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a data entry template.
@@ -487,10 +488,10 @@ public isolated client class Client {
     # + id - Template id 
     # + return - Data entry template. 
     remote isolated function getDataEntryTemplate(int id) returns DataEntryTemplate|error {
-        string path = string `/v1/template/dataentry`;
+        string resourcePath = string `/v1/template/dataentry`;
         map<anydata> queryParam = {"id": id};
-        path = path + check getPathForQueryParam(queryParam);
-        DataEntryTemplate response = check self.clientEp->get(path, targetType = DataEntryTemplate);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DataEntryTemplate response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Run a data entry template callback.
@@ -500,13 +501,13 @@ public isolated client class Client {
     # + payload - Data entry template object 
     # + return - Call back result. 
     remote isolated function runCallbackDataEntry(int callbackHandleId, int fieldId, DataEntryTemplate payload) returns CallbackResult|error {
-        string path = string `/v1/template/dataentry/callback`;
+        string resourcePath = string `/v1/template/dataentry/callback`;
         map<anydata> queryParam = {"callbackHandleId": callbackHandleId, "fieldId": fieldId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CallbackResult response = check self.clientEp->post(path, request, targetType = CallbackResult);
+        request.setPayload(jsonBody, "application/json");
+        CallbackResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a retrieval template.
@@ -515,10 +516,10 @@ public isolated client class Client {
     # + applicationid - Application id 
     # + return - Retrieval template. 
     remote isolated function getRetrievalTemplate(int id, int applicationid) returns RetrievalTemplate|error {
-        string path = string `/v1/template/retrieval`;
+        string resourcePath = string `/v1/template/retrieval`;
         map<anydata> queryParam = {"id": id, "applicationid": applicationid};
-        path = path + check getPathForQueryParam(queryParam);
-        RetrievalTemplate response = check self.clientEp->get(path, targetType = RetrievalTemplate);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        RetrievalTemplate response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Run a retrieval template callback.
@@ -528,13 +529,13 @@ public isolated client class Client {
     # + payload - Retrieval template 
     # + return - Call back result. 
     remote isolated function runCallbackRetrieval(int callbackHandleId, int fieldId, RetrievalTemplate payload) returns CallbackResult|error {
-        string path = string `/v1/template/retrieval/callback`;
+        string resourcePath = string `/v1/template/retrieval/callback`;
         map<anydata> queryParam = {"callbackHandleId": callbackHandleId, "fieldId": fieldId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CallbackResult response = check self.clientEp->post(path, request, targetType = CallbackResult);
+        request.setPayload(jsonBody, "application/json");
+        CallbackResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Search for a list of documents.
@@ -542,11 +543,11 @@ public isolated client class Client {
     # + payload - Retrieval template filled in with search criteria 
     # + return - Hit list. 
     remote isolated function performRetrieval(RetrievalTemplate payload) returns Hits|error {
-        string path = string `/v1/template/retrieval/documents`;
+        string resourcePath = string `/v1/template/retrieval/documents`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Hits response = check self.clientEp->post(path, request, targetType = Hits);
+        request.setPayload(jsonBody, "application/json");
+        Hits response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update retrieval template layout for user.
@@ -554,11 +555,11 @@ public isolated client class Client {
     # + payload - Retrieval template 
     # + return - Retrieval template. 
     remote isolated function savePersonalRetrievalTemplate(RetrievalTemplate payload) returns RetrievalTemplate|error {
-        string path = string `/v1/template/retrieval/layout`;
+        string resourcePath = string `/v1/template/retrieval/layout`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RetrievalTemplate response = check self.clientEp->put(path, request, targetType = RetrievalTemplate);
+        request.setPayload(jsonBody, "application/json");
+        RetrievalTemplate response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete retrieval template layout for user.
@@ -566,50 +567,50 @@ public isolated client class Client {
     # + templateId - Template id 
     # + return - Retrieval template. 
     remote isolated function removePersonalRetrievalTemplate(int templateId) returns RetrievalTemplate|error {
-        string path = string `/v1/template/retrieval/layout`;
+        string resourcePath = string `/v1/template/retrieval/layout`;
         map<anydata> queryParam = {"templateId": templateId};
-        path = path + check getPathForQueryParam(queryParam);
-        RetrievalTemplate response = check self.clientEp->delete(path, targetType = RetrievalTemplate);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        RetrievalTemplate response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Data entry templates listing.
     #
     # + return - A collection of data entry templates. 
     remote isolated function dataentrytemplates() returns DataEntryTemplatesList|error {
-        string path = string `/v1/templates/dataentry`;
-        DataEntryTemplatesList response = check self.clientEp->get(path, targetType = DataEntryTemplatesList);
+        string resourcePath = string `/v1/templates/dataentry`;
+        DataEntryTemplatesList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieval templates listing.
     #
     # + return - A collection of retrieval templates. 
     remote isolated function retrievaltemplates() returns RetrievalTemplatesList|error {
-        string path = string `/v1/templates/retrieval`;
-        RetrievalTemplatesList response = check self.clientEp->get(path, targetType = RetrievalTemplatesList);
+        string resourcePath = string `/v1/templates/retrieval`;
+        RetrievalTemplatesList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of users.
     #
     # + return - A collection of user identifiers. 
     remote isolated function users() returns UserIdentifier[]|error {
-        string path = string `/v1/users`;
-        UserIdentifier[] response = check self.clientEp->get(path, targetType = UserIdentifierArr);
+        string resourcePath = string `/v1/users`;
+        UserIdentifier[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of groups.
     #
     # + return - A collection of groups. 
     remote isolated function groups() returns GroupIdentifier[]|error {
-        string path = string `/v1/groups`;
-        GroupIdentifier[] response = check self.clientEp->get(path, targetType = GroupIdentifierArr);
+        string resourcePath = string `/v1/groups`;
+        GroupIdentifier[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of all users.
     #
     # + return - A collection of users. 
     remote isolated function adminUsers() returns User[]|error {
-        string path = string `/v1/admin/users`;
-        User[] response = check self.clientEp->get(path, targetType = UserArr);
+        string resourcePath = string `/v1/admin/users`;
+        User[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a user.
@@ -617,10 +618,10 @@ public isolated client class Client {
     # + userId - User id 
     # + return - A user. 
     remote isolated function getUser(int userId) returns User[]|error {
-        string path = string `/v1/admin/user`;
+        string resourcePath = string `/v1/admin/user`;
         map<anydata> queryParam = {"userId": userId};
-        path = path + check getPathForQueryParam(queryParam);
-        User[] response = check self.clientEp->get(path, targetType = UserArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        User[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a user.
@@ -628,18 +629,18 @@ public isolated client class Client {
     # + userId - User id 
     # + return - Deleted user id. 
     remote isolated function deleteUser(int userId) returns int|error {
-        string path = string `/v1/admin/user`;
+        string resourcePath = string `/v1/admin/user`;
         map<anydata> queryParam = {"userId": userId};
-        path = path + check getPathForQueryParam(queryParam);
-        int response = check self.clientEp->delete(path, targetType = int);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        int response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get a list of groups.
     #
     # + return - A collection of groups. 
     remote isolated function adminGroups() returns Group[]|error {
-        string path = string `/v1/admin/groups`;
-        Group[] response = check self.clientEp->get(path, targetType = GroupArr);
+        string resourcePath = string `/v1/admin/groups`;
+        Group[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a group.
@@ -647,10 +648,10 @@ public isolated client class Client {
     # + groupId - Group id 
     # + return - A group to administer. 
     remote isolated function getGroup(int groupId) returns Group|error {
-        string path = string `/v1/admin/group`;
+        string resourcePath = string `/v1/admin/group`;
         map<anydata> queryParam = {"groupId": groupId};
-        path = path + check getPathForQueryParam(queryParam);
-        Group response = check self.clientEp->get(path, targetType = Group);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Group response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a group.
@@ -658,11 +659,11 @@ public isolated client class Client {
     # + payload - Group updates 
     # + return - Updated group. 
     remote isolated function editGroup(Group payload) returns Group|error {
-        string path = string `/v1/admin/group`;
+        string resourcePath = string `/v1/admin/group`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->put(path, request, targetType = Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Create a group.
@@ -670,11 +671,11 @@ public isolated client class Client {
     # + payload - Group identifier 
     # + return - Group identifier. 
     remote isolated function createGroup(GroupIdentifier payload) returns GroupIdentifier|error {
-        string path = string `/v1/admin/group`;
+        string resourcePath = string `/v1/admin/group`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupIdentifier response = check self.clientEp->post(path, request, targetType = GroupIdentifier);
+        request.setPayload(jsonBody, "application/json");
+        GroupIdentifier response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete a group.
@@ -682,10 +683,10 @@ public isolated client class Client {
     # + groupId - Group id 
     # + return - Deleted group id. 
     remote isolated function deleteGroup(int groupId) returns int|error {
-        string path = string `/v1/admin/group`;
+        string resourcePath = string `/v1/admin/group`;
         map<anydata> queryParam = {"groupId": groupId};
-        path = path + check getPathForQueryParam(queryParam);
-        int response = check self.clientEp->delete(path, targetType = int);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        int response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get a the list of users for a group.
@@ -693,10 +694,10 @@ public isolated client class Client {
     # + groupId - Group id 
     # + return - A group with user information. 
     remote isolated function adminGroupMembers(int groupId) returns Group|error {
-        string path = string `/v1/admin/group/members`;
+        string resourcePath = string `/v1/admin/group/members`;
         map<anydata> queryParam = {"groupId": groupId};
-        path = path + check getPathForQueryParam(queryParam);
-        Group response = check self.clientEp->get(path, targetType = Group);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Group response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Edit a document security level.
@@ -705,13 +706,13 @@ public isolated client class Client {
     # + payload - Document security level 
     # + return - Updated document security level. 
     remote isolated function updateDocumentLevelSecurity(int level, DocumentLevelSecurity payload) returns DocumentLevelSecurity|error {
-        string path = string `/v1/admin/document-security-level`;
+        string resourcePath = string `/v1/admin/document-security-level`;
         map<anydata> queryParam = {"level": level};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DocumentLevelSecurity response = check self.clientEp->put(path, request, targetType = DocumentLevelSecurity);
+        request.setPayload(jsonBody, "application/json");
+        DocumentLevelSecurity response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get a workitem.
@@ -724,10 +725,10 @@ public isolated client class Client {
     # + timestamp - Workitem timestamp 
     # + return - A workitem. 
     remote isolated function retrieveWorkitem(string workitemId, int 'type, string workstep, string workset, int workflowId, string timestamp) returns Workitem|error {
-        string path = string `/v1/workflow/workitem`;
+        string resourcePath = string `/v1/workflow/workitem`;
         map<anydata> queryParam = {"workitemId": workitemId, "type": 'type, "workstep": workstep, "workset": workset, "workflowId": workflowId, "timestamp": timestamp};
-        path = path + check getPathForQueryParam(queryParam);
-        Workitem response = check self.clientEp->get(path, targetType = Workitem);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Workitem response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Make changes to a workitem.
@@ -735,11 +736,11 @@ public isolated client class Client {
     # + payload - Workitem 
     # + return - An updated workitem. 
     remote isolated function saveWorkitem(Workitem payload) returns Workitem|error {
-        string path = string `/v1/workflow/workitem`;
+        string resourcePath = string `/v1/workflow/workitem`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Workitem response = check self.clientEp->put(path, request, targetType = Workitem);
+        request.setPayload(jsonBody, "application/json");
+        Workitem response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Send the changes for the workitem.
@@ -747,11 +748,11 @@ public isolated client class Client {
     # + payload - Workitem 
     # + return - An updated workitem. 
     remote isolated function sendWorkitem(Workitem payload) returns Workitem|error {
-        string path = string `/v1/workflow/workitem`;
+        string resourcePath = string `/v1/workflow/workitem`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Workitem response = check self.clientEp->post(path, request, targetType = Workitem);
+        request.setPayload(jsonBody, "application/json");
+        Workitem response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the history for a workitem.
@@ -759,10 +760,10 @@ public isolated client class Client {
     # + workitemId - Workitem id 
     # + return - The workitem history. 
     remote isolated function getHistory(string workitemId) returns Workitem|error {
-        string path = string `/v1/workflow/workitem/history`;
+        string resourcePath = string `/v1/workflow/workitem/history`;
         map<anydata> queryParam = {"workitemId": workitemId};
-        path = path + check getPathForQueryParam(queryParam);
-        Workitem response = check self.clientEp->get(path, targetType = Workitem);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Workitem response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of workitems.
@@ -771,26 +772,26 @@ public isolated client class Client {
     # + worksetName - Workset name 
     # + return - A collection of workitems. 
     remote isolated function workitems(int workflowId, string worksetName) returns json|error {
-        string path = string `/v1/workflow/workitems`;
+        string resourcePath = string `/v1/workflow/workitems`;
         map<anydata> queryParam = {"workflowId": workflowId, "worksetName": worksetName};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp->get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a count of workflow items awaiting initiation.
     #
     # + return - Count of workitems awaiting initiation. 
     remote isolated function getCountOfWorkflowBacklog() returns int|error {
-        string path = string `/v1/workflow/workitems/backlog`;
-        int response = check self.clientEp->get(path, targetType = int);
+        string resourcePath = string `/v1/workflow/workitems/backlog`;
+        int response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of workitems on the currently logged on users worklist.
     #
     # + return - A collection of workitems. 
     remote isolated function worklist() returns Workitems|error {
-        string path = string `/v1/workflow/worklist`;
-        Workitems response = check self.clientEp->get(path, targetType = Workitems);
+        string resourcePath = string `/v1/workflow/worklist`;
+        Workitems response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the workflow form.
@@ -798,10 +799,10 @@ public isolated client class Client {
     # + className - Class name 
     # + return - The workflow form for the class. 
     remote isolated function getForm(string className) returns WorkitemForm|error {
-        string path = string `/v1/workflow/worklist/form`;
+        string resourcePath = string `/v1/workflow/worklist/form`;
         map<anydata> queryParam = {"className": className};
-        path = path + check getPathForQueryParam(queryParam);
-        WorkitemForm response = check self.clientEp->get(path, targetType = WorkitemForm);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WorkitemForm response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Remove a workitem from the current users worklist.
@@ -809,18 +810,18 @@ public isolated client class Client {
     # + workitemId - Workitem id 
     # + return - The workitem id that was removed. 
     remote isolated function removeWorkitemFromWorklist(string workitemId) returns string|error {
-        string path = string `/v1/workflow/worklist/workitem`;
+        string resourcePath = string `/v1/workflow/worklist/workitem`;
         map<anydata> queryParam = {"workitemId": workitemId};
-        path = path + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp->delete(path, targetType = string);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        string response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get a list of worksets.
     #
     # + return - A collection of worksets. 
     remote isolated function worksets() returns Worksets|error {
-        string path = string `/v1/workflow/worksets`;
-        Worksets response = check self.clientEp->get(path, targetType = Worksets);
+        string resourcePath = string `/v1/workflow/worksets`;
+        Worksets response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

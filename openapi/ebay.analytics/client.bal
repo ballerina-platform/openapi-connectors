@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -54,7 +52,7 @@ public type ClientConfig record {|
 
 # This is a generated connector for [eBay Analytics API v1.2.0](https://developer.ebay.com/api-docs/sell/analytics/overview.html) OpenAPI Specification.
 # The Analytics API provides data and information to review information on their listing performance, metrics on their customer service performance, and details on their eBay seller performance rating. 
-@display {label: "eBay Analytics", iconPath: "icon.png"} 
+@display {label: "eBay Analytics", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
@@ -67,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.ebay.com/sell/analytics/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Use this method to retrieve a seller's performance and rating for the customer service metric. Control the response from the getCustomerServiceMetric method using the following path and query parameters: customer_service_metric_type controls the type of customer service transactions evaluated for the metric rating. evaluation_type controls the period you want to review. evaluation_marketplace_id specifies the target marketplace for the evaluation. Currently, metric data is returned for only peer benchmarking. For more detail on the workings of peer benchmarking, see Service metrics policy.
     #
@@ -75,18 +74,18 @@ public isolated client class Client {
     # + evaluationType - Use this path parameter to specify the type of the seller evaluation you want returned, either: CURRENT &ndash; A monthly evaluation that occurs on the 20th of every month. PROJECTED &ndash; A daily evaluation that provides a projection of how the seller is currently performing with regards to the upcoming evaluation period. 
     # + return - Success 
     remote isolated function getCustomerServiceMetric(string customerServiceMetricType, string evaluationMarketplaceId, string evaluationType) returns GetCustomerServiceMetricResponse|error {
-        string  path = string `/customer_service_metric/${customerServiceMetricType}/${evaluationType}`;
+        string resourcePath = string `/customer_service_metric/${customerServiceMetricType}/${evaluationType}`;
         map<anydata> queryParam = {"evaluation_marketplace_id": evaluationMarketplaceId};
-        path = path + check getPathForQueryParam(queryParam);
-        GetCustomerServiceMetricResponse response = check self.clientEp-> get(path, targetType = GetCustomerServiceMetricResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GetCustomerServiceMetricResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # This call retrieves all the standards profiles for the associated seller. A standards profile is a set of eBay seller metrics and the seller's associated compliance values (either TOP_RATED, ABOVE_STANDARD, or BELOW_STANDARD). A seller's multiple profiles are distinguished by two criteria, a &quot;program&quot; and a &quot;cycle.&quot; A profile's program is one of three regions where the seller may have done business, or PROGRAM_GLOBAL to indicate all marketplaces where the seller has done business. The cycle value specifies whether the standards compliance values were determined at the last official eBay evaluation or at the time of the request.
     #
     # + return - Success 
     remote isolated function findSellerStandardsProfiles() returns FindSellerStandardsProfilesResponse|error {
-        string  path = string `/seller_standards_profile`;
-        FindSellerStandardsProfilesResponse response = check self.clientEp-> get(path, targetType = FindSellerStandardsProfilesResponse);
+        string resourcePath = string `/seller_standards_profile`;
+        FindSellerStandardsProfilesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # This call retrieves a single standards profile for the associated seller. A standards profile is a set of eBay seller metrics and the seller's associated compliance values (either TOP_RATED, ABOVE_STANDARD, or BELOW_STANDARD). A seller can have multiple profiles distinguished by two criteria, a &quot;program&quot; and a &quot;cycle.&quot; A profile's program is one of three regions where the seller may have done business, or PROGRAM_GLOBAL to indicate all marketplaces where the seller has done business. The cycle value specifies whether the standards compliance values were determined at the last official eBay evaluation (CURRENT) or at the time of the request (PROJECTED). Both cycle and a program values are required URI parameters for this method.
@@ -94,9 +93,9 @@ public isolated client class Client {
     # + cycle - The period covered by the returned standards profile evaluation. Supply one of two values, CURRENT means the response reflects eBay's most recent monthly standards evaluation and PROJECTED means the response reflect the seller's projected monthly evaluation, as calculated at the time of the request. 
     # + program - This input value specifies the region used to determine the seller's standards profile. Supply one of the four following values, PROGRAM_DE, PROGRAM_UK, PROGRAM_US, or PROGRAM_GLOBAL. 
     # + return - Success 
-    remote isolated function getSellerStandardsProfile(string cycle, string program) returns StandardsProfile|error {
-        string  path = string `/seller_standards_profile/${program}/${cycle}`;
-        StandardsProfile response = check self.clientEp-> get(path, targetType = StandardsProfile);
+    remote isolated function getSellerStandardsProfile(string cycle, string program) returns StandardsProfile|error? {
+        string resourcePath = string `/seller_standards_profile/${program}/${cycle}`;
+        StandardsProfile? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # This method returns a report that details the user traffic received by a seller's listings. A traffic report gives sellers the ability to review how often their listings appeared on eBay, how many times their listings are viewed, and how many purchases were made. The report also returns the report's start and end dates, and the date the information was last updated. When using this call: Be sure to URL-encode the values you pass in query parameters, as described in URI parameters. See the request samples below for details. You can only specify a single metric in the sort parameter and the specified metric must be listed in the metric parameter of your request. Parameter names are case sensitive, but metric names are not. For example, the following are correct: sort=LISTING_IMPRESSION_TOTAL sort=lisitng_impression_total metric=lisitng_impression_total However, these are incorrect: SORT=LISTING_IMPRESSION_TOTAL SORT=lisitng_impression_total Metric=lisitng_impression_total For more information, see Traffic report details.
@@ -107,44 +106,10 @@ public isolated client class Client {
     # + sort - This query parameter sorts the report on the specified metric. The metric you specify must be included in the configuration of the report's metric parameter. Sorting is helpful when you want to review how a specific metric is performing, such as the CLICK_THROUGH_RATE. Reports can be sorted in ascending or descending order. Precede the value of a descending-order request with a minus sign (&quot;-&quot;), for example: sort=-CLICK_THROUGH_RATE. For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/sell/analytics/types/csb:SortField 
     # + return - Success 
     remote isolated function getTrafficReport(string? dimension = (), string? filter = (), string? metric = (), string? sort = ()) returns Report|error {
-        string  path = string `/traffic_report`;
+        string resourcePath = string `/traffic_report`;
         map<anydata> queryParam = {"dimension": dimension, "filter": filter, "metric": metric, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
-        Report response = check self.clientEp-> get(path, targetType = Report);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Report response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

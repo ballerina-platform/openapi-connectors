@@ -381,7 +381,7 @@ public type IdShareBody record {
     # Note to include in email.
     string note?;
     # A list of recipients to share this bundle with. Required unless `to` is used.
-    record  { } [] recipients?;
+    record {}[] recipients?;
 };
 
 # Image entity
@@ -741,7 +741,7 @@ public type BehaviorEntity record {
     # Behavior type.
     string behavior?;
     # Settings for this behavior.  See the section above for an example value to provide here.  Formatting is different for each Behavior type.  May be sent as nested JSON or a single JSON-encoded string.  If using XML encoding for the API call, this data must be sent as a JSON-encoded string.
-    record  { }  value?;
+    record {} value?;
 };
 
 # List Requests
@@ -1197,7 +1197,7 @@ public type IdShareBody1 record {
     # Note to include in email.
     string note?;
     # A list of recipients to share this bundle with. Required unless `to` is used.
-    record  { } [] recipients?;
+    record {}[] recipients?;
 };
 
 public type MessagesBody1 record {
@@ -1250,7 +1250,7 @@ public type IdShareBody2 record {
     # Note to include in email.
     string note?;
     # A list of recipients to share this bundle with. Required unless `to` is used.
-    record  { } [] recipients?;
+    record {}[] recipients?;
 };
 
 public type ClickwrapsBody record {
@@ -1825,7 +1825,7 @@ public type ApiKeysIdBody2 record {
 # List Settings Changes
 public type SettingsChangeEntity record {
     # Specifics on what changed.
-    record  { }  change_details?;
+    record {} change_details?;
     # The time this change was made
     string created_at?;
     # The user id responsible for this change
@@ -1904,7 +1904,7 @@ public type UsageSnapshotEntity record {
     # The last time this site usage report was updated
     string updated_at?;
     # A map of root folders to their total usage
-    record  { }  usage_by_top_level_dir?;
+    record {} usage_by_top_level_dir?;
     # Usage for root folder
     float root_storage?;
     # Usage for files that are deleted but uploaded within last 30 days
@@ -2771,7 +2771,7 @@ public type FileActionEntity record {
 # Begin file upload
 public type FileUploadPartEntity record {
     # Content-Type and File to send
-    record  { }  send?;
+    record {} send?;
     # Type of upload
     string action?;
     # If `true`, this file exists and you may wish to ask the user for overwrite confirmation
@@ -2781,7 +2781,7 @@ public type FileUploadPartEntity record {
     # Date/time of when this Upload part expires and the URL cannot be used any more
     string expires?;
     # Additional upload headers to provide as part of the upload
-    record  { }  headers?;
+    record {} headers?;
     # HTTP Method to use for uploading the part, usually `PUT`
     string http_method?;
     # Size in bytes for this part
@@ -2789,7 +2789,7 @@ public type FileUploadPartEntity record {
     # If `true`, multiple parts may be uploaded in parallel.  If `false`, be sure to only upload one part at a time, in order.
     boolean parallel_parts?;
     # Additional HTTP parameters to send with the upload
-    record  { }  parameters?;
+    record {} parameters?;
     # Number of this upload part
     int part_number?;
     # Size in bytes for the next upload part
@@ -3524,7 +3524,7 @@ public type AutomationEntity record {
     # If trigger is `daily`, this specifies how often to run this automation.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
     string interval?;
     # If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
-    record  { }  schedule?;
+    record {} schedule?;
     # Source Path
     string 'source?;
     # Destination Path
@@ -3548,7 +3548,7 @@ public type AutomationEntity record {
     # If trigger is `action`, this is the path to watch for the specified trigger actions.
     string trigger_action_path?;
     # A Hash of attributes specific to the automation type.
-    record  { }  value?;
+    record {} value?;
 };
 
 public type FileCommentsBody record {
@@ -4116,7 +4116,7 @@ public type GroupEntity record {
 # Auto fields.
 public type AutoEntity record {
     # Dynamic properties
-    record  { }  dynamic?;
+    record {} dynamic?;
 };
 
 public type UserAs2KeysBody record {

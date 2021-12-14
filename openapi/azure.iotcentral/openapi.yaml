@@ -13,8 +13,6 @@ info:
 
     Create an [Azure  IoT Central account](https://azure.microsoft.com/en-us/services/iot-central/) and obtain OAuth tokens following [this guide](https://docs.microsoft.com/en-us/rest/api/iotcentral/authentication#aad-bearer-token).
   version: "1.0"
-servers:
-- url: /api
 paths:
   /apiTokens:
     get:

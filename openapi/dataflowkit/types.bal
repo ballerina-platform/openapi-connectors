@@ -39,7 +39,7 @@ public type Field record {
     # Details themself represent independent Parse request that extracts data from linked pages.
     record {*Parserequest;} details?;
     # Filters are used to pre-processing of text data when extracting.
-    record {}|record {}[] filters?;
+    (record {string name?;}|record {string name?; string param?;})[] filters?;
     # Field name is used to aggregate results.
     string name;
     # Selector represents a CSS selector for data extraction within the given block.
@@ -48,7 +48,72 @@ public type Field record {
     int 'type;
 };
 
-public type  Action record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {};
+public type Action record {
+    boolean ignoreIfNotPresent?;
+    # Must be a valid CSS Selector
+    string selector?;
+    # The value to input.
+    string value?;
+}|record {
+    boolean ignoreIfNotPresent?;
+    # Must be a valid CSS Selector
+    string selector?;
+    # Sequence of keys to send. Keys can include keystrokes such as ALT+A, ENTER, BACKSPACE, etc.
+    string value?;
+}|record {
+    # This optional parameter is useful when the target element occasionally may not be present in the DOM.
+    boolean ignoreIfNotPresent?;
+    # Must be a valid CSS Selector
+    string selector?;
+    # It is only used for click action inside a loop only. Skips the last iteration.
+    boolean skipLastIteration?;
+}|record {
+    # This optional parameter is useful when the target element occasionally may not be present in the DOM.
+    boolean ignoreIfNotPresent?;
+    # Must be a valid CSS Selector
+    string selector?;
+    # It is only used for click action inside a loop only. Skips the last iteration.
+    boolean skipLastIteration?;
+}|record {
+    # This optional parameter is useful when the target element occasionally may not be present in the DOM.
+    boolean ignoreIfNotPresent?;
+    # Must be a valid CSS Selector for the target element.
+    string selector?;
+    # It is only used for click action inside a loop only. Skips the last iteration.
+    boolean skipLastIteration?;
+}|record {
+    # Must be an any valid CSS Selector inside the parent form to submit.
+    string selector?;
+}|record {
+    # Must be a valid CSS Selector for the target element.
+    string selector?;
+}|record {
+    # Must be a valid CSS Selector for the target element.
+    string selector?;
+}|record {
+    # Wait time (in milliseconds).
+    string waitDelay?;
+}|record {
+    # The JavaScript snippet to run
+    string script?;
+}|record {
+    # list of actions combined in the loop are executed step-by-step
+    Action[] actions?;
+    # the number of times to execute the wrapped actions within the 'loop .. times' construction.
+    decimal times?;
+}|record {
+    # It is only used for loop actions only. Skips the last iteration.
+    boolean skipLastIteration?;
+}|record {
+    # Scrolls a web page by the number of pixels specified by 'scrollByPixels' parameter.
+    decimal scrollByPixels?;
+    # Optionally specify here a valid CSS Selector of scrolling element.
+    string scrollingElementSelector?;
+    # Some websites require clicking 'More' button while scrolling a page. Put here 'More' button valid CSS Selector.
+    string selector?;
+    # The number of times to scroll down a web page.
+    int times?;
+};
 
 public type Url2screenshotrequest record {
     # Use actions to automate manual workflows while rendering web pages. They simulate real-world human interaction with pages.

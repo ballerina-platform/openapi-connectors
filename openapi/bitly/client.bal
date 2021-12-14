@@ -15,7 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -67,14 +66,15 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api-ssl.bitly.com/v4") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get Click Metrics for a Group by Referring Networks
     #
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function getGroupMetricsByReferringNetworks(string groupGuid) returns ClickMetrics|error {
-        string  path = string `/groups/${groupGuid}/referring_networks`;
-        ClickMetrics response = check self.clientEp-> get(path, targetType = ClickMetrics);
+        string resourcePath = string `/groups/${groupGuid}/referring_networks`;
+        ClickMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Metrics for a Bitlink by Country
@@ -86,10 +86,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getMetricsForBitlinkByCountries(string bitlink, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns ClickMetrics|error {
-        string  path = string `/bitlinks/${bitlink}/countries`;
+        string resourcePath = string `/bitlinks/${bitlink}/countries`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        ClickMetrics response = check self.clientEp-> get(path, targetType = ClickMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ClickMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Tags by Group
@@ -97,8 +97,8 @@ public isolated client class Client {
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function getGroupTags(string groupGuid) returns Tags|error {
-        string  path = string `/groups/${groupGuid}/tags`;
-        Tags response = check self.clientEp-> get(path, targetType = Tags);
+        string resourcePath = string `/groups/${groupGuid}/tags`;
+        Tags response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get clicks by group
@@ -109,10 +109,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getGroupClicks(string groupGuid, TimeUnit unit, int units, string? unitReference = ()) returns GroupClicks|error {
-        string  path = string `/groups/${groupGuid}/clicks`;
+        string resourcePath = string `/groups/${groupGuid}/clicks`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        GroupClicks response = check self.clientEp-> get(path, targetType = GroupClicks);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GroupClicks response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Webhook
@@ -120,8 +120,8 @@ public isolated client class Client {
     # + webhookGuid - A GUID for a Bitly webhook 
     # + return - SUCCESS 
     remote isolated function getWebhook(string webhookGuid) returns Webhook|error {
-        string  path = string `/webhooks/${webhookGuid}`;
-        Webhook response = check self.clientEp-> get(path, targetType = Webhook);
+        string resourcePath = string `/webhooks/${webhookGuid}`;
+        Webhook response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete Webhook
@@ -129,8 +129,8 @@ public isolated client class Client {
     # + webhookGuid - A GUID for a Bitly webhook 
     # + return - SUCCESS 
     remote isolated function deleteWebhook(string webhookGuid) returns http:Response|error {
-        string  path = string `/webhooks/${webhookGuid}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/webhooks/${webhookGuid}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update Webhook
@@ -138,11 +138,11 @@ public isolated client class Client {
     # + webhookGuid - A GUID for a Bitly webhook 
     # + return - SUCCESS 
     remote isolated function updateWebhook(string webhookGuid, WebhookUpdate payload) returns Webhook|error {
-        string  path = string `/webhooks/${webhookGuid}`;
+        string resourcePath = string `/webhooks/${webhookGuid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Webhook response = check self.clientEp->patch(path, request, targetType=Webhook);
+        request.setPayload(jsonBody, "application/json");
+        Webhook response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Shorten Counts for an Organization
@@ -153,21 +153,21 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getOrganizationShortenCounts(string organizationGuid, TimeUnit unit, int units, string? unitReference = ()) returns Metrics|error {
-        string  path = string `/organizations/${organizationGuid}/shorten_counts`;
+        string resourcePath = string `/organizations/${organizationGuid}/shorten_counts`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        Metrics response = check self.clientEp-> get(path, targetType = Metrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Metrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Expand a Bitlink
     #
     # + return - SUCCESS 
     remote isolated function expandBitlink(ExpandBitlink payload) returns ExpandedBitlink|error {
-        string  path = string `/expand`;
+        string resourcePath = string `/expand`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ExpandedBitlink response = check self.clientEp->post(path, request, targetType=ExpandedBitlink);
+        request.setPayload(jsonBody, "application/json");
+        ExpandedBitlink response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieve an Organization
@@ -175,8 +175,8 @@ public isolated client class Client {
     # + organizationGuid - A GUID for a Bitly organization 
     # + return - SUCCESS 
     remote isolated function getOrganization(string organizationGuid) returns Organization|error {
-        string  path = string `/organizations/${organizationGuid}`;
-        Organization response = check self.clientEp-> get(path, targetType = Organization);
+        string resourcePath = string `/organizations/${organizationGuid}`;
+        Organization response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Click Metrics for a Group by Device Type
@@ -188,10 +188,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getGroupMetricsByDevices(string groupGuid, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns DeviceMetrics|error {
-        string  path = string `/groups/${groupGuid}/devices`;
+        string resourcePath = string `/groups/${groupGuid}/devices`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceMetrics response = check self.clientEp-> get(path, targetType = DeviceMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Click Metrics for a Group by Country
@@ -203,10 +203,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getGroupMetricsByCountries(string groupGuid, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns ClickMetrics|error {
-        string  path = string `/groups/${groupGuid}/countries`;
+        string resourcePath = string `/groups/${groupGuid}/countries`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        ClickMetrics response = check self.clientEp-> get(path, targetType = ClickMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ClickMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a Clicks Summary for a Bitlink
@@ -217,10 +217,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getClicksSummaryForBitlink(string bitlink, TimeUnit unit, int units, string? unitReference = ()) returns ClicksSummary|error {
-        string  path = string `/bitlinks/${bitlink}/clicks/summary`;
+        string resourcePath = string `/bitlinks/${bitlink}/clicks/summary`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        ClicksSummary response = check self.clientEp-> get(path, targetType = ClicksSummary);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ClicksSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Metrics for a Custom Bitlink by Destination
@@ -231,10 +231,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getCustomBitlinkMetricsByDestination(string customBitlink, TimeUnit unit, int units, string? unitReference = ()) returns ClickMetrics|error {
-        string  path = string `/customBitlinks/${customBitlink}/clicks_by_destination`;
+        string resourcePath = string `/custom_bitlinks/${customBitlink}/clicks_by_destination`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        ClickMetrics response = check self.clientEp-> get(path, targetType = ClickMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ClickMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve a Bitlink
@@ -242,8 +242,8 @@ public isolated client class Client {
     # + bitlink - A Bitlink made of the domain and hash 
     # + return - SUCCESS 
     remote isolated function getBitlink(string bitlink) returns BitlinkBody|error {
-        string  path = string `/bitlinks/${bitlink}`;
-        BitlinkBody response = check self.clientEp-> get(path, targetType = BitlinkBody);
+        string resourcePath = string `/bitlinks/${bitlink}`;
+        BitlinkBody response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a Bitlink
@@ -251,11 +251,11 @@ public isolated client class Client {
     # + bitlink - A Bitlink made of the domain and hash 
     # + return - SUCCESS 
     remote isolated function updateBitlink(string bitlink, BitlinkBody payload) returns BitlinkBody|error {
-        string  path = string `/bitlinks/${bitlink}`;
+        string resourcePath = string `/bitlinks/${bitlink}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BitlinkBody response = check self.clientEp->patch(path, request, targetType=BitlinkBody);
+        request.setPayload(jsonBody, "application/json");
+        BitlinkBody response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Retrieve a Campaign
@@ -263,8 +263,8 @@ public isolated client class Client {
     # + campaignGuid - A GUID for a Bitly campaign 
     # + return - SUCCESS 
     remote isolated function getCampaign(string campaignGuid) returns Campaign|error {
-        string  path = string `/campaigns/${campaignGuid}`;
-        Campaign response = check self.clientEp-> get(path, targetType = Campaign);
+        string resourcePath = string `/campaigns/${campaignGuid}`;
+        Campaign response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Campaign
@@ -272,11 +272,11 @@ public isolated client class Client {
     # + campaignGuid - A GUID for a Bitly campaign 
     # + return - SUCCESS 
     remote isolated function updateCampaign(string campaignGuid, CampaignModify payload) returns Campaign|error {
-        string  path = string `/campaigns/${campaignGuid}`;
+        string resourcePath = string `/campaigns/${campaignGuid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Campaign response = check self.clientEp->patch(path, request, targetType=Campaign);
+        request.setPayload(jsonBody, "application/json");
+        Campaign response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Clicks for a Custom Bitlink's Entire History
@@ -287,10 +287,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getClicksForCustomBitlink(string customBitlink, TimeUnit unit, int units, string? unitReference = ()) returns Clicks|error {
-        string  path = string `/customBitlinks/${customBitlink}/clicks`;
+        string resourcePath = string `/custom_bitlinks/${customBitlink}/clicks`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        Clicks response = check self.clientEp-> get(path, targetType = Clicks);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Clicks response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Metrics for a Bitlink by Referring Domains
@@ -302,10 +302,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getMetricsForBitlinkByReferringDomains(string bitlink, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns ClickMetrics|error {
-        string  path = string `/bitlinks/${bitlink}/referring_domains`;
+        string resourcePath = string `/bitlinks/${bitlink}/referring_domains`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        ClickMetrics response = check self.clientEp-> get(path, targetType = ClickMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ClickMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve a Group
@@ -313,8 +313,8 @@ public isolated client class Client {
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function getGroup(string groupGuid) returns Group|error {
-        string  path = string `/groups/${groupGuid}`;
-        Group response = check self.clientEp-> get(path, targetType = Group);
+        string resourcePath = string `/groups/${groupGuid}`;
+        Group response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a Group
@@ -322,11 +322,11 @@ public isolated client class Client {
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function updateGroup(string groupGuid, GroupUpdate payload) returns Group|error {
-        string  path = string `/groups/${groupGuid}`;
+        string resourcePath = string `/groups/${groupGuid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->patch(path, request, targetType=Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get a QR Code
@@ -337,10 +337,10 @@ public isolated client class Client {
     # + imageFormat - Determines the image format of the returned QR code 
     # + return - SUCCESS 
     remote isolated function getBitlinkQRCode(string bitlink, string? color = (), boolean? excludeBitlyLogo = (), string imageFormat = "png") returns BitlinkQR|error {
-        string  path = string `/bitlinks/${bitlink}/qr`;
+        string resourcePath = string `/bitlinks/${bitlink}/qr`;
         map<anydata> queryParam = {"color": color, "exclude_bitly_logo": excludeBitlyLogo, "image_format": imageFormat};
-        path = path + check getPathForQueryParam(queryParam);
-        BitlinkQR response = check self.clientEp-> get(path, targetType = BitlinkQR);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        BitlinkQR response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Metrics for a Bitlink by City
@@ -352,10 +352,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getMetricsForBitlinkByCities(string bitlink, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns CityMetrics|error {
-        string  path = string `/bitlinks/${bitlink}/cities`;
+        string resourcePath = string `/bitlinks/${bitlink}/cities`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        CityMetrics response = check self.clientEp-> get(path, targetType = CityMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CityMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Click Metrics for a Group by City
@@ -367,10 +367,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getGroupMetricsByCities(string groupGuid, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns CityMetrics|error {
-        string  path = string `/groups/${groupGuid}/cities`;
+        string resourcePath = string `/groups/${groupGuid}/cities`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        CityMetrics response = check self.clientEp-> get(path, targetType = CityMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CityMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Metrics for a Bitlink by Device Type
@@ -382,21 +382,21 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getMetricsForBitlinkByDevices(string bitlink, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns DeviceMetrics|error {
-        string  path = string `/bitlinks/${bitlink}/devices`;
+        string resourcePath = string `/bitlinks/${bitlink}/devices`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceMetrics response = check self.clientEp-> get(path, targetType = DeviceMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Webhook
     #
     # + return - CREATED 
     remote isolated function createWebhook(WebhookCreate payload) returns Webhook|error {
-        string  path = string `/webhooks`;
+        string resourcePath = string `/webhooks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Webhook response = check self.clientEp->post(path, request, targetType=Webhook);
+        request.setPayload(jsonBody, "application/json");
+        Webhook response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Plan Limits
@@ -404,8 +404,8 @@ public isolated client class Client {
     # + organizationGuid - A GUID for a Bitly organization 
     # + return - SUCCESS 
     remote isolated function getPlanLimits(string organizationGuid) returns PlanLimits|error {
-        string  path = string `/organizations/${organizationGuid}/plan_limits`;
-        PlanLimits response = check self.clientEp-> get(path, targetType = PlanLimits);
+        string resourcePath = string `/organizations/${organizationGuid}/plan_limits`;
+        PlanLimits response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve OAuth App
@@ -413,8 +413,8 @@ public isolated client class Client {
     # + clientId - The client ID of an OAuth app 
     # + return - SUCCESS 
     remote isolated function getOAuthApp(string clientId) returns OAuthApp|error {
-        string  path = string `/apps/${clientId}`;
-        OAuthApp response = check self.clientEp-> get(path, targetType = OAuthApp);
+        string resourcePath = string `/apps/${clientId}`;
+        OAuthApp response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Channels
@@ -423,21 +423,21 @@ public isolated client class Client {
     # + campaignGuid - A GUID for a Bitly campaign 
     # + return - SUCCESS 
     remote isolated function getChannels(string? groupGuid = (), string? campaignGuid = ()) returns Channels|error {
-        string  path = string `/channels`;
+        string resourcePath = string `/channels`;
         map<anydata> queryParam = {"group_guid": groupGuid, "campaign_guid": campaignGuid};
-        path = path + check getPathForQueryParam(queryParam);
-        Channels response = check self.clientEp-> get(path, targetType = Channels);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Channels response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Channel
     #
     # + return - SUCCESS 
     remote isolated function createChannel(ChannelModify payload) returns Channel|error {
-        string  path = string `/channels`;
+        string resourcePath = string `/channels`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Channel response = check self.clientEp->post(path, request, targetType=Channel);
+        request.setPayload(jsonBody, "application/json");
+        Channel response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieve Custom Bitlink
@@ -445,8 +445,8 @@ public isolated client class Client {
     # + customBitlink - A Custom Bitlink made of the domain and keyword 
     # + return - SUCCESS 
     remote isolated function getCustomBitlink(string customBitlink) returns CustomBitlink|error {
-        string  path = string `/customBitlinks/${customBitlink}`;
-        CustomBitlink response = check self.clientEp-> get(path, targetType = CustomBitlink);
+        string resourcePath = string `/custom_bitlinks/${customBitlink}`;
+        CustomBitlink response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Custom Bitlink
@@ -454,11 +454,11 @@ public isolated client class Client {
     # + customBitlink - A Custom Bitlink made of the domain and keyword 
     # + return - SUCCESS 
     remote isolated function updateCustomBitlink(string customBitlink, UpdateCustomBitlink payload) returns CustomBitlink|error {
-        string  path = string `/customBitlinks/${customBitlink}`;
+        string resourcePath = string `/custom_bitlinks/${customBitlink}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomBitlink response = check self.clientEp->patch(path, request, targetType=CustomBitlink);
+        request.setPayload(jsonBody, "application/json");
+        CustomBitlink response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Retrieve Group Shorten Counts
@@ -469,10 +469,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getGroupShortenCounts(string groupGuid, TimeUnit unit, int units, string? unitReference = ()) returns Metrics|error {
-        string  path = string `/groups/${groupGuid}/shorten_counts`;
+        string resourcePath = string `/groups/${groupGuid}/shorten_counts`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        Metrics response = check self.clientEp-> get(path, targetType = Metrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Metrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Groups
@@ -480,18 +480,18 @@ public isolated client class Client {
     # + organizationGuid - A GUID for a Bitly organization 
     # + return - SUCCESS 
     remote isolated function getGroups(string? organizationGuid = ()) returns Groups|error {
-        string  path = string `/groups`;
+        string resourcePath = string `/groups`;
         map<anydata> queryParam = {"organization_guid": organizationGuid};
-        path = path + check getPathForQueryParam(queryParam);
-        Groups response = check self.clientEp-> get(path, targetType = Groups);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Groups response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Organizations
     #
     # + return - SUCCESS 
     remote isolated function getOrganizations() returns Organizations|error {
-        string  path = string `/organizations`;
-        Organizations response = check self.clientEp-> get(path, targetType = Organizations);
+        string resourcePath = string `/organizations`;
+        Organizations response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Metrics for a Bitlink by Referrers by Domain
@@ -503,37 +503,37 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getMetricsForBitlinkByReferrersByDomains(string bitlink, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns ReferrersByDomains|error {
-        string  path = string `/bitlinks/${bitlink}/referrers_by_domains`;
+        string resourcePath = string `/bitlinks/${bitlink}/referrers_by_domains`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        ReferrersByDomains response = check self.clientEp-> get(path, targetType = ReferrersByDomains);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ReferrersByDomains response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve a User
     #
     # + return - SUCCESS 
     remote isolated function getUser() returns User|error {
-        string  path = string `/user`;
-        User response = check self.clientEp-> get(path, targetType = User);
+        string resourcePath = string `/user`;
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a User
     #
     # + return - SUCCESS 
     remote isolated function updateUser(UserUpdate payload) returns User|error {
-        string  path = string `/user`;
+        string resourcePath = string `/user`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        User response = check self.clientEp->patch(path, request, targetType=User);
+        request.setPayload(jsonBody, "application/json");
+        User response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get BSDs
     #
     # + return - SUCCESS 
     remote isolated function getBSDs() returns BSDsResponse|error {
-        string  path = string `/bsds`;
-        BSDsResponse response = check self.clientEp-> get(path, targetType = BSDsResponse);
+        string resourcePath = string `/bsds`;
+        BSDsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Group Preferences
@@ -541,8 +541,8 @@ public isolated client class Client {
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function getGroupPreferences(string groupGuid) returns GroupPreferences|error {
-        string  path = string `/groups/${groupGuid}/preferences`;
-        GroupPreferences response = check self.clientEp-> get(path, targetType = GroupPreferences);
+        string resourcePath = string `/groups/${groupGuid}/preferences`;
+        GroupPreferences response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Group Preferences
@@ -550,11 +550,11 @@ public isolated client class Client {
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function updateGroupPreferences(string groupGuid, GroupPreferences payload) returns GroupPreferences|error {
-        string  path = string `/groups/${groupGuid}/preferences`;
+        string resourcePath = string `/groups/${groupGuid}/preferences`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupPreferences response = check self.clientEp->patch(path, request, targetType=GroupPreferences);
+        request.setPayload(jsonBody, "application/json");
+        GroupPreferences response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get Clicks for a Bitlink
@@ -565,10 +565,10 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getClicksForBitlink(string bitlink, TimeUnit unit, int units, string? unitReference = ()) returns Clicks|error {
-        string  path = string `/bitlinks/${bitlink}/clicks`;
+        string resourcePath = string `/bitlinks/${bitlink}/clicks`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        Clicks response = check self.clientEp-> get(path, targetType = Clicks);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Clicks response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve Sorted Bitlinks for Group
@@ -581,32 +581,32 @@ public isolated client class Client {
     # + size - The quantity of items to be be returned 
     # + return - SUCCESS 
     remote isolated function getSortedBitlinks(string groupGuid, string sort, TimeUnit? unit = (), int units = -1, string? unitReference = (), int size = 50) returns SortedLinks|error {
-        string  path = string `/groups/${groupGuid}/bitlinks/${sort}`;
+        string resourcePath = string `/groups/${groupGuid}/bitlinks/${sort}`;
         map<anydata> queryParam = {"unit": unit, "units": units, "unit_reference": unitReference, "size": size};
-        path = path + check getPathForQueryParam(queryParam);
-        SortedLinks response = check self.clientEp-> get(path, targetType = SortedLinks);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SortedLinks response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a Bitlink
     #
     # + return - SUCCESS 
     remote isolated function createFullBitlink(FullShorten payload) returns BitlinkBody|error {
-        string  path = string `/bitlinks`;
+        string resourcePath = string `/bitlinks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BitlinkBody response = check self.clientEp->post(path, request, targetType=BitlinkBody);
+        request.setPayload(jsonBody, "application/json");
+        BitlinkBody response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Add Custom Bitlink
     #
     # + return - SUCCESS 
     remote isolated function addCustomBitlink(AddCustomBitlink payload) returns CustomBitlink|error {
-        string  path = string `/custom_bitlinks`;
+        string resourcePath = string `/custom_bitlinks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomBitlink response = check self.clientEp->post(path, request, targetType=CustomBitlink);
+        request.setPayload(jsonBody, "application/json");
+        CustomBitlink response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieve Bitlinks by Group
@@ -629,10 +629,11 @@ public isolated client class Client {
     # + encodingLogin - Filter by the login of the authenticated user that created the Bitlink 
     # + return - SUCCESS 
     remote isolated function getBitlinksByGroup(string groupGuid, int size = 50, int page = 1, string? keyword = (), string? query = (), int? createdBefore = (), int? createdAfter = (), int? modifiedAfter = (), string archived = "off", string deeplinks = "both", string domainDeeplinks = "both", string? campaignGuid = (), string? channelGuid = (), string customBitlink = "both", string[]? tags = (), string[]? launchpadIds = (), string[]? encodingLogin = ()) returns Bitlinks|error {
-        string  path = string `/groups/${groupGuid}/bitlinks`;
+        string resourcePath = string `/groups/${groupGuid}/bitlinks`;
         map<anydata> queryParam = {"size": size, "page": page, "keyword": keyword, "query": query, "created_before": createdBefore, "created_after": createdAfter, "modified_after": modifiedAfter, "archived": archived, "deeplinks": deeplinks, "domain_deeplinks": domainDeeplinks, "campaign_guid": campaignGuid, "channel_guid": channelGuid, "custom_bitlink": customBitlink, "tags": tags, "launchpad_ids": launchpadIds, "encoding_login": encodingLogin};
-        path = path + check getPathForQueryParam(queryParam);
-        Bitlinks response = check self.clientEp-> get(path, targetType = Bitlinks);
+        map<Encoding> queryParamEncoding = {"tags": {style: FORM, explode: true}, "launchpad_ids": {style: FORM, explode: true}, "encoding_login": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Bitlinks response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Bulk update bitlinks
@@ -640,11 +641,11 @@ public isolated client class Client {
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function updateBitlinksByGroup(string groupGuid, BulkUpdateRequest payload) returns BulkUpdate|error {
-        string  path = string `/groups/${groupGuid}/bitlinks`;
+        string resourcePath = string `/groups/${groupGuid}/bitlinks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BulkUpdate response = check self.clientEp->patch(path, request, targetType=BulkUpdate);
+        request.setPayload(jsonBody, "application/json");
+        BulkUpdate response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Retrieve Campaigns
@@ -652,21 +653,21 @@ public isolated client class Client {
     # + groupGuid - A GUID for a Bitly group 
     # + return - SUCCESS 
     remote isolated function getCampaigns(string? groupGuid = ()) returns Campaigns|error {
-        string  path = string `/campaigns`;
+        string resourcePath = string `/campaigns`;
         map<anydata> queryParam = {"group_guid": groupGuid};
-        path = path + check getPathForQueryParam(queryParam);
-        Campaigns response = check self.clientEp-> get(path, targetType = Campaigns);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Campaigns response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Campaign
     #
     # + return - SUCCESS 
     remote isolated function createCampaign(CampaignModify payload) returns Campaign|error {
-        string  path = string `/campaigns`;
+        string resourcePath = string `/campaigns`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Campaign response = check self.clientEp->post(path, request, targetType=Campaign);
+        request.setPayload(jsonBody, "application/json");
+        Campaign response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Metrics for a Bitlink by Referrers
@@ -678,21 +679,21 @@ public isolated client class Client {
     # + unitReference - An ISO-8601 timestamp, indicating the most recent time for which to pull metrics. Will default to current time. 
     # + return - SUCCESS 
     remote isolated function getMetricsForBitlinkByReferrers(string bitlink, TimeUnit unit, int units, int size = 50, string? unitReference = ()) returns ClickMetrics|error {
-        string  path = string `/bitlinks/${bitlink}/referrers`;
+        string resourcePath = string `/bitlinks/${bitlink}/referrers`;
         map<anydata> queryParam = {"unit": unit, "units": units, "size": size, "unit_reference": unitReference};
-        path = path + check getPathForQueryParam(queryParam);
-        ClickMetrics response = check self.clientEp-> get(path, targetType = ClickMetrics);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ClickMetrics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Shorten a Link
     #
     # + return - SUCCESS 
     remote isolated function createBitlink(Shorten payload) returns ShortenBitlinkBody|error {
-        string  path = string `/shorten`;
+        string resourcePath = string `/shorten`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShortenBitlinkBody response = check self.clientEp->post(path, request, targetType=ShortenBitlinkBody);
+        request.setPayload(jsonBody, "application/json");
+        ShortenBitlinkBody response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Verify Webhook
@@ -700,10 +701,10 @@ public isolated client class Client {
     # + webhookGuid - A GUID for a Bitly webhook 
     # + return - SUCCESS 
     remote isolated function verifyWebhook(string webhookGuid) returns Webhook|error {
-        string  path = string `/webhooks/${webhookGuid}/verify`;
+        string resourcePath = string `/webhooks/${webhookGuid}/verify`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Webhook response = check self.clientEp-> post(path, request, targetType = Webhook);
+        Webhook response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Get Webhooks
@@ -711,8 +712,8 @@ public isolated client class Client {
     # + organizationGuid - A GUID for a Bitly organization 
     # + return - SUCCESS 
     remote isolated function getWebhooks(string organizationGuid) returns Webhooks|error {
-        string  path = string `/organizations/${organizationGuid}/webhooks`;
-        Webhooks response = check self.clientEp-> get(path, targetType = Webhooks);
+        string resourcePath = string `/organizations/${organizationGuid}/webhooks`;
+        Webhooks response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a Channel
@@ -720,8 +721,8 @@ public isolated client class Client {
     # + channelGuid - A GUID for a Bitly Channel 
     # + return - SUCCESS 
     remote isolated function getChannel(string channelGuid) returns Channel|error {
-        string  path = string `/channels/${channelGuid}`;
-        Channel response = check self.clientEp-> get(path, targetType = Channel);
+        string resourcePath = string `/channels/${channelGuid}`;
+        Channel response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a Channel
@@ -729,45 +730,11 @@ public isolated client class Client {
     # + channelGuid - A GUID for a Bitly Channel 
     # + return - SUCCESS 
     remote isolated function updateChannel(string channelGuid, ChannelModify payload) returns Channel|error {
-        string  path = string `/channels/${channelGuid}`;
+        string resourcePath = string `/channels/${channelGuid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Channel response = check self.clientEp->patch(path, request, targetType=Channel);
+        request.setPayload(jsonBody, "application/json");
+        Channel response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

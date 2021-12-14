@@ -247,7 +247,7 @@ public type TimeSeriesAggregateCategory record {
     # The name of the category which will be used in constructing the output variable names.
     string label;
     # The list of values that a category maps to. Can be either a unique list of string or list of long.
-    record  { } [] values;
+    record {}[] values;
 };
 
 # Request to get or delete instances by time series IDs or time series names. Exactly one of "timeSeriesIds" or "names" must be set.
@@ -388,7 +388,6 @@ public type EventProperty record {
 };
 
 # A single Time Series ID value that is an array of primitive values that uniquely identifies a time series instance (e.g. a single device). Note that a single Time Series ID can be composite if multiple properties are specified as Time Series ID at environment creation time. The position and type of values must match Time Series ID properties specified on the environment and returned by Get Model Setting API. Cannot be empty.
-# A single Time Series ID value that is an array of primitive values that uniquely identifies a time series instance (e.g. a single device). Note that a single Time Series ID can be composite if multiple properties are specified as Time Series ID at environment creation time. The position and type of values must match Time Series ID properties specified on the environment and returned by Get Model Setting API. Cannot be empty.
 public type TimeSeriesId record {}[];
 
 # The hierarchy node which contains the instances matching the query based on the input. May be empty or null.
@@ -514,7 +513,6 @@ public type AggregateVariable record {
     Tsx aggregation?;
 };
 
-# Time series ID properties defined during environment creation.
 # Time series ID properties defined during environment creation.
 public type TimeSeriesIdProperties TimeSeriesIdProperty[];
 

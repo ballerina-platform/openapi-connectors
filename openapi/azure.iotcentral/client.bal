@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -64,19 +62,20 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "/api") returns error? {
+    public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get the list of API tokens in an application. The token value will never be returned for security reasons.
     #
     # + apiVersion - The version of the API being called. 
     # + return - Success 
     remote isolated function apitokensList(string apiVersion) returns ApiTokenCollection|error {
-        string  path = string `/apiTokens`;
+        string resourcePath = string `/apiTokens`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        ApiTokenCollection response = check self.clientEp-> get(path, targetType = ApiTokenCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ApiTokenCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get an API token by ID.
@@ -85,10 +84,10 @@ public isolated client class Client {
     # + tokenId - Unique ID for the API token. 
     # + return - Success 
     remote isolated function apitokensGet(string apiVersion, string tokenId) returns ApiToken|error {
-        string  path = string `/apiTokens/${tokenId}`;
+        string resourcePath = string `/apiTokens/${tokenId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        ApiToken response = check self.clientEp-> get(path, targetType = ApiToken);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ApiToken response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new API token in the application to use in the IoT Central public API. The token value will be returned in the response, and won't be returned again in subsequent requests.
@@ -98,13 +97,13 @@ public isolated client class Client {
     # + payload - API token body. 
     # + return - Success 
     remote isolated function apitokensCreate(string apiVersion, string tokenId, ApiToken payload) returns ApiToken|error {
-        string  path = string `/apiTokens/${tokenId}`;
+        string resourcePath = string `/apiTokens/${tokenId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiToken response = check self.clientEp->put(path, request, targetType=ApiToken);
+        request.setPayload(jsonBody, "application/json");
+        ApiToken response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete an API token.
@@ -113,12 +112,10 @@ public isolated client class Client {
     # + tokenId - Unique ID for the API token. 
     # + return - Success 
     remote isolated function apitokensRemove(string apiVersion, string tokenId) returns http:Response|error {
-        string  path = string `/apiTokens/${tokenId}`;
+        string resourcePath = string `/apiTokens/${tokenId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get the list of device templates in an application
@@ -126,10 +123,10 @@ public isolated client class Client {
     # + apiVersion - The version of the API being called. 
     # + return - Success 
     remote isolated function devicetemplatesList(string apiVersion) returns DeviceTemplateCollection|error {
-        string  path = string `/deviceTemplates`;
+        string resourcePath = string `/deviceTemplates`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceTemplateCollection response = check self.clientEp-> get(path, targetType = DeviceTemplateCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceTemplateCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a device template by ID
@@ -138,10 +135,10 @@ public isolated client class Client {
     # + deviceTemplateId - Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier) 
     # + return - Success 
     remote isolated function devicetemplatesGet(string apiVersion, string deviceTemplateId) returns DeviceTemplate|error {
-        string  path = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceTemplate response = check self.clientEp-> get(path, targetType = DeviceTemplate);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceTemplate response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Publish a new device template. Default views will be automatically generated for new device templates created this way.
@@ -151,13 +148,13 @@ public isolated client class Client {
     # + payload - Device template body. 
     # + return - Success 
     remote isolated function devicetemplatesCreate(string apiVersion, string deviceTemplateId, DeviceTemplate payload) returns DeviceTemplate|error {
-        string  path = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceTemplate response = check self.clientEp->put(path, request, targetType=DeviceTemplate);
+        request.setPayload(jsonBody, "application/json");
+        DeviceTemplate response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a device template
@@ -166,12 +163,10 @@ public isolated client class Client {
     # + deviceTemplateId - Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier) 
     # + return - Success 
     remote isolated function devicetemplatesRemove(string apiVersion, string deviceTemplateId) returns http:Response|error {
-        string  path = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update the cloud properties and overrides of an existing device template via patch.
@@ -181,13 +176,13 @@ public isolated client class Client {
     # + payload - Device template patch body. 
     # + return - Success 
     remote isolated function devicetemplatesUpdate(string apiVersion, string deviceTemplateId, Payload payload) returns DeviceTemplate|error {
-        string  path = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceTemplate response = check self.clientEp->patch(path, request, targetType=DeviceTemplate);
+        request.setPayload(jsonBody, "application/json");
+        DeviceTemplate response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get the list of devices in an application
@@ -195,10 +190,10 @@ public isolated client class Client {
     # + apiVersion - The version of the API being called. 
     # + return - Success 
     remote isolated function devicesList(string apiVersion) returns DeviceCollection|error {
-        string  path = string `/devices`;
+        string resourcePath = string `/devices`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceCollection response = check self.clientEp-> get(path, targetType = DeviceCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a device by ID
@@ -207,10 +202,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGet(string apiVersion, string deviceId) returns Device|error {
-        string  path = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${deviceId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        Device response = check self.clientEp-> get(path, targetType = Device);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Device response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or update a device
@@ -220,13 +215,13 @@ public isolated client class Client {
     # + payload - Device body. 
     # + return - Success 
     remote isolated function devicesCreate(string apiVersion, string deviceId, Device payload) returns Device|error {
-        string  path = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${deviceId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Device response = check self.clientEp->put(path, request, targetType=Device);
+        request.setPayload(jsonBody, "application/json");
+        Device response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a device
@@ -235,12 +230,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesRemove(string apiVersion, string deviceId) returns http:Response|error {
-        string  path = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${deviceId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a device via patch
@@ -250,13 +243,13 @@ public isolated client class Client {
     # + payload - Device patch body. 
     # + return - Success 
     remote isolated function devicesUpdate(string apiVersion, string deviceId, Payload payload) returns Device|error {
-        string  path = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${deviceId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Device response = check self.clientEp->patch(path, request, targetType=Device);
+        request.setPayload(jsonBody, "application/json");
+        Device response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get device attestation
@@ -265,10 +258,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGetattestation(string apiVersion, string deviceId) returns Attestation|error {
-        string  path = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${deviceId}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        Attestation response = check self.clientEp-> get(path, targetType = Attestation);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Attestation response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an individual device attestation
@@ -278,13 +271,13 @@ public isolated client class Client {
     # + payload - Individual device attestation body. 
     # + return - Success 
     remote isolated function devicesCreateattestation(string apiVersion, string deviceId, Attestation payload) returns Attestation|error {
-        string  path = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${deviceId}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attestation response = check self.clientEp->put(path, request, targetType=Attestation);
+        request.setPayload(jsonBody, "application/json");
+        Attestation response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove an individual device attestation
@@ -293,12 +286,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesRemoveattestation(string apiVersion, string deviceId) returns http:Response|error {
-        string  path = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${deviceId}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update an individual device attestation via patch
@@ -308,13 +299,13 @@ public isolated client class Client {
     # + payload - Individual device attestation patch body. 
     # + return - Success 
     remote isolated function devicesUpdateattestation(string apiVersion, string deviceId, Payload payload) returns Attestation|error {
-        string  path = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${deviceId}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attestation response = check self.clientEp->patch(path, request, targetType=Attestation);
+        request.setPayload(jsonBody, "application/json");
+        Attestation response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get device command history
@@ -324,10 +315,10 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetcommandhistory(string apiVersion, string deviceId, string commandName) returns DeviceCommandCollection|error {
-        string  path = string `/devices/${deviceId}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceCommandCollection response = check self.clientEp-> get(path, targetType = DeviceCommandCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceCommandCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Run a device command
@@ -338,13 +329,13 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRuncommand(string apiVersion, string deviceId, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string  path = string `/devices/${deviceId}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceCommand response = check self.clientEp->post(path, request, targetType=DeviceCommand);
+        request.setPayload(jsonBody, "application/json");
+        DeviceCommand response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # List the components present in a device
@@ -353,10 +344,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesListcomponents(string apiVersion, string deviceId) returns Collection|error {
-        string  path = string `/devices/${deviceId}/components`;
+        string resourcePath = string `/devices/${deviceId}/components`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        Collection response = check self.clientEp-> get(path, targetType = Collection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Collection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get component command history
@@ -367,10 +358,10 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetcomponentcommandhistory(string apiVersion, string deviceId, string componentName, string commandName) returns DeviceCommandCollection|error {
-        string  path = string `/devices/${deviceId}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/components/${componentName}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceCommandCollection response = check self.clientEp-> get(path, targetType = DeviceCommandCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceCommandCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Run a component command
@@ -382,13 +373,13 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRuncomponentcommand(string apiVersion, string deviceId, string componentName, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string  path = string `/devices/${deviceId}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/components/${componentName}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceCommand response = check self.clientEp->post(path, request, targetType=DeviceCommand);
+        request.setPayload(jsonBody, "application/json");
+        DeviceCommand response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get device properties for a specific component
@@ -398,10 +389,10 @@ public isolated client class Client {
     # + componentName - Name of the device component. 
     # + return - Success 
     remote isolated function devicesGetcomponentproperties(string apiVersion, string deviceId, string componentName) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/components/${componentName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceProperties response = check self.clientEp-> get(path, targetType = DeviceProperties);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceProperties response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Replace device properties for a specific component
@@ -412,13 +403,13 @@ public isolated client class Client {
     # + payload - Device properties. 
     # + return - Success 
     remote isolated function devicesReplacecomponentproperties(string apiVersion, string deviceId, string componentName, DeviceProperties payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/components/${componentName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->put(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Update device properties for a specific component via patch
@@ -429,13 +420,13 @@ public isolated client class Client {
     # + payload - Device properties patch. 
     # + return - Success 
     remote isolated function devicesUpdatecomponentproperties(string apiVersion, string deviceId, string componentName, Payload payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/components/${componentName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->patch(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get component telemetry value
@@ -446,10 +437,10 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGetcomponenttelemetryvalue(string apiVersion, string deviceId, string componentName, string telemetryName) returns DeviceTelemetry|error {
-        string  path = string `/devices/${deviceId}/components/${componentName}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${deviceId}/components/${componentName}/telemetry/${telemetryName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceTelemetry response = check self.clientEp-> get(path, targetType = DeviceTelemetry);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceTelemetry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get device credentials
@@ -458,10 +449,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGetcredentials(string apiVersion, string deviceId) returns DeviceCredentials|error {
-        string  path = string `/devices/${deviceId}/credentials`;
+        string resourcePath = string `/devices/${deviceId}/credentials`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceCredentials response = check self.clientEp-> get(path, targetType = DeviceCredentials);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceCredentials response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List the modules present in a device
@@ -470,10 +461,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesListmodules(string apiVersion, string deviceId) returns Collection|error {
-        string  path = string `/devices/${deviceId}/modules`;
+        string resourcePath = string `/devices/${deviceId}/modules`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        Collection response = check self.clientEp-> get(path, targetType = Collection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Collection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get module command history
@@ -484,10 +475,10 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetmodulecommandhistory(string apiVersion, string deviceId, string moduleName, string commandName) returns DeviceCommandCollection|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceCommandCollection response = check self.clientEp-> get(path, targetType = DeviceCommandCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceCommandCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Run a module command
@@ -499,13 +490,13 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRunmodulecommand(string apiVersion, string deviceId, string moduleName, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceCommand response = check self.clientEp->post(path, request, targetType=DeviceCommand);
+        request.setPayload(jsonBody, "application/json");
+        DeviceCommand response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # List the components present in a module
@@ -515,10 +506,10 @@ public isolated client class Client {
     # + moduleName - Name of the device module. 
     # + return - Success 
     remote isolated function devicesListmodulecomponents(string apiVersion, string deviceId, string moduleName) returns Collection|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/components`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        Collection response = check self.clientEp-> get(path, targetType = Collection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Collection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get module component command history
@@ -530,10 +521,10 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetmodulecomponentcommandhistory(string apiVersion, string deviceId, string moduleName, string componentName, string commandName) returns DeviceCommandCollection|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceCommandCollection response = check self.clientEp-> get(path, targetType = DeviceCommandCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceCommandCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Run a module component command
@@ -546,13 +537,13 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRunmodulecomponentcommand(string apiVersion, string deviceId, string moduleName, string componentName, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/commands/${commandName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceCommand response = check self.clientEp->post(path, request, targetType=DeviceCommand);
+        request.setPayload(jsonBody, "application/json");
+        DeviceCommand response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get module properties for a specific component
@@ -563,10 +554,10 @@ public isolated client class Client {
     # + componentName - Name of the device component. 
     # + return - Success 
     remote isolated function devicesGetmodulecomponentproperties(string apiVersion, string deviceId, string moduleName, string componentName) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceProperties response = check self.clientEp-> get(path, targetType = DeviceProperties);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceProperties response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Replace module properties for a specific component
@@ -578,13 +569,13 @@ public isolated client class Client {
     # + payload - Module properties. 
     # + return - Success 
     remote isolated function devicesReplacemodulecomponentproperties(string apiVersion, string deviceId, string moduleName, string componentName, DeviceProperties payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->put(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Update module properties for a specific component via patch
@@ -596,13 +587,13 @@ public isolated client class Client {
     # + payload - Module properties patch. 
     # + return - Success 
     remote isolated function devicesUpdatemodulecomponentproperties(string apiVersion, string deviceId, string moduleName, string componentName, Payload payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->patch(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get module component telemetry value
@@ -614,10 +605,10 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGetmodulecomponenttelemetryvalue(string apiVersion, string deviceId, string moduleName, string componentName, string telemetryName) returns DeviceTelemetry|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/telemetry/${telemetryName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceTelemetry response = check self.clientEp-> get(path, targetType = DeviceTelemetry);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceTelemetry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get module properties
@@ -627,10 +618,10 @@ public isolated client class Client {
     # + moduleName - Name of the device module. 
     # + return - Success 
     remote isolated function devicesGetmoduleproperties(string apiVersion, string deviceId, string moduleName) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceProperties response = check self.clientEp-> get(path, targetType = DeviceProperties);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceProperties response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Replace module properties
@@ -641,13 +632,13 @@ public isolated client class Client {
     # + payload - Module properties. 
     # + return - Success 
     remote isolated function devicesReplacemoduleproperties(string apiVersion, string deviceId, string moduleName, DeviceProperties payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->put(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Update module properties via patch
@@ -658,13 +649,13 @@ public isolated client class Client {
     # + payload - Module properties patch. 
     # + return - Success 
     remote isolated function devicesUpdatemoduleproperties(string apiVersion, string deviceId, string moduleName, Payload payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/properties`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->patch(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get module telemetry value
@@ -675,10 +666,10 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGetmoduletelemetryvalue(string apiVersion, string deviceId, string moduleName, string telemetryName) returns DeviceTelemetry|error {
-        string  path = string `/devices/${deviceId}/modules/${moduleName}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/telemetry/${telemetryName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceTelemetry response = check self.clientEp-> get(path, targetType = DeviceTelemetry);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceTelemetry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get device properties
@@ -687,10 +678,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGetproperties(string apiVersion, string deviceId) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/properties`;
+        string resourcePath = string `/devices/${deviceId}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceProperties response = check self.clientEp-> get(path, targetType = DeviceProperties);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceProperties response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Replace device properties
@@ -700,13 +691,13 @@ public isolated client class Client {
     # + payload - Device properties. 
     # + return - Success 
     remote isolated function devicesReplaceproperties(string apiVersion, string deviceId, DeviceProperties payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/properties`;
+        string resourcePath = string `/devices/${deviceId}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->put(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Update device properties via patch
@@ -716,13 +707,13 @@ public isolated client class Client {
     # + payload - Device properties patch. 
     # + return - Success 
     remote isolated function devicesUpdateproperties(string apiVersion, string deviceId, Payload payload) returns DeviceProperties|error {
-        string  path = string `/devices/${deviceId}/properties`;
+        string resourcePath = string `/devices/${deviceId}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeviceProperties response = check self.clientEp->patch(path, request, targetType=DeviceProperties);
+        request.setPayload(jsonBody, "application/json");
+        DeviceProperties response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get device telemetry value
@@ -732,10 +723,10 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGettelemetryvalue(string apiVersion, string deviceId, string telemetryName) returns DeviceTelemetry|error {
-        string  path = string `/devices/${deviceId}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${deviceId}/telemetry/${telemetryName}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        DeviceTelemetry response = check self.clientEp-> get(path, targetType = DeviceTelemetry);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DeviceTelemetry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the list of roles in an application.
@@ -743,10 +734,10 @@ public isolated client class Client {
     # + apiVersion - The version of the API being called. 
     # + return - Success 
     remote isolated function rolesList(string apiVersion) returns RoleCollection|error {
-        string  path = string `/roles`;
+        string resourcePath = string `/roles`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        RoleCollection response = check self.clientEp-> get(path, targetType = RoleCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        RoleCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a role by ID.
@@ -755,10 +746,10 @@ public isolated client class Client {
     # + roleId - Unique ID for the role. 
     # + return - Success 
     remote isolated function rolesGet(string apiVersion, string roleId) returns Role|error {
-        string  path = string `/roles/${roleId}`;
+        string resourcePath = string `/roles/${roleId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        Role response = check self.clientEp-> get(path, targetType = Role);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Role response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the list of users in an application
@@ -766,10 +757,10 @@ public isolated client class Client {
     # + apiVersion - The version of the API being called. 
     # + return - Success 
     remote isolated function usersList(string apiVersion) returns UserCollection|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        UserCollection response = check self.clientEp-> get(path, targetType = UserCollection);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        UserCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a user by ID
@@ -778,10 +769,10 @@ public isolated client class Client {
     # + userId - Unique ID of the user. 
     # + return - Success 
     remote isolated function usersGet(string apiVersion, string userId) returns User|error {
-        string  path = string `/users/${userId}`;
+        string resourcePath = string `/users/${userId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        User response = check self.clientEp-> get(path, targetType = User);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a user in the application
@@ -791,13 +782,13 @@ public isolated client class Client {
     # + payload - User body. 
     # + return - Success 
     remote isolated function usersCreate(string apiVersion, string userId, User payload) returns User|error {
-        string  path = string `/users/${userId}`;
+        string resourcePath = string `/users/${userId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        User response = check self.clientEp->put(path, request, targetType=User);
+        request.setPayload(jsonBody, "application/json");
+        User response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a user
@@ -806,12 +797,10 @@ public isolated client class Client {
     # + userId - Unique ID of the user. 
     # + return - Success 
     remote isolated function usersRemove(string apiVersion, string userId) returns http:Response|error {
-        string  path = string `/users/${userId}`;
+        string resourcePath = string `/users/${userId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a user in the application via patch
@@ -821,47 +810,13 @@ public isolated client class Client {
     # + payload - User patch body. 
     # + return - Success 
     remote isolated function usersUpdate(string apiVersion, string userId, Payload payload) returns User|error {
-        string  path = string `/users/${userId}`;
+        string resourcePath = string `/users/${userId}`;
         map<anydata> queryParam = {"api-version": apiVersion};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        User response = check self.clientEp->patch(path, request, targetType=User);
+        request.setPayload(jsonBody, "application/json");
+        User response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

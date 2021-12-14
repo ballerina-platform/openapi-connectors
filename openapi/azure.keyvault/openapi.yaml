@@ -27,8 +27,6 @@ info:
   x-tags:
   - Azure
   - Microsoft
-servers:
-- url: https://azure.local/
 paths:
   /certificates:
     get:

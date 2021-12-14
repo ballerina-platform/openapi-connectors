@@ -84,7 +84,7 @@ public type DeviceTemplate record {
     # Detailed description of the device template.
     string description?;
     # The capability model utilized by this device template.
-    record  { }  capabilityModel;
+    record {} capabilityModel;
 };
 
 public type Permission record {
@@ -202,7 +202,7 @@ public type ApiToken record {
 
 public type Collection record {
     # The collection of entities.
-    record  { } [] value;
+    record {}[] value;
     # URL to get the next page of entities.
     string nextLink?;
 };

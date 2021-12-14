@@ -15,8 +15,7 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
+import ballerina/mime;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -78,21 +77,22 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.earthref.org") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Check the health of the API
     #
     # + return - Health check passed 
     remote isolated function checkHealth() returns InlineResponse200|error {
-        string  path = string `/v1/health-check`;
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        string resourcePath = string `/v1/health-check`;
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Authenticate a username and password
     #
     # + return - User Record 
     remote isolated function authenticate() returns string|error {
-        string  path = string `/v1/authenticate`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/v1/authenticate`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Download the zip archive of files for one or more public contributions
@@ -104,11 +104,12 @@ public isolated client class Client {
     # + doi - One or more reference DOIs to match 
     # + contributorName - One or more contributor names to match 
     # + return - A zip archive of files for the public contributions 
-    remote isolated function downloadPublicFiles(string repository, int nMaxContributions = 10, string? query = (), int[]? id = (), string[]? doi = (), string[]? contributorName = ()) returns json|error {
-        string  path = string `/v1/${repository}/download`;
+    remote isolated function downloadPublicFiles(string repository, int nMaxContributions = 10, string? query = (), int[]? id = (), string[]? doi = (), string[]? contributorName = ()) returns json|error? {
+        string resourcePath = string `/v1/${repository}/download`;
         map<anydata> queryParam = {"n_max_contributions": nMaxContributions, "query": query, "id": id, "doi": doi, "contributor_name": contributorName};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        map<Encoding> queryParamEncoding = {"id": {style: FORM, explode: true}, "doi": {style: FORM, explode: true}, "contributor_name": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        json? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the data for a public or shared private contribution
@@ -117,11 +118,11 @@ public isolated client class Client {
     # + id - The ID of the contribution to retrieve 
     # + 'key - The private key for retrieving a shared contribution 
     # + return - Rows are returned in the format requested by the accept header 
-    remote isolated function getPublicContributionData(string repository, int? id = (), string? 'key = ()) returns string|error {
-        string  path = string `/v1/${repository}/data`;
+    remote isolated function getPublicContributionData(string repository, int? id = (), string? 'key = ()) returns string|error? {
+        string resourcePath = string `/v1/${repository}/data`;
         map<anydata> queryParam = {"id": id, "key": 'key};
-        path = path + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp-> get(path, targetType = string);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        string? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve public data rows
@@ -132,11 +133,12 @@ public isolated client class Client {
     # + 'from - Starting record number for paging 
     # + query - One or more Elasticsearch query strings to match any data model text field (https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html) 
     # + return - Rows are returned in the format requested by the accept header 
-    remote isolated function getPublicTable(string repository, string 'table, int? nMaxRows = (), int? 'from = (), string[]? query = ()) returns string|error {
-        string  path = string `/v1/${repository}/search/${'table}`;
+    remote isolated function getPublicTable(string repository, string 'table, int? nMaxRows = (), int? 'from = (), string[]? query = ()) returns string|error? {
+        string resourcePath = string `/v1/${repository}/search/${'table}`;
         map<anydata> queryParam = {"n_max_rows": nMaxRows, "from": 'from, "query": query};
-        path = path + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp-> get(path, targetType = string);
+        map<Encoding> queryParamEncoding = {"query": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        string? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Validate a contribution
@@ -144,10 +146,12 @@ public isolated client class Client {
     # + repository - Repository 
     # + payload - Request payload 
     # + return - The validation result was returned. 
-    remote isolated function validateContribution(string repository, Body payload) returns json|error {
-        string  path = string `/v1/${repository}/validate`;
+    remote isolated function validateContribution(string repository, RepositoryValidateBody payload) returns json|error {
+        string resourcePath = string `/v1/${repository}/validate`;
         http:Request request = new;
-        json response = check self.clientEp->post(path, request, targetType=json);
+        mime:Entity[] bodyParts = check createBodyParts(payload);
+        request.setBodyParts(bodyParts);
+        json response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Download the zip archive of the files for a private contribution
@@ -155,11 +159,11 @@ public isolated client class Client {
     # + repository - Repository 
     # + id - The ID of the contribution to download 
     # + return - A zip archive of files for the private contribution 
-    remote isolated function downloadPrivateFiles(string repository, int id) returns json|error {
-        string  path = string `/v1/${repository}/private/download`;
+    remote isolated function downloadPrivateFiles(string repository, int id) returns json|error? {
+        string resourcePath = string `/v1/${repository}/private/download`;
         map<anydata> queryParam = {"id": id};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the data for a private contribution
@@ -167,11 +171,11 @@ public isolated client class Client {
     # + repository - Repository 
     # + id - The ID of the contribution data to retrieve 
     # + return - Rows are returned in the format requested by the accept header 
-    remote isolated function getPrivateContributionData(string repository, int id) returns string|error {
-        string  path = string `/v1/${repository}/private/data`;
+    remote isolated function getPrivateContributionData(string repository, int id) returns string|error? {
+        string resourcePath = string `/v1/${repository}/private/data`;
         map<anydata> queryParam = {"id": id};
-        path = path + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp-> get(path, targetType = string);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        string? response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Validate a private contribution
@@ -179,13 +183,13 @@ public isolated client class Client {
     # + repository - Repository 
     # + id - The ID of the contribution data to validate 
     # + return - The validation result was returned. 
-    remote isolated function validatePrivateContribution(string repository, int id) returns json|error {
-        string  path = string `/v1/${repository}/private/validate`;
+    remote isolated function validatePrivateContribution(string repository, int id) returns json|error? {
+        string resourcePath = string `/v1/${repository}/private/validate`;
         map<anydata> queryParam = {"id": id};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp-> put(path, request, targetType = json);
+        json? response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Retrieve private data rows
@@ -197,10 +201,11 @@ public isolated client class Client {
     # + query - One or more Elasticsearch query strings to match any data model text field (https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html) 
     # + return - Rows are returned in the format requested by the accept header. 
     remote isolated function getPrivateTable(string repository, string 'table, int? nMaxRows = (), int? 'from = (), string[]? query = ()) returns http:Response|error {
-        string  path = string `/v1/${repository}/private/search/${'table}`;
+        string resourcePath = string `/v1/${repository}/private/search/${'table}`;
         map<anydata> queryParam = {"n_max_rows": nMaxRows, "from": 'from, "query": query};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        map<Encoding> queryParamEncoding = {"query": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a private contribution
@@ -209,23 +214,25 @@ public isolated client class Client {
     # + id - Contribution IDs 
     # + payload - Request payload 
     # + return - The file(s) were uploaded to the contribution and are being processed. 
-    remote isolated function updatePrivateContribution(string repository, int id, Body1 payload) returns InlineResponse202|error {
-        string  path = string `/v1/${repository}/private`;
+    remote isolated function updatePrivateContribution(string repository, int id, RepositoryPrivateBody payload) returns InlineResponse202|error? {
+        string resourcePath = string `/v1/${repository}/private`;
         map<anydata> queryParam = {"id": id};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        InlineResponse202 response = check self.clientEp->put(path, request, targetType=InlineResponse202);
+        mime:Entity[] bodyParts = check createBodyParts(payload);
+        request.setBodyParts(bodyParts);
+        InlineResponse202? response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Create a private contribution
     #
     # + repository - Repository 
     # + return - The private contribution was created. 
-    remote isolated function createPrivateContribution(string repository) returns InlineResponse201|error {
-        string  path = string `/v1/${repository}/private`;
+    remote isolated function createPrivateContribution(string repository) returns InlineResponse201|error? {
+        string resourcePath = string `/v1/${repository}/private`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse201 response = check self.clientEp-> post(path, request, targetType = InlineResponse201);
+        InlineResponse201? response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Delete a private contribution
@@ -233,47 +240,11 @@ public isolated client class Client {
     # + repository - Repository 
     # + id - Contribution IDs 
     # + return - The contribution was deleted. 
-    remote isolated function deletePrivateContribution(string repository, int id) returns InlineResponse2001|error {
-        string  path = string `/v1/${repository}/private`;
+    remote isolated function deletePrivateContribution(string repository, int id) returns InlineResponse2001|error? {
+        string resourcePath = string `/v1/${repository}/private`;
         map<anydata> queryParam = {"id": id};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        InlineResponse2001 response = check self.clientEp-> delete(path, request, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001? response = check self.clientEp->delete(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

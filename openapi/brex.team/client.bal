@@ -15,7 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -66,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://platform.staging.brexapps.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List cards
     #
@@ -74,25 +74,25 @@ public isolated client class Client {
     # + 'limit - Object limit 
     # + return - listCardsByUserIdGet 200 response 
     remote isolated function listCardsByUserIdGet(string? userId = (), string? cursor = (), int? 'limit = ()) returns PageCard|error {
-        string  path = string `/v2/cards`;
+        string resourcePath = string `/v2/cards`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
-        PageCard response = check self.clientEp-> get(path, targetType = PageCard);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PageCard response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create card
     #
-    # + payload - Create card request 
     # + idempotencyKey - Idempotency key 
+    # + payload - Create card request 
     # + return - createCardPost 200 response 
     remote isolated function createCardPost(CreateCardRequest payload, string? idempotencyKey = ()) returns Card|error {
-        string  path = string `/v2/cards`;
+        string resourcePath = string `/v2/cards`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Card response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Card);
+        request.setPayload(jsonBody, "application/json");
+        Card response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get card
@@ -100,40 +100,40 @@ public isolated client class Client {
     # + id - Card ID 
     # + return - getCardByIdGet 200 response 
     remote isolated function getCardByIdGet(string id) returns Card|error {
-        string  path = string `/v2/cards/${id}`;
-        Card response = check self.clientEp-> get(path, targetType = Card);
+        string resourcePath = string `/v2/cards/${id}`;
+        Card response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update card
     #
+    # + idempotencyKey - Idenmpotency key 
     # + id - Card ID 
     # + payload - Update card request 
-    # + idempotencyKey - Idenmpotency key 
     # + return - updateCardPut 200 response 
     remote isolated function updateCardPut(string id, UpdateCardRequest payload, string? idempotencyKey = ()) returns Card|error {
-        string  path = string `/v2/cards/${id}`;
+        string resourcePath = string `/v2/cards/${id}`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Card response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Card);
+        request.setPayload(jsonBody, "application/json");
+        Card response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Lock card
     #
+    # + idempotencyKey - Idempotency key 
     # + id - Card ID 
     # + payload - Lock card request payload 
-    # + idempotencyKey - Idempotency key 
     # + return - lockCardPost 200 response 
     remote isolated function lockCardPost(string id, LockCardRequest payload, string? idempotencyKey = ()) returns Card|error {
-        string  path = string `/v2/cards/${id}/lock`;
+        string resourcePath = string `/v2/cards/${id}/lock`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Card response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Card);
+        request.setPayload(jsonBody, "application/json");
+        Card response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get card number
@@ -141,40 +141,40 @@ public isolated client class Client {
     # + id - Card ID 
     # + return - getCardNumberGet 200 response 
     remote isolated function getCardNumberGet(string id) returns CardNumberResponse|error {
-        string  path = string `/v2/cards/${id}/pan`;
-        CardNumberResponse response = check self.clientEp-> get(path, targetType = CardNumberResponse);
+        string resourcePath = string `/v2/cards/${id}/pan`;
+        CardNumberResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Terminate card
     #
+    # + idempotencyKey - Idempotency key 
     # + id - Card ID 
     # + payload - Terminate card request 
-    # + idempotencyKey - Idempotency key 
     # + return - terminateCardPost 200 response 
     remote isolated function terminateCardPost(string id, TerminateCardRequest payload, string? idempotencyKey = ()) returns Card|error {
-        string  path = string `/v2/cards/${id}/terminate`;
+        string resourcePath = string `/v2/cards/${id}/terminate`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Card response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Card);
+        request.setPayload(jsonBody, "application/json");
+        Card response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Unlock card
     #
+    # + idempotencyKey - Idempotency key 
     # + id - Card ID 
     # + payload - Card unlock payload 
-    # + idempotencyKey - Idempotency key 
     # + return - unlockCardPost 200 response 
-    remote isolated function unlockCardPost(string id, UnlockCardPostRequest payload, string? idempotencyKey = ()) returns Card|error {
-        string  path = string `/v2/cards/${id}/unlock`;
+    remote isolated function unlockCardPost(string id, json payload, string? idempotencyKey = ()) returns Card|error {
+        string resourcePath = string `/v2/cards/${id}/unlock`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Card response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Card);
+        request.setPayload(jsonBody, "application/json");
+        Card response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List departments
@@ -183,25 +183,25 @@ public isolated client class Client {
     # + 'limit - Object limit 
     # + return - listDepartmentsGet 200 response 
     remote isolated function listDepartmentsGet(string? cursor = (), int? 'limit = ()) returns PageDepartmentresponse|error {
-        string  path = string `/v2/departments`;
+        string resourcePath = string `/v2/departments`;
         map<anydata> queryParam = {"cursor": cursor, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
-        PageDepartmentresponse response = check self.clientEp-> get(path, targetType = PageDepartmentresponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PageDepartmentresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create department
     #
-    # + payload - Create department request 
     # + idempotencyKey - Idempotency key 
+    # + payload - Create department request 
     # + return - createDepartmentPost 200 response 
     remote isolated function createDepartmentPost(CreateDepartmentRequest payload, string? idempotencyKey = ()) returns DepartmentResponse|error {
-        string  path = string `/v2/departments`;
+        string resourcePath = string `/v2/departments`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DepartmentResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DepartmentResponse);
+        request.setPayload(jsonBody, "application/json");
+        DepartmentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get department
@@ -209,8 +209,8 @@ public isolated client class Client {
     # + id - Department ID 
     # + return - getDepartmentByIdGet 200 response 
     remote isolated function getDepartmentByIdGet(string id) returns DepartmentResponse|error {
-        string  path = string `/v2/departments/${id}`;
-        DepartmentResponse response = check self.clientEp-> get(path, targetType = DepartmentResponse);
+        string resourcePath = string `/v2/departments/${id}`;
+        DepartmentResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List locations
@@ -219,25 +219,25 @@ public isolated client class Client {
     # + 'limit - Object limit 
     # + return - listLocationsGet 200 response 
     remote isolated function listLocationsGet(string? cursor = (), int? 'limit = ()) returns PageLocationresponse|error {
-        string  path = string `/v2/locations`;
+        string resourcePath = string `/v2/locations`;
         map<anydata> queryParam = {"cursor": cursor, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
-        PageLocationresponse response = check self.clientEp-> get(path, targetType = PageLocationresponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PageLocationresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create location
     #
-    # + payload - Create location request 
     # + idempotencyKey - Idempotency key 
+    # + payload - Create location request 
     # + return - createLocationPost 200 response 
     remote isolated function createLocationPost(CreateLocationRequest payload, string? idempotencyKey = ()) returns LocationResponse|error {
-        string  path = string `/v2/locations`;
+        string resourcePath = string `/v2/locations`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LocationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LocationResponse);
+        request.setPayload(jsonBody, "application/json");
+        LocationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get location
@@ -245,8 +245,8 @@ public isolated client class Client {
     # + id - Location ID 
     # + return - getLocationByIdGet 200 response 
     remote isolated function getLocationByIdGet(string id) returns LocationResponse|error {
-        string  path = string `/v2/locations/${id}`;
-        LocationResponse response = check self.clientEp-> get(path, targetType = LocationResponse);
+        string resourcePath = string `/v2/locations/${id}`;
+        LocationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List users
@@ -255,33 +255,33 @@ public isolated client class Client {
     # + 'limit - Object limit 
     # + return - listUsersGet 200 response 
     remote isolated function listUsersGet(string? cursor = (), int? 'limit = ()) returns PageUserresponse|error {
-        string  path = string `/v2/users`;
+        string resourcePath = string `/v2/users`;
         map<anydata> queryParam = {"cursor": cursor, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
-        PageUserresponse response = check self.clientEp-> get(path, targetType = PageUserresponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PageUserresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Invite user
     #
-    # + payload - Create user request 
     # + idempotencyKey - Idempotency key 
+    # + payload - Create user request 
     # + return - createUserPost 200 response 
     remote isolated function createUserPost(CreateUserRequest payload, string? idempotencyKey = ()) returns UserResponse|error {
-        string  path = string `/v2/users`;
+        string resourcePath = string `/v2/users`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserResponse);
+        request.setPayload(jsonBody, "application/json");
+        UserResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get current user
     #
     # + return - getMeGet 200 response 
     remote isolated function getMeGet() returns UserResponse|error {
-        string  path = string `/v2/users/me`;
-        UserResponse response = check self.clientEp-> get(path, targetType = UserResponse);
+        string resourcePath = string `/v2/users/me`;
+        UserResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get user
@@ -289,24 +289,24 @@ public isolated client class Client {
     # + id - User ID 
     # + return - getUserByIdGet 200 response 
     remote isolated function getUserByIdGet(string id) returns UserResponse|error {
-        string  path = string `/v2/users/${id}`;
-        UserResponse response = check self.clientEp-> get(path, targetType = UserResponse);
+        string resourcePath = string `/v2/users/${id}`;
+        UserResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update user
     #
+    # + idempotencyKey - Idempotency key 
     # + id - User ID 
     # + payload - Update user request 
-    # + idempotencyKey - Idempotency key 
     # + return - updateUserPut 200 response 
     remote isolated function updateUserPut(string id, UpdateUserRequest payload, string? idempotencyKey = ()) returns UserResponse|error {
-        string  path = string `/v2/users/${id}`;
+        string resourcePath = string `/v2/users/${id}`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserResponse response = check self.clientEp->put(path, request, headers = accHeaders, targetType=UserResponse);
+        request.setPayload(jsonBody, "application/json");
+        UserResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get limit for the user
@@ -314,72 +314,24 @@ public isolated client class Client {
     # + id - User ID 
     # + return - getUserLimitGet 200 response 
     remote isolated function getUserLimitGet(string id) returns UserLimitResponse|error {
-        string  path = string `/v2/users/${id}/limit`;
-        UserLimitResponse response = check self.clientEp-> get(path, targetType = UserLimitResponse);
+        string resourcePath = string `/v2/users/${id}/limit`;
+        UserLimitResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Set limit for the user
     #
+    # + idempotencyKey - Idempotency key 
     # + id - User ID 
     # + payload - Set user limit request 
-    # + idempotencyKey - Idempotency key 
     # + return - setUserLimitPost 200 response 
     remote isolated function setUserLimitPost(string id, SetUserLimitRequest payload, string? idempotencyKey = ()) returns UserLimitResponse|error {
-        string  path = string `/v2/users/${id}/limit`;
+        string resourcePath = string `/v2/users/${id}/limit`;
         map<any> headerValues = {"Idempotency-Key": idempotencyKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserLimitResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserLimitResponse);
+        request.setPayload(jsonBody, "application/json");
+        UserLimitResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

@@ -42,21 +42,22 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Detect anomaly status of the latest point in time series.
     #
     # + payload - Time series points and period if needed. Advanced model parameters can also be set in the request. 
     # + return - Successful operation. 
     remote isolated function postTimeseriesLastDetect(Request payload) returns LastResponse|error {
-        string  path = string `/timeseries/last/detect`;
+        string resourcePath = string `/timeseries/last/detect`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LastResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LastResponse);
+        request.setPayload(jsonBody, "application/json");
+        LastResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Find anomalies for the entire series in batch.
@@ -64,15 +65,15 @@ public isolated client class Client {
     # + payload - Time series points and period if needed. Advanced model parameters can also be set in the request. 
     # + return - Successful operation. 
     remote isolated function postTimeseriesEntireDetect(Request payload) returns EntireDetectResponse|error {
-        string  path = string `/timeseries/entire/detect`;
+        string resourcePath = string `/timeseries/entire/detect`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntireDetectResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=EntireDetectResponse);
+        request.setPayload(jsonBody, "application/json");
+        EntireDetectResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Find trend change point for the entire series in batch.
@@ -80,15 +81,15 @@ public isolated client class Client {
     # + payload - Time series points, granularity should be set in the request. Advanced model parameters can also be set in the request. 
     # + return - Successful operation. 
     remote isolated function postTimeseriesChangepointDetect(ChangePointDetectRequest payload) returns ChangePointDetectResponse|error {
-        string  path = string `/timeseries/changepoint/detect`;
+        string resourcePath = string `/timeseries/changepoint/detect`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ChangePointDetectResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ChangePointDetectResponse);
+        request.setPayload(jsonBody, "application/json");
+        ChangePointDetectResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

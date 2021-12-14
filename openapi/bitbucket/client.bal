@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -53,324 +51,251 @@ public type ClientConfig record {|
 |};
 
 # This is a generated connector for [Bitbucket API v2.0](https://developer.atlassian.com/bitbucket/api/2/reference/) OpenAPI Specification.
-# Code against the Bitbucket API to automate simple tasks, embed Bitbucket data into your own site, build mobile or desktop apps,  
-# or even add custom UI add-ons into Bitbucket itself using the Connect framework.
+# Code against the Bitbucket API to automate simple tasks, embed Bitbucket data into your own site, build mobile or desktop apps,  or even add custom UI add-ons into Bitbucket itself using the Connect framework.
 @display {label: "Bitbucket", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials.
-    # Create an [Bitbucket account](https://bitbucket.org/product/) and obtain tokens following  
-    # [this guide](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication).
+    # Create an [Bitbucket account](https://bitbucket.org/product/) and obtain tokens following  [this guide](https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.bitbucket.org/2.0") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Returns a list of all repositories
     #
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
-    # + role - Filters the result based on the authenticated user's role on each repository. member-returns repositories 
-    # to which the user has explicit read access. contributor- returns repositories to which the user has explicit write access. 
-    # admin- returns repositories to which the user has explicit administrator access. owner-returns all repositories owned 
-    # by the current user
-    # + q - Query string to narrow down the response as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
-    # + sort - Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
-    # + return - The repositories owned by the specified account.
-    remote isolated function listWorkspaces(string workspace, string? role = (), string? q = (), string? sort = ()) returns 
-                                            PaginatedRepositories|error {
-        string  path = string `/repositories/${workspace}`;
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`. 
+    # + role - Filters the result based on the authenticated user's role on each repository. member-returns repositories to which the user has explicit read access. contributor- returns repositories to which the user has explicit write access. admin- returns repositories to which the user has explicit administrator access. owner-returns all repositories owned by the current user 
+    # + q - Query string to narrow down the response as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering 
+    # + sort - Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering 
+    # + return - The repositories owned by the specified account. 
+    remote isolated function listWorkspaces(string workspace, string? role = (), string? q = (), string? sort = ()) returns PaginatedRepositories|error {
+        string resourcePath = string `/repositories/${workspace}`;
         map<anydata> queryParam = {"role": role, "q": q, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedRepositories response = check self.clientEp-> get(path, targetType = PaginatedRepositories);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedRepositories response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns all pull requests
     #
-    # + repoSlug - This can either be the repository slug or the UUID of the repository,
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
-    # + state - Only return pull requests that are in this state. This parameter can be repeated.
-    # + return - All pull requests on the specified repository.
+    # + repoSlug - This can either be the repository slug or the UUID of the repository, surrounded by curly-braces, for example: `{repository UUID}`. 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}`. 
+    # + state - Only return pull requests that are in this state. This parameter can be repeated. 
+    # + return - All pull requests on the specified repository. 
     remote isolated function listPullrequets(string repoSlug, string workspace, string? state = ()) returns PaginatedPullrequests|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/pullrequests`;
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/pullrequests`;
         map<anydata> queryParam = {"state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedPullrequests response = check self.clientEp-> get(path, targetType = PaginatedPullrequests);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedPullrequests response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the specified pull request
     #
-    # + pullRequestId - The id of the pull request
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + return - The pull request object
+    # + pullRequestId - The id of the pull request 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + return - The pull request object 
     remote isolated function getPullRequestByID(int pullRequestId, string repoSlug, string workspace) returns Pullrequest|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/pullrequests/${pullRequestId}`;
-        Pullrequest response = check self.clientEp-> get(path, targetType = Pullrequest);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/pullrequests/${pullRequestId}`;
+        Pullrequest response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the object describing this repository
     #
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: {repository UUID}
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: {workspace UUID}
-    # + return - The repository object
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: {repository UUID} 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: {workspace UUID} 
+    # + return - The repository object 
     remote isolated function getRepositoryDetail(string repoSlug, string workspace) returns Repository|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}`;
-        Repository response = check self.clientEp-> get(path, targetType = Repository);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}`;
+        Repository response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new repository
     #
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + payload - The repository that is to be created. Note that most object elements are optional. Elements "owner" 
-    # and "full_name" are ignored as the URL implies them
-    # + return - The newly created repository.
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + payload - The repository that is to be created. Note that most object elements are optional. Elements "owner" and "full_name" are ignored as the URL implies them 
+    # + return - The newly created repository. 
     remote isolated function createNewRepository(string repoSlug, string workspace, Repository payload) returns Repository|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}`;
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Repository response = check self.clientEp->post(path, request, targetType=Repository);
+        request.setPayload(jsonBody, "application/json");
+        Repository response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Deletes the repository
     #
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + return - Indicates successful deletion
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + return - Indicates successful deletion 
     remote isolated function deleteRepository(string repoSlug, string workspace) returns http:Response|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns the specified issue
     #
-    # + issueId - The issue id
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + return - The issue object
+    # + issueId - The issue id 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + return - The issue object 
     remote isolated function getIssueByID(string issueId, string repoSlug, string workspace) returns Issue|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}`;
-        Issue response = check self.clientEp-> get(path, targetType = Issue);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}`;
+        Issue response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes the specified issue
     #
-    # + issueId - The issue id
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + return - The issue object
+    # + issueId - The issue id 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + return - The issue object 
     remote isolated function deleteIssue(string issueId, string repoSlug, string workspace) returns http:Response|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns the issues in the issue tracker
     #
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + q - Query string to narrow down the response as  https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
-    # + sort - Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering
-    # + return - A paginated list of the issues matching any filter criteria that were provided
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + q - Query string to narrow down the response as  https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering 
+    # + sort - Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering 
+    # + return - A paginated list of the issues matching any filter criteria that were provided 
     remote isolated function listIssues(string repoSlug, string workspace, string? q = (), string? sort = ()) returns PaginatedIssues|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues`;
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues`;
         map<anydata> queryParam = {"q": q, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedIssues response = check self.clientEp-> get(path, targetType = PaginatedIssues);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedIssues response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new issue
     #
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + payload - The new issue. The only required element is `title`. All other elements can be omitted from the body
-    # + return - The newly created issue
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + payload - The new issue. The only required element is `title`. All other elements can be omitted from the body 
+    # + return - The newly created issue 
     remote isolated function createIssue(string repoSlug, string workspace, Issue payload) returns Issue|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues`;
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Issue response = check self.clientEp->post(path, request, targetType=Issue);
+        request.setPayload(jsonBody, "application/json");
+        Issue response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns a list of all comments on an issue
     #
-    # + issueId - The issue id
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + return - A paginated list of issue comments
+    # + issueId - The issue id 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + return - A paginated list of issue comments 
     remote isolated function listComments(string issueId, string repoSlug, string workspace) returns PaginatedIssueComments|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments`;
-        PaginatedIssueComments response = check self.clientEp-> get(path, targetType = PaginatedIssueComments);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments`;
+        PaginatedIssueComments response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new issue comment
     #
-    # + issueId - The issue id
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + payload - The new issue comment object
-    # + return - The newly created comment
+    # + issueId - The issue id 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + payload - The new issue comment object 
+    # + return - The newly created comment 
     remote isolated function createNewIssueComment(string issueId, string repoSlug, string workspace, IssueComment payload) returns http:Response|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments`;
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the specified issue comment object
     #
-    # + commentId - The id of the comment
-    # + issueId - The issue id
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for 
-    # example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + return - The issue comment
+    # + commentId - The id of the comment 
+    # + issueId - The issue id 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + return - The issue comment 
     remote isolated function getCommentByID(int commentId, string issueId, string repoSlug, string workspace) returns IssueComment|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
-        IssueComment response = check self.clientEp-> get(path, targetType = IssueComment);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
+        IssueComment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates the content of the specified issue comment
     #
-    # + commentId - The id of the comment
-    # + issueId - The issue id
-    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, 
-    # for example: `{repository UUID}`
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, 
-    # for example: `{workspace UUID}`
-    # + payload - The updated comment
-    # + return - The updated issue comment
+    # + commentId - The id of the comment 
+    # + issueId - The issue id 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository surrounded by curly-braces, for example: `{repository UUID}` 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + payload - The updated comment 
+    # + return - The updated issue comment 
     remote isolated function updateComment(int commentId, string issueId, string repoSlug, string workspace, IssueComment payload) returns IssueComment|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        IssueComment response = check self.clientEp->put(path, request, targetType=IssueComment);
+        request.setPayload(jsonBody, "application/json");
+        IssueComment response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the specified comment
     #
-    # + commentId - The id of the comment
-    # + issueId - The issue id
-    # + repoSlug - This can either be the repository slug or the UUID of the repository
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
-    # + return - Indicates successful deletion
+    # + commentId - The id of the comment 
+    # + issueId - The issue id 
+    # + repoSlug - This can either be the repository slug or the UUID of the repository 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID 
+    # + return - Indicates successful deletion 
     remote isolated function deleteComment(int commentId, string issueId, string repoSlug, string workspace) returns http:Response|error {
-        string  path = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Returns the requested workspace
     #
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
-    # + return - The workspace.
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID 
+    # + return - The workspace. 
     remote isolated function getWorkSpaceByID(string workspace) returns Workspace|error {
-        string  path = string `/workspaces/${workspace}`;
-        Workspace response = check self.clientEp-> get(path, targetType = Workspace);
+        string resourcePath = string `/workspaces/${workspace}`;
+        Workspace response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the requested project
     #
-    # + projectKey - The project in question. This is the actual `key` assigned to the project
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
-    # + return - The project that is part of a workspace
+    # + projectKey - The project in question. This is the actual `key` assigned to the project 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID 
+    # + return - The project that is part of a workspace 
     remote isolated function getProjectByProjectKey(string projectKey, string workspace) returns Project|error {
-        string  path = string `/workspaces/${workspace}/projects/${projectKey}`;
-        Project response = check self.clientEp-> get(path, targetType = Project);
+        string resourcePath = string `/workspaces/${workspace}/projects/${projectKey}`;
+        Project response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates or Updates a project
     #
-    # + projectKey - The project in question. This is the actual `key` assigned to the project.
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID
-    # + payload - The project object
-    # + return - The existing project is has been updated
+    # + projectKey - The project in question. This is the actual `key` assigned to the project. 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID 
+    # + payload - The project object 
+    # + return - The existing project is has been updated 
     remote isolated function createOrUpdateProject(string projectKey, string workspace, Project payload) returns Project|error {
-        string  path = string `/workspaces/${workspace}/projects/${projectKey}`;
+        string resourcePath = string `/workspaces/${workspace}/projects/${projectKey}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Project response = check self.clientEp->put(path, request, targetType=Project);
+        request.setPayload(jsonBody, "application/json");
+        Project response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes a project.
     #
-    # + projectKey - The project in question. This is the actual `key` assigned
-    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for 
-    # example: `{workspace UUID}`
-    # + return - Successful deletion.
+    # + projectKey - The project in question. This is the actual `key` assigned to the project. 
+    # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
+    # + return - Successful deletion. 
     remote isolated function deleteProject(string projectKey, string workspace) returns http:Response|error {
-        string  path = string `/workspaces/${workspace}/projects/${projectKey}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/workspaces/${workspace}/projects/${projectKey}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

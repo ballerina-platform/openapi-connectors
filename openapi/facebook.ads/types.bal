@@ -122,7 +122,7 @@ public type AdSetUpdate record {
     # Settings of Contextual Bundle to support ads serving in Facebook contextual surfaces
     ContextualBundlingSpec? contextual_bundling_spec?;
     # Order of the adgroup sequence to be shown to users
-    string|int[]? creative_sequence?;
+    (string|int?)[]? creative_sequence?;
     # The daily budget defined in your account currency, allowed only for ad sets with a duration (difference between end_time and start_time) longer than 24 hours.
     int? daily_budget?;
     # Daily impressions. Available only for campaigns with buying_type=FIXED_CPM.
@@ -173,7 +173,7 @@ public type AdSetUpdate record {
     # An ad set's targeting structure. "countries" is required.
     record {} targeting?;
     # Specify ad creative that displays at custom date ranges in a campaign as an array. A list of Adgroup IDs
-    int[]?[]? time_based_ad_rotation_id_blocks?;
+    int[][]? time_based_ad_rotation_id_blocks?;
     # Date range when specific ad creative displays during a campaign. Provide date ranges in an array of UNIX timestamps where each timestamp represents the start time for each date range.
     int[]? time_based_ad_rotation_intervals?;
     # Time start
@@ -424,7 +424,7 @@ public type PromotedObject record {
     # Omnichannel object
     OmnichannelObject? omnichannel_object?;
     # Post conversions
-    record {}[]?[]? post_conversions?;
+    record {}[][]? post_conversions?;
 };
 
 # Ad set schedule, representing a delivery schedule for a single day
@@ -477,7 +477,7 @@ public type AdSet record {
     # Settings of Contextual Bundle to support ads serving in Facebook contextual surfaces
     ContextualBundlingSpec? contextual_bundling_spec?;
     # Order of the adgroup sequence to be shown to users
-    string|int[]? creative_sequence?;
+    (string|int?)[]? creative_sequence?;
     # The daily budget defined in your account currency, allowed only for ad sets with a duration (difference between end_time and start_time) longer than 24 hours.
     int? daily_budget?;
     # Daily impressions. Available only for campaigns with buying_type=FIXED_CPM.
@@ -528,7 +528,7 @@ public type AdSet record {
     # An ad set's targeting structure. "countries" is required.
     record {} targeting?;
     # Specify ad creative that displays at custom date ranges in a campaign as an array. A list of Adgroup IDs
-    int[]?[]? time_based_ad_rotation_id_blocks?;
+    int[][]? time_based_ad_rotation_id_blocks?;
     # Date range when specific ad creative displays during a campaign. Provide date ranges in an array of UNIX timestamps where each timestamp represents the start time for each date range.
     int[]? time_based_ad_rotation_intervals?;
     # Time start

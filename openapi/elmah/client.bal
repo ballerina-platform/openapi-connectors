@@ -43,15 +43,16 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Fetch a list of deployments.
     #
     # + return - Request for deployments successful. 
     remote isolated function deploymentsGetAll() returns Deployment[]|error {
-        string  path = string `/v3/deployments`;
+        string resourcePath = string `/v3/deployments`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Deployment[] response = check self.clientEp-> get(path, targetType = DeploymentArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Deployment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new deployment.
@@ -59,13 +60,13 @@ public isolated client class Client {
     # + payload - The deployment object to create. 
     # + return - Deployment was created. 
     remote isolated function deploymentsCreate(CreateDeployment payload) returns CreateDeploymentResult|error {
-        string  path = string `/v3/deployments`;
+        string resourcePath = string `/v3/deployments`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateDeploymentResult response = check self.clientEp->post(path, request, targetType=CreateDeploymentResult);
+        request.setPayload(jsonBody, "application/*+json");
+        CreateDeploymentResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a deployment by its ID.
@@ -73,10 +74,10 @@ public isolated client class Client {
     # + id - The ID of the deployment to fetch. 
     # + return - Request for deployment successful. 
     remote isolated function deploymentsGet(string id) returns Deployment|error {
-        string  path = string `/v3/deployments/${id}`;
+        string resourcePath = string `/v3/deployments/${id}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Deployment response = check self.clientEp-> get(path, targetType = Deployment);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Deployment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a deployment by its ID.
@@ -84,10 +85,10 @@ public isolated client class Client {
     # + id - The ID of the deployment to delete. 
     # + return - Deployment was deleted. 
     remote isolated function deploymentsDelete(string id) returns http:Response|error {
-        string  path = string `/v3/deployments/${id}`;
+        string resourcePath = string `/v3/deployments/${id}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Create a new heartbeat.
@@ -97,23 +98,23 @@ public isolated client class Client {
     # + payload - The details of the heartbeat. 
     # + return - Heartbeat was created. 
     remote isolated function heartbeatsCreate(string id, string logId, CreateHeartbeat payload) returns http:Response|error {
-        string  path = string `/v3/heartbeats/${logId}/${id}`;
+        string resourcePath = string `/v3/heartbeats/${logId}/${id}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/*+json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a list of logs.
     #
     # + return - Request for logs successful. 
     remote isolated function logsGetAll() returns Log[]|error {
-        string  path = string `/v3/logs`;
+        string resourcePath = string `/v3/logs`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Log[] response = check self.clientEp-> get(path, targetType = LogArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Log[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new log.
@@ -121,13 +122,13 @@ public isolated client class Client {
     # + payload - The log object to create. 
     # + return - Log where successfully created. 
     remote isolated function logsCreate(CreateLog payload) returns CreateLogResult|error {
-        string  path = string `/v3/logs`;
+        string resourcePath = string `/v3/logs`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateLogResult response = check self.clientEp->post(path, request, targetType=CreateLogResult);
+        request.setPayload(jsonBody, "application/*+json");
+        CreateLogResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a log by its ID.
@@ -135,10 +136,10 @@ public isolated client class Client {
     # + id - The ID of the log to fetch. 
     # + return - Request for log successful. 
     remote isolated function logsGet(string id) returns Log|error {
-        string  path = string `/v3/logs/${id}`;
+        string resourcePath = string `/v3/logs/${id}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Log response = check self.clientEp-> get(path, targetType = Log);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Log response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Disable a log by its ID.
@@ -146,12 +147,12 @@ public isolated client class Client {
     # + id - The ID of the log to disable. 
     # + return - Log was disabled. 
     remote isolated function logsDisable(string id) returns http:Response|error {
-        string  path = string `/v3/logs/${id}/_disable`;
+        string resourcePath = string `/v3/logs/${id}/_disable`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Enable a log by its ID.
@@ -159,12 +160,12 @@ public isolated client class Client {
     # + id - The ID of the log to enable. 
     # + return - Log was enabled. 
     remote isolated function logsEnable(string id) returns http:Response|error {
-        string  path = string `/v3/logs/${id}/_enable`;
+        string resourcePath = string `/v3/logs/${id}/_enable`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Fetch messages from a log.
@@ -178,10 +179,10 @@ public isolated client class Client {
     # + includeHeaders - Include headers like server variables and cookies in the result (slower). 
     # + return - Log found and may contain messages. 
     remote isolated function messagesGetAll(string logId, int pageIndex = 0, int pageSize = 15, string? query = (), string? 'from = (), string? to = (), boolean includeHeaders = false) returns MessagesResult|error {
-        string  path = string `/v3/messages/${logId}`;
+        string resourcePath = string `/v3/messages/${logId}`;
         map<anydata> queryParam = {"pageIndex": pageIndex, "pageSize": pageSize, "query": query, "from": 'from, "to": to, "includeHeaders": includeHeaders, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        MessagesResult response = check self.clientEp-> get(path, targetType = MessagesResult);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MessagesResult response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new message.
@@ -190,28 +191,24 @@ public isolated client class Client {
     # + payload - The message object to create. 
     # + return - Message was not created. 
     remote isolated function messagesCreate(string logId, CreateMessage payload) returns CreateMessageResult|error {
-        string  path = string `/v3/messages/${logId}`;
+        string resourcePath = string `/v3/messages/${logId}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateMessageResult response = check self.clientEp->post(path, request, targetType=CreateMessageResult);
+        request.setPayload(jsonBody, "application/*+json");
+        CreateMessageResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Deletes a list of messages by logid and query.
     #
     # + logId - The ID of the log containing the message. 
-    # + payload - A search object containing query, time filters etc. 
     # + return - Messages where deleted. 
-    remote isolated function messagesDeleteAll(string logId, Search payload) returns http:Response|error {
-        string  path = string `/v3/messages/${logId}`;
+    remote isolated function messagesDeleteAll(string logId) returns http:Response|error {
+        string resourcePath = string `/v3/messages/${logId}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->delete(path, request, targetType=http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Create one or more new messages.
@@ -220,13 +217,13 @@ public isolated client class Client {
     # + payload - The messages to create. 
     # + return - Zero or more messages where successfully created. Check the response body for details. 
     remote isolated function messagesCreateBulk(string logId, CreateMessage[] payload) returns CreateBulkMessageResult[]|error {
-        string  path = string `/v3/messages/${logId}/_bulk`;
+        string resourcePath = string `/v3/messages/${logId}/_bulk`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateBulkMessageResult[] response = check self.clientEp->post(path, request, targetType=CreateBulkMessageResultArr);
+        request.setPayload(jsonBody, "application/*+json");
+        CreateBulkMessageResult[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a message by its ID.
@@ -235,10 +232,10 @@ public isolated client class Client {
     # + logId - The ID of the log containing the message. 
     # + return - Message found. 
     remote isolated function messagesGet(string id, string logId) returns Message|error {
-        string  path = string `/v3/messages/${logId}/${id}`;
+        string resourcePath = string `/v3/messages/${logId}/${id}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Message response = check self.clientEp-> get(path, targetType = Message);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Message response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete a message by its ID.
@@ -247,10 +244,10 @@ public isolated client class Client {
     # + logId - The ID of the log containing the message. 
     # + return - Message where deleted. 
     remote isolated function messagesDelete(string id, string logId) returns http:Response|error {
-        string  path = string `/v3/messages/${logId}/${id}`;
+        string resourcePath = string `/v3/messages/${logId}/${id}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Fix a message by its ID.
@@ -260,12 +257,12 @@ public isolated client class Client {
     # + markAllAsFixed - If set to true, all instances of the log message are set to fixed. 
     # + return - Message was fixed. 
     remote isolated function messagesFix(string id, string logId, boolean markAllAsFixed = false) returns http:Response|error {
-        string  path = string `/v3/messages/${logId}/${id}/_fix`;
+        string resourcePath = string `/v3/messages/${logId}/${id}/_fix`;
         map<anydata> queryParam = {"markAllAsFixed": markAllAsFixed, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Hide a message by its ID.
@@ -274,22 +271,22 @@ public isolated client class Client {
     # + logId - The ID of the log containing the message. 
     # + return - Message was hidden. 
     remote isolated function messagesHide(string id, string logId) returns http:Response|error {
-        string  path = string `/v3/messages/${logId}/${id}/_hide`;
+        string resourcePath = string `/v3/messages/${logId}/${id}/_hide`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Fetch a list of uptime checks. Currently in closed beta. Get in contact to get access to this endpoint.
     #
     # + return - Request for uptime checks successful. 
     remote isolated function uptimeChecksGetAll() returns UptimeCheck[]|error {
-        string  path = string `/v3/uptimechecks`;
+        string resourcePath = string `/v3/uptimechecks`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        UptimeCheck[] response = check self.clientEp-> get(path, targetType = UptimeCheckArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        UptimeCheck[] response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

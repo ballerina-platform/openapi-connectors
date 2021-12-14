@@ -44,6 +44,7 @@ paths:
     post:
       summary: Feedback the status of an order transaction.
       description: Feedback the status of an order transaction.
+      operationId: sendFeedback
       parameters:
         - in: query
           name: id
@@ -94,6 +95,7 @@ paths:
   /v1/order/screen:
     post:
       summary: Screen order for payment fraud.
+      operationId: screenOrder
       description: Screen order for payment fraud.
       parameters:
         - in: query

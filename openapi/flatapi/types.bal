@@ -64,10 +64,12 @@ public type AssignmentSubmissionHistory record {
 # Options to fork the score
 public type ScoreFork record {
     # Unique identifier of a collection where the score will be copied.
+    # If no collection identifier is provided, the score will be stored in the `root` directory.
     string collection?;
 };
 
 # A computed version of the weekly, monthly and total of number of likes
+# for a score
 public type ScoreLikesCounts record {
     # The total number of likes of the score
     decimal total?;
@@ -86,15 +88,12 @@ public type ClassdetailsCanvas record {
 };
 
 # The collection main privacy mode(private).
-#
 public type CollectionPrivacy string;
 
 # Source of the license
-#
 public type LicenseSources string;
 
 # The type of an audio track
-#
 public type ScoreTrackType string;
 
 # A classroom
@@ -143,7 +142,6 @@ public type ClassDetails record {
 };
 
 # User's Class Role (for Edu users only)
-#
 public type ClassRoles string?;
 
 # Assignment details
@@ -169,8 +167,10 @@ public type Assignment record {
     # The creation date of this assignment
     string creationDate?;
     # The publication (scheduled) date of the assignment.
+    # If this one is specified, the assignment will only be listed to the teachers of the class.
     string scheduledDate?;
     # The due date of this assignment, late submissions will be marked as
+    # paste due.
     string dueDate?;
     # If set, the grading will be enabled for the assignement
     decimal maxPoints?;
@@ -187,7 +187,6 @@ public type Assignment record {
 };
 
 # User details
-#
 public type UserDetails record {
     *UserPublic;
     # Identifier of the user
@@ -205,7 +204,6 @@ public type UserDetails record {
 };
 
 # Public User details
-#
 public type UserPublic record {
     *UserPublicSummary;
     # User's biography
@@ -225,6 +223,7 @@ public type UserPublic record {
     # Theme (background) for the profile
     string profileTheme?;
     # An array of the instrument identifiers.
+    # The format of the strings is `{instrument-group}.{instrument-id}`.
     string[] instruments?;
 };
 
@@ -243,17 +242,24 @@ public type FlatErrorResponse record {
 # A new created score
 public type ScoreCreation record {
     # The title of the new score. If the title is too long, the API may trim this one.
+    # 
+    # If this title is not specified, the API will try to (in this order):
+    #   - Use the title contained in the file (e.g. [`movement-title`](https://usermanuals.musicxml.com/MusicXML/Content/EL-MusicXML-movement-title.htm) or [`credit-words`](https://usermanuals.musicxml.com/MusicXML/Content/EL-MusicXML-credit-words.htm) for [MusicXML](http://www.musicxml.com/) files).
+    #   - Use the name of the file for files from a specified `source` (e.g. Google Drive) or the one in the `filename` property
+    #   - Set a default title (e.g. "New Music Score")
     string title?;
     # If this is an imported file, its filename
     string filename?;
     # The score main privacy mode(public, private, privateLink and organizationPublic).
     ScorePrivacy privacy;
     # The data of the score file. It must be a MusicXML 3 file (`vnd.recordare.musicxml` or `vnd.recordare.musicxml+xml`), a MIDI file (`audio/midi`) or a Flat.json (aka Adagio.json) file.
+    # Binary payloads (`vnd.recordare.musicxml` and `audio/midi`) can be encoded in Base64, in this case the `dataEncoding` property must match the encoding used for the API request.
     string data?;
     # The optional encoding of the score data. This property must match the encoding used for the `data` property.
     string dataEncoding?;
     ScoreSource 'source?;
     # Unique identifier of a collection where the score will be created.
+    # If no collection identifier is provided, the score will be stored in the `root` directory.
     string collection?;
     # If the user uses Google Drive and this properties is specified, the file will be created in this directory. The currently user creating the file must be granted to write in this directory.
     string googleDriveFolder?;
@@ -293,8 +299,6 @@ public type AssignmentsubmissionhistoryAttachment record {
 };
 
 # The score main privacy mode(public, private, privateLink and organizationPublic).
-
-#
 public type ScorePrivacy string;
 
 # Comment added on a sheet music
@@ -316,8 +320,10 @@ public type ScoreComment record {
     # The date of the last comment modification
     string modificationDate?;
     # The comment text that can includes mentions using the following
+    # format: `@[id:username]`.
     string comment?;
     # A raw version of the comment, that can be displayed without parsing
+    # the mentions.
     string rawComment?;
     # The context of the comment (for inline/contextualized comments). A context will include all the information related to the location of the comment (i.e. score parts, range of measure, time position).
     ScoreCommentContext context?;
@@ -332,11 +338,9 @@ public type ScoreComment record {
 };
 
 # The type of creation (an orginal, an arrangement)
-#
 public type ScoreCreationType string;
 
 # State of the submission
-#
 public type AssignmentSubmissionState string;
 
 # The rights of the current user on a score or collection
@@ -344,8 +348,12 @@ public type ResourceRights record {
     # `True` if the current user can read the current document
     boolean aclRead?;
     # `True` if the current user can modify the current document.
+    # 
+    # If this is a right of a Collection, the capabilities of the associated user can be lower than this permission, check out the `capabilities` property as the end-user to have the complete possibilities with the collection.
     boolean aclWrite?;
     # `True` if the current user can manage the current document (i.e. share, delete)
+    # 
+    # If this is a right of a Collection, the capabilities of the associated user can be lower than this permission, check out the `capabilities` property as the end-user to have the complete possibilities with the collection.
     boolean aclAdmin?;
     # `True` if the current user is a collaborator of the current document (direct or via group).
     boolean isCollaborator?;
@@ -358,6 +366,8 @@ public type AssignmentCopy record {
     # An optional destination assignment where the original assignement will be copied. Must be a draft.
     string assignment?;
     # The publication (scheduled) date of the assignment.
+    # If this one is specified, the assignment will only be listed to the teachers of the class.
+    # Alternatively the existing `scheduledDate` from the copied assignment will be used.
     string scheduledDate?;
 };
 
@@ -376,7 +386,6 @@ public type AssignmentcreationMicrosoftgraph record {
 };
 
 # The score and all its details
-#
 public type ScoreDetails record {
     *ScoreSummary;
     # Subtitle of the score
@@ -420,22 +429,28 @@ public type ScoreDetails record {
     # An array of the instrument identifiers used in the last version of the score. This is mainly used to display a list of the instruments in the Flat's UI or instruments icons. The format of the strings is `{instrument-group}.{instrument-id}`.
     string[] instruments?;
     # An array of the audio samples identifiers used the different score parts.
+    # The format of the strings is `{instrument-group}.{sample-id}`.
     string[] samples?;
     # If the user uses Google Drive and the score exists on Google Drive, this field will contain the unique identifier of the Flat score on Google Drive. You can access the document using the url: `https://drive.google.com/open?id={googleDriveFileId}`
     string googleDriveFileId?;
     # A computed version of the weekly, monthly and total of number of likes
+    # for a score
     ScoreLikesCounts likes?;
     # A computed version of the total, unique, weekly and monthly number of
+    # comments added on the documents (this doesn't include inline comments).
     ScoreCommentsCounts comments?;
     # A computed version of the total, weekly, and monthly number of views of
+    # the score
     ScoreViewsCounts views?;
     # A computed version of the total, weekly, and monthly number of plays of
+    # the score
     ScorePlaysCounts plays?;
     # The List of parent collections, which includes all the collections this score is included. Please note that you might not have access to all of them.
     string[] collections?;
 };
 
 # A computed version of the total, weekly, and monthly number of plays of
+# the score
 public type ScorePlaysCounts record {
     # The total number of plays of the score
     decimal total?;
@@ -464,12 +479,9 @@ public type GroupDetails record {
 };
 
 # License of the creation. Read more about the Creative Commons licenses on https://creativecommons.org/licenses/
-
-#
 public type ScoreLicense string;
 
 # The type of the group
-#
 public type GroupType string;
 
 # The parameters to create an organization invitation
@@ -494,6 +506,7 @@ public type ScoreRevision record {
     # A description associated to the revision
     string description?;
     # True if this revision was automatically generated by Flat and not on
+    # purpose by the user.
     boolean autosave?;
     # The statistics related to the score revision (additions and deletions)
     ScoreRevisionStatistics statistics?;
@@ -550,10 +563,12 @@ public type GoogleClassroomSubmission record {
 };
 
 # Attachment creation for an assignment or stream post.
+# This attachment must contain a `score` or an `url`, all the details of this one will be resolved and returned as `ClassAttachment` once the assignment or stream post is created.
 public type ClassAttachmentCreation record {
     # The type of the attachment posted
     string 'type?;
     # A unique Flat score identifier. The user creating the assignment must at least have read access to the document. If the user has admin rights, new group permissions will be automatically added for the
+    # teachers and students of the class.
     string score?;
     # An unique worksheet identifier
     string worksheet?;
@@ -595,8 +610,6 @@ public type LtiCredentialsCreation record {
 };
 
 # A collaborator of a score. The `userEmail` and `group` are only available if the requesting user is a collaborator of the related score (in this case these permissions will eventualy not be listed and exposed publicly).
-
-#
 public type ResourceCollaborator record {
     *ResourceRights;
     # The unique identifier of the permission
@@ -665,27 +678,30 @@ public type Group record {
     # The display name of the group
     string name?;
     # The type of the group:
+    # * `generic`: A group created by a Flat user
+    # * `classTeachers`: A group created automaticaly by Flat that contains
+    #   the teachers of a class
+    # * `classStudents`: A group created automaticaly by Flat that contains
+    #   the studnets of a class
     string 'type?;
     # The number of users in this group
     decimal usersCount?;
     # `True` if the group is set in read-only
     boolean readOnly?;
     # If the group is related to an organization, this field will contain
+    # the unique identifier of the organization
     string organization?;
     # The creation date of the group
     string creationDate?;
 };
 
 # State of the track
-#
 public type ScoreTrackState string;
 
 # The state of a classroom
-#
 public type ClassState string;
 
 # Public User details summary
-#
 public type UserPublicSummary record {
     *UserBasics;
     # Organization ID (for Edu users only)
@@ -755,7 +771,6 @@ public type ScoreRevisionStatistics record {
 };
 
 # User details (view for organization teacher / admin)
-#
 public type UserDetailsAdmin record {
     *UserPublicSummary;
     # Email of the user
@@ -789,11 +804,9 @@ public type LtiCredentials record {
 };
 
 # LMS name
-#
 public type LmsName string;
 
 # Mode of the license
-#
 public type LicenseMode string;
 
 # Meta information provided by Canvs LMS
@@ -829,7 +842,6 @@ public type UserAdminUpdate record {
 };
 
 # Type of the collection that influence the capabilitied available on the collections and how this collection is/can be populated.
-#
 public type CollectionType string;
 
 # Update of a comment
@@ -845,6 +857,7 @@ public type ScoreCommentUpdate record {
 };
 
 # A computed version of the total, unique, weekly and monthly number of
+# comments added on the documents (this doesn't include inline comments).
 public type ScoreCommentsCounts record {
     # The total number of comments added to the score
     decimal total?;
@@ -870,6 +883,7 @@ public type AssignmentCreation record {
     # The due date of this assignment, late submissions will be marked as paste due. If not set, the assignment won't have a due date.
     string? dueDate?;
     # The publication (scheduled) date of the assignment.
+    # If this one is specified, the assignment will only be listed to the teachers of the class.
     string? scheduledDate?;
     # The number of playback authorized on the scores of the assignment.
     decimal? nbPlaybackAuthorized?;
@@ -906,11 +920,9 @@ public type AssignmentSubmissionUpdate record {
 };
 
 # The user language
-#
 public type FlatLocales string;
 
 # User's Organization Role (for Edu users only)
-#
 public type OrganizationRoles string?;
 
 # Add a collaborator to a resource.
@@ -972,6 +984,7 @@ public type ScoreTrack record {
     # The URL of the track
     string url?;
     # The unique identifier of the track when hosted on an external service.
+    # For example, if the url is `https://www.youtube.com/watch?v=dQw4w9WgXcQ`, `mediaId` will be `dQw4w9WgXcQ`
     string mediaId?;
     ScoreTrackPoint[] synchronizationPoints?;
 };
@@ -1088,6 +1101,7 @@ public type UserCreation record {
 # A new created revision
 public type ScoreRevisionCreation record {
     # The data of the score file. It must be a MusicXML 3 file (`vnd.recordare.musicxml` or `vnd.recordare.musicxml+xml`), a MIDI file (`audio/midi`) or a Flat.json (aka Adagio.json) file.
+    # Binary payloads (`vnd.recordare.musicxml` and `audio/midi`) can be encoded in Base64, in this case the `dataEncoding` property must match the encoding used for the API request.
     string data;
     # The optional encoding of the score data. This property must match the encoding used for the `data` property.
     string dataEncoding?;
@@ -1132,10 +1146,10 @@ public type ScoreCommentContext record {
 };
 
 # The sharing mode of the score for classes post and assignments
-#
 public type MediaScoreSharingMode string;
 
 # A computed version of the total, weekly, and monthly number of views of
+# the score
 public type ScoreViewsCounts record {
     # The total number of views of the score
     decimal total?;
@@ -1154,8 +1168,12 @@ public type CollectionCapabilities record {
     # Whether the current user can delete the collection
     boolean canDelete?;
     # Whether the current user can add scores to the collection
+    # 
+    # If this collection has the `type` `trash`, this property will be set to `false`. Use `DELETE /v2/scores/{score}` to trash a score.
     boolean canAddScores?;
     # Whether the current user can delete scores from the collection
+    # 
+    # If this collection has the `type` `trash`, this property will be set to `false`. Use `POST /v2/scores/{score}/untrash` to restore a score.
     boolean canDeleteScores?;
 };
 
@@ -1209,7 +1227,6 @@ public type ScoreCommentCreation record {
 };
 
 # Type of the assignment
-#
 public type AssignmentType string;
 
 public type ClassdetailsMicrosoftgraph record {
@@ -1249,8 +1266,11 @@ public type ClassUpdate record {
 };
 
 # Media attachment. The API will automatically resolve the details, oEmbed,
+# and media available if possible and return them in this object
 public type MediaAttachment record {
     # The type of the assignment resolved:
+    # * `rich`, `photo`, `video` are attachment types that are automatically resolved from a `link` attachment.
+    # * A `flat` attachment is a score document where the unique identifier will be specified in the `score` property. Its sharing mode will be provided in the `sharingMode` property.
     string 'type?;
     # An unique Flat score identifier
     string score?;
@@ -1269,6 +1289,7 @@ public type MediaAttachment record {
     # The resolved description of the attachment
     string description?;
     # If the attachment type is `rich` or `video`, the HTML code of the
+    # media to display
     string html?;
     # If the `html` is available, the width of the widget
     string htmlWidth?;
@@ -1277,6 +1298,7 @@ public type MediaAttachment record {
     # The url of the attachment
     string url?;
     # If the attachment type is `rich`, `video`, `photo` or `link`, a
+    # displayable thumbnail for this attachment
     string thumbnailUrl?;
     # If the `thumbnailUrl` is available, the width of the thumbnail
     int thumbnailWidth?;

@@ -40,15 +40,16 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get the supported barcode types for encoding / image generation.
     #
     # + return - 200  response 
     remote isolated function getSupportedTypesForEncode() returns json|error {
-        string  path = string `/barcode/encode/types`;
+        string resourcePath = string `/barcode/encode/types`;
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a Bar Code image for the given barcode number
@@ -60,22 +61,22 @@ public isolated client class Client {
     # + totalheight - Total height of the image 
     # + return - 200  response 
     remote isolated function encode(string number, string? barcodeformat = (), string? outputformat = (), int? widthfactor = (), int? totalheight = ()) returns json|error {
-        string  path = string `/barcode/encode`;
+        string resourcePath = string `/barcode/encode`;
         map<anydata> queryParam = {"number": number, "barcodeformat": barcodeformat, "outputformat": outputformat, "widthfactor": widthfactor, "totalheight": totalheight};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the supported barcode types for the decoding process.
     #
     # + return - 200  response 
     remote isolated function getSupportedTypesForDecode() returns json|error {
-        string  path = string `/barcode/decode/types`;
+        string resourcePath = string `/barcode/decode/types`;
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Decode a Barcode image and return the cotents if successful
@@ -83,14 +84,13 @@ public isolated client class Client {
     # + payload - Request body detail 
     # + return - 200  response 
     remote isolated function decode(BarcodeDecodeBody payload) returns json|error {
-        string  path = string `/barcode/decode`;
+        string resourcePath = string `/barcode/decode`;
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType=json);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

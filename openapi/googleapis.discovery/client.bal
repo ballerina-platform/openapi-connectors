@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # This is a generated connector for [Google Discovery REST API v1](https://developers.google.com/discovery/v1/reference) OpenAPI specification.
 # Provides information about other Google APIs, such as what APIs are available, the resource, and method details for each API.
@@ -32,6 +30,7 @@ public isolated client class Client {
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://www.googleapis.com/discovery/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieve the list of APIs supported at this endpoint.
     #
@@ -43,60 +42,26 @@ public isolated client class Client {
     # + preferred - Return only the preferred version of an API. 
     # + return - Successful response 
     remote isolated function listAPIList(string? alt = (), string? fields = (), string? quotaUser = (), string? userIp = (), string? name = (), boolean? preferred = ()) returns DirectoryList|error {
-        string  path = string `/apis`;
+        string resourcePath = string `/apis`;
         map<anydata> queryParam = {"alt": alt, "fields": fields, "quotaUser": quotaUser, "userIp": userIp, "name": name, "preferred": preferred};
-        path = path + check getPathForQueryParam(queryParam);
-        DirectoryList response = check self.clientEp-> get(path, targetType = DirectoryList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DirectoryList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the description of a particular version of an api.
     #
-    # + api - The name of the API. 
-    # + 'version - The version of the API. 
     # + alt - Data format for the response. 
     # + fields - Selector specifying which fields to include in a partial response. 
     # + quotaUser - An opaque string that represents a user for quota purposes. Must not exceed 40 characters. 
     # + userIp - Deprecated. Please use quotaUser instead. 
+    # + api - The name of the API. 
+    # + 'version - The version of the API. 
     # + return - Successful response 
     remote isolated function getAPIDescription(string api, string 'version, string? alt = (), string? fields = (), string? quotaUser = (), string? userIp = ()) returns RestDescription|error {
-        string  path = string `/apis/${api}/${'version}/rest`;
+        string resourcePath = string `/apis/${api}/${'version}/rest`;
         map<anydata> queryParam = {"alt": alt, "fields": fields, "quotaUser": quotaUser, "userIp": userIp};
-        path = path + check getPathForQueryParam(queryParam);
-        RestDescription response = check self.clientEp-> get(path, targetType = RestDescription);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        RestDescription response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

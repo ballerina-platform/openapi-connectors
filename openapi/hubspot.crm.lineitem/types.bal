@@ -18,7 +18,7 @@ public type StandardError record {
     string status;
     string id?;
     ErrorCategory category;
-    record  { }  subCategory?;
+    record {} subCategory?;
     string message;
     ErrorDetail[] errors;
     record {} context;

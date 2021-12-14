@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.insightly.com/v3.1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Gets a list of records
     #
@@ -75,10 +76,10 @@ public isolated client class Client {
     # + countTotal - Optional,true if total number of records should be returned in the response headers. 
     # + return - Request succeeded. 
     remote isolated function getEntities(string objectName, boolean brief = false, int? skip = (), int? top = (), boolean countTotal = false) returns CustomObjectsRecords[]|error {
-        string path = string `/${objectName}`;
+        string resourcePath = string `/${objectName}`;
         map<anydata> queryParam = {"brief": brief, "skip": skip, "top": top, "count_total": countTotal};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomObjectsRecords[] response = check self.clientEp->get(path, targetType = CustomObjectsRecordsArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CustomObjectsRecords[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates a record
@@ -87,11 +88,11 @@ public isolated client class Client {
     # + payload - The record to update (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function updateEntity(string objectName, Customobjectsrecords1 payload) returns CustomObjectsRecords|error {
-        string path = string `/${objectName}`;
+        string resourcePath = string `/${objectName}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomObjectsRecords response = check self.clientEp->put(path, request, targetType = CustomObjectsRecords);
+        request.setPayload(jsonBody, "application/json");
+        CustomObjectsRecords response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Adds a record
@@ -100,11 +101,11 @@ public isolated client class Client {
     # + payload - The record to add (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function addEntity(string objectName, Customobjectsrecords2 payload) returns CustomObjectsRecords|error {
-        string path = string `/${objectName}`;
+        string resourcePath = string `/${objectName}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomObjectsRecords response = check self.clientEp->post(path, request, targetType = CustomObjectsRecords);
+        request.setPayload(jsonBody, "application/json");
+        CustomObjectsRecords response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a record
@@ -113,8 +114,8 @@ public isolated client class Client {
     # + id - The record's ID 
     # + return - Request succeeded. 
     remote isolated function getEntity(string objectName, int id) returns CustomObjectsRecords|error {
-        string path = string `/${objectName}/${id}`;
-        CustomObjectsRecords response = check self.clientEp->get(path, targetType = CustomObjectsRecords);
+        string resourcePath = string `/${objectName}/${id}`;
+        CustomObjectsRecords response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes a Record
@@ -123,8 +124,8 @@ public isolated client class Client {
     # + id - Entity's ID 
     # + return - Delete succeeded. 
     remote isolated function deleteEntity(string objectName, int id) returns http:Response|error {
-        string path = string `/${objectName}/${id}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/${objectName}/${id}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets a record's translation in a specific language
@@ -134,8 +135,8 @@ public isolated client class Client {
     # + language - The requested language 
     # + return - Request succeeded. 
     remote isolated function getTranslation(string objectName, int id, string language) returns CustomObjectsRecords[]|error {
-        string path = string `/${objectName}/${id}/Translations/${language}`;
-        CustomObjectsRecords[] response = check self.clientEp->get(path, targetType = CustomObjectsRecordsArr);
+        string resourcePath = string `/${objectName}/${id}/Translations/${language}`;
+        CustomObjectsRecords[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates a record's translation in a specific language
@@ -145,11 +146,11 @@ public isolated client class Client {
     # + payload - The record to update (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function updateTranslation(string objectName, string language, string id, Customobjectsrecords3 payload) returns CustomObjectsRecords[]|error {
-        string path = string `/${objectName}/${id}/Translations/${language}`;
+        string resourcePath = string `/${objectName}/${id}/Translations/${language}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomObjectsRecords[] response = check self.clientEp->put(path, request, targetType = CustomObjectsRecordsArr);
+        request.setPayload(jsonBody, "application/json");
+        CustomObjectsRecords[] response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Adds a Translation for a record in a specific language
@@ -159,11 +160,11 @@ public isolated client class Client {
     # + payload - The record to add (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function addTranslation(string objectName, string language, string id, CustomObjectsRecords1 payload) returns CustomObjectsRecords[]|error {
-        string path = string `/${objectName}/${id}/Translations/${language}`;
+        string resourcePath = string `/${objectName}/${id}/Translations/${language}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomObjectsRecords[] response = check self.clientEp->post(path, request, targetType = CustomObjectsRecordsArr);
+        request.setPayload(jsonBody, "application/json");
+        CustomObjectsRecords[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a filtered list of records
@@ -178,18 +179,18 @@ public isolated client class Client {
     # + countTotal - Optional, true if total number of records should be returned in the response headers. 
     # + return - Request succeeded. 
     remote isolated function getCustomObjectsRecordsBySearch(string objectName, string? fieldName = (), string? fieldValue = (), string? updatedAfterUtc = (), boolean brief = false, int? skip = (), int? top = (), boolean countTotal = false) returns CustomObjectsRecords[]|error {
-        string path = string `/${objectName}/Search`;
+        string resourcePath = string `/${objectName}/Search`;
         map<anydata> queryParam = {"field_name": fieldName, "field_value": fieldValue, "updated_after_utc": updatedAfterUtc, "brief": brief, "skip": skip, "top": top, "count_total": countTotal};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomObjectsRecords[] response = check self.clientEp->get(path, targetType = CustomObjectsRecordsArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CustomObjectsRecords[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a list of Custom Fields
     #
     # + return - Request succeeded. 
     remote isolated function getCustomFields(string objectName) returns APICustomFieldMetadata[]|error {
-        string path = string `/CustomFields/${objectName}`;
-        APICustomFieldMetadata[] response = check self.clientEp->get(path, targetType = APICustomFieldMetadataArr);
+        string resourcePath = string `/CustomFields/${objectName}`;
+        APICustomFieldMetadata[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a Custom Field by name
@@ -198,18 +199,18 @@ public isolated client class Client {
     # + fieldName - The custom field name 
     # + return - Request succeeded. 
     remote isolated function getCustomfieldBySearch(string objectName, string fieldName) returns CustomFieldMetadata|error {
-        string path = string `/CustomFields/${objectName}/Search`;
+        string resourcePath = string `/CustomFields/${objectName}/Search`;
         map<anydata> queryParam = {"fieldName": fieldName};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomFieldMetadata response = check self.clientEp->get(path, targetType = CustomFieldMetadata);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CustomFieldMetadata response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a list of custom objects
     #
     # + return - Request succeeded. 
     remote isolated function getCustomObjects() returns APICustomObject[]|error {
-        string path = string `/CustomObjects`;
-        APICustomObject[] response = check self.clientEp->get(path, targetType = APICustomObjectArr);
+        string resourcePath = string `/CustomObjects`;
+        APICustomObject[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a custom object by object name
@@ -217,8 +218,8 @@ public isolated client class Client {
     # + customObjectName - The custom object name 
     # + return - Request succeeded. 
     remote isolated function getCustomObject(string customObjectName) returns CustomObject|error {
-        string path = string `/CustomObjects/${customObjectName}`;
-        CustomObject response = check self.clientEp->get(path, targetType = CustomObject);
+        string resourcePath = string `/CustomObjects/${customObjectName}`;
+        CustomObject response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

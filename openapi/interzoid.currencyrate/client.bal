@@ -40,16 +40,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets a foreign currency rate for one US Dollar
     #
     # + symbol - Currency symbol to retrieve current rate for 
     # + return - Currency rate data to one US DOllar 
     remote isolated function getCurrencyRate(string symbol) returns CurrencyInfo|error {
-        string  path = string `/getcurrencyrate`;
+        string resourcePath = string `/getcurrencyrate`;
         map<anydata> queryParam = {"symbol": symbol, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        CurrencyInfo response = check self.clientEp-> get(path, targetType = CurrencyInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CurrencyInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

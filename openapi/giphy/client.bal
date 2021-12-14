@@ -39,16 +39,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get GIFs by ID
     #
     # + ids - Filters results by specified GIF IDs, separated by commas. 
     # + return - GIF or an error 
     remote isolated function getGifsById(string? ids = ()) returns PaginatedResponse|error {
-        string  path = string `/gifs`;
+        string resourcePath = string `/gifs`;
         map<anydata> queryParam = {"ids": ids, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedResponse response = check self.clientEp-> get(path, targetType = PaginatedResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Random GIF
@@ -57,10 +58,10 @@ public isolated client class Client {
     # + rating - Filters results by specified rating. 
     # + return - Random GIF or an error 
     remote isolated function randomGif(string? tag = (), string? rating = ()) returns Response|error {
-        string  path = string `/gifs/random`;
+        string resourcePath = string `/gifs/random`;
         map<anydata> queryParam = {"tag": tag, "rating": rating, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Response response = check self.clientEp-> get(path, targetType = Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search GIFs
@@ -72,10 +73,10 @@ public isolated client class Client {
     # + lang - Specify default language for regional content; use a 2-letter ISO 639-1 language code. 
     # + return - GIFs or an error 
     remote isolated function searchGifs(string q, int 'limit = 25, int offset = 0, string? rating = (), string? lang = ()) returns PaginatedResponse|error {
-        string  path = string `/gifs/search`;
+        string resourcePath = string `/gifs/search`;
         map<anydata> queryParam = {"q": q, "limit": 'limit, "offset": offset, "rating": rating, "lang": lang, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedResponse response = check self.clientEp-> get(path, targetType = PaginatedResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Translate phrase to GIF
@@ -83,10 +84,10 @@ public isolated client class Client {
     # + s - Search term. 
     # + return - Translated GIF or an error 
     remote isolated function translateGif(string s) returns Response|error {
-        string  path = string `/gifs/translate`;
+        string resourcePath = string `/gifs/translate`;
         map<anydata> queryParam = {"s": s, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Response response = check self.clientEp-> get(path, targetType = Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Trending GIFs
@@ -96,10 +97,10 @@ public isolated client class Client {
     # + rating - Filters results by specified rating. 
     # + return - Treading GIFs or an error 
     remote isolated function trendingGifs(int 'limit = 25, int offset = 0, string? rating = ()) returns PaginatedResponse|error {
-        string  path = string `/gifs/trending`;
+        string resourcePath = string `/gifs/trending`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "rating": rating, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedResponse response = check self.clientEp-> get(path, targetType = PaginatedResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get GIF by Id
@@ -107,10 +108,10 @@ public isolated client class Client {
     # + gifId - Filters results by specified GIF ID. 
     # + return - Sticker or an error 
     remote isolated function getGifById(int gifId) returns Response|error {
-        string  path = string `/gifs/${gifId}`;
+        string resourcePath = string `/gifs/${gifId}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Response response = check self.clientEp-> get(path, targetType = Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Random Sticker
@@ -119,10 +120,10 @@ public isolated client class Client {
     # + rating - Filters results by specified rating. 
     # + return - Random sticker or an error 
     remote isolated function randomSticker(string? tag = (), string? rating = ()) returns Response|error {
-        string  path = string `/stickers/random`;
+        string resourcePath = string `/stickers/random`;
         map<anydata> queryParam = {"tag": tag, "rating": rating, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Response response = check self.clientEp-> get(path, targetType = Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search Stickers
@@ -134,10 +135,10 @@ public isolated client class Client {
     # + lang - Specify default language for regional content; use a 2-letter ISO 639-1 language code. 
     # + return - Stickers or an error 
     remote isolated function searchStickers(string q, int 'limit = 25, int offset = 0, string? rating = (), string? lang = ()) returns PaginatedResponse|error {
-        string  path = string `/stickers/search`;
+        string resourcePath = string `/stickers/search`;
         map<anydata> queryParam = {"q": q, "limit": 'limit, "offset": offset, "rating": rating, "lang": lang, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedResponse response = check self.clientEp-> get(path, targetType = PaginatedResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Translate phrase to Sticker
@@ -145,10 +146,10 @@ public isolated client class Client {
     # + s - Search term. 
     # + return - Translated sticker or an error 
     remote isolated function translateSticker(string s) returns Response|error {
-        string  path = string `/stickers/translate`;
+        string resourcePath = string `/stickers/translate`;
         map<anydata> queryParam = {"s": s, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Response response = check self.clientEp-> get(path, targetType = Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Trending Stickers
@@ -158,10 +159,10 @@ public isolated client class Client {
     # + rating - Filters results by specified rating. 
     # + return - Treading stickers or an error 
     remote isolated function trendingStickers(int 'limit = 25, int offset = 0, string? rating = ()) returns PaginatedResponse|error {
-        string  path = string `/stickers/trending`;
+        string resourcePath = string `/stickers/trending`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "rating": rating, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        PaginatedResponse response = check self.clientEp-> get(path, targetType = PaginatedResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PaginatedResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

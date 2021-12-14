@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -68,6 +66,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.shipwire.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get carriers availability
     #
@@ -77,10 +76,10 @@ public isolated client class Client {
     # + isPoBoxSupported - Add description 
     # + return - Carriers response 
     remote isolated function getCarriers(string? name = (), string? carrierCode = (), string? serviceLevelCode = (), string? isPoBoxSupported = ()) returns GetCarriersResponse|error {
-        string  path = string `/api/v3.1/carriers`;
+        string resourcePath = string `/api/v3.1/carriers`;
         map<anydata> queryParam = {"name": name, "carrierCode": carrierCode, "serviceLevelCode": serviceLevelCode, "isPoBoxSupported": isPoBoxSupported};
-        path = path + check getPathForQueryParam(queryParam);
-        GetCarriersResponse response = check self.clientEp-> get(path, targetType = GetCarriersResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GetCarriersResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get carrier availability
@@ -88,42 +87,8 @@ public isolated client class Client {
     # + id - The prefix concatenated with '-' and service level code of the carrier. 
     # + return - Carrier response 
     remote isolated function getCarrier(string id) returns GetCarrierResponse|error {
-        string  path = string `/api/v3.1/carriers/${id}`;
-        GetCarrierResponse response = check self.clientEp-> get(path, targetType = GetCarrierResponse);
+        string resourcePath = string `/api/v3.1/carriers/${id}`;
+        GetCarrierResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

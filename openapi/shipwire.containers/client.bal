@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -68,6 +66,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.shipwire.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get containers
     #
@@ -77,10 +76,11 @@ public isolated client class Client {
     # + 'type - Container type. Valid options are 'box', 'envelope', 'tube', 'pallet' 
     # + return - OK 
     remote isolated function getContainers(int? isActive = (), string? warehouseIds = (), string? warehouseExternalIds = (), string[]? 'type = ()) returns GetContainersResponse|error {
-        string  path = string `/api/v3.1/containers`;
+        string resourcePath = string `/api/v3.1/containers`;
         map<anydata> queryParam = {"isActive": isActive, "warehouseIds": warehouseIds, "warehouseExternalIds": warehouseExternalIds, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        GetContainersResponse response = check self.clientEp-> get(path, targetType = GetContainersResponse);
+        map<Encoding> queryParamEncoding = {"type": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        GetContainersResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new container
@@ -88,11 +88,11 @@ public isolated client class Client {
     # + payload - CreateANewContainer request 
     # + return - OK 
     remote isolated function postContainers(CreateANewContainerRequest payload) returns CreateANewContainerResponse|error {
-        string  path = string `/api/v3.1/containers`;
+        string resourcePath = string `/api/v3.1/containers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateANewContainerResponse response = check self.clientEp->post(path, request, targetType=CreateANewContainerResponse);
+        request.setPayload(jsonBody, "application/json");
+        CreateANewContainerResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a container
@@ -100,8 +100,8 @@ public isolated client class Client {
     # + id - The container's id or external id. 
     # + return - OK 
     remote isolated function getContainersById(string id) returns GetAContainerResponse|error {
-        string  path = string `/api/v3.1/containers/${id}`;
-        GetAContainerResponse response = check self.clientEp-> get(path, targetType = GetAContainerResponse);
+        string resourcePath = string `/api/v3.1/containers/${id}`;
+        GetAContainerResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a container
@@ -110,45 +110,11 @@ public isolated client class Client {
     # + payload - UpdateAContainer request 
     # + return - OK 
     remote isolated function putContainersById(string id, UpdateAContainerRequest payload) returns UpdateAContainerResponse|error {
-        string  path = string `/api/v3.1/containers/${id}`;
+        string resourcePath = string `/api/v3.1/containers/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UpdateAContainerResponse response = check self.clientEp->put(path, request, targetType=UpdateAContainerResponse);
+        request.setPayload(jsonBody, "application/json");
+        UpdateAContainerResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

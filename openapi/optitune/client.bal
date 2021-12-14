@@ -15,7 +15,7 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
+import ballerina/mime;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -66,21 +66,22 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://manage.opti-tune.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Gets the logged in user account
     #
     # + return - OK 
     remote isolated function getMyAccounts() returns Account|error {
-        string  path = string `/api/v1/Accounts/Me`;
-        Account response = check self.clientEp-> get(path, targetType = Account);
+        string resourcePath = string `/api/v1/Accounts/Me`;
+        Account response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all accounts in the organization
     #
     # + return - OK 
     remote isolated function getAllAccounts() returns Account[]|error {
-        string  path = string `/api/v1/Accounts`;
-        Account[] response = check self.clientEp-> get(path, targetType = AccountArr);
+        string resourcePath = string `/api/v1/Accounts`;
+        Account[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new account
@@ -88,11 +89,11 @@ public isolated client class Client {
     # + payload - The account to add 
     # + return - OK 
     remote isolated function postAccounts(Account payload) returns Account|error {
-        string  path = string `/api/v1/Accounts`;
+        string resourcePath = string `/api/v1/Accounts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Account response = check self.clientEp->post(path, request, targetType=Account);
+        request.setPayload(jsonBody, "application/json");
+        Account response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a single account in the organization, given an account ID
@@ -100,8 +101,8 @@ public isolated client class Client {
     # + id - Account ID 
     # + return - OK 
     remote isolated function getAccounts(string id) returns Account|error {
-        string  path = string `/api/v1/Accounts/${id}`;
-        Account response = check self.clientEp-> get(path, targetType = Account);
+        string resourcePath = string `/api/v1/Accounts/${id}`;
+        Account response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing account
@@ -110,11 +111,11 @@ public isolated client class Client {
     # + payload - The Account data 
     # + return - OK 
     remote isolated function putAccounts(string id, Account payload) returns Account|error {
-        string  path = string `/api/v1/Accounts/${id}`;
+        string resourcePath = string `/api/v1/Accounts/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Account response = check self.clientEp->put(path, request, targetType=Account);
+        request.setPayload(jsonBody, "application/json");
+        Account response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing account
@@ -122,16 +123,16 @@ public isolated client class Client {
     # + id - Account ID 
     # + return - OK 
     remote isolated function deleteAccounts(string id) returns json|error {
-        string  path = string `/api/v1/Accounts/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Accounts/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets the advanced settings for an organization
     #
     # + return - OK 
     remote isolated function getAdvancedSettings() returns AdvancedSettings|error {
-        string  path = string `/api/v1/AdvancedSettings`;
-        AdvancedSettings response = check self.clientEp-> get(path, targetType = AdvancedSettings);
+        string resourcePath = string `/api/v1/AdvancedSettings`;
+        AdvancedSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates advanced settings for the organization
@@ -139,11 +140,11 @@ public isolated client class Client {
     # + payload - AdvancedSettings data 
     # + return - OK 
     remote isolated function putAdvancedSettings(AdvancedSettings payload) returns AdvancedSettings|error {
-        string  path = string `/api/v1/AdvancedSettings`;
+        string resourcePath = string `/api/v1/AdvancedSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AdvancedSettings response = check self.clientEp->put(path, request, targetType=AdvancedSettings);
+        request.setPayload(jsonBody, "application/json");
+        AdvancedSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Gets the OptiTune agent configuration for a given computer id, in XML format
@@ -151,16 +152,16 @@ public isolated client class Client {
     # + computerid - computer ID 
     # + return - OK 
     remote isolated function getAgentConfig(string computerid) returns json|error {
-        string  path = string `/api/v1/Computers/${computerid}/AgentConfig`;
-        json response = check self.clientEp-> get(path, targetType = json);
+        string resourcePath = string `/api/v1/Computers/${computerid}/AgentConfig`;
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all agent installers in the organization
     #
     # + return - OK 
     remote isolated function agentinstallersGetall() returns AgentInstaller[]|error {
-        string  path = string `/api/v1/AgentInstallers`;
-        AgentInstaller[] response = check self.clientEp-> get(path, targetType = AgentInstallerArr);
+        string resourcePath = string `/api/v1/AgentInstallers`;
+        AgentInstaller[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new agent installer.  Upload the files specifying local storage first, and then 
@@ -169,11 +170,11 @@ public isolated client class Client {
     # + payload - AgentInstaller data 
     # + return - OK 
     remote isolated function postAgentInstallers(AgentInstaller payload) returns AgentInstaller|error {
-        string  path = string `/api/v1/AgentInstallers`;
+        string resourcePath = string `/api/v1/AgentInstallers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AgentInstaller response = check self.clientEp->post(path, request, targetType=AgentInstaller);
+        request.setPayload(jsonBody, "application/json");
+        AgentInstaller response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a single agent installer in the organization, given an agent installer ID
@@ -181,8 +182,8 @@ public isolated client class Client {
     # + id - Agent installer ID 
     # + return - OK 
     remote isolated function getAgentInstallers(string id) returns AgentInstaller|error {
-        string  path = string `/api/v1/AgentInstallers/${id}`;
-        AgentInstaller response = check self.clientEp-> get(path, targetType = AgentInstaller);
+        string resourcePath = string `/api/v1/AgentInstallers/${id}`;
+        AgentInstaller response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing agent installer
@@ -190,8 +191,8 @@ public isolated client class Client {
     # + id - Agent installer ID 
     # + return - OK 
     remote isolated function deleteAgentInstallers(string id) returns json|error {
-        string  path = string `/api/v1/AgentInstallers/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/AgentInstallers/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets the state of a single OptiTune agent, given a computer ID.  The state will frequently change as the agent performs its duties.
@@ -199,8 +200,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getAgentStateAgentStatus(string computerid) returns AgentState|error {
-        string  path = string `/api/v1/Computers/${computerid}/AgentState`;
-        AgentState response = check self.clientEp-> get(path, targetType = AgentState);
+        string resourcePath = string `/api/v1/Computers/${computerid}/AgentState`;
+        AgentState response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the connection status for a single computer
@@ -208,8 +209,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getConnectionStateAgentStatus(string computerid) returns ConnectionStatusInfo|error {
-        string  path = string `/api/v1/Computers/${computerid}/ConnectionState`;
-        ConnectionStatusInfo response = check self.clientEp-> get(path, targetType = ConnectionStatusInfo);
+        string resourcePath = string `/api/v1/Computers/${computerid}/ConnectionState`;
+        ConnectionStatusInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a single alert instance, given an alert instance ID
@@ -217,8 +218,8 @@ public isolated client class Client {
     # + id - Alert instance ID 
     # + return - OK 
     remote isolated function getAlertInstances(string id) returns AlertInstance|error {
-        string  path = string `/api/v1/AlertInstances/${id}`;
-        AlertInstance response = check self.clientEp-> get(path, targetType = AlertInstance);
+        string resourcePath = string `/api/v1/AlertInstances/${id}`;
+        AlertInstance response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing alert instance
@@ -226,8 +227,8 @@ public isolated client class Client {
     # + id - Alert instance ID 
     # + return - OK 
     remote isolated function deleteAlertInstances(string id) returns json|error {
-        string  path = string `/api/v1/AlertInstances/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/AlertInstances/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all alert instances that fall into a given page range.
@@ -236,10 +237,10 @@ public isolated client class Client {
     # + pageSize - Page Size 
     # + return - OK 
     remote isolated function getAllAlertInstances(int? pageNumber = (), int? pageSize = ()) returns AlertInstance[]|error {
-        string  path = string `/api/v1/AlertInstances`;
+        string resourcePath = string `/api/v1/AlertInstances`;
         map<anydata> queryParam = {"page.number": pageNumber, "page.size": pageSize};
-        path = path + check getPathForQueryParam(queryParam);
-        AlertInstance[] response = check self.clientEp-> get(path, targetType = AlertInstanceArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        AlertInstance[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates only the status for a given alert instance
@@ -247,19 +248,19 @@ public isolated client class Client {
     # + payload - AlertInstance data 
     # + return - OK 
     remote isolated function patchAlertInstances(AlertInstance payload) returns AlertInstance|error {
-        string  path = string `/api/v1/AlertInstances`;
+        string resourcePath = string `/api/v1/AlertInstances`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AlertInstance response = check self.clientEp->patch(path, request, targetType=AlertInstance);
+        request.setPayload(jsonBody, "application/json");
+        AlertInstance response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Gets all alert subscriptions in the organization
     #
     # + return - OK 
     remote isolated function getAllAlertSubscriptions() returns AlertSubscription[]|error {
-        string  path = string `/api/v1/AlertSubscriptions`;
-        AlertSubscription[] response = check self.clientEp-> get(path, targetType = AlertSubscriptionArr);
+        string resourcePath = string `/api/v1/AlertSubscriptions`;
+        AlertSubscription[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new alert subscription
@@ -267,11 +268,11 @@ public isolated client class Client {
     # + payload - AlertSubscription data 
     # + return - OK 
     remote isolated function postAlertSubscriptions(AlertSubscription payload) returns AlertSubscription|error {
-        string  path = string `/api/v1/AlertSubscriptions`;
+        string resourcePath = string `/api/v1/AlertSubscriptions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AlertSubscription response = check self.clientEp->post(path, request, targetType=AlertSubscription);
+        request.setPayload(jsonBody, "application/json");
+        AlertSubscription response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a alert subscription by ID
@@ -279,8 +280,8 @@ public isolated client class Client {
     # + id - Alert subscription ID 
     # + return - OK 
     remote isolated function getAlertSubscriptions(string id) returns AlertSubscription|error {
-        string  path = string `/api/v1/AlertSubscriptions/${id}`;
-        AlertSubscription response = check self.clientEp-> get(path, targetType = AlertSubscription);
+        string resourcePath = string `/api/v1/AlertSubscriptions/${id}`;
+        AlertSubscription response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing alert subscription, using a given ID
@@ -289,11 +290,11 @@ public isolated client class Client {
     # + payload - AlertSubscription data 
     # + return - OK 
     remote isolated function putAlertSubscriptions(string id, AlertSubscription payload) returns AlertSubscription|error {
-        string  path = string `/api/v1/AlertSubscriptions/${id}`;
+        string resourcePath = string `/api/v1/AlertSubscriptions/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AlertSubscription response = check self.clientEp->put(path, request, targetType=AlertSubscription);
+        request.setPayload(jsonBody, "application/json");
+        AlertSubscription response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing alert subscription, given an ID
@@ -301,16 +302,16 @@ public isolated client class Client {
     # + id - Alert subscription ID 
     # + return - OK 
     remote isolated function deleteAlertSubscriptions(string id) returns json|error {
-        string  path = string `/api/v1/AlertSubscriptions/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/AlertSubscriptions/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all announcements on the management server
     #
     # + return - OK 
     remote isolated function getAllAnnouncements() returns Announcement[]|error {
-        string  path = string `/api/v1/Announcements`;
-        Announcement[] response = check self.clientEp-> get(path, targetType = AnnouncementArr);
+        string resourcePath = string `/api/v1/Announcements`;
+        Announcement[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all applications installed on a given computer
@@ -318,8 +319,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getApplications(string computerid) returns Application[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/Applications`;
-        Application[] response = check self.clientEp-> get(path, targetType = ApplicationArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/Applications`;
+        Application[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all audit log entries between optional start and end times, in UTC
@@ -328,10 +329,10 @@ public isolated client class Client {
     # + endDateTime - An optional end time 
     # + return - OK 
     remote isolated function getByDateAuditLog(string? startDateTime = (), string? endDateTime = ()) returns AuditLogEntry[]|error {
-        string  path = string `/api/v1/AuditLog`;
+        string resourcePath = string `/api/v1/AuditLog`;
         map<anydata> queryParam = {"startDateTime": startDateTime, "endDateTime": endDateTime};
-        path = path + check getPathForQueryParam(queryParam);
-        AuditLogEntry[] response = check self.clientEp-> get(path, targetType = AuditLogEntryArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        AuditLogEntry[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the cloudberry backup configuration for a given computer
@@ -339,8 +340,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getConfigBackupCloudberry(string computerid) returns BackupCloudberryComputerConfig|error {
-        string  path = string `/api/v1/Computers/${computerid}/BackupCloudberryConfig`;
-        BackupCloudberryComputerConfig response = check self.clientEp-> get(path, targetType = BackupCloudberryComputerConfig);
+        string resourcePath = string `/api/v1/Computers/${computerid}/BackupCloudberryConfig`;
+        BackupCloudberryComputerConfig response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the cloudberry backup plans for a given computer
@@ -348,8 +349,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getPlansBackupCloudberry(string computerid) returns BackupCloudberryComputerPlan[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/BackupCloudberryPlans`;
-        BackupCloudberryComputerPlan[] response = check self.clientEp-> get(path, targetType = BackupCloudberryComputerPlanArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/BackupCloudberryPlans`;
+        BackupCloudberryComputerPlan[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the cloudberry backup plan history, for a given computer ID and plan ID
@@ -358,8 +359,8 @@ public isolated client class Client {
     # + planid - Plan ID 
     # + return - OK 
     remote isolated function getPlanHistoryBackupCloudberry(string computerid, string planid) returns BackupCloudberryComputerPlanHistory[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/BackupCloudberryPlans/${planid}/History`;
-        BackupCloudberryComputerPlanHistory[] response = check self.clientEp-> get(path, targetType = BackupCloudberryComputerPlanHistoryArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/BackupCloudberryPlans/${planid}/History`;
+        BackupCloudberryComputerPlanHistory[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all benchmark data points for a given computer.  Each benchmark data point will have an associated "benchmark" and "benchmark data set".
@@ -367,16 +368,16 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getByComputerBenchmarkDataPoints(string computerid) returns BenchmarkDataPoint[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/BenchmarkDataPoints`;
-        BenchmarkDataPoint[] response = check self.clientEp-> get(path, targetType = BenchmarkDataPointArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/BenchmarkDataPoints`;
+        BenchmarkDataPoint[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Each benchmark for a particular computer may contain multiple data sets.  This returns all available data sets for the organization, across all computers.
     #
     # + return - OK 
     remote isolated function getAllBenchmarkDataSets() returns BenchmarkDataSet[]|error {
-        string  path = string `/api/v1/BenchmarkDataSets`;
-        BenchmarkDataSet[] response = check self.clientEp-> get(path, targetType = BenchmarkDataSetArr);
+        string resourcePath = string `/api/v1/BenchmarkDataSets`;
+        BenchmarkDataSet[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a particular benchmark data set given a benchmark data set id
@@ -384,16 +385,16 @@ public isolated client class Client {
     # + id - Benchmark data set ID 
     # + return - OK 
     remote isolated function getBenchmarkDataSets(int id) returns BenchmarkDataSet|error {
-        string  path = string `/api/v1/BenchmarkDataSets/${id}`;
-        BenchmarkDataSet response = check self.clientEp-> get(path, targetType = BenchmarkDataSet);
+        string resourcePath = string `/api/v1/BenchmarkDataSets/${id}`;
+        BenchmarkDataSet response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all available benchmarks for the organization.  Each benchmark is named for the corresponding performance counter, e.g. Name = "\Processor(_Total)\% Processor Time"
     #
     # + return - OK 
     remote isolated function getAllBenchmarks() returns Benchmark[]|error {
-        string  path = string `/api/v1/Benchmarks`;
-        Benchmark[] response = check self.clientEp-> get(path, targetType = BenchmarkArr);
+        string resourcePath = string `/api/v1/Benchmarks`;
+        Benchmark[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a particular benchmark given a benchmark id
@@ -401,8 +402,8 @@ public isolated client class Client {
     # + id - Benchmark ID 
     # + return - OK 
     remote isolated function getBenchmarks(int id) returns Benchmark|error {
-        string  path = string `/api/v1/Benchmarks/${id}`;
-        Benchmark response = check self.clientEp-> get(path, targetType = Benchmark);
+        string resourcePath = string `/api/v1/Benchmarks/${id}`;
+        Benchmark response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all billing license usage data for the organization, between optional start and end dates (in UTC)
@@ -411,18 +412,18 @@ public isolated client class Client {
     # + endDateTime - End date 
     # + return - OK 
     remote isolated function getByDateBillingLicenseUsage(string? startDateTime = (), string? endDateTime = ()) returns BillingLicenseUsage[]|error {
-        string  path = string `/api/v1/BillingLicenseUsage`;
+        string resourcePath = string `/api/v1/BillingLicenseUsage`;
         map<anydata> queryParam = {"startDateTime": startDateTime, "endDateTime": endDateTime};
-        path = path + check getPathForQueryParam(queryParam);
-        BillingLicenseUsage[] response = check self.clientEp-> get(path, targetType = BillingLicenseUsageArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        BillingLicenseUsage[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the billing settings for the current organization
     #
     # + return - OK 
     remote isolated function getBillingSettings() returns BillingSettings|error {
-        string  path = string `/api/v1/BillingSettings`;
-        BillingSettings response = check self.clientEp-> get(path, targetType = BillingSettings);
+        string resourcePath = string `/api/v1/BillingSettings`;
+        BillingSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates existing billing settings.  If you provide a valid billing token (from https://www.bravurasoftware.com/billing), the organization will use monthly billing for its license usage
@@ -430,27 +431,27 @@ public isolated client class Client {
     # + payload - BillingSettings data 
     # + return - OK 
     remote isolated function putBillingSettings(BillingSettings payload) returns BillingSettings|error {
-        string  path = string `/api/v1/BillingSettings`;
+        string resourcePath = string `/api/v1/BillingSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BillingSettings response = check self.clientEp->put(path, request, targetType=BillingSettings);
+        request.setPayload(jsonBody, "application/json");
+        BillingSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Gets all available root domains for branding.  When configuring a brand for your organization, you can pick between one or more root domains, e.g. "rmmportal.com"
     #
     # + return - OK 
     remote isolated function getAllBrandDomains() returns BrandDomain[]|error {
-        string  path = string `/api/v1/BrandDomains`;
-        BrandDomain[] response = check self.clientEp-> get(path, targetType = BrandDomainArr);
+        string resourcePath = string `/api/v1/BrandDomains`;
+        BrandDomain[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all brands in the organization
     #
     # + return - OK 
     remote isolated function getAllBrands() returns Brand[]|error {
-        string  path = string `/api/v1/Brands`;
-        Brand[] response = check self.clientEp-> get(path, targetType = BrandArr);
+        string resourcePath = string `/api/v1/Brands`;
+        Brand[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new brand
@@ -458,11 +459,11 @@ public isolated client class Client {
     # + payload - Brand data 
     # + return - OK 
     remote isolated function postBrands(Brand payload) returns Brand|error {
-        string  path = string `/api/v1/Brands`;
+        string resourcePath = string `/api/v1/Brands`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Brand response = check self.clientEp->post(path, request, targetType=Brand);
+        request.setPayload(jsonBody, "application/json");
+        Brand response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a brand by ID
@@ -470,8 +471,8 @@ public isolated client class Client {
     # + id - Brand ID 
     # + return - OK 
     remote isolated function getBrands(string id) returns Brand|error {
-        string  path = string `/api/v1/Brands/${id}`;
-        Brand response = check self.clientEp-> get(path, targetType = Brand);
+        string resourcePath = string `/api/v1/Brands/${id}`;
+        Brand response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing brand
@@ -479,16 +480,16 @@ public isolated client class Client {
     # + id - Brand ID 
     # + return - OK 
     remote isolated function deleteBrands(string id) returns json|error {
-        string  path = string `/api/v1/Brands/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Brands/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all business entities in the organization
     #
     # + return - OK 
     remote isolated function getAllBusinessEntities() returns BusinessEntity[]|error {
-        string  path = string `/api/v1/BusinessEntities`;
-        BusinessEntity[] response = check self.clientEp-> get(path, targetType = BusinessEntityArr);
+        string resourcePath = string `/api/v1/BusinessEntities`;
+        BusinessEntity[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new business entity
@@ -496,11 +497,11 @@ public isolated client class Client {
     # + payload - BusinessEntity data 
     # + return - OK 
     remote isolated function postBusinessEntities(BusinessEntity payload) returns BusinessEntity|error {
-        string  path = string `/api/v1/BusinessEntities`;
+        string resourcePath = string `/api/v1/BusinessEntities`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BusinessEntity response = check self.clientEp->post(path, request, targetType=BusinessEntity);
+        request.setPayload(jsonBody, "application/json");
+        BusinessEntity response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a business entity, based on the provided business entity ID
@@ -508,8 +509,8 @@ public isolated client class Client {
     # + id - Business entity ID 
     # + return - OK 
     remote isolated function getBusinessEntities(string id) returns BusinessEntity|error {
-        string  path = string `/api/v1/BusinessEntities/${id}`;
-        BusinessEntity response = check self.clientEp-> get(path, targetType = BusinessEntity);
+        string resourcePath = string `/api/v1/BusinessEntities/${id}`;
+        BusinessEntity response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing business entity.  You can also change the parent of the business entity by adjusting the ParentID value.
@@ -518,11 +519,11 @@ public isolated client class Client {
     # + payload - The Business Entity data 
     # + return - OK 
     remote isolated function putBusinessEntities(string id, BusinessEntity payload) returns BusinessEntity|error {
-        string  path = string `/api/v1/BusinessEntities/${id}`;
+        string resourcePath = string `/api/v1/BusinessEntities/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BusinessEntity response = check self.clientEp->put(path, request, targetType=BusinessEntity);
+        request.setPayload(jsonBody, "application/json");
+        BusinessEntity response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing business entity
@@ -530,16 +531,16 @@ public isolated client class Client {
     # + id - Business entity ID 
     # + return - OK 
     remote isolated function deleteBusinessEntities(string id) returns json|error {
-        string  path = string `/api/v1/BusinessEntities/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/BusinessEntities/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     #
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getComputerDetails(string computerid) returns ComputerDetails|error {
-        string  path = string `/api/v1/Computers/${computerid}/Details`;
-        ComputerDetails response = check self.clientEp-> get(path, targetType = ComputerDetails);
+        string resourcePath = string `/api/v1/Computers/${computerid}/Details`;
+        ComputerDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns the user provided display name for a given computer.  The display name typically entered in the computer details page,
@@ -548,8 +549,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getComputerDisplayName(string computerid) returns string|error {
-        string  path = string `/api/v1/Computers/${computerid}/DisplayName`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/api/v1/Computers/${computerid}/DisplayName`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or Updates the computer's user defined display name
@@ -558,11 +559,11 @@ public isolated client class Client {
     # + payload - User defined display name 
     # + return - OK 
     remote isolated function putComputerDisplayName(string computerid, string payload) returns string|error {
-        string  path = string `/api/v1/Computers/${computerid}/DisplayName`;
+        string resourcePath = string `/api/v1/Computers/${computerid}/DisplayName`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->put(path, request, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the display name for a single computer
@@ -570,8 +571,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function deleteComputerDisplayName(string computerid) returns json|error {
-        string  path = string `/api/v1/Computers/${computerid}/DisplayName`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Computers/${computerid}/DisplayName`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets computer metadata for a given computer
@@ -579,8 +580,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getComputerMetadata(string computerid) returns ComputerMetadata|error {
-        string  path = string `/api/v1/Computers/${computerid}/Metadata`;
-        ComputerMetadata response = check self.clientEp-> get(path, targetType = ComputerMetadata);
+        string resourcePath = string `/api/v1/Computers/${computerid}/Metadata`;
+        ComputerMetadata response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates Metadata for a single computer
@@ -589,11 +590,11 @@ public isolated client class Client {
     # + payload - Computer Metadata 
     # + return - OK 
     remote isolated function putComputerMetadata(string computerid, ComputerMetadata payload) returns ComputerMetadata|error {
-        string  path = string `/api/v1/Computers/${computerid}/Metadata`;
+        string resourcePath = string `/api/v1/Computers/${computerid}/Metadata`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ComputerMetadata response = check self.clientEp->put(path, request, targetType=ComputerMetadata);
+        request.setPayload(jsonBody, "application/json");
+        ComputerMetadata response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the metadata for a single computer
@@ -601,8 +602,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function deleteComputerMetadata(string computerid) returns json|error {
-        string  path = string `/api/v1/Computers/${computerid}/Metadata`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Computers/${computerid}/Metadata`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Updates individual metadata fields for one computer.  The Patch method will update individual fields, whereas the Put 
@@ -612,27 +613,27 @@ public isolated client class Client {
     # + payload - Computer metadata 
     # + return - OK 
     remote isolated function patchComputerMetadata(string computerid, ComputerMetadata payload) returns ComputerMetadata|error {
-        string  path = string `/api/v1/Computers/${computerid}/Metadata`;
+        string resourcePath = string `/api/v1/Computers/${computerid}/Metadata`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ComputerMetadata response = check self.clientEp->patch(path, request, targetType=ComputerMetadata);
+        request.setPayload(jsonBody, "application/json");
+        ComputerMetadata response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Gets all computer metadata values for all computers in the organization.  Note that not every computer will have metadata associated with it.
     #
     # + return - OK 
     remote isolated function getAllComputerMetadata() returns ComputerMetadata[]|error {
-        string  path = string `/api/v1/ComputerMetadata`;
-        ComputerMetadata[] response = check self.clientEp-> get(path, targetType = ComputerMetadataArr);
+        string resourcePath = string `/api/v1/ComputerMetadata`;
+        ComputerMetadata[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all computers in the organization
     #
     # + return - OK 
     remote isolated function getAllComputers() returns Computer[]|error {
-        string  path = string `/api/v1/Computers`;
-        Computer[] response = check self.clientEp-> get(path, targetType = ComputerArr);
+        string resourcePath = string `/api/v1/Computers`;
+        Computer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a computer by the computer's id
@@ -640,8 +641,8 @@ public isolated client class Client {
     # + id - Computer ID 
     # + return - OK 
     remote isolated function getComputers(string id) returns Computer|error {
-        string  path = string `/api/v1/Computers/${id}`;
-        Computer response = check self.clientEp-> get(path, targetType = Computer);
+        string resourcePath = string `/api/v1/Computers/${id}`;
+        Computer response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retires an existing computer, deleting all of its data in OptiTune.
@@ -651,8 +652,8 @@ public isolated client class Client {
     # + id - Computer ID 
     # + return - OK 
     remote isolated function deleteComputers(string id) returns json|error {
-        string  path = string `/api/v1/Computers/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Computers/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all deployment results for a given deployment ID
@@ -660,8 +661,8 @@ public isolated client class Client {
     # + deploymentid - Deployment ID 
     # + return - OK 
     remote isolated function getDeploymentResults(string deploymentid) returns DeploymentResult[]|error {
-        string  path = string `/api/v1/Deployments/${deploymentid}/Results`;
-        DeploymentResult[] response = check self.clientEp-> get(path, targetType = DeploymentResultArr);
+        string resourcePath = string `/api/v1/Deployments/${deploymentid}/Results`;
+        DeploymentResult[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all deployments to a given group
@@ -669,16 +670,16 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getForGroupDeployments(string groupid) returns Deployment[]|error {
-        string  path = string `/api/v1/Groups/${groupid}/Deployments`;
-        Deployment[] response = check self.clientEp-> get(path, targetType = DeploymentArr);
+        string resourcePath = string `/api/v1/Groups/${groupid}/Deployments`;
+        Deployment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all deployments in the organization
     #
     # + return - OK 
     remote isolated function getAllDeployments() returns Deployment[]|error {
-        string  path = string `/api/v1/Deployments`;
-        Deployment[] response = check self.clientEp-> get(path, targetType = DeploymentArr);
+        string resourcePath = string `/api/v1/Deployments`;
+        Deployment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new deployment
@@ -686,11 +687,11 @@ public isolated client class Client {
     # + payload - Deployment data 
     # + return - OK 
     remote isolated function postDeployments(Deployment payload) returns Deployment|error {
-        string  path = string `/api/v1/Deployments`;
+        string resourcePath = string `/api/v1/Deployments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Deployment response = check self.clientEp->post(path, request, targetType=Deployment);
+        request.setPayload(jsonBody, "application/json");
+        Deployment response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a deployment by ID
@@ -698,8 +699,8 @@ public isolated client class Client {
     # + id - Deployment ID 
     # + return - OK 
     remote isolated function getDeployments(string id) returns Deployment|error {
-        string  path = string `/api/v1/Deployments/${id}`;
-        Deployment response = check self.clientEp-> get(path, targetType = Deployment);
+        string resourcePath = string `/api/v1/Deployments/${id}`;
+        Deployment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing deployment
@@ -707,8 +708,8 @@ public isolated client class Client {
     # + id - Deployment ID 
     # + return - OK 
     remote isolated function deleteDeployments(string id) returns json|error {
-        string  path = string `/api/v1/Deployments/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Deployments/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets the endpoint protection information for a given computer, if available
@@ -716,8 +717,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getEndpointProtection(string computerid) returns EndpointProtection|error {
-        string  path = string `/api/v1/Computers/${computerid}/EndpointProtection`;
-        EndpointProtection response = check self.clientEp-> get(path, targetType = EndpointProtection);
+        string resourcePath = string `/api/v1/Computers/${computerid}/EndpointProtection`;
+        EndpointProtection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the endpoint protection settings for a given group, if available
@@ -725,8 +726,8 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getEndpointProtectionSettings(string groupid) returns EndpointProtectionSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/EndpointProtectionSettings`;
-        EndpointProtectionSettings response = check self.clientEp-> get(path, targetType = EndpointProtectionSettings);
+        string resourcePath = string `/api/v1/Groups/${groupid}/EndpointProtectionSettings`;
+        EndpointProtectionSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates endpoint protection settings for a given group
@@ -735,11 +736,11 @@ public isolated client class Client {
     # + payload - EndpointProtectionSettings data 
     # + return - OK 
     remote isolated function putEndpointProtectionSettings(string groupid, EndpointProtectionSettings payload) returns EndpointProtectionSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/EndpointProtectionSettings`;
+        string resourcePath = string `/api/v1/Groups/${groupid}/EndpointProtectionSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EndpointProtectionSettings response = check self.clientEp->put(path, request, targetType=EndpointProtectionSettings);
+        request.setPayload(jsonBody, "application/json");
+        EndpointProtectionSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes existing endpoint protection settings for a given group
@@ -747,24 +748,24 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function deleteEndpointProtectionSettings(string groupid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/EndpointProtectionSettings`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${groupid}/EndpointProtectionSettings`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all endpoint protection settings for all groups in the organization
     #
     # + return - OK 
     remote isolated function getAllEndpointProtectionSettings() returns EndpointProtectionSettings[]|error {
-        string  path = string `/api/v1/EndpointProtectionSettings`;
-        EndpointProtectionSettings[] response = check self.clientEp-> get(path, targetType = EndpointProtectionSettingsArr);
+        string resourcePath = string `/api/v1/EndpointProtectionSettings`;
+        EndpointProtectionSettings[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all event categories in the organization
     #
     # + return - OK 
     remote isolated function getAllEventCategories() returns EventCategory[]|error {
-        string  path = string `/api/v1/EventCategories`;
-        EventCategory[] response = check self.clientEp-> get(path, targetType = EventCategoryArr);
+        string resourcePath = string `/api/v1/EventCategories`;
+        EventCategory[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new event category
@@ -772,11 +773,11 @@ public isolated client class Client {
     # + payload - EventCategory data 
     # + return - OK 
     remote isolated function postEventCategories(EventCategory payload) returns EventCategory|error {
-        string  path = string `/api/v1/EventCategories`;
+        string resourcePath = string `/api/v1/EventCategories`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EventCategory response = check self.clientEp->post(path, request, targetType=EventCategory);
+        request.setPayload(jsonBody, "application/json");
+        EventCategory response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets an event category by ID
@@ -784,8 +785,8 @@ public isolated client class Client {
     # + id - Event category ID 
     # + return - OK 
     remote isolated function getEventCategories(string id) returns EventCategory|error {
-        string  path = string `/api/v1/EventCategories/${id}`;
-        EventCategory response = check self.clientEp-> get(path, targetType = EventCategory);
+        string resourcePath = string `/api/v1/EventCategories/${id}`;
+        EventCategory response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing event category
@@ -793,8 +794,8 @@ public isolated client class Client {
     # + id - Event category ID 
     # + return - OK 
     remote isolated function deleteEventCategories(string id) returns json|error {
-        string  path = string `/api/v1/EventCategories/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/EventCategories/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets the event category members for a given event category, if available
@@ -802,8 +803,8 @@ public isolated client class Client {
     # + eventCategoryid - Event category ID 
     # + return - OK 
     remote isolated function getEventCategoryMemberships(string eventCategoryid) returns EventCategoryMembership[]|error {
-        string  path = string `/api/v1/EventCategories/${eventCategoryid}/Memberships`;
-        EventCategoryMembership[] response = check self.clientEp-> get(path, targetType = EventCategoryMembershipArr);
+        string resourcePath = string `/api/v1/EventCategories/${eventCategoryid}/Memberships`;
+        EventCategoryMembership[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds event source to an event category, if it doesn't already exist
@@ -812,10 +813,10 @@ public isolated client class Client {
     # + eventSourceid - Event source ID 
     # + return - OK 
     remote isolated function postEventCategoryMemberships(string eventCategoryid, string eventSourceid) returns json|error {
-        string  path = string `/api/v1/EventCategories/${eventCategoryid}/Memberships/${eventSourceid}`;
+        string resourcePath = string `/api/v1/EventCategories/${eventCategoryid}/Memberships/${eventSourceid}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp-> post(path, request, targetType = json);
+        json response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Deletes a event category membership for a given event category and event source
@@ -824,8 +825,8 @@ public isolated client class Client {
     # + eventSourceid - Event source ID 
     # + return - OK 
     remote isolated function deleteEventCategoryMemberships(string eventCategoryid, string eventSourceid) returns json|error {
-        string  path = string `/api/v1/EventCategories/${eventCategoryid}/Memberships/${eventSourceid}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/EventCategories/${eventCategoryid}/Memberships/${eventSourceid}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all event descriptors that are available on the management server.  
@@ -833,16 +834,16 @@ public isolated client class Client {
     #
     # + return - OK 
     remote isolated function getAllEventDescriptors() returns EventDescriptor[]|error {
-        string  path = string `/api/v1/EventDescriptors`;
-        EventDescriptor[] response = check self.clientEp-> get(path, targetType = EventDescriptorArr);
+        string resourcePath = string `/api/v1/EventDescriptors`;
+        EventDescriptor[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all event sources in the organization
     #
     # + return - OK 
     remote isolated function getAllEventSources() returns EventSource[]|error {
-        string  path = string `/api/v1/EventSources`;
-        EventSource[] response = check self.clientEp-> get(path, targetType = EventSourceArr);
+        string resourcePath = string `/api/v1/EventSources`;
+        EventSource[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new event source.  Use the EventDescriptors resource to get the valid event descriptors on the management server, and pick one to use for the new event source.
@@ -850,11 +851,11 @@ public isolated client class Client {
     # + payload - EventSource data 
     # + return - OK 
     remote isolated function postEventSources(EventSource payload) returns EventSource|error {
-        string  path = string `/api/v1/EventSources`;
+        string resourcePath = string `/api/v1/EventSources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EventSource response = check self.clientEp->post(path, request, targetType=EventSource);
+        request.setPayload(jsonBody, "application/json");
+        EventSource response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets an event source by ID
@@ -862,8 +863,8 @@ public isolated client class Client {
     # + id - Event source ID 
     # + return - OK 
     remote isolated function getEventSources(string id) returns EventSource|error {
-        string  path = string `/api/v1/EventSources/${id}`;
-        EventSource response = check self.clientEp-> get(path, targetType = EventSource);
+        string resourcePath = string `/api/v1/EventSources/${id}`;
+        EventSource response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing event source
@@ -871,16 +872,16 @@ public isolated client class Client {
     # + id - Event source ID 
     # + return - OK 
     remote isolated function deleteEventSources(string id) returns json|error {
-        string  path = string `/api/v1/EventSources/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/EventSources/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all favorite tasks in the organization
     #
     # + return - OK 
     remote isolated function getAllFavoriteTasks() returns FavoriteTask[]|error {
-        string  path = string `/api/v1/FavoriteTasks`;
-        FavoriteTask[] response = check self.clientEp-> get(path, targetType = FavoriteTaskArr);
+        string resourcePath = string `/api/v1/FavoriteTasks`;
+        FavoriteTask[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new favorite task
@@ -888,11 +889,11 @@ public isolated client class Client {
     # + payload - FavoriteTask data 
     # + return - OK 
     remote isolated function postFavoriteTasks(FavoriteTask payload) returns FavoriteTask|error {
-        string  path = string `/api/v1/FavoriteTasks`;
+        string resourcePath = string `/api/v1/FavoriteTasks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FavoriteTask response = check self.clientEp->post(path, request, targetType=FavoriteTask);
+        request.setPayload(jsonBody, "application/json");
+        FavoriteTask response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a favorite task by task ID
@@ -900,8 +901,8 @@ public isolated client class Client {
     # + id - Task ID 
     # + return - OK 
     remote isolated function getFavoriteTasks(string id) returns FavoriteTask|error {
-        string  path = string `/api/v1/FavoriteTasks/${id}`;
-        FavoriteTask response = check self.clientEp-> get(path, targetType = FavoriteTask);
+        string resourcePath = string `/api/v1/FavoriteTasks/${id}`;
+        FavoriteTask response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing favorite task, by task ID
@@ -909,29 +910,31 @@ public isolated client class Client {
     # + id - Task ID 
     # + return - OK 
     remote isolated function deleteFavoriteTasks(string id) returns json|error {
-        string  path = string `/api/v1/FavoriteTasks/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/FavoriteTasks/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all files in the organization
     #
     # + return - OK 
     remote isolated function getAllFiles() returns File[]|error {
-        string  path = string `/api/v1/Files`;
-        File[] response = check self.clientEp-> get(path, targetType = FileArr);
+        string resourcePath = string `/api/v1/Files`;
+        File[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Upload a file using 'multipart/form-data', supplying a storage type to use (1 for local storage, 2 for cloud)
     #
-    # + payload - File data 
     # + storageType - 1 for local storage, 2 for cloud storage 
+    # + payload - File data 
     # + return - OK 
-    remote isolated function uploadFiles(Body payload, int storageType = 1) returns File|error {
-        string  path = string `/api/v1/Files`;
+    remote isolated function uploadFiles(V1FilesBody payload, int storageType = 1) returns File|error {
+        string resourcePath = string `/api/v1/Files`;
         map<anydata> queryParam = {"storageType": storageType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        File response = check self.clientEp->post(path, request, targetType=File);
+        mime:Entity[] bodyParts = check createBodyParts(payload);
+        request.setBodyParts(bodyParts);
+        File response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a single file in the organization, given a file ID
@@ -939,8 +942,8 @@ public isolated client class Client {
     # + id - File ID 
     # + return - OK 
     remote isolated function getFiles(string id) returns File|error {
-        string  path = string `/api/v1/Files/${id}`;
-        File response = check self.clientEp-> get(path, targetType = File);
+        string resourcePath = string `/api/v1/Files/${id}`;
+        File response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing file
@@ -948,8 +951,8 @@ public isolated client class Client {
     # + id - File ID 
     # + return - OK 
     remote isolated function deleteFiles(string id) returns json|error {
-        string  path = string `/api/v1/Files/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Files/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets the group members for a given group, if available
@@ -957,8 +960,8 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getGroupMemberships(string groupid) returns GroupMembership[]|error {
-        string  path = string `/api/v1/Groups/${groupid}/Memberships`;
-        GroupMembership[] response = check self.clientEp-> get(path, targetType = GroupMembershipArr);
+        string resourcePath = string `/api/v1/Groups/${groupid}/Memberships`;
+        GroupMembership[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds computer to a group, using the static membership type
@@ -967,10 +970,10 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function postGroupMemberships(string groupid, string computerid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/Memberships/${computerid}`;
+        string resourcePath = string `/api/v1/Groups/${groupid}/Memberships/${computerid}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp-> post(path, request, targetType = json);
+        json response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Deletes a group membership for a given computer and group.  Note that this will only
@@ -980,16 +983,16 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function deleteGroupMemberships(string groupid, string computerid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/Memberships/${computerid}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${groupid}/Memberships/${computerid}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all groups in the organization
     #
     # + return - OK 
     remote isolated function getAllGroups() returns OptiTuneGroup[]|error {
-        string  path = string `/api/v1/Groups`;
-        OptiTuneGroup[] response = check self.clientEp-> get(path, targetType = OptiTuneGroupArr);
+        string resourcePath = string `/api/v1/Groups`;
+        OptiTuneGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new group
@@ -997,11 +1000,11 @@ public isolated client class Client {
     # + payload - OptiTuneGroup data 
     # + return - OK 
     remote isolated function postGroups(OptiTuneGroup payload) returns OptiTuneGroup|error {
-        string  path = string `/api/v1/Groups`;
+        string resourcePath = string `/api/v1/Groups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OptiTuneGroup response = check self.clientEp->post(path, request, targetType=OptiTuneGroup);
+        request.setPayload(jsonBody, "application/json");
+        OptiTuneGroup response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Looks up a given group, based on its ID
@@ -1009,8 +1012,8 @@ public isolated client class Client {
     # + id - Group ID 
     # + return - OK 
     remote isolated function getGroups(string id) returns OptiTuneGroup|error {
-        string  path = string `/api/v1/Groups/${id}`;
-        OptiTuneGroup response = check self.clientEp-> get(path, targetType = OptiTuneGroup);
+        string resourcePath = string `/api/v1/Groups/${id}`;
+        OptiTuneGroup response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing group
@@ -1018,16 +1021,16 @@ public isolated client class Client {
     # + id - Group ID 
     # + return - OK 
     remote isolated function deleteGroups(string id) returns json|error {
-        string  path = string `/api/v1/Groups/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all install tasks in the organization
     #
     # + return - OK 
     remote isolated function getAllInstallTasks() returns InstallTask[]|error {
-        string  path = string `/api/v1/InstallTasks`;
-        InstallTask[] response = check self.clientEp-> get(path, targetType = InstallTaskArr);
+        string resourcePath = string `/api/v1/InstallTasks`;
+        InstallTask[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new install task.  If using PackageFileID, be sure to upload your package file first and get the ID of the file before calling this method
@@ -1035,11 +1038,11 @@ public isolated client class Client {
     # + payload - InstallTask data 
     # + return - OK 
     remote isolated function postInstallTasks(InstallTask payload) returns InstallTask|error {
-        string  path = string `/api/v1/InstallTasks`;
+        string resourcePath = string `/api/v1/InstallTasks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InstallTask response = check self.clientEp->post(path, request, targetType=InstallTask);
+        request.setPayload(jsonBody, "application/json");
+        InstallTask response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a install task by ID
@@ -1047,8 +1050,8 @@ public isolated client class Client {
     # + id - Install task ID 
     # + return - OK 
     remote isolated function getInstallTasks(string id) returns InstallTask|error {
-        string  path = string `/api/v1/InstallTasks/${id}`;
-        InstallTask response = check self.clientEp-> get(path, targetType = InstallTask);
+        string resourcePath = string `/api/v1/InstallTasks/${id}`;
+        InstallTask response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing install task, and all of its associated deployments
@@ -1056,8 +1059,8 @@ public isolated client class Client {
     # + id - Install task ID 
     # + return - OK 
     remote isolated function deleteInstallTasks(string id) returns json|error {
-        string  path = string `/api/v1/InstallTasks/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/InstallTasks/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all applications installed on a given computer
@@ -1065,16 +1068,16 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getLocalUsers(string computerid) returns LocalUser[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/LocalUsers`;
-        LocalUser[] response = check self.clientEp-> get(path, targetType = LocalUserArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/LocalUsers`;
+        LocalUser[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all mail templates in the organization
     #
     # + return - OK 
     remote isolated function getAllMailTemplates() returns MailTemplate[]|error {
-        string  path = string `/api/v1/MailTemplates`;
-        MailTemplate[] response = check self.clientEp-> get(path, targetType = MailTemplateArr);
+        string resourcePath = string `/api/v1/MailTemplates`;
+        MailTemplate[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new mail template
@@ -1082,11 +1085,11 @@ public isolated client class Client {
     # + payload - MailTemplate data 
     # + return - OK 
     remote isolated function postMailTemplates(MailTemplate payload) returns MailTemplate|error {
-        string  path = string `/api/v1/MailTemplates`;
+        string resourcePath = string `/api/v1/MailTemplates`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MailTemplate response = check self.clientEp->post(path, request, targetType=MailTemplate);
+        request.setPayload(jsonBody, "application/json");
+        MailTemplate response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a mail template by ID
@@ -1094,8 +1097,8 @@ public isolated client class Client {
     # + id - Mail template ID 
     # + return - OK 
     remote isolated function getMailTemplates(string id) returns MailTemplate|error {
-        string  path = string `/api/v1/MailTemplates/${id}`;
-        MailTemplate response = check self.clientEp-> get(path, targetType = MailTemplate);
+        string resourcePath = string `/api/v1/MailTemplates/${id}`;
+        MailTemplate response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing mail template, using a given ID
@@ -1104,11 +1107,11 @@ public isolated client class Client {
     # + payload - MailTemplate data 
     # + return - OK 
     remote isolated function putMailTemplates(string id, MailTemplate payload) returns MailTemplate|error {
-        string  path = string `/api/v1/MailTemplates/${id}`;
+        string resourcePath = string `/api/v1/MailTemplates/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MailTemplate response = check self.clientEp->put(path, request, targetType=MailTemplate);
+        request.setPayload(jsonBody, "application/json");
+        MailTemplate response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing mail template
@@ -1116,8 +1119,8 @@ public isolated client class Client {
     # + id - Mail template ID 
     # + return - OK 
     remote isolated function deleteMailTemplates(string id) returns json|error {
-        string  path = string `/api/v1/MailTemplates/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/MailTemplates/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets any detected malware threats on a given computer
@@ -1125,8 +1128,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getMalwareThreats(string computerid) returns MalwareThreat[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/MalwareThreats`;
-        MalwareThreat[] response = check self.clientEp-> get(path, targetType = MalwareThreatArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/MalwareThreats`;
+        MalwareThreat[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the account members of a notification group by notification group ID
@@ -1134,8 +1137,8 @@ public isolated client class Client {
     # + notificationgroupid - Notification group ID 
     # + return - OK 
     remote isolated function getNotificationGroupMemberAccounts(string notificationgroupid) returns NotificationGroupMemberAccount[]|error {
-        string  path = string `/api/v1/NotificationGroups/${notificationgroupid}/MemberAccounts`;
-        NotificationGroupMemberAccount[] response = check self.clientEp-> get(path, targetType = NotificationGroupMemberAccountArr);
+        string resourcePath = string `/api/v1/NotificationGroups/${notificationgroupid}/MemberAccounts`;
+        NotificationGroupMemberAccount[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds an account to a notification group
@@ -1145,11 +1148,11 @@ public isolated client class Client {
     # + payload - NotificationGroupMemberAccount data 
     # + return - OK 
     remote isolated function putNotificationGroupMemberAccounts(string notificationgroupid, string accountid, NotificationGroupMemberAccount payload) returns NotificationGroupMemberAccount|error {
-        string  path = string `/api/v1/NotificationGroups/${notificationgroupid}/MemberAccounts/${accountid}`;
+        string resourcePath = string `/api/v1/NotificationGroups/${notificationgroupid}/MemberAccounts/${accountid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotificationGroupMemberAccount response = check self.clientEp->put(path, request, targetType=NotificationGroupMemberAccount);
+        request.setPayload(jsonBody, "application/json");
+        NotificationGroupMemberAccount response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing notification group account
@@ -1158,8 +1161,8 @@ public isolated client class Client {
     # + accountid - Account ID 
     # + return - OK 
     remote isolated function deleteNotificationGroupMemberAccounts(string notificationgroupid, string accountid) returns json|error {
-        string  path = string `/api/v1/NotificationGroups/${notificationgroupid}/MemberAccounts/${accountid}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/NotificationGroups/${notificationgroupid}/MemberAccounts/${accountid}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets the members of a notification group by notification group ID
@@ -1167,8 +1170,8 @@ public isolated client class Client {
     # + notificationgroupid - Notification group ID 
     # + return - OK 
     remote isolated function getNotificationGroupMembers(string notificationgroupid) returns NotificationGroupMember[]|error {
-        string  path = string `/api/v1/NotificationGroups/${notificationgroupid}/Members`;
-        NotificationGroupMember[] response = check self.clientEp-> get(path, targetType = NotificationGroupMemberArr);
+        string resourcePath = string `/api/v1/NotificationGroups/${notificationgroupid}/Members`;
+        NotificationGroupMember[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a member to a notification group.  For users that already have OptiTune accounts, use NotificationGroupMemberAccounts instead.
@@ -1177,11 +1180,11 @@ public isolated client class Client {
     # + payload - NotificationGroupMember data 
     # + return - OK 
     remote isolated function postNotificationGroupMembers(string notificationgroupid, NotificationGroupMember payload) returns NotificationGroupMember|error {
-        string  path = string `/api/v1/NotificationGroups/${notificationgroupid}/Members`;
+        string resourcePath = string `/api/v1/NotificationGroups/${notificationgroupid}/Members`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotificationGroupMember response = check self.clientEp->post(path, request, targetType=NotificationGroupMember);
+        request.setPayload(jsonBody, "application/json");
+        NotificationGroupMember response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Updates an existing notification group member
@@ -1191,11 +1194,11 @@ public isolated client class Client {
     # + payload - NotificationGroupMember data 
     # + return - OK 
     remote isolated function putNotificationGroupMembers(string notificationgroupid, string notificationgroupmemberid, NotificationGroupMember payload) returns NotificationGroupMember|error {
-        string  path = string `/api/v1/NotificationGroups/${notificationgroupid}/Members/${notificationgroupmemberid}`;
+        string resourcePath = string `/api/v1/NotificationGroups/${notificationgroupid}/Members/${notificationgroupmemberid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotificationGroupMember response = check self.clientEp->put(path, request, targetType=NotificationGroupMember);
+        request.setPayload(jsonBody, "application/json");
+        NotificationGroupMember response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing notification group member
@@ -1204,16 +1207,16 @@ public isolated client class Client {
     # + notificationgroupmemberid - Notification group member ID 
     # + return - OK 
     remote isolated function deleteNotificationGroupMembers(string notificationgroupid, string notificationgroupmemberid) returns json|error {
-        string  path = string `/api/v1/NotificationGroups/${notificationgroupid}/Members/${notificationgroupmemberid}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/NotificationGroups/${notificationgroupid}/Members/${notificationgroupmemberid}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all notification groups in the organization
     #
     # + return - OK 
     remote isolated function getAllNotificationGroups() returns NotificationGroup[]|error {
-        string  path = string `/api/v1/NotificationGroups`;
-        NotificationGroup[] response = check self.clientEp-> get(path, targetType = NotificationGroupArr);
+        string resourcePath = string `/api/v1/NotificationGroups`;
+        NotificationGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new notification group
@@ -1221,11 +1224,11 @@ public isolated client class Client {
     # + payload - NotificationGroup data 
     # + return - OK 
     remote isolated function postNotificationGroups(NotificationGroup payload) returns NotificationGroup|error {
-        string  path = string `/api/v1/NotificationGroups`;
+        string resourcePath = string `/api/v1/NotificationGroups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotificationGroup response = check self.clientEp->post(path, request, targetType=NotificationGroup);
+        request.setPayload(jsonBody, "application/json");
+        NotificationGroup response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a notification group by ID
@@ -1233,8 +1236,8 @@ public isolated client class Client {
     # + id - Notification group ID 
     # + return - OK 
     remote isolated function getNotificationGroups(string id) returns NotificationGroup|error {
-        string  path = string `/api/v1/NotificationGroups/${id}`;
-        NotificationGroup response = check self.clientEp-> get(path, targetType = NotificationGroup);
+        string resourcePath = string `/api/v1/NotificationGroups/${id}`;
+        NotificationGroup response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing notification group, using a given ID
@@ -1243,11 +1246,11 @@ public isolated client class Client {
     # + payload - NotificationGroup data 
     # + return - OK 
     remote isolated function putNotificationGroups(string id, NotificationGroup payload) returns NotificationGroup|error {
-        string  path = string `/api/v1/NotificationGroups/${id}`;
+        string resourcePath = string `/api/v1/NotificationGroups/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotificationGroup response = check self.clientEp->put(path, request, targetType=NotificationGroup);
+        request.setPayload(jsonBody, "application/json");
+        NotificationGroup response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing notification group
@@ -1255,8 +1258,8 @@ public isolated client class Client {
     # + id - Notification group ID 
     # + return - OK 
     remote isolated function deleteNotificationGroups(string id) returns json|error {
-        string  path = string `/api/v1/NotificationGroups/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/NotificationGroups/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all tasks in the organization, that match the given taskType.  Use AllTasks to get all tasks in the organization.
@@ -1264,10 +1267,10 @@ public isolated client class Client {
     # + taskType - Task type 
     # + return - OK 
     remote isolated function getAllOptiTuneTasks(string taskType) returns OptiTuneTask[]|error {
-        string  path = string `/api/v1/OptiTuneTasks`;
+        string resourcePath = string `/api/v1/OptiTuneTasks`;
         map<anydata> queryParam = {"taskType": taskType};
-        path = path + check getPathForQueryParam(queryParam);
-        OptiTuneTask[] response = check self.clientEp-> get(path, targetType = OptiTuneTaskArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OptiTuneTask[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a task by ID
@@ -1275,8 +1278,8 @@ public isolated client class Client {
     # + id - Task ID 
     # + return - OK 
     remote isolated function getOptiTuneTasks(string id) returns OptiTuneTask|error {
-        string  path = string `/api/v1/OptiTuneTasks/${id}`;
-        OptiTuneTask response = check self.clientEp-> get(path, targetType = OptiTuneTask);
+        string resourcePath = string `/api/v1/OptiTuneTasks/${id}`;
+        OptiTuneTask response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets an organization's license usage data for an optional date and time range, in UTC
@@ -1286,33 +1289,33 @@ public isolated client class Client {
     # + endDateTime - End Date Time 
     # + return - OK 
     remote isolated function getOrganizationsBillingLicenseUsageByDate(string organizationid, string? startDateTime = (), string? endDateTime = ()) returns BillingLicenseUsage[]|error {
-        string  path = string `/api/v1/Organizations/${organizationid}/BillingLicenseUsage`;
+        string resourcePath = string `/api/v1/Organizations/${organizationid}/BillingLicenseUsage`;
         map<anydata> queryParam = {"startDateTime": startDateTime, "endDateTime": endDateTime};
-        path = path + check getPathForQueryParam(queryParam);
-        BillingLicenseUsage[] response = check self.clientEp-> get(path, targetType = BillingLicenseUsageArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        BillingLicenseUsage[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all organizations on the management server.  You need to have master administrator privileges to call any of the Organization resource methods
     #
     # + return - OK 
     remote isolated function getAllOrganizations() returns Organization[]|error {
-        string  path = string `/api/v1/Organizations`;
-        Organization[] response = check self.clientEp-> get(path, targetType = OrganizationArr);
+        string resourcePath = string `/api/v1/Organizations`;
+        Organization[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new organization
     #
-    # + payload - OrganizationRegistration data 
     # + generateApiCredentials - Generate Api credentials 
+    # + payload - OrganizationRegistration data 
     # + return - OK 
     remote isolated function postOrganizations(OrganizationRegistration payload, boolean generateApiCredentials = false) returns Organization|error {
-        string  path = string `/api/v1/Organizations`;
+        string resourcePath = string `/api/v1/Organizations`;
         map<anydata> queryParam = {"generateApiCredentials": generateApiCredentials};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Organization response = check self.clientEp->post(path, request, targetType=Organization);
+        request.setPayload(jsonBody, "application/json");
+        Organization response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a organization by ID
@@ -1320,8 +1323,8 @@ public isolated client class Client {
     # + id - Organization ID 
     # + return - OK 
     remote isolated function getOrganizations(string id) returns Organization|error {
-        string  path = string `/api/v1/Organizations/${id}`;
-        Organization response = check self.clientEp-> get(path, targetType = Organization);
+        string resourcePath = string `/api/v1/Organizations/${id}`;
+        Organization response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing organization, using a given ID
@@ -1330,11 +1333,11 @@ public isolated client class Client {
     # + payload - Organization data 
     # + return - OK 
     remote isolated function putOrganizations(string id, Organization payload) returns Organization|error {
-        string  path = string `/api/v1/Organizations/${id}`;
+        string resourcePath = string `/api/v1/Organizations/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Organization response = check self.clientEp->put(path, request, targetType=Organization);
+        request.setPayload(jsonBody, "application/json");
+        Organization response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing organization, and all of its associated data
@@ -1342,16 +1345,16 @@ public isolated client class Client {
     # + id - Organization ID 
     # + return - OK 
     remote isolated function deleteOrganizations(string id) returns json|error {
-        string  path = string `/api/v1/Organizations/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Organizations/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all organization settings, for all organizations
     #
     # + return - OK 
     remote isolated function getAllOrganizationSettings() returns OrganizationSettings[]|error {
-        string  path = string `/api/v1/OrganizationSettings`;
-        OrganizationSettings[] response = check self.clientEp-> get(path, targetType = OrganizationSettingsArr);
+        string resourcePath = string `/api/v1/OrganizationSettings`;
+        OrganizationSettings[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets an organization settings by organization ID
@@ -1359,8 +1362,8 @@ public isolated client class Client {
     # + id - Organization ID 
     # + return - OK 
     remote isolated function getOrganizationSettings(string id) returns OrganizationSettings|error {
-        string  path = string `/api/v1/OrganizationSettings/${id}`;
-        OrganizationSettings response = check self.clientEp-> get(path, targetType = OrganizationSettings);
+        string resourcePath = string `/api/v1/OrganizationSettings/${id}`;
+        OrganizationSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing organization settings, using a given organization ID
@@ -1369,11 +1372,11 @@ public isolated client class Client {
     # + payload - OrganizationSettings data 
     # + return - OK 
     remote isolated function putOrganizationSettings(string id, OrganizationSettings payload) returns OrganizationSettings|error {
-        string  path = string `/api/v1/OrganizationSettings/${id}`;
+        string resourcePath = string `/api/v1/OrganizationSettings/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrganizationSettings response = check self.clientEp->put(path, request, targetType=OrganizationSettings);
+        request.setPayload(jsonBody, "application/json");
+        OrganizationSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Gets the performance settings for a given group, if available
@@ -1381,8 +1384,8 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getPerformanceSettings(string groupid) returns PerformanceSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/PerformanceSettings`;
-        PerformanceSettings response = check self.clientEp-> get(path, targetType = PerformanceSettings);
+        string resourcePath = string `/api/v1/Groups/${groupid}/PerformanceSettings`;
+        PerformanceSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates performance settings for a given group
@@ -1391,11 +1394,11 @@ public isolated client class Client {
     # + payload - PerformanceSettings data 
     # + return - OK 
     remote isolated function putPerformanceSettings(string groupid, PerformanceSettings payload) returns PerformanceSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/PerformanceSettings`;
+        string resourcePath = string `/api/v1/Groups/${groupid}/PerformanceSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PerformanceSettings response = check self.clientEp->put(path, request, targetType=PerformanceSettings);
+        request.setPayload(jsonBody, "application/json");
+        PerformanceSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes performance settings for a given group
@@ -1403,24 +1406,24 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function deletePerformanceSettings(string groupid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/PerformanceSettings`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${groupid}/PerformanceSettings`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all performance settings for all groups in the organization
     #
     # + return - OK 
     remote isolated function getAllPerformanceSettings() returns PerformanceSettings[]|error {
-        string  path = string `/api/v1/PerformanceSettings`;
-        PerformanceSettings[] response = check self.clientEp-> get(path, targetType = PerformanceSettingsArr);
+        string resourcePath = string `/api/v1/PerformanceSettings`;
+        PerformanceSettings[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all product keys for the organization
     #
     # + return - OK 
     remote isolated function getAllProductKeys() returns ProductKey[]|error {
-        string  path = string `/api/v1/ProductKeys`;
-        ProductKey[] response = check self.clientEp-> get(path, targetType = ProductKeyArr);
+        string resourcePath = string `/api/v1/ProductKeys`;
+        ProductKey[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new product key for the organization
@@ -1428,11 +1431,11 @@ public isolated client class Client {
     # + payload - ProductKey data 
     # + return - OK 
     remote isolated function postProductKeys(ProductKey payload) returns ProductKey|error {
-        string  path = string `/api/v1/ProductKeys`;
+        string resourcePath = string `/api/v1/ProductKeys`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProductKey response = check self.clientEp->post(path, request, targetType=ProductKey);
+        request.setPayload(jsonBody, "application/json");
+        ProductKey response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets the remote access settings for a given group, if available
@@ -1440,8 +1443,8 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getRemoteAccessSettings(string groupid) returns RemoteAccessSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/RemoteAccessSettings`;
-        RemoteAccessSettings response = check self.clientEp-> get(path, targetType = RemoteAccessSettings);
+        string resourcePath = string `/api/v1/Groups/${groupid}/RemoteAccessSettings`;
+        RemoteAccessSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates remote access settings for a given group
@@ -1450,11 +1453,11 @@ public isolated client class Client {
     # + payload - RemoteAccessSettings data 
     # + return - OK 
     remote isolated function putRemoteAccessSettings(string groupid, RemoteAccessSettings payload) returns RemoteAccessSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/RemoteAccessSettings`;
+        string resourcePath = string `/api/v1/Groups/${groupid}/RemoteAccessSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RemoteAccessSettings response = check self.clientEp->put(path, request, targetType=RemoteAccessSettings);
+        request.setPayload(jsonBody, "application/json");
+        RemoteAccessSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes existing remote access settings for a given group
@@ -1462,24 +1465,24 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function deleteRemoteAccessSettings(string groupid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/RemoteAccessSettings`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${groupid}/RemoteAccessSettings`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all remote access settings for all groups in the organization
     #
     # + return - OK 
     remote isolated function getAllRemoteAccessSettings() returns RemoteAccessSettings[]|error {
-        string  path = string `/api/v1/RemoteAccessSettings`;
-        RemoteAccessSettings[] response = check self.clientEp-> get(path, targetType = RemoteAccessSettingsArr);
+        string resourcePath = string `/api/v1/RemoteAccessSettings`;
+        RemoteAccessSettings[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all remoteAssistanceRequests in the organization
     #
     # + return - OK 
     remote isolated function getAllRemoteAssistanceRequests() returns RemoteAssistanceRequest[]|error {
-        string  path = string `/api/v1/RemoteAssistanceRequests`;
-        RemoteAssistanceRequest[] response = check self.clientEp-> get(path, targetType = RemoteAssistanceRequestArr);
+        string resourcePath = string `/api/v1/RemoteAssistanceRequests`;
+        RemoteAssistanceRequest[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new RemoteAssistanceRequest
@@ -1487,11 +1490,11 @@ public isolated client class Client {
     # + payload - RemoteAssistanceRequest data 
     # + return - OK 
     remote isolated function postRemoteAssistanceRequests(RemoteAssistanceRequest payload) returns RemoteAssistanceRequest|error {
-        string  path = string `/api/v1/RemoteAssistanceRequests`;
+        string resourcePath = string `/api/v1/RemoteAssistanceRequests`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RemoteAssistanceRequest response = check self.clientEp->post(path, request, targetType=RemoteAssistanceRequest);
+        request.setPayload(jsonBody, "application/json");
+        RemoteAssistanceRequest response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a remoteAssistanceRequest by ID
@@ -1499,8 +1502,8 @@ public isolated client class Client {
     # + id - RemoteAssistanceRequest ID 
     # + return - OK 
     remote isolated function getRemoteAssistanceRequests(string id) returns RemoteAssistanceRequest|error {
-        string  path = string `/api/v1/RemoteAssistanceRequests/${id}`;
-        RemoteAssistanceRequest response = check self.clientEp-> get(path, targetType = RemoteAssistanceRequest);
+        string resourcePath = string `/api/v1/RemoteAssistanceRequests/${id}`;
+        RemoteAssistanceRequest response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing RemoteAssistanceRequest, using a given ID
@@ -1509,11 +1512,11 @@ public isolated client class Client {
     # + payload - RemoteAssistanceRequest data 
     # + return - OK 
     remote isolated function putRemoteAssistanceRequests(string id, RemoteAssistanceRequest payload) returns RemoteAssistanceRequest|error {
-        string  path = string `/api/v1/RemoteAssistanceRequests/${id}`;
+        string resourcePath = string `/api/v1/RemoteAssistanceRequests/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RemoteAssistanceRequest response = check self.clientEp->put(path, request, targetType=RemoteAssistanceRequest);
+        request.setPayload(jsonBody, "application/json");
+        RemoteAssistanceRequest response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing remote assistance request
@@ -1521,8 +1524,8 @@ public isolated client class Client {
     # + id - Remote assistance request ID 
     # + return - OK 
     remote isolated function deleteRemoteAssistanceRequests(string id) returns json|error {
-        string  path = string `/api/v1/RemoteAssistanceRequests/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/RemoteAssistanceRequests/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # This will initiate a remote connection to the given computer, and return an .OTC file used by the Remote Connect software
@@ -1532,8 +1535,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getRemoteConnections(string computerid) returns json|error {
-        string  path = string `/api/v1/Computers/${computerid}/RemoteConnection`;
-        json response = check self.clientEp-> get(path, targetType = json);
+        string resourcePath = string `/api/v1/Computers/${computerid}/RemoteConnection`;
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # This will initiate a remote connection to the given computer, and return an URI with a custom url scheme (otcfile://) used by the Remote Connect software
@@ -1543,16 +1546,16 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getUriRemoteConnections(string computerid) returns string|error {
-        string  path = string `/api/v1/Computers/${computerid}/RemoteConnectionUri`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/api/v1/Computers/${computerid}/RemoteConnectionUri`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all repair tasks in the organization
     #
     # + return - OK 
     remote isolated function getAllRepairTasks() returns RepairTask[]|error {
-        string  path = string `/api/v1/RepairTasks`;
-        RepairTask[] response = check self.clientEp-> get(path, targetType = RepairTaskArr);
+        string resourcePath = string `/api/v1/RepairTasks`;
+        RepairTask[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new repair task
@@ -1560,11 +1563,11 @@ public isolated client class Client {
     # + payload - RepairTask data 
     # + return - OK 
     remote isolated function postRepairTasks(RepairTask payload) returns RepairTask|error {
-        string  path = string `/api/v1/RepairTasks`;
+        string resourcePath = string `/api/v1/RepairTasks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RepairTask response = check self.clientEp->post(path, request, targetType=RepairTask);
+        request.setPayload(jsonBody, "application/json");
+        RepairTask response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a repair task by ID
@@ -1572,8 +1575,8 @@ public isolated client class Client {
     # + id - Repair task ID 
     # + return - OK 
     remote isolated function getRepairTasks(string id) returns RepairTask|error {
-        string  path = string `/api/v1/RepairTasks/${id}`;
-        RepairTask response = check self.clientEp-> get(path, targetType = RepairTask);
+        string resourcePath = string `/api/v1/RepairTasks/${id}`;
+        RepairTask response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing repair task, and all of its associated deployments
@@ -1581,16 +1584,16 @@ public isolated client class Client {
     # + id - Repair task ID 
     # + return - OK 
     remote isolated function deleteRepairTasks(string id) returns json|error {
-        string  path = string `/api/v1/RepairTasks/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/RepairTasks/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all retired computers in the organization
     #
     # + return - OK 
     remote isolated function getAllRetiredComputers() returns RetiredComputer[]|error {
-        string  path = string `/api/v1/RetiredComputers`;
-        RetiredComputer[] response = check self.clientEp-> get(path, targetType = RetiredComputerArr);
+        string resourcePath = string `/api/v1/RetiredComputers`;
+        RetiredComputer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a retired computer by computer ID
@@ -1598,8 +1601,8 @@ public isolated client class Client {
     # + id - Retired computer ID 
     # + return - OK 
     remote isolated function getRetiredComputers(string id) returns RetiredComputer|error {
-        string  path = string `/api/v1/RetiredComputers/${id}`;
-        RetiredComputer response = check self.clientEp-> get(path, targetType = RetiredComputer);
+        string resourcePath = string `/api/v1/RetiredComputers/${id}`;
+        RetiredComputer response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Removes an existing retired computer, allowing to access OptiTune again
@@ -1607,16 +1610,16 @@ public isolated client class Client {
     # + id - Retired computer ID 
     # + return - OK 
     remote isolated function deleteRetiredComputers(string id) returns json|error {
-        string  path = string `/api/v1/RetiredComputers/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/RetiredComputers/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all script tasks in the organization
     #
     # + return - OK 
     remote isolated function getAllScriptTasks() returns ScriptTask[]|error {
-        string  path = string `/api/v1/ScriptTasks`;
-        ScriptTask[] response = check self.clientEp-> get(path, targetType = ScriptTaskArr);
+        string resourcePath = string `/api/v1/ScriptTasks`;
+        ScriptTask[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new script task
@@ -1624,11 +1627,11 @@ public isolated client class Client {
     # + payload - ScriptTask data 
     # + return - OK 
     remote isolated function postScriptTasks(ScriptTask payload) returns ScriptTask|error {
-        string  path = string `/api/v1/ScriptTasks`;
+        string resourcePath = string `/api/v1/ScriptTasks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScriptTask response = check self.clientEp->post(path, request, targetType=ScriptTask);
+        request.setPayload(jsonBody, "application/json");
+        ScriptTask response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a script task by task ID
@@ -1636,8 +1639,8 @@ public isolated client class Client {
     # + id - Script task ID 
     # + return - OK 
     remote isolated function getScriptTasks(string id) returns ScriptTask|error {
-        string  path = string `/api/v1/ScriptTasks/${id}`;
-        ScriptTask response = check self.clientEp-> get(path, targetType = ScriptTask);
+        string resourcePath = string `/api/v1/ScriptTasks/${id}`;
+        ScriptTask response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing script task, and all of its associated deployments
@@ -1645,8 +1648,8 @@ public isolated client class Client {
     # + id - Script task ID 
     # + return - OK 
     remote isolated function deleteScriptTasks(string id) returns json|error {
-        string  path = string `/api/v1/ScriptTasks/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/ScriptTasks/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets the ID of the singleton group for a given computer ID.  The singleton group is used when creating settings or deploying tasks to a single computer.
@@ -1654,16 +1657,16 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getSingletonGroups(string computerid) returns string|error {
-        string  path = string `/api/v1/Computers/${computerid}/SingletonGroup`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/api/v1/Computers/${computerid}/SingletonGroup`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all system tasks in the organization
     #
     # + return - OK 
     remote isolated function getAllSystemTasks() returns SystemTask[]|error {
-        string  path = string `/api/v1/SystemTasks`;
-        SystemTask[] response = check self.clientEp-> get(path, targetType = SystemTaskArr);
+        string resourcePath = string `/api/v1/SystemTasks`;
+        SystemTask[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a system task by ID
@@ -1671,8 +1674,8 @@ public isolated client class Client {
     # + id - System task ID 
     # + return - OK 
     remote isolated function getSystemTasks(string id) returns SystemTask|error {
-        string  path = string `/api/v1/SystemTasks/${id}`;
-        SystemTask response = check self.clientEp-> get(path, targetType = SystemTask);
+        string resourcePath = string `/api/v1/SystemTasks/${id}`;
+        SystemTask response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the tray icon settings for a given group, if available
@@ -1680,8 +1683,8 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getTrayIconSettings(string groupid) returns TrayIconSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/TrayIconSettings`;
-        TrayIconSettings response = check self.clientEp-> get(path, targetType = TrayIconSettings);
+        string resourcePath = string `/api/v1/Groups/${groupid}/TrayIconSettings`;
+        TrayIconSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates tray icon settings for a given group
@@ -1690,11 +1693,11 @@ public isolated client class Client {
     # + payload - TrayIconSettings data 
     # + return - OK 
     remote isolated function putTrayIconSettings(string groupid, TrayIconSettings payload) returns TrayIconSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/TrayIconSettings`;
+        string resourcePath = string `/api/v1/Groups/${groupid}/TrayIconSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TrayIconSettings response = check self.clientEp->put(path, request, targetType=TrayIconSettings);
+        request.setPayload(jsonBody, "application/json");
+        TrayIconSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes existing tray icon settings for a given group
@@ -1702,24 +1705,24 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function deleteTrayIconSettings(string groupid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/TrayIconSettings`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${groupid}/TrayIconSettings`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all tray icon settings for all groups in the organization
     #
     # + return - OK 
     remote isolated function getAllTrayIconSettings() returns TrayIconSettings[]|error {
-        string  path = string `/api/v1/TrayIconSettings`;
-        TrayIconSettings[] response = check self.clientEp-> get(path, targetType = TrayIconSettingsArr);
+        string resourcePath = string `/api/v1/TrayIconSettings`;
+        TrayIconSettings[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all uninstall tasks in the organization
     #
     # + return - OK 
     remote isolated function getAllUninstallTasks() returns UninstallTask[]|error {
-        string  path = string `/api/v1/UninstallTasks`;
-        UninstallTask[] response = check self.clientEp-> get(path, targetType = UninstallTaskArr);
+        string resourcePath = string `/api/v1/UninstallTasks`;
+        UninstallTask[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new uninstall task
@@ -1727,11 +1730,11 @@ public isolated client class Client {
     # + payload - UninstallTask data 
     # + return - OK 
     remote isolated function postUninstallTasks(UninstallTask payload) returns UninstallTask|error {
-        string  path = string `/api/v1/UninstallTasks`;
+        string resourcePath = string `/api/v1/UninstallTasks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UninstallTask response = check self.clientEp->post(path, request, targetType=UninstallTask);
+        request.setPayload(jsonBody, "application/json");
+        UninstallTask response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a uninstall task by ID
@@ -1739,8 +1742,8 @@ public isolated client class Client {
     # + id - Uninstall task ID 
     # + return - OK 
     remote isolated function getUninstallTasks(string id) returns UninstallTask|error {
-        string  path = string `/api/v1/UninstallTasks/${id}`;
-        UninstallTask response = check self.clientEp-> get(path, targetType = UninstallTask);
+        string resourcePath = string `/api/v1/UninstallTasks/${id}`;
+        UninstallTask response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an existing uninstall task, and all of its associated deployments
@@ -1748,16 +1751,16 @@ public isolated client class Client {
     # + id - Uninstall task ID 
     # + return - OK 
     remote isolated function deleteUninstallTasks(string id) returns json|error {
-        string  path = string `/api/v1/UninstallTasks/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/UninstallTasks/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all webhooks in the organization
     #
     # + return - OK 
     remote isolated function getAllWebhooks() returns Webhook[]|error {
-        string  path = string `/api/v1/Webhooks`;
-        Webhook[] response = check self.clientEp-> get(path, targetType = WebhookArr);
+        string resourcePath = string `/api/v1/Webhooks`;
+        Webhook[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds a new Webhook
@@ -1765,11 +1768,11 @@ public isolated client class Client {
     # + payload - Webhook data 
     # + return - OK 
     remote isolated function postWebhooks(Webhook payload) returns Webhook|error {
-        string  path = string `/api/v1/Webhooks`;
+        string resourcePath = string `/api/v1/Webhooks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Webhook response = check self.clientEp->post(path, request, targetType=Webhook);
+        request.setPayload(jsonBody, "application/json");
+        Webhook response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Gets a webhook by ID
@@ -1777,8 +1780,8 @@ public isolated client class Client {
     # + id - Webhook ID 
     # + return - OK 
     remote isolated function getWebhooks(string id) returns Webhook|error {
-        string  path = string `/api/v1/Webhooks/${id}`;
-        Webhook response = check self.clientEp-> get(path, targetType = Webhook);
+        string resourcePath = string `/api/v1/Webhooks/${id}`;
+        Webhook response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an existing Webhook, using a given ID
@@ -1787,11 +1790,11 @@ public isolated client class Client {
     # + payload - Webhook data 
     # + return - OK 
     remote isolated function putWebhooks(string id, Webhook payload) returns Webhook|error {
-        string  path = string `/api/v1/Webhooks/${id}`;
+        string resourcePath = string `/api/v1/Webhooks/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Webhook response = check self.clientEp->put(path, request, targetType=Webhook);
+        request.setPayload(jsonBody, "application/json");
+        Webhook response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes an existing Webhook
@@ -1799,8 +1802,8 @@ public isolated client class Client {
     # + id - Webhook ID 
     # + return - OK 
     remote isolated function deleteWebhooks(string id) returns json|error {
-        string  path = string `/api/v1/Webhooks/${id}`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Webhooks/${id}`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets windows event log entries on a given computer
@@ -1810,10 +1813,10 @@ public isolated client class Client {
     # + endDateTime - End Date Time 
     # + return - OK 
     remote isolated function getWindowsEventLog(string computerid, string? startDateTime = (), string? endDateTime = ()) returns WindowsEventLogEntry[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/WindowsEventLog`;
+        string resourcePath = string `/api/v1/Computers/${computerid}/WindowsEventLog`;
         map<anydata> queryParam = {"startDateTime": startDateTime, "endDateTime": endDateTime};
-        path = path + check getPathForQueryParam(queryParam);
-        WindowsEventLogEntry[] response = check self.clientEp-> get(path, targetType = WindowsEventLogEntryArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WindowsEventLogEntry[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets windows event log entries for a given log on a given computer
@@ -1824,18 +1827,18 @@ public isolated client class Client {
     # + endDateTime - End Date Time 
     # + return - OK 
     remote isolated function getWindowsEventLogByLogNameId(string computerid, string logNameId, string? startDateTime = (), string? endDateTime = ()) returns WindowsEventLogEntry[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/WindowsEventLog/${logNameId}`;
+        string resourcePath = string `/api/v1/Computers/${computerid}/WindowsEventLog/${logNameId}`;
         map<anydata> queryParam = {"startDateTime": startDateTime, "endDateTime": endDateTime};
-        path = path + check getPathForQueryParam(queryParam);
-        WindowsEventLogEntry[] response = check self.clientEp-> get(path, targetType = WindowsEventLogEntryArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        WindowsEventLogEntry[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the names and IDs of all windows event logs for the organization.  The log IDs are needed to query event log entries for a given computer.
     #
     # + return - OK 
     remote isolated function getWindowsEventLogNames() returns WindowsEventLogName[]|error {
-        string  path = string `/api/v1/WindowsEventLogNames`;
-        WindowsEventLogName[] response = check self.clientEp-> get(path, targetType = WindowsEventLogNameArr);
+        string resourcePath = string `/api/v1/WindowsEventLogNames`;
+        WindowsEventLogName[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the windows event log settings for a given group, if available
@@ -1843,8 +1846,8 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getWindowsEventLogSettings(string groupid) returns WindowsEventLogSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/WindowsEventLogSettings`;
-        WindowsEventLogSettings response = check self.clientEp-> get(path, targetType = WindowsEventLogSettings);
+        string resourcePath = string `/api/v1/Groups/${groupid}/WindowsEventLogSettings`;
+        WindowsEventLogSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates windows event log settings for a given group
@@ -1853,11 +1856,11 @@ public isolated client class Client {
     # + payload - WindowsEventLogSettings data 
     # + return - OK 
     remote isolated function putWindowsEventLogSettings(string groupid, WindowsEventLogSettings payload) returns WindowsEventLogSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/WindowsEventLogSettings`;
+        string resourcePath = string `/api/v1/Groups/${groupid}/WindowsEventLogSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        WindowsEventLogSettings response = check self.clientEp->put(path, request, targetType=WindowsEventLogSettings);
+        request.setPayload(jsonBody, "application/json");
+        WindowsEventLogSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes existing windows event log settings for a given group
@@ -1865,16 +1868,16 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function deleteWindowsEventLogSettings(string groupid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/WindowsEventLogSettings`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${groupid}/WindowsEventLogSettings`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all windows event log settings for all groups in the organization
     #
     # + return - OK 
     remote isolated function getAllWindowsEventLogSettings() returns WindowsEventLogSettings[]|error {
-        string  path = string `/api/v1/WindowsEventLogSettings`;
-        WindowsEventLogSettings[] response = check self.clientEp-> get(path, targetType = WindowsEventLogSettingsArr);
+        string resourcePath = string `/api/v1/WindowsEventLogSettings`;
+        WindowsEventLogSettings[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all windows updates that belong to a given windows update category
@@ -1882,16 +1885,16 @@ public isolated client class Client {
     # + categoryid - Category ID 
     # + return - OK 
     remote isolated function getMembersWindowsUpdateCategories(string categoryid) returns WindowsUpdate[]|error {
-        string  path = string `/api/v1/api/v1/WindowsUpdateCategory/${categoryid}/Members`;
-        WindowsUpdate[] response = check self.clientEp-> get(path, targetType = WindowsUpdateArr);
+        string resourcePath = string `/api/v1/api/v1/WindowsUpdateCategory/${categoryid}/Members`;
+        WindowsUpdate[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all windows update categories in the organization
     #
     # + return - OK 
     remote isolated function getAllWindowsUpdateCategories() returns WindowsUpdateCategory[]|error {
-        string  path = string `/api/v1/WindowsUpdateCategories`;
-        WindowsUpdateCategory[] response = check self.clientEp-> get(path, targetType = WindowsUpdateCategoryArr);
+        string resourcePath = string `/api/v1/WindowsUpdateCategories`;
+        WindowsUpdateCategory[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a windows update category by ID
@@ -1899,8 +1902,8 @@ public isolated client class Client {
     # + id - Category ID 
     # + return - OK 
     remote isolated function getWindowsUpdateCategories(string id) returns WindowsUpdateCategory|error {
-        string  path = string `/api/v1/WindowsUpdateCategories/${id}`;
-        WindowsUpdateCategory response = check self.clientEp-> get(path, targetType = WindowsUpdateCategory);
+        string resourcePath = string `/api/v1/WindowsUpdateCategories/${id}`;
+        WindowsUpdateCategory response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the state of all windows updates on a given computer
@@ -1908,8 +1911,8 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getWindowsUpdateComputerState(string computerid) returns WindowsUpdateComputerState[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/UpdateState`;
-        WindowsUpdateComputerState[] response = check self.clientEp-> get(path, targetType = WindowsUpdateComputerStateArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/UpdateState`;
+        WindowsUpdateComputerState[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the entire windows update history for a given computer
@@ -1917,16 +1920,16 @@ public isolated client class Client {
     # + computerid - Computer ID 
     # + return - OK 
     remote isolated function getWindowsUpdateHistory(string computerid) returns WindowsUpdateHistoryEntry[]|error {
-        string  path = string `/api/v1/Computers/${computerid}/WindowsUpdateHistory`;
-        WindowsUpdateHistoryEntry[] response = check self.clientEp-> get(path, targetType = WindowsUpdateHistoryEntryArr);
+        string resourcePath = string `/api/v1/Computers/${computerid}/WindowsUpdateHistory`;
+        WindowsUpdateHistoryEntry[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets all windows updates in the organization
     #
     # + return - OK 
     remote isolated function getAllWindowsUpdates() returns WindowsUpdate[]|error {
-        string  path = string `/api/v1/WindowsUpdates`;
-        WindowsUpdate[] response = check self.clientEp-> get(path, targetType = WindowsUpdateArr);
+        string resourcePath = string `/api/v1/WindowsUpdates`;
+        WindowsUpdate[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets a windows update by its ID
@@ -1934,8 +1937,8 @@ public isolated client class Client {
     # + id - Windows update ID 
     # + return - OK 
     remote isolated function getWindowsUpdates(string id) returns WindowsUpdate|error {
-        string  path = string `/api/v1/WindowsUpdates/${id}`;
-        WindowsUpdate response = check self.clientEp-> get(path, targetType = WindowsUpdate);
+        string resourcePath = string `/api/v1/WindowsUpdates/${id}`;
+        WindowsUpdate response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the windows update settings for a given group, if available
@@ -1943,8 +1946,8 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function getWindowsUpdateSettings(string groupid) returns WindowsUpdateSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/WindowsUpdateSettings`;
-        WindowsUpdateSettings response = check self.clientEp-> get(path, targetType = WindowsUpdateSettings);
+        string resourcePath = string `/api/v1/Groups/${groupid}/WindowsUpdateSettings`;
+        WindowsUpdateSettings response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Adds or updates windows update settings for a given group
@@ -1953,11 +1956,11 @@ public isolated client class Client {
     # + payload - WindowsUpdateSettings data 
     # + return - OK 
     remote isolated function putWindowsUpdateSettings(string groupid, WindowsUpdateSettings payload) returns WindowsUpdateSettings|error {
-        string  path = string `/api/v1/Groups/${groupid}/WindowsUpdateSettings`;
+        string resourcePath = string `/api/v1/Groups/${groupid}/WindowsUpdateSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        WindowsUpdateSettings response = check self.clientEp->put(path, request, targetType=WindowsUpdateSettings);
+        request.setPayload(jsonBody, "application/json");
+        WindowsUpdateSettings response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes windows update settings for a given group
@@ -1965,50 +1968,16 @@ public isolated client class Client {
     # + groupid - Group ID 
     # + return - OK 
     remote isolated function deleteWindowsUpdateSettings(string groupid) returns json|error {
-        string  path = string `/api/v1/Groups/${groupid}/WindowsUpdateSettings`;
-        json response = check self.clientEp-> delete(path, targetType = json);
+        string resourcePath = string `/api/v1/Groups/${groupid}/WindowsUpdateSettings`;
+        json response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Gets all windows update settings for all groups in the organization
     #
     # + return - OK 
     remote isolated function getAllWindowsUpdateSettings() returns WindowsUpdateSettings[]|error {
-        string  path = string `/api/v1/WindowsUpdateSettings`;
-        WindowsUpdateSettings[] response = check self.clientEp-> get(path, targetType = WindowsUpdateSettingsArr);
+        string resourcePath = string `/api/v1/WindowsUpdateSettings`;
+        WindowsUpdateSettings[] response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

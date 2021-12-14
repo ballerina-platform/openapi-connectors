@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -67,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.shipwire.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get list of advance ship notices
     #
@@ -84,25 +83,27 @@ public isolated client class Client {
     # + vendorExternalId - Filter by vendorExternalId 
     # + return - OK 
     remote isolated function getReceivings(string[]? expand = (), string? commerceName = (), string? transactionId = (), string? externalId = (), string? orderId = (), string? orderNo = (), string? status = (), string? updatedAfter = (), string? warehouseId = (), string? warehouseExternalId = (), string? vendorId = (), string? vendorExternalId = ()) returns GetListOfAdvanceShipNoticesResponse|error {
-        string  path = string `/api/v3/receivings`;
+        string resourcePath = string `/api/v3/receivings`;
         map<anydata> queryParam = {"expand": expand, "commerceName": commerceName, "transactionId": transactionId, "externalId": externalId, "orderId": orderId, "orderNo": orderNo, "status": status, "updatedAfter": updatedAfter, "warehouseId": warehouseId, "warehouseExternalId": warehouseExternalId, "vendorId": vendorId, "vendorExternalId": vendorExternalId};
-        path = path + check getPathForQueryParam(queryParam);
-        GetListOfAdvanceShipNoticesResponse response = check self.clientEp-> get(path, targetType = GetListOfAdvanceShipNoticesResponse);
+        map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        GetListOfAdvanceShipNoticesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an advance ship notice
     #
-    # + payload - CreateAnAdvanceShipNotice request 
     # + expand - Expand receivings data in the response, instead of accessing directly via a URL (comma separated list). See resources `Holds`, `Instruction Recipients`, `Items`, `Shipments`, `labels` and `Trackings` for information on the data model returned by this parameter. 
+    # + payload - CreateAnAdvanceShipNotice request 
     # + return - OK 
     remote isolated function postReceivings(CreateAnAdvanceShipNoticeRequest payload, string[]? expand = ()) returns PostListOfAdvanceShipNoticesResponse|error {
-        string  path = string `/api/v3/receivings`;
+        string resourcePath = string `/api/v3/receivings`;
         map<anydata> queryParam = {"expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
+        map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PostListOfAdvanceShipNoticesResponse response = check self.clientEp->post(path, request, targetType=PostListOfAdvanceShipNoticesResponse);
+        request.setPayload(jsonBody, "application/json");
+        PostListOfAdvanceShipNoticesResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get advance ship notice
@@ -111,26 +112,28 @@ public isolated client class Client {
     # + expand - Expand receivings data in the response, instead of accessing directly via a URL (comma separated list). See resources `Holds`, `Instruction Recipients`, `Items`, `Shipments`, `labels` and `Trackings` for information on the data model returned by this parameter. 
     # + return - OK 
     remote isolated function getReceivingsById(string id, string[]? expand = ()) returns GetAdvanceShipNoticeResponse|error {
-        string  path = string `/api/v3/receivings/${id}`;
+        string resourcePath = string `/api/v3/receivings/${id}`;
         map<anydata> queryParam = {"expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
-        GetAdvanceShipNoticeResponse response = check self.clientEp-> get(path, targetType = GetAdvanceShipNoticeResponse);
+        map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        GetAdvanceShipNoticeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an advance ship notice
     #
     # + id - The advance ship notice's ID. 
-    # + payload - CreateAnAdvanceShipNotice request 
     # + expand - Expand receivings data in the response, instead of accessing directly via a URL (comma separated list). See resources `Holds`, `Instruction Recipients`, `Items`, `Shipments`, `labels` and `Trackings` for information on the data model returned by this parameter. 
+    # + payload - CreateAnAdvanceShipNotice request 
     # + return - OK 
     remote isolated function putReceivingsById(string id, CreateAnAdvanceShipNoticeRequest payload, string[]? expand = ()) returns GetAdvanceShipNoticeResponse|error {
-        string  path = string `/api/v3/receivings/${id}`;
+        string resourcePath = string `/api/v3/receivings/${id}`;
         map<anydata> queryParam = {"expand": expand};
-        path = path + check getPathForQueryParam(queryParam);
+        map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GetAdvanceShipNoticeResponse response = check self.clientEp->put(path, request, targetType=GetAdvanceShipNoticeResponse);
+        request.setPayload(jsonBody, "application/json");
+        GetAdvanceShipNoticeResponse response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Cancel a receiving order
@@ -138,10 +141,10 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function postReceivingsCancelById(string id) returns CancelAReceivingOrderResponse|error {
-        string  path = string `/api/v3/receivings/${id}/cancel`;
+        string resourcePath = string `/api/v3/receivings/${id}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        CancelAReceivingOrderResponse response = check self.clientEp-> post(path, request, targetType = CancelAReceivingOrderResponse);
+        CancelAReceivingOrderResponse response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Cancel a receiving label
@@ -149,10 +152,10 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function postReceivingsLabelsCancelById(string id) returns CancelAReceivingLabelResponse|error {
-        string  path = string `/api/v3/receivings/${id}/labels/cancel`;
+        string resourcePath = string `/api/v3/receivings/${id}/labels/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        CancelAReceivingLabelResponse response = check self.clientEp-> post(path, request, targetType = CancelAReceivingLabelResponse);
+        CancelAReceivingLabelResponse response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Get holds detail
@@ -161,10 +164,10 @@ public isolated client class Client {
     # + includeCleared - When set to 1, response includes holds that have been cleared. 
     # + return - OK 
     remote isolated function getReceivingsHoldsById(string id, int? includeCleared = ()) returns GetHoldDetailsResponse|error {
-        string  path = string `/api/v3/receivings/${id}/holds`;
+        string resourcePath = string `/api/v3/receivings/${id}/holds`;
         map<anydata> queryParam = {"includeCleared": includeCleared};
-        path = path + check getPathForQueryParam(queryParam);
-        GetHoldDetailsResponse response = check self.clientEp-> get(path, targetType = GetHoldDetailsResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GetHoldDetailsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get instructions and the recipients contact details
@@ -172,8 +175,8 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsInstructionsRecipientsById(string id) returns GetInstructionsRecipientsDetailsResponse|error {
-        string  path = string `/api/v3/receivings/${id}/instructionsRecipients`;
-        GetInstructionsRecipientsDetailsResponse response = check self.clientEp-> get(path, targetType = GetInstructionsRecipientsDetailsResponse);
+        string resourcePath = string `/api/v3/receivings/${id}/instructionsRecipients`;
+        GetInstructionsRecipientsDetailsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get receiving extended attributes
@@ -181,8 +184,8 @@ public isolated client class Client {
     # + id - The receiving's ID. 
     # + return - OK 
     remote isolated function getReceivingsExtendedAttributesById(string id) returns GetReceivingExtendedAttributesResponse|error {
-        string  path = string `/api/v3/receivings/${id}/extendedAttributes`;
-        GetReceivingExtendedAttributesResponse response = check self.clientEp-> get(path, targetType = GetReceivingExtendedAttributesResponse);
+        string resourcePath = string `/api/v3/receivings/${id}/extendedAttributes`;
+        GetReceivingExtendedAttributesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get items detail
@@ -190,8 +193,8 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsItemsById(string id) returns GetItemsDetailResponse|error {
-        string  path = string `/api/v3/receivings/${id}/items`;
-        GetItemsDetailResponse response = check self.clientEp-> get(path, targetType = GetItemsDetailResponse);
+        string resourcePath = string `/api/v3/receivings/${id}/items`;
+        GetItemsDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get shipment details
@@ -199,8 +202,8 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsShipmentsById(string id) returns GetShipmentDetailsResponse|error {
-        string  path = string `/api/v3/receivings/${id}/shipments`;
-        GetShipmentDetailsResponse response = check self.clientEp-> get(path, targetType = GetShipmentDetailsResponse);
+        string resourcePath = string `/api/v3/receivings/${id}/shipments`;
+        GetShipmentDetailsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get trackings detail
@@ -208,8 +211,8 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsTrackingsById(string id) returns GetTrackingsDetailResponse|error {
-        string  path = string `/api/v3/receivings/${id}/trackings`;
-        GetTrackingsDetailResponse response = check self.clientEp-> get(path, targetType = GetTrackingsDetailResponse);
+        string resourcePath = string `/api/v3/receivings/${id}/trackings`;
+        GetTrackingsDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get labels detail
@@ -217,8 +220,8 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsLabelsById(string id) returns GetLabelsDetailResponse|error {
-        string  path = string `/api/v3/receivings/${id}/labels`;
-        GetLabelsDetailResponse response = check self.clientEp-> get(path, targetType = GetLabelsDetailResponse);
+        string resourcePath = string `/api/v3/receivings/${id}/labels`;
+        GetLabelsDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Mark the receiving completed
@@ -226,44 +229,10 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function postReceivingsMarkCompleteById(string id) returns MarkTheReceivingCompletedResponse|error {
-        string  path = string `/api/v3.1/receivings/${id}/markComplete`;
+        string resourcePath = string `/api/v3.1/receivings/${id}/markComplete`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        MarkTheReceivingCompletedResponse response = check self.clientEp-> post(path, request, targetType = MarkTheReceivingCompletedResponse);
+        MarkTheReceivingCompletedResponse response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

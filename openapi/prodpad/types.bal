@@ -55,8 +55,7 @@ public type SearchFeedback record {
 };
 
 # List of feedback.
-# List of feedback.
-public type FeedbackList ContactLinkWithFeedback|FeedbackListing[];
+public type FeedbackList (ContactLinkWithFeedback|FeedbackListing)[];
 
 public type Product record {
     # ID of product.
@@ -73,7 +72,7 @@ public type Product record {
     string value?;
     # Documentation related to the product. This field can contain HTML markup and UTF-8 character codes.
     string documentation?;
-    ProductImage image?;
+    ProductImage? image?;
     ProductRoadmaps roadmaps?;
     # When the product was created.
     string created_at?;
@@ -98,11 +97,11 @@ public type FeedbackPost record {
     # Ihe one or more ideas  associated to the feedback.
     IdeaPostLink[] ideas?;
     # The tags associated to the feedback. Mulitple tags can be specified and acts as an OR. Use the tag ID or UUID.
-    TagIdPostLink|TagNamePostLink[] tags?;
+    (TagIdPostLink|TagNamePostLink)[] tags?;
     # The persona associated to feedback. Can either be the persona UUID or persona ID.
-    PersonaIdPostLink|PersonaNamePostLink[] personas?;
+    (PersonaIdPostLink|PersonaNamePostLink)[] personas?;
     # The product associated to feedback. Can either be the product UUID or product ID.
-    ProductIdPostLink|ProductNamePostLink[] products?;
+    (ProductIdPostLink|ProductNamePostLink)[] products?;
     # The source from where the feedback was gathered. If none is supplied the default is API.
     string 'source?;
     # The external url associated with the feedback. An example of an external url is that of a record in a CRM or a ticket in a customer support application
@@ -146,9 +145,9 @@ public type ContactPost record {
     string phone?;
     # Twitter handle of the contact.
     string twitter_url?;
-    TagIdPostLink|TagNamePostLink[] tags?;
+    (TagIdPostLink|TagNamePostLink)[] tags?;
     ExternalUrlPost[] external_links?;
-    PersonaIdPostLink|PersonaNamePostLink[] personas?;
+    (PersonaIdPostLink|PersonaNamePostLink)[] personas?;
     # UUID of the company to link the contact to. The UUID can be determined using /GET companies endpoint. Only used in the creation of a new contact.
     string company?;
     # The UUID of the job role. The UUID can be /GET job_roles endpoint
@@ -207,7 +206,7 @@ public type PersonaListing record {
     string name?;
     # Description of the persona. This field can contain HTML markup and UTF-8 character codes.
     string description?;
-    PersonalistingImage image?;
+    PersonalistingImage? image?;
     # When the persona was created.
     string created_at?;
     # When the persona details were last updated.
@@ -350,7 +349,7 @@ public type Persona record {
     string name?;
     # Description of the persona. This field can contain HTML markup and UTF-8 character codes.
     string description?;
-    PersonaImage image?;
+    PersonaImage? image?;
     # When the persona was created.
     string created_at?;
     # When the persona details were last updated.
@@ -382,7 +381,7 @@ public type IdeaLink record {
 
 public type ThoughtWithIdea record {
     *Thought;
-    IdeaLink ideas?;
+    IdeaLink ideas;
 };
 
 public type ObjectiveList Objective[];
@@ -541,12 +540,12 @@ public type ContactList record {
     int size?;
     ContactlistFilters filters?;
     ContactlistIncludes includes?;
-    Contact|ContactWithFeedback[] contacts?;
+    (Contact|ContactWithFeedback)[] contacts?;
 };
 
 public type ContactWithFeedback record {
     *Contact;
-    FeedbackLink[] feedbacks?;
+    FeedbackLink[] feedbacks;
 };
 
 public type ProductList ProductListing[];
@@ -584,7 +583,7 @@ public type TagLink record {
     string added?;
 };
 
-public type  InlineResponse2001 Idea|IdeaExpanded;
+public type InlineResponse2001 Idea|IdeaExpanded;
 
 public type RoadmaplinkProducts record {
     # ID of the associated product.
@@ -609,7 +608,7 @@ public type StatusListing record {
     string updated_at?;
 };
 
-public type  InlineResponse2003 ProductList|ProductListGroup;
+public type InlineResponse2003 ProductList|ProductListGroup;
 
 public type Tag record {
     # ID of the tag.
@@ -622,7 +621,7 @@ public type Tag record {
     string updated_at?;
 };
 
-public type  InlineResponse2002 Comment|CommentWithDesign|CommentWithThought;
+public type InlineResponse2002 Comment|CommentWithDesign|CommentWithThought;
 
 public type Company record {
     # UUID of the company.
@@ -667,7 +666,7 @@ public type CompanyList record {
     int size?;
     CompanylistFilters filters?;
     CompanylistInclude include?;
-    Company|CompanyWithContacts|CompanyWithContactsFeedback[] companies?;
+    (Company|CompanyWithContacts|CompanyWithContactsFeedback)[] companies?;
 };
 
 # Photo or image of contact
@@ -689,7 +688,7 @@ public type CompanyPost record {
     string size?;
     # The value of the company.
     string value?;
-    TagIdPostLink|TagNamePostLink[] tags?;
+    (TagIdPostLink|TagNamePostLink)[] tags?;
     ExternalUrlPost[] external_links?;
     ContactIdPostLink[] contacts?;
 };
@@ -755,7 +754,7 @@ public type ProductListing record {
     string name?;
     # Description of the product. This field can contain HTML markup and UTF-8 character codes.
     string description?;
-    ProductImage image?;
+    ProductImage? image?;
     ProductlistingRoadmaps roadmaps?;
     ProductlistingProductlines productlines?;
     # Order of product in portfolio .
@@ -773,7 +772,7 @@ public type ProductNamePostLink record {
 
 public type CompanyWithContacts record {
     *Company;
-    CompanyContact[] contacts?;
+    CompanyContact[] contacts;
 };
 
 public type RoadmapCard record {
@@ -879,9 +878,9 @@ public type IdeaPost record {
     IdeaStoryPost[] user_stories?;
     IdeaCommentPost[] comments?;
     FeedbackPostLink[] Feedbacks?;
-    ProductIdPostLink|ProductNamePostLink[] products?;
-    PersonaIdPostLink|PersonaNamePostLink[] personas?;
-    TagIdPostLink|TagNamePostLink[] tags?;
+    (ProductIdPostLink|ProductNamePostLink)[] products?;
+    (PersonaIdPostLink|PersonaNamePostLink)[] personas?;
+    (TagIdPostLink|TagNamePostLink)[] tags?;
     ExternalUrlIdeaPost[] external_links?;
     IdeapostStatus status?;
     # Set the state of the idea to active, archived or unsorted.
@@ -970,7 +969,7 @@ public type PersonaLink record {
 
 public type CompanyWithContactsFeedback record {
     *Company;
-    CompanyContactWithFeedback[] contacts?;
+    CompanyContactWithFeedback[] contacts;
 };
 
 # Photo or image of contact.
@@ -1000,7 +999,7 @@ public type StatusLink record {
     string status?;
 };
 
-public type CommentList Comment|CommentWithThought|CommentWithDesign[];
+public type CommentList (Comment|CommentWithThought|CommentWithDesign)[];
 
 public type ObjectiveIdLink record {
     # The UUID of the objective.
@@ -1059,7 +1058,7 @@ public type User record {
     string role_id?;
     # The role type of the user.
     string role_type?;
-    UserImage image?;
+    UserImage? image?;
 };
 
 public type PersonaIdPostLink record {
@@ -1079,7 +1078,7 @@ public type ProductListGroup record {
     string product_count?;
 };
 
-public type  InlineResponse200 Contact|ContactWithFeedback;
+public type InlineResponse200 Contact|ContactWithFeedback;
 
 public type ProductlistingProductlines record {
     # ID of productline a product is in.
@@ -1393,7 +1392,7 @@ public type Contact record {
     # Contact's twitter handle.
     string? twitter_url?;
     # Photo or image of contact
-    ContactImage image?;
+    ContactImage? image?;
     JobRoleLink? job_role?;
     CompanyLink? company?;
     TagLink[] tags?;
@@ -1437,7 +1436,7 @@ public type IdeaCommentPost record {
 
 public type CompanyContactWithFeedback record {
     *CompanyContact;
-    FeedbackLink[] feedbacks?;
+    FeedbackLink[] feedbacks;
 };
 
 public type RoadmapCardPost record {
@@ -1449,7 +1448,7 @@ public type RoadmapCardPost record {
     int column_id?;
     # The description of the problem(s) and/or hypothesis this card is about. This field accepts HTML and is stored as UTF-8.
     string description?;
-    TagIdPostLink|TagNamePostLink[] tags?;
+    (TagIdPostLink|TagNamePostLink)[] tags?;
     RoadmapcardpostObjectives[] objectives?;
 };
 

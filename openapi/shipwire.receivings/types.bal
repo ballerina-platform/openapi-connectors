@@ -50,7 +50,7 @@ public type GetAdvanceShipNoticeResponse record {
     string? message?;
     # A URL that gives more information about the linked resource. A 'null' value would mean that no further information is available for that resource.
     string? resourceLocation?;
-    record  { }  'resource?;
+    record {} 'resource?;
 };
 
 # Receiving Server Response

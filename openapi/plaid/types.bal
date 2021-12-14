@@ -1572,7 +1572,7 @@ public type InstitutionsSearchAccountFilter record {
 public type PaymentInitiationRecipientGetResponse record {
     *PaymentInitiationRecipient;
     # A unique identifier for the request, which can be used for troubleshooting. This identifier, like all Plaid identifiers, is case sensitive.
-    RequestID request_id;
+    RequestID request_id?;
 };
 
 # PaymentInitiationPaymentCreateRequest defines the request schema for `/payment_initiation/payment/create`
@@ -1613,7 +1613,6 @@ public type TransferListRequest record {
     TransferDirection? direction?;
 };
 
-# A list of account subtypes to be filtered.
 # A list of account subtypes to be filtered.
 public type AccountFilterSubtypes string[];
 
@@ -1713,7 +1712,8 @@ public type Taxform record {
 # - Maximum of 50 key/value pairs
 # - Maximum key length of 40 characters
 # - Maximum value length of 500 characters
-public type TransferMetadata record {}?;
+public type TransferMetadata record {
+};
 
 # IncomeVerificationTaxformsGetRequest defines the request schema for `/income/verification/taxforms/get`
 public type IncomeVerificationTaxformsGetRequest record {
@@ -2587,21 +2587,21 @@ public type Transaction record {
     # `other:` transactions that relate to banks, e.g. fees or deposits.
     # 
     # This field replaces the `transaction_type` field.
-    string payment_channel?;
+    string payment_channel;
     # The merchant name, as extracted by Plaid from the `name` field.
-    string? merchant_name?;
+    string? merchant_name;
     # The date that the transaction was authorized. Dates are returned in an [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format ( `YYYY-MM-DD` ).
-    string? authorized_date?;
+    string? authorized_date;
     # Date and time when a transaction was authorized in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format ( `YYYY-MM-DDTHH:mm:ssZ` ).
     # 
     # This field is only populated for UK institutions. For institutions in other countries, will be `null`.
-    string? authorized_datetime?;
+    string? authorized_datetime;
     # Date and time when a transaction was posted in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format ( `YYYY-MM-DDTHH:mm:ssZ` ).
     # 
     # This field is only populated for UK institutions. For institutions in other countries, will be `null`.
-    string? datetime?;
+    string? datetime;
     # The check number of the transaction. This field is only populated for check transactions.
-    string? check_number?;
+    string? check_number;
     # An identifier classifying the transaction type.
     # 
     # This field is only populated for European institutions. For institutions in the US and Canada, this field is set to `null`.
@@ -2629,7 +2629,7 @@ public type Transaction record {
     # `standing order:` Payment instructed by the account holder to a third party at a regular interval
     # 
     # `transfer:` Transfer of money between accounts
-    TransactionCode? transaction_code?;
+    TransactionCode? transaction_code;
 };
 
 # DepositSwitchGetResponse defines the response schema for `/deposit_switch/get`
@@ -3075,7 +3075,7 @@ public type AssetReportCreateRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # An array of access tokens corresponding to the Items that will be included in the report. The `assets` product must have been initialized for the Items during link; the Assets product cannot be added after initialization.
-    AccessToken[] access_tokens;
+    AccessToken[99] access_tokens;
     # The maximum integer number of days of history to include in the Asset Report. If using Fannie Mae Day 1 Certainty, `days_requested` must be at least 61 for new originations or at least 31 for refinancings.
     int days_requested;
     # An optional object to filter `/asset_report/create` results. If provided, must be non-`null`. The optional `user` object is required for the report to be eligible for Fannie Mae's Day 1 Certainty program.
@@ -4327,7 +4327,7 @@ public type DepositSwitchCreateRequestOptions record {
     # The URL registered to receive webhooks when the status of a deposit switch request has changed.
     string? webhook?;
     # An array of access tokens corresponding to transaction items to use when attempting to match the user to their Payroll Provider. These tokens must be created by the same client id as the one creating the switch, and have access to the transactions product.
-    AccessToken[] transaction_item_access_tokens?;
+    AccessToken[99] transaction_item_access_tokens?;
 };
 
 # ProcessorApexProcessorTokenCreateRequest defines the request schema for `/processor/apex/processor_token/create`
@@ -4366,13 +4366,13 @@ public type ScopesNullable record {
 public type AccountAssets record {
     *AccountBase;
     # The duration of transaction history available for this Item, typically defined as the time since the date of the earliest transaction in that account. Only returned by Assets endpoints.
-    decimal days_available?;
+    decimal days_available;
     # Transaction history associated with the account. Only returned by Assets endpoints. Transaction history returned by endpoints such as `/transactions/get` or `/investments/transactions/get` will be returned in the top-level `transactions` field instead.
-    AssetReportTransaction[] transactions?;
+    AssetReportTransaction[] transactions;
     # Data returned by the financial institution about the account owner or owners. Only returned by Identity or Assets endpoints. Multiple owners on a single account will be represented in the same `owner` object, not in multiple owner objects within the array.
-    Owner[] owners?;
+    Owner[] owners;
     # Calculated data about the historical balances on the account. Only returned by Assets endpoints.
-    HistoricalBalance[] historical_balances?;
+    HistoricalBalance[] historical_balances;
 };
 
 # Data to use to set values of test accounts. Some values cannot be specified in the schema and will instead will be calculated from other test data in order to achieve more consistent, realistic test data.
@@ -4510,7 +4510,7 @@ public type AccountFilter record {
 public type AccountIdentity record {
     *AccountBase;
     # Data returned by the financial institution about the account owner or owners. Only returned by Identity or Assets endpoints. Multiple owners on a single account will be represented in the same `owner` object, not in multiple owner objects within the array.
-    Owner[] owners?;
+    Owner[] owners;
 };
 
 # An object containing identifying numbers used for making electronic transfers to and from the `account`. The identifying number type (ACH, EFT, IBAN, or BACS) used will depend on the country of the account. An account may have more than one number type. If a particular identifying number type is not used by the `account` for which auth data has been requested, a null value will be returned.
@@ -4539,7 +4539,8 @@ public type ItemImportRequestUserAuth record {
 # - Maximum of 50 key/value pairs
 # - Maximum key length of 40 characters
 # - Maximum value length of 500 characters
-public type BankTransferMetadata record {}?;
+public type BankTransferMetadata record {
+};
 
 # Details regarding the proposed transfer.
 public type TransferAuthorizationProposedTransfer record {
@@ -4931,7 +4932,6 @@ public type ExternalPaymentRefundDetails record {
     RecipientBACSNullable? bacs;
 };
 
-# An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
 # An array of account subtypes to display in Link. If not specified, all account subtypes will be shown. For a full list of valid types and subtypes, see the [Account schema](https://plaid.com/docs/api/accounts#accounts-schema). 
 public type AccountSubtypes AccountSubtype[];
 
@@ -5618,7 +5618,7 @@ public type ProcessorToken string;
 public type PaymentInitiationPaymentGetResponse record {
     *PaymentInitiationPayment;
     # A unique identifier for the request, which can be used for troubleshooting. This identifier, like all Plaid identifiers, is case sensitive.
-    RequestID request_id;
+    RequestID request_id?;
 };
 
 # Defines the request schema for `/bank_transfer/event/sync`

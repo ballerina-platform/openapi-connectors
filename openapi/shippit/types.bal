@@ -278,7 +278,7 @@ public type MerchantResponse record {
 # Response message containing an error.
 public type GenericErrorResponse record {
     # Error code returned by Shippit
-    string? _error?;
+    string? _error;
     # Human-readable description of error encountered.
     string? error_description?;
     *ErrorResponse;
@@ -365,7 +365,7 @@ public type TrackingResponseTrackingHistory record {
 
 public type OrderDeleteErrorResponse record {
     # The current state of the order should a DELETE request fail
-    string? order_state?;
+    string? order_state;
     *GenericErrorResponse;
 };
 
@@ -414,7 +414,7 @@ public type TrackingErrorResponse record {
     # A Hash of error codes returned by tracking response.
     # 
     # Each error code is returned as a key, with an array of strings for each instance of the error.
-    TrackingErrorResponseDetails? _error?;
+    TrackingErrorResponseDetails? _error;
     # Returns `false`
     boolean? success?;
     # Human-readable description of error encountered.

@@ -12,7 +12,7 @@ info:
     obtain tokens.
   x-ballerina-display:
     label: Workday Expense
-    iconPath: “icon.png”
+    iconPath: icon.png
 tags:
 - name: entries
   description: The Quick Expense that you can create, modify or submit. This can be

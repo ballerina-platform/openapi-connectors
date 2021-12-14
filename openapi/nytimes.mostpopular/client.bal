@@ -41,6 +41,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Most Emailed by Section & Time Period
     #
@@ -48,10 +49,10 @@ public isolated client class Client {
     # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content. 
     # + return - An array of Articles 
     remote isolated function getMostemailed(string section, string timePeriod) returns InlineResponse200|error {
-        string  path = string `/mostemailed/${section}/${timePeriod}.json`;
+        string resourcePath = string `/mostemailed/${section}/${timePeriod}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Most Shared by Section & Time Period
@@ -60,10 +61,10 @@ public isolated client class Client {
     # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content. 
     # + return - An array of Articles 
     remote isolated function getMostshared(string section, string timePeriod) returns InlineResponse2001|error {
-        string  path = string `/mostshared/${section}/${timePeriod}.json`;
+        string resourcePath = string `/mostshared/${section}/${timePeriod}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Most Viewed by Section & Time Period
@@ -72,10 +73,10 @@ public isolated client class Client {
     # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content. 
     # + return - An array of Articles 
     remote isolated function getMostviewed(string section, string timePeriod) returns InlineResponse2001|error {
-        string  path = string `/mostviewed/${section}/${timePeriod}.json`;
+        string resourcePath = string `/mostviewed/${section}/${timePeriod}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

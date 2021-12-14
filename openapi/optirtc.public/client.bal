@@ -21,7 +21,7 @@ public type ApiKeysConfig record {|
     # You must include a 'key' parameter in the query string of each request to the Opti Public API. Opti uses this key to authenticate and throttle all requests to the Public API to help provide reliable and rapid services to all of its customers.
     # 
     # API Keys can be acquired and replaced by contacting your [Opti Support](mailto:support@optirtc.com?subject=[Opti%20Developer%20Docs]%20Public%20API%20Throttling) representative. If you are building multiple web sites, ETL workflows, or other applications on top of the Opti Public API, Opti recommends using a different API key for each application to avoid unnecessary throttling from occurring. All throttled requests will return an [HTTP 429 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429).
-    string key;
+    string 'key;
 |};
 
 # This is a generated connector for [Optirtc Public API v1.0](https://docs.optirtc.com/api/opti-publicapi-v1.html) OpenAPI specification.
@@ -47,6 +47,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Datastream
     #
@@ -55,10 +56,10 @@ public isolated client class Client {
     # + skiptoken - Paging parameter to return the page after this number of results. 
     # + return - Lists the DataStreams available with the provided API key. 
     remote isolated function datastream(string? at = (), int? top = (), int? skiptoken = ()) returns DataStreamPageResult|error {
-        string  path = string `/Datastream`;
-        map<anydata> queryParam = {"at": at, "top": top, "skiptoken": skiptoken, "key": self.apiKeyConfig.key};
-        path = path + check getPathForQueryParam(queryParam);
-        DataStreamPageResult response = check self.clientEp-> get(path, targetType = DataStreamPageResult);
+        string resourcePath = string `/Datastream`;
+        map<anydata> queryParam = {"at": at, "top": top, "skiptoken": skiptoken, "key": self.apiKeyConfig.'key};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DataStreamPageResult response = check self.clientEp->get(resourcePath);
         return response;
     }
     # DataPoint-Get-Range
@@ -74,20 +75,20 @@ public isolated client class Client {
     # + unit - Abbreviation of the unit in which to return data. May be null, in which case the stored unit of the datastream will be used. 
     # + return - A page of data points matching your query, including a link to follow for the next page if there are more data points in the full response to the client's request. 
     remote isolated function datapointGetRange(int dataStreamId, string? historicalId = (), string? modernId = (), string? utcHistorical = (), string? utcModern = (), string? skiptoken = (), int? top = (), string? verbosity = (), string? unit = ()) returns DataPointPage|error {
-        string  path = string `/DataPoint`;
-        map<anydata> queryParam = {"dataStreamId": dataStreamId, "historicalId": historicalId, "modernId": modernId, "utcHistorical": utcHistorical, "utcModern": utcModern, "skiptoken": skiptoken, "top": top, "verbosity": verbosity, "unit": unit, "key": self.apiKeyConfig.key};
-        path = path + check getPathForQueryParam(queryParam);
-        DataPointPage response = check self.clientEp-> get(path, targetType = DataPointPage);
+        string resourcePath = string `/DataPoint`;
+        map<anydata> queryParam = {"dataStreamId": dataStreamId, "historicalId": historicalId, "modernId": modernId, "utcHistorical": utcHistorical, "utcModern": utcModern, "skiptoken": skiptoken, "top": top, "verbosity": verbosity, "unit": unit, "key": self.apiKeyConfig.'key};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DataPointPage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get-DataPoint-Verbosities
     #
     # + return - Lists the options available in for use with the Public API. 
     remote isolated function getDatapointVerbosities() returns DataPointVerbosityList|error {
-        string  path = string `/DataPointVerbosity`;
-        map<anydata> queryParam = {"key": self.apiKeyConfig.key};
-        path = path + check getPathForQueryParam(queryParam);
-        DataPointVerbosityList response = check self.clientEp-> get(path, targetType = DataPointVerbosityList);
+        string resourcePath = string `/DataPointVerbosity`;
+        map<anydata> queryParam = {"key": self.apiKeyConfig.'key};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DataPointVerbosityList response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

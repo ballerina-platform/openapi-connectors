@@ -122,6 +122,12 @@ public type SmsUniqueRequest record {
     # Date sent in YYYY-MM-DD format hh: mm. This parameter is optional, if it is omitted, the sending is carried out immediately.
     string date_envoi?;
     # - The sender must be an alphanumeric string between 4 and 11 characters long.
+    # 
+    # - The accepted characters are numbers between 0 and 9, letters between A and Z and space.
+    # 
+    # - It cannot consist of only numbers.
+    # 
+    # - For the modification of the transmitter and within the framework of commercial campaigns, the operators contractually impose to add at the end of the message the text "STOP XXXXX". As a result, the message sent cannot exceed a length of 148 characters instead of 160 characters, the "STOP" being added automatically.
     string emetteur?;
     # Fuseau horaire de la date d'envoi
     string gmt_zone?;
@@ -135,10 +141,21 @@ public type SmsUniqueRequest record {
     # Message to send to recipients. The message must be encoded in utf-8 format and contain only characters existing in the GSM alphabet. It is also possible to send (abroad only) SMS in UCS-2, see parameter ucs2 for more details.
     string sms;
     # The long SMS allows you to exceed the limit of 160 characters by sending a message consisting of
+    # of several SMS.
+    # Up to 6 concatenated SMS can be sent for a maximum total length of 918
+    # characters per message.
+    # For technical reasons, the limit per concatenated SMS is 153 characters.
+    # If the transmitter is changed, consider the automatic addition of 12 characters
+    # of the "STOP SMS".
+    # To send a smslong, you must add the smslong parameter to the calls. The value of SMS must be the maximum number of concatenated SMS allowed. In order not to have this error message and to obtain a dynamic calculation of the number of SMS then you must enter smslong = "999"
     string smslong?;
     # Le tracker doit être une chaine alphanumérique de moins de 50 caractères. Ce tracker sera ensuite renvoyé en paramètre des urls pour les retours des accusés de réception. 
     string tracker?;
     # It is also possible to send SMS in non-Latin alphabet (Russian, Chinese, Arabic, etc.) on 
+    # numbers outside mainland France.
+    # To do this, the request should be encoded in UTF-8 format and contain the argument ucs2 = "1"
+    # Due to technical constraints, 1 unique SMS cannot exceed 70 characters (instead of
+    # the usual 160) and in the case of long SMS, each SMS cannot exceed 67 characters.
     string ucs2?;
 };
 
@@ -169,6 +186,12 @@ public type CountRequest record {
     # Date sent in YYYY-MM-DD format hh: mm. This parameter is optional, if it is omitted, the sending is carried out immediately.
     string date_envoi?;
     # - The sender must be an alphanumeric string between 4 and 11 characters long.
+    # 
+    # - The accepted characters are numbers between 0 and 9, letters between A and Z and space.
+    # 
+    # - It cannot consist of only numbers.
+    # 
+    # - For the modification of the transmitter and within the framework of commercial campaigns, the operators contractually impose to add at the end of the message the text "STOP XXXXX". As a result, the message sent cannot exceed a length of 148 characters instead of 160 characters, the "STOP" being added automatically.
     string emetteur?;
     # Time zone of the date sent
     string gmt_zone?;
@@ -182,10 +205,21 @@ public type CountRequest record {
     # Message to send to recipients. The message must be encoded in utf-8 format and contain only characters existing in the GSM alphabet. It is also possible to send (abroad only) SMS in UCS-2, see parameter ucs2 for more details.
     string sms;
     # The long SMS allows you to exceed the limit of 160 characters by sending a message consisting of
+    # of several SMS.
+    # Up to 6 concatenated SMS can be sent for a maximum total length of 918
+    # characters per message.
+    # For technical reasons, the limit per concatenated SMS is 153 characters.
+    # If the transmitter is changed, consider the automatic addition of 12 characters
+    # of the "STOP SMS".
+    # To send a smslong, you must add the smslong parameter to the calls. The value of SMS must be the maximum number of concatenated SMS allowed. In order not to have this error message and to obtain a dynamic calculation of the number of SMS then you must enter smslong = "999"
     string smslong?;
     # Le tracker doit être une chaine alphanumérique de moins de 50 caractères. Ce tracker sera ensuite renvoyé en paramètre des urls pour les retours des accusés de réception. 
     string tracker?;
     # It is also possible to send SMS in non-Latin alphabet (Russian, Chinese, Arabic, etc.) on
+    # numbers outside mainland France.
+    # To do this, the request should be encoded in UTF-8 format and contain the argument ucs2 = "1"
+    # Due to technical constraints, 1 unique SMS cannot exceed 70 characters (instead of
+    # of the usual 160) and in the case of long SMS, each SMS cannot exceed 67 characters.
     string ucs2?;
 };
 

@@ -17,7 +17,7 @@
 # An OpenAir type record or an error
 public type OpenAirResponse record {
     # An array containing the relevant objects requested or an IDs
-    IDs|ExpenseReport|Attachment|JobCode[] data?;
+    (IDs|ExpenseReport|Attachment|JobCode)[] data?;
     # An array of expanded objects, if the expand parameter was set in the request
     record {} included?;
     # An object containing information about objects referenced by internal ID in the data array (object type and internal ID). Only returned if the return_object parameter was set to any value other than 0 (zero) in the request

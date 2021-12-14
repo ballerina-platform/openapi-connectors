@@ -62,7 +62,7 @@ public type InlineResponse200BookDetails record {
 public type InlineResponse2004Results record {
     string bestsellers_date?;
     InlineResponse2004ResultsBooks[] books?;
-    record  { } [] corrections?;
+    record {}[] corrections?;
     string display_name?;
     string list_name?;
     int normal_list_ends_at?;

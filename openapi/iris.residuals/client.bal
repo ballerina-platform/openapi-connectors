@@ -42,6 +42,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get residuals summary data
     #
@@ -56,12 +57,12 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A JSON array of totals 
     remote isolated function getResidualsSummaryData(int year, int month, int? processor = (), int? 'group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), int? page = (), int? perPage = ()) returns InlineResponse20010|error {
-        string  path = string `/api/v1/residuals/reports/summary/${year}/${month}`;
+        string resourcePath = string `/api/v1/residuals/reports/summary/${year}/${month}`;
         map<anydata> queryParam = {"processor": processor, "group": 'group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20010 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20010);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20010 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get residuals summary with merchant rows
@@ -78,12 +79,12 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
     remote isolated function getResiduals(int processorId, int year, int month, int? 'group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), boolean? template = (), int? page = (), int? perPage = ()) returns InlineResponse20011|error {
-        string  path = string `/api/v1/residuals/reports/summary/rows/${processorId}/${year}/${month}`;
+        string resourcePath = string `/api/v1/residuals/reports/summary/rows/${processorId}/${year}/${month}`;
         map<anydata> queryParam = {"group": 'group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "template": template, "page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20011 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20011);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20011 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get residuals details with merchant rows
@@ -99,12 +100,12 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
     remote isolated function getResidualsDetailsWithMerchantRows(int processorId, int year, int month, int? 'group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), int? page = (), int? perPage = ()) returns InlineResponse20012|error {
-        string  path = string `/api/v1/residuals/reports/details/${processorId}/${year}/${month}`;
+        string resourcePath = string `/api/v1/residuals/reports/details/${processorId}/${year}/${month}`;
         map<anydata> queryParam = {"group": 'group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20012 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20012);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20012 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get residuals line items
@@ -120,12 +121,12 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
     remote isolated function getResidualsLineItems(int year, int month, string? created = (), string? dba = (), string? username = (), int? userId = (), string? description = (), int? page = (), int? perPage = ()) returns InlineResponse20013|error {
-        string  path = string `/api/v1/residuals/lineitems/${year}/${month}`;
+        string resourcePath = string `/api/v1/residuals/lineitems/${year}/${month}`;
         map<anydata> queryParam = {"created": created, "dba": dba, "username": username, "user_id": userId, "description": description, "page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20013 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20013);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20013 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get residuals templates
@@ -137,12 +138,12 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
     remote isolated function getResidualsTemplates(string? name = (), string? revision = (), int? creator = (), int? page = (), int? perPage = ()) returns InlineResponse20014|error {
-        string  path = string `/api/v1/residuals/templates/`;
+        string resourcePath = string `/api/v1/residuals/templates/`;
         map<anydata> queryParam = {"name": name, "revision": revision, "creator": creator, "page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20014 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20014);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20014 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a list of users with assigned residuals templates
@@ -157,12 +158,12 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
     remote isolated function getUsersWithAssignedResidualsTemplates(int year, int month, int? user = (), int? processor = (), int? 'group = (), int? 'class = (), int? page = (), int? perPage = ()) returns InlineResponse20015|error {
-        string  path = string `/api/v1/residuals/templates/assigned/${year}/${month}`;
+        string resourcePath = string `/api/v1/residuals/templates/assigned/${year}/${month}`;
         map<anydata> queryParam = {"user": user, "processor": processor, "group": 'group, "class": 'class, "page": page, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20015 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20015);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20015 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

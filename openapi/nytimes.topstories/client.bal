@@ -41,6 +41,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Top Stories
     #
@@ -49,10 +50,10 @@ public isolated client class Client {
     # + callback - The name of the function the API call results will be passed to. Required when using JSONP. This parameter has only one valid value per section. The format is {section_name}TopStoriesCallback. 
     # + return - An array of articles 
     remote isolated function topStories(string section, string format, string? callback = ()) returns InlineResponse200|error {
-        string  path = string `/${section}.${format}`;
+        string resourcePath = string `/${section}.${format}`;
         map<anydata> queryParam = {"callback": callback, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

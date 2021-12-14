@@ -41,16 +41,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get articles.
     #
     # + url - The complete URL of a specific news item, URL-encoded or backslash-escaped 
     # + return - An array of Articles 
     remote isolated function getContents(string url) returns InlineResponse200|error {
-        string  path = string `/content.json`;
+        string resourcePath = string `/content.json`;
         map<anydata> queryParam = {"url": url, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Filter articles by source and section.
@@ -61,10 +62,10 @@ public isolated client class Client {
     # + offset - Sets the starting point of the result set 
     # + return - An array of Articles 
     remote isolated function filterContents(string 'source, string section, int 'limit = 20, int offset = 0) returns InlineResponse200|error {
-        string  path = string `/content/${'source}/${section}.json`;
+        string resourcePath = string `/content/${'source}/${section}.json`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Filter articles by source, section and time period.
@@ -76,10 +77,10 @@ public isolated client class Client {
     # + offset - Sets the starting point of the result set 
     # + return - An array of Articles 
     remote isolated function filterContentsByTime(string 'source, string section, int timePeriod, int 'limit = 20, int offset = 0) returns InlineResponse200|error {
-        string  path = string `/content/${'source}/${section}/${timePeriod}.json`;
+        string resourcePath = string `/content/${'source}/${section}/${timePeriod}.json`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

@@ -22,6 +22,14 @@ public type MessageResponse record {
     string message;
 };
 
+public type RepositoryValidateBody record {
+    string[] filename?;
+};
+
+public type RepositoryPrivateBody record {
+    string[] filename?;
+};
+
 public type InlineResponse201 record {
     int id;
 };
@@ -34,10 +42,6 @@ public type InlineResponse200 record {
     string message;
 };
 
-public type Body1 record {
-    string[] filename?;
-};
-
 public type InlineResponse500 record {
     InlineResponse500Errors[] errors;
 };
@@ -46,10 +50,6 @@ public type InlineResponse202 record {
     int rowsAdded;
     int rowsChanged;
     int rowsDeleted;
-};
-
-public type Body record {
-    string[] filename?;
 };
 
 public type InlineResponse500Errors record {

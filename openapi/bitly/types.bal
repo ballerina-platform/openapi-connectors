@@ -179,14 +179,14 @@ public type PlanLimit record {
 
 public type Group record {
     *HasReferences;
-    string name;
-    string[] bsds;
-    string created;
-    boolean is_active;
-    string modified;
-    string organization_guid;
-    string role;
-    string guid;
+    string name?;
+    string[] bsds?;
+    string created?;
+    boolean is_active?;
+    string modified?;
+    string organization_guid?;
+    string role?;
+    string guid?;
 };
 
 public type BulkShortenUploads record {
@@ -413,21 +413,21 @@ public type Event record {
 public type Webhook record {
     *HasReferences;
     string status?;
-    string modified_by;
-    string name;
-    string created;
-    string url;
-    string deactivated;
+    string modified_by?;
+    string name?;
+    string created?;
+    string url?;
+    string deactivated?;
     boolean fetch_tags?;
-    boolean is_active;
-    string modified;
-    string organization_guid;
+    boolean is_active?;
+    string modified?;
+    string organization_guid?;
     string client_id?;
     string group_guid?;
     string client_secret?;
     string oauth_url?;
-    string guid;
-    string event;
+    string guid?;
+    string event?;
 };
 
 # UNPROCESSABLE_ENTITY
@@ -1087,16 +1087,16 @@ public type ClickstreamSinkNew record {
 
 public type Organization record {
     *HasReferences;
-    string name;
-    string[] bsds;
-    string created;
-    boolean is_active;
-    string modified;
-    string tier_display_name;
-    string tier_family;
-    string tier;
-    string role;
-    string guid;
+    string name?;
+    string[] bsds?;
+    string created?;
+    boolean is_active?;
+    string modified?;
+    string tier_display_name?;
+    string tier_family?;
+    string tier?;
+    string role?;
+    string guid?;
 };
 
 public type SSOSettings record {

@@ -17,7 +17,7 @@
 # Encapsulates a list of results.
 public type ResultPage record {
     # The list of currently accessible results.
-    record  { } [] items?;
+    record {}[] items?;
     # The total number of accessible results, including the results not listed in <em>items</em>.
     int total?;
     # If <em>true</em>, indicates that you are denied access to part of, or all the results.

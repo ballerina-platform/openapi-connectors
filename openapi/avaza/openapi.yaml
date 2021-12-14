@@ -663,7 +663,7 @@ paths:
       requestBody:
         description: Request to create expense attachment
         content:
-          application/form-data:
+          application/json:
             schema:
               required:
               - File
@@ -986,40 +986,40 @@ paths:
       - Expense
       summary: Delete a Timesheet Entry
       operationId: Expense_Delete
-      requestBody:
-        description: A collection of ExpenseIDs to delete
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: integer
-                format: int64
-          text/json:
-            schema:
-              type: array
-              items:
-                type: integer
-                format: int64
-          application/xml:
-            schema:
-              type: array
-              items:
-                type: integer
-                format: int64
-          text/xml:
-            schema:
-              type: array
-              items:
-                type: integer
-                format: int64
-          application/x-www-form-urlencoded:
-            schema:
-              type: array
-              items:
-                type: integer
-                format: int64
-        required: true
+      # requestBody:
+      #   description: A collection of ExpenseIDs to delete
+      #   content:
+      #     application/json:
+      #       schema:
+      #         type: array
+      #         items:
+      #           type: integer
+      #           format: int64
+      #     text/json:
+      #       schema:
+      #         type: array
+      #         items:
+      #           type: integer
+      #           format: int64
+      #     application/xml:
+      #       schema:
+      #         type: array
+      #         items:
+      #           type: integer
+      #           format: int64
+      #     text/xml:
+      #       schema:
+      #         type: array
+      #         items:
+      #           type: integer
+      #           format: int64
+      #     application/x-www-form-urlencoded:
+      #       schema:
+      #         type: array
+      #         items:
+      #           type: integer
+      #           format: int64
+      #   required: true
       responses:
         200:
           description: OK

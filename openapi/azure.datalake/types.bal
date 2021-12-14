@@ -65,4 +65,3 @@ public type DatalakestorageerrorError record {
     # The service error message
     string message?;
 };
-

@@ -62,9 +62,9 @@ public type CertificateListDescription record {
 
 public type RoutingtwinProperties record {
     # Twin desired properties
-    record  { }  desired?;
+    record {} desired?;
     # Twin desired properties
-    record  { }  reported?;
+    record {} reported?;
 };
 
 # Name of Iot Hub type
@@ -80,7 +80,7 @@ public type RouteProperties record {
     # The condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default. For grammar, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
     string condition?;
     # The list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is allowed.
-    string[] endpointNames;
+    string[1] endpointNames;
     # Used to specify whether a route is enabled.
     boolean isEnabled;
     # The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
@@ -196,7 +196,7 @@ public type FallbackRouteProperties record {
     # The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate to true by default. For grammar, See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
     string condition?;
     # The list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint is allowed.
-    string[] endpointNames;
+    string[1] endpointNames;
     # Used to specify whether the fallback route is enabled.
     boolean isEnabled;
     # The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
@@ -654,7 +654,7 @@ public type RoutingMessage record {
 public type RoutingTwin record {
     RoutingtwinProperties properties?;
     # Twin Tags
-    record  { }  tags?;
+    record {} tags?;
 };
 
 # IoT Hub capacity information.

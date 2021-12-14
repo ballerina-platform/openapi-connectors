@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Copy a file or folder to a different location in the user's Dropbox.
     #
@@ -72,13 +73,13 @@ public isolated client class Client {
     # + payload - Arguments for relocation. 
     # + return - Success 
     remote isolated function copyFileOrFolder(RelocationArg payload, string? dropboxApiSelectAdmin = ()) returns RelocationResult|error {
-        string path = string `/files/copy_v2`;
+        string resourcePath = string `/files/copy_v2`;
         map<any> headerValues = {"Dropbox-API-Select-Admin": dropboxApiSelectAdmin};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RelocationResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType = RelocationResult);
+        request.setPayload(jsonBody, "application/json");
+        RelocationResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create a folder at a given path.
@@ -87,13 +88,13 @@ public isolated client class Client {
     # + payload - Arguments for folder creation. 
     # + return - Success 
     remote isolated function createFolder(CreateFolderArg payload, string? dropboxApiSelectAdmin = ()) returns CreateFolderResult|error {
-        string path = string `/files/create_folder_v2`;
+        string resourcePath = string `/files/create_folder_v2`;
         map<any> headerValues = {"Dropbox-API-Select-Admin": dropboxApiSelectAdmin};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateFolderResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CreateFolderResult);
+        request.setPayload(jsonBody, "application/json");
+        CreateFolderResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete the file or folder at a given path.
@@ -102,13 +103,13 @@ public isolated client class Client {
     # + payload - Arguments for deletion. 
     # + return - Success 
     remote isolated function deleteFileOrFolder(DeleteArg payload, string? dropboxApiSelectAdmin = ()) returns DeleteResult|error {
-        string path = string `/files/delete_v2`;
+        string resourcePath = string `/files/delete_v2`;
         map<any> headerValues = {"Dropbox-API-Select-Admin": dropboxApiSelectAdmin};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DeleteResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType = DeleteResult);
+        request.setPayload(jsonBody, "application/json");
+        DeleteResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Move a file or folder to a different location in the user's Dropbox.
@@ -117,13 +118,13 @@ public isolated client class Client {
     # + payload - Arguments for move. 
     # + return - Success 
     remote isolated function moveFileOrFolder(RelocationArg payload, string? dropboxApiSelectAdmin = ()) returns RelocationResult|error {
-        string path = string `/files/move_v2`;
+        string resourcePath = string `/files/move_v2`;
         map<any> headerValues = {"Dropbox-API-Select-Admin": dropboxApiSelectAdmin};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RelocationResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType = RelocationResult);
+        request.setPayload(jsonBody, "application/json");
+        RelocationResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Restore a file to a specific revision.
@@ -132,13 +133,13 @@ public isolated client class Client {
     # + payload - Arguments for restore. 
     # + return - Success 
     remote isolated function restoreFiles(RestoreArg payload, string? dropboxApiSelectAdmin = ()) returns FileMetadata|error {
-        string path = string `/files/restore`;
+        string resourcePath = string `/files/restore`;
         map<any> headerValues = {"Dropbox-API-Select-Admin": dropboxApiSelectAdmin};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileMetadata response = check self.clientEp->post(path, request, headers = accHeaders, targetType = FileMetadata);
+        request.setPayload(jsonBody, "application/json");
+        FileMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create Shared Link With Settings
@@ -147,13 +148,13 @@ public isolated client class Client {
     # + payload - Arguments for create a Dropbox link. 
     # + return - Success 
     remote isolated function createSharedLinkWithSettings(CreateSharedLinkWithSettingsArg payload, string? dropboxApiSelectAdmin = ()) returns SharedLinkMetadata|error {
-        string path = string `/sharing/create_shared_link_with_settings`;
+        string resourcePath = string `/sharing/create_shared_link_with_settings`;
         map<any> headerValues = {"Dropbox-API-Select-Admin": dropboxApiSelectAdmin};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SharedLinkMetadata response = check self.clientEp->post(path, request, headers = accHeaders, targetType = SharedLinkMetadata);
+        request.setPayload(jsonBody, "application/json");
+        SharedLinkMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get a temporary link to stream content of a file.
@@ -161,11 +162,11 @@ public isolated client class Client {
     # + payload - Arguments to get temporary link. 
     # + return - Success 
     remote isolated function getTemporaryLink(GetTemporaryLinkArg payload) returns GetTemporaryLinkResult|error {
-        string path = string `/files/get_temporary_link`;
+        string resourcePath = string `/files/get_temporary_link`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GetTemporaryLinkResult response = check self.clientEp->post(path, request, targetType = GetTemporaryLinkResult);
+        request.setPayload(jsonBody, "application/json");
+        GetTemporaryLinkResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Returns the metadata for a file or folder.
@@ -174,13 +175,13 @@ public isolated client class Client {
     # + payload - Arguments to get metadata. 
     # + return - Success 
     remote isolated function getFileOrFolderMetadata(GetMetadataArg payload, string? dropboxApiSelectUser = ()) returns FileMetadata|error {
-        string path = string `/files/get_metadata`;
+        string resourcePath = string `/files/get_metadata`;
         map<any> headerValues = {"Dropbox-API-Select-User": dropboxApiSelectUser};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileMetadata response = check self.clientEp->post(path, request, headers = accHeaders, targetType = FileMetadata);
+        request.setPayload(jsonBody, "application/json");
+        FileMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Returns revisions for files based on a file path or a file id.
@@ -189,13 +190,13 @@ public isolated client class Client {
     # + payload - Arguments to list revisions. 
     # + return - Success 
     remote isolated function listRevisions(ListRevisionsArg payload, string? dropboxApiSelectUser = ()) returns ListRevisionsResult|error {
-        string path = string `/files/list_revisions`;
+        string resourcePath = string `/files/list_revisions`;
         map<any> headerValues = {"Dropbox-API-Select-User": dropboxApiSelectUser};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ListRevisionsResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ListRevisionsResult);
+        request.setPayload(jsonBody, "application/json");
+        ListRevisionsResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Searches for files and folders.
@@ -203,11 +204,11 @@ public isolated client class Client {
     # + payload - Arguments to search. 
     # + return - Success 
     remote isolated function searchFiles(SearchArg payload) returns SearchResult|error {
-        string path = string `/files/search_v2`;
+        string resourcePath = string `/files/search_v2`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SearchResult response = check self.clientEp->post(path, request, targetType = SearchResult);
+        request.setPayload(jsonBody, "application/json");
+        SearchResult response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Download a file from a user's Dropbox.
@@ -215,13 +216,13 @@ public isolated client class Client {
     # + dropboxApiSelectUser - The specified `team_member_id`. 
     # + dropboxApiArg - Download arguments. 
     # + return - Success 
-    remote isolated function downloadFiles(DownloadArg dropboxApiArg, string? dropboxApiSelectUser = ()) returns FileMetadata|error {
-        string path = string `/files/download`;
-        map<any> headerValues = {"Dropbox-API-Select-User": dropboxApiSelectUser, "Dropbox-API-Arg": dropboxApiArg.toString()};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+    remote isolated function downloadFiles(record {} dropboxApiArg, string? dropboxApiSelectUser = ()) returns FileMetadata|error {
+        string resourcePath = string `/files/download`;
+        map<any> headerValues = {"Dropbox-API-Select-User": dropboxApiSelectUser, "Dropbox-API-Arg": dropboxApiArg};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        FileMetadata response = check self.clientEp->post(path, request, headers = accHeaders, targetType = FileMetadata);
+        FileMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

@@ -94,17 +94,17 @@ public type AnalyzeBatchInput record {
 
 public type HealthcareEntity record {
     # Entity text as appears in the request.
-    string text?;
+    string text;
     # Healthcare Entity Category.
-    string category?;
+    string category;
     # (Optional) Entity sub type.
     string subcategory?;
     # Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
-    int offset?;
+    int offset;
     # Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
-    int length?;
+    int length;
     # Confidence score between 0 and 1 of the extracted entity.
-    float confidenceScore?;
+    float confidenceScore;
     *HealthcareLinkingProperties;
 };
 
@@ -135,7 +135,6 @@ public type HealthcareJobState record {
     *Pagination;
 };
 
-# (Optional) describes the PII categories to return
 # (Optional) describes the PII categories to return
 public type PiiCategories string[];
 

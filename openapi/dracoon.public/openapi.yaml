@@ -5883,12 +5883,12 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ChangeGroupMembersRequest"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/ChangeGroupMembersRequest"
+      #   required: true
       responses:
         "200":
           content:
@@ -6572,12 +6572,12 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeleteNodesRequest"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/DeleteNodesRequest"
+      #   required: true
       responses:
         "204":
           description: No Content
@@ -7530,12 +7530,12 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeleteDeletedNodesRequest"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/DeleteDeletedNodesRequest"
+      #   required: true
       responses:
         "204":
           description: No Content
@@ -15949,12 +15949,12 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RoomGroupsDeleteBatchRequest"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/RoomGroupsDeleteBatchRequest"
+      #   required: true
       responses:
         "204":
           description: No Content
@@ -18308,12 +18308,12 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RoomUsersDeleteBatchRequest"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/RoomUsersDeleteBatchRequest"
+      #   required: true
       responses:
         "204":
           description: No Content
@@ -29858,13 +29858,13 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GroupIds"
-        description: Group IDs
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/GroupIds"
+      #   description: Group IDs
+      #   required: true
       responses:
         "200":
           content:
@@ -30516,13 +30516,13 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserIds"
-        description: User IDs
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/UserIds"
+      #   description: User IDs
+      #   required: true
       responses:
         "200":
           content:
@@ -34153,12 +34153,12 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeleteDownloadSharesRequest"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/DeleteDownloadSharesRequest"
+      #   required: true
       responses:
         "204":
           description: No Content
@@ -36338,12 +36338,12 @@ paths:
           name: X-Sds-Auth-Token
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeleteUploadSharesRequest"
-        required: true
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/DeleteUploadSharesRequest"
+      #   required: true
       responses:
         "204":
           description: No Content

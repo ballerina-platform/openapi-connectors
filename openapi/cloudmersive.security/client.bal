@@ -40,19 +40,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Automatically detect threats in an input string
     #
     # + payload - User-facing text input. 
     # + return - OK 
     remote isolated function contentThreatDetectionAutomaticThreatDetectionString(string payload) returns StringAutomaticThreatDetection|error {
-        string  path = string `/security/threat-detection/content/automatic/detect/string`;
+        string resourcePath = string `/security/threat-detection/content/automatic/detect/string`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StringAutomaticThreatDetection response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StringAutomaticThreatDetection);
+        request.setPayload(jsonBody, "application/json");
+        StringAutomaticThreatDetection response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Detect Insecure Deserialization JSON (JID) attacks in a string
@@ -60,13 +61,13 @@ public isolated client class Client {
     # + payload - User-facing text input. 
     # + return - OK 
     remote isolated function contentThreatDetectionDetectInsecureDeserializationJsonString(string payload) returns StringInsecureDeserializationJsonDetection|error {
-        string  path = string `/security/threat-detection/content/insecure-deserialization/json/detect/string`;
+        string resourcePath = string `/security/threat-detection/content/insecure-deserialization/json/detect/string`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StringInsecureDeserializationJsonDetection response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StringInsecureDeserializationJsonDetection);
+        request.setPayload(jsonBody, "application/json");
+        StringInsecureDeserializationJsonDetection response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Check text input for SQL Injection (SQLI) attacks
@@ -74,13 +75,13 @@ public isolated client class Client {
     # + payload - User-facing text input. 
     # + return - OK 
     remote isolated function contentThreatDetectionCheckSqlInjectionString(string payload) returns StringSqlInjectionDetectionResult|error {
-        string  path = string `/security/threat-detection/content/sql-injection/detect/string`;
+        string resourcePath = string `/security/threat-detection/content/sql-injection/detect/string`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StringSqlInjectionDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StringSqlInjectionDetectionResult);
+        request.setPayload(jsonBody, "application/json");
+        StringSqlInjectionDetectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Protect text input from Cross-Site-Scripting (XSS) attacks through normalization
@@ -88,13 +89,13 @@ public isolated client class Client {
     # + payload - User-facing text input. 
     # + return - OK 
     remote isolated function contentThreatDetectionProtectXss(string payload) returns StringXssProtectionResult|error {
-        string  path = string `/security/threat-detection/content/xss/detect/string`;
+        string resourcePath = string `/security/threat-detection/content/xss/detect/string`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StringXssProtectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StringXssProtectionResult);
+        request.setPayload(jsonBody, "application/json");
+        StringXssProtectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Protect text input from XML External Entity (XXE) attacks
@@ -102,13 +103,13 @@ public isolated client class Client {
     # + payload - User-facing text input. 
     # + return - OK 
     remote isolated function contentThreatDetectionCheckXxe(string payload) returns StringXxeDetectionResult|error {
-        string  path = string `/security/threat-detection/content/xxe/detect/xml/string`;
+        string resourcePath = string `/security/threat-detection/content/xxe/detect/xml/string`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StringXxeDetectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StringXxeDetectionResult);
+        request.setPayload(jsonBody, "application/json");
+        StringXxeDetectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Check a URL for Server-side Request Forgery (SSRF) threats
@@ -116,13 +117,13 @@ public isolated client class Client {
     # + payload - Input URL request 
     # + return - OK 
     remote isolated function networkThreatDetectionDetectSsrfUrl(UrlSsrfThreatDetectionRequestFull payload) returns UrlSsrfThreatDetectionResponseFull|error {
-        string  path = string `/security/threat-detection/network/url/ssrf/detect`;
+        string resourcePath = string `/security/threat-detection/network/url/ssrf/detect`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UrlSsrfThreatDetectionResponseFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UrlSsrfThreatDetectionResponseFull);
+        request.setPayload(jsonBody, "application/json");
+        UrlSsrfThreatDetectionResponseFull response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Check if IP address is a known threat
@@ -130,13 +131,13 @@ public isolated client class Client {
     # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes. 
     # + return - OK 
     remote isolated function networkThreatDetectionIsThreat(string payload) returns IPThreatDetectionResponse|error {
-        string  path = string `/security/threat-detection/network/ip/is-threat`;
+        string resourcePath = string `/security/threat-detection/network/ip/is-threat`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        IPThreatDetectionResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPThreatDetectionResponse);
+        request.setPayload(jsonBody, "application/json");
+        IPThreatDetectionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Check if IP address is a Bot client threat
@@ -144,13 +145,13 @@ public isolated client class Client {
     # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes. 
     # + return - OK 
     remote isolated function networkThreatDetectionIsBot(string payload) returns ThreatDetectionBotCheckResponse|error {
-        string  path = string `/security/threat-detection/network/ip/is-bot`;
+        string resourcePath = string `/security/threat-detection/network/ip/is-bot`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ThreatDetectionBotCheckResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ThreatDetectionBotCheckResponse);
+        request.setPayload(jsonBody, "application/json");
+        ThreatDetectionBotCheckResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Check if IP address is a Tor node server
@@ -158,13 +159,13 @@ public isolated client class Client {
     # + payload - IP address to check, e.g. "55.55.55.55".  The input is a string so be sure to enclose it in double-quotes. 
     # + return - OK 
     remote isolated function networkThreatDetectionIsTorNode(string payload) returns ThreatDetectionTorNodeResponse|error {
-        string  path = string `/security/threat-detection/network/ip/is-tor-node`;
+        string resourcePath = string `/security/threat-detection/network/ip/is-tor-node`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ThreatDetectionTorNodeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ThreatDetectionTorNodeResponse);
+        request.setPayload(jsonBody, "application/json");
+        ThreatDetectionTorNodeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

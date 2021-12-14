@@ -39,31 +39,32 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Login
     #
     # + return - Your tokens 
     remote isolated function login(LoginRequest payload) returns ApiCredentials|error {
-        string path = string `/v2/public/security/login`;
+        string resourcePath = string `/v2/public/security/login`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiCredentials response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ApiCredentials);
+        request.setPayload(jsonBody, "application/json");
+        ApiCredentials response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # User Registration
     #
     # + return - Customer registered 
     remote isolated function register(RegisterRequest payload) returns http:Response|error {
-        string path = string `/v2/public/security/register`;
+        string resourcePath = string `/v2/public/security/register`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Lost password
@@ -71,13 +72,13 @@ public isolated client class Client {
     # + payload - Your email 
     # + return - New password sent 
     remote isolated function lostPassword(BeezupCommonEmail payload) returns http:Response|error {
-        string path = string `/v2/public/security/lostpassword`;
+        string resourcePath = string `/v2/public/security/lostpassword`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get public channel index
@@ -85,10 +86,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Channel list regrouped by country and links to list of values 
     remote isolated function getChannelsIndex(string? ifNoneMatch = ()) returns PublicChannelIndex|error {
-        string path = string `/v2/public/channels/`;
+        string resourcePath = string `/v2/public/channels/`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicChannelIndex response = check self.clientEp->get(path, accHeaders, targetType = PublicChannelIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicChannelIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # The channel list for one country
@@ -98,10 +99,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - The channel list for one country 
     remote isolated function getChannels(string countryIsoCode, string[] acceptEncoding, string? ifNoneMatch = ()) returns PublicChannelInfoList|error {
-        string path = string `/v2/public/channels/${countryIsoCode}`;
+        string resourcePath = string `/v2/public/channels/${countryIsoCode}`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicChannelInfoList response = check self.clientEp->get(path, accHeaders, targetType = PublicChannelInfoList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicChannelInfoList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get all list names
@@ -109,20 +110,20 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Get the list names 
     remote isolated function getPublicLovIndex(string? ifNoneMatch = ()) returns PublicLovIndex|error {
-        string path = string `/v2/public/lov/`;
+        string resourcePath = string `/v2/public/lov/`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicLovIndex response = check self.clientEp->get(path, accHeaders, targetType = PublicLovIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicLovIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get all list names
     #
     # + return - Get the list names 
     remote isolated function getUserLovIndex() returns UserLovIndex|error {
-        string path = string `/v2/user/lov/`;
+        string resourcePath = string `/v2/user/lov/`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserLovIndex response = check self.clientEp->get(path, accHeaders, targetType = UserLovIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserLovIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # The index of all operations and LOV
@@ -130,10 +131,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - OK 
     remote isolated function getCustomerIndex(string? ifNoneMatch = ()) returns CustomerIndex|error {
-        string path = string `/v2/user/customer/`;
+        string resourcePath = string `/v2/user/customer/`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomerIndex response = check self.clientEp->get(path, accHeaders, targetType = CustomerIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get user account information
@@ -141,22 +142,22 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - User account information 
     remote isolated function getUserAccountInfo(string? ifNoneMatch = ()) returns AccountInfo|error {
-        string path = string `/v2/user/customer/account`;
+        string resourcePath = string `/v2/user/customer/account`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountInfo response = check self.clientEp->get(path, accHeaders, targetType = AccountInfo);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountInfo response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Resend email activation
     #
     # + return - Email activation resent 
     remote isolated function resendEmailActivation() returns http:Response|error {
-        string path = string `/v2/user/customer/account/resendEmailActivation`;
+        string resourcePath = string `/v2/user/customer/account/resendEmailActivation`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Activate the user account
@@ -164,39 +165,39 @@ public isolated client class Client {
     # + payload - The email activation id received by email. 
     # + return - User account activated. 
     remote isolated function activateUserAccount(string payload) returns http:Response|error {
-        string path = string `/v2/user/customer/account/activate`;
+        string resourcePath = string `/v2/user/customer/account/activate`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Save user personal information
     #
     # + return - User account information updated 
     remote isolated function savePersonalInfo(PersonalInfo payload) returns http:Response|error {
-        string path = string `/v2/user/customer/account/personalInfo`;
+        string resourcePath = string `/v2/user/customer/account/personalInfo`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Change company information
     #
     # + return - Company information saved 
     remote isolated function saveCompanyInfo(CompanyInfo payload) returns http:Response|error {
-        string path = string `/v2/user/customer/account/companyInfo`;
+        string resourcePath = string `/v2/user/customer/account/companyInfo`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get profile picture information
@@ -204,23 +205,23 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Profile picture information 
     remote isolated function getProfilePictureInfo(string? ifNoneMatch = ()) returns ProfilePictureInfoResponse|error {
-        string path = string `/v2/user/customer/account/profilePictureInfo`;
+        string resourcePath = string `/v2/user/customer/account/profilePictureInfo`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProfilePictureInfoResponse response = check self.clientEp->get(path, accHeaders, targetType = ProfilePictureInfoResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProfilePictureInfoResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Change user picture information
     #
     # + return - User profile picture information saved. 
     remote isolated function saveProfilePictureInfo(ProfilePictureInfo payload) returns http:Response|error {
-        string path = string `/v2/user/customer/account/profilePictureInfo`;
+        string resourcePath = string `/v2/user/customer/account/profilePictureInfo`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get credit card information
@@ -228,10 +229,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - User credit card information 
     remote isolated function getCreditCardInfo(string? ifNoneMatch = ()) returns CreditCardInfoResponse|error {
-        string path = string `/v2/user/customer/account/creditCardInfo`;
+        string resourcePath = string `/v2/user/customer/account/creditCardInfo`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CreditCardInfoResponse response = check self.clientEp->get(path, accHeaders, targetType = CreditCardInfoResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CreditCardInfoResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Save user credit card info
@@ -239,61 +240,61 @@ public isolated client class Client {
     # + payload - Credit card info 
     # + return - The credit card information has been accepted for processing, the authorization will be processed shortly. 
     remote isolated function saveCreditCardInfo(CreditCardInfo payload) returns http:Response|error {
-        string path = string `/v2/user/customer/account/creditCardInfo`;
+        string resourcePath = string `/v2/user/customer/account/creditCardInfo`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Change user email
     #
     # + return - Email updated 
     remote isolated function changeEmail(ChangeEmailRequest payload) returns http:Response|error {
-        string path = string `/v2/user/customer/account/changeEmail`;
+        string resourcePath = string `/v2/user/customer/account/changeEmail`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Change user password
     #
     # + return - Password updated 
     remote isolated function changePassword(ChangePasswordRequest payload) returns http:Response|error {
-        string path = string `/v2/user/customer/account/changePassword`;
+        string resourcePath = string `/v2/user/customer/account/changePassword`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Log out the current user from go2
     #
     # + return - User logout 
     remote isolated function logout() returns http:Response|error {
-        string path = string `/v2/user/customer/security/logout`;
+        string resourcePath = string `/v2/user/customer/security/logout`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Zendesk token
     #
     # + return - A JWT token to connect the Zendesk Web Widget 
     remote isolated function zendeskToken() returns ZendeskToken|error {
-        string path = string `/v2/user/customer/zendeskToken`;
+        string resourcePath = string `/v2/user/customer/zendeskToken`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ZendeskToken response = check self.clientEp->get(path, accHeaders, targetType = ZendeskToken);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ZendeskToken response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get store list
@@ -301,23 +302,23 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Store list 
     remote isolated function getStores(string? ifNoneMatch = ()) returns StoreList|error {
-        string path = string `/v2/user/customer/stores`;
+        string resourcePath = string `/v2/user/customer/stores`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StoreList response = check self.clientEp->get(path, accHeaders, targetType = StoreList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StoreList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new store
     #
     # + return - The store has been created successfully. The http header Location contains the new resource url. The body contains the link to the new resource. 
     remote isolated function createStore(CreateStoreRequest payload) returns LinksGetstorelink|error {
-        string path = string `/v2/user/customer/stores`;
+        string resourcePath = string `/v2/user/customer/stores`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LinksGetstorelink response = check self.clientEp->post(path, request, headers = accHeaders, targetType = LinksGetstorelink);
+        request.setPayload(jsonBody, "application/json");
+        LinksGetstorelink response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get store's information
@@ -326,10 +327,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - The store information 
     remote isolated function getStore(string storeId, string? ifNoneMatch = ()) returns Store|error {
-        string path = string `/v2/user/customer/stores/${storeId}`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Store response = check self.clientEp->get(path, accHeaders, targetType = Store);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Store response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete a store
@@ -337,10 +338,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Store deleted 
     remote isolated function deleteStore(string storeId) returns http:Response|error {
-        string path = string `/v2/user/customer/stores/${storeId}`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update some store's information.
@@ -348,13 +349,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Store updated 
     remote isolated function updateStore(string storeId, UpdateStoreRequest payload) returns http:Response|error {
-        string path = string `/v2/user/customer/stores/${storeId}`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get store's rights
@@ -362,10 +363,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - The store's rights 
     remote isolated function getRights(string storeId) returns FunctionalityRightInfo[]|error {
-        string path = string `/v2/user/customer/stores/${storeId}/rights`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}/rights`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FunctionalityRightInfo[] response = check self.clientEp->get(path, accHeaders, targetType = FunctionalityRightInfoArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FunctionalityRightInfo[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get store's alerts
@@ -374,10 +375,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - User account alerts information 
     remote isolated function getStoreAlerts(string storeId, string? ifNoneMatch = ()) returns StoreAlerts|error {
-        string path = string `/v2/user/customer/stores/${storeId}/alerts`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}/alerts`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StoreAlerts response = check self.clientEp->get(path, accHeaders, targetType = StoreAlerts);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StoreAlerts response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Save store alerts
@@ -385,13 +386,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Store alerts saved 
     remote isolated function saveStoreAlerts(string storeId, SaveStoreAlertsRequest payload) returns http:Response|error {
-        string path = string `/v2/user/customer/stores/${storeId}/alerts`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}/alerts`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get shares related to this store
@@ -400,10 +401,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - The sharing list of the store 
     remote isolated function getStoreShares(string storeId, string? ifNoneMatch = ()) returns StoreShares|error {
-        string path = string `/v2/user/customer/stores/${storeId}/shares`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}/shares`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StoreShares response = check self.clientEp->get(path, accHeaders, targetType = StoreShares);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StoreShares response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Share a store to another user
@@ -412,13 +413,13 @@ public isolated client class Client {
     # + payload - Your friend's email 
     # + return - Store shared 
     remote isolated function shareStore(string storeId, FriendEmail payload) returns http:Response|error {
-        string path = string `/v2/user/customer/stores/${storeId}/shares`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}/shares`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete a share of a store to another user
@@ -427,10 +428,10 @@ public isolated client class Client {
     # + userId - The friend user id 
     # + return - Share deleted 
     remote isolated function deleteStoreShare(string storeId, string userId) returns http:Response|error {
-        string path = string `/v2/user/customer/stores/${storeId}/shares/${userId}`;
+        string resourcePath = string `/v2/user/customer/stores/${storeId}/shares/${userId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get friend information
@@ -439,10 +440,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Get friend info 
     remote isolated function getFriendInfo(string userId, string? ifNoneMatch = ()) returns UserFriendInfo|error {
-        string path = string `/v2/user/customer/friends/${userId}`;
+        string resourcePath = string `/v2/user/customer/friends/${userId}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserFriendInfo response = check self.clientEp->get(path, accHeaders, targetType = UserFriendInfo);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserFriendInfo response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get billing periods conditions
@@ -450,10 +451,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Get the billing periods conditions 
     remote isolated function getBillingPeriods(string? ifNoneMatch = ()) returns BillingPeriodList|error {
-        string path = string `/v2/user/customer/billingPeriods`;
+        string resourcePath = string `/v2/user/customer/billingPeriods`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BillingPeriodList response = check self.clientEp->get(path, accHeaders, targetType = BillingPeriodList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BillingPeriodList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get all standard offers
@@ -461,23 +462,23 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Get all standard offers 
     remote isolated function getStandardOffers(string? ifNoneMatch = ()) returns StandardOffers|error {
-        string path = string `/v2/user/customer/offers`;
+        string resourcePath = string `/v2/user/customer/offers`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StandardOffers response = check self.clientEp->get(path, accHeaders, targetType = StandardOffers);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StandardOffers response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get offer pricing
     #
     # + return - Get the offer proposal considering your current contract 
     remote isolated function getOffer(OfferRequest payload) returns Offer|error {
-        string path = string `/v2/user/customer/offers`;
+        string resourcePath = string `/v2/user/customer/offers`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Offer response = check self.clientEp->post(path, request, headers = accHeaders, targetType = Offer);
+        request.setPayload(jsonBody, "application/json");
+        Offer response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get contract list
@@ -485,23 +486,23 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Contract list 
     remote isolated function getContracts(string? ifNoneMatch = ()) returns Contracts|error {
-        string path = string `/v2/user/customer/contracts`;
+        string resourcePath = string `/v2/user/customer/contracts`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Contracts response = check self.clientEp->get(path, accHeaders, targetType = Contracts);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Contracts response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new contract
     #
     # + return - New contract has been created. Some warnings can be present in response. 
     remote isolated function createContract(CreateContract payload) returns CreateContractResponse|error {
-        string path = string `/v2/user/customer/contracts`;
+        string resourcePath = string `/v2/user/customer/contracts`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateContractResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CreateContractResponse);
+        request.setPayload(jsonBody, "application/json");
+        CreateContractResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Schedule termination of your current contract at the end of the commitment.
@@ -509,35 +510,35 @@ public isolated client class Client {
     # + payload - Indicate the termination reason 
     # + return - Your current contract termination has been scheduled 
     remote isolated function terminateCurrentContract(TerminateContract payload) returns http:Response|error {
-        string path = string `/v2/user/customer/contracts/current/disableAutoRenewal`;
+        string resourcePath = string `/v2/user/customer/contracts/current/disableAutoRenewal`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Reactivate your terminated contract.
     #
     # + return - Your current contract has been resumed 
     remote isolated function reactivateCurrentContract() returns http:Response|error {
-        string path = string `/v2/user/customer/contracts/current/reenableAutoRenewal`;
+        string resourcePath = string `/v2/user/customer/contracts/current/reenableAutoRenewal`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete your next contract
     #
     # + return - Next contract has been deleted 
     remote isolated function deleteNextContract() returns http:Response|error {
-        string path = string `/v2/user/customer/contracts/next`;
+        string resourcePath = string `/v2/user/customer/contracts/next`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get all your invoices
@@ -545,30 +546,30 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Get all invoices of a customer 
     remote isolated function getInvoices(string? ifNoneMatch = ()) returns InvoiceList|error {
-        string path = string `/v2/user/customer/invoices`;
+        string resourcePath = string `/v2/user/customer/invoices`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InvoiceList response = check self.clientEp->get(path, accHeaders, targetType = InvoiceList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InvoiceList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the index of the catalog API
     #
     # + return - OK 
     remote isolated function catalogIndex() returns CatalogIndex|error {
-        string path = string `/v2/user/catalogs/`;
+        string resourcePath = string `/v2/user/catalogs/`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CatalogIndex response = check self.clientEp->get(path, accHeaders, targetType = CatalogIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CatalogIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the BeezUP columns
     #
     # + return - The catalog API index 
     remote isolated function catalogGetbeezupcolumns() returns BeezUPColumnConfiguration[]|error {
-        string path = string `/v2/user/catalogs/beezupColumns`;
+        string resourcePath = string `/v2/user/catalogs/beezupColumns`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BeezUPColumnConfiguration[] response = check self.clientEp->get(path, accHeaders, targetType = BeezUPColumnConfigurationArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BeezUPColumnConfiguration[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the index of the catalog API for this store
@@ -576,10 +577,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - The catalog index 
     remote isolated function catalogStoreIndex(string storeId) returns CatalogStoreIndex|error {
-        string path = string `/v2/user/catalogs/${storeId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CatalogStoreIndex response = check self.clientEp->get(path, accHeaders, targetType = CatalogStoreIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CatalogStoreIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the last input configuration
@@ -587,10 +588,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - OK 
     remote isolated function importationGetmanualupdatelastinputconfig(string storeId) returns LastManualImportInputConfiguration|error {
-        string path = string `/v2/user/catalogs/${storeId}/inputConfiguration`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/inputConfiguration`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LastManualImportInputConfiguration response = check self.clientEp->get(path, accHeaders, targetType = LastManualImportInputConfiguration);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LastManualImportInputConfiguration response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get catalog column list
@@ -598,10 +599,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Catalog column list 
     remote isolated function catalogGetcatalogcolumns(string storeId) returns CatalogColumnList|error {
-        string path = string `/v2/user/catalogs/${storeId}/catalogColumns`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/catalogColumns`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CatalogColumnList response = check self.clientEp->get(path, accHeaders, targetType = CatalogColumnList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CatalogColumnList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Change Catalog Column User Name
@@ -610,13 +611,13 @@ public isolated client class Client {
     # + columnId - The catalog column identifier 
     # + return - Catalog column user name changed 
     remote isolated function catalogChangecatalogcolumnusername(string storeId, string columnId, ChangeUserColumnNameRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/catalogColumns/${columnId}/rename`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/catalogColumns/${columnId}/rename`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get custom column list
@@ -624,10 +625,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Custom column list 
     remote isolated function catalogGetcustomcolumns(string storeId) returns CustomColumnList|error {
-        string path = string `/v2/user/catalogs/${storeId}/customColumns`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/customColumns`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CustomColumnList response = check self.clientEp->get(path, accHeaders, targetType = CustomColumnList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomColumnList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or replace a custom column
@@ -636,13 +637,13 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Custom column saved 
     remote isolated function catalogSavecustomcolumn(string storeId, string columnId, CreateCustomColumnRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete custom column
@@ -651,10 +652,10 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Custom column deleted 
     remote isolated function catalogDeletecustomcolumn(string storeId, string columnId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Change Custom Column User Name
@@ -663,13 +664,13 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Custom column renamed 
     remote isolated function catalogChangecustomcolumnusername(string storeId, string columnId, ChangeUserColumnNameRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}/rename`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}/rename`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the encrypted custom column expression
@@ -678,10 +679,10 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Encrypted expression 
     remote isolated function catalogGetcustomcolumnexpression(string storeId, string columnId) returns string|error {
-        string path = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}/expression`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}/expression`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        string response = check self.clientEp->get(path, accHeaders, targetType = string);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        string response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Change custom column expression
@@ -690,13 +691,13 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Custom column expression saved 
     remote isolated function catalogChangecustomcolumnexpression(string storeId, string columnId, ChangeCustomColumnExpressionRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}/expression`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/customColumns/${columnId}/expression`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Compute the expression for this catalog.
@@ -704,13 +705,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Compute an expression 
     remote isolated function catalogComputeexpression(string storeId, ComputeExpressionRequest payload) returns string|error {
-        string path = string `/v2/user/catalogs/${storeId}/customColumns/computeExpression`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/customColumns/computeExpression`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType = string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get category list
@@ -719,10 +720,10 @@ public isolated client class Client {
     # + acceptEncoding - Indicates that the client accepts that the response will be compressed to reduce traffic size. 
     # + return - Categories 
     remote isolated function catalogGetcategories(string storeId, string[] acceptEncoding) returns CategoryList|error {
-        string path = string `/v2/user/catalogs/${storeId}/categories`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/categories`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CategoryList response = check self.clientEp->get(path, accHeaders, targetType = CategoryList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CategoryList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get product list
@@ -730,13 +731,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Product list 
     remote isolated function catalogGetproducts(string storeId, GetProductsRequest payload) returns ProductList|error {
-        string path = string `/v2/user/catalogs/${storeId}/products/list`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/products/list`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProductList response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ProductList);
+        request.setPayload(jsonBody, "application/json");
+        ProductList response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get random product list
@@ -744,10 +745,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Random product list 
     remote isolated function catalogGetrandomproducts(string storeId) returns RandomProductList|error {
-        string path = string `/v2/user/catalogs/${storeId}/products/random`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/products/random`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RandomProductList response = check self.clientEp->get(path, accHeaders, targetType = RandomProductList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RandomProductList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get product by ProductId
@@ -756,10 +757,10 @@ public isolated client class Client {
     # + productId - The product identifier you want to get 
     # + return - Product 
     remote isolated function catalogGetproductbyproductid(string storeId, string productId) returns Product|error {
-        string path = string `/v2/user/catalogs/${storeId}/products/${productId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/products/${productId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Product response = check self.clientEp->get(path, accHeaders, targetType = Product);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Product response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get product by Sku
@@ -768,22 +769,22 @@ public isolated client class Client {
     # + sku - The product sku you want to get 
     # + return - Product 
     remote isolated function catalogGetproductbysku(string storeId, string sku) returns Product|error {
-        string path = string `/v2/user/catalogs/${storeId}/products`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/products`;
         map<anydata> queryParam = {"sku": sku};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Product response = check self.clientEp->get(path, accHeaders, targetType = Product);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Product response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the latest catalog importation reporting for all your stores
     #
     # + return - The last importation reportings 
     remote isolated function importationGetreportingsallstores() returns ImportationsPerStoreResponse|error {
-        string path = string `/v2/user/catalogs/importations`;
+        string resourcePath = string `/v2/user/catalogs/importations`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ImportationsPerStoreResponse response = check self.clientEp->get(path, accHeaders, targetType = ImportationsPerStoreResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ImportationsPerStoreResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the latest catalog importation reporting
@@ -791,10 +792,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - The last importation reportings 
     remote isolated function importationGetreportings(string storeId) returns ImportationsResponse|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ImportationsResponse response = check self.clientEp->get(path, accHeaders, targetType = ImportationsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ImportationsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Start Manual Import
@@ -802,13 +803,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Catalog importation started 
     remote isolated function importationStartmanualupdate(string storeId, StartManualImportRequest payload) returns LinksImportationGetimportationmonitoringlink|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/start`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/start`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LinksImportationGetimportationmonitoringlink response = check self.clientEp->post(path, request, headers = accHeaders, targetType = LinksImportationGetimportationmonitoringlink);
+        request.setPayload(jsonBody, "application/json");
+        LinksImportationGetimportationmonitoringlink response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the importation status
@@ -817,10 +818,10 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - OK 
     remote isolated function importationGetimportationmonitoring(string storeId, string executionId) returns ImportationMonitoring|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ImportationMonitoring response = check self.clientEp->get(path, accHeaders, targetType = ImportationMonitoring);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ImportationMonitoring response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Cancel importation
@@ -829,12 +830,12 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - Catalog importation canceled 
     remote isolated function importationCancel(string storeId, string executionId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/cancel`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/cancel`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get technical progression
@@ -843,10 +844,10 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - When the technical progression is correctly retrived 
     remote isolated function importationTechnicalprogression(string storeId, string executionId) returns ImportationTechnicalProgression|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/technicalProgression`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/technicalProgression`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ImportationTechnicalProgression response = check self.clientEp->get(path, accHeaders, targetType = ImportationTechnicalProgression);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ImportationTechnicalProgression response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Configure remaining catalog columns
@@ -855,12 +856,12 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - Remaining catalog columns have been configured. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationConfigureremainingcatalogcolumns(string storeId, string executionId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/configureRemainingCatalogColumns`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/configureRemainingCatalogColumns`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Commit columns
@@ -869,12 +870,12 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - Columns configuration have been committed. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationCommitcolumns(string storeId, string executionId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/commitColumns`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/commitColumns`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Commit Importation
@@ -883,12 +884,12 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - Catalog importation committed 
     remote isolated function importationCommit(string storeId, string executionId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/commit`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/commit`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the product sample related to this importation with all columns (catalog and custom)
@@ -898,10 +899,10 @@ public isolated client class Client {
     # + productSampleIndex - Index of the product sample. Starting from 0 to 99. 
     # + return - OK 
     remote isolated function importationGetproductsample(string storeId, string executionId, int productSampleIndex) returns ProductSample|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/productSamples/${productSampleIndex}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/productSamples/${productSampleIndex}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProductSample response = check self.clientEp->get(path, accHeaders, targetType = ProductSample);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProductSample response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get product sample custom column value related to this importation.
@@ -912,10 +913,10 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Product sample custom column value 
     remote isolated function importationGetproductsamplecustomcolumnvalue(string storeId, string executionId, int productSampleIndex, string columnId) returns string|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/productSamples/${productSampleIndex}/customColumns/${columnId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/productSamples/${productSampleIndex}/customColumns/${columnId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        string response = check self.clientEp->get(path, accHeaders, targetType = string);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        string response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get detected catalog columns during this importation.
@@ -924,10 +925,10 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - OK 
     remote isolated function importationGetdetectedcatalogcolumns(string storeId, string executionId) returns DetectedCatalogColumnList|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DetectedCatalogColumnList response = check self.clientEp->get(path, accHeaders, targetType = DetectedCatalogColumnList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DetectedCatalogColumnList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Configure catalog column
@@ -937,13 +938,13 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Catalog column configured. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationConfigurecatalogcolumn(string storeId, string executionId, string columnId, ConfigureCatalogColumnCatalogRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Ignore Column
@@ -953,12 +954,12 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Catalog column ignored. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationIgnorecolumn(string storeId, string executionId, string columnId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/ignore`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/ignore`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Reattend Column
@@ -968,12 +969,12 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Catalog column reattended. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationReattendcolumn(string storeId, string executionId, string columnId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/reattend`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/reattend`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Map catalog column to a BeezUP column
@@ -983,13 +984,13 @@ public isolated client class Client {
     # + columnId - The catalog column identifier 
     # + return - Catalog column mapped. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationMapcatalogcolumn(string storeId, string executionId, string columnId, MapBeezUPColumnRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/map`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/map`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Unmap catalog column
@@ -999,12 +1000,12 @@ public isolated client class Client {
     # + columnId - The catalog column identifier 
     # + return - Catalog Column unmapped. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationUnmapcatalogcolumn(string storeId, string executionId, string columnId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/unmap`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/catalogColumns/${columnId}/unmap`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get custom columns currently place in this importation
@@ -1013,10 +1014,10 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - Custom columns of current Importation successfully retrieved 
     remote isolated function importationGetcustomcolumns(string storeId, string executionId) returns ImportationCustomColumnList|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ImportationCustomColumnList response = check self.clientEp->get(path, accHeaders, targetType = ImportationCustomColumnList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ImportationCustomColumnList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the encrypted custom column expression in this importation
@@ -1026,10 +1027,10 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Encrypted expression 
     remote isolated function importationGetcustomcolumnexpression(string storeId, string executionId, string columnId) returns string|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}/expression`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}/expression`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        string response = check self.clientEp->get(path, accHeaders, targetType = string);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        string response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or replace a custom column
@@ -1039,13 +1040,13 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Custom column configured. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationSavecustomcolumn(string storeId, string executionId, string columnId, ChangeCustomColumnRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Custom Column
@@ -1055,10 +1056,10 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - When the custom column for this importation is correctly deleted 
     remote isolated function importationDeletecustomcolumn(string storeId, string executionId, string columnId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Map custom column to a BeezUP column
@@ -1068,13 +1069,13 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Custom column mapped. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationMapcustomcolumn(string storeId, string executionId, string columnId, MapBeezUPColumnRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}/map`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}/map`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Unmap custom column
@@ -1084,12 +1085,12 @@ public isolated client class Client {
     # + columnId - The custom column identifier 
     # + return - Custom column unmapped. This operation has no impact on the current catalog until you commit the catalog importation. 
     remote isolated function importationUnmapcustomcolumn(string storeId, string executionId, string columnId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}/unmap`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/customColumns/${columnId}/unmap`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Importation Get Products Report
@@ -1098,13 +1099,13 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - Get Products Report Response 
     remote isolated function importationGetproductsreport(string storeId, string executionId, GetImportationProductsReportRequest payload) returns GetImportationProductsReportResponse|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/products/list`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/products/list`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GetImportationProductsReportResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = GetImportationProductsReportResponse);
+        request.setPayload(jsonBody, "application/json");
+        GetImportationProductsReportResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Importation Get Report
@@ -1113,10 +1114,10 @@ public isolated client class Client {
     # + executionId - The execution identifier of you catalog importation 
     # + return - Get Report Response 
     remote isolated function importationGetreport(string storeId, string executionId) returns GetImportationReportResponse|error {
-        string path = string `/v2/user/catalogs/${storeId}/importations/${executionId}/report`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/importations/${executionId}/report`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetImportationReportResponse response = check self.clientEp->get(path, accHeaders, targetType = GetImportationReportResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetImportationReportResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Activate the auto importation of the last successful manual catalog importation.
@@ -1124,12 +1125,12 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Auto import activated 
     remote isolated function importationActivateautoimport(string storeId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport/activate`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport/activate`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the auto import configuration
@@ -1137,10 +1138,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Auto import configuration 
     remote isolated function autoGetautoimportconfiguration(string storeId) returns AutoImportConfiguration|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AutoImportConfiguration response = check self.clientEp->get(path, accHeaders, targetType = AutoImportConfiguration);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AutoImportConfiguration response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Auto Import
@@ -1148,10 +1149,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Auto import deleted 
     remote isolated function autoDeleteautoimport(string storeId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Start Auto Import Manually
@@ -1159,12 +1160,12 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Catalog importation started 
     remote isolated function autoStartautoimport(string storeId) returns LinksImportationGetimportationmonitoringlink|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport/start`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport/start`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        LinksImportationGetimportationmonitoringlink response = check self.clientEp->post(path, request, headers = accHeaders, targetType = LinksImportationGetimportationmonitoringlink);
+        LinksImportationGetimportationmonitoringlink response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Pause Auto Import
@@ -1172,12 +1173,12 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Auto import paused 
     remote isolated function autoPauseautoimport(string storeId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport/pause`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport/pause`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Resume Auto Import
@@ -1185,12 +1186,12 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Auto import resumed 
     remote isolated function autoResumeautoimport(string storeId) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport/resume`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport/resume`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Configure Auto Import Interval
@@ -1198,13 +1199,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Auto import scheduling interval saved 
     remote isolated function autoConfigureautoimportinterval(string storeId, ConfigureAutoImportIntervalRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport/scheduling/interval`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport/scheduling/interval`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Configure Auto Import Schedules
@@ -1212,13 +1213,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Auto import scheduling saved 
     remote isolated function autoScheduleautoimport(string storeId, ScheduleAutoImportRequest payload) returns http:Response|error {
-        string path = string `/v2/user/catalogs/${storeId}/autoImport/scheduling/schedules`;
+        string resourcePath = string `/v2/user/catalogs/${storeId}/autoImport/scheduling/schedules`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List all available channel for this store
@@ -1226,12 +1227,12 @@ public isolated client class Client {
     # + storeId - The store identifier 
     # + return - Available channel list for this store 
     remote isolated function getAvailableChannels(string storeId) returns ChannelHeader[]|error {
-        string path = string `/v2/user/channels/`;
+        string resourcePath = string `/v2/user/channels/`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelHeader[] response = check self.clientEp->get(path, accHeaders, targetType = ChannelHeaderArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelHeader[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get channel information
@@ -1239,10 +1240,10 @@ public isolated client class Client {
     # + channelId - The channel identifier 
     # + return - Channel information 
     remote isolated function getChannelInfo(string channelId) returns ChannelInfo|error {
-        string path = string `/v2/user/channels/${channelId}`;
+        string resourcePath = string `/v2/user/channels/${channelId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelInfo response = check self.clientEp->get(path, accHeaders, targetType = ChannelInfo);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelInfo response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get channel categories
@@ -1251,10 +1252,10 @@ public isolated client class Client {
     # + acceptEncoding - Indicates that the client accepts that the response will be compressed to reduce traffic size. 
     # + return - Channel categories 
     remote isolated function getChannelCategories(string channelId, string[] acceptEncoding) returns ChannelRootCategory|error {
-        string path = string `/v2/user/channels/${channelId}/categories`;
+        string resourcePath = string `/v2/user/channels/${channelId}/categories`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelRootCategory response = check self.clientEp->get(path, accHeaders, targetType = ChannelRootCategory);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelRootCategory response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get channel columns
@@ -1264,13 +1265,13 @@ public isolated client class Client {
     # + payload - Allow you to filter the channel column identifier list your want to get 
     # + return - Channel columns 
     remote isolated function getChannelColumns(string channelId, string[] acceptEncoding, BeezupCommonChannelcolumnid[] payload) returns ChannelColumn[]|error {
-        string path = string `/v2/user/channels/${channelId}/columns`;
+        string resourcePath = string `/v2/user/channels/${channelId}/columns`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ChannelColumn[] response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ChannelColumnArr);
+        request.setPayload(jsonBody, "application/json");
+        ChannelColumn[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List all your current channel catalogs
@@ -1278,25 +1279,25 @@ public isolated client class Client {
     # + storeId - The store identifier 
     # + return - OK 
     remote isolated function getChannelCatalogs(string? storeId = ()) returns ChannelCatalogList|error {
-        string path = string `/v2/user/channelCatalogs/`;
+        string resourcePath = string `/v2/user/channelCatalogs/`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalogList response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalogList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalogList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Add a new channel catalog
     #
     # + return - When the channel has been successfully added for this store 
     remote isolated function addChannelCatalog(AddChannelCatalogRequest payload) returns LinksGetchannelcataloglink|error {
-        string path = string `/v2/user/channelCatalogs/`;
+        string resourcePath = string `/v2/user/channelCatalogs/`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LinksGetchannelcataloglink response = check self.clientEp->post(path, request, headers = accHeaders, targetType = LinksGetchannelcataloglink);
+        request.setPayload(jsonBody, "application/json");
+        LinksGetchannelcataloglink response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the channel catalog information
@@ -1304,10 +1305,10 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog 
     remote isolated function getChannelCatalog(string channelCatalogId) returns ChannelCatalog|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalog response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalog);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalog response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete the channel catalog
@@ -1315,20 +1316,20 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog deleted 
     remote isolated function deleteChannelCatalog(string channelCatalogId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get channel catalog filter operators
     #
     # + return - Channel catalog  filter operator list 
     remote isolated function getChannelCatalogFilterOperators() returns FilterOperator[]|error {
-        string path = string `/v2/user/channelCatalogs/filterOperators`;
+        string resourcePath = string `/v2/user/channelCatalogs/filterOperators`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FilterOperator[] response = check self.clientEp->get(path, accHeaders, targetType = FilterOperatorArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FilterOperator[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Enable a channel catalog
@@ -1336,12 +1337,12 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog enabled 
     remote isolated function enableChannelCatalog(string channelCatalogId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/enable`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/enable`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Disable a channel catalog
@@ -1349,12 +1350,12 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog disabled 
     remote isolated function disableChannelCatalog(string channelCatalogId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/disable`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/disable`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Configure channel catalog general settings
@@ -1362,13 +1363,13 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog general settings configured 
     remote isolated function configureChannelCatalogGeneralSettings(string channelCatalogId, GeneralSettings payload) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/settings/general`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/settings/general`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Configure channel catalog cost settings
@@ -1376,13 +1377,13 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog cost settings configured 
     remote isolated function configureChannelCatalogCostSettings(string channelCatalogId, CostSettings payload) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/settings/cost`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/settings/cost`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Configure channel catalog column mappings
@@ -1390,13 +1391,13 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog column mappings configured 
     remote isolated function configureChannelCatalogColumnMappings(string channelCatalogId, ChannelCatalogColumnMappingList payload) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/columnMappings`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/columnMappings`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get channel catalog categories
@@ -1404,10 +1405,10 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog category mappings 
     remote isolated function getChannelCatalogCategories(string channelCatalogId) returns ChannelCatalogCategoryConfigurationList|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/categories`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/categories`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalogCategoryConfigurationList response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalogCategoryConfigurationList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalogCategoryConfigurationList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Disable a channel catalog category mapping
@@ -1415,12 +1416,12 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog category mapping disabled 
     remote isolated function disableChannelCatalogCategoryMapping(string channelCatalogId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/categories/disableMapping`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/categories/disableMapping`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Reenable a channel catalog category mapping
@@ -1428,12 +1429,12 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog category mapping reenabled 
     remote isolated function reenableChannelCatalogCategoryMapping(string channelCatalogId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/categories/reenableMapping`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/categories/reenableMapping`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Configure channel catalog category
@@ -1441,13 +1442,13 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog category configured 
     remote isolated function configureChannelCatalogCategory(string channelCatalogId, ConfigureCategoryRequest payload) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/categories/configure`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/categories/configure`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get channel catalog exclusion filters
@@ -1455,10 +1456,10 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog exclusion filter list 
     remote isolated function getChannelCatalogExclusionFilters(string channelCatalogId) returns ExclusionFiltersResponse|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/exclusionFilters`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/exclusionFilters`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ExclusionFiltersResponse response = check self.clientEp->get(path, accHeaders, targetType = ExclusionFiltersResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ExclusionFiltersResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Configure channel catalog exclusion filters
@@ -1466,13 +1467,13 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog exclusion filter list configured 
     remote isolated function configureChannelCatalogExclusionFilters(string channelCatalogId, ExclusionFilters payload) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/exclusionFilters`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/exclusionFilters`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get channel catalog product information list
@@ -1481,13 +1482,13 @@ public isolated client class Client {
     # + payload - The channel catalog product list filter 
     # + return - Channel catalog product information 
     remote isolated function getChannelCatalogProductInfoList(string channelCatalogId, GetChannelCatalogProductInfoListRequest payload) returns ChannelCatalogProductInfoList|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ChannelCatalogProductInfoList response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ChannelCatalogProductInfoList);
+        request.setPayload(jsonBody, "application/json");
+        ChannelCatalogProductInfoList response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Export channel catalog product information list
@@ -1497,15 +1498,15 @@ public isolated client class Client {
     # + payload - The channel catalog product list filter 
     # + return - Channel catalog product information list exported 
     remote isolated function exportChannelCatalogProductInfoList(string channelCatalogId, string format, GetChannelCatalogProductInfoListRequest payload) returns BeezupCommonLink3|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/export`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/export`;
         map<anydata> queryParam = {"format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BeezupCommonLink3 response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BeezupCommonLink3);
+        request.setPayload(jsonBody, "application/json");
+        BeezupCommonLink3 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get channel catalog products' counters
@@ -1513,23 +1514,23 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog products' counters 
     remote isolated function getChannelCatalogProductsCounters(string channelCatalogId) returns ChannelCatalogProductsCounters|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/counters`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/counters`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalogProductsCounters response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalogProductsCounters);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalogProductsCounters response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get channel catalog products related to these channel catalogs
     #
     # + return - The channel catalog product by channel catalog 
     remote isolated function getChannelCatalogProductByChannelCatalog(ChannelCatalogProductByChannelCatalogRequest payload) returns ChannelCatalogProductByChannelCatalogResponse|error {
-        string path = string `/v2/user/channelCatalogs/products`;
+        string resourcePath = string `/v2/user/channelCatalogs/products`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ChannelCatalogProductByChannelCatalogResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ChannelCatalogProductByChannelCatalogResponse);
+        request.setPayload(jsonBody, "application/json");
+        ChannelCatalogProductByChannelCatalogResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get channel catalog product information
@@ -1538,10 +1539,10 @@ public isolated client class Client {
     # + productId - The product identifier 
     # + return - Channel catalog product information 
     remote isolated function getChannelCatalogProductInfo(string channelCatalogId, string productId) returns ChannelCatalogProductInfo|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalogProductInfo response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalogProductInfo);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalogProductInfo response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Override channel catalog product values
@@ -1550,13 +1551,13 @@ public isolated client class Client {
     # + productId - The product identifier 
     # + return - Channel catalog product overriden 
     remote isolated function overrideChannelCatalogProductValues(string channelCatalogId, string productId, ProductOverrides payload) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete a specific channel catalog product value override
@@ -1566,10 +1567,10 @@ public isolated client class Client {
     # + channelColumnId - The channel column identifier 
     # + return - Channel catalog product value override deleted 
     remote isolated function deleteChannelCatalogProductValueOverride(string channelCatalogId, string productId, string channelColumnId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides/${channelColumnId}`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides/${channelColumnId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get channel catalog product value override compatibilities status
@@ -1578,10 +1579,10 @@ public isolated client class Client {
     # + productId - The product identifier 
     # + return - placeholder. will be completed soon. 
     remote isolated function getChannelCatalogProductValueOverrideCopy(string channelCatalogId, string productId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides/copy`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides/copy`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Copy channel catalog product value override
@@ -1590,12 +1591,12 @@ public isolated client class Client {
     # + productId - The product identifier 
     # + return - Channel catalog product value override deleted 
     remote isolated function configureChannelCatalogProductValueOverrideCopy(string channelCatalogId, string productId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides/copy`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/overrides/copy`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Disable channel catalog product
@@ -1604,12 +1605,12 @@ public isolated client class Client {
     # + productId - The product identifier 
     # + return - Channel catalog product disabled 
     remote isolated function disableChannelCatalogProduct(string channelCatalogId, string productId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/disable`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/disable`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Reenable channel catalog product
@@ -1618,12 +1619,12 @@ public isolated client class Client {
     # + productId - The product identifier 
     # + return - Channel catalog product reenabled 
     remote isolated function reenableChannelCatalogProduct(string channelCatalogId, string productId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/reenable`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/products/${productId}/reenable`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the exportation cache information
@@ -1631,10 +1632,10 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog exportation cache information 
     remote isolated function getChannelCatalogExportationCacheInfo(string channelCatalogId) returns ChannelCatalogExportCacheInfoResponse|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/exportations/cache`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/exportations/cache`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalogExportCacheInfoResponse response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalogExportCacheInfoResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalogExportCacheInfoResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Clear the exportation cache
@@ -1642,12 +1643,12 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog exportation cache cleared 
     remote isolated function clearChannelCatalogExportationCache(string channelCatalogId) returns http:Response|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/exportations/cache/clear`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/exportations/cache/clear`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the exportation history
@@ -1657,12 +1658,12 @@ public isolated client class Client {
     # + pageSize - The entry count you want to get 
     # + return - Channel catalog exportation history 
     remote isolated function getChannelCatalogExportationHistory(string channelCatalogId, int pageNumber, int pageSize) returns ChannelCatalogExportationHistory|error {
-        string path = string `/v2/user/channelCatalogs/${channelCatalogId}/exportations/history`;
+        string resourcePath = string `/v2/user/channelCatalogs/${channelCatalogId}/exportations/history`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalogExportationHistory response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalogExportationHistory);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalogExportationHistory response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get your marketplace channel catalog list
@@ -1670,12 +1671,12 @@ public isolated client class Client {
     # + storeId - The StoreId to filter by 
     # + return - Marketplace channel catalog list 
     remote isolated function getMarketplaceChannelCatalogs(string? storeId = ()) returns MarketplaceChannelCatalogList|error {
-        string path = string `/v2/user/marketplaces/channelcatalogs/`;
+        string resourcePath = string `/v2/user/marketplaces/channelcatalogs/`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MarketplaceChannelCatalogList response = check self.clientEp->get(path, accHeaders, targetType = MarketplaceChannelCatalogList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MarketplaceChannelCatalogList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [PREVIEW] Launch a publication of the catalog to the marketplace
@@ -1684,13 +1685,13 @@ public isolated client class Client {
     # + accountId - Account Id to query (required) 
     # + return - Publication request accepted 
     remote isolated function publishCatalogToMarketplace(string marketplaceTechnicalCode, int accountId, PublishCatalogToMarketplaceRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/channelcatalogs/publications/${marketplaceTechnicalCode}/${accountId}/publish`;
+        string resourcePath = string `/v2/user/marketplaces/channelcatalogs/publications/${marketplaceTechnicalCode}/${accountId}/publish`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Fetch the publication history for an account, sorted by descending start date
@@ -1702,13 +1703,13 @@ public isolated client class Client {
     # + publicationTypes - Publication types by which to filter (optional) 
     # + return - Successfully fetched channel catalog settings 
     remote isolated function getPublications(string marketplaceTechnicalCode, int accountId, string[] publicationTypes, string? channelCatalogId = (), int count = 10) returns AccountPublications|error {
-        string path = string `/v2/user/marketplaces/channelcatalogs/publications/${marketplaceTechnicalCode}/${accountId}/history`;
+        string resourcePath = string `/v2/user/marketplaces/channelcatalogs/publications/${marketplaceTechnicalCode}/${accountId}/history`;
         map<anydata> queryParam = {"channelCatalogId": channelCatalogId, "count": count, "publicationTypes": publicationTypes};
         map<Encoding> queryParamEncoding = {"publicationTypes": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountPublications response = check self.clientEp->get(path, accHeaders, targetType = AccountPublications);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountPublications response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the marketplace settings for a channel catalog
@@ -1716,10 +1717,10 @@ public isolated client class Client {
     # + channelCatalogId - Channel Catalog Id to query (required) 
     # + return - Successfully fetched channel catalog settings 
     remote isolated function getChannelCatalogMarketplaceSettings(string channelCatalogId) returns ChannelCatalogMarketplaceSettings|error {
-        string path = string `/v2/user/marketplaces/channelcatalogs/${channelCatalogId}/settings`;
+        string resourcePath = string `/v2/user/marketplaces/channelcatalogs/${channelCatalogId}/settings`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChannelCatalogMarketplaceSettings response = check self.clientEp->get(path, accHeaders, targetType = ChannelCatalogMarketplaceSettings);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChannelCatalogMarketplaceSettings response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Save new marketplace settings for a channel catalog
@@ -1728,13 +1729,13 @@ public isolated client class Client {
     # + payload - Settings to save 
     # + return - Successfully saved channel catalog marketplace settings 
     remote isolated function setChannelCatalogMarketplaceSettings(string channelCatalogId, SetChannelCatalogMarketplaceSettingsRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/channelcatalogs/${channelCatalogId}/settings`;
+        string resourcePath = string `/v2/user/marketplaces/channelcatalogs/${channelCatalogId}/settings`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Get all actions you can do on the order API
@@ -1745,10 +1746,10 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getOrderIndex(string? ifNoneMatch = ()) returns OrderIndex|error {
-        string path = string `/v2/user/marketplaces/orders/`;
+        string resourcePath = string `/v2/user/marketplaces/orders/`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderIndex response = check self.clientEp->get(path, accHeaders, targetType = OrderIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [DEPRECATED] Get current synchronization status between your marketplaces and BeezUP accounts
@@ -1760,12 +1761,12 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getMarketplaceAccountsSynchronization(string? storeId = (), string? ifNoneMatch = ()) returns AccountSynchronizationList|error {
-        string path = string `/v2/user/marketplaces/orders/status`;
+        string resourcePath = string `/v2/user/marketplaces/orders/status`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountSynchronizationList response = check self.clientEp->get(path, accHeaders, targetType = AccountSynchronizationList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountSynchronizationList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [DEPRECATED] Send harvest request to all your marketplaces
@@ -1776,14 +1777,14 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function harvestAll(string? storeId = ()) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/harvest`;
+        string resourcePath = string `/v2/user/marketplaces/orders/harvest`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get list of configured automatic Order status transitions
@@ -1792,25 +1793,25 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Successfully fetched list of configured automatic Order status transitions 
     remote isolated function getAutomaticTransitions(string? storeId = (), string? ifNoneMatch = ()) returns AutomaticTransitionInfoList|error {
-        string path = string `/v2/user/marketplaces/orders/automaticTransitions`;
+        string resourcePath = string `/v2/user/marketplaces/orders/automaticTransitions`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AutomaticTransitionInfoList response = check self.clientEp->get(path, accHeaders, targetType = AutomaticTransitionInfoList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AutomaticTransitionInfoList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Configure new or existing automatic Order status transition
     #
     # + return - Successfully confirugred new or existing automatic Order status transition 
     remote isolated function configureAutomaticTransitions(ConfigureAutomaticTransitionRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/automaticTransitions`;
+        string resourcePath = string `/v2/user/marketplaces/orders/automaticTransitions`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Get a paginated list of all Orders with all Order and Order Item(s) properties
@@ -1821,13 +1822,13 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getOrderListFull(string[] acceptEncoding, OrderListRequest payload) returns OrderListFull|error {
-        string path = string `/v2/user/marketplaces/orders/list/full`;
+        string resourcePath = string `/v2/user/marketplaces/orders/list/full`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderListFull response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderListFull);
+        request.setPayload(jsonBody, "application/json");
+        OrderListFull response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Get a paginated list of all Orders without details
@@ -1837,13 +1838,13 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getOrderListLight(OrderListRequest payload) returns OrderListLight|error {
-        string path = string `/v2/user/marketplaces/orders/list/light`;
+        string resourcePath = string `/v2/user/marketplaces/orders/list/light`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderListLight response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderListLight);
+        request.setPayload(jsonBody, "application/json");
+        OrderListLight response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get a paginated list of Order report exportations
@@ -1854,25 +1855,25 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Successfully fetched the list of Order report exportations 
     remote isolated function getOrderExportations(int pageNumber, int pageSize, string storeId, string? ifNoneMatch = ()) returns OrderExportations|error {
-        string path = string `/v2/user/marketplaces/orders/exportations`;
+        string resourcePath = string `/v2/user/marketplaces/orders/exportations`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderExportations response = check self.clientEp->get(path, accHeaders, targetType = OrderExportations);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderExportations response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request a new Order report exportation to be generated
     #
     # + return - Successfully requested new Order report exportation generation 
     remote isolated function exportOrders(ExportOrderListRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/exportations`;
+        string resourcePath = string `/v2/user/marketplaces/orders/exportations`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Send a batch of operations to set an Order's merchant information  (max 100 items per call)
@@ -1882,13 +1883,13 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function setMerchantOrderInfoList(SetMerchantOrderInfoListRequest payload) returns BatchOrderOperationResponse|error {
-        string path = string `/v2/user/marketplaces/orders/batches/setMerchantOrderInfos`;
+        string resourcePath = string `/v2/user/marketplaces/orders/batches/setMerchantOrderInfos`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchOrderOperationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BatchOrderOperationResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchOrderOperationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Send a batch of operations to clear an Order's merchant information (max 100 items per call)
@@ -1898,13 +1899,13 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function clearMerchantOrderInfoList(ClearMerchantOrderInfoListRequest payload) returns BatchOrderOperationResponse|error {
-        string path = string `/v2/user/marketplaces/orders/batches/clearMerchantOrderInfos`;
+        string resourcePath = string `/v2/user/marketplaces/orders/batches/clearMerchantOrderInfos`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchOrderOperationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BatchOrderOperationResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchOrderOperationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Send a batch of operations to change your marketplace Order information: accept, ship, etc.  (max 100 items per call)
@@ -1917,15 +1918,15 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function changeOrderList(string changeOrderType, string userName, ChangeOrderListRequest payload, boolean testMode = false) returns BatchOrderOperationResponse|error {
-        string path = string `/v2/user/marketplaces/orders/batches/changeOrders/${changeOrderType}`;
+        string resourcePath = string `/v2/user/marketplaces/orders/batches/changeOrders/${changeOrderType}`;
         map<anydata> queryParam = {"userName": userName, "testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchOrderOperationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BatchOrderOperationResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchOrderOperationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] DEPRECATED - Get full Order and Order Item(s) properties
@@ -1938,10 +1939,10 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getOrder(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string? ifNoneMatch = ()) returns Order|error {
-        string path = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
+        string resourcePath = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Order response = check self.clientEp->get(path, accHeaders, targetType = Order);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Order response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [DEPRECATED] DEPRECATED - Get the meta information about the order (ETag, Last-Modified)
@@ -1954,10 +1955,10 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function headOrder(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string? ifNoneMatch = ()) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
+        string resourcePath = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->head(path, accHeaders);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->head(resourcePath, httpHeaders);
         return response;
     }
     # [DEPRECATED] Get an Order's harvest and change history
@@ -1970,10 +1971,10 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getOrderHistory(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string? ifNoneMatch = ()) returns OrderHistory|error {
-        string path = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/history`;
+        string resourcePath = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/history`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderHistory response = check self.clientEp->get(path, accHeaders, targetType = OrderHistory);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderHistory response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # [DEPRECATED] Send harvest request for a single Order
@@ -1985,12 +1986,12 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function harvestOrder(string marketplaceTechnicalCode, int accountId, string beezUPOrderId) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/harvest`;
+        string resourcePath = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/harvest`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Set an Order's merchant information
@@ -2002,13 +2003,13 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function setMerchantOrderInfo(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, SetMerchantOrderInfoRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/setMerchantOrderInfo`;
+        string resourcePath = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/setMerchantOrderInfo`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Clear an Order's merchant information
@@ -2020,12 +2021,12 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function clearMerchantOrderInfo(string marketplaceTechnicalCode, int accountId, string beezUPOrderId) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/clearMerchantOrderInfo`;
+        string resourcePath = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/clearMerchantOrderInfo`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # [DEPRECATED] Change your marketplace Order Information (accept, ship, etc.)
@@ -2041,15 +2042,15 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function changeOrder(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string changeOrderType, string userName, string ifMatch, ChangeOrderRequest payload, boolean testMode = false) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/${changeOrderType}`;
+        string resourcePath = string `/v2/user/marketplaces/orders/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/${changeOrderType}`;
         map<anydata> queryParam = {"userName": userName, "testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Match": ifMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get current synchronization status between your marketplaces and BeezUP accounts
@@ -2058,13 +2059,13 @@ public isolated client class Client {
     # + storeIds - StoredIds to filter 
     # + return - Successfully fetched the list of MarketplaceBusinessCode ready for Order Management 
     remote isolated function getMarketplaceAccountsSynchronizationV3(string? ifNoneMatch = (), string[]? storeIds = ()) returns AccountSynchronizationList|error {
-        string path = string `/orders/v3/status`;
+        string resourcePath = string `/orders/v3/status`;
         map<anydata> queryParam = {"storeIds": storeIds};
         map<Encoding> queryParamEncoding = {"storeIds": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountSynchronizationList response = check self.clientEp->get(path, accHeaders, targetType = AccountSynchronizationList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountSynchronizationList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Send harvest request to all your marketplaces
@@ -2072,14 +2073,14 @@ public isolated client class Client {
     # + storeId - The StoreId to filter by 
     # + return - Successfully sent harvest request to all marketplaces 
     remote isolated function harvestAllV3(string? storeId = ()) returns http:Response|error {
-        string path = string `/orders/v3/harvest`;
+        string resourcePath = string `/orders/v3/harvest`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get a paginated list of all Orders with all Order and Order Item(s) properties
@@ -2087,26 +2088,26 @@ public isolated client class Client {
     # + acceptEncoding - Allows the client to indicate wether it accepts a compressed encoding to reduce traffic size 
     # + return - Successfully fetched the full list of Orders 
     remote isolated function getOrderListFullV3(string acceptEncoding, OrderListRequest payload) returns OrderListFullWithLinks|error {
-        string path = string `/orders/v3/list/full`;
+        string resourcePath = string `/orders/v3/list/full`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderListFullWithLinks response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderListFullWithLinks);
+        request.setPayload(jsonBody, "application/json");
+        OrderListFullWithLinks response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get a paginated list of all Orders without details
     #
     # + return - Successfully fetched the list of Orders 
     remote isolated function getOrderListLightV3(OrderListRequest payload) returns OrderListLightWithLinks|error {
-        string path = string `/orders/v3/list/light`;
+        string resourcePath = string `/orders/v3/list/light`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OrderListLightWithLinks response = check self.clientEp->post(path, request, headers = accHeaders, targetType = OrderListLightWithLinks);
+        request.setPayload(jsonBody, "application/json");
+        OrderListLightWithLinks response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get full Order and Order Item(s) properties
@@ -2116,10 +2117,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Successfully fetched Order and Order Item(s) properties 
     remote isolated function getOrderV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string? ifNoneMatch = ()) returns OrderWithLinks|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderWithLinks response = check self.clientEp->get(path, accHeaders, targetType = OrderWithLinks);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderWithLinks response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the meta information about the order (ETag, Last-Modified)
@@ -2129,10 +2130,10 @@ public isolated client class Client {
     # + ifNoneMatch - ETag value to identify the last known version of requested resource.\ To avoid useless exchange, we recommend you to indicate the ETag you previously got from this operation.\ If the ETag value does not match the response will be 200 to give you a new content, otherwise the response will be: 304 Not Modified, without any content.\ For more details go to this link: http://tools.ietf.org/html/rfc7232#section-2.3 
     # + return - Successfully fetched Order and Order Item(s) properties 
     remote isolated function headOrderV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string? ifNoneMatch = ()) returns http:Response|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->head(path, accHeaders);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->head(resourcePath, httpHeaders);
         return response;
     }
     # Change your marketplace Order Information (accept, ship, etc.)
@@ -2144,15 +2145,15 @@ public isolated client class Client {
     # + testMode - If true, the operation will be not be sent to marketplace. But the validation will be taken in account. 
     # + return - Order change request accepted 
     remote isolated function changeOrderV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string changeOrderType, string userName, ChangeOrderRequest payload, boolean testMode = false) returns http:Response|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/${changeOrderType}`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/${changeOrderType}`;
         map<anydata> queryParam = {"userName": userName, "testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get an Order's harvest and change history
@@ -2161,10 +2162,10 @@ public isolated client class Client {
     # + beezUPOrderId - The BeezUP Order identifier 
     # + return - Successfully fetched Order history 
     remote isolated function getOrderHistoryV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId) returns OrderHistory|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/history`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/history`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderHistory response = check self.clientEp->get(path, accHeaders, targetType = OrderHistory);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderHistory response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Send harvest request for a single Order
@@ -2173,12 +2174,12 @@ public isolated client class Client {
     # + beezUPOrderId - The BeezUP Order identifier 
     # + return - Successfully sent Order harvest request 
     remote isolated function harvestOrderV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId) returns http:Response|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/harvest`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/harvest`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send harvest request for an Account
@@ -2186,14 +2187,14 @@ public isolated client class Client {
     # + marketplaceTechnicalCode - The marketplace technical code 
     # + return - Successfully sent Order harvest request 
     remote isolated function harvestAccount(string marketplaceTechnicalCode, int accountId, string? marketplaceOrderId = (), string? beezUPOrderId = ()) returns http:Response|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/harvest`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/harvest`;
         map<anydata> queryParam = {"marketplaceOrderId": marketplaceOrderId, "beezUPOrderId": beezUPOrderId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the order change reporting
@@ -2203,10 +2204,10 @@ public isolated client class Client {
     # + orderChangeExecutionUUID - The order change execution id 
     # + return - Successfully fetched Order change reporting 
     remote isolated function getOrderChangeReportingV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, string orderChangeExecutionUUID) returns ChangeOrderReporting|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/history/${orderChangeExecutionUUID}`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/history/${orderChangeExecutionUUID}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ChangeOrderReporting response = check self.clientEp->get(path, accHeaders, targetType = ChangeOrderReporting);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ChangeOrderReporting response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Set an Order's merchant information
@@ -2216,15 +2217,15 @@ public isolated client class Client {
     # + testMode - If true, the operation will be not be sent to marketplace. But the validation will be taken in account. 
     # + return - Set Order merchant order info accepted 
     remote isolated function setMerchantOrderInfoV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, SetMerchantOrderInfoRequest payload, boolean testMode = false) returns http:Response|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/setMerchantOrderInfo`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/setMerchantOrderInfo`;
         map<anydata> queryParam = {"testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Clear an Order's merchant information
@@ -2234,14 +2235,14 @@ public isolated client class Client {
     # + testMode - If true, the operation will be not be sent to marketplace. But the validation will be taken in account. 
     # + return - Clear Order merchant order info accepted 
     remote isolated function clearMerchantOrderInfoV3(string marketplaceTechnicalCode, int accountId, string beezUPOrderId, boolean testMode = false) returns http:Response|error {
-        string path = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/clearMerchantOrderInfo`;
+        string resourcePath = string `/orders/v3/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderId}/clearMerchantOrderInfo`;
         map<anydata> queryParam = {"testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send a batch of operations to set an Order's merchant information  (max 100 items per call)
@@ -2249,15 +2250,15 @@ public isolated client class Client {
     # + testMode - If true, the operation will be not be sent to marketplace. But the validation will be taken in account. 
     # + return - Succesfully received and processed batched operations. Please check response to see the status per operation. 
     remote isolated function setMerchantOrderInfoListV3(SetMerchantOrderInfoListRequest payload, boolean testMode = false) returns BatchOrderOperationResponse|error {
-        string path = string `/orders/v3/batches/setMerchantOrderInfos`;
+        string resourcePath = string `/orders/v3/batches/setMerchantOrderInfos`;
         map<anydata> queryParam = {"testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchOrderOperationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BatchOrderOperationResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchOrderOperationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send a batch of operations to clear an Order's merchant information (max 100 items per call)
@@ -2265,15 +2266,15 @@ public isolated client class Client {
     # + testMode - If true, the operation will be not be sent to marketplace. But the validation will be taken in account. 
     # + return - Succesfully received and processed batched operations. Please check response to see the status per operation. 
     remote isolated function clearMerchantOrderInfoListV3(ClearMerchantOrderInfoListRequest payload, boolean testMode = false) returns BatchOrderOperationResponse|error {
-        string path = string `/orders/v3/batches/clearMerchantOrderInfos`;
+        string resourcePath = string `/orders/v3/batches/clearMerchantOrderInfos`;
         map<anydata> queryParam = {"testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchOrderOperationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BatchOrderOperationResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchOrderOperationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send a batch of operations to change your marketplace Order information: accept, ship, etc.  (max 100 items per call)
@@ -2283,15 +2284,15 @@ public isolated client class Client {
     # + changeOrderType - The Order change type 
     # + return - Succesfully received and processed batched operations. Please check response to see the status per operation. 
     remote isolated function changeOrderListV2(string userName, string changeOrderType, ChangeOrderListRequestV2 payload, boolean testMode = false) returns BatchOrderOperationResponse|error {
-        string path = string `/orders/v3/batches/changeOrders/${changeOrderType}`;
+        string resourcePath = string `/orders/v3/batches/changeOrders/${changeOrderType}`;
         map<anydata> queryParam = {"userName": userName, "testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchOrderOperationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BatchOrderOperationResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchOrderOperationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send a batch of operations to change your marketplace Order information: accept, ship, etc.  (max 100 items per call)
@@ -2300,153 +2301,153 @@ public isolated client class Client {
     # + testMode - If true, the operation will be not be sent to marketplace. But the validation will be taken in account. 
     # + return - Succesfully received and processed batched operations. Please check response to see the status per operation. 
     remote isolated function changeOrderListV3(string userName, ChangeOrderListRequest payload, boolean testMode = false) returns BatchOrderOperationResponse|error {
-        string path = string `/orders/v3/batches/changeOrders`;
+        string resourcePath = string `/orders/v3/batches/changeOrders`;
         map<anydata> queryParam = {"userName": userName, "testMode": testMode};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchOrderOperationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = BatchOrderOperationResponse);
+        request.setPayload(jsonBody, "application/json");
+        BatchOrderOperationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the subscription list
     #
     # + return - The subscription list 
     remote isolated function getSubscriptionList() returns SubscriptionIndex[]|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionIndex[] response = check self.clientEp->get(path, accHeaders, targetType = SubscriptionIndexArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionIndex[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a subscription to the orders
     #
     # + return - Subscription info 
     remote isolated function getSubscription(string id) returns SubscriptionIndex|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/${id}`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/${id}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionIndex response = check self.clientEp->get(path, accHeaders, targetType = SubscriptionIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Creates a subscription to the orders
     #
     # + return - Subscription creation accepted 
     remote isolated function createSubscription(string id, CreateSubscriptionRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/${id}`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/${id}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete a subscription to the orders
     #
     # + return - Subscription deletion accepted 
     remote isolated function deleteSubscription(string id) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/${id}`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/${id}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get the push reporting related to this subscription
     #
     # + return - Subscription push reporting info 
     remote isolated function getSubscriptionPushReporting(string id, int? pageNumber = (), int? pageSize = ()) returns SubscriptionPushReporting[]|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/${id}/reporting`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/${id}/reporting`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionPushReporting[] response = check self.clientEp->get(path, accHeaders, targetType = SubscriptionPushReportingArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionPushReporting[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Activate a subscription to the orders
     #
     # + return - Subscription activation accepted 
     remote isolated function activateSubscription(string id, ActivateSubscriptionRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/${id}/activate`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/${id}/activate`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Deactivate a subscription to the orders
     #
     # + return - Subscription deactivation accepted 
     remote isolated function deactivateSubscription(string id) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/${id}/deactivate`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/${id}/deactivate`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Force retry push orders immediatly
     #
     # + return - Retry push orders request accepted 
     remote isolated function retryPushOrders(string id) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/subscriptions/${id}/retry`;
+        string resourcePath = string `/v2/user/marketplaces/orders/subscriptions/${id}/retry`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Order Invoice general settings
     #
     # + return - Settings successfully retrieved 
     remote isolated function getOrderInvoiceGeneralSettings() returns GetOrderInvoiceGeneralSettingsResponse|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/settings/general`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/settings/general`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GetOrderInvoiceGeneralSettingsResponse response = check self.clientEp->get(path, accHeaders, targetType = GetOrderInvoiceGeneralSettingsResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GetOrderInvoiceGeneralSettingsResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Save Order Invoice general settings
     #
     # + return - General Settings successfully saved 
     remote isolated function saveOrderInvoiceGeneralSettings(OrderInvoiceGeneralSettings payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/settings/general`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/settings/general`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Order Invoice design settings
     #
     # + return - Design successfully retrieved 
     remote isolated function getOrderInvoiceDesignSettings() returns OrderInvoiceDesignSettings|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/settings/design`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/settings/design`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        OrderInvoiceDesignSettings response = check self.clientEp->get(path, accHeaders, targetType = OrderInvoiceDesignSettings);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderInvoiceDesignSettings response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Save Order Invoice design settings
     #
     # + return - Design successfully saved 
     remote isolated function saveOrderInvoiceDesignSettings(OrderInvoiceDesignSettings payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/settings/design`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/settings/design`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # View a preview an Order Invoice using custom design settings
@@ -2454,13 +2455,13 @@ public isolated client class Client {
     # + acceptEncoding - Allows the client to indicate wether it accepts a compressed encoding to reduce traffic size 
     # + return - Design Preview successfully retrieved 
     remote isolated function getOrderInvoiceDesignSettingsPreview(string acceptEncoding, OrderInvoiceDesignSettings payload) returns GetOrderInvoiceDesignPreviewResponse|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/settings/design/preview`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/settings/design/preview`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GetOrderInvoiceDesignPreviewResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = GetOrderInvoiceDesignPreviewResponse);
+        request.setPayload(jsonBody, "application/json");
+        GetOrderInvoiceDesignPreviewResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Generate an Order Invoice
@@ -2471,15 +2472,15 @@ public isolated client class Client {
     # + userName - Sometimes the user in the e-commerce application is not the same as user associated with the current subscription key. We recommend providing your application's user login. 
     # + return - Request Accepted. 
     remote isolated function generateOrderInvoice(string marketplaceTechnicalCode, string accountId, string beezUPOrderUUID, string userName, GenerateOrderInvoiceRequest payload) returns http:Response|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderUUID}/generate`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderUUID}/generate`;
         map<anydata> queryParam = {"userName": userName};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # View a preview an Order Invoice
@@ -2490,36 +2491,36 @@ public isolated client class Client {
     # + acceptEncoding - Allows the client to indicate wether it accepts a compressed encoding to reduce traffic size 
     # + return - Order Invoice preview successfully returned. 
     remote isolated function getOrderInvoicePreview(string marketplaceTechnicalCode, string accountId, string beezUPOrderUUID, string acceptEncoding, PreviewOrderInvoiceRequest payload) returns PreviewOrderInvoiceResponse|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderUUID}/preview`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/${marketplaceTechnicalCode}/${accountId}/${beezUPOrderUUID}/preview`;
         map<any> headerValues = {"Accept-Encoding": acceptEncoding, "Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PreviewOrderInvoiceResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = PreviewOrderInvoiceResponse);
+        request.setPayload(jsonBody, "application/json");
+        PreviewOrderInvoiceResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Returns the PDF version of the invoice
     #
     # + return - The PDF version of the HTML invoice URL in the request 
     remote isolated function getOrderInvoicePdf(GetOrderInvoicePdfFromHtmlInvoiceUrlRequest payload) returns string|error {
-        string path = string `/v2/user/marketplaces/orders/invoices/getPdfInvoice`;
+        string resourcePath = string `/v2/user/marketplaces/orders/invoices/getPdfInvoice`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType = string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the Analytics API operation index
     #
     # + return - Analytics API operation index 
     remote isolated function analyticsIndex() returns AnalyticsIndex|error {
-        string path = string `/v2/user/analytics/`;
+        string resourcePath = string `/v2/user/analytics/`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AnalyticsIndex response = check self.clientEp->get(path, accHeaders, targetType = AnalyticsIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AnalyticsIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the Analytics API operation index for one store
@@ -2527,20 +2528,20 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Analytics API operation index for one store 
     remote isolated function analyticsStoreIndex(string storeId) returns AnalyticsStoreIndex|error {
-        string path = string `/v2/user/analytics/${storeId}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AnalyticsStoreIndex response = check self.clientEp->get(path, accHeaders, targetType = AnalyticsStoreIndex);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AnalyticsStoreIndex response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the global synchronization status of clicks and orders
     #
     # + return - The tracking status informations 
     remote isolated function getTrackingStatus() returns TrackingStatus|error {
-        string path = string `/v2/user/analytics/tracking/status`;
+        string resourcePath = string `/v2/user/analytics/tracking/status`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TrackingStatus response = check self.clientEp->get(path, accHeaders, targetType = TrackingStatus);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TrackingStatus response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the synchronization status of clicks and orders of a store
@@ -2548,10 +2549,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Store Tracking Status 
     remote isolated function getStoreTrackingStatus(string storeId) returns StoreTrackingStatus|error {
-        string path = string `/v2/user/analytics/${storeId}/tracking/status`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/tracking/status`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StoreTrackingStatus response = check self.clientEp->get(path, accHeaders, targetType = StoreTrackingStatus);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StoreTrackingStatus response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the latest tracked clicks
@@ -2560,12 +2561,12 @@ public isolated client class Client {
     # + count - The amount of clicks to retrieve 
     # + return - Click list 
     remote isolated function getStoreTrackedClicks(string storeId, int count = 100) returns TrackedClicks|error {
-        string path = string `/v2/user/analytics/${storeId}/tracking/clicks`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/tracking/clicks`;
         map<anydata> queryParam = {"count": count};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TrackedClicks response = check self.clientEp->get(path, accHeaders, targetType = TrackedClicks);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TrackedClicks response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the latest tracked orders
@@ -2574,12 +2575,12 @@ public isolated client class Client {
     # + count - The amount of orders to retrieve 
     # + return - Order list 
     remote isolated function getStoreTrackedOrders(string storeId, int count = 100) returns TrackedOrders|error {
-        string path = string `/v2/user/analytics/${storeId}/tracking/orders`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/tracking/orders`;
         map<anydata> queryParam = {"count": count};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TrackedOrders response = check self.clientEp->get(path, accHeaders, targetType = TrackedOrders);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TrackedOrders response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the latest tracked external orders
@@ -2588,25 +2589,25 @@ public isolated client class Client {
     # + count - The amount of external orders to retrieve 
     # + return - External Order list 
     remote isolated function getStoreTrackedExternalOrders(string storeId, int count = 100) returns TrackedExternalOrders|error {
-        string path = string `/v2/user/analytics/${storeId}/tracking/externalorders`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/tracking/externalorders`;
         map<anydata> queryParam = {"count": count};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TrackedExternalOrders response = check self.clientEp->get(path, accHeaders, targetType = TrackedExternalOrders);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TrackedExternalOrders response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the report by day for a StoreId
     #
     # + return - Your reporting by day 
     remote isolated function getStoreReportByDayPerStore(ReportByDayRequest payload) returns ReportByDayPerStoreResponse|error {
-        string path = string `/v2/user/analytics/reports/byday`;
+        string resourcePath = string `/v2/user/analytics/reports/byday`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReportByDayPerStoreResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ReportByDayPerStoreResponse);
+        request.setPayload(jsonBody, "application/json");
+        ReportByDayPerStoreResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the report by day for a StoreId
@@ -2614,13 +2615,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Your reporting by day 
     remote isolated function getStoreReportByDay(string storeId, ReportByDayRequest payload) returns ReportByDayResponse|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/byday`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/byday`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReportByDayResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ReportByDayResponse);
+        request.setPayload(jsonBody, "application/json");
+        ReportByDayResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the report by channel
@@ -2628,13 +2629,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Your reporting by channel 
     remote isolated function getStoreReportByChannel(string storeId, ReportByChannelRequest payload) returns ReportByChannelResponse|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/bychannel`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/bychannel`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReportByChannelResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ReportByChannelResponse);
+        request.setPayload(jsonBody, "application/json");
+        ReportByChannelResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the report by category
@@ -2642,13 +2643,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Your reporting by channel 
     remote isolated function getStoreReportByCategory(string storeId, ReportByCategoryRequest payload) returns ReportByCategoryResponse|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/bycategory`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/bycategory`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReportByCategoryResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ReportByCategoryResponse);
+        request.setPayload(jsonBody, "application/json");
+        ReportByCategoryResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the report by product
@@ -2656,13 +2657,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Your reporting by product 
     remote isolated function getStoreReportByProduct(string storeId, ReportByProductRequest payload) returns ReportByProductResponse|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/byproduct`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/byproduct`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ReportByProductResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = ReportByProductResponse);
+        request.setPayload(jsonBody, "application/json");
+        ReportByProductResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Optimise all products
@@ -2670,13 +2671,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Products optimisatized 
     remote isolated function optimiseAll(string storeId, string actionName, OptimiseAllRequest payload) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/optimisations/all/${actionName}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/optimisations/all/${actionName}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Optimise products by page
@@ -2684,13 +2685,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Products optimisatized 
     remote isolated function optimise(string storeId, string actionName, OptimiseRequest payload) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/optimisations/${actionName}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/optimisations/${actionName}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Optimise products by channel
@@ -2699,12 +2700,12 @@ public isolated client class Client {
     # + channelId - The channel identifier concerned by this optimisation 
     # + return - Products optimisatized 
     remote isolated function optimiseByChannel(string storeId, string channelId, string actionName) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/optimisations/bychannel/${channelId}/${actionName}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/optimisations/bychannel/${channelId}/${actionName}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Optimise products by category
@@ -2714,13 +2715,13 @@ public isolated client class Client {
     # + payload - The channel identifier list concerned by this optimisation 
     # + return - Products optimisatized 
     remote isolated function optimiseByCategory(string storeId, string catalogCategoryId, string actionName, string[] payload) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/optimisations/bycategory/${catalogCategoryId}/${actionName}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/optimisations/bycategory/${catalogCategoryId}/${actionName}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Optimise product
@@ -2730,13 +2731,13 @@ public isolated client class Client {
     # + payload - The channel identifier list concerned by this optimisation 
     # + return - Product(s) optimisatized 
     remote isolated function optimiseByProduct(string storeId, string productId, string actionName, string[] payload) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/optimisations/byproduct/${productId}/${actionName}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/optimisations/byproduct/${productId}/${actionName}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Copy product optimisations between 2 channels
@@ -2744,13 +2745,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Products optimisatisation copied 
     remote isolated function copyOptimisation(string storeId, CopyOptimisationRequest payload) returns CopyOptimisationResponse|error {
-        string path = string `/v2/user/analytics/${storeId}/optimisations/copy`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/optimisations/copy`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CopyOptimisationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType = CopyOptimisationResponse);
+        request.setPayload(jsonBody, "application/json");
+        CopyOptimisationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get report filter list for the given store
@@ -2758,10 +2759,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Report filter list 
     remote isolated function getReportFilters(string storeId) returns ReportFilterList|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/filters`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/filters`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ReportFilterList response = check self.clientEp->get(path, accHeaders, targetType = ReportFilterList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ReportFilterList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the report filter description
@@ -2770,10 +2771,10 @@ public isolated client class Client {
     # + reportFilterId - Your report filter identifier 
     # + return - Report filter 
     remote isolated function getReportFilter(string storeId, string reportFilterId) returns ReportFilter|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/filters/${reportFilterId}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/filters/${reportFilterId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ReportFilter response = check self.clientEp->get(path, accHeaders, targetType = ReportFilter);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ReportFilter response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Save the report filter
@@ -2782,13 +2783,13 @@ public isolated client class Client {
     # + reportFilterId - Your report filter identifier 
     # + return - Report filter saved 
     remote isolated function saveReportFilter(string storeId, string reportFilterId, SaveReportFilterRequest payload) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/filters/${reportFilterId}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/filters/${reportFilterId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete the report filter
@@ -2797,10 +2798,10 @@ public isolated client class Client {
     # + reportFilterId - Your report filter identifier 
     # + return - Report filter deleted 
     remote isolated function deleteReportFilter(string storeId, string reportFilterId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/reports/filters/${reportFilterId}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/reports/filters/${reportFilterId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Gets the list of rules for a given store
@@ -2808,10 +2809,10 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Rule list 
     remote isolated function getRules(string storeId) returns RuleList|error {
-        string path = string `/v2/user/analytics/${storeId}/rules`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RuleList response = check self.clientEp->get(path, accHeaders, targetType = RuleList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RuleList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Rule creation
@@ -2819,13 +2820,13 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - Rule created 
     remote isolated function createRule(string storeId, CreateRuleRequest payload) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Gets the rule
@@ -2834,10 +2835,10 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Get Rule 
     remote isolated function getRule(string storeId, string ruleId) returns Rule|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Rule response = check self.clientEp->get(path, accHeaders, targetType = Rule);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Rule response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Rule
@@ -2846,10 +2847,10 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Rule deleted 
     remote isolated function deleteRule(string storeId, string ruleId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Rule
@@ -2858,13 +2859,13 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Rule updated 
     remote isolated function updateRule(string storeId, string ruleId, UpdateRuleRequest payload) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, headers = accHeaders, targetType = http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Move the rule up
@@ -2873,12 +2874,12 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Rule moved up 
     remote isolated function moveUpRule(string storeId, string ruleId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}/moveup`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}/moveup`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Move the rule down
@@ -2887,12 +2888,12 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Rule moved down 
     remote isolated function moveDownRule(string storeId, string ruleId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}/movedown`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}/movedown`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Enable rule
@@ -2901,12 +2902,12 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Rune enabled 
     remote isolated function enableRule(string storeId, string ruleId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}/enable`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}/enable`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Disable rule
@@ -2915,12 +2916,12 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Rule disabled 
     remote isolated function disableRule(string storeId, string ruleId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}/disable`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}/disable`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Run all rules for this store
@@ -2928,12 +2929,12 @@ public isolated client class Client {
     # + storeId - Your store identifier 
     # + return - All rules executed. 
     remote isolated function runRules(string storeId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/run`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/run`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Run rule
@@ -2942,12 +2943,12 @@ public isolated client class Client {
     # + ruleId - Your rule identifier 
     # + return - Rule executed 
     remote isolated function runRule(string storeId, string ruleId) returns http:Response|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/${ruleId}/run`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/${ruleId}/run`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the rules execution history
@@ -2957,12 +2958,12 @@ public isolated client class Client {
     # + pageSize - The count of rule history to retrieve 
     # + return - Rules executions list 
     remote isolated function getRulesExecutions(string storeId, int pageNumber, int pageSize) returns RuleExecutionReportings|error {
-        string path = string `/v2/user/analytics/${storeId}/rules/executions`;
+        string resourcePath = string `/v2/user/analytics/${storeId}/rules/executions`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RuleExecutionReportings response = check self.clientEp->get(path, accHeaders, targetType = RuleExecutionReportings);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RuleExecutionReportings response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List all your current channel catalogs configured to use legacy tracking format
@@ -2970,12 +2971,12 @@ public isolated client class Client {
     # + storeId - The store identifier 
     # + return - OK 
     remote isolated function getLegacyTrackingChannelCatalogs(string? storeId = ()) returns LegacyTrackingChannelCatalogList|error {
-        string path = string `/v2/user/legacyTracking/channelCatalogs/`;
+        string resourcePath = string `/v2/user/legacyTracking/channelCatalogs/`;
         map<anydata> queryParam = {"storeId": storeId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LegacyTrackingChannelCatalogList response = check self.clientEp->get(path, accHeaders, targetType = LegacyTrackingChannelCatalogList);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LegacyTrackingChannelCatalogList response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the channel catalog configured to use legacy tracking format information
@@ -2983,10 +2984,10 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog configured to use legacy tracking format 
     remote isolated function getLegacyTrackingChannelCatalog(string channelCatalogId) returns LegacyTrackingChannelCatalog|error {
-        string path = string `/v2/user/legacyTracking/channelCatalogs/${channelCatalogId}`;
+        string resourcePath = string `/v2/user/legacyTracking/channelCatalogs/${channelCatalogId}`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LegacyTrackingChannelCatalog response = check self.clientEp->get(path, accHeaders, targetType = LegacyTrackingChannelCatalog);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LegacyTrackingChannelCatalog response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Migrate a channel catalog to current tracking format
@@ -2994,12 +2995,12 @@ public isolated client class Client {
     # + channelCatalogId - The channel catalog identifier 
     # + return - Channel catalog migrated 
     remote isolated function migrateLegacyTrackingChannelCatalog(string channelCatalogId) returns http:Response|error {
-        string path = string `/v2/user/legacyTracking/channelCatalogs/${channelCatalogId}/migrate`;
+        string resourcePath = string `/v2/user/legacyTracking/channelCatalogs/${channelCatalogId}/migrate`;
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

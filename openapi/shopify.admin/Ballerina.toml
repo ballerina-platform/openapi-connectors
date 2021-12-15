@@ -1,13 +1,12 @@
 [package]
-distribution = "slbeta6"
+license = ["Apache-2.0"]
+keywords = ["Commerce/eCommerce", "Cost/Paid"]
 org = "ballerinax"
 name = "shopify.admin"
 icon = "icon.png"
-version = "1.1.0"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["Commerce/eCommerce","Cost/Paid"]
+distribution = "slbeta6"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-
+version = "1.1.1"
+authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

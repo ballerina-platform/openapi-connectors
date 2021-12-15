@@ -1,10 +1,10 @@
 [package]
-distribution = "slbeta6"
+license = ["Apache-2.0"]
+keywords = ["Finance/Accounting", "Cost/Paid"]
 org = "ballerinax"
 name = "zuora.revenue"
-version = "1.1.0"
 icon = "icon.png"
-license= ["Apache-2.0"]
+distribution = "slbeta6"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.1.1"
 authors = ["Ballerina"]
-keywords = ["Finance/Accounting","Cost/Paid"]
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors" 

@@ -1,10 +1,10 @@
 [package]
-distribution = "slbeta6"
+license = ["Apache-2.0"]
+keywords = ["Marketing/Event Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "eventbrite"
 icon = "icon.png"
-version = "1.1.0"
-license= ["Apache-2.0"]
-authors = ["Ballerina"]
-keywords = ["Marketing/Event Management","Cost/Freemium"]
+distribution = "slbeta6"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.1.1"
+authors = ["Ballerina"]

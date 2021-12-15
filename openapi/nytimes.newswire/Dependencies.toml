@@ -279,8 +279,7 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "nytimes.newswire", moduleName = "nytimes.newswire"},
-	{org = "ballerinax", packageName = "nytimes.newswire", moduleName = "nytimes.newswire.newswire"}
+	{org = "ballerinax", packageName = "nytimes.newswire", moduleName = "nytimes.newswire"}
 ]
 
 

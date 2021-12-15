@@ -279,8 +279,7 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "googleapis.blogger", moduleName = "googleapis.blogger"},
-	{org = "ballerinax", packageName = "googleapis.blogger", moduleName = "googleapis.blogger.blogger"}
+	{org = "ballerinax", packageName = "googleapis.blogger", moduleName = "googleapis.blogger"}
 ]
 
 

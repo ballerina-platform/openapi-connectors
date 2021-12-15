@@ -1,12 +1,12 @@
 [package]
-distribution = "slbeta6"
 license = ["Apache-2.0"]
 keywords = ["Commerce/eCommerce", "Cost/Freemium"]
 org = "ballerinax"
 name = "ebay.recommendation"
 icon = "icon.png"
+distribution = "slbeta6"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

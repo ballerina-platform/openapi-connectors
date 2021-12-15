@@ -279,8 +279,7 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "googleapis.youtube.reporting", moduleName = "googleapis.youtube.reporting"},
-	{org = "ballerinax", packageName = "googleapis.youtube.reporting", moduleName = "googleapis.youtube.reporting.youtube.reporting"}
+	{org = "ballerinax", packageName = "googleapis.youtube.reporting", moduleName = "googleapis.youtube.reporting"}
 ]
 
 

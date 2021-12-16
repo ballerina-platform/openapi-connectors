@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/url;
+import ballerina/mime;
 
 type SimpleBasicType string|boolean|int|float|decimal;
 
@@ -216,24 +217,31 @@ isolated function getPathForQueryParam(map<anydata> queryParam, map<Encoding> en
     return restOfPath;
 }
 
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map
-# + return - Returns generated map or error at failure of client initialization
-isolated function getMapForHeaders(map<any> headerParam) returns map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach var [key, value] in headerParam.entries() {
-        if value is string || value is string[] {
-            headerMap[key] = value;
-        } else if value is int[] {
-            string[] stringArray = [];
-            foreach int intValue in value {
-                stringArray.push(intValue.toString());
-            }
-            headerMap[key] = stringArray;
-        } else if value is SimpleBasicType {
-            headerMap[key] = value.toString();
+isolated function createBodyParts(record {|anydata...; |} anyRecord, map<Encoding> encodingMap = {})
+returns mime:Entity[]|error {
+    mime:Entity[] entities = [];
+    foreach [string, anydata] [key, value] in anyRecord.entries() {
+        Encoding encodingData = encodingMap.hasKey(key) ? encodingMap.get(key) : {};
+        mime:Entity entity = new mime:Entity();
+        if value is byte[] {
+            entity.setByteArray(value);
+        } else if value is SimpleBasicType|SimpleBasicType[] {
+            entity.setText(value.toString());
+        } else if value is record {}|record {}[] {
+            entity.setJson(value.toJson());
         }
+        if (encodingData?.contentType is string) {
+            check entity.setContentType(encodingData?.contentType.toString());
+        }
+        map<any>? headers = encodingData?.headers;
+        if (headers is map<any>) {
+            foreach var [headerName, headerValue] in headers.entries() {
+                if headerValue is SimpleBasicType {
+                    entity.setHeader(headerName, headerValue.toString());
+                }
+            }
+        }
+        entities.push(entity);
     }
-    return headerMap;
+    return entities;
 }

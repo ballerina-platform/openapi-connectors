@@ -1536,8 +1536,7 @@ components:
           type: object
           description: QnADTO - Either QnaId or QnADTO needs to be present in a PromptDTO
             object
-          allOf:
-          - $ref: '#/components/schemas/QnADTO'
+          $ref: '#/components/schemas/QnADTO'
         displayText:
           maxLength: 200
           type: string
@@ -1570,8 +1569,7 @@ components:
         activeLearning:
           type: object
           description: An instance of ActiveLearningSettingsDTO active learning settings.
-          allOf:
-          - $ref: '#/components/schemas/ActiveLearningSettingsDTO'
+          $ref: '#/components/schemas/ActiveLearningSettingsDTO'
       description: Endpoint settings.
       example: "{\r\n  \"activeLearning\": {\r\n    \"enable\": \"true\"\r\n  }\r\n\
         }"
@@ -1616,8 +1614,7 @@ components:
         error:
           type: object
           description: The error object.
-          allOf:
-          - $ref: '#/components/schemas/Error'
+          $ref: '#/components/schemas/Error'
       description: Error response. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
     Error:
       required:
@@ -1627,8 +1624,7 @@ components:
         code:
           type: object
           description: One of a server-defined set of error codes.
-          allOf:
-          - $ref: '#/components/schemas/ErrorCode'
+          $ref: '#/components/schemas/ErrorCode'
         message:
           type: string
           description: A human-readable representation of the error.
@@ -1645,8 +1641,7 @@ components:
           type: object
           description: An object containing more specific information than the current
             object about the error.
-          allOf:
-          - $ref: '#/components/schemas/InnerErrorModel'
+          $ref: '#/components/schemas/InnerErrorModel'
       description: The error object. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
     ErrorCode:
       type: string
@@ -1692,8 +1687,7 @@ components:
           type: object
           description: An object containing more specific information than the current
             object about the error.
-          allOf:
-          - $ref: '#/components/schemas/InnerErrorModel'
+          $ref: '#/components/schemas/InnerErrorModel'
       description: An object containing more specific information about the error.
         As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
     EndpointKeysDTO:
@@ -1837,8 +1831,7 @@ components:
         context:
           type: object
           description: Context of a QnA
-          allOf:
-          - $ref: '#/components/schemas/ContextDTO'
+          $ref: '#/components/schemas/ContextDTO'
       description: Q-A object.
     MetadataDTO:
       required:
@@ -1883,8 +1876,7 @@ components:
         operationState:
           type: object
           description: Operation state.
-          allOf:
-          - $ref: '#/components/schemas/OperationState'
+          $ref: '#/components/schemas/OperationState'
         createdTimestamp:
           type: string
           description: Timestamp when the operation was created.
@@ -1906,8 +1898,7 @@ components:
         errorResponse:
           type: object
           description: Error details in case of failures.
-          allOf:
-          - $ref: '#/components/schemas/ErrorResponse'
+          $ref: '#/components/schemas/ErrorResponse'
       description: Record to track long running operation.
     OperationState:
       type: string
@@ -2415,18 +2406,15 @@ components:
         add:
           type: object
           description: An instance of CreateKbInputDTO for add operation
-          allOf:
-          - $ref: '#/components/schemas/CreateKbInputDTO'
+          $ref: '#/components/schemas/CreateKbInputDTO'
         delete:
           type: object
           description: An instance of DeleteKbContentsDTO for delete Operation
-          allOf:
-          - $ref: '#/components/schemas/DeleteKbContentsDTO'
+          $ref: '#/components/schemas/DeleteKbContentsDTO'
         update:
           type: object
           description: An instance of UpdateKbContentsDTO for Update Operation
-          allOf:
-          - $ref: '#/components/schemas/UpdateKbContentsDTO'
+          $ref: '#/components/schemas/UpdateKbContentsDTO'
       description: Contains list of QnAs to be updated
       example: "{\r\n  \"add\": {\r\n    \"qnaList\": [\r\n      {\r\n        \"id\"\
         : 0,\r\n        \"answer\": \"You can change the default message if you use\
@@ -2533,18 +2521,15 @@ components:
         questions:
           type: object
           description: List of questions associated with the answer.
-          allOf:
-          - $ref: '#/components/schemas/UpdateQuestionsDTO'
+          $ref: '#/components/schemas/UpdateQuestionsDTO'
         metadata:
           type: object
           description: List of metadata associated with the answer to be updated
-          allOf:
-          - $ref: '#/components/schemas/UpdateMetadataDTO'
+          $ref: '#/components/schemas/UpdateMetadataDTO'
         context:
           type: object
           description: Context associated with Qna to be updated.
-          allOf:
-          - $ref: '#/components/schemas/UpdateContextDTO'
+          $ref: '#/components/schemas/UpdateContextDTO'
       description: PATCH Body schema for Update Qna List
     UpdateQuestionsDTO:
       type: object

@@ -14,8 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type AttachmentArr Attachment[];
-
 public type ColumnItemArr ColumnItem[];
 
 public type ResolutionArr Resolution[];
@@ -73,6 +71,12 @@ public type EventNotification record {
     # Identifies the recipients of the notification.
     string notificationType?;
     # The value of the `notificationType`:
+    # 
+    #  *  `User` The `parameter` is the user account ID.
+    #  *  `Group` The `parameter` is the group name.
+    #  *  `ProjectRole` The `parameter` is the project role ID.
+    #  *  `UserCustomField` The `parameter` is the ID of the custom field.
+    #  *  `GroupCustomField` The `parameter` is the ID of the custom field.
     string 'parameter?;
     # The specified group.
     GroupName 'group?;
@@ -111,8 +115,7 @@ public type WorkflowId record {
 };
 
 # The workflow transition rule conditions tree.
-#
-public type  WorkflowCondition WorkflowSimpleCondition|WorkflowCompoundCondition;
+public type WorkflowCondition WorkflowSimpleCondition|WorkflowCompoundCondition;
 
 # Details about a project landing page.
 public type ProjectLandingPageInfo record {
@@ -175,7 +178,7 @@ public type Status record {
 # Details of configurations for a custom field.
 public type CustomFieldConfigurations record {
     # The list of custom field configuration details.
-    ContextualConfiguration[] configurations;
+    ContextualConfiguration[1000] configurations;
 };
 
 # Details of a changed worklog.
@@ -239,6 +242,16 @@ public type CreateWorkflowDetails record {
     # The description of the workflow. The maximum length is 1000 characters.
     string description?;
     # The transitions of the workflow. For the request to be valid, these transitions must:
+    # 
+    #  *  include one *initial* transition.
+    #  *  not use the same name for a *global* and *directed* transition.
+    #  *  have a unique name for each *global* transition.
+    #  *  have a unique 'to' status for each *global* transition.
+    #  *  have unique names for each transition from a status.
+    #  *  not have a 'from' status on *initial* and *global* transitions.
+    #  *  have a 'from' status on *directed* transitions.
+    # 
+    # All the transition statuses must be included in `statuses`.
     CreateWorkflowTransitionDetails[] transitions;
     # The statuses of the workflow. Any status that does not include a transition is added to the workflow without a transition.
     CreateWorkflowStatusDetails[] statuses;
@@ -317,6 +330,9 @@ public type IconBean record {
 # A list of webhooks.
 public type WebhookDetails record {
     # The JQL filter that specifies which issues the webhook is sent for. Only a subset of JQL can be used. The supported elements are:
+    # 
+    #  *  Fields: `issueKey`, `project`, `issuetype`, `status`, `assignee`, `reporter`, `issue.property`, and `cf[id]`. For custom fields (`cf[id]`), only the epic label custom field is supported.".
+    #  *  Operators: `=`, `!=`, `IN`, and `NOT IN`.
     string jqlFilter;
     # A list of field IDs. When the issue changelog contains any of the fields, the webhook `jira:issue_updated` is sent. If this parameter is not present, the app is notified about all field updates.
     string[] fieldIdsFilter?;
@@ -426,14 +442,29 @@ public type IssueTypeWithStatus record {
 };
 
 # This object is used as follows:
+# 
+#  *  In the [ issueLink](#api-rest-api-2-issueLink-post) resource it defines and reports on the type of link between the issues. Find a list of issue link types with [Get issue link types](#api-rest-api-2-issueLinkType-get).
+#  *  In the [ issueLinkType](#api-rest-api-2-issueLinkType-post) resource it defines and reports on issue link types.
 public type IssueLinkType record {
     # The ID of the issue link type and is used as follows:
+    # 
+    #  *  In the [ issueLink](#api-rest-api-2-issueLink-post) resource it is the type of issue link. Required on create when `name` isn't provided. Otherwise, read only.
+    #  *  In the [ issueLinkType](#api-rest-api-2-issueLinkType-post) resource it is read only.
     string id?;
     # The name of the issue link type and is used as follows:
+    # 
+    #  *  In the [ issueLink](#api-rest-api-2-issueLink-post) resource it is the type of issue link. Required on create when `id` isn't provided. Otherwise, read only.
+    #  *  In the [ issueLinkType](#api-rest-api-2-issueLinkType-post) resource it is required on create and optional on update. Otherwise, read only.
     string name?;
     # The description of the issue link type inward link and is used as follows:
+    # 
+    #  *  In the [ issueLink](#api-rest-api-2-issueLink-post) resource it is read only.
+    #  *  In the [ issueLinkType](#api-rest-api-2-issueLinkType-post) resource it is required on create and optional on update. Otherwise, read only.
     string inward?;
     # The description of the issue link type outward link and is used as follows:
+    # 
+    #  *  In the [ issueLink](#api-rest-api-2-issueLink-post) resource it is read only.
+    #  *  In the [ issueLinkType](#api-rest-api-2-issueLinkType-post) resource it is required on create and optional on update. Otherwise, read only.
     string outward?;
     # The URL of the issue link type. Read only.
     string self?;
@@ -484,8 +515,7 @@ public type Worklog record {
 };
 
 # An operand that can be part of a list operand.
-#
-public type  JqlQueryUnitaryOperand ValueOperand|FunctionOperand|KeywordOperand;
+public type JqlQueryUnitaryOperand ValueOperand|FunctionOperand|KeywordOperand;
 
 # Details about a licensed Jira application.
 public type LicensedApplication record {
@@ -529,7 +559,7 @@ public type BulkIssuePropertyUpdateRequest record {
     anydata value?;
     # EXPERIMENTAL. The Jira expression to calculate the value of the property. The value of the expression must be an object that can be converted to JSON, such as a number, boolean, string, list, or map. The context variables available to the expression are `issue` and `user`. Issues for which the expression returns a value whose JSON representation is longer than 32768 characters are ignored.
     string expression?;
-    # The bulk operation filter.
+    # Bulk operation filter details.
     IssueFilterForBulkPropertySet filter?;
 };
 
@@ -761,6 +791,10 @@ public type FieldReferenceData record {
     # The field identifier.
     string value?;
     # The display name contains the following:
+    # 
+    #  *  for system fields, the field name. For example, `Summary`.
+    #  *  for collapsed custom fields, the field name followed by a hyphen and then the field name and field type. For example, `Component - Component[Dropdown]`.
+    #  *  for other custom fields, the field name followed by a hyphen and then the custom field ID. For example, `Component - cf[10061]`.
     string displayName?;
     # Whether the field can be used in a query's `ORDER BY` clause.
     string orderable?;
@@ -785,6 +819,10 @@ public type ListOperand record {
 # Details of the scope of the default sharing for new filters and dashboards.
 public type DefaultShareScope record {
     # The scope of the default sharing for new filters and dashboards:
+    # 
+    #  *  `AUTHENTICATED` Shared with all logged-in users.
+    #  *  `GLOBAL` Shared with all logged-in users. This shows as `AUTHENTICATED` in the response.
+    #  *  `PRIVATE` Not shared with any users.
     string scope;
 };
 
@@ -799,6 +837,11 @@ public type WebhookRegistrationDetails record {
 # Details about a project version.
 public type Version record {
     # Use [expand](em>#expansion) to include additional information about version in the response. This parameter accepts a comma-separated list. Expand options include:
+    # 
+    #  *  `operations` Returns the list of operations available for this version.
+    #  *  `issuesstatus` Returns the count of issues in this version for each of the status categories *to do*, *in progress*, *done*, and *unmapped*. The *unmapped* property contains a count of issues with a status other than *to do*, *in progress*, and *done*.
+    # 
+    # Optional for create and update.
     string expand?;
     # The URL of the version.
     string self?;
@@ -985,10 +1028,16 @@ public type FieldUpdateOperation record {
 };
 
 # An icon. If no icon is defined:
+# 
+#  *  for a status icon, no status icon displays in Jira.
+#  *  for the remote object icon, the default link icon displays in Jira.
 public type Icon record {
     # The URL of an icon that displays at 16x16 pixel in Jira.
     string url16x16?;
     # The title of the icon. This is used as follows:
+    # 
+    #  *  For a status icon it is used as a tooltip on the icon. If not set, the status icon doesn't display a tooltip in Jira.
+    #  *  For the remote object icon it is used in conjunction with the application name to display a tooltip for the link's icon. The tooltip takes the format "\[application name\] icon title". Blank itemsare excluded from the tooltip title. If both items are blank, the icon tooltop displays as "Web Link".
     string title?;
     # The URL of the tooltip, used only for a status icon. If not set, the status icon in Jira is not clickable.
     string link?;
@@ -1002,10 +1051,45 @@ public type SearchRequestBean record {
     # The maximum number of items to return per page.
     int maxResults?;
     # A list of fields to return for each issue, use it to retrieve a subset of fields. This parameter accepts a comma-separated list. Expand options include:
+    # 
+    #  *  `*all` Returns all fields.
+    #  *  `*navigable` Returns navigable fields.
+    #  *  Any issue field, prefixed with a minus to exclude.
+    # 
+    # The default is `*navigable`.
+    # 
+    # Examples:
+    # 
+    #  *  `summary,comment` Returns the summary and comments fields only.
+    #  *  `-description` Returns all navigable (default) fields except description.
+    #  *  `*all,-comment` Returns all fields except comments.
+    # 
+    # Multiple `fields` parameters can be included in a request.
+    # 
+    # Note: All navigable fields are returned by default. This differs from [GET issue](#api-rest-api-2-issue-issueIdOrKey-get) where the default is all fields.
     string[] fields?;
     # Determines how to validate the JQL query and treat the validation results. Supported values:
+    # 
+    #  *  `strict` Returns a 400 response code if any errors are found, along with a list of all errors (and warnings).
+    #  *  `warn` Returns all errors as warnings.
+    #  *  `none` No validation is performed.
+    #  *  `true` *Deprecated* A legacy synonym for `strict`.
+    #  *  `false` *Deprecated* A legacy synonym for `warn`.
+    # 
+    # The default is `strict`.
+    # 
+    # Note: If the JQL is not correctly formed a 400 response code is returned, regardless of the `validateQuery` value.
     string validateQuery?;
     # Use [expand](em>#expansion) to include additional information about issues in the response. Note that, unlike the majority of instances where `expand` is specified, `expand` is defined as a list of values. The expand options are:
+    # 
+    #  *  `renderedFields` Returns field values rendered in HTML format.
+    #  *  `names` Returns the display name of each field.
+    #  *  `schema` Returns the schema describing a field type.
+    #  *  `transitions` Returns all possible transitions for the issue.
+    #  *  `operations` Returns all possible operations for the issue.
+    #  *  `editmeta` Returns information about how each field can be edited.
+    #  *  `changelog` Returns a list of recent updates to an issue, sorted by date, starting from the most recent.
+    #  *  `versionedRepresentations` Instead of `fields`, returns `versionedRepresentations` a JSON array containing each version of a field's value, with the highest numbered item representing the most recent version.
     string[] expand?;
     # A list of up to 5 issue properties to include in the results. This parameter accepts a comma-separated list.
     string[] properties?;
@@ -1255,6 +1339,14 @@ public type CustomFieldValueUpdate record {
     # The list of issue IDs.
     int[] issueIds;
     # The value for the custom field. The value must be compatible with the [custom field type](https://developer.atlassian.com/platform/forge/manifest-reference/modules/#data-types) as follows:
+    # 
+    #  *  `string` – the value must be a string.
+    #  *  `number` – the value must be a number.
+    #  *  `datetime` – the value must be a string that represents a date in the ISO format, for example `"2021-01-18T12:00:00-03:00"`.
+    #  *  `user` – the value must be an object that contains the `accountId` field.
+    #  *  `group` – the value must be an object that contains the group `name` field.
+    # 
+    # A list of appropriate values must be provided if the field is of the `list` [collection type](https://developer.atlassian.com/platform/forge/manifest-reference/modules/#collection-types).
     anydata value;
 };
 
@@ -1459,8 +1551,15 @@ public type IssueTypeCreateBean record {
     # The description of the issue type.
     string description?;
     # Deprecated. Use `hierarchyLevel` instead.
+    # 
+    # Whether the issue type is `subtype` or `standard`. Defaults to `standard`.
     string 'type?;
     # The hierarchy level of the issue type. Use:
+    # 
+    #  *  `-1` for Subtask.
+    #  *  `0` for Base.
+    # 
+    # Defaults to `0`.
     int hierarchyLevel?;
 };
 
@@ -1478,6 +1577,7 @@ public type CreatedIssue record {
 
 public type ConnectModules record {
     # A list of app modules in the same format as the `modules` property in the
+    # [app descriptor](https://developer.atlassian.com/cloud/jira/platform/app-descriptor/).
     ConnectModule[] modules;
 };
 
@@ -1733,13 +1833,13 @@ public type NotificationScheme record {
 
 public type UserBeanAvatarUrls record {
     # The URL of the user's 48x48 pixel avatar.
-    string '\4\8x\4\8?;
+    string '48x48?;
     # The URL of the user's 24x24 pixel avatar.
-    string '\2\4x\2\4?;
+    string '24x24?;
     # The URL of the user's 16x16 pixel avatar.
-    string '\1\6x\1\6?;
+    string '16x16?;
     # The URL of the user's 32x32 pixel avatar.
-    string '\3\2x\3\2?;
+    string '32x32?;
 };
 
 # A page of items.
@@ -1833,8 +1933,7 @@ public type FailedWebhook record {
 };
 
 # Details of an operand in a JQL clause.
-#
-public type  JqlQueryClauseOperand ListOperand|ValueOperand|FunctionOperand|KeywordOperand;
+public type JqlQueryClauseOperand ListOperand|ValueOperand|FunctionOperand|KeywordOperand;
 
 # The details of an issue type screen scheme.
 public type IssueTypeScreenSchemeDetails record {
@@ -2127,6 +2226,10 @@ public type IssueTypeScheme record {
 };
 
 # User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:
+# 
+#  *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).
+#  *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.
+#  *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values.
 public type UserDetails record {
     # The URL of the user.
     string self?;
@@ -2400,10 +2503,12 @@ public type IssueTypeWorkflowMapping record {
 # Record defining a user bean.
 public type UserBean record {
     # This property is deprecated in favor of `accountId` because of privacy changes. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.  
+    # The key of the user.
     string 'key?;
     # The URL of the user.
     string self?;
     # This property is deprecated in favor of `accountId` because of privacy changes. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.  
+    # The username of the user.
     string name?;
     # The display name of the user. Depending on the user’s privacy setting, this may return an alternative value.
     string displayName?;
@@ -2438,10 +2543,19 @@ public type SharePermission record {
     # The unique identifier of the share permission.
     int id?;
     # The type of share permission:
+    # 
+    #  *  `group` Shared with a group. If set in a request, then specify `sharePermission.group` as well.
+    #  *  `project` Shared with a project. If set in a request, then specify `sharePermission.project` as well.
+    #  *  `projectRole` Share with a project role in a project. This value is not returned in responses. It is used in requests, where it needs to be specify with `projectId` and `projectRoleId`.
+    #  *  `global` Shared globally. If set in a request, no other `sharePermission` properties need to be specified.
+    #  *  `loggedin` Shared with all logged-in users. Note: This value is set in a request by specifying `authenticated` as the `type`.
+    #  *  `project-unknown` Shared with a project that the user does not have access to. Cannot be set in a request.
     string 'type;
     # The project that the filter is shared with. This is similar to the project object returned by [Get project](#api-rest-api-2-project-projectIdOrKey-get) but it contains a subset of the properties, which are: `self`, `id`, `key`, `assigneeType`, `name`, `roles`, `avatarUrls`, `projectType`, `simplified`.  
+    # For a request, specify the `id` for the project.
     Project project?;
     # The project role that the filter is shared with.  
+    # For a request, specify the `id` for the role. You must also specify the `project` object and `id` for the project that the role is in.
     ProjectRole role?;
     # The group that the filter is shared with. For a request, specify the `name` property for the group.
     GroupName 'group?;
@@ -2827,6 +2941,28 @@ public type UpdateCustomFieldDetails record {
     # The description of the custom field. The maximum length is 40000 characters.
     string description?;
     # The searcher that defines the way the field is searched in Jira. It can be set to `null`, otherwise you must specify the valid searcher for the field type, as listed below (abbreviated values shown):
+    # 
+    #  *  `cascadingselect`: `cascadingselectsearcher`
+    #  *  `datepicker`: `daterange`
+    #  *  `datetime`: `datetimerange`
+    #  *  `float`: `exactnumber` or `numberrange`
+    #  *  `grouppicker`: `grouppickersearcher`
+    #  *  `importid`: `exactnumber` or `numberrange`
+    #  *  `labels`: `labelsearcher`
+    #  *  `multicheckboxes`: `multiselectsearcher`
+    #  *  `multigrouppicker`: `multiselectsearcher`
+    #  *  `multiselect`: `multiselectsearcher`
+    #  *  `multiuserpicker`: `userpickergroupsearcher`
+    #  *  `multiversion`: `versionsearcher`
+    #  *  `project`: `projectsearcher`
+    #  *  `radiobuttons`: `multiselectsearcher`
+    #  *  `readonlyfield`: `textsearcher`
+    #  *  `select`: `multiselectsearcher`
+    #  *  `textarea`: `textsearcher`
+    #  *  `textfield`: `textsearcher`
+    #  *  `url`: `exacttextsearcher`
+    #  *  `userpicker`: `userpickergroupsearcher`
+    #  *  `version`: `versionsearcher`
     string searcherKey?;
 };
 
@@ -2951,6 +3087,9 @@ public type ProjectRoleUser record {
 
 public type LinkIssueRequestJsonBean record {
     # This object is used as follows:
+    # 
+    #  *  In the [ issueLink](#api-rest-api-2-issueLink-post) resource it defines and reports on the type of link between the issues. Find a list of issue link types with [Get issue link types](#api-rest-api-2-issueLinkType-get).
+    #  *  In the [ issueLinkType](#api-rest-api-2-issueLinkType-post) resource it defines and reports on issue link types.
     IssueLinkType 'type;
     # The ID or key of a linked issue.
     LinkedIssue inwardIssue;
@@ -3239,8 +3378,7 @@ public type PermissionHolder record {
 };
 
 # A JQL query clause.
-#
-public type  JqlQueryClause CompoundClause|FieldValueClause|FieldWasClause|FieldChangedClause;
+public type JqlQueryClause CompoundClause|FieldValueClause|FieldWasClause|FieldChangedClause;
 
 # Details about an issue type.
 public type IssueTypeDetails record {
@@ -3501,6 +3639,12 @@ public type WorkflowScheme record {
     # The self of the workflow scheme.
     string self?;
     # Whether to create or update a draft workflow scheme when updating an active workflow scheme. An active workflow scheme is a workflow scheme that is used by at least one project. The following examples show how this property works:
+    # 
+    #  *  Update an active workflow scheme with `updateDraftIfNeeded` set to `true`: If a draft workflow scheme exists, it is updated. Otherwise, a draft workflow scheme is created.
+    #  *  Update an active workflow scheme with `updateDraftIfNeeded` set to `false`: An error is returned, as active workflow schemes cannot be updated.
+    #  *  Update an inactive workflow scheme with `updateDraftIfNeeded` set to `true`: The workflow scheme is updated, as inactive workflow schemes do not require drafts to update.
+    # 
+    # Defaults to `false`.
     boolean updateDraftIfNeeded?;
     # The issue types available in Jira.
     record {} issueTypes?;
@@ -3686,6 +3830,10 @@ public type ProjectIdentifiers record {
 # Details of a remote issue link.
 public type RemoteIssueLinkRequest record {
     # An identifier for the remote item in the remote system. For example, the global ID for a remote item in Confluence would consist of the app ID and page ID, like this: `appId=456&pageId=123`.
+    # 
+    # Setting this field enables the remote issue link details to be updated or deleted using remote system and item details as the record identifier, rather than using the record's Jira ID.
+    # 
+    # The maximum length is 255 characters.
     string globalId?;
     # Details of the remote application the linked item is in. For example, trello.
     Application application?;
@@ -3717,6 +3865,9 @@ public type ContextualConfiguration record {
 };
 
 # Details about syntax and type errors. The error details apply to the entire expression, unless the object includes:
+# 
+#  *  `line` and `column`
+#  *  `expression`
 public type JiraExpressionValidationError record {
     # The text line in which the error occurred.
     int line?;
@@ -3824,6 +3975,7 @@ public type ColumnItem record {
 };
 
 # A [Connect module](https://developer.atlassian.com/cloud/jira/platform/about-jira-modules/) in the same format as in the
+# [app descriptor](https://developer.atlassian.com/cloud/jira/platform/app-descriptor/).
 public type ConnectModule record {
 };
 
@@ -3848,6 +4000,10 @@ public type PageBeanVersion record {
 # Information about the most recent use of a field.
 public type FieldLastUsed record {
     # Last used value type:
+    # 
+    #  *  *TRACKED*: field is tracked and a last used date is available.
+    #  *  *NOT\_TRACKED*: field is not tracked, last used date is not available.
+    #  *  *NO\_INFORMATION*: field is tracked, but no last used date is available.
     string 'type?;
     # The date when the value of the field last changed.
     string value?;
@@ -3859,8 +4015,57 @@ public type CustomFieldDefinitionJsonBean record {
     # The description of the custom field, which is displayed in Jira.
     string description?;
     # The type of the custom field. These built-in custom field types are available:
+    # 
+    #  *  `cascadingselect`: Enables values to be selected from two levels of select lists (value: `com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect`)
+    #  *  `datepicker`: Stores a date using a picker control (value: `com.atlassian.jira.plugin.system.customfieldtypes:datepicker`)
+    #  *  `datetime`: Stores a date with a time component (value: `com.atlassian.jira.plugin.system.customfieldtypes:datetime`)
+    #  *  `float`: Stores and validates a numeric (floating point) input (value: `com.atlassian.jira.plugin.system.customfieldtypes:float`)
+    #  *  `grouppicker`: Stores a user group using a picker control (value: `com.atlassian.jira.plugin.system.customfieldtypes:grouppicker`)
+    #  *  `importid`: A read-only field that stores the ID the issue had in the system it was imported from (value: `com.atlassian.jira.plugin.system.customfieldtypes:importid`)
+    #  *  `labels`: Stores labels (value: `com.atlassian.jira.plugin.system.customfieldtypes:labels`)
+    #  *  `multicheckboxes`: Stores multiple values using checkboxes (value: ``)
+    #  *  `multigrouppicker`: Stores multiple user groups using a picker control (value: ``)
+    #  *  `multiselect`: Stores multiple values using a select list (value: `com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes`)
+    #  *  `multiuserpicker`: Stores multiple users using a picker control (value: `com.atlassian.jira.plugin.system.customfieldtypes:multigrouppicker`)
+    #  *  `multiversion`: Stores multiple versions from the versions available in a project using a picker control (value: `com.atlassian.jira.plugin.system.customfieldtypes:multiversion`)
+    #  *  `project`: Stores a project from a list of projects that the user is permitted to view (value: `com.atlassian.jira.plugin.system.customfieldtypes:project`)
+    #  *  `radiobuttons`: Stores a value using radio buttons (value: `com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons`)
+    #  *  `readonlyfield`: Stores a read-only text value, which can only be populated via the API (value: `com.atlassian.jira.plugin.system.customfieldtypes:readonlyfield`)
+    #  *  `select`: Stores a value from a configurable list of options (value: `com.atlassian.jira.plugin.system.customfieldtypes:select`)
+    #  *  `textarea`: Stores a long text string using a multiline text area (value: `com.atlassian.jira.plugin.system.customfieldtypes:textarea`)
+    #  *  `textfield`: Stores a text string using a single-line text box (value: `com.atlassian.jira.plugin.system.customfieldtypes:textfield`)
+    #  *  `url`: Stores a URL (value: `com.atlassian.jira.plugin.system.customfieldtypes:url`)
+    #  *  `userpicker`: Stores a user using a picker control (value: `com.atlassian.jira.plugin.system.customfieldtypes:userpicker`)
+    #  *  `version`: Stores a version using a picker control (value: `com.atlassian.jira.plugin.system.customfieldtypes:version`)
+    # 
+    # To create a field based on a [Forge custom field type](https://developer.atlassian.com/platform/forge/manifest-reference/modules/#jira-custom-field-type--beta-), use the ID of the Forge custom field type as the value. For example, `ari:cloud:ecosystem::extension/e62f20a2-4b61-4dbe-bfb9-9a88b5e3ac84/548c5df1-24aa-4f7c-bbbb-3038d947cb05/static/my-cf-type-key`.
     string 'type;
     # The searcher defines the way the field is searched in Jira. For example, *com.atlassian.jira.plugin.system.customfieldtypes:grouppickersearcher*.  
+    # The search UI (basic search and JQL search) will display different operations and values for the field, based on the field searcher. You must specify a searcher that is valid for the field type, as listed below (abbreviated values shown):
+    # 
+    #  *  `cascadingselect`: `cascadingselectsearcher`
+    #  *  `datepicker`: `daterange`
+    #  *  `datetime`: `datetimerange`
+    #  *  `float`: `exactnumber` or `numberrange`
+    #  *  `grouppicker`: `grouppickersearcher`
+    #  *  `importid`: `exactnumber` or `numberrange`
+    #  *  `labels`: `labelsearcher`
+    #  *  `multicheckboxes`: `multiselectsearcher`
+    #  *  `multigrouppicker`: `multiselectsearcher`
+    #  *  `multiselect`: `multiselectsearcher`
+    #  *  `multiuserpicker`: `userpickergroupsearcher`
+    #  *  `multiversion`: `versionsearcher`
+    #  *  `project`: `projectsearcher`
+    #  *  `radiobuttons`: `multiselectsearcher`
+    #  *  `readonlyfield`: `textsearcher`
+    #  *  `select`: `multiselectsearcher`
+    #  *  `textarea`: `textsearcher`
+    #  *  `textfield`: `textsearcher`
+    #  *  `url`: `exacttextsearcher`
+    #  *  `userpicker`: `userpickergroupsearcher`
+    #  *  `version`: `versionsearcher`
+    # 
+    # If no searcher is provided, the field isn't searchable. However, [Forge custom fields](https://developer.atlassian.com/platform/forge/manifest-reference/modules/#jira-custom-field-type--beta-) have a searcher set automatically, so are always searchable.
     string searcherKey?;
 };
 
@@ -4346,6 +4551,11 @@ public type ComponentWithIssueCount record {
     # The user details for the component's lead user.
     User lead?;
     # The nominal user type used to determine the assignee for issues created with this component. See `realAssigneeType` for details on how the type of the user, and hence the user, assigned to issues is determined. Takes the following values:
+    # 
+    #  *  `PROJECT_LEAD` the assignee to any issues created with this component is nominally the lead for the project the component is in.
+    #  *  `COMPONENT_LEAD` the assignee to any issues created with this component is nominally the lead for the component.
+    #  *  `UNASSIGNED` an assignee is not set for issues created with this component.
+    #  *  `PROJECT_DEFAULT` the assignee to any issues created with this component is nominally the default assignee for the project that the component is in.
     string assigneeType?;
     # Not used.
     int projectId?;
@@ -4356,6 +4566,11 @@ public type ComponentWithIssueCount record {
     # Whether a user is associated with `assigneeType`. For example, if the `assigneeType` is set to `COMPONENT_LEAD` but the component lead is not set, then `false` is returned.
     boolean isAssigneeTypeValid?;
     # The type of the assignee that is assigned to issues created with this component, when an assignee cannot be set from the `assigneeType`. For example, `assigneeType` is set to `COMPONENT_LEAD` but no component lead is set. This property is set to one of the following values:
+    # 
+    #  *  `PROJECT_LEAD` when `assigneeType` is `PROJECT_LEAD` and the project lead has permission to be assigned issues in the project that the component is in.
+    #  *  `COMPONENT_LEAD` when `assignee`Type is `COMPONENT_LEAD` and the component lead has permission to be assigned issues in the project that the component is in.
+    #  *  `UNASSIGNED` when `assigneeType` is `UNASSIGNED` and Jira is configured to allow unassigned issues.
+    #  *  `PROJECT_DEFAULT` when none of the preceding cases are true.
     string realAssigneeType?;
     # The name for the component.
     string name?;
@@ -4488,6 +4703,12 @@ public type Changelog record {
 
 public type SharePermissionInputBean record {
     # The type of the share permission.Specify the type as follows:
+    # 
+    #  *  `group` Share with a group. Specify `groupname` as well.
+    #  *  `project` Share with a project. Specify `projectId` as well.
+    #  *  `projectRole` Share with a project role in a project. Specify `projectId` and `projectRoleId` as well.
+    #  *  `global` Share globally, including anonymous users. If set, this type overrides all existing share permissions and must be deleted before any non-global share permissions is set.
+    #  *  `authenticated` Share with all logged-in users. This shows as `loggedin` in the response. If set, this type overrides all existing share permissions and must be deleted before any non-global share permissions is set.
     string 'type;
     # The ID of the project to share the filter with. Set `type` to `project`.
     string projectId?;
@@ -4642,10 +4863,23 @@ public type ProjectComponent record {
     # The accountId of the component's lead user. The accountId uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
     string leadAccountId?;
     # The nominal user type used to determine the assignee for issues created with this component. See `realAssigneeType` for details on how the type of the user, and hence the user, assigned to issues is determined. Can take the following values:
+    # 
+    #  *  `PROJECT_LEAD` the assignee to any issues created with this component is nominally the lead for the project the component is in.
+    #  *  `COMPONENT_LEAD` the assignee to any issues created with this component is nominally the lead for the component.
+    #  *  `UNASSIGNED` an assignee is not set for issues created with this component.
+    #  *  `PROJECT_DEFAULT` the assignee to any issues created with this component is nominally the default assignee for the project that the component is in.
+    # 
+    # Default value: `PROJECT_DEFAULT`.  
+    # Optional when creating or updating a component.
     string assigneeType?;
     # The details of the user associated with `assigneeType`, if any. See `realAssignee` for details of the user assigned to issues created with this component.
     User assignee?;
     # The type of the assignee that is assigned to issues created with this component, when an assignee cannot be set from the `assigneeType`. For example, `assigneeType` is set to `COMPONENT_LEAD` but no component lead is set. This property is set to one of the following values:
+    # 
+    #  *  `PROJECT_LEAD` when `assigneeType` is `PROJECT_LEAD` and the project lead has permission to be assigned issues in the project that the component is in.
+    #  *  `COMPONENT_LEAD` when `assignee`Type is `COMPONENT_LEAD` and the component lead has permission to be assigned issues in the project that the component is in.
+    #  *  `UNASSIGNED` when `assigneeType` is `UNASSIGNED` and Jira is configured to allow unassigned issues.
+    #  *  `PROJECT_DEFAULT` when none of the preceding cases are true.
     string realAssigneeType?;
     # The user assigned to issues created with this component, when `assigneeType` does not identify a valid assignee.
     User realAssignee?;
@@ -4893,13 +5127,13 @@ public type JexpIssues record {
 
 public type AvatarUrlsBean record {
     # The URL of the item's 16x16 pixel avatar.
-    string '\1\6x\1\6?;
+    string '16x16?;
     # The URL of the item's 24x24 pixel avatar.
-    string '\2\4x\2\4?;
+    string '24x24?;
     # The URL of the item's 32x32 pixel avatar.
-    string '\3\2x\3\2?;
+    string '32x32?;
     # The URL of the item's 48x48 pixel avatar.
-    string '\4\8x\4\8?;
+    string '48x48?;
 };
 
 public type IdOrKeyBean record {
@@ -4999,6 +5233,10 @@ public type Resolution record {
 };
 
 # A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:
+# 
+#  *  User record deleted from Atlassian: This occurs as the result of a right to be forgotten request. In this case, `displayName` provides an indication and other parameters have default values or are blank (for example, email is blank).
+#  *  User record corrupted: This occurs as a results of events such as a server import and can only happen to deleted users. In this case, `accountId` returns *unknown* and all other parameters have fallback values.
+#  *  User record unavailable: This usually occurs due to an internal service outage. In this case, all parameters have fallback values.
 public type User record {
     # The URL of the user.
     string self?;
@@ -5007,12 +5245,15 @@ public type User record {
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. Required in requests.
     string accountId?;
     # The user account type. Can take the following values:
+    # 
+    #  *  `atlassian` regular Atlassian user account
+    #  *  `app` system account used for Connect applications and OAuth to represent external systems
+    #  *  `customer` Jira Service Desk account representing an external service desk
     string accountType?;
     # This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
     string name?;
     # The email address of the user. Depending on the user’s privacy setting, this may be returned as null.
     string emailAddress?;
-    # The avatars of the user.
     AvatarUrlsBean avatarUrls?;
     # The display name of the user. Depending on the user’s privacy setting, this may return an alternative value.
     string displayName?;
@@ -5022,9 +5263,8 @@ public type User record {
     string timeZone?;
     # The locale of the user. Depending on the user’s privacy setting, this may be returned as null.
     string locale?;
-    # The groups that the user belongs to.
+    # A simple wrapper group name.
     SimpleListWrapperGroupName groups?;
-    # The application roles the user is assigned to.
     SimpleListWrapperApplicationRole applicationRoles?;
     # Expand options that include additional user details in the response.
     string expand?;
@@ -5108,7 +5348,7 @@ public type ProjectRoleDetails record {
 # Lists of issues and entity properties. See [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/) for more information.
 public type IssueEntityProperties record {
     # A list of entity property IDs.
-    int[] entitiesIds?;
+    int[10000] entitiesIds?;
     # A list of entity property keys and values.
     record {} properties?;
 };
@@ -5127,7 +5367,7 @@ public type KeywordOperand record {
     string keyword;
 };
 
-public type  CustomFieldContextDefaultValue CustomFieldContextDefaultValueCascadingOption|CustomFieldContextDefaultValueMultipleOption|CustomFieldContextDefaultValueSingleOption;
+public type CustomFieldContextDefaultValue CustomFieldContextDefaultValueCascadingOption|CustomFieldContextDefaultValueMultipleOption|CustomFieldContextDefaultValueSingleOption;
 
 # The schema of a field.
 public type JsonTypeBean record {

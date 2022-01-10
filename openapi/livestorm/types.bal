@@ -37,7 +37,7 @@ public type Owner record {
 # Session releationship
 public type SessionRelationship record {
     # People
-    People[] people?;
+    People[]? people?;
 };
 
 # Create new event response
@@ -60,29 +60,29 @@ public type EventAttribute record {
     # Event slug
     string slug?;
     # Event title
-    string registration_link?;
+    string? registration_link?;
     # Estimated duration
-    int estimated_duration?;
+    int? estimated_duration?;
     # Registration page enabled or not
-    boolean registration_page_enabled?;
+    boolean? registration_page_enabled?;
     # Everyone can speack or not
-    boolean everyone_can_speak?;
+    boolean? everyone_can_speak?;
     # Description about event
     string? description?;
     # Event language
-    string language?;
+    string? language?;
     # Updated timestamp
-    int published_at?;
+    int? published_at?;
     # Created timestamp
-    int created_at?;
+    int? created_at?;
     # Updated timestamp
-    int updated_at?;
+    int? updated_at?;
     # Owner details
     Owner owner?;
     # Number of sessions
-    int sessions_count?;
+    int? sessions_count?;
     # Fields available
-    Field[] fields?;
+    Field[]? fields?;
 };
 
 # Add Session data
@@ -108,27 +108,27 @@ public type EventData record {
 # Event fields
 public type Field record {
     # Event field ID
-    string id?;
+    string? id?;
     # Type of fields
-    string 'type?;
+    string? 'type?;
     # Order of fields
-    int 'order?;
+    int? 'order?;
     # Required or not
-    boolean required?;
+    boolean? required?;
 };
 
 # People request attributes
 public type PeopleRequestAttribute record {
     # Referrer detail
-    string referrer?;
+    string? referrer?;
     # UTM tracking source
     string utm_source?;
     # UTM medium
-    string utm_medium?;
+    string? utm_medium?;
     # UTM term
     string utm_term?;
     # UTM content
-    string utm_content?;
+    string? utm_content?;
     # UTM campaign
     string utm_campaign?;
 };
@@ -162,19 +162,19 @@ public type OwnerAttribute record {
     # Email
     string email?;
     # Avatar link
-    string? avatar_link?;
+    string avatar_link?;
 };
 
 # Event releationship
 public type EventRelationship record {
     # Event session
-    Session[] sessions?;
+    Session[]? sessions?;
 };
 
 # Session request attributes
 public type SessionRequestAttribute record {
     # Estimated started time
-    string estimated_started_at?;
+    string? estimated_started_at?;
     # Time zone
     string timezone?;
 };
@@ -286,7 +286,7 @@ public type InlineResponse2003 record {
     record {
         *Event;
         # Attributes
-        record {string role?; int created_at?; int updated_at?; string timezone?; string first_name?; string last_name?; string email?; string avatar_link?; record {string event_id?; string created_at?; string updated_at?; record {string id?; string 'type?; int 'order?; string required?;}[] fields?;}[] registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;} attributes?;
+        record {string role?; int? created_at?; int? updated_at?; string? timezone?; string? first_name?; string? last_name?; string? email?; string? avatar_link?; record {string event_id?; string created_at?; string updated_at?; record {string id?; string 'type?; int 'order?; string required?;}[] fields?;}[]? registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;} attributes?;
     }[] data;
     # Metadata
     Meta meta?;
@@ -297,7 +297,7 @@ public type InlineResponse2002 record {
     record {
         *Event;
         # Attributes
-        record {string event_type_id?; string status?; string timezone?; string room_link?; int attendees_count?; int duration?; int estimated_started_at?; int started_at?; int ended_at?; int canceled_at?; int created_at?; int updated_at?; int registrants_count?;} attributes?;
+        record {string? event_type_id?; string status?; string timezone?; string room_link?; int attendees_count?; int? duration?; int estimated_started_at?; int? started_at?; int? ended_at?; int? canceled_at?; int created_at?; int updated_at?; int? registrants_count?;} attributes?;
     }[] data;
     # Metadata
     Meta meta?;
@@ -306,7 +306,7 @@ public type InlineResponse2002 record {
 # Event request attributes
 public type EventRequestAttribute record {
     # Event ID to copy
-    string copy_from_event_id?;
+    string? copy_from_event_id?;
     # Owner ID
     string owner_id?;
     # Event title

@@ -162,7 +162,7 @@ public type OwnerAttribute record {
     # Email
     string email?;
     # Avatar link
-    string avatar_link?;
+    string? avatar_link?;
 };
 
 # Event releationship

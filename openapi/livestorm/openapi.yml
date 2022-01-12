@@ -205,7 +205,7 @@ components:
           description: Email
         avatar_link:
           type: string
-          nullable: false
+          nullable: true
           description: Avatar link
     EventAttribute:
       type: object

@@ -162,7 +162,7 @@ public type OwnerAttribute record {
     # Email
     string email?;
     # Avatar link
-    string avatar_link?;
+    string? avatar_link?;
 };
 
 # Event releationship
@@ -184,9 +184,9 @@ public type PeopleAttribute record {
     # Role assigned to
     string role?;
     # Created time
-    string created_at?;
+    int created_at?;
     # Updated time
-    string updated_at?;
+    int updated_at?;
     # Time zone
     string timezone?;
     # First name
@@ -238,9 +238,9 @@ public type SessionAttribute record {
     # Canceled time
     string canceled_at?;
     # Created time
-    string created_at?;
+    int created_at?;
     # Updated time
-    string updated_at?;
+    int updated_at?;
     # Number of registrants
     string registrants_count?;
 };
@@ -286,7 +286,7 @@ public type InlineResponse2003 record {
     record {
         *Event;
         # Attributes
-        record {string role?; int? created_at?; int? updated_at?; string? timezone?; string? first_name?; string? last_name?; string? email?; string? avatar_link?; record {string event_id?; string created_at?; string updated_at?; record {string id?; string 'type?; int 'order?; string required?;}[] fields?;}[]? registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;} attributes?;
+        record {string role?; int? created_at?; int? updated_at?; string? timezone?; string? first_name?; string? last_name?; string? email?; string? avatar_link?; record {string event_id?; int created_at?; int updated_at?; record {string id?; string 'type?; string? value?; boolean required?;}[] fields?;} registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;} attributes?;
     }[] data;
     # Metadata
     Meta meta?;

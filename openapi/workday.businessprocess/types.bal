@@ -104,8 +104,8 @@ public type BusinessProcessStepRef record {
 
 public type BusinessProcessStepSendBack record {
     # Returns user's comment for Event Record.
-    string? reason?;
-    To? to?;
+    string? reason;
+    To? to;
     StatusReadOnly? status?;
     # A preview of the instance
     string? descriptor?;
@@ -449,11 +449,16 @@ public type FacetsModelReferenceInner record {
     # The alias used to select the facet
     string? facetParameter?;
     # the facet values
-    record  { # The number of instances returned by this facet
-        int? count?; # wid / id / reference id
-        string? id; # A description of the facet
-        string? descriptor?; # A link to the instance
-        string? href?;} []? values?;
+    record {
+        # The number of instances returned by this facet
+        int? count?;
+        # wid / id / reference id
+        string? id;
+        # A description of the facet
+        string? descriptor?;
+        # A link to the instance
+        string? href?;
+    }[]? values?;
 };
 
 public type BusinessProcess record {

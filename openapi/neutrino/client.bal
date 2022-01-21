@@ -42,20 +42,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # SMS Verify
     #
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function verifySMS(SmsverifyBody payload) returns SMSVerifyResponse|error {
-        string  path = string `/sms-verify`;
+        string resourcePath = string `/sms-verify`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        SMSVerifyResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SMSVerifyResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        SMSVerifyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Phone Verify
@@ -63,14 +63,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function verifyPhone(PhoneverifyBody payload) returns PhoneVerifyResponse|error {
-        string  path = string `/phone-verify`;
+        string resourcePath = string `/phone-verify`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        PhoneVerifyResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PhoneVerifyResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        PhoneVerifyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # HLR Lookup
@@ -78,14 +77,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function lookupHLR(HlrlookupBody payload) returns HLRLookupResponse|error {
-        string  path = string `/hlr-lookup`;
+        string resourcePath = string `/hlr-lookup`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        HLRLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=HLRLookupResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        HLRLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # SMS Message
@@ -93,14 +91,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function sendSMS(SmsmessageBody payload) returns SMSMessageResponse|error {
-        string  path = string `/sms-message`;
+        string resourcePath = string `/sms-message`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        SMSMessageResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SMSMessageResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        SMSMessageResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Verify Security Code
@@ -108,14 +105,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function verifySecurityCode(VerifysecuritycodeBody payload) returns VerifySecurityCodeResponse|error {
-        string  path = string `/verify-security-code`;
+        string resourcePath = string `/verify-security-code`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        VerifySecurityCodeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=VerifySecurityCodeResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        VerifySecurityCodeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Phone Playback
@@ -123,14 +119,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function playbackPhone(PhoneplaybackBody payload) returns PhonePlaybackResponse|error {
-        string  path = string `/phone-playback`;
+        string resourcePath = string `/phone-playback`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        PhonePlaybackResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PhonePlaybackResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        PhonePlaybackResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # User Agent Info
@@ -138,14 +133,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function getUserAgentInfo(UseragentinfoBody payload) returns UserAgentInfoResponse|error {
-        string  path = string `/user-agent-info`;
+        string resourcePath = string `/user-agent-info`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        UserAgentInfoResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserAgentInfoResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        UserAgentInfoResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Email Validate
@@ -153,14 +147,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function validateEmail(EmailvalidateBody payload) returns EmailValidateResponse|error {
-        string  path = string `/email-validate`;
+        string resourcePath = string `/email-validate`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        EmailValidateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=EmailValidateResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        EmailValidateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Phone Validate
@@ -168,14 +161,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function validatePhone(PhonevalidateBody payload) returns PhoneValidateResponse|error {
-        string  path = string `/phone-validate`;
+        string resourcePath = string `/phone-validate`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        PhoneValidateResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PhoneValidateResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        PhoneValidateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Bad Word Filter
@@ -183,14 +175,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function filterBadWord(BadwordfilterBody payload) returns BadWordFilterResponse|error {
-        string  path = string `/bad-word-filter`;
+        string resourcePath = string `/bad-word-filter`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        BadWordFilterResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BadWordFilterResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        BadWordFilterResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Host Reputation
@@ -198,14 +189,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function hostReputation(HostreputationBody payload) returns HostReputationResponse|error {
-        string  path = string `/host-reputation`;
+        string resourcePath = string `/host-reputation`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        HostReputationResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=HostReputationResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        HostReputationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # IP Probe
@@ -213,14 +203,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function probeIP(IpprobeBody payload) returns IPProbeResponse|error {
-        string  path = string `/ip-probe`;
+        string resourcePath = string `/ip-probe`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        IPProbeResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPProbeResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        IPProbeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Email Verify
@@ -228,14 +217,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function verifyEmail(EmailverifyBody payload) returns EmailVerifyResponse|error {
-        string  path = string `/email-verify`;
+        string resourcePath = string `/email-verify`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        EmailVerifyResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=EmailVerifyResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        EmailVerifyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # IP Blocklist
@@ -243,14 +231,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function detectIPBlocklist(IpblocklistBody payload) returns IPBlocklistResponse|error {
-        string  path = string `/ip-blocklist`;
+        string resourcePath = string `/ip-blocklist`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        IPBlocklistResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPBlocklistResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        IPBlocklistResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # IP Blocklist Download
@@ -258,14 +245,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function downloadIPBlocklist(IpblocklistdownloadBody payload) returns string|error {
-        string  path = string `/ip-blocklist-download`;
+        string resourcePath = string `/ip-blocklist-download`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # IP Info
@@ -273,14 +259,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function getIPInfo(IpinfoBody payload) returns IPInfoResponse|error {
-        string  path = string `/ip-info`;
+        string resourcePath = string `/ip-info`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        IPInfoResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=IPInfoResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        IPInfoResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Geocode Reverse
@@ -288,14 +273,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function reverseGeocode(GeocodereverseBody payload) returns GeocodeReverseResponse|error {
-        string  path = string `/geocode-reverse`;
+        string resourcePath = string `/geocode-reverse`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        GeocodeReverseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GeocodeReverseResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        GeocodeReverseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Geocode Address
@@ -303,14 +287,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function geocodeAddress(GeocodeaddressBody payload) returns GeocodeAddressResponse|error {
-        string  path = string `/geocode-address`;
+        string resourcePath = string `/geocode-address`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        GeocodeAddressResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GeocodeAddressResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        GeocodeAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Currency Convert
@@ -318,14 +301,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function convertCurrency(ConvertBody payload) returns ConvertResponse|error {
-        string  path = string `/convert`;
+        string resourcePath = string `/convert`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        ConvertResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ConvertResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        ConvertResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # BIN Lookup
@@ -333,14 +315,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function lookupBIN(BinlookupBody payload) returns BINLookupResponse|error {
-        string  path = string `/bin-lookup`;
+        string resourcePath = string `/bin-lookup`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        BINLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BINLookupResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        BINLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # BIN List Download
@@ -348,14 +329,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function downloadBINList(BinlistdownloadBody payload) returns string|error {
-        string  path = string `/bin-list-download`;
+        string resourcePath = string `/bin-list-download`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # URL Info
@@ -363,14 +343,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function getURLInfo(UrlinfoBody payload) returns URLInfoResponse|error {
-        string  path = string `/url-info`;
+        string resourcePath = string `/url-info`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        URLInfoResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=URLInfoResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        URLInfoResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # HTML Clean
@@ -378,14 +357,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function cleanHTML(HtmlcleanBody payload) returns string|error {
-        string  path = string `/html-clean`;
+        string resourcePath = string `/html-clean`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Browser Bot
@@ -393,14 +371,13 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Response status 
     remote isolated function browserBot(BrowserbotBody payload) returns BrowserBotResponse|error {
-        string  path = string `/browser-bot`;
+        string resourcePath = string `/browser-bot`;
         map<any> headerValues = {"user-id": self.apiKeyConfig.userId, "api-key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        BrowserBotResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BrowserBotResponse);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        BrowserBotResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

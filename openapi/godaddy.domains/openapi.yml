@@ -1,6 +1,6 @@
 openapi: 3.0.1
 servers:
-  - url: //api.ote-godaddy.com/
+  - url: https://api.ote-godaddy.com/
 info:
   x-ballerina-display:
     label: GoDaddy Domains

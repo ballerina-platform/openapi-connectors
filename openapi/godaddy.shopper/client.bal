@@ -34,23 +34,24 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "//api.ote-godaddy.com/") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.ote-godaddy.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Create a Subaccount owned by the authenticated Reseller
     #
     # + payload - The subaccount to create 
     # + return - Request was successful 
     remote isolated function createSubaccount(SubaccountCreate payload) returns ShopperId|error {
-        string  path = string `/v1/shoppers/subaccount`;
+        string resourcePath = string `/v1/shoppers/subaccount`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShopperId response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ShopperId);
+        request.setPayload(jsonBody, "application/json");
+        ShopperId response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get details for the specified Shopper
@@ -59,13 +60,13 @@ public isolated client class Client {
     # + includes - Additional properties to be included in the response shopper object 
     # + return - Request was successful 
     remote isolated function get(string shopperId, string[]? includes = ()) returns Shopper|error {
-        string  path = string `/v1/shoppers/${shopperId}`;
+        string resourcePath = string `/v1/shoppers/${shopperId}`;
         map<anydata> queryParam = {"includes": includes};
         map<Encoding> queryParamEncoding = {"includes": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Shopper response = check self.clientEp-> get(path, accHeaders, targetType = Shopper);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Shopper response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update details for the specified Shopper
@@ -74,13 +75,13 @@ public isolated client class Client {
     # + payload - The Shopper details to update 
     # + return - Request was successful 
     remote isolated function update(string shopperId, ShopperUpdate payload) returns ShopperId|error {
-        string  path = string `/v1/shoppers/${shopperId}`;
+        string resourcePath = string `/v1/shoppers/${shopperId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShopperId response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ShopperId);
+        request.setPayload(jsonBody, "application/json");
+        ShopperId response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request the deletion of a shopper profile
@@ -89,12 +90,12 @@ public isolated client class Client {
     # + auditClientIp - The client IP of the user who originated the request leading to this call. 
     # + return - Request was successful 
     remote isolated function delete(string shopperId, string auditClientIp) returns http:Response|error {
-        string  path = string `/v1/shoppers/${shopperId}`;
+        string resourcePath = string `/v1/shoppers/${shopperId}`;
         map<anydata> queryParam = {"auditClientIp": auditClientIp};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get details for the specified Shopper
@@ -103,12 +104,12 @@ public isolated client class Client {
     # + auditClientIp - The client IP of the user who originated the request leading to this call. 
     # + return - Request was successful 
     remote isolated function getStatus(string shopperId, string auditClientIp) returns ShopperStatus|error {
-        string  path = string `/v1/shoppers/${shopperId}/status`;
+        string resourcePath = string `/v1/shoppers/${shopperId}/status`;
         map<anydata> queryParam = {"auditClientIp": auditClientIp};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ShopperStatus response = check self.clientEp-> get(path, accHeaders, targetType = ShopperStatus);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ShopperStatus response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Set subaccount's password
@@ -117,13 +118,13 @@ public isolated client class Client {
     # + payload - The value to set the subaccount's password to 
     # + return - Request was successful 
     remote isolated function changePassword(string shopperId, Secret payload) returns ShopperId|error {
-        string  path = string `/v1/shoppers/${shopperId}/factors/password`;
+        string resourcePath = string `/v1/shoppers/${shopperId}/factors/password`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShopperId response = check self.clientEp->put(path, request, headers = accHeaders, targetType=ShopperId);
+        request.setPayload(jsonBody, "application/json");
+        ShopperId response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

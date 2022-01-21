@@ -344,7 +344,7 @@ public type PaymentCreateObject record {
     # The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company
     decimal? ExchangeRate?;
     # Zero or more transactions accounting for this payment. Values for Line.LinkedTxn.TxnTypecan be one of the following- - Expense--Payment is reimbursement for expense paid by cash made on behalf of the customer - Check--Payment is reimbursement for expense paid by check made on behalf of the customer - CreditCardCredit--Payment is reimbursement for a credit card credit made on behalf of the customer - JournalEntry--Payment is linked to the representative journal entry - CreditMemo--Payment is linked to the credit memo the customer has with the business - Invoice--The invoice to which payment is applied - Use Line.LinkedTxn.TxnId as the ID in a separate read request for the specific resource to retrieve details of the linked object.
-    ItemBasedExpenseLine|AccountBasedExpenseLine[]? Line?;
+    (ItemBasedExpenseLine|AccountBasedExpenseLine?)[]? Line?;
     # Used internally to specify originating source of a credit card transaction.
     string? TxnSource?;
     # Reference type
@@ -542,7 +542,7 @@ public type BillCreateObject record {
     # Reference to the vendor for this transaction. Query the Vendor name list resource to determine the appropriate Vendor object for this reference. Use Vendor.Id and Vendor.Name from that object for VendorRef.value and VendorRef.name, respectively.
     BillcreateobjectVendorref? VendorRef;
     # Individual line items of a transaction. Valid Line types include- ItemBasedExpenseLine and AccountBasedExpenseLine
-    ItemBasedExpenseLine|AccountBasedExpenseLine[]? Line;
+    (ItemBasedExpenseLine|AccountBasedExpenseLine?)[]? Line;
     # Currency reference type
     CurrencyRefType? CurrencyRef?;
 };
@@ -878,7 +878,7 @@ public type Payment record {
     # The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company
     decimal? ExchangeRate?;
     # Zero or more transactions accounting for this payment. Values for Line.LinkedTxn.TxnTypecan be one of the following- - Expense--Payment is reimbursement for expense paid by cash made on behalf of the customer - Check--Payment is reimbursement for expense paid by check made on behalf of the customer - CreditCardCredit--Payment is reimbursement for a credit card credit made on behalf of the customer - JournalEntry--Payment is linked to the representative journal entry - CreditMemo--Payment is linked to the credit memo the customer has with the business - Invoice--The invoice to which payment is applied - Use Line.LinkedTxn.TxnId as the ID in a separate read request for the specific resource to retrieve details of the linked object.
-    ItemBasedExpenseLine|AccountBasedExpenseLine[]? Line?;
+    (ItemBasedExpenseLine|AccountBasedExpenseLine?)[]? Line?;
     # Used internally to specify originating source of a credit card transaction.
     string? TxnSource?;
     # Reference type
@@ -936,7 +936,7 @@ public type Bill record {
     # Reference type
     ReferenceType? VendorRef?;
     # Individual line items of a transaction. Valid Line types include- ItemBasedExpenseLine and AccountBasedExpenseLine
-    ItemBasedExpenseLine|AccountBasedExpenseLine[]? Line?;
+    (ItemBasedExpenseLine|AccountBasedExpenseLine?)[]? Line?;
     # Version number of the object. It is used to lock an object for use by one app at a time. - As soon as an application modifies an object, its SyncToken is incremented. - Attempts to modify an object specifying an older SyncToken fails. - Only the latest version of the object is maintained by QuickBooks Online.
     string? SyncToken?;
     # Currency reference type

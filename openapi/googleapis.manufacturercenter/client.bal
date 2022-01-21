@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -61,130 +59,97 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials. 
     # Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://manufacturers.googleapis.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Lists all the products in a Manufacturer Center account.
     #
-    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + include - The information to be included in the response. Only sections listed here will be returned.
-    # + pageSize - Maximum number of product statuses to return in the response, used for paging.
-    # + pageToken - The token returned by the previous request.
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account. 
+    # + include - The information to be included in the response. Only sections listed here will be returned. 
+    # + pageSize - Maximum number of product statuses to return in the response, used for paging. 
+    # + pageToken - The token returned by the previous request. 
+    # + return - Successful response 
     remote isolated function listAccountsProducts(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? include = (), int? pageSize = (), string? pageToken = ()) returns ListProductsResponse|error {
-        string  path = string `/v1/${parent}/products`;
+        string resourcePath = string `/v1/${parent}/products`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "include": include, "pageSize": pageSize, "pageToken": pageToken};
-        path = path + check getPathForQueryParam(queryParam);
-        ListProductsResponse response = check self.clientEp-> get(path, targetType = ListProductsResponse);
+        map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ListProductsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Gets the product from a Manufacturer Center account, including product issues. A recently updated product takes around 15 minutes to process. Changes are only visible after it has been processed. While some issues may be available once the product has been processed, other issues may take days to appear.
     #
-    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account.
-    # + name - Name in the format `{target_country}:{content_language}:{product_id}`. `target_country` - The target country of the product as a CLDR territory code (for example, US). `content_language` - The content language of the product as a two-letter ISO 639-1 language code (for example, en). `product_id` - The ID of the product. For more information, see https://support.google.com/manufacturers/answer/6124116#id.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + include - The information to be included in the response. Only sections listed here will be returned.
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account. 
+    # + name - Name in the format `{target_country}:{content_language}:{product_id}`. `target_country` - The target country of the product as a CLDR territory code (for example, US). `content_language` - The content language of the product as a two-letter ISO 639-1 language code (for example, en). `product_id` - The ID of the product. For more information, see https://support.google.com/manufacturers/answer/6124116#id. 
+    # + include - The information to be included in the response. Only sections listed here will be returned. 
+    # + return - Successful response 
     remote isolated function getAccountsProducts(string parent, string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? include = ()) returns Product|error {
-        string  path = string `/v1/${parent}/products/${name}`;
+        string resourcePath = string `/v1/${parent}/products/${name}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "include": include};
-        path = path + check getPathForQueryParam(queryParam);
-        Product response = check self.clientEp-> get(path, targetType = Product);
+        map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Product response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Inserts or updates the attributes of the product in a Manufacturer Center account. Creates a product with the provided attributes. If the product already exists, then all attributes are replaced with the new ones. The checks at upload time are minimal. All required attributes need to be present for a product to be valid. Issues may show up later after the API has accepted a new upload for a product and it is possible to overwrite an existing valid product with an invalid product. To detect this, you should retrieve the product and check it for issues once the new version is available. Uploaded attributes first need to be processed before they can be retrieved. Until then, new products will be unavailable, and retrieval of previously uploaded products will return the original state of the product.
     #
-    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account.
-    # + name - Name in the format `{target_country}:{content_language}:{product_id}`. `target_country` - The target country of the product as a CLDR territory code (for example, US). `content_language` - The content language of the product as a two-letter ISO 639-1 language code (for example, en). `product_id` - The ID of the product. For more information, see https://support.google.com/manufacturers/answer/6124116#id.
-    # + payload - Attributes request
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account. 
+    # + name - Name in the format `{target_country}:{content_language}:{product_id}`. `target_country` - The target country of the product as a CLDR territory code (for example, US). `content_language` - The content language of the product as a two-letter ISO 639-1 language code (for example, en). `product_id` - The ID of the product. For more information, see https://support.google.com/manufacturers/answer/6124116#id. 
+    # + payload - Attributes request 
+    # + return - Successful response 
     remote isolated function updateAccountsProducts(string parent, string name, Attributes payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string  path = string `/v1/${parent}/products/${name}`;
+        string resourcePath = string `/v1/${parent}/products/${name}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes the product from a Manufacturer Center account.
     #
-    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account.
-    # + name - Name in the format `{target_country}:{content_language}:{product_id}`. `target_country` - The target country of the product as a CLDR territory code (for example, US). `content_language` - The content language of the product as a two-letter ISO 639-1 language code (for example, en). `product_id` - The ID of the product. For more information, see https://support.google.com/manufacturers/answer/6124116#id.
-    # + xgafv - V1 error format.
-    # + alt - Data format for response.
-    # + callback - JSONP
-    # + fields - Selector specifying which fields to include in a partial response.
-    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
-    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart").
-    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart").
-    # + return - Successful response
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + parent - Parent ID in the format `accounts/{account_id}`. `account_id` - The ID of the Manufacturer Center account. 
+    # + name - Name in the format `{target_country}:{content_language}:{product_id}`. `target_country` - The target country of the product as a CLDR territory code (for example, US). `content_language` - The content language of the product as a two-letter ISO 639-1 language code (for example, en). `product_id` - The ID of the product. For more information, see https://support.google.com/manufacturers/answer/6124116#id. 
+    # + return - Successful response 
     remote isolated function deleteAccountsProducts(string parent, string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string  path = string `/v1/${parent}/products/${name}`;
+        string resourcePath = string `/v1/${parent}/products/${name}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

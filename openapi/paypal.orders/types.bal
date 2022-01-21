@@ -209,7 +209,6 @@ public type PaymentSourceResponse record {
 };
 
 # An array of JSON patch objects to apply partial updates to resources.
-# An array of JSON patch objects to apply partial updates to resources.
 public type UpdateOrderRequest Patch[]?;
 
 # An authorized payment for a purchase unit. A purchase unit can have zero or more authorized payments.

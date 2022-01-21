@@ -40,19 +40,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Geolocate a given IP address
     #
     # + payload - IP address 
     # + return - Successful IP geolocation 
     remote isolated function getGeoLocationInfo(Request payload) returns Response|error {
-        string  path = string `/`;
+        string resourcePath = string `/`;
         map<any> headerValues = {"X-IPTWIST-TOKEN": self.apiKeyConfig.xIptwistToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Response);
+        request.setPayload(jsonBody, "application/json");
+        Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

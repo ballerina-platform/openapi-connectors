@@ -144,9 +144,9 @@ public type PutPostResponseModel record {
     # This is the HTTP status message.
     string message?;
     # A notification that warns the user of something or that serves as a caution. Eg. an externalId supplied greater than 32 characters.
-    record  { }  warnings?;
+    record {} warnings?;
     # A fatal error that prevents the user from performing some action. (e.g. invalid warehouseId specified when creating a container)
-    record  { }  errors?;
+    record {} errors?;
     # A URL that gives more information about the linked resource. A null value would mean that no further information is available for that resource.
     string resourceLocation?;
 };

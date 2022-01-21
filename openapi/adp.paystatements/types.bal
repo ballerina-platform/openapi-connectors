@@ -645,10 +645,14 @@ public type PaystatementMemos record {
     # The code of the memo. The code can be user defined or statutory.
     PaystatementNamecode nameCode?;
     # The category of Memo. This is to support Taxable Benefits (memos) in Canada.
-    record {# The code for the related entity.
-        string codeValue?; # Short description of the related code not to exceed 25 characters
-        string shortName?; # Long description of the related code
-        string longName?;} memoCategoryCode?;
+    record {
+        # The code for the related entity.
+        string codeValue?;
+        # Short description of the related code not to exceed 25 characters
+        string shortName?;
+        # Long description of the related code
+        string longName?;
+    } memoCategoryCode?;
     # The amount of the memo related to this pay period
     PaystatementMemoamount memoAmount?;
     # The year to date amount of the memo

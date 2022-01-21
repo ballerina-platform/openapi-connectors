@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type  CustomOrPostActivity Activity|PostActivity;
+public type CustomOrPostActivity Activity|PostActivity;
 
 # A member's notes are free-form areas to attach information to a member's profile.
 public type Note record {

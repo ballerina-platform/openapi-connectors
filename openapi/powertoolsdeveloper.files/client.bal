@@ -43,19 +43,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Files - Generate QR code
     #
     # + payload - Input QR code parameters 
     # + return - OK 
     remote isolated function generateQRCode(InputQRCode payload) returns string|error {
-        string  path = string `/GenerateQRCode`;
+        string resourcePath = string `/GenerateQRCode`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

@@ -63,6 +63,10 @@ public type ActivityReference record {
     # The ID (UUID) that uniquely identifies a campaign activity.
     string campaign_activity_id?;
     # The purpose of the individual campaign activity in the larger email campaign effort. Valid values are: <ul>
+    #   <li>primary_email — The main email marketing campaign that you send to contacts. The <code>primary_email</code> contains the complete email content.</li>
+    #   <li>permalink — A permanent link to a web accessible version of the <code>primary_email</code> content without any personalized email information. For example, permalinks do not contain any of the contact details that you add to the <code>primary_email</code> email content. </li>
+    #   <li>resend — An email campaign that you resend to contacts that did not open the email campaign.</li>
+    # </ul> Constant Contact creates a <code>primary_email</code> and a <code>permalink</code> role campaign activity when you create an email campaign.
     string role?;
 };
 
@@ -98,12 +102,12 @@ public type TagAddRemoveContacts record {
     # Use to exclude specified contacts from being added or removed from a tag. Only applicable if the specified source is either <code>all_active_contacts</code> or <code>list_ids</code>.
     TagaddremovecontactsExclude exclude?;
     # An array of tags (<code>tag_id</code>) to add to all contacts meeting the specified source criteria.
-    string[] tag_ids;
+    string[50] tag_ids;
 };
 
 public type ContactXrefs record {
     # An array of cross-referenced V3 API <code>contact_id</code> and V2 API <code>sequence_id</code> values. Response is sorted ascending by <code>sequence_id</code>.
-    ContactXref[] xrefs?;
+    ContactXref[500] xrefs?;
 };
 
 # Link to an activity result resource; as an example, for file_export, the link to the exported contacts file.
@@ -121,6 +125,10 @@ public type TierObject record {
     # The number of active contacts (default) used within the current tier.
     float current_usage?;
     # The billing tier level that is associated with a client account. By default, the system determines the tier level to use based on the number of active contacts currently in the client account at the time of billing. Billing tiers may differ. The following shows an example billing tier: <ul>
+    #   <li>level <code>1</code> = 0 - 500 contacts</li>
+    #   <li>level <code>2</code> = 501 - 1000 contacts</li>
+    #   <li>level <code>3</code> = 1001 - ...</li>
+    # </ul>
     int tier?;
     # The minimum number of active contacts for the tier level.
     float tier_min?;
@@ -193,9 +201,9 @@ public type BulkEmailCampaignSummary record {
 # You can export contact objects to a CSV file. By default, all contacts in the user's account are exported if none of the following properties are included: <br/><li> By contact_id - you can specify up to 500 specific contacts. <li>list_id - you can specify up to 50 lists. You can use the status parameter with list_id<li>status - you can export contacts by status (unsubscribed, active, removed); this property can be used with list_ids.
 public type ContactsExport record {
     # Exports up to 500 specific contacts. This property is mutually exclusive with <code>list_ids</code>.
-    string[] contact_ids?;
+    string[500] contact_ids?;
     # Exports all of the contacts inside of up to 50 contact lists. This property is mutually exclusive with <code>contact_ids</code>.
-    string[] list_ids?;
+    string[50] list_ids?;
     # Specify the <code>segment_id</code> from which you want to export all contacts that meet the specified <code>segment_criteria</code>. This property is mutually exclusive with <code>contact_ids</code> and <code>list_ids</code>. You can only specify one <code>segment_id</code>.
     int segment_id?;
     # Use this array to export specific contact fields. You must export <code>email_address</code> to successfully export <code>email_optin_source</code>, <code>email_optin_date</code>, <code>email_optout_source</code>, <code>email_optout_date</code>, or <code>email_optout_reason</code>.
@@ -229,11 +237,11 @@ public type ActivityTagging record {
 # Select the source used to identify contacts to which a tag is added or removed. Source types are mutually exclusive.
 public type TagaddremovecontactsSource record {
     # An array of contacts IDs.
-    string[] contact_ids?;
+    string[500] contact_ids?;
     # An array of list IDs ( <code>list_id</code> ).
-    string[] list_ids?;
+    string[50] list_ids?;
     # An array of tags ( <code>tag_id</code> ).
-    string[] tag_ids?;
+    string[50] tag_ids?;
     # Use to identify contacts with an active status.
     boolean all_active_contacts?;
     # Use to identify newly subscribed contacts.
@@ -399,24 +407,24 @@ public type Contactresource2 record {
     # For deleted contacts (<code>email_address</code> contains <code>opt_out_source</code> and <code>opt_out_date</code>), shows the date of deletion.
     string deleted_at?;
     # Array of up to 25 <code>custom_field</code> key value pairs.
-    ContactCustomField[] custom_fields?;
+    ContactCustomField[25] custom_fields?;
     # Array of phone_numbers subresources. A contact can have up to 2 phone numbers.
-    PhoneNumber[] phone_numbers?;
+    PhoneNumber[2] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
-    StreetAddress[] street_addresses?;
+    StreetAddress[1] street_addresses?;
     # Array of list_id's to which the contact is subscribed, up to a maximum of 50.
-    string[] list_memberships?;
+    string[50] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[] taggings?;
+    string[50] taggings?;
     # An array of up to 150 notes about the contact.
-    Note[] notes?;
+    Note[150] notes?;
 };
 
 public type ContactDelete record {
     # Specify up to 500 contacts by <code>contact_id</code> to delete; mutually exclusive with <code>list_ids</code>.
-    string[] contact_ids?;
+    string[500] contact_ids?;
     # The contacts on the lists (up to 50) specified will be deleted; mutually exclusive with <code>contact_ids</code>.
-    string[] list_ids?;
+    string[50] list_ids?;
 };
 
 public type Paginglinks2 record {
@@ -444,10 +452,22 @@ public type Link2 record {
 # Specifies client billing plan details including the type of plan, the plan tiers used, the current billing status, and the day of the month that the client is billed. When a client account is first provisioned, the `plan_type` defaults to a `Trial` account. After you change an account `billing_status` from `Trial` to any other `billing_status`, you cannot change it back to a `Trial` account.
 public type PlanTiersObject record {
     # The billing plan that is associated with a client's Constant Contact account. The billing plan determines which Constant Contact product features that the client account can access. <ul>
+    #   <li><code>TRIAL</code>: A non-billed account with an expiration date that allows clients to try limited Constant Contact product features.</li>
+    #   <li><code>GOOD</code>: A billed <b>Email</b> client account plan.</li>
+    #   <li><code>BETTER</code>: A billed <b>Email Plus</b> client account plan.</li>
+    #   <li><code>BEST</code>: A billed <b>Personal Marketer</b> client account plan.</li>
+    #   <li><code>LITE</code>: A <b>Website Builder</b> client account plan.</li>
+    # </ul>
     string plan_type?;
     # Lists the billing plan tiers that are currently associated with a client account.
     TierObject[] current_tiers?;
     # The client's account billing status. When you first create a client account the <code>billing_status</code> defaults to <code>Trial</code>. Billing status values include:
+    #   <ul>
+    #     <li><code>Trial</code> - A non-paying trial client account (default value).</li>
+    #     <li><code>Open</code> - An active and paying client account.</li>
+    #     <li><code>Canceled</code> - A canceled client account.</li>
+    #     <li><code>Trial End</code> - The trial period has ended for this client account.</li>
+    #   </ul>
     string billing_status?;
     # This property is required when an account is not set up to use single billing. For trial accounts, the value is intially set to <code>null</code>. The value can only be changed when changing the <code>plan_type</code> from a trial account to a different type of plan, otherwise the value you enter is ignored. You can choose to enter a specific day of month or except the default value, which is the day that the <code>plan_type</code> value changes from a trial account plan to a different plan. Valid <code>billing_day_of_month</code> values include <code>1</code> through and including <code>31</code>.
     int billing_day_of_month?;
@@ -482,6 +502,17 @@ public type DidNotOpensTrackingActivity record {
 # Specifies the date and time a client requests to cancel their Constant Contact account and changes the account `billing_status` to `Canceled`. By default, this is the current date and time in ISO format. In the request body, you can optionally specify a future cancellation date (in ISO format) and a reason (`reason_code`) that the client wants to cancel their account.
 public type AccountCancellation record {
     # Specifies the reason that the client is canceling their Constant Contact account as follows:
+    #   <ul>
+    #     <li><code>1</code>  Cost Too High</li>
+    #     <li><code>2</code>  Using A Competitive Service</li>
+    #     <li><code>3</code>  Not Doing Email Marketing</li>
+    #     <li><code>11</code> Something Missing Or Not Working </li>
+    #     <li><code>12</code> Doing It In-House</li>
+    #     <li><code>14</code> Poor Results</li>
+    #     <li><code>21</code> Too Difficult To Use</li>
+    #     <li><code>27</code> Canceled Online by Customer</li>
+    #     <li><code>30</code> Dissatisfied With Billing Policies</li>
+    #   </ul>
     int reason_id?;
     # The client account cancellation date and time in ISO-8601 format.
     string effective_date?;
@@ -641,6 +672,8 @@ public type ContactCreateOrUpdateResponse record {
 };
 
 # A page of tracking activities for a contact that can include sends,
+# opens, clicks, bounces, opt-outs and forwards to a friend. If it exists, a
+# link to the next page of tracking activities is provided.
 public type ContactTrackingActivitiesPage record {
     # The list of contact tracking activities in descending date order.
     ContactTrackingActivity[] tracking_activities?;
@@ -662,6 +695,20 @@ public type BouncesTrackingActivity record {
     # The last name of the contact.
     string last_name?;
     # The one-character string used to specify the reason for the email bounce. Valid codes include:
+    # 
+    # <ul><li><code>B</code> - Non-existent address; the contact's Internet Service Provider (ISP) indicates that the email address doesn't exist.</li>
+    # 
+    # <li><code>D</code> - Undeliverable; after repeated delivery attempts, no response was received from the contact's ISP.</li>
+    # 
+    # <li><code>F</code> - Full; the contact's mailbox is full.</li>
+    # 
+    # <li><code>S</code> - Suspended; the contact's address was reported as non-existent by the ISP and is suspended from delivery.</li>
+    # 
+    # <li><code>V</code> - Vacation/autoreply; the contact set an autoreply, but the message was delivered.</li>
+    # 
+    # <li><code>X</code> - Other; the contact's ISP specified another reason that the message cannot be delivered.</li>
+    # 
+    # <li><code>Z</code> - Blocked; the recipient's ISP chose not to deliver the email. For example, the ISP may have flagged the email as spam.</li></ul>
     string bounce_code;
     # The contact's most current email address. If <code>email_address</code> was updated after the email bounce activity occurred, <code>current_ email_address</code> displays the updated address. If updates were not made to <code>email_address</code>, the <code>email_address</code> and <code>current_email_address</code> are the same.
     string current_email_address?;
@@ -783,11 +830,11 @@ public type ActivitydeletelistresponseLinks record {
 # The <code>source</code> object specifies which contacts to remove from your targeted lists using one of three mutually exclusive properties.
 public type ListactivityremovecontactsSource record {
     # Specifies which contacts to remove from your target lists as an array of up to 50 contact <code>list_id</code> values. This property is mutually exclusive with <code>contact_ids</code> and <code>all_active_contacts</code>.
-    string[] list_ids?;
+    string[50] list_ids?;
     # Removes all active contacts from your targeted lists. This property is mutually exclusive with <code>contact_ids</code> and <code>list_ids</code>.
     boolean all_active_contacts?;
     # Specifies which contacts to remove from your target lists as an array of <code>contact_id</code> values. This property is mutually exclusive with <code>list_ids</code> and <code>all_active_contacts</code>.
-    string[] contact_ids?;
+    string[500] contact_ids?;
 };
 
 public type CampaignActivitySummary record {
@@ -811,7 +858,7 @@ public type CampaignActivitySummary record {
 
 public type TagIdList500Limit record {
     # The tag IDs (<code>tag_ids</code>) to delete.
-    string[] tag_ids;
+    string[500] tag_ids;
 };
 
 public type ClicksTrackingActivitiesPage record {
@@ -881,17 +928,17 @@ public type ContactPostRequest record {
     # The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
     string anniversary?;
     # Array of up to 25 <code>custom_field</code> key value pairs.
-    ContactCustomField[] custom_fields?;
+    ContactCustomField[25] custom_fields?;
     # Array of up to 2 phone_numbers subresources.
-    PhoneNumberPut[] phone_numbers?;
+    PhoneNumberPut[2] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
     StreetAddressPut[] street_addresses?;
     # Array of list_id's to which the contact is being subscribed, up to a maximum of 50.
-    string[] list_memberships?;
+    string[50] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[] taggings?;
+    string[50] taggings?;
     # An array of notes about the contact.
-    Note[] notes?;
+    Note[150] notes?;
 };
 
 public type ContactcreateorupdateinputStreetAddress record {
@@ -1028,7 +1075,7 @@ public type StatsError record {
 
 public type ListXrefs record {
     # An array of cross-referenced V3 API <code>list_id</code> and V2 API <code>sequence_id</code> properties. Response is sorted ascending by <code>sequence_id</code>.
-    ListXref[] xrefs?;
+    ListXref[500] xrefs?;
 };
 
 public type OpensTrackingActivity record {
@@ -1176,9 +1223,9 @@ public type ContactCreateOrUpdateInput record {
     # The phone number for the contact.
     string phone_number?;
     # The contact lists you want to add the contact to as an array of up to 50 contact <code>list_id</code> values. You must include at least one <code>list_id</code>.
-    string[] list_memberships;
+    string[50] list_memberships;
     # The custom fields you want to add to the contact as an array of up to 50 custom field objects.
-    CreateOrUpdateContactCustomField[] custom_fields?;
+    CreateOrUpdateContactCustomField[50] custom_fields?;
     # The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
     string anniversary?;
     # The month value for the contact's birthday. Valid values are from 1 through 12. The <code>birthday_month</code> property is required if you use <code>birthday_day</code>.
@@ -1228,17 +1275,17 @@ public type ContactPutRequest record {
     # Identifies who last updated the contact; valid values are <code>Contact</code> or <code>Account</code>.
     string update_source;
     # Array of up to 25 custom_field subresources.
-    ContactCustomField[] custom_fields?;
+    ContactCustomField[25] custom_fields?;
     # Array of up to 2 phone_numbers subresources.
-    PhoneNumberPut[] phone_numbers?;
+    PhoneNumberPut[2] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
     StreetAddressPut[] street_addresses?;
     # Array of up to 50 <code>list_ids</code> to which the contact is subscribed.
-    string[] list_memberships?;
+    string[50] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[] taggings?;
+    string[50] taggings?;
     # An array of notes about the contact listed by most recent note first.
-    Note[] notes?;
+    Note[150] notes?;
 };
 
 # Status
@@ -1255,14 +1302,31 @@ public type EmailCampaignActivity record {
     # Identifies a campaign in the V3 API.
     string campaign_id?;
     # The purpose of the individual campaign activity in the larger email campaign effort. Valid values are: <ul>
+    #   <li>primary_email — The main email marketing campaign that you send to contacts. The <code>primary_email</code> contains the complete email content.</li>
+    #   <li>permalink — A permanent link to a web accessible version of the <code>primary_email</code> content without any personalized email information. For example, permalinks do not contain any of the contact details that you add to the <code>primary_email</code> email content. </li>
+    #   <li>resend — An email campaign that you resend to contacts that did not open the email campaign.</li>
+    # </ul> Constant Contact creates a <code>primary_email</code> and a <code>permalink</code> role campaign activity when you create an email campaign.
     string role?;
     # The contacts that Constant Contact sends the email campaign activity to as an array of contact <code>list_id</code> values. You cannot use contact lists and segments at the same time in an email campaign activity.
     string[] contact_list_ids?;
     # The contacts that Constant Contact sends the email campaign activity to as an array containing a single <code>segment_id</code> value. Only <code>format_type</code> 3, 4, and 5 email campaign activities support segments. You cannot use contact lists and segments at the same time in an email campaign activity.
     int[] segment_ids?;
     # The current status of the email campaign activity. Valid values are: <ul>
+    #   <li>DRAFT — An email campaign activity that you have created but have not sent to contacts.</li>
+    #   <li>SCHEDULED — An email campaign activity that you have scheduled for Constant Contact to send to contacts.</li>
+    #   <li>EXECUTING — An email campaign activity Constant Contact is currently sending to contacts. Email campaign activities are only in this status briefly.</li>
+    #   <li>DONE — An email campaign activity that you successfully sent to contacts.</li>
+    #   <li>ERROR — An email campaign activity that encountered an error.</li>
+    #   <li>REMOVED — An email campaign that a user deleted. Users can view and restore deleted emails through the UI.</li>
+    # </ul>
     string current_status?;
     # Identifies the type of email format. Valid values are: <ul>
+    #   <li>1 - A legacy custom code email created using the V2 API, the V3 API, or the legacy UI HTML editor.</li>
+    #   <li>2 - An email created using the second generation email editor UI.</li>
+    #   <li>3 - An email created using the third generation email editor UI. This email editor features an improved drag and drop UI and mobile responsiveness.</li>
+    #   <li>4 - An email created using the fourth generation email editor UI.</li>
+    #   <li>5 - A custom code email created using the V3 API or the new UI HTML editor.</li>
+    # </ul>
     int format_type?;
     # The email "From Email" field for the email campaign activity. You must use a confirmed Constant Contact account email address. Make a GET call to <code>/account/emails</code> to return a collection of account emails and their confirmation status.
     string from_email;
@@ -1288,6 +1352,13 @@ public type EmailCampaignActivity record {
 # Specifies the type of billing plan (`plan_type`) and the billing date (`billing_day_of_month`) used for a client account.
 public type PlanInfo record {
     # The type of billing plan (<code>plan_type</code>) to associate with a client's Constant Contact account. The type of billing plan determines which Constant Contact product features that the client account can access. The billing plan type that you enter must already exist in your plan group or a 400 error message is returned. After changing the <code>plan_type</code> from <code>TRIAL</code> to any other billing plan type, you cannot change it back to <code>TRIAL</code>.
+    #   <ul>
+    #     <li><code>TRIAL</code>: A non-billed account with an expiration date that allows clients to try Constant Contact product features.</li>
+    #     <li><code>GOOD</code>: A billed <b>Email</b> client account plan.</li>
+    #     <li><code>BETTER</code>: A billed <b>Email Plus</b> client account plan.</li>
+    #     <li><code>BEST</code>: A billed <b>Personal Marketer</b> client account plan.</li>
+    #     <li><code>LITE</code>: A <b>Website Builder</b> client account plan.</li>
+    #   </ul>
     string plan_type?;
     # This property is required if a client account is not set up to use single billing. You can choose to enter a specific day of the month or accept the default value, which is the day on which the <code>plan_type</code> value changes from a <code>TRIAL</code> plan to a different <code>plan_type</code>. For trial accounts, the value defaults to null. You can only change the <code>billing_day_of_month</code> when changing the <code>plan_type</code> value from <code>TRIAL</code> to a different <code>plan_type</code>, otherwise the value you enter is ignored.
     int billing_day_of_month?;
@@ -1393,7 +1464,7 @@ public type ContactsJsonImport record {
     # An array containing the contacts to import.
     JsonImportContact[] import_data;
     # Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact <code>list_id</code> string values.
-    string[] list_ids;
+    string[50] list_ids;
 };
 
 public type CompanyLogo record {
@@ -1413,12 +1484,39 @@ public type EmailCampaign record {
     # The system generated date and time that this email campaign was created. This string is readonly and is in ISO-8601 format.
     string created_at?;
     # The current status of the email campaign. Valid values are: <ul>
+    #   <li>Draft — An email campaign that you have created but have not sent to contacts.</li>
+    #   <li>Scheduled — An email campaign that you have scheduled for Constant Contact to send to contacts.</li>
+    #   <li>Executing — An email campaign that Constant Contact is currently sending to contacts. Email campaign activities are only in this status briefly.</li>
+    #   <li>Done — An email campaign that you successfully sent to contacts.</li>
+    #   <li>Error — An email campaign activity that encountered an error.</li>
+    #   <li>Removed — An email campaign that a user deleted. Users can view and restore deleted emails through the UI.</li>
+    # </ul>
     string current_status?;
     # The descriptive name the user provides to identify this campaign. Campaign names must be unique for each account ID.
     string name?;
     # Identifies the type of campaign that you select when creating the campaign. Newsletter and Custom Code email campaigns are the primary types.
     string 'type?;
     # The code used to identify the email campaign `type`. <ul>
+    #   <li> 1  (Default) </li>
+    #   <li> 2  (Bulk Email) </li>
+    #   <li> 10 (Newsletter) </li>
+    #   <li> 11 (Announcement) </li>
+    #   <li> 12 (Product/Service News) </li>
+    #   <li> 14 (Business Letter) </li>
+    #   <li> 15 (Card) </li>
+    #   <li> 16 (Press release)</li>
+    #   <li> 17 (Flyer) </li>
+    #   <li> 18 (Feedback Request) </li>
+    #   <li> 19 (Ratings and Reviews) </li>
+    #   <li> 20 (Event Announcement) </li>
+    #   <li> 21 (Simple Coupon) </li>
+    #   <li> 22 (Sale Promotion) </li>
+    #   <li> 23 (Product Promotion) </li>
+    #   <li> 24 (Membership Drive) </li>
+    #   <li> 25 (Fundraiser) </li>
+    #   <li> 26 (Custom Code Email)</li>
+    #   <li> 57 (A/B Test)</li>
+    # </ul>
     int type_code?;
     # The system generated date and time showing when the campaign was last updated. This string is read only and is in ISO-8601 format.
     string updated_at?;
@@ -1441,8 +1539,25 @@ public type EmailsendhistoryInner record {
     # The system generated date and time that Constant Contact sent the email campaign activity to contacts in ISO-8601 format.
     string run_date?;
     # The send status for the email campaign activity. Valid values are: <ul> 
+    #   <li><code>COMPLETED</code>: Constant Contact successfully sent the email campaign activity.</li>
+    #   <li><code>ERRORED</code>: Constant Contact encountered an error when sending the email campaign activity.<li>
+    # </ul>
     string send_status?;
     # The reason why the send attempt completed or encountered an error. This method returns <code>0</code> if Constant Contact successfully sent the email campaign activity to contacts. Possible <code>reason_code</code> values are: <ul>
+    #       <li>0 — Constant Contact successfully sent the email to contacts.</li>
+    #       <li>1 — An error occurred when sending this email. Try scheduling it again, or contact <a href='http://support.constantcontact.com' target='_blank'>Customer Support</a>.</li>
+    #       <li>2 — We were unable to send the email. Please contact our <a href='http://knowledgebase.constantcontact.com/articles/KnowledgeBase/5782-contact-an-account-review-and-deliverability-specialist' target='_blank'>Account Review Team</a> for more information.</li>
+    #       <li>3 — This Constant Contact account cannot currently send emails. This can be due to billing or product expiration.</li>
+    #       <li>4 — You're not able to send the email to that many contacts. Remove contacts from the contact lists you are using or select a list with fewer contacts.</li>
+    #       <li>5 — The email is currently in staging. For more information, see the <a href='http://knowledgebase.constantcontact.com/articles/KnowledgeBase/7402-email-staging' target='_blank>Email Staging Knowledge Base article</a>.</li>
+    #       <li>6 — Constant Contact was unable to finish sending this email to all of the contacts on your list. Please contact <a href='http://support.constantcontact.com' target='_blank'>Customer Support</a> for more information.</li>
+    #       <li>7 — The email contains invalid images. This can be caused when one or more images in the email are longer available in your image library.</li>
+    #       <li>8 — The email contains a link URL that exceeds 1005 characters.</li>
+    #       <li>9 — Constant Contact was unable to verify your authenticated Sender address. Please contact <a href='http://support.constantcontact.com' target='_blank'>Customer Support</a> for more information.</li>
+    #       <li>10 — Constant Contact was unable to verify your authenticated Sender address. Please contact <a href='http://support.constantcontact.com' target='_blank'>Customer Support</a> for more information.</li>
+    #       <li>11 — This Constant Contact account cannot send survey invitations.</li>
+    #       <li>12 — Constant Contact attempted to send the email, but there were no eligible contacts to send it to. This can be caused by an invalid contact list, a contact list with no contacts, or a contact list with no new contacts during a resend. This method displays <code>reason_code</code> 12 as a send attempt with a <code>send_status</code> of COMPLETED and a <code>count</code> of 0.</li>
+    # </ul>
     int reason_code?;
 };
 
@@ -1450,13 +1565,13 @@ public type ListActivityRemoveContacts record {
     # The <code>source</code> object specifies which contacts to remove from your targeted lists using one of three mutually exclusive properties.
     ListactivityremovecontactsSource 'source;
     # Specifies which lists (up to 50) to remove your source contacts from.
-    string[] list_ids;
+    string[50] list_ids;
 };
 
 # Use this endpoint to retrieve (GET) all custom_fields in the user's account, or to create (POST) a new custom_field.
 public type CustomFields record {
     # CustomFields array
-    Customfieldresource2[] custom_fields?;
+    Customfieldresource2[100] custom_fields?;
     # Paging links
     PagingLinks _links?;
 };
@@ -1532,8 +1647,6 @@ public type PhoneNumberPut record {
 };
 
 # An array of webhook subscriptions.
-#
-# + WebhooksSubscription - An array of webhook subscriptions.
 public type WebhooksSubscriptionCollection WebhooksSubscription[];
 
 public type UserPrivilegesResource UserprivilegesresourceInner[];
@@ -1583,12 +1696,39 @@ public type EmailCampaigns record {
     # The system generated date and time that this email campaign was created. This string is readonly and is in ISO-8601 format.
     string created_at?;
     # The current status of the email campaign. Valid values are: <ul>
+    #   <li>Draft — An email campaign that you have created but have not sent to contacts.</li>
+    #   <li>Scheduled — An email campaign that you have scheduled for Constant Contact to send to contacts.</li>
+    #   <li>Executing — An email campaign that Constant Contact is currently sending to contacts. Email campaign activities are only in this status briefly.</li>
+    #   <li>Done — An email campaign that you successfully sent to contacts.</li>
+    #   <li>Error — An email campaign activity that encountered an error.</li>
+    #   <li>Removed — An email campaign that a user deleted. Users can view and restore deleted emails through the UI.</li>
+    # </ul>
     string current_status?;
     # The descriptive name the user provides to identify this campaign. Campaign names must be unique for each account ID.
     string name?;
     # Identifies the type of campaign that you select when creating the campaign. Newsletter and Custom Code email campaigns are the primary types.
     string 'type?;
     # The code used to identify the email campaign `type`. <ul>
+    #   <li> 1  (Default) </li>
+    #   <li> 2  (Bulk Email) </li>
+    #   <li> 10 (Newsletter) </li>
+    #   <li> 11 (Announcement) </li>
+    #   <li> 12 (Product/Service News) </li>
+    #   <li> 14 (Business Letter) </li>
+    #   <li> 15 (Card) </li>
+    #   <li> 16 (Press release)</li>
+    #   <li> 17 (Flyer) </li>
+    #   <li> 18 (Feedback Request) </li>
+    #   <li> 19 (Ratings and Reviews) </li>
+    #   <li> 20 (Event Announcement) </li>
+    #   <li> 21 (Simple Coupon) </li>
+    #   <li> 22 (Sale Promotion) </li>
+    #   <li> 23 (Product Promotion) </li>
+    #   <li> 24 (Membership Drive) </li>
+    #   <li> 25 (Fundraiser) </li>
+    #   <li> 26 (Custom Code Email)</li>
+    #   <li> 57 (A/B Test)</li>
+    # </ul>
     int type_code?;
     # The system generated date and time showing when the campaign was last updated. This string is read only and is in ISO-8601 format.
     string updated_at?;
@@ -1682,17 +1822,17 @@ public type ContactResource record {
     # For deleted contacts (<code>email_address</code> contains <code>opt_out_source</code> and <code>opt_out_date</code>), shows the date of deletion.
     string deleted_at?;
     # Array of up to 25 <code>custom_field</code> key value pairs.
-    ContactCustomField[] custom_fields?;
+    ContactCustomField[25] custom_fields?;
     # Array of phone_numbers subresources. A contact can have up to 2 phone numbers.
-    PhoneNumber[] phone_numbers?;
+    PhoneNumber[2] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
-    StreetAddress[] street_addresses?;
+    StreetAddress[1] street_addresses?;
     # Array of list_id's to which the contact is subscribed, up to a maximum of 50.
-    string[] list_memberships?;
+    string[50] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[] taggings?;
+    string[50] taggings?;
     # An array of up to 150 notes about the contact.
-    Note[] notes?;
+    Note[150] notes?;
 };
 
 public type BouncesTrackingActivitiesPage record {
@@ -1764,13 +1904,6 @@ public type ContactCustomField record {
     string value;
 };
 
-public type Body record {
-    # The CSV file you are importing. The column headings that you can use in the file are: `first_name`,
-    string file;
-    # Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact `list_id` values.
-    string[] list_ids;
-};
-
 public type AccountemailsInner record {
     # An email address associated with a Constant Contact account owner.
     string email_address?;
@@ -1781,6 +1914,12 @@ public type AccountemailsInner record {
     # The date that the email address changed to <code>CONFIRMED</code> status in ISO-8601 format.
     string confirm_time?;
     # Describes who confirmed the email address. Valid values are:
+    #   <ul>
+    #   <li>SITE_OWNER — The Constant Contact account owner confirmed the email address.</li>
+    #   <li>SUPPORT — Constant Contact support staff confirmed the email address.</li>
+    #   <li>FORCEVERIFY — Constant Contact confirmed the email address without sending a confirmation email.</li>
+    #   <li>PARTNER — A Constant Contact partner confirmed the email address.</li>
+    #   </ul>
     string confirm_source_type?;
     # Specifies the current role of a confirmed email address in an account. Each email address can have multiple roles or no role. Possible role values are: <ul> <li>CONTACT — The contact email for the Constant Contact account owner. Each account can only have one <code>CONTACT</code> role email.</li> <li>BILLING — The billing address for the Constant Contact account. Each account can only have one <code>BILLING</code> role email.</li> <li>JOURNALING — An email address that Constant Contact forwards all sent email campaigns to as part of the partner journaling compliance feature.</li> <li>REPLY_TO — The contact email used in the email campaign signature. Each account can only have one <code>REPLY_TO</code> role email.</li> <li>OTHER — An email address that does not fit into the other categories.</li> </ul> You can use any confirmed email address in the email campaign <code>from_email</code> and <code>reply_to_email</code> headers.
     string[] roles?;
@@ -1813,6 +1952,11 @@ public type PartneraccountSiteOwnerList record {
     # The user name that identifies a client account.
     string site_owner_name?;
     # The client's account billing status. When you first create a client account the `billing status` defaults to `Trial`. Billing status values include: <ul>
+    #   <li><code>Trial</code> - A non-paying trial client account (default value).</li>
+    #   <li><code>Open</code> - An active and paying client account.</li>
+    #   <li><code>Canceled</code> - A canceled client account.</li>
+    #   <li><code>Trial End</code> - The trial period has ended for this client account.</li>
+    # </ul>
     string billing_status?;
     # The system generated date and time (ISO-8601) showing when the client last logged into their Constant Contact account. If a client has not logged into their account, the value is `null`. This property does not display in the results.
     string last_login_date?;
@@ -1861,6 +2005,17 @@ public type ContactListArray record {
     PagingLinks _links?;
 };
 
+public type ActivitiesContactsFileImportBody record {
+    # The CSV file you are importing. The column headings that you can use in the file are: `first_name`,
+    # `last_name`, `email`, `phone`, `job_title`, `anniversary`, `birthday_day`, `birthday_month`, `company_name`, `street`, `street2`, `city`, `state`, `zip`, and `country`. The only required column heading is `email`.
+    # 
+    # 
+    # You can also use custom fields as column headings. Enter the custom field name prefixed with `cf:` as the column heading. For example, use `cf:first_name` as the header name if you have a custom field named "first_name". The custom field must already exist in the Constant Contact account you are using. Depending on the custom field data type, you can enter dates or strings as the value of the custom field. Each contact can contain up to 25 different custom fields.
+    string file;
+    # Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact `list_id` values.
+    string[50] list_ids;
+};
+
 public type CampaignActivityStatsResultGenericStatsEmailActivity record {
     # The unique ID used to identify the campaign (UUID).
     string campaign_id?;
@@ -1897,7 +2052,7 @@ public type ListActivityAddContacts record {
     # The <code>source</code> object specifies which contacts you are adding to your targeted lists using one of four mutually exclusive properties.
     ListactivityaddcontactsSource 'source;
     # Specifies which lists (up to 50) you are adding your source contacts to.
-    string[] list_ids;
+    string[50] list_ids;
 };
 
 public type TagPut record {
@@ -1908,11 +2063,11 @@ public type TagPut record {
 # The <code>source</code> object specifies which contacts you are adding to your targeted lists using one of four mutually exclusive properties.
 public type ListactivityaddcontactsSource record {
     # Specifies which contacts you are adding to lists as an array of up to 50 contact <code>list_id</code> values. This property is mutually exclusive with <code>contact_ids</code>, <code>all_active_contacts</code>, and <code>segment_id</code>.
-    string[] list_ids?;
+    string[50] list_ids?;
     # Adds all active contacts to your targeted lists. This property is mutually exclusive with <code>contact_ids</code>, <code>list_ids</code>, and <code>segment_id</code>.
     boolean all_active_contacts?;
     # Specifies which contacts (up to 500) you are adding to lists as an array of <code>contact_id</code> values. This property is mutually exclusive with <code>list_ids</code>, <code>all_active_contacts</code>, and <code>segment_id</code>.
-    string[] contact_ids?;
+    string[500] contact_ids?;
     # Specifies which contacts you are adding to lists as a single <code>segment_id</code> value. This property is mutually exclusive with <code>list_ids</code>, <code>all_active_contacts</code>, and <code>contact_ids</code>.
     int segment_id?;
 };
@@ -2015,7 +2170,7 @@ public type PartnerAccount record {
 
 public type EmailTestSendInput record {
     # The recipients of the test email as an array of email address strings. You can send a test email to up to 5 different email addresses at a time.
-    string[] email_addresses;
+    string[5] email_addresses;
     # A personal message for the recipients of the test email. Constant Contact displays this message before the email campaign activity content.
     string personal_message?;
 };

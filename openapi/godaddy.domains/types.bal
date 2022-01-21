@@ -60,7 +60,7 @@ public type ErrorField record {
 public type JsonProperty record {
     string defaultValue?;
     string format?;
-    record  { }  items?;
+    record {} items?;
     int maxItems?;
     int maximum?;
     int minItems?;
@@ -109,8 +109,8 @@ public type DomainSuggestion record {
 
 public type JsonSchema record {
     string id;
-    record  { }  models;
-    record  { }  properties;
+    record {} models;
+    record {} properties;
     string[] required;
 };
 

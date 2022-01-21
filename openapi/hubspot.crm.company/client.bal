@@ -14,9 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import  ballerina/http;
-import  ballerina/url;
-import  ballerina/lang.'string;
+import ballerina/http;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -61,219 +59,177 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials.
     # Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com") returns error? {
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
+    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List
     #
-    # + 'limit - The maximum number of results to display per page.
-    # + after - The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
-    # + properties - A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.
-    # + associations - A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.
-    # + archived - Whether to return only results that have been archived.
-    # + return - successful operation
+    # + 'limit - The maximum number of results to display per page. 
+    # + after - The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results. 
+    # + properties - A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored. 
+    # + associations - A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored. 
+    # + archived - Whether to return only results that have been archived. 
+    # + return - successful operation 
     remote isolated function getPage(int 'limit = 10, string? after = (), string[]? properties = (), string[]? associations = (), boolean archived = false) returns CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error {
-        string  path = string `/crm/v3/objects/companies`;
+        string resourcePath = string `/crm/v3/objects/companies`;
         map<anydata> queryParam = {"limit": 'limit, "after": after, "properties": properties, "associations": associations, "archived": archived};
-        path = path + check getPathForQueryParam(queryParam);
-        CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check self.clientEp-> get(path, targetType = CollectionResponseSimplePublicObjectWithAssociationsForwardPaging);
+        map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create
     #
-    # + payload - Properties
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function create(SimplePublicObjectInput payload) returns SimplePublicObject|error {
-        string  path = string `/crm/v3/objects/companies`;
+        string resourcePath = string `/crm/v3/objects/companies`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SimplePublicObject response = check self.clientEp->post(path, request, targetType=SimplePublicObject);
+        request.setPayload(jsonBody, "application/json");
+        SimplePublicObject response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Archive a batch of companies by ID
     #
-    # + payload - Array of object IDs
-    # + return - No content
+    # + return - No content 
     remote isolated function batchArchiveArchive(BatchInputSimplePublicObjectId payload) returns http:Response|error {
-        string  path = string `/crm/v3/objects/companies/batch/archive`;
+        string resourcePath = string `/crm/v3/objects/companies/batch/archive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Create a batch of companies
     #
-    # + payload - Array of property records
-    # + return - successful operation
-    remote isolated function batchCreateCreate(BatchInputSimplePublicObjectInput payload) returns BatchResponseSimplePublicObject|error {
-        string  path = string `/crm/v3/objects/companies/batch/create`;
+    # + return - successful operation 
+    remote isolated function batchCreateCreate(BatchInputSimplePublicObjectInput payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+        string resourcePath = string `/crm/v3/objects/companies/batch/create`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchResponseSimplePublicObject response = check self.clientEp->post(path, request, targetType=BatchResponseSimplePublicObject);
+        request.setPayload(jsonBody, "application/json");
+        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a batch of companies by internal ID, or unique property values
     #
-    # + payload - Batch read options
-    # + archived - Whether to return only results that have been archived.
-    # + return - successful operation
-    remote isolated function batchReadRead(BatchReadInputSimplePublicObjectId payload, boolean archived = false) returns BatchResponseSimplePublicObject|error {
-        string  path = string `/crm/v3/objects/companies/batch/read`;
+    # + archived - Whether to return only results that have been archived. 
+    # + return - successful operation 
+    remote isolated function batchReadRead(BatchReadInputSimplePublicObjectId payload, boolean archived = false) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+        string resourcePath = string `/crm/v3/objects/companies/batch/read`;
         map<anydata> queryParam = {"archived": archived};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchResponseSimplePublicObject response = check self.clientEp->post(path, request, targetType=BatchResponseSimplePublicObject);
+        request.setPayload(jsonBody, "application/json");
+        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update a batch of companies
     #
-    # + payload - Array of object properties
-    # + return - successful operation
-    remote isolated function batchUpdateUpdate(BatchInputSimplePublicObjectBatchInput payload) returns BatchResponseSimplePublicObject|error {
-        string  path = string `/crm/v3/objects/companies/batch/update`;
+    # + return - successful operation 
+    remote isolated function batchUpdateUpdate(BatchInputSimplePublicObjectBatchInput payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+        string resourcePath = string `/crm/v3/objects/companies/batch/update`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BatchResponseSimplePublicObject response = check self.clientEp->post(path, request, targetType=BatchResponseSimplePublicObject);
+        request.setPayload(jsonBody, "application/json");
+        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Filter, Sort, and Search CRM Objects
     #
-    # + payload - Search request
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function doSearch(PublicObjectSearchRequest payload) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {
-        string  path = string `/crm/v3/objects/companies/search`;
+        string resourcePath = string `/crm/v3/objects/companies/search`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check self.clientEp->post(path, request, targetType=CollectionResponseWithTotalSimplePublicObjectForwardPaging);
+        request.setPayload(jsonBody, "application/json");
+        CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read
     #
-    # + companyId - Company ID
-    # + properties - A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored.
-    # + associations - A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored.
-    # + archived - Whether to return only results that have been archived.
-    # + idProperty - The name of a property whose values are unique for this object type
-    # + return - successful operation
+    # + companyId - Company ID 
+    # + properties - A comma separated list of the properties to be returned in the response. If any of the specified properties are not present on the requested object(s), they will be ignored. 
+    # + associations - A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored. 
+    # + archived - Whether to return only results that have been archived. 
+    # + idProperty - The name of a property whose values are unique for this object type 
+    # + return - successful operation 
     remote isolated function getById(string companyId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
-        string  path = string `/crm/v3/objects/companies/${companyId}`;
+        string resourcePath = string `/crm/v3/objects/companies/${companyId}`;
         map<anydata> queryParam = {"properties": properties, "associations": associations, "archived": archived, "idProperty": idProperty};
-        path = path + check getPathForQueryParam(queryParam);
-        SimplePublicObjectWithAssociations response = check self.clientEp-> get(path, targetType = SimplePublicObjectWithAssociations);
+        map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SimplePublicObjectWithAssociations response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Archive
     #
-    # + companyId - Company ID
-    # + return - No content
+    # + companyId - Company ID 
+    # + return - No content 
     remote isolated function archive(string companyId) returns http:Response|error {
-        string  path = string `/crm/v3/objects/companies/${companyId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/crm/v3/objects/companies/${companyId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update
     #
-    # + companyId - Company ID
-    # + payload - Properties
-    # + idProperty - The name of a property whose values are unique for this object type
-    # + return - successful operation
+    # + companyId - Company ID 
+    # + idProperty - The name of a property whose values are unique for this object type 
+    # + return - successful operation 
     remote isolated function update(string companyId, SimplePublicObjectInput payload, string? idProperty = ()) returns SimplePublicObject|error {
-        string  path = string `/crm/v3/objects/companies/${companyId}`;
+        string resourcePath = string `/crm/v3/objects/companies/${companyId}`;
         map<anydata> queryParam = {"idProperty": idProperty};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SimplePublicObject response = check self.clientEp->patch(path, request, targetType=SimplePublicObject);
+        request.setPayload(jsonBody, "application/json");
+        SimplePublicObject response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # List associations of a company by type
     #
-    # + companyId - Company ID
-    # + toObjectType - Object type to associate with
-    # + after - The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
-    # + 'limit - The maximum number of results to display per page.
-    # + return - successful operation
+    # + companyId - Company ID 
+    # + toObjectType - Object type to associate with 
+    # + after - The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results. 
+    # + 'limit - The maximum number of results to display per page. 
+    # + return - successful operation 
     remote isolated function associationsGetAll(string companyId, string toObjectType, string? after = (), int 'limit = 500) returns CollectionResponseAssociatedIdForwardPaging|error {
-        string  path = string `/crm/v3/objects/companies/${companyId}/associations/${toObjectType}`;
+        string resourcePath = string `/crm/v3/objects/companies/${companyId}/associations/${toObjectType}`;
         map<anydata> queryParam = {"after": after, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
-        CollectionResponseAssociatedIdForwardPaging response = check self.clientEp-> get(path, targetType = CollectionResponseAssociatedIdForwardPaging);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CollectionResponseAssociatedIdForwardPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Associate a company with another object
     #
-    # + companyId - Company ID
-    # + toObjectType - Object type to associate with
-    # + toObjectId - Object ID to associate
-    # + associationType - Type of the association
-    # + return - successful operation
+    # + companyId - Company ID 
+    # + toObjectType - Object type to associate with 
+    # + toObjectId - Object ID to associate 
+    # + associationType - Type of the association 
+    # + return - successful operation 
     remote isolated function associationsCreate(string companyId, string toObjectType, string toObjectId, string associationType) returns SimplePublicObjectWithAssociations|error {
-        string  path = string `/crm/v3/objects/companies/${companyId}/associations/${toObjectType}/${toObjectId}/${associationType}`;
+        string resourcePath = string `/crm/v3/objects/companies/${companyId}/associations/${toObjectType}/${toObjectId}/${associationType}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        SimplePublicObjectWithAssociations response = check self.clientEp-> put(path, request, targetType = SimplePublicObjectWithAssociations);
+        SimplePublicObjectWithAssociations response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Remove an association between two companies
     #
-    # + companyId - Company ID
-    # + toObjectType - Object type to associate with
-    # + toObjectId - Object ID to associate
-    # + associationType - Type of the association
-    # + return - No content
+    # + companyId - Company ID 
+    # + toObjectType - Object type to associate with 
+    # + toObjectId - Object ID to associate 
+    # + associationType - Type of the association 
+    # + return - No content 
     remote isolated function associationsArchive(string companyId, string toObjectType, string toObjectId, string associationType) returns http:Response|error {
-        string  path = string `/crm/v3/objects/companies/${companyId}/associations/${toObjectType}/${toObjectId}/${associationType}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/crm/v3/objects/companies/${companyId}/associations/${toObjectType}/${toObjectId}/${associationType}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata>   queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

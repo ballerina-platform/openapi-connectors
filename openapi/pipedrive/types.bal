@@ -107,11 +107,11 @@ public type Deletedealparticipantresponse200Data record {
 
 public type UpdateTeamRequest record {
     # The Team name
-    string? name?;
+    string? name;
     # The Team description
     string? description?;
     # The Team manager ID
-    int? manager_id?;
+    int? manager_id;
     # List of User IDs
     int[]? users?;
     # Flag that indicates if the Team is activated
@@ -528,7 +528,7 @@ public type AddDealProductRequest record {
     # Whether the product is enabled on the deal or not. This makes it possible to add products to a deal with specific price and discount criteria - but keep them disabled, which refrains them from being included in deal price calculation. When omitted, the product will be marked as enabled by default.
     record {} enabled_flag?;
     # ID of the product that will be attached
-    int? product_id?;
+    int? product_id;
 };
 
 public type UpdateLeadRequest record {
@@ -583,7 +583,130 @@ public type DeleteOrganizationsResponse200 record {
 public type MergePersonsResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {} data?;
+    record {
+        # The ID of the Person
+        int? id?;
+        # The ID of the Company related to the Person
+        int? company_id?;
+        # If the Person is activated or not
+        boolean? active_flag?;
+        # List of phone data related to the Person
+        record {
+            # Phone number
+            string? value?;
+            # Boolean that indicates if phone number is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the phone number. (Possible values - work, home, mobile or other)
+            string? label?;
+        }[]? phone?;
+        # List of email data related to the Person
+        record {
+            # Email
+            string? value?;
+            # Boolean that indicates if email is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the email. (Possible values - work, home or other)
+            string? label?;
+        }[]? email?;
+        # The first letter of the name of the Person
+        string? first_char?;
+        # The date and time when the Person was added/created. Format: YYYY-MM-DD HH:MM:SS
+        string? add_time?;
+        # The last updated date and time of the Person. Format: YYYY-MM-DD HH:MM:SS
+        string? update_time?;
+        # The visibility group ID of who can see the Person
+        string? visible_to?;
+        record {
+            # The ID of the picture associated with the item
+            int? id?;
+            # The type of item the picture is related to
+            string? item_type?;
+            # The ID of related item
+            int? item_id?;
+            # If the associated picture is activated or not
+            boolean? active_flag?;
+            # The add time of the picture
+            string? add_time?;
+            # The update time of the picture
+            string? update_time?;
+            # The ID of the User who added the picture
+            int? added_by_user_id?;
+            record {
+                # The URL of the 128*128 picture
+                string? '128?;
+                # The URL of the 512*512 picture
+                string? '512?;
+            } pictures?;
+        } picture_id?;
+        # The label assigned to the Person
+        int? label?;
+        # The name of the Organization associated with the Person
+        string? org_name?;
+        # The name of the owner associated with the Person
+        string? owner_name?;
+        # The CC email associated with the Person
+        string? cc_email?;
+        # The ID of the owner related to the Person
+        int? owner_id?;
+        # The ID of the Organization related to the Person
+        int? org_id?;
+        # The ID of the Person with what the main Person was merged
+        int? merge_what_id?;
+        # The name of the Person
+        string? name?;
+        # The first name of the Person
+        string? first_name?;
+        # The last name of the Person
+        string? last_name?;
+        # The count of email messages related to the Person
+        int? email_messages_count?;
+        # The count of activities related to the Person
+        int? activities_count?;
+        # The count of done activities related to the Person
+        int? done_activities_count?;
+        # The count of undone activities related to the Person
+        int? undone_activities_count?;
+        # The count of files related to the Person
+        int? files_count?;
+        # The count of notes related to the Person
+        int? notes_count?;
+        # The count of followers related to the Person
+        int? followers_count?;
+        # The date and time of the last incoming email associated with the Person
+        string? last_incoming_mail_time?;
+        # The date and time of the last outgoing email associated with the Person
+        string? last_outgoing_mail_time?;
+        # The count of open Deals related with the item
+        int? open_deals_count?;
+        # The count of related open Deals related with the item
+        int? related_open_deals_count?;
+        # The count of closed Deals related with the item
+        int? closed_deals_count?;
+        # The count of related closed Deals related with the item
+        int? related_closed_deals_count?;
+        # The count of won Deals related with the item
+        int? won_deals_count?;
+        # The count of related won Deals related with the item
+        int? related_won_deals_count?;
+        # The count of lost Deals related with the item
+        int? lost_deals_count?;
+        # The count of related lost Deals related with the item
+        int? related_lost_deals_count?;
+        # The date of the next activity associated with the Deal
+        string? next_activity_date?;
+        # The time of the next activity associated with the Deal
+        string? next_activity_time?;
+        # The ID of the next activity associated with the Deal
+        int? next_activity_id?;
+        # The ID of the last activity associated with the Deal
+        int? last_activity_id?;
+        # The date of the last activity associated with the Deal
+        string? last_activity_date?;
+        # The count of open participant Deals related with the item
+        int? participant_open_deals_count?;
+        # The count of closed participant Deals related with the item
+        int? participant_closed_deals_count?;
+    } data?;
 };
 
 # The response data
@@ -656,7 +779,26 @@ public type UpdatePipelineResponse200 record {
     # If the response is successful or not
     boolean? success?;
     # The Pipeline object
-    record {} data?;
+    record {
+        # The ID of the Pipeline
+        int? id?;
+        # The name of the Pipeline
+        string? name?;
+        # The Pipeline title displayed in the URL
+        string? url_title?;
+        # Defines the order of Pipelines. First order (`order_nr=0`) is the default Pipeline.
+        int? order_nr?;
+        # Whether this Pipeline will be made inactive (hidden) or active
+        boolean? active?;
+        # Whether Deal probability is disabled or enabled for this Pipeline
+        boolean? deal_probability?;
+        # The Pipeline creation time. Format: YYYY-MM-DD HH:MM:SS.
+        string? add_time?;
+        # The Pipeline update time. Format: YYYY-MM-DD HH:MM:SS.
+        string? update_time?;
+        # A boolean that shows if the Pipeline is selected from a filter or not
+        boolean? selected?;
+    } data?;
 };
 
 public type GetGoalResultResponse200 record {
@@ -826,7 +968,65 @@ public type GetPipelineResponse200 record {
     # If the response is successful or not
     boolean? success?;
     # The Pipeline object
-    record {} data?;
+    record {
+        # The ID of the Pipeline
+        int? id?;
+        # The name of the Pipeline
+        string? name?;
+        # The Pipeline title displayed in the URL
+        string? url_title?;
+        # Defines the order of Pipelines. First order (`order_nr=0`) is the default Pipeline.
+        int? order_nr?;
+        # Whether this Pipeline will be made inactive (hidden) or active
+        boolean? active?;
+        # Whether Deal probability is disabled or enabled for this Pipeline
+        boolean? deal_probability?;
+        # The Pipeline creation time. Format: YYYY-MM-DD HH:MM:SS.
+        string? add_time?;
+        # The Pipeline update time. Format: YYYY-MM-DD HH:MM:SS.
+        string? update_time?;
+        # A boolean that shows if the Pipeline is selected from a filter or not
+        boolean? selected?;
+        # Deals summary
+        record {
+            # The Stage objects containing Deals currency information
+            record {
+                # The currency summaries per stage. This parameter is dynamic and changes according to `stage_id` value.
+                record {
+                    # The currency summary. This parameter is dynamic and changes according to `currency_id` value.
+                    record {
+                        # Deals count per currency
+                        int? count?;
+                        # Deals value per currency
+                        int? value?;
+                        # Deals value formatted per currency
+                        string? value_formatted?;
+                        # Deals weighted value per currency
+                        int? weighted_value?;
+                        # Deals weighted value formatted per currency
+                        string? weighted_value_formatted?;
+                    } CURRENCY_ID?;
+                } STAGE_ID?;
+            } per_stages?;
+            # The currency count summary
+            record {
+                # Deals count per currency. This parameter is dynamic and changes according to `currency_id` value.
+                int? CURRENCY_ID?;
+            } per_currency?;
+            # Deals count
+            int? total_count?;
+            # Full currency summaries
+            record {
+                # The currency summary. This parameter is dynamic and changes according to `currency_id` value.
+                record {
+                    # Deals count per currency
+                    int? count?;
+                    # Deals value per currency
+                    int? value?;
+                } CURRENCY_ID?;
+            } per_currency_full?;
+        } deals_summary?;
+    } data?;
 };
 
 public type GetActivityTypesResponse200 record {
@@ -1002,7 +1202,32 @@ public type WebhookResponse200 record {
 
 public type Getactivitiesresponse200RelatedObjectsPerson record {
     # The ID of the Person associated with the item
-    record {} PERSON_ID?;
+    record {
+        # The ID of the Person associated with the item
+        int? id?;
+        # The name of the Person associated with the item
+        string? name?;
+        # The emails of the Person associated with the item
+        record {
+            # The type of the email
+            string? label?;
+            # The email of the associated Person
+            string? value?;
+            # If this is the primary email or not
+            boolean? primary?;
+        }[]? email?;
+        # The phone numbers of the Person associated with the item
+        record {
+            # The type of the phone number
+            string? label?;
+            # The phone number of the Person associated with the item
+            string? value?;
+            # If this is the primary phone number or not
+            boolean? primary?;
+        }[]? phone?;
+        # The ID of the owner of the Person that is associated with the item
+        int? owner_id?;
+    } PERSON_ID?;
 };
 
 public type Updatefieldrequest2 record {
@@ -1115,7 +1340,7 @@ public type BaseOrganizationItem1 record {
     string? name?;
     # If the Organization is activated or not
     boolean? active_flag?;
-    record {} picture_id?;
+    record {*PictureId1; *PictureId2;} picture_id?;
     # The country code of the Organization
     string? country_code?;
     # The first character of the Organization name
@@ -1366,7 +1591,152 @@ public type Findproductsbynameresponse200Data record {
 public type AddPersonResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {} data?;
+    record {
+        # The ID of the Person
+        int? id?;
+        # The ID of the Company related to the Person
+        int? company_id?;
+        # If the Person is activated or not
+        boolean? active_flag?;
+        # List of phone data related to the Person
+        record {
+            # Phone number
+            string? value?;
+            # Boolean that indicates if phone number is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the phone number. (Possible values - work, home, mobile or other)
+            string? label?;
+        }[]? phone?;
+        # List of email data related to the Person
+        record {
+            # Email
+            string? value?;
+            # Boolean that indicates if email is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the email. (Possible values - work, home or other)
+            string? label?;
+        }[]? email?;
+        # The first letter of the name of the Person
+        string? first_char?;
+        # The date and time when the Person was added/created. Format: YYYY-MM-DD HH:MM:SS
+        string? add_time?;
+        # The last updated date and time of the Person. Format: YYYY-MM-DD HH:MM:SS
+        string? update_time?;
+        # The visibility group ID of who can see the Person
+        string? visible_to?;
+        record {
+            # The ID of the picture associated with the item
+            int? id?;
+            # The type of item the picture is related to
+            string? item_type?;
+            # The ID of related item
+            int? item_id?;
+            # If the associated picture is activated or not
+            boolean? active_flag?;
+            # The add time of the picture
+            string? add_time?;
+            # The update time of the picture
+            string? update_time?;
+            # The ID of the User who added the picture
+            int? added_by_user_id?;
+            record {
+                # The URL of the 128*128 picture
+                string? '128?;
+                # The URL of the 512*512 picture
+                string? '512?;
+            } pictures?;
+        } picture_id?;
+        # The label assigned to the Person
+        int? label?;
+        # The name of the Organization associated with the Person
+        string? org_name?;
+        # The name of the owner associated with the Person
+        string? owner_name?;
+        # The CC email associated with the Person
+        string? cc_email?;
+        record {
+            # The ID of the User
+            int? id?;
+            # The name of the User
+            string? name?;
+            # The email of the User
+            string? email?;
+            # Whether the User has picture or not. 0 = No picture, 1 = Has picture.
+            int? has_pic?;
+            # The User picture hash
+            string? pic_hash?;
+            # If the User is activated or not
+            boolean? active_flag?;
+            # The ID of the owner
+            int? value?;
+        } owner_id?;
+        record {
+            # The name of the Organization associated with the item
+            string? name?;
+            # The number of people connected with the Organization that is associated with the item
+            int? people_count?;
+            # The ID of the owner of the Organization that is associated with the item
+            int? owner_id?;
+            # The address of the Organization
+            string? address?;
+            # The CC email of the Organization associated with the item
+            string? cc_email?;
+            # The ID of the Organization
+            int? value?;
+            # If the associated Organization is active or not
+            boolean? active_flag?;
+        } org_id?;
+        # The name of the Person
+        string? name?;
+        # The first name of the Person
+        string? first_name?;
+        # The last name of the Person
+        string? last_name?;
+        # The count of email messages related to the Person
+        int? email_messages_count?;
+        # The count of activities related to the Person
+        int? activities_count?;
+        # The count of done activities related to the Person
+        int? done_activities_count?;
+        # The count of undone activities related to the Person
+        int? undone_activities_count?;
+        # The count of files related to the Person
+        int? files_count?;
+        # The count of notes related to the Person
+        int? notes_count?;
+        # The count of followers related to the Person
+        int? followers_count?;
+        # The date and time of the last incoming email associated with the Person
+        string? last_incoming_mail_time?;
+        # The date and time of the last outgoing email associated with the Person
+        string? last_outgoing_mail_time?;
+        # The count of open Deals related with the item
+        int? open_deals_count?;
+        # The count of related open Deals related with the item
+        int? related_open_deals_count?;
+        # The count of closed Deals related with the item
+        int? closed_deals_count?;
+        # The count of related closed Deals related with the item
+        int? related_closed_deals_count?;
+        # The count of won Deals related with the item
+        int? won_deals_count?;
+        # The count of related won Deals related with the item
+        int? related_won_deals_count?;
+        # The count of lost Deals related with the item
+        int? lost_deals_count?;
+        # The count of related lost Deals related with the item
+        int? related_lost_deals_count?;
+        # The date of the next activity associated with the Deal
+        string? next_activity_date?;
+        # The time of the next activity associated with the Deal
+        string? next_activity_time?;
+        # The ID of the next activity associated with the Deal
+        int? next_activity_id?;
+        # The ID of the last activity associated with the Deal
+        int? last_activity_id?;
+        # The date of the last activity associated with the Deal
+        string? last_activity_date?;
+    } data?;
     Listproductsresponse200RelatedObjects? related_objects?;
 };
 
@@ -1412,11 +1782,6 @@ public type GetPermissionSetsResponse200 record {
     boolean? success?;
     # The array of Permission Set
     Getpermissionsetsresponse200Data[]? data?;
-};
-
-public type DeleteRoleAssignment record {
-    # ID of the user
-    int? user_id;
 };
 
 public type GetNoteFieldsResponse200 record {
@@ -1757,7 +2122,152 @@ public type Addorupdaterolesettingresponse200Data record {
 public type UpdatePersonResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {} data?;
+    record {
+        # The ID of the Person
+        int? id?;
+        # The ID of the Company related to the Person
+        int? company_id?;
+        # If the Person is activated or not
+        boolean? active_flag?;
+        # List of phone data related to the Person
+        record {
+            # Phone number
+            string? value?;
+            # Boolean that indicates if phone number is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the phone number. (Possible values - work, home, mobile or other)
+            string? label?;
+        }[]? phone?;
+        # List of email data related to the Person
+        record {
+            # Email
+            string? value?;
+            # Boolean that indicates if email is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the email. (Possible values - work, home or other)
+            string? label?;
+        }[]? email?;
+        # The first letter of the name of the Person
+        string? first_char?;
+        # The date and time when the Person was added/created. Format: YYYY-MM-DD HH:MM:SS
+        string? add_time?;
+        # The last updated date and time of the Person. Format: YYYY-MM-DD HH:MM:SS
+        string? update_time?;
+        # The visibility group ID of who can see the Person
+        string? visible_to?;
+        record {
+            # The ID of the picture associated with the item
+            int? id?;
+            # The type of item the picture is related to
+            string? item_type?;
+            # The ID of related item
+            int? item_id?;
+            # If the associated picture is activated or not
+            boolean? active_flag?;
+            # The add time of the picture
+            string? add_time?;
+            # The update time of the picture
+            string? update_time?;
+            # The ID of the User who added the picture
+            int? added_by_user_id?;
+            record {
+                # The URL of the 128*128 picture
+                string? '128?;
+                # The URL of the 512*512 picture
+                string? '512?;
+            } pictures?;
+        } picture_id?;
+        # The label assigned to the Person
+        int? label?;
+        # The name of the Organization associated with the Person
+        string? org_name?;
+        # The name of the owner associated with the Person
+        string? owner_name?;
+        # The CC email associated with the Person
+        string? cc_email?;
+        record {
+            # The ID of the User
+            int? id?;
+            # The name of the User
+            string? name?;
+            # The email of the User
+            string? email?;
+            # Whether the User has picture or not. 0 = No picture, 1 = Has picture.
+            int? has_pic?;
+            # The User picture hash
+            string? pic_hash?;
+            # If the User is activated or not
+            boolean? active_flag?;
+            # The ID of the owner
+            int? value?;
+        } owner_id?;
+        record {
+            # The name of the Organization associated with the item
+            string? name?;
+            # The number of people connected with the Organization that is associated with the item
+            int? people_count?;
+            # The ID of the owner of the Organization that is associated with the item
+            int? owner_id?;
+            # The address of the Organization
+            string? address?;
+            # The CC email of the Organization associated with the item
+            string? cc_email?;
+            # The ID of the Organization
+            int? value?;
+            # If the associated Organization is active or not
+            boolean? active_flag?;
+        } org_id?;
+        # The name of the Person
+        string? name?;
+        # The first name of the Person
+        string? first_name?;
+        # The last name of the Person
+        string? last_name?;
+        # The count of email messages related to the Person
+        int? email_messages_count?;
+        # The count of activities related to the Person
+        int? activities_count?;
+        # The count of done activities related to the Person
+        int? done_activities_count?;
+        # The count of undone activities related to the Person
+        int? undone_activities_count?;
+        # The count of files related to the Person
+        int? files_count?;
+        # The count of notes related to the Person
+        int? notes_count?;
+        # The count of followers related to the Person
+        int? followers_count?;
+        # The date and time of the last incoming email associated with the Person
+        string? last_incoming_mail_time?;
+        # The date and time of the last outgoing email associated with the Person
+        string? last_outgoing_mail_time?;
+        # The count of open Deals related with the item
+        int? open_deals_count?;
+        # The count of related open Deals related with the item
+        int? related_open_deals_count?;
+        # The count of closed Deals related with the item
+        int? closed_deals_count?;
+        # The count of related closed Deals related with the item
+        int? related_closed_deals_count?;
+        # The count of won Deals related with the item
+        int? won_deals_count?;
+        # The count of related won Deals related with the item
+        int? related_won_deals_count?;
+        # The count of lost Deals related with the item
+        int? lost_deals_count?;
+        # The count of related lost Deals related with the item
+        int? related_lost_deals_count?;
+        # The date of the next activity associated with the Deal
+        string? next_activity_date?;
+        # The time of the next activity associated with the Deal
+        string? next_activity_time?;
+        # The ID of the next activity associated with the Deal
+        int? next_activity_id?;
+        # The ID of the last activity associated with the Deal
+        int? last_activity_id?;
+        # The date of the last activity associated with the Deal
+        string? last_activity_date?;
+    } data?;
     Listproductsresponse200RelatedObjects? related_objects?;
 };
 
@@ -1884,7 +2394,809 @@ public type Searchpersonsresponse200DataItemOwner record {
 public type GetRecentsResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}|record {}[]? data?;
+    (record {
+        string? item?;
+        int? id?;
+        record {
+            # Due date of the Activity. Format: YYYY-MM-DD
+            string? due_date?;
+            # Due time of the Activity in UTC. Format: HH:MM
+            string? due_time?;
+            # Duration of the Activity. Format: HH:MM
+            string? duration?;
+            # The ID of the Deal this Activity is associated with
+            int? deal_id?;
+            # The ID of the Person this Activity is associated with
+            int? person_id?;
+            # The ID of the Organization this Activity is associated with
+            int? org_id?;
+            # Note of the Activity (HTML format)
+            string? note?;
+            # The address of the Activity. Pipedrive will automatically check if the location matches a geo-location on Google maps.
+            string? location?;
+            # Additional details about the Activity that is synced to your external calendar. Unlike the note added to the Activity, the description is publicly visible to any guests added to the Activity.
+            string? public_description?;
+            # The Activity ID, generated when the Activity was created
+            string? id?;
+            # Whether the Activity is done or not
+            boolean? done?;
+            # Subject of the Activity
+            string? subject?;
+            # Type of the Activity. This is in correlation with the `key_string` parameter of ActivityTypes.
+            string? 'type?;
+            # The ID of the User whom the Activity is assigned to
+            int? user_id?;
+            # List of multiple Persons (participants) this Activity is associated with
+            record {}[]? participants?;
+            # Marks if the Activity is set as 'Busy' or 'Free'. If the flag is set to `true`, your customers will not be able to book that time slot through any Scheduler links. The flag can also be unset. When the value of the flag is unset (`null`), the flag defaults to 'Busy' if it has a time set, and 'Free' if it is an all-day event without specified time.
+            boolean? busy_flag?;
+            # Attendees of the Activity. This can be either your existing Pipedrive contacts or an external email address.
+            record {}[]? attendees?;
+            # The User's company ID
+            int? company_id?;
+            # If the Activity references some other object, it is indicated here. For example, value `Salesphone` refers to Activities created with Caller.
+            string? reference_type?;
+            # Together with the `reference_type`, gives the ID of the other object
+            int? reference_id?;
+            # The ID of Marketplace app, which is connected to this Activity
+            string? conference_meeting_client?;
+            # The link to join the meeting which is associated with this Activity
+            string? conference_meeting_url?;
+            # The meeting ID of the meeting provider (Zoom, MS Teams etc.) that is associated with this Activity
+            string? conference_meeting_id?;
+            # The creation date and time of the Activity in UTC. Format: YYYY-MM-DD HH:MM:SS.
+            string? add_time?;
+            # The date and time this Activity was marked as done. Format: YYYY-MM-DD HH:MM:SS.
+            string? marked_as_done_time?;
+            # The date and time of latest notifications sent about this Activity to the participants or the attendees of this Activity
+            string? last_notification_time?;
+            # The ID of the User who triggered the sending of the latest notifications about this Activity to the participants or the attendees of this Activity
+            int? last_notification_user_id?;
+            # The ID of the language the notifications are sent in
+            int? notification_language_id?;
+            # The ID of the Lead in the UUID format this Activity is associated with
+            string? lead_id?;
+            # Whether the Activity is active or not
+            boolean? active_flag?;
+            # The last update date and time of the Activity. Format: YYYY-MM-DD HH:MM:SS.
+            string? update_time?;
+            # The ID of the User who was the last to update this Activity
+            int? update_user_id?;
+            # For the Activity which syncs to Google calendar, this is the Google event ID. NB! This field is related to old Google calendar sync and will be deprecated soon.
+            string? gcal_event_id?;
+            # The Google calendar ID that this Activity syncs to. NB! This field is related to old Google calendar sync and will be deprecated soon.
+            string? google_calendar_id?;
+            # The Google calendar API etag (version) that is used for syncing this Activity. NB! This field is related to old Google calendar sync and will be deprecated soon.
+            string? google_calendar_etag?;
+            # For Activities that sync to an external calendar, this setting indicates if the Activity syncs with context (what are the Deals, Persons, Organizations this Activity is related to)
+            string? calendar_sync_include_context?;
+            # The timezone the Activity was created in an external calendar
+            string? source_timezone?;
+            # The rule for the recurrence of the Activity. Is important for activities synced into Pipedrive from an external calendar. Example: "RRULE:FREQ=WEEKLY;BYDAY=WE"
+            string? rec_rule?;
+            # Additional rules for the recurrence of the Activity, extend the `rec_rule`. Is important for activities synced into Pipedrive from an external calendar.
+            string? rec_rule_extension?;
+            # The ID of parent Activity for a recurrent Activity if the current Activity is an exception to recurrence rules
+            int? rec_master_activity_id?;
+            # The list of recurring Activity instances. It is in a structure as follows: `[{due_date: "2020-06-24", due_time: "10:00:00"}]`
+            record {}[]? series?;
+            # The ID of the User who created the Activity
+            int? created_by_user_id?;
+            # Subfield of location field. Indicates apartment/suite number.
+            string? location_subpremise?;
+            # Subfield of location field. Indicates house number.
+            string? location_street_number?;
+            # Subfield of location field. Indicates street name.
+            string? location_route?;
+            # Subfield of location field. Indicates district/sublocality.
+            string? location_sublocality?;
+            # Subfield of location field. Indicates city/town/village/locality.
+            string? location_locality?;
+            # Subfield of location field. Indicates state/county.
+            string? location_admin_area_level_1?;
+            # Subfield of location field. Indicates region.
+            string? location_admin_area_level_2?;
+            # Subfield of location field. Indicates country.
+            string? location_country?;
+            # Subfield of location field. Indicates ZIP/postal code.
+            string? location_postal_code?;
+            # Subfield of location field. Indicates full/combined address.
+            string? location_formatted_address?;
+            # Subfield of location field. Indicates latitude.
+            decimal? location_lat?;
+            # Subfield of location field. Indicates longitude.
+            decimal? location_long?;
+            # Name of the Organization this Activity is associated with
+            string? org_name?;
+            # Name of the Person this Activity is associated with
+            string? person_name?;
+            # Name of the Deal this Activity is associated with
+            string? deal_title?;
+            # Name of the User this Activity is owned by
+            string? owner_name?;
+            # The bcc email address of the Person
+            string? person_dropbox_bcc?;
+            # The bcc email address of the Deal
+            string? deal_dropbox_bcc?;
+            # The ID of the User to whom the Activity is assigned to. Equal to `user_id`.
+            int? assigned_to_user_id?;
+            # The file that is attached to this Activity. For example, this can be a reference to an audio note file generated with Pipedrive mobile app.
+            record {} file?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The ID of the ActivityType
+            int? id?;
+            # The name of the ActivityType
+            string? name?;
+            # Icon graphic to use for representing this activity type.
+            string? icon_key?;
+            # A designated color for the ActivityType in 6-character HEX format (e.g. `FFFFFF` for white, `000000` for black)
+            string? color?;
+            # An order number for this ActivityType. Order numbers should be used to order the types in the ActivityType selections.
+            int? order_nr?;
+            # A string that is generated by the API based on the given name of the ActivityType upon creation
+            string? key_string?;
+            # The active flag of the ActivityType
+            boolean? active_flag?;
+            # Whether the ActivityType is a custom one or not
+            boolean? is_custom_flag?;
+            # The creation time of the ActivityType
+            string? add_time?;
+            # The update time of the ActivityType
+            string? update_time?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The ID of the Deal
+            int? id?;
+            # The ID of the Deal creator
+            int? creator_user_id?;
+            # The ID of the User
+            int? user_id?;
+            # The ID of the Person associated with the Deal
+            int? person_id?;
+            # The ID of the Organization associated with the Deal
+            int? org_id?;
+            # The ID of the Deal stage
+            int? stage_id?;
+            # The title of the Deal
+            string? title?;
+            # The value of the Deal
+            decimal? value?;
+            # The currency associated with the Deal
+            string? currency?;
+            # The creation date and time of the Deal
+            string? add_time?;
+            # The last updated date and time of the Deal
+            string? update_time?;
+            # The last updated date and time of the Deal stage
+            string? stage_change_time?;
+            # If the Deal is activated or not
+            boolean? active?;
+            # If the Deal is deleted or not
+            boolean? deleted?;
+            # The status of the Deal
+            string? status?;
+            # The success probability percentage of the Deal
+            decimal? probability?;
+            # The date of the next activity associated with the Deal
+            string? next_activity_date?;
+            # The time of the next activity associated with the Deal
+            string? next_activity_time?;
+            # The ID of the next activity associated with the Deal
+            int? next_activity_id?;
+            # The ID of the last activity associated with the Deal
+            int? last_activity_id?;
+            # The date of the last activity associated with the Deal
+            string? last_activity_date?;
+            # The reason for losing the Deal
+            string? lost_reason?;
+            # The visibility of the Deal
+            string? visible_to?;
+            # The date and time of closing the Deal
+            string? close_time?;
+            # The ID of pipeline associated with the Deal
+            int? pipeline_id?;
+            # The date and time of changing the Deal status as won
+            string? won_time?;
+            # The date and time of the first time changing the Deal status as won
+            string? first_won_time?;
+            # The date and time of changing the Deal status as lost
+            string? lost_time?;
+            # The number of Products associated with the Deal
+            int? products_count?;
+            # The number of Files associated with the Deal
+            int? files_count?;
+            # The number of Notes associated with the Deal
+            int? notes_count?;
+            # The number of Followers associated with the Deal
+            int? followers_count?;
+            # The number of emails associated with the Deal
+            int? email_messages_count?;
+            # The number of Activities associated with the Deal
+            int? activities_count?;
+            # The number of completed Activities associated with the Deal
+            int? done_activities_count?;
+            # The number of incomplete Activities associated with the Deal
+            int? undone_activities_count?;
+            # The number of Participants associated with the Deal
+            int? participants_count?;
+            # The expected close date of the Deal
+            string? expected_close_date?;
+            # The date and time of the last incoming email associated with the Deal
+            string? last_incoming_mail_time?;
+            # The date and time of the last outgoing email associated with the Deal
+            string? last_outgoing_mail_time?;
+            # The label assigned to the Deal
+            string? label?;
+            # The order number of the Deal stage associated with the Deal
+            int? stage_order_nr?;
+            # The name of the Person associated with the Deal
+            string? person_name?;
+            # The name of the Organization associated with the Deal
+            string? org_name?;
+            # The subject of the next activity associated with the Deal
+            string? next_activity_subject?;
+            # The type of the next activity associated with the Deal
+            string? next_activity_type?;
+            # The duration of the next activity associated with the Deal
+            string? next_activity_duration?;
+            # The note of the next activity associated with the Deal
+            string? next_activity_note?;
+            # The Deal value formatted with selected currency. E.g. US$500
+            string? formatted_value?;
+            # Probability times Deal value. Probability can either be Deal probability or if not set, then stage probability.
+            decimal? weighted_value?;
+            # The weighted_value formatted with selected currency. E.g. US$500
+            string? formatted_weighted_value?;
+            # The currency associated with the Deal
+            string? weighted_value_currency?;
+            # The date and time of changing the Deal status as rotten
+            string? rotten_time?;
+            # The name of the Deal owner
+            string? owner_name?;
+            # The Cc email of the Deal
+            string? cc_email?;
+            # If the Organization that is associated with the Deal is hidden or not
+            boolean? org_hidden?;
+            # If the Person that is associated with the Deal is hidden or not
+            boolean? person_hidden?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        # The File data
+        record {
+            # The ID of the File
+            int? id?;
+            # The ID of the User to associate the File with
+            int? user_id?;
+            # The ID of the Deal to associate the File with
+            int? deal_id?;
+            # The ID of the Person to associate the File with
+            int? person_id?;
+            # The ID of the Organization to associate the File with
+            int? org_id?;
+            # The ID of the Product to associate the File with
+            int? product_id?;
+            # The ID of the Activity to associate the File with
+            int? activity_id?;
+            # The date and time when the File was added/created. Format: YYYY-MM-DD HH:MM:SS
+            string? add_time?;
+            # The last updated date and time of the File. Format: YYYY-MM-DD HH:MM:SS
+            string? update_time?;
+            # The original name of the File
+            string? file_name?;
+            # The size of the File
+            string? file_size?;
+            # Whether the User is active or not. false = Not activated, true = Activated
+            boolean? active_flag?;
+            # Whether the File was uploaded as inline or not
+            boolean? inline_flag?;
+            # The location type to send the File to. Only googledrive is supported at the moment.
+            string? remote_location?;
+            # The ID of the remote item
+            string? remote_id?;
+            # The ID of the inline attachment
+            string? cid?;
+            # The location of the cloud storage
+            string? s3_bucket?;
+            # The ID of the mail message to associate the File with
+            string? mail_message_id?;
+            # The ID of the mail template to associate the File with
+            string? mail_template_id?;
+            # The name of the Deal associated with the File
+            string? deal_name?;
+            # The name of the Person associated with the File
+            string? person_name?;
+            # The name of the Organization associated with the File
+            string? org_name?;
+            # The name of the Product associated with the File
+            string? product_name?;
+            # The URL of the download File
+            string? url?;
+            # The visible name of the File
+            string? name?;
+            # The description of the File
+            string? description?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        # The filter object
+        record {
+            # The ID of the filter
+            int? id?;
+            # The name of the filter
+            string? name?;
+            # The active flag of the filter
+            boolean? active_flag?;
+            # The type of the item
+            string? 'type?;
+            # The owner of the filter
+            int? user_id?;
+            # The date and time when the filter was added
+            string? add_time?;
+            # The date and time when the filter was updated
+            string? update_time?;
+            # The visibility group ID of who can see then filter
+            int? visible_to?;
+            # Used by Pipedrive webapp
+            int? custom_view_id?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The ID of the Note
+            int? id?;
+            # If Note is active or deleted
+            boolean? active_flag?;
+            # The creation date and time of the Note
+            string? add_time?;
+            # Content of the Note in HTML format. Subject to sanitization on the back-end.
+            string? content?;
+            # The Deal this Note is attached to
+            record {
+                # The title of the Deal this Note is attached to
+                string? title?;
+            } deal?;
+            # The ID of the Lead the Note is attached to
+            string? lead_id?;
+            # The ID of the Deal the Note is attached to
+            int? deal_id?;
+            # The ID of the User who updated the Note last
+            int? last_update_user_id?;
+            # The ID of the Organization this Note is attached to
+            int? org_id?;
+            # The Organization this Note is attached to
+            record {
+                # The name of the Organization this Note is attached to
+                string? name?;
+            } organization?;
+            # The Person this Note is attached to
+            record {
+                # The name of the Person this Note is attached to
+                string? name?;
+            } person?;
+            # The ID of the Person this Note is attached to
+            int? person_id?;
+            # If true, then the results are filtered by Note to Deal pinning state.
+            boolean? pinned_to_deal_flag?;
+            # If true, then the results are filtered by Note to Organization pinning state.
+            boolean? pinned_to_organization_flag?;
+            # If true, then the results are filtered by Note to Person pinning state.
+            boolean? pinned_to_person_flag?;
+            # The last updated date and time of the Note
+            string? update_time?;
+            # The User who created the Note
+            record {
+                # The Email of the Note creator
+                string? email?;
+                # The URL of the Note creator avatar picture
+                string? icon_url?;
+                # If the Note is created by you or not
+                boolean? is_you?;
+                # The name of the Note creator
+                string? name?;
+            } user?;
+            # The ID of the Note creator
+            int? user_id?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The ID of the Person
+            int? id?;
+            # The ID of the Company related to the Person
+            int? company_id?;
+            # If the Person is activated or not
+            boolean? active_flag?;
+            # List of phone data related to the Person
+            record {
+                # Phone number
+                string? value?;
+                # Boolean that indicates if phone number is primary for the Person or not
+                boolean? primary?;
+                # Label that indicates the type of the phone number. (Possible values - work, home, mobile or other)
+                string? label?;
+            }[]? phone?;
+            # List of email data related to the Person
+            record {
+                # Email
+                string? value?;
+                # Boolean that indicates if email is primary for the Person or not
+                boolean? primary?;
+                # Label that indicates the type of the email. (Possible values - work, home or other)
+                string? label?;
+            }[]? email?;
+            # The first letter of the name of the Person
+            string? first_char?;
+            # The date and time when the Person was added/created. Format: YYYY-MM-DD HH:MM:SS
+            string? add_time?;
+            # The last updated date and time of the Person. Format: YYYY-MM-DD HH:MM:SS
+            string? update_time?;
+            # The visibility group ID of who can see the Person
+            string? visible_to?;
+            record {
+                # The ID of the picture associated with the item
+                int? id?;
+                # The type of item the picture is related to
+                string? item_type?;
+                # The ID of related item
+                int? item_id?;
+                # If the associated picture is activated or not
+                boolean? active_flag?;
+                # The add time of the picture
+                string? add_time?;
+                # The update time of the picture
+                string? update_time?;
+                # The ID of the User who added the picture
+                int? added_by_user_id?;
+                record {
+                    # The URL of the 128*128 picture
+                    string? '128?;
+                    # The URL of the 512*512 picture
+                    string? '512?;
+                } pictures?;
+            } picture_id?;
+            # The label assigned to the Person
+            int? label?;
+            # The name of the Organization associated with the Person
+            string? org_name?;
+            # The name of the owner associated with the Person
+            string? owner_name?;
+            # The CC email associated with the Person
+            string? cc_email?;
+            # The ID of the owner related to the Person
+            int? owner_id?;
+            # The ID of the Organization related to the Person
+            int? org_id?;
+            # The ID of the Person with what the main Person was merged
+            int? merge_what_id?;
+            # The name of the Person
+            string? name?;
+            # The first name of the Person
+            string? first_name?;
+            # The last name of the Person
+            string? last_name?;
+            # The count of email messages related to the Person
+            int? email_messages_count?;
+            # The count of activities related to the Person
+            int? activities_count?;
+            # The count of done activities related to the Person
+            int? done_activities_count?;
+            # The count of undone activities related to the Person
+            int? undone_activities_count?;
+            # The count of files related to the Person
+            int? files_count?;
+            # The count of notes related to the Person
+            int? notes_count?;
+            # The count of followers related to the Person
+            int? followers_count?;
+            # The date and time of the last incoming email associated with the Person
+            string? last_incoming_mail_time?;
+            # The date and time of the last outgoing email associated with the Person
+            string? last_outgoing_mail_time?;
+            # The count of open Deals related with the item
+            int? open_deals_count?;
+            # The count of related open Deals related with the item
+            int? related_open_deals_count?;
+            # The count of closed Deals related with the item
+            int? closed_deals_count?;
+            # The count of related closed Deals related with the item
+            int? related_closed_deals_count?;
+            # The count of won Deals related with the item
+            int? won_deals_count?;
+            # The count of related won Deals related with the item
+            int? related_won_deals_count?;
+            # The count of lost Deals related with the item
+            int? lost_deals_count?;
+            # The count of related lost Deals related with the item
+            int? related_lost_deals_count?;
+            # The date of the next activity associated with the Deal
+            string? next_activity_date?;
+            # The time of the next activity associated with the Deal
+            string? next_activity_time?;
+            # The ID of the next activity associated with the Deal
+            int? next_activity_id?;
+            # The ID of the last activity associated with the Deal
+            int? last_activity_id?;
+            # The date of the last activity associated with the Deal
+            string? last_activity_date?;
+            # The count of open participant Deals related with the item
+            int? participant_open_deals_count?;
+            # The count of closed participant Deals related with the item
+            int? participant_closed_deals_count?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The ID of the Organization
+            int? id?;
+            # The ID of the Company related to the Organization
+            int? company_id?;
+            record {
+                # The ID of the User
+                int? id?;
+                # The name of the User
+                string? name?;
+                # The email of the User
+                string? email?;
+                # Whether the User has picture or not. 0 = No picture, 1 = Has picture.
+                int? has_pic?;
+                # The User picture hash
+                string? pic_hash?;
+                # If the User is activated or not
+                boolean? active_flag?;
+                # The ID of the owner
+                int? value?;
+            } owner_id?;
+            # The name of the Organization
+            string? name?;
+            # If the Organization is activated or not
+            boolean? active_flag?;
+            record {
+                # The ID of the picture associated with the item
+                int? value?;
+                # The type of item the picture is related to
+                string? item_type?;
+                # The ID of related item
+                int? item_id?;
+                # If the associated picture is activated or not
+                boolean? active_flag?;
+                # The add time of the picture
+                string? add_time?;
+                # The update time of the picture
+                string? update_time?;
+                # The ID of the User who added the picture
+                int? added_by_user_id?;
+                record {
+                    # The URL of the 128*128 picture
+                    string? '128?;
+                    # The URL of the 512*512 picture
+                    string? '512?;
+                } pictures?;
+            } picture_id?;
+            # The country code of the Organization
+            string? country_code?;
+            # The first character of the Organization name
+            string? first_char?;
+            # The creation date and time of the Organization
+            string? add_time?;
+            # The last updated date and time of the Organization
+            string? update_time?;
+            # The visibility group ID of who can see the Organization
+            string? visible_to?;
+            # The ID of the label
+            int? label?;
+            # The name of the Organization owner
+            string? owner_name?;
+            # The CC email of the Organization
+            string? cc_email?;
+            # The count of email messages related to the Organization
+            int? email_messages_count?;
+            # The count of Persons related to the Organization
+            int? people_count?;
+            # The count of Activities related to the Organization
+            int? activities_count?;
+            # The count of done Activities related to the Organization
+            int? done_activities_count?;
+            # The count of undone Activities related to the Organization
+            int? undone_activities_count?;
+            # The count of files related to the Organization
+            int? files_count?;
+            # The count of notes related to the Organization
+            int? notes_count?;
+            # The count of followers related to the Organization
+            int? followers_count?;
+            # The full address of the Organization
+            string? address?;
+            # The sub-premise of the Organization location
+            string? address_subpremise?;
+            # The street number of the Organization location
+            string? address_street_number?;
+            # The route of the Organization location
+            string? address_route?;
+            # The sub-locality of the Organization location
+            string? address_sublocality?;
+            # The locality of the Organization location
+            string? address_locality?;
+            # The level 1 admin area of the Organization location
+            string? address_admin_area_level_1?;
+            # The level 2 admin area of the Organization location
+            string? address_admin_area_level_2?;
+            # The country of the Organization location
+            string? address_country?;
+            # The postal code of the Organization location
+            string? address_postal_code?;
+            # The formatted Organization location
+            string? address_formatted_address?;
+            # The count of open Deals related with the item
+            int? open_deals_count?;
+            # The count of related open Deals related with the item
+            int? related_open_deals_count?;
+            # The count of closed Deals related with the item
+            int? closed_deals_count?;
+            # The count of related closed Deals related with the item
+            int? related_closed_deals_count?;
+            # The count of won Deals related with the item
+            int? won_deals_count?;
+            # The count of related won Deals related with the item
+            int? related_won_deals_count?;
+            # The count of lost Deals related with the item
+            int? lost_deals_count?;
+            # The count of related lost Deals related with the item
+            int? related_lost_deals_count?;
+            # The date of the next activity associated with the Deal
+            string? next_activity_date?;
+            # The time of the next activity associated with the Deal
+            string? next_activity_time?;
+            # The ID of the next activity associated with the Deal
+            int? next_activity_id?;
+            # The ID of the last activity associated with the Deal
+            int? last_activity_id?;
+            # The date of the last activity associated with the Deal
+            string? last_activity_date?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The ID of the Pipeline
+            int? id?;
+            # The name of the Pipeline
+            string? name?;
+            # The Pipeline title displayed in the URL
+            string? url_title?;
+            # Defines the order of Pipelines. First order (`order_nr=0`) is the default Pipeline.
+            int? order_nr?;
+            # Whether this Pipeline will be made inactive (hidden) or active
+            boolean? active?;
+            # Whether Deal probability is disabled or enabled for this Pipeline
+            boolean? deal_probability?;
+            # The Pipeline creation time. Format: YYYY-MM-DD HH:MM:SS.
+            string? add_time?;
+            # The Pipeline update time. Format: YYYY-MM-DD HH:MM:SS.
+            string? update_time?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # ID of the Product
+            int? id?;
+            # Name of the product
+            string? name?;
+            # Product code
+            string? code?;
+            # Description of the Product
+            string? description?;
+            # Unit in which this product is sold
+            string? unit?;
+            # Tax percentage
+            decimal? tax?;
+            # Category of the Product
+            string? category?;
+            # Whether this product will be made active or not
+            boolean? active_flag?;
+            # Whether this product can be selected in Deals or not
+            boolean? selectable?;
+            # First letter of the Product name
+            string? first_char?;
+            # Visibility of the product. If omitted, visibility will be set to the default visibility setting of this item type for the authorized user.
+            int? visible_to?;
+            # ID of the user who will be marked as the owner of this product. When omitted, authorized user ID will be used
+            int? owner_id?;
+            # Files count
+            int? files_count?;
+            # Followers count
+            int? followers_count?;
+            # Date and time when the Product was added to the Deal
+            string? add_time?;
+            # Date and time when the Product was updated to the Deal
+            string? update_time?;
+            # Array of objects, each containing: `currency` (string), `price` (number), `cost` (number, optional), `overhead_cost` (number, optional). Note that there can only be one price per product per currency. When `prices` is omitted altogether, no prices will be set up for the product.
+            record {}[]? prices?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The ID of the Stage
+            int? id?;
+            # Defines the order of the Stage
+            int? order_nr?;
+            # The name of the Stage
+            string? name?;
+            # If the Stage is active or deleted
+            boolean? active_flag?;
+            # The Deal success probability percentage. Used/shown when the Deal weighted values are used.
+            int? deal_probability?;
+            # The ID of the Pipeline to add the Stage to
+            int? pipeline_id?;
+            # Whether Deals in this Stage can become rotten
+            int? rotten_flag?;
+            # The number of days the Deals are not updated in this Stage would become rotten. Applies only if the `rotten_flag` is set.
+            int? rotten_days?;
+            # The Stage creation time. Format: YYYY-MM-DD HH:MM:SS.
+            string? add_time?;
+            # The Stage update time. Format: YYYY-MM-DD HH:MM:SS.
+            string? update_time?;
+        } data?;
+    }|record {
+        string? item?;
+        int? id?;
+        record {
+            # The User ID
+            int? id?;
+            # The User name
+            string? name?;
+            # The User default currency
+            string? default_currency?;
+            # The User locale
+            string? locale?;
+            # The User language ID
+            int? lang?;
+            # The User email
+            string? email?;
+            # The User phone
+            string? phone?;
+            # Boolean that indicates if the User is activated
+            boolean? activated?;
+            # The User last login date and time. Format: YYYY-MM-DD HH:MM:SS
+            string? last_login?;
+            # The User creation date and time. Format: YYYY-MM-DD HH:MM:SS
+            string? created?;
+            # The User last modification date and time. Format: YYYY-MM-DD HH:MM:SS
+            string? modified?;
+            # The variation of signup flow (if exists). E.g. google
+            string? signup_flow_variation?;
+            # Boolean that indicates if the User has created a Company
+            boolean? has_created_company?;
+            # Indication if the User is admin (1 = true, 0 = false)
+            record {} is_admin?;
+            # Boolean that indicates if the User is activated
+            boolean? active_flag?;
+            # The User timezone name
+            string? timezone_name?;
+            # The User timezone offset
+            string? timezone_offset?;
+            # The ID of the User role
+            int? role_id?;
+            # The User icon URL
+            string? icon_url?;
+            # Boolean that indicates if the requested User is the same which is logged in (in this case, always true)
+            boolean? is_you?;
+        } data?;
+    }?)[]? data?;
     Getrecentsresponse200AdditionalData? additional_data?;
 };
 
@@ -2282,7 +3594,18 @@ public type OrganizationCountAndAddressInfo1 record {
 # The follower that is associated with the item
 public type Getorganizationresponse200AdditionalDataFollowers record {
     # The user ID of the follower
-    record {} FOLLOWER_USER_ID?;
+    record {
+        # The ID of the follower associated with the item
+        int? id?;
+        # The name of the follower
+        string? name?;
+        # The email of the follower
+        string? email?;
+        # The user ID of the follower
+        int? user_id?;
+        # The follower picture hash
+        string? pic_hash?;
+    } FOLLOWER_USER_ID?;
 };
 
 public type AddOrganizationFollowerResponse200 record {
@@ -2427,8 +3750,8 @@ public type OrganizationRelationshipWithCalculatedFields1 record {
     int? id?;
     # The type of the Relationship
     string? 'type?;
-    record {} rel_owner_org_id?;
-    record {} rel_linked_org_id?;
+    record {*RelationshipOrganizationInfoItem1; *RelationshipOrganizationInfoItem2;} rel_owner_org_id?;
+    record {*RelationshipOrganizationInfoItem1; *RelationshipOrganizationInfoItem2;} rel_linked_org_id?;
     # The creation date and time of the Relationship
     string? add_time?;
     # The last updated date and time of the Relationship
@@ -2478,14 +3801,18 @@ public type ResponseCallLogObject record {
     *ResponseCallLogObject1;
 };
 
-public type DeleteTeamUserRequest record {
-    # List of User IDs
-    int[]? users;
-};
-
 public type Getfilesresponse200AdditionalData record {
     # Pagination details of the list
-    record {} pagination?;
+    record {
+        # Pagination start
+        int? 'start?;
+        # Items shown per page
+        int? 'limit?;
+        # If there are more list items in the collection than displayed or not
+        boolean? more_items_in_collection?;
+        # Next pagination start
+        int? next_start?;
+    } pagination?;
 };
 
 public type DeleteGlobalMessageResponse200 record {
@@ -2604,7 +3931,6 @@ public type DealOrganizationDataWithId1 record {
     string? cc_email?;
 };
 
-# Details of the role
 public type AddRoleRequest record {
     # The ID of the parent Role
     int? parent_role_id?;
@@ -2764,7 +4090,22 @@ public type GetProductFollowersResponseSuccess record {
 
 public type Addactivityresponse200RelatedObjectsOrganization record {
     # The ID of the Organization associated with the item
-    record {} ORGANIZATION_ID?;
+    record {
+        # If the associated Organization is active or not
+        boolean? active_flag?;
+        # The ID of the Organization associated with the item
+        int? id?;
+        # The name of the Organization associated with the item
+        string? name?;
+        # The number of people connected with the Organization that is associated with the item
+        int? people_count?;
+        # The ID of the owner of the Organization that is associated with the item
+        int? owner_id?;
+        # The address of the Organization
+        string? address?;
+        # The CC email of the Organization associated with the item
+        string? cc_email?;
+    } ORGANIZATION_ID?;
 };
 
 public type DealStrict1 record {
@@ -3076,13 +4417,13 @@ public type DeleteActivitiesResponse200 record {
 
 public type CreateFieldRequest record {
     # Name of the field
-    string? name?;
+    string? name;
     # When `field_type` is either set or enum, possible options must be supplied as a JSON-encoded sequential array of objects. Example: `[{"label":"New Item"}]`
     string? options?;
     # Whether the field is available in 'add new' modal or not (both in web and mobile app)
     boolean? add_visible_flag?;
     # Type of the field<table><tr><th>Value</th><th>Description</th></tr><tr><td>`address`</td><td>Address field (has multiple subfields, autocompleted by Google Maps)</td></tr><tr><td>`date`</td><td>Date (format YYYY-MM-DD)</td></tr><tr><td>`daterange`</td><td>Date-range field (has a start date and end date value, both YYYY-MM-DD)</td></tr><tr><td>`double`</td><td>Numeric value</td></tr><tr><td>`enum`</td><td>Options field with a single possible chosen option</td></tr><tr><td>`int`</td><td>Integer value</td></tr><tr><td>`monetary`</td><td>Monetary field (has a numeric value and a currency value)</td></tr><tr><td>`org`</td><td>Organization field (contains an organization ID which is stored on the same account)</td></tr><tr><td>`people`</td><td>Person field (contains a person ID which is stored on the same account)</td></tr><tr><td>`phone`</td><td>Phone field (up to 255 numbers and/or characters)</td></tr><tr><td>`set`</td><td>Options field with a possibility of having multiple chosen options</td></tr><tr><td>`text`</td><td>Long text (up to 65k characters)</td></tr><tr><td>`time`</td><td>Time field (format HH:MM:SS)</td></tr><tr><td>`timerange`</td><td>Time-range field (has a start time and end time value, both HH:MM:SS)</td></tr><tr><td>`user`</td><td>User field (contains a user ID of another Pipedrive user)</td></tr><tr><td>`varchar`</td><td>Text (up to 255 characters)</td></tr><tr><td>`varchar_auto`</td><td>Autocomplete text (up to 255 characters)</td></tr><tr><td>`visible_to`</td><td>System field that keeps item's visibility setting</td></tr></table>
-    string? field_type?;
+    string? field_type;
 };
 
 public type ListProductsResponse200 record {
@@ -3266,7 +4607,34 @@ public type Pipeline2 record {
 
 public type Addactivityresponse200RelatedObjectsPerson record {
     # The ID of the Person associated with the item
-    record {} PERSON_ID?;
+    record {
+        # If the associated Person is active or not
+        boolean? active_flag?;
+        # The ID of the Person associated with the item
+        int? id?;
+        # The name of the Person associated with the item
+        string? name?;
+        # The emails of the Person associated with the item
+        record {
+            # The type of the email
+            string? label?;
+            # The email of the associated Person
+            string? value?;
+            # If this is the primary email or not
+            boolean? primary?;
+        }[]? email?;
+        # The phone numbers of the Person associated with the item
+        record {
+            # The type of the phone number
+            string? label?;
+            # The phone number of the Person associated with the item
+            string? value?;
+            # If this is the primary phone number or not
+            boolean? primary?;
+        }[]? phone?;
+        # The ID of the owner of the Person that is associated with the item
+        int? owner_id?;
+    } PERSON_ID?;
 };
 
 public type GetNotesResponse200 record {
@@ -3384,11 +4752,11 @@ public type MailMessages2 record {
     # If the mail message has a draft status then the value is the mail message object as JSON formatted string, otherwise `null`.
     string? draft?;
     # Whether the mail thread message has a body
-    decimal? has_body_flag?;
+    record {} has_body_flag?;
     # Whether the mail thread message is sent
-    decimal? sent_flag?;
+    record {} sent_flag?;
     # Whether the mail thread message is sent from Pipedrive
-    decimal? sent_from_pipedrive_flag?;
+    record {} sent_from_pipedrive_flag?;
     # The time when the mail message was received or created
     string? message_time?;
     # The time when the mail message was inserted to database
@@ -3628,7 +4996,152 @@ public type BasicDealProductRequest record {
 public type GetPersonResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {} data?;
+    record {
+        # The ID of the Person
+        int? id?;
+        # The ID of the Company related to the Person
+        int? company_id?;
+        # If the Person is activated or not
+        boolean? active_flag?;
+        # List of phone data related to the Person
+        record {
+            # Phone number
+            string? value?;
+            # Boolean that indicates if phone number is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the phone number. (Possible values - work, home, mobile or other)
+            string? label?;
+        }[]? phone?;
+        # List of email data related to the Person
+        record {
+            # Email
+            string? value?;
+            # Boolean that indicates if email is primary for the Person or not
+            boolean? primary?;
+            # Label that indicates the type of the email. (Possible values - work, home or other)
+            string? label?;
+        }[]? email?;
+        # The first letter of the name of the Person
+        string? first_char?;
+        # The date and time when the Person was added/created. Format: YYYY-MM-DD HH:MM:SS
+        string? add_time?;
+        # The last updated date and time of the Person. Format: YYYY-MM-DD HH:MM:SS
+        string? update_time?;
+        # The visibility group ID of who can see the Person
+        string? visible_to?;
+        record {
+            # The ID of the picture associated with the item
+            int? id?;
+            # The type of item the picture is related to
+            string? item_type?;
+            # The ID of related item
+            int? item_id?;
+            # If the associated picture is activated or not
+            boolean? active_flag?;
+            # The add time of the picture
+            string? add_time?;
+            # The update time of the picture
+            string? update_time?;
+            # The ID of the User who added the picture
+            int? added_by_user_id?;
+            record {
+                # The URL of the 128*128 picture
+                string? '128?;
+                # The URL of the 512*512 picture
+                string? '512?;
+            } pictures?;
+        } picture_id?;
+        # The label assigned to the Person
+        int? label?;
+        # The name of the Organization associated with the Person
+        string? org_name?;
+        # The name of the owner associated with the Person
+        string? owner_name?;
+        # The CC email associated with the Person
+        string? cc_email?;
+        record {
+            # The ID of the User
+            int? id?;
+            # The name of the User
+            string? name?;
+            # The email of the User
+            string? email?;
+            # Whether the User has picture or not. 0 = No picture, 1 = Has picture.
+            int? has_pic?;
+            # The User picture hash
+            string? pic_hash?;
+            # If the User is activated or not
+            boolean? active_flag?;
+            # The ID of the owner
+            int? value?;
+        } owner_id?;
+        record {
+            # The name of the Organization associated with the item
+            string? name?;
+            # The number of people connected with the Organization that is associated with the item
+            int? people_count?;
+            # The ID of the owner of the Organization that is associated with the item
+            int? owner_id?;
+            # The address of the Organization
+            string? address?;
+            # The CC email of the Organization associated with the item
+            string? cc_email?;
+            # The ID of the Organization
+            int? value?;
+            # If the associated Organization is active or not
+            boolean? active_flag?;
+        } org_id?;
+        # The name of the Person
+        string? name?;
+        # The first name of the Person
+        string? first_name?;
+        # The last name of the Person
+        string? last_name?;
+        # The count of email messages related to the Person
+        int? email_messages_count?;
+        # The count of activities related to the Person
+        int? activities_count?;
+        # The count of done activities related to the Person
+        int? done_activities_count?;
+        # The count of undone activities related to the Person
+        int? undone_activities_count?;
+        # The count of files related to the Person
+        int? files_count?;
+        # The count of notes related to the Person
+        int? notes_count?;
+        # The count of followers related to the Person
+        int? followers_count?;
+        # The date and time of the last incoming email associated with the Person
+        string? last_incoming_mail_time?;
+        # The date and time of the last outgoing email associated with the Person
+        string? last_outgoing_mail_time?;
+        # The count of open Deals related with the item
+        int? open_deals_count?;
+        # The count of related open Deals related with the item
+        int? related_open_deals_count?;
+        # The count of closed Deals related with the item
+        int? closed_deals_count?;
+        # The count of related closed Deals related with the item
+        int? related_closed_deals_count?;
+        # The count of won Deals related with the item
+        int? won_deals_count?;
+        # The count of related won Deals related with the item
+        int? related_won_deals_count?;
+        # The count of lost Deals related with the item
+        int? lost_deals_count?;
+        # The count of related lost Deals related with the item
+        int? related_lost_deals_count?;
+        # The date of the next activity associated with the Deal
+        string? next_activity_date?;
+        # The time of the next activity associated with the Deal
+        string? next_activity_time?;
+        # The ID of the next activity associated with the Deal
+        int? next_activity_id?;
+        # The ID of the last activity associated with the Deal
+        int? last_activity_id?;
+        # The date of the last activity associated with the Deal
+        string? last_activity_date?;
+    } data?;
     Getpersonresponse200AdditionalData? additional_data?;
     Getorganizationsresponse200RelatedObjects? related_objects?;
 };
@@ -3839,9 +5352,9 @@ public type BaseMailThread2 record {
     # An amount of messages
     int? message_count?;
     # Whether the mail thread has any drafts
-    decimal? has_draft_flag?;
+    record {} has_draft_flag?;
     # Whether the mail thread has messages sent
-    decimal? has_sent_flag?;
+    record {} has_sent_flag?;
     # Whether the mail thread is archived
     record {} archived_flag?;
     # Whether the mail thread is shared
@@ -3869,29 +5382,29 @@ public type BaseMailThread2 record {
     # The ID of the lead
     string? lead_id?;
     # Whether all the mail thread messages have been sent
-    decimal? all_messages_sent_flag?;
+    record {} all_messages_sent_flag?;
 };
 
 public type Createfieldrequest2 record {
     # Name of the field
-    string? name?;
+    string? name;
     # When `field_type` is either set or enum, possible options must be supplied as a JSON-encoded sequential array of objects. Example: `[{"label":"New Item"}]`
     string? options?;
     # Whether the field is available in 'add new' modal or not (both in web and mobile app)
     boolean? add_visible_flag?;
     # Type of the field<table><tr><th>Value</th><th>Description</th></tr><tr><td>`address`</td><td>Address field (has multiple subfields, autocompleted by Google Maps)</td></tr><tr><td>`date`</td><td>Date (format YYYY-MM-DD)</td></tr><tr><td>`daterange`</td><td>Date-range field (has a start date and end date value, both YYYY-MM-DD)</td></tr><tr><td>`double`</td><td>Numeric value</td></tr><tr><td>`enum`</td><td>Options field with a single possible chosen option</td></tr><tr><td>`int`</td><td>Integer value</td></tr><tr><td>`monetary`</td><td>Monetary field (has a numeric value and a currency value)</td></tr><tr><td>`org`</td><td>Organization field (contains an organization ID which is stored on the same account)</td></tr><tr><td>`people`</td><td>Person field (contains a person ID which is stored on the same account)</td></tr><tr><td>`phone`</td><td>Phone field (up to 255 numbers and/or characters)</td></tr><tr><td>`set`</td><td>Options field with a possibility of having multiple chosen options</td></tr><tr><td>`text`</td><td>Long text (up to 65k characters)</td></tr><tr><td>`time`</td><td>Time field (format HH:MM:SS)</td></tr><tr><td>`timerange`</td><td>Time-range field (has a start time and end time value, both HH:MM:SS)</td></tr><tr><td>`user`</td><td>User field (contains a user ID of another Pipedrive user)</td></tr><tr><td>`varchar`</td><td>Text (up to 255 characters)</td></tr><tr><td>`varchar_auto`</td><td>Autocomplete text (up to 255 characters)</td></tr><tr><td>`visible_to`</td><td>System field that keeps item's visibility setting</td></tr></table>
-    string? field_type?;
+    string? field_type;
 };
 
 public type Createfieldrequest1 record {
     # Name of the field
-    string? name?;
+    string? name;
     # When `field_type` is either set or enum, possible options must be supplied as a JSON-encoded sequential array of objects. Example: `[{"label":"New Item"}]`
     string? options?;
     # Whether the field is available in 'add new' modal or not (both in web and mobile app)
     boolean? add_visible_flag?;
     # Type of the field<table><tr><th>Value</th><th>Description</th></tr><tr><td>`address`</td><td>Address field (has multiple subfields, autocompleted by Google Maps)</td></tr><tr><td>`date`</td><td>Date (format YYYY-MM-DD)</td></tr><tr><td>`daterange`</td><td>Date-range field (has a start date and end date value, both YYYY-MM-DD)</td></tr><tr><td>`double`</td><td>Numeric value</td></tr><tr><td>`enum`</td><td>Options field with a single possible chosen option</td></tr><tr><td>`int`</td><td>Integer value</td></tr><tr><td>`monetary`</td><td>Monetary field (has a numeric value and a currency value)</td></tr><tr><td>`org`</td><td>Organization field (contains an organization ID which is stored on the same account)</td></tr><tr><td>`people`</td><td>Person field (contains a person ID which is stored on the same account)</td></tr><tr><td>`phone`</td><td>Phone field (up to 255 numbers and/or characters)</td></tr><tr><td>`set`</td><td>Options field with a possibility of having multiple chosen options</td></tr><tr><td>`text`</td><td>Long text (up to 65k characters)</td></tr><tr><td>`time`</td><td>Time field (format HH:MM:SS)</td></tr><tr><td>`timerange`</td><td>Time-range field (has a start time and end time value, both HH:MM:SS)</td></tr><tr><td>`user`</td><td>User field (contains a user ID of another Pipedrive user)</td></tr><tr><td>`varchar`</td><td>Text (up to 255 characters)</td></tr><tr><td>`varchar_auto`</td><td>Autocomplete text (up to 255 characters)</td></tr><tr><td>`visible_to`</td><td>System field that keeps item's visibility setting</td></tr></table>
-    string? field_type?;
+    string? field_type;
 };
 
 public type Searchorganizationresponse200DataItem record {
@@ -4254,7 +5767,134 @@ public type Addroleassignmentresponse200Data record {
 public type UpdateOrganizationResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {} data?;
+    record {
+        # The ID of the Organization
+        int? id?;
+        # The ID of the Company related to the Organization
+        int? company_id?;
+        record {
+            # The ID of the User
+            int? id?;
+            # The name of the User
+            string? name?;
+            # The email of the User
+            string? email?;
+            # Whether the User has picture or not. 0 = No picture, 1 = Has picture.
+            int? has_pic?;
+            # The User picture hash
+            string? pic_hash?;
+            # If the User is activated or not
+            boolean? active_flag?;
+            # The ID of the owner
+            int? value?;
+        } owner_id?;
+        # The name of the Organization
+        string? name?;
+        # If the Organization is activated or not
+        boolean? active_flag?;
+        record {
+            # The ID of the picture associated with the item
+            int? value?;
+            # The type of item the picture is related to
+            string? item_type?;
+            # The ID of related item
+            int? item_id?;
+            # If the associated picture is activated or not
+            boolean? active_flag?;
+            # The add time of the picture
+            string? add_time?;
+            # The update time of the picture
+            string? update_time?;
+            # The ID of the User who added the picture
+            int? added_by_user_id?;
+            record {
+                # The URL of the 128*128 picture
+                string? '128?;
+                # The URL of the 512*512 picture
+                string? '512?;
+            } pictures?;
+        } picture_id?;
+        # The country code of the Organization
+        string? country_code?;
+        # The first character of the Organization name
+        string? first_char?;
+        # The creation date and time of the Organization
+        string? add_time?;
+        # The last updated date and time of the Organization
+        string? update_time?;
+        # The visibility group ID of who can see the Organization
+        string? visible_to?;
+        # The ID of the label
+        int? label?;
+        # The name of the Organization owner
+        string? owner_name?;
+        # The CC email of the Organization
+        string? cc_email?;
+        # The count of email messages related to the Organization
+        int? email_messages_count?;
+        # The count of Persons related to the Organization
+        int? people_count?;
+        # The count of Activities related to the Organization
+        int? activities_count?;
+        # The count of done Activities related to the Organization
+        int? done_activities_count?;
+        # The count of undone Activities related to the Organization
+        int? undone_activities_count?;
+        # The count of files related to the Organization
+        int? files_count?;
+        # The count of notes related to the Organization
+        int? notes_count?;
+        # The count of followers related to the Organization
+        int? followers_count?;
+        # The full address of the Organization
+        string? address?;
+        # The sub-premise of the Organization location
+        string? address_subpremise?;
+        # The street number of the Organization location
+        string? address_street_number?;
+        # The route of the Organization location
+        string? address_route?;
+        # The sub-locality of the Organization location
+        string? address_sublocality?;
+        # The locality of the Organization location
+        string? address_locality?;
+        # The level 1 admin area of the Organization location
+        string? address_admin_area_level_1?;
+        # The level 2 admin area of the Organization location
+        string? address_admin_area_level_2?;
+        # The country of the Organization location
+        string? address_country?;
+        # The postal code of the Organization location
+        string? address_postal_code?;
+        # The formatted Organization location
+        string? address_formatted_address?;
+        # The count of open Deals related with the item
+        int? open_deals_count?;
+        # The count of related open Deals related with the item
+        int? related_open_deals_count?;
+        # The count of closed Deals related with the item
+        int? closed_deals_count?;
+        # The count of related closed Deals related with the item
+        int? related_closed_deals_count?;
+        # The count of won Deals related with the item
+        int? won_deals_count?;
+        # The count of related won Deals related with the item
+        int? related_won_deals_count?;
+        # The count of lost Deals related with the item
+        int? lost_deals_count?;
+        # The count of related lost Deals related with the item
+        int? related_lost_deals_count?;
+        # The date of the next activity associated with the Deal
+        string? next_activity_date?;
+        # The time of the next activity associated with the Deal
+        string? next_activity_time?;
+        # The ID of the next activity associated with the Deal
+        int? next_activity_id?;
+        # The ID of the last activity associated with the Deal
+        int? last_activity_id?;
+        # The date of the last activity associated with the Deal
+        string? last_activity_date?;
+    } data?;
     Getorganizationsresponse200RelatedObjects? related_objects?;
 };
 
@@ -4365,11 +6005,6 @@ public type FindProductsByNameResponse200 record {
     record {} additional_data?;
 };
 
-public type DeleteUserRoleAssignmentRequest record {
-    # ID of the role
-    int? role_id;
-};
-
 public type Getassociatedupdatesresponse200RelatedObjects record {
     Getactivitiesresponse200RelatedObjectsOrganization? organization?;
     Getactivitiesresponse200RelatedObjectsUser? user?;
@@ -4444,7 +6079,28 @@ public type Goal record {
 # The picture that is associated with the item
 public type Getorganizationsresponse200RelatedObjectsPicture record {
     # The ID of the picture
-    record {} PICTURE_ID?;
+    record {
+        # The ID of the picture associated with the item
+        int? id?;
+        # The type of item the picture is related to
+        string? item_type?;
+        # The ID of related item
+        int? item_id?;
+        # If the associated picture is activated or not
+        boolean? active_flag?;
+        # The add time of the picture
+        string? add_time?;
+        # The update time of the picture
+        string? update_time?;
+        # The ID of the User who added the picture
+        int? added_by_user_id?;
+        record {
+            # The URL of the 128*128 picture
+            string? '128?;
+            # The URL of the 512*512 picture
+            string? '512?;
+        } pictures?;
+    } PICTURE_ID?;
 };
 
 public type SubRole1 record {
@@ -4567,7 +6223,26 @@ public type AddPersonFollowerResponse200 record {
 public type TeamResponse200 record {
     # If the response is successful or not
     boolean? success?;
-    record {} data?;
+    record {
+        # The Team ID
+        int? id?;
+        # The Team name
+        string? name;
+        # The Team description
+        string? description?;
+        # The Team manager ID
+        int? manager_id;
+        # List of User IDs
+        int[]? users?;
+        # Flag that indicates if the Team is activated
+        record {} active_flag?;
+        # Flag that indicates if the Team is deleted
+        record {} deleted_flag?;
+        # The Team creation time. Format: YYYY-MM-DD HH:MM:SS
+        string? add_time?;
+        # ID of the User who created the Team
+        int? created_by_user_id?;
+    } data?;
 };
 
 public type DeleteNoteResponse200 record {
@@ -4810,11 +6485,37 @@ public type CommentPostPutObject record {
 
 public type Getactivitiesresponse200RelatedObjectsOrganization record {
     # The ID of the Organization associated with the item
-    record {} ORGANIZATION_ID?;
+    record {
+        # The ID of the Organization associated with the item
+        int? id?;
+        # The name of the Organization associated with the item
+        string? name?;
+        # The number of people connected with the Organization that is associated with the item
+        int? people_count?;
+        # The ID of the owner of the Organization that is associated with the item
+        int? owner_id?;
+        # The address of the Organization
+        string? address?;
+        # The CC email of the Organization associated with the item
+        string? cc_email?;
+    } ORGANIZATION_ID?;
 };
 
 public type Getactivitiesresponse200RelatedObjectsUser record {
-    record {} USER_ID?;
+    record {
+        # The ID of the User
+        int? id?;
+        # The name of the User
+        string? name?;
+        # The email of the User
+        string? email?;
+        # Whether the User has picture or not. 0 = No picture, 1 = Has picture.
+        int? has_pic?;
+        # The User picture hash
+        string? pic_hash?;
+        # If the User is activated or not
+        boolean? active_flag?;
+    } USER_ID?;
 };
 
 public type UpdateFieldRequest record {
@@ -4905,8 +6606,50 @@ public type GetAddProductAttachementResponse200 record {
     # If the response is successful or not
     boolean? success?;
     # The added Product object attached to the Deal
-    record {# The ID of the deal-product (the ID of the Product attached to the Deal)
-        int? product_attachment_id?;} data?;
+    record {
+        # Price at which this product will be added to the deal
+        decimal? item_price?;
+        # Quantity – e.g. how many items of this product will be added to the deal
+        int? quantity?;
+        # Discount %. If omitted, will be set to 0
+        decimal? discount_percentage?;
+        # Duration of the product (when product durations are not enabled for the company or if omitted, defaults to 1)
+        decimal? duration?;
+        # ID of the product variation to use. When omitted, no variation will be used.
+        int? product_variation_id?;
+        # Any textual comment associated with this product-deal attachment. Visible and editable in the application UI.
+        string? comments?;
+        # Whether the product is enabled on the deal or not. This makes it possible to add products to a deal with specific price and discount criteria - but keep them disabled, which refrains them from being included in deal price calculation. When omitted, the product will be marked as enabled by default.
+        record {} enabled_flag?;
+        # The ID of the deal-product (the ID of the Product attached to the Deal)
+        int? id?;
+        # The ID of the Company
+        int? company_id?;
+        # The ID of the Deal
+        int? deal_id?;
+        # The ID of the Product
+        int? product_id?;
+        # The type of the duration. (For example hourly, daily, etc.)
+        string? duration_unit?;
+        # The Product sum without the discount
+        decimal? sum_no_discount?;
+        # The sum of all the Products attached to the Deal
+        decimal? sum?;
+        # The currency associated with the Deal Product
+        string? currency?;
+        # The date and time when the Product was added to the Deal
+        string? add_time?;
+        # The date and time when the Deal Product was last edited
+        string? last_edit?;
+        # Boolean indicates if the Product is activated or not
+        boolean? active_flag?;
+        # The Product tax
+        decimal? tax?;
+        # The Product name
+        string? name?;
+        # The ID of the deal-product (the ID of the Product attached to the Deal)
+        int? product_attachment_id?;
+    } data?;
 };
 
 public type AddOrUpdateRoleSettingResponse200 record {
@@ -5041,7 +6784,67 @@ public type GetStageResponse200 record {
     # If the request was successful or not
     boolean? success?;
     # The Stage object
-    record {} data?;
+    record {
+        # The ID of the Stage
+        int? id?;
+        # Defines the order of the Stage
+        int? order_nr?;
+        # The name of the Stage
+        string? name?;
+        # If the Stage is active or deleted
+        boolean? active_flag?;
+        # The Deal success probability percentage. Used/shown when the Deal weighted values are used.
+        int? deal_probability?;
+        # The ID of the Pipeline to add the Stage to
+        int? pipeline_id?;
+        # Whether Deals in this Stage can become rotten
+        int? rotten_flag?;
+        # The number of days the Deals are not updated in this Stage would become rotten. Applies only if the `rotten_flag` is set.
+        int? rotten_days?;
+        # The Stage creation time. Format: YYYY-MM-DD HH:MM:SS.
+        string? add_time?;
+        # The Stage update time. Format: YYYY-MM-DD HH:MM:SS.
+        string? update_time?;
+        # Deals summary
+        record {
+            # The Stage objects containing Deals currency information
+            record {
+                # The currency summaries per stage. This parameter is dynamic and changes according to `stage_id` value.
+                record {
+                    # The currency summary. This parameter is dynamic and changes according to `currency_id` value.
+                    record {
+                        # Deals count per currency
+                        int? count?;
+                        # Deals value per currency
+                        int? value?;
+                        # Deals value formatted per currency
+                        string? value_formatted?;
+                        # Deals weighted value per currency
+                        int? weighted_value?;
+                        # Deals weighted value formatted per currency
+                        string? weighted_value_formatted?;
+                    } CURRENCY_ID?;
+                } STAGE_ID?;
+            } per_stages?;
+            # The currency count summary
+            record {
+                # Deals count per currency. This parameter is dynamic and changes according to `currency_id` value.
+                int? CURRENCY_ID?;
+            } per_currency?;
+            # Deals count
+            int? total_count?;
+            # Full currency summaries
+            record {
+                # The currency summary. This parameter is dynamic and changes according to `currency_id` value.
+                record {
+                    # Deals count per currency
+                    int? count?;
+                    # Deals value per currency
+                    int? value?;
+                } CURRENCY_ID?;
+            } per_currency_full?;
+        } deals_summary?;
+    } data?;
 };
 
 public type Addorupdategoalresponse200Data record {

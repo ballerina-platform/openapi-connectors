@@ -43,6 +43,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # List Events
     #
@@ -53,12 +54,12 @@ public isolated client class Client {
     # + return - Fetch List 
     @display {label: "Get List Of Events"}
     remote isolated function listEvents(@display {label: "Page Number"} string? pageNumber = (), @display {label: "Page Size"} string? pageSize = (), @display {label: "Title Filter"} string? filterTitle = (), @display {label: "Filter By Everyone Can Speak Or Not"} string? filterEveryoneCanSpeak = ()) returns InlineResponse200|error {
-        string  path = string `/events`;
+        string resourcePath = string `/events`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterTitle": filterTitle, "filterEveryoneCanSpeak": filterEveryoneCanSpeak};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new event
@@ -66,14 +67,13 @@ public isolated client class Client {
     # + payload - Request payload to create event 
     # + return - Create event response 
     @display {label: "Create Event"}
-    remote isolated function createEvent(EventsBody payload) returns InlineResponse201|error {
-        string  path = string `/events`;
+    remote isolated function createEvent(byte[] payload) returns InlineResponse201|error {
+        string resourcePath = string `/events`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse201 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse201);
+        request.setPayload(payload, "application/vnd.api+json");
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve an Event
@@ -82,10 +82,10 @@ public isolated client class Client {
     # + return - Get detail 
     @display {label: "Get Event By Event ID"}
     remote isolated function getEventByID(@display {label: "Event ID"} string id) returns InlineResponse2001|error {
-        string  path = string `/events/${id}`;
+        string resourcePath = string `/events/${id}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Sessions for an Event
@@ -99,13 +99,13 @@ public isolated client class Client {
     # + include - Include Related Data 
     # + return - Fetch List 
     remote isolated function listSessionByEvent(string id, string? pageNumber = (), string? pageSize = (), string? filterStatus = (), string? filterDateFrom = (), string? filterDateTo = (), string[]? include = ()) returns InlineResponse2002|error {
-        string  path = string `/events/${id}/sessions`;
+        string resourcePath = string `/events/${id}/sessions`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterStatus": filterStatus, "filterDateFrom": filterDateFrom, "filterDateTo": filterDateTo, "include": include};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2002 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2002);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new event session
@@ -113,14 +113,13 @@ public isolated client class Client {
     # + id - Event ID 
     # + payload - Request payload to add event session 
     # + return - Create event session response 
-    remote isolated function createEventSession(string id, IdSessionsBody payload) returns InlineResponse2011|error {
-        string  path = string `/events/${id}/sessions`;
+    remote isolated function createEventSession(string id, byte[] payload) returns InlineResponse2011|error {
+        string resourcePath = string `/events/${id}/sessions`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse2011 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse2011);
+        request.setPayload(payload, "application/vnd.api+json");
+        InlineResponse2011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List People for a Session
@@ -134,13 +133,13 @@ public isolated client class Client {
     # + include - Include Related Data 
     # + return - Fetch List 
     remote isolated function listSessionPeople(string id, string? pageNumber = (), string? pageSize = (), string? filterRole = (), boolean? filterAttended = (), string? filterEmail = (), string[]? include = ()) returns InlineResponse2003|error {
-        string  path = string `/sessions/${id}/people`;
+        string resourcePath = string `/sessions/${id}/people`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterRole": filterRole, "filterAttended": filterAttended, "filterEmail": filterEmail, "include": include};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2003 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2003);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Register a participant to a Session
@@ -148,14 +147,13 @@ public isolated client class Client {
     # + id - Session ID 
     # + payload - Request payload to add participant to session 
     # + return - Register participant response 
-    remote isolated function registerPeopleForSession(string id, IdPeopleBody payload) returns InlineResponse2012|error {
-        string  path = string `/sessions/${id}/people`;
+    remote isolated function registerPeopleForSession(string id, byte[] payload) returns InlineResponse2012|error {
+        string resourcePath = string `/sessions/${id}/people`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse2012 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse2012);
+        request.setPayload(payload, "application/vnd.api+json");
+        InlineResponse2012 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

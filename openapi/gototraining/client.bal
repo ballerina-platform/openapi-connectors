@@ -65,14 +65,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.getgo.com/G2T/rest") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get Organizers
     #
     # + accountKey - The key of the multi-user account 
     # + return - OK 
+    # 
+    # # Deprecated
+    @deprecated
     remote isolated function getAllOrganizers(int accountKey) returns Organizer[]|error {
-        string  path = string `/accounts/${accountKey}/organizers`;
-        Organizer[] response = check self.clientEp-> get(path, targetType = OrganizerArr);
+        string resourcePath = string `/accounts/${accountKey}/organizers`;
+        Organizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Trainings
@@ -80,8 +84,8 @@ public isolated client class Client {
     # + organizerKey - The key of the training organizer 
     # + return - OK 
     remote isolated function getAllTrainings(int organizerKey) returns Training[]|error {
-        string  path = string `/organizers/${organizerKey}/trainings`;
-        Training[] response = check self.clientEp-> get(path, targetType = TrainingArr);
+        string resourcePath = string `/organizers/${organizerKey}/trainings`;
+        Training[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Training
@@ -90,11 +94,11 @@ public isolated client class Client {
     # + payload - The details of the training to create 
     # + return - The training's unique key 
     remote isolated function scheduleTraining(int organizerKey, TrainingReqCreate payload) returns string|error {
-        string  path = string `/organizers/${organizerKey}/trainings`;
+        string resourcePath = string `/organizers/${organizerKey}/trainings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Training
@@ -103,8 +107,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - OK 
     remote isolated function getTraining(int organizerKey, int trainingKey) returns Training|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}`;
-        Training response = check self.clientEp-> get(path, targetType = Training);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}`;
+        Training response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete Training
@@ -113,8 +117,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - No Content 
     remote isolated function cancelTraining(int organizerKey, int trainingKey) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get Management URL for Training
@@ -123,8 +127,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - URL to the admin portal page of the requested training 
     remote isolated function getManageTrainingURL(int organizerKey, int trainingKey) returns string|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/manageUrl`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/manageUrl`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Training Name and Description
@@ -134,11 +138,11 @@ public isolated client class Client {
     # + payload - The new name and description for the training 
     # + return - No Content 
     remote isolated function updateTrainingNameDescription(int organizerKey, int trainingKey, TrainingNameDescription payload) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/nameDescription`;
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/nameDescription`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get Training Organizers
@@ -147,8 +151,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - OK 
     remote isolated function getOrganizersForTraining(int organizerKey, int trainingKey) returns Organizer[]|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/organizers`;
-        Organizer[] response = check self.clientEp-> get(path, targetType = OrganizerArr);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/organizers`;
+        Organizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Training Organizers
@@ -158,11 +162,11 @@ public isolated client class Client {
     # + payload - Details required to update the list of organizers for a training 
     # + return - No Content 
     remote isolated function updateOrganizersForTraining(int organizerKey, int trainingKey, TrainingOrganizers payload) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/organizers`;
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/organizers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get Online Recordings for Training
@@ -170,8 +174,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - OK 
     remote isolated function getRecordingsForTraining(int trainingKey) returns RecordingsListForTraining|error {
-        string  path = string `/trainings/${trainingKey}/recordings`;
-        RecordingsListForTraining response = check self.clientEp-> get(path, targetType = RecordingsListForTraining);
+        string resourcePath = string `/trainings/${trainingKey}/recordings`;
+        RecordingsListForTraining response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Download for Online Recordings
@@ -180,8 +184,8 @@ public isolated client class Client {
     # + recordingId - the unique id of the recording 
     # + return - Redirected to download 
     remote isolated function getRecordingDownloadById(int trainingKey, int recordingId) returns http:Response|error {
-        string  path = string `/trainings/${trainingKey}/recordings/${recordingId}`;
-        http:Response response = check self.clientEp-> get(path, targetType = http:Response);
+        string resourcePath = string `/trainings/${trainingKey}/recordings/${recordingId}`;
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Training Registrants
@@ -190,8 +194,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - OK 
     remote isolated function getRegistrants(int organizerKey, int trainingKey) returns Registrant[]|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants`;
-        Registrant[] response = check self.clientEp-> get(path, targetType = RegistrantArr);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants`;
+        Registrant[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Register for Training
@@ -201,11 +205,11 @@ public isolated client class Client {
     # + payload - The details of the registrant to create 
     # + return - Created 
     remote isolated function registerForTraining(int organizerKey, int trainingKey, RegistrantReqCreate payload) returns RegistrantCreated|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants`;
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RegistrantCreated response = check self.clientEp->post(path, request, targetType=RegistrantCreated);
+        request.setPayload(jsonBody, "application/json");
+        RegistrantCreated response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Registrant
@@ -215,8 +219,8 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - OK 
     remote isolated function getRegistrant(int organizerKey, int trainingKey, int registrantKey) returns Registrant|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants/${registrantKey}`;
-        Registrant response = check self.clientEp-> get(path, targetType = Registrant);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants/${registrantKey}`;
+        Registrant response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Cancel Registration
@@ -226,8 +230,8 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - No Content 
     remote isolated function cancelRegistration(int organizerKey, int trainingKey, int registrantKey) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants/${registrantKey}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrants/${registrantKey}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update Training Registration Settings
@@ -237,11 +241,11 @@ public isolated client class Client {
     # + payload - The new registration settings for the training 
     # + return - No Content 
     remote isolated function updateRegistrationSettingsForTraining(int organizerKey, int trainingKey, RegistrationSettings payload) returns http:Response|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrationSettings`;
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/registrationSettings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get Start Url
@@ -250,8 +254,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - URL to start the training 
     remote isolated function getStartUrl(int organizerKey, int trainingKey) returns string|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/startUrl`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/startUrl`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Start Training
@@ -259,8 +263,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - OK 
     remote isolated function startTraining(int trainingKey) returns HostUrl|error {
-        string  path = string `/trainings/${trainingKey}/start`;
-        HostUrl response = check self.clientEp-> get(path, targetType = HostUrl);
+        string resourcePath = string `/trainings/${trainingKey}/start`;
+        HostUrl response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Training Times
@@ -270,11 +274,11 @@ public isolated client class Client {
     # + payload - The new start and end times for the scheduled training 
     # + return - OK 
     remote isolated function updateTrainingTimes(int organizerKey, int trainingKey, TrainingTimes payload) returns NotifiedParties|error {
-        string  path = string `/organizers/${organizerKey}/trainings/${trainingKey}/times`;
+        string resourcePath = string `/organizers/${organizerKey}/trainings/${trainingKey}/times`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotifiedParties response = check self.clientEp->put(path, request, targetType=NotifiedParties);
+        request.setPayload(jsonBody, "application/json");
+        NotifiedParties response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get Sessions by Date Range
@@ -283,11 +287,11 @@ public isolated client class Client {
     # + payload - The start and end times for the time range over which to retrieve training sessions 
     # + return - OK 
     remote isolated function getSessionDetailsForDateRange(int organizerKey, DateTimeRange payload) returns Session[]|error {
-        string  path = string `/reports/organizers/${organizerKey}/sessions`;
+        string resourcePath = string `/reports/organizers/${organizerKey}/sessions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Session[] response = check self.clientEp->post(path, request, targetType=SessionArr);
+        request.setPayload(jsonBody, "application/json");
+        Session[] response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Attendance Details
@@ -296,8 +300,8 @@ public isolated client class Client {
     # + sessionKey - The key of the training session 
     # + return - OK 
     remote isolated function getAttendanceDetails(int organizerKey, int sessionKey) returns Attendee[]|error {
-        string  path = string `/reports/organizers/${organizerKey}/sessions/${sessionKey}/attendees`;
-        Attendee[] response = check self.clientEp-> get(path, targetType = AttendeeArr);
+        string resourcePath = string `/reports/organizers/${organizerKey}/sessions/${sessionKey}/attendees`;
+        Attendee[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Sessions By Training
@@ -306,8 +310,8 @@ public isolated client class Client {
     # + trainingKey - The key of the training 
     # + return - OK 
     remote isolated function getSessionDetailsForTraining(int organizerKey, int trainingKey) returns Session[]|error {
-        string  path = string `/reports/organizers/${organizerKey}/trainings/${trainingKey}`;
-        Session[] response = check self.clientEp-> get(path, targetType = SessionArr);
+        string resourcePath = string `/reports/organizers/${organizerKey}/trainings/${trainingKey}`;
+        Session[] response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

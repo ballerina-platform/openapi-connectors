@@ -1163,8 +1163,6 @@ paths:
         - $ref: '#/components/parameters/EnvironmentKey'
         - $ref: '#/components/parameters/FeatureFlagKey'
         - $ref: '#/components/parameters/FeatureFlagApprovalRequestId'
-      requestBody:
-        $ref: '#/components/requestBodies/deleteFeatureFlagApprovalRequestFeatureflagapprovalrequestconfigbody'
       responses:
         '204':
           $ref: '#/components/responses/Standard204'

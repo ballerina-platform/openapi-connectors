@@ -43,19 +43,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Currency - Convert currency
     #
     # + payload - Currency conversion parameters 
     # + return - OK 
     remote isolated function convertCurrency(InputCurrencyConversion payload) returns OutputNumber|error {
-        string  path = string `/ConvertCurrency`;
+        string resourcePath = string `/ConvertCurrency`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Currency - Format currency
@@ -63,13 +64,13 @@ public isolated client class Client {
     # + payload - Currency format parameters 
     # + return - OK 
     remote isolated function formatCurrency(InputCurrencyFormat payload) returns OutputString|error {
-        string  path = string `/FormatCurrency`;
+        string resourcePath = string `/FormatCurrency`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Finance - Stock prices
@@ -77,13 +78,13 @@ public isolated client class Client {
     # + payload - Input stock prices parameters 
     # + return - OK 
     remote isolated function stockPrices(InputStockPrices payload) returns OutputStockPrice|error {
-        string  path = string `/StockPrices`;
+        string resourcePath = string `/StockPrices`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputStockPrice response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputStockPrice);
+        request.setPayload(jsonBody, "application/json");
+        OutputStockPrice response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Finance - Market index
@@ -91,13 +92,13 @@ public isolated client class Client {
     # + payload - Input market index parameters 
     # + return - OK 
     remote isolated function marketIndex(InputMarketIndex payload) returns OutputMarketIndex|error {
-        string  path = string `/MarketIndex`;
+        string resourcePath = string `/MarketIndex`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputMarketIndex response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputMarketIndex);
+        request.setPayload(jsonBody, "application/json");
+        OutputMarketIndex response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

@@ -15,8 +15,7 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
+import ballerina/mime;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -61,293 +60,242 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials.
     # Create a [Dracoon account](https://www.dracoon.com/en/home) and obtain OAuth tokens following [this guide](https://cloud.support.dracoon.com/hc/en-us/articles/360001329825-OAuth-2-0-example).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://stats.bis.org/api/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Request public Download Share information
     #
-    # + accessKey - Access key
-    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/))
-    # + return - OK
+    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/)) 
+    # + accessKey - Access key 
+    # + return - OK 
     remote isolated function requestPublicDownloadShareInfo(string accessKey, string? xSdsDateFormat = ()) returns PublicDownloadShare|error {
-        string  path = string `/v4/public/shares/downloads/${accessKey}`;
+        string resourcePath = string `/v4/public/shares/downloads/${accessKey}`;
         map<any> headerValues = {"X-Sds-Date-Format": xSdsDateFormat};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicDownloadShare response = check self.clientEp-> get(path, accHeaders, targetType = PublicDownloadShare);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicDownloadShare response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Generate download URL
     #
-    # + accessKey - Access key
-    # + payload -  Request model for generating download URL
-    # + return - Created
+    # + accessKey - Access key 
+    # + return - Created 
     remote isolated function generateDownloadUrlPublic(string accessKey, PublicDownloadTokenGenerateRequest payload) returns PublicDownloadTokenGenerateResponse|error {
-        string  path = string `/v4/public/shares/downloads/${accessKey}`;
+        string resourcePath = string `/v4/public/shares/downloads/${accessKey}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PublicDownloadTokenGenerateResponse response = check self.clientEp->post(path, request, targetType=PublicDownloadTokenGenerateResponse);
+        request.setPayload(jsonBody, "application/json");
+        PublicDownloadTokenGenerateResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Download file with token
     #
-    # + accessKey - Access key
-    # + token - Download token
-    # + range - Range 
-    # + genericMimetype - Always return `application/octet-stream` instead of specific mimetype
-    # + inline - Use Content-Disposition: `inline` instead of `attachment`
-    # + return - OK
+    # + accessKey - Access key 
+    # + token - Download token 
+    # + range - Range  e.g. `bytes=0-999` 
+    # + genericMimetype - Always return `application/octet-stream` instead of specific mimetype 
+    # + inline - Use Content-Disposition: `inline` instead of `attachment` 
+    # + return - OK 
     remote isolated function downloadFileViaTokenPublic(string accessKey, string token, string? range = (), boolean? genericMimetype = (), boolean? inline = ()) returns http:Response|error {
-        string  path = string `/v4/public/shares/downloads/${accessKey}/${token}`;
+        string resourcePath = string `/v4/public/shares/downloads/${accessKey}/${token}`;
         map<anydata> queryParam = {"generic_mimetype": genericMimetype, "inline": inline};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Range": range};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Download file with token
     #
-    # + accessKey - Access key
-    # + token - Download token
-    # + range - Range 
-    # + genericMimetype - Always return `application/octet-stream` instead of specific mimetype
-    # + inline - Use Content-Disposition: `inline` instead of `attachment`
-    # + return - OK
+    # + accessKey - Access key 
+    # + token - Download token 
+    # + range - Range  e.g. `bytes=0-999` 
+    # + genericMimetype - Always return `application/octet-stream` instead of specific mimetype 
+    # + inline - Use Content-Disposition: `inline` instead of `attachment` 
+    # + return - OK 
     remote isolated function downloadfileviatokenpublic1(string accessKey, string token, string? range = (), boolean? genericMimetype = (), boolean? inline = ()) returns http:Response|error {
-        string  path = string `/v4/public/shares/downloads/${accessKey}/${token}`;
+        string resourcePath = string `/v4/public/shares/downloads/${accessKey}/${token}`;
         map<anydata> queryParam = {"generic_mimetype": genericMimetype, "inline": inline};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Range": range};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> head(path, accHeaders);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->head(resourcePath, httpHeaders);
         return response;
     }
     # Request public Upload Share information
     #
-    # + accessKey - Access key
-    # + xSdsSharePassword - Upload share password. Should be base64-encoded.
-    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/))
-    # + return - OK
+    # + xSdsSharePassword - Upload share password. Should be base64-encoded. Plain X-Sds-Share-Passwords are *deprecated* and will be removed in the future 
+    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/)) 
+    # + accessKey - Access key 
+    # + return - OK 
     remote isolated function requestPublicUploadShareInfo(string accessKey, string? xSdsSharePassword = (), string? xSdsDateFormat = ()) returns PublicUploadShare|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}`;
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}`;
         map<any> headerValues = {"X-Sds-Share-Password": xSdsSharePassword, "X-Sds-Date-Format": xSdsDateFormat};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicUploadShare response = check self.clientEp-> get(path, accHeaders, targetType = PublicUploadShare);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicUploadShare response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create new file upload channel
     #
-    # + accessKey - Access key
-    # + payload - Request model for creating an upload channel
-    # + return - Created
+    # + accessKey - Access key 
+    # + return - Created 
     remote isolated function createShareUploadChannel(string accessKey, CreateShareUploadChannelRequest payload) returns CreateShareUploadChannelResponse|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}`;
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateShareUploadChannelResponse response = check self.clientEp->post(path, request, targetType=CreateShareUploadChannelResponse);
+        request.setPayload(jsonBody, "application/json");
+        CreateShareUploadChannelResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Request status of S3 file upload
     #
-    # + accessKey - Access key
-    # + uploadId - Upload channel ID
-    # + return - OK
+    # + accessKey - Access key 
+    # + uploadId - Upload channel ID 
+    # + return - OK 
     remote isolated function requestUploadStatusPublic(string accessKey, string uploadId) returns S3ShareUploadStatus|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
-        S3ShareUploadStatus response = check self.clientEp-> get(path, targetType = S3ShareUploadStatus);
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
+        S3ShareUploadStatus response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Complete file upload
     #
-    # + accessKey - Access key
-    # + uploadId - Upload channel ID
-    # + payload - Mandatory for encrypted shares
-    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/))
-    # + return - Created
+    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/)) 
+    # + accessKey - Access key 
+    # + uploadId - Upload channel ID 
+    # + payload - Mandatory for encrypted shares 
+    # + return - Created 
     remote isolated function completeFileUploadViaShare(string accessKey, string uploadId, UserFileKeyList payload, string? xSdsDateFormat = ()) returns PublicUploadedFileData|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
         map<any> headerValues = {"X-Sds-Date-Format": xSdsDateFormat};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PublicUploadedFileData response = check self.clientEp->put(path, request, headers = accHeaders, targetType=PublicUploadedFileData);
+        request.setPayload(jsonBody, "application/json");
+        PublicUploadedFileData response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Upload file
     #
-    # + accessKey - Access key
-    # + uploadId - Upload channel ID
-    # + payload - File
-    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/))
-    # + contentRange - Content-Range 
-    # + return - Created
-    remote isolated function uploadfileasbinarypublic1(string accessKey, string uploadId, Body1 payload, string? xSdsDateFormat = (), string? contentRange = ()) returns ChunkUploadResponse|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
+    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/)) 
+    # + accessKey - Access key 
+    # + uploadId - Upload channel ID 
+    # + contentRange - Content-Range  e.g. `bytes 0-999/3980` 
+    # + payload - File 
+    # + return - Created 
+    remote isolated function uploadfileasbinarypublic1(string accessKey, string uploadId, AccessKeyUploadIdBody payload, string? xSdsDateFormat = (), string? contentRange = ()) returns ChunkUploadResponse|error {
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
         map<any> headerValues = {"X-Sds-Date-Format": xSdsDateFormat, "Content-Range": contentRange};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        ChunkUploadResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ChunkUploadResponse);
+        mime:Entity[] bodyParts = check createBodyParts(payload);
+        request.setBodyParts(bodyParts);
+        ChunkUploadResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Cancel file upload
     #
-    # + accessKey - Access key
-    # + uploadId - Upload channel ID
-    # + return - No Content
+    # + accessKey - Access key 
+    # + uploadId - Upload channel ID 
+    # + return - No Content 
     remote isolated function cancelFileUploadViaShare(string accessKey, string uploadId) returns http:Response|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}/${uploadId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Complete S3 file upload
     #
-    # + accessKey - Access key
-    # + uploadId - Upload channel ID
-    # + payload -Request model for completing a S3 file upload
-    # + return - Accepted
+    # + accessKey - Access key 
+    # + uploadId - Upload channel ID 
+    # + return - Accepted 
     remote isolated function completeS3FileUploadViaShare(string accessKey, string uploadId, CompleteS3ShareUploadRequest payload) returns http:Response|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}/${uploadId}/s3`;
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}/${uploadId}/s3`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Generate presigned URLs for S3 file upload
     #
-    # + accessKey - Access key
-    # + uploadId - Upload channel ID
-    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/))
-    # + payload - Request model for generating presigned URLs
-    # + return - Created
+    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/)) 
+    # + accessKey - Access key 
+    # + uploadId - Upload channel ID 
+    # + return - Created 
     remote isolated function generatePresignedUrlsPublic(string accessKey, string uploadId, GeneratePresignedUrlsRequest payload, string? xSdsDateFormat = ()) returns PresignedUrlList|error {
-        string  path = string `/v4/public/shares/uploads/${accessKey}/${uploadId}/s3_urls`;
+        string resourcePath = string `/v4/public/shares/uploads/${accessKey}/${uploadId}/s3_urls`;
         map<any> headerValues = {"X-Sds-Date-Format": xSdsDateFormat};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PresignedUrlList response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PresignedUrlList);
+        request.setPayload(jsonBody, "application/json");
+        PresignedUrlList response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Request third-party software dependencies
     #
-    # + return - OK
+    # + return - OK 
     remote isolated function requestThirdPartyDependencies() returns ThirdPartyDependenciesData[]|error {
-        string  path = string `/v4/public/software/third_party_dependencies`;
-        ThirdPartyDependenciesData[] response = check self.clientEp-> get(path, targetType = ThirdPartyDependenciesDataArr);
+        string resourcePath = string `/v4/public/software/third_party_dependencies`;
+        ThirdPartyDependenciesData[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Request software version information
     #
-    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/))
-    # + return - OK
+    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/)) 
+    # + return - OK 
     remote isolated function requestSoftwareVersion(string? xSdsDateFormat = ()) returns SoftwareVersionData|error {
-        string  path = string `/v4/public/software/version`;
+        string resourcePath = string `/v4/public/software/version`;
         map<any> headerValues = {"X-Sds-Date-Format": xSdsDateFormat};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SoftwareVersionData response = check self.clientEp-> get(path, accHeaders, targetType = SoftwareVersionData);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SoftwareVersionData response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Request system information
     #
-    # + isEnabled - Show only enabled authentication methods
-    # + return - OK
+    # + isEnabled - Show only enabled authentication methods 
+    # + return - OK 
     remote isolated function requestSystemInfo(boolean? isEnabled = ()) returns SystemInfo|error {
-        string  path = string `/v4/public/system/info`;
+        string resourcePath = string `/v4/public/system/info`;
         map<anydata> queryParam = {"is_enabled": isEnabled};
-        path = path + check getPathForQueryParam(queryParam);
-        SystemInfo response = check self.clientEp-> get(path, targetType = SystemInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        SystemInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Request Active Directory authentication information
     #
-    # + isGlobalAvailable - Show only global available items
-    # + return - OK
+    # + isGlobalAvailable - Show only global available items 
+    # + return - OK 
     remote isolated function requestActiveDirectoryAuthInfo(boolean? isGlobalAvailable = ()) returns ActiveDirectoryAuthInfo|error {
-        string  path = string `/v4/public/system/info/auth/ad`;
+        string resourcePath = string `/v4/public/system/info/auth/ad`;
         map<anydata> queryParam = {"is_global_available": isGlobalAvailable};
-        path = path + check getPathForQueryParam(queryParam);
-        ActiveDirectoryAuthInfo response = check self.clientEp-> get(path, targetType = ActiveDirectoryAuthInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ActiveDirectoryAuthInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Request OpenID Connect provider authentication information
     #
-    # + isGlobalAvailable - Show only global available items
-    # + return - OK
+    # + isGlobalAvailable - Show only global available items 
+    # + return - OK 
     remote isolated function requestOpenIdAuthInfo(boolean? isGlobalAvailable = ()) returns OpenIdAuthInfo|error {
-        string  path = string `/v4/public/system/info/auth/openid`;
+        string resourcePath = string `/v4/public/system/info/auth/openid`;
         map<anydata> queryParam = {"is_global_available": isGlobalAvailable};
-        path = path + check getPathForQueryParam(queryParam);
-        OpenIdAuthInfo response = check self.clientEp-> get(path, targetType = OpenIdAuthInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        OpenIdAuthInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Request system time
     #
-    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/))
-    # + return - OK
+    # + xSdsDateFormat - Date time format (cf. [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) & [leettime.de](http://leettime.de/)) 
+    # + return - OK 
     remote isolated function requestSystemTime(string? xSdsDateFormat = ()) returns SdsServerTime|error {
-        string  path = string `/v4/public/time`;
+        string resourcePath = string `/v4/public/time`;
         map<any> headerValues = {"X-Sds-Date-Format": xSdsDateFormat};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SdsServerTime response = check self.clientEp-> get(path, accHeaders, targetType = SdsServerTime);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SdsServerTime response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map
-# + return - Returns generated map or error at failure of client initialization
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

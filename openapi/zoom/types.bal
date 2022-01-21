@@ -380,7 +380,7 @@ public type MeetingSettings record {
     # Contact name for registration
     string contact_name?;
     # Custom keys and values assigned to the meeting.
-    CustomKeys[] custom_keys?;
+    CustomKeys[10] custom_keys?;
     # Choose between enhanced encryption and [end-to-end encryption](https://support.zoom.us/hc/en-us/articles/360048660871) when starting or a meeting. When using end-to-end encryption, several features (e.g. cloud recording, phone/SIP/H.323 dial-in) will be **automatically disabled**. The value of this field can be one of the following:
     # `enhanced_encryption`: Enhanced encryption. Encryption is stored in the cloud if you enable this option. 
     # 
@@ -578,7 +578,6 @@ public type EndedMeetingDetails record {
     string uuid?;
 };
 
-# Registrant base object
 public type RegistrantDetails record {
     # Registrant ID.
     string id?;
@@ -593,9 +592,9 @@ public type RegistrantDetails record {
     # Custom questions.
     RegistrantCustomQuestion[] custom_questions?;
     # A valid email address of the registrant.
-    string email?;
+    string email;
     # Registrant's first name.
-    string first_name?;
+    string first_name;
     # Registrant's Industry.
     string industry?;
     # Registrant's job title.
@@ -668,8 +667,11 @@ public type GetMeetingInvitationResponse record {
     string invitation?;
 };
 
-# Poll
 public type PollDetails record {
+    # ID of Poll
+    string id?;
+    # Status of Poll:<br>`notstart` - Poll not started<br>`started` - Poll started<br>`ended` - Poll ended<br>`sharing` - Sharing poll results
+    string status?;
     # Array of Polls
     PollQuestions[] questions?;
     # Title for the poll.

@@ -42,6 +42,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get Concepts.
     #
@@ -51,10 +52,10 @@ public isolated client class Client {
     # + query - Precedes the search term string. Used in a Search Query. Except for &lt;specific_concept_name&gt;, Search Query will take the required parameters listed above (&lt;concept_type&gt;, &lt;concept_uri&gt;, &lt;article_uri&gt;) as an optional_parameter in addition to the query=&lt;query_term&gt;. 
     # + return - An array of Concepts 
     remote isolated function getConcepts(string conceptType, string specificConcept, string query, string? fields = ()) returns InlineResponse200|error {
-        string  path = string `/name/${conceptType}/${specificConcept}.json`;
+        string resourcePath = string `/name/${conceptType}/${specificConcept}.json`;
         map<anydata> queryParam = {"fields": fields, "query": query, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search Concepts.
@@ -64,10 +65,10 @@ public isolated client class Client {
     # + fields - "all" or comma-separated list of specific optional fields: pages, ticker_symbol, links, taxonomy, combinations, geocodes, article_list, scope_notes, search_api_query Optional fields are returned in result_set. They are briefly explained here: pages: A list of topic pages associated with a specific concept. ticker_symbol: If this concept is a publicly traded company, this field contains the ticker symbol. links: A list of links from this concept to external data resources. taxonomy: For descriptor concepts, this field returns a list of taxonomic relations to other concepts. combinations: For descriptor concepts, this field returns a list of the specific meanings tis concept takes on when combined with other concepts. geocodes: For geographic concepts, the full GIS record from geonames. article_list: A list of up to 10 articles associated with this concept. scope_notes: Scope notes contains clarifications and meaning definitions that explicate the relationship between the concept and an article. search_api_query: Returns the request one would need to submit to the Article Search API to obtain a list of articles annotated with this concept. 
     # + return - An array of Concepts 
     remote isolated function searchConcepts(string query, int offset = 10, string? fields = ()) returns InlineResponse2001|error {
-        string  path = string `/search.json`;
+        string resourcePath = string `/search.json`;
         map<anydata> queryParam = {"query": query, "offset": offset, "fields": fields, "api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

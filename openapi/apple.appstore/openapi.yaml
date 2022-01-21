@@ -14294,13 +14294,13 @@ paths:
       tags:
         - Apps
       operationId: apps-betaTesters-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AppBetaTestersLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/AppBetaTestersLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -15482,13 +15482,13 @@ paths:
       tags:
         - BetaGroups
       operationId: betaGroups-betaTesters-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BetaGroupBetaTestersLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/BetaGroupBetaTestersLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -15655,13 +15655,13 @@ paths:
       tags:
         - BetaGroups
       operationId: betaGroups-builds-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BetaGroupBuildsLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/BetaGroupBuildsLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -15881,13 +15881,13 @@ paths:
       tags:
         - BetaTesters
       operationId: betaTesters-apps-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BetaTesterAppsLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/BetaTesterAppsLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -16070,13 +16070,13 @@ paths:
       tags:
         - BetaTesters
       operationId: betaTesters-betaGroups-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BetaTesterBetaGroupsLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/BetaTesterBetaGroupsLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -16248,13 +16248,13 @@ paths:
       tags:
         - BetaTesters
       operationId: betaTesters-builds-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BetaTesterBuildsLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/BetaTesterBuildsLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -16849,13 +16849,13 @@ paths:
       tags:
         - Builds
       operationId: builds-betaGroups-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BuildBetaGroupsLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/BuildBetaGroupsLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -17141,13 +17141,13 @@ paths:
       tags:
         - Builds
       operationId: builds-individualTesters-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BuildIndividualTestersLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/BuildIndividualTestersLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -17776,13 +17776,13 @@ paths:
       tags:
         - GameCenterEnabledVersions
       operationId: gameCenterEnabledVersions-compatibleVersions-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameCenterEnabledVersionCompatibleVersionsLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/GameCenterEnabledVersionCompatibleVersionsLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)
@@ -18486,13 +18486,13 @@ paths:
       tags:
         - Users
       operationId: users-visibleApps-delete_to_many_relationship
-      requestBody:
-        description: List of related linkages
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserVisibleAppsLinkagesRequest'
-        required: true
+      # requestBody:
+      #   description: List of related linkages
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/UserVisibleAppsLinkagesRequest'
+      #   required: true
       responses:
         '204':
           description: Success (no content)

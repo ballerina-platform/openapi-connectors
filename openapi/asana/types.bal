@@ -14,8 +14,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type PortfolioMembershipResponse record {
-    *PortfolioMembershipBase;
+public type PortfolioMembershipResponse PortfolioMembershipBase;
+
+public type CustomFieldsCustomFieldGidBody record {
+    CustomFieldRequest data?;
 };
 
 # A response object returned from a batch request.
@@ -28,9 +30,7 @@ public type BatchResponse record {
     int status_code?;
 };
 
-public type ProjectStatusRequest record {
-    *ProjectStatusBase;
-};
+public type ProjectStatusRequest ProjectStatusBase;
 
 public type TeamRequest record {
     *TeamBase;
@@ -51,13 +51,9 @@ public type SectionTaskInsertRequest record {
     string task;
 };
 
-public type ProjectMembershipBase record {
-    *ProjectMembershipCompact;
-};
+public type ProjectMembershipBase ProjectMembershipCompact;
 
-public type CustomFieldSettingBase record {
-    *CustomFieldSettingCompact;
-};
+public type CustomFieldSettingBase CustomFieldSettingCompact;
 
 public type PortfolioResponse record {
     *PortfolioBase;
@@ -80,7 +76,14 @@ public type PortfolioResponse record {
     WorkspaceCompact workspace?;
 };
 
-# A story represents an activity associated with an object in the Asana system.
+public type ProjectGidSectionsBody record {
+    SectionRequest data?;
+};
+
+public type ProjectGidRemovefollowersBody record {
+    RemoveFollowersRequest data?;
+};
+
 public type StoryBase record {
     *AsanaResource;
     # The time at which this resource was created.
@@ -117,6 +120,10 @@ public type BatchRequest record {
     BatchRequestAction[] actions?;
 };
 
+public type PortfolioGidAddmembersBody record {
+    AddMembersRequest data?;
+};
+
 public type CustomFieldSettingCompact record {
     *AsanaResource;
 };
@@ -129,6 +136,11 @@ public type TagResponse record {
     string permalink_url?;
     # The workspace in which the user task list is located.
     WorkspaceCompact workspace?;
+};
+
+public type TeamGidRemoveuserBody record {
+    # A user identification object for specification with the addUser/removeUser endpoints.
+    TeamRemoveUserRequest data?;
 };
 
 public type TaskAddProjectRequest record {
@@ -154,6 +166,10 @@ public type WebhookResponse record {
     string last_failure_content?;
     # The timestamp when the webhook last successfully sent an event to the target.
     string last_success_at?;
+};
+
+public type TagsBody record {
+    TagRequest data?;
 };
 
 public type AddCustomFieldSettingRequest record {
@@ -191,6 +207,7 @@ public type ProjectBase record {
     # Array of users who are members of this project.
     UserCompact[] members?;
     # The time at which this project was last modified.
+    # *Note: This does not currently reflect any changes in associations such as tasks or comments that may have been added or removed from the project.*
     string modified_at?;
     # More detailed, free-form textual information associated with the project.
     string notes?;
@@ -225,8 +242,6 @@ public type UserresponsePhoto record {
 };
 
 # Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [Custom Fields](/docs/asana-custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
-#
-# Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [Custom Fields](/docs/asana-custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
 public type CustomFieldCompact record {
     *AsanaResource;
     # A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
@@ -247,7 +262,6 @@ public type CustomFieldCompact record {
     string 'type?;
 };
 
-# A *job* is an object representing a process that handles asynchronous work.
 public type JobCompact record {
     *AsanaResource;
     # A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
@@ -294,17 +308,21 @@ public type SectionResponse record {
     ProjectCompact[] projects?;
 };
 
+public type WorkspaceGidTagsBody record {
+    TagResponse data?;
+};
+
 public type TaskRemoveProjectRequest record {
     # The project to remove the task from.
     string project;
 };
 
-# An *attachment* object represents any file attached to a task in Asana, whether it’s an uploaded file or one associated via a third-party service such as Dropbox or Google Drive.
 public type AttachmentCompact record {
     *AsanaResource;
     # The name of the file.
     string name?;
     # The service hosting the attachment. Valid values are `asana`, `dropbox`, `gdrive`, `onedrive`, `box`, and `external`.
+    # `external` attachments are a beta feature currently limited to specific integrations.
     anydata resource_subtype?;
 };
 
@@ -314,13 +332,19 @@ public type WorkspaceAddUserRequest record {
     string user?;
 };
 
-# A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
-#
+public type StoriesStoryGidBody record {
+    StoryRequest data?;
+};
+
 # A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
 public type ProjectCompact record {
     *AsanaResource;
     # Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
     string name?;
+};
+
+public type ProjectGidProjectStatusesBody record {
+    ProjectStatusRequest data?;
 };
 
 public type InlineResponse2012 record {
@@ -368,9 +392,7 @@ public type InlineResponse2017 record {
     TaskResponse data?;
 };
 
-public type TeamMembershipBase record {
-    *TeamMembershipCompact;
-};
+public type TeamMembershipBase TeamMembershipCompact;
 
 public type PortfolioRemoveItemRequest record {
     # The item to remove from the portfolio.
@@ -395,11 +417,20 @@ public type TaskRequest record {
     string workspace?;
 };
 
-public type UserTaskListRequest record {
-    *UserTaskListBase;
-};
+public type UserTaskListRequest UserTaskListBase;
 
 # Sadly, sometimes requests to the API are not successful. Failures can
+# occur for a wide range of reasons. In all cases, the API should return
+# an HTTP Status Code that indicates the nature of the failure,
+# with a response body in JSON format containing additional information.
+# 
+# 
+# In the event of a server error the response body will contain an error
+# phrase. These phrases are automatically generated using the
+# [node-asana-phrase
+# library](https://github.com/Asana/node-asana-phrase) and can be used by
+# Asana support to quickly look up the incident that caused the server
+# error.
 public type ErrorResponse record {
     # Array of errors when requests to the API are not successful.
     Error[] errors?;
@@ -430,6 +461,10 @@ public type InlineResponse2004 record {
     JobResponse data?;
 };
 
+public type CustomFieldsBody record {
+    CustomFieldRequest data?;
+};
+
 public type InlineResponse2007 record {
     PortfolioMembershipResponse data?;
 };
@@ -438,23 +473,26 @@ public type InlineResponse2006 record {
     PortfolioMembershipCompact[] data?;
 };
 
-public type OrganizationExportBase record {
-    *OrganizationExportCompact;
-};
+public type OrganizationExportBase OrganizationExportCompact;
 
 # A generic Asana Resource, containing a globally unique identifier.
-#
 public type AsanaNamedResource record {
     *AsanaResource;
     # The name of the object.
     string name?;
 };
 
-public type SectionBase record {
-    *SectionCompact;
+public type SectionsSectionGidBody record {
+    SectionRequest data?;
 };
 
-# A user task list represents the tasks assigned to a particular user. It provides API access to a user’s “My Tasks” view in Asana.
+# A section is a subdivision of a project that groups tasks together.
+public type SectionBase SectionCompact;
+
+public type PortfolioGidRemovecustomfieldsettingBody record {
+    RemoveCustomFieldSettingRequest data?;
+};
+
 public type UserTaskListCompact record {
     *AsanaResource;
     # The name of the user task list.
@@ -486,9 +524,7 @@ public type PortfolioBase record {
     string color?;
 };
 
-public type UserRequest record {
-    *UserBase;
-};
+public type UserRequest UserBase;
 
 public type TaskSetParentRequest record {
     # A subtask of the parent to insert the task after, or `null` to insert at the beginning of the list.
@@ -499,14 +535,17 @@ public type TaskSetParentRequest record {
     string parent;
 };
 
+public type TeamGidAdduserBody record {
+    # A user identification object for specification with the addUser/removeUser endpoints.
+    TeamAddUserRequest data?;
+};
+
 public type RemoveMembersRequest record {
     # An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
     string members;
 };
 
 # Enum options are the possible values which an enum custom field can adopt.
-#
-# Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 50.
 public type EnumOption record {
     *AsanaResource;
     # The color of the enum option. Defaults to ‘none’.
@@ -518,8 +557,6 @@ public type EnumOption record {
 };
 
 # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-#
-# A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
 public type UserCompact record {
     *AsanaResource;
     # *Read-only except when same user as requester*. The user’s name.
@@ -529,6 +566,10 @@ public type UserCompact record {
 public type TaskAddFollowersRequest record {
     # An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
     string[] followers;
+};
+
+public type TaskGidSetparentBody record {
+    TaskSetParentRequest data?;
 };
 
 public type EnumOptionRequest record {
@@ -555,13 +596,11 @@ public type ProjectResponse record {
     TeamCompact team?;
 };
 
-public type TeamBase record {
-    *TeamCompact;
-};
+# A *team* is used to group related projects and people together within an organization.
+public type TeamBase TeamCompact;
 
-public type UserBase record {
-    *UserCompact;
-};
+# The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
+public type UserBase UserCompact;
 
 public type ProjectStatusResponse record {
     *ProjectStatusBase;
@@ -572,6 +611,7 @@ public type ProjectStatusResponse record {
 };
 
 # *OAuth Required*. *Conditional*. This field is returned only if external values are set or included by using [Opt In] (/docs/input-output-options).
+# The external field allows you to store app-specific metadata on tasks, including a gid that can be used to retrieve tasks and a data blob that can store app-specific character strings. Note that you will need to authenticate with Oauth to access or modify this data. Once an external gid is set, you can use the notation `external:custom_gid` to reference your object anywhere in the API where you may use the original object gid. See the page on Custom External Data for more details.
 public type TaskbaseExternal record {
     # The data of external field allows you to store app-specific metadata on tasks.
     string data?;
@@ -579,22 +619,26 @@ public type TaskbaseExternal record {
     string gid?;
 };
 
-public type OrganizationExportResponse record {
-    *OrganizationExportBase;
-};
+public type OrganizationExportResponse OrganizationExportBase;
 
 # A section is a subdivision of a project that groups tasks together.
-#
-# A *section* is a subdivision of a project that groups tasks together. It can either be a header above a list of tasks in a list view or a column in a board view of a project.
 public type SectionCompact record {
     *AsanaResource;
     # The name of the section (i.e. the text displayed as the section header).
     string name?;
 };
 
-public type WorkspaceBase record {
-    *WorkspaceCompact;
+public type PortfolioGidRemoveitemBody record {
+    PortfolioRemoveItemRequest data?;
 };
+
+public type BatchBody record {
+    # A request object for use in a batch request.
+    BatchRequest data?;
+};
+
+# The workspace in which the user task list is located.
+public type WorkspaceBase WorkspaceCompact;
 
 public type TeamResponse record {
     *TeamBase;
@@ -614,8 +658,19 @@ public type ModifyDependentsRequest record {
     string[] dependents?;
 };
 
-public type UserTaskListBase record {
-    *UserTaskListCompact;
+public type UserTaskListBase UserTaskListCompact;
+
+public type TaskGidAddprojectBody record {
+    TaskAddProjectRequest data?;
+};
+
+public type PortfolioGidAdditemBody record {
+    PortfolioAddItemRequest data?;
+};
+
+public type WorkspaceGidRemoveuserBody record {
+    # A user identification object for specification with the addUser/removeUser endpoints.
+    WorkspaceRemoveUserRequest data?;
 };
 
 public type TaskbaseMemberships record {
@@ -638,8 +693,9 @@ public type UserResponse record {
     # The user's email address.
     string email?;
     # A map of the user’s profile photo in various sizes, or null if no photo is set. Sizes provided are 21, 27, 36, 60, and 128. Images are in PNG format.
-    UserresponsePhoto photo?;
+    UserresponsePhoto? photo?;
     # Workspaces and organizations this user may access.
+    # Note\: The API will only return workspaces and organizations that also contain the authenticated user.
     WorkspaceCompact[] workspaces?;
 };
 
@@ -654,7 +710,6 @@ public type TeamAddUserRequest record {
     string user?;
 };
 
-# This object represents a user's connection to a team.
 public type TeamMembershipCompact record {
     *AsanaResource;
     # Describes if the user is a guest in the team.
@@ -665,7 +720,6 @@ public type TeamMembershipCompact record {
     UserCompact user?;
 };
 
-# This object determines if a user is a member of a portfolio.
 public type PortfolioMembershipCompact record {
     *AsanaResource;
     # A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana.
@@ -691,7 +745,6 @@ public type TaskCountResponse record {
 };
 
 # Represents activity associated with an object in the Asana system
-#
 public type StoryResponse record {
     *StoryBase;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
@@ -709,8 +762,11 @@ public type StoryResponse record {
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
     UserCompact follower?;
     # *Deprecated - please use likes instead*
+    # *Conditional*. True if the story is hearted by the authorized user, false if not.
     boolean hearted?;
     # *Deprecated - please use likes instead*
+    # 
+    # *Conditional*. Array of likes for users who have hearted this story.
     Like[] hearts?;
     # *Conditional*. Whether the text of the story has been edited after creation.
     boolean is_edited?;
@@ -735,6 +791,8 @@ public type StoryResponse record {
     # *Conditional*
     string new_text_value?;
     # *Deprecated - please use likes instead*
+    # 
+    # *Conditional*. The number of users who have hearted this story.
     int num_hearts?;
     # *Conditional*. The number of users who have liked this story.
     int num_likes?;
@@ -755,6 +813,8 @@ public type StoryResponse record {
     # *Conditional*
     string old_text_value?;
     # *Conditional*. A collection of previews to be displayed in the story.
+    # 
+    # *Note: This property only exists for comment stories.*
     Preview[] previews?;
     # A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
     ProjectCompact project?;
@@ -770,7 +830,10 @@ public type StoryResponse record {
     TaskCompact task?;
 };
 
-# With the introduction of “comment-only” projects in Asana, a user’s membership in a project comes with associated permissions. These permissions (whether a user has full access to the project or comment-only access) are accessible through the project memberships endpoints described here.
+public type PortfoliosPortfolioGidBody record {
+    PortfolioRequest data?;
+};
+
 public type ProjectMembershipCompact record {
     *AsanaResource;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
@@ -798,6 +861,11 @@ public type CustomFieldSettingResponse record {
     ProjectCompact project?;
 };
 
+public type TaskGidAdddependentsBody record {
+    # A set of dependent tasks.
+    ModifyDependentsRequest data?;
+};
+
 public type SectionRequest record {
     # An existing section within this project after which the added section should be inserted. Cannot be provided together with insert_before.
     string insert_after?;
@@ -809,28 +877,10 @@ public type SectionRequest record {
     string project;
 };
 
-public type Body56 record {
-    TagResponse data?;
-};
-
-public type Body55 record {
-    # A user identification object for specification with the addUser/removeUser endpoints.
-    WorkspaceRemoveUserRequest data?;
-};
-
-public type Body54 record {
-    ProjectRequest data?;
-};
-
 public type CustomFieldRequest record {
     *CustomFieldBase;
     # *Create-Only* The workspace to create a custom field in.
-    string workspace?;
-};
-
-public type Body53 record {
-    # A user identification object for specification with the addUser/removeUser endpoints.
-    WorkspaceAddUserRequest data?;
+    string workspace;
 };
 
 # An action object for use in a batch request.
@@ -843,6 +893,19 @@ public type BatchRequestAction record {
     BatchrequestactionOptions options?;
     # The path of the desired endpoint relative to the API’s base URL. Query parameters are not accepted here; put them in `data` instead.
     string relative_path;
+};
+
+public type TasksBody record {
+    TaskRequest data?;
+};
+
+public type PortfolioGidAddcustomfieldsettingBody record {
+    AddCustomFieldSettingRequest data?;
+};
+
+public type TaskGidRemovedependentsBody record {
+    # A set of dependent tasks.
+    ModifyDependentsRequest data?;
 };
 
 public type InlineResponse20021 record {
@@ -909,6 +972,10 @@ public type InlineResponse20028 record {
     UserTaskListResponse data?;
 };
 
+public type SectionGidAddtaskBody record {
+    SectionTaskInsertRequest data?;
+};
+
 public type WorkspaceMembershipResponse record {
     *WorkspaceMembershipBase;
     # Reflects if this user still a member of the workspace.
@@ -920,18 +987,23 @@ public type WorkspaceMembershipResponse record {
     UserTaskListResponse user_task_list?;
 };
 
+public type TaskGidDuplicateBody record {
+    TaskDuplicateRequest data?;
+};
+
 public type ProjectStatusBase record {
     *ProjectStatusCompact;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
     UserCompact author?;
     # The color associated with the status update.
-    string color?;
+    string color;
     # [Opt In](/docs/input-output-options). The text content of the status update with formatting as HTML.
     string html_text?;
     # The time at which this project status was last modified.
+    # *Note: This does not currently reflect any changes in associations such as comments that may have been added or removed from the project status.*
     anydata modified_at?;
     # The text content of the status update.
-    string text?;
+    string text;
 };
 
 # An *organization_export* request starts a job to export the complete data of the given Organization.
@@ -941,62 +1013,14 @@ public type OrganizationExportRequest record {
 };
 
 # The *task* is the basic object around which many operations in Asana are centered.
-#
-# The *task* is the basic object around which many operations in Asana are centered.
 public type TaskCompact record {
     *AsanaResource;
     # The name of the task.
     string name?;
 };
 
-public type Body45 record {
-    StoryRequest data?;
-};
-
-public type Body44 record {
-    TaskSetParentRequest data?;
-};
-
-public type Body43 record {
-    TaskRemoveTagRequest data?;
-};
-
-public type Body42 record {
-    TaskRemoveProjectRequest data?;
-};
-
-public type Body49 record {
-    ProjectRequest data?;
-};
-
-public type Body48 record {
-    # A user identification object for specification with the addUser/removeUser endpoints.
-    TeamAddUserRequest data?;
-};
-
-public type Body47 record {
-    TeamRequest data?;
-};
-
-public type Body46 record {
-    TaskRequest data?;
-};
-
 public type InlineResponse20030 record {
     WorkspaceMembershipCompact[] data?;
-};
-
-public type Body52 record {
-    WorkspaceRequest data?;
-};
-
-public type Body51 record {
-    WebhookRequest data?;
-};
-
-public type Body50 record {
-    # A user identification object for specification with the addUser/removeUser endpoints.
-    TeamRemoveUserRequest data?;
 };
 
 public type InlineResponse20032 record {
@@ -1017,6 +1041,11 @@ public type ProjectRequest record {
 
 public type InlineResponse20031 record {
     WebhookResponse[] data?;
+};
+
+public type OrganizationExportsBody record {
+    # An *organization_export* request starts a job to export the complete data of the given Organization.
+    OrganizationExportRequest data?;
 };
 
 public type InlineResponse20034 record {
@@ -1055,25 +1084,18 @@ public type CustomFieldBase record {
     # This flag describes whether this custom field is available to every container in the workspace. Before project-specific custom fields, this field was always true.
     boolean is_global_to_workspace?;
     # Only relevant for custom fields of type ‘Number’. This field dictates the number of places after the decimal to round to, i.e. 0 is integer values, 1 rounds to the nearest tenth, and so on. Must be between 0 and 6, inclusive.
+    # For percentage format, this may be unintuitive, as a value of 0.25 has a precision of 0, while a value of 0.251 has a precision of 1. This is due to 0.25 being displayed as 25%.
+    # The identifier format will always have a precision of 0.
     int precision?;
 };
 
-public type AttachmentBase record {
-    *AttachmentCompact;
+public type AttachmentBase AttachmentCompact;
+
+public type ProjectGidAddmembersBody record {
+    AddMembersRequest data?;
 };
 
-public type Body39 record {
-    ModifyDependenciesRequest data?;
-};
-
-public type Body34 record {
-    # A set of dependent tasks.
-    ModifyDependentsRequest data?;
-};
-
-public type JobResponse record {
-    *JobBase;
-};
+public type JobResponse JobBase;
 
 public type TaskBase record {
     *TaskCompact;
@@ -1098,6 +1120,7 @@ public type TaskBase record {
     # The localized date on which this task is due, or null if the task has no due date. This takes a date with `YYYY-MM-DD` format and should not be used together with due_at.
     string? due_on?;
     # *OAuth Required*. *Conditional*. This field is returned only if external values are set or included by using [Opt In] (/docs/input-output-options).
+    # The external field allows you to store app-specific metadata on tasks, including a gid that can be used to retrieve tasks and a data blob that can store app-specific character strings. Note that you will need to authenticate with Oauth to access or modify this data. Once an external gid is set, you can use the notation `external:custom_gid` to reference your object anywhere in the API where you may use the original object gid. See the page on Custom External Data for more details.
     TaskbaseExternal 'external?;
     # *Deprecated - please use liked instead* True if the task is hearted by the authorized user, false if not.
     boolean hearted?;
@@ -1114,6 +1137,10 @@ public type TaskBase record {
     # *Create-only*. Array of projects this task is associated with and the section it is in. At task creation time, this array can be used to add the task to specific sections. After task creation, these associations can be modified using the `addProject` and `removeProject` endpoints. Note that over time, more types of memberships may be added to this property.
     TaskbaseMemberships[] memberships?;
     # The time at which this task was last modified.
+    # 
+    # *Note: This does not currently reflect any changes in
+    # associations such as projects or comments that may have been
+    # added or removed from the task.*
     string modified_at?;
     # Name of the task. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
     string name?;
@@ -1126,42 +1153,55 @@ public type TaskBase record {
     # [Opt In](/docs/input-output-options). The number of subtasks on this task.
     int num_subtasks?;
     # The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+    # The resource_subtype `milestone` represent a single moment in time. This means tasks with this subtype cannot have a start_date.
     string resource_subtype?;
     # Date and time on which work begins for the task, or null if the task has no start time. This takes a UTC timestamp format.
+    # *Note: `due_at` must be present in the request when setting or unsetting the `start_at` parameter.*
     string? start_at?;
     # The day on which work begins for the task , or null if the task has no start date. This takes a date with `YYYY-MM-DD` format.
+    # *Note: `due_on` or `due_at` must be present in the request when setting or unsetting the `start_on` parameter.*
     string? start_on?;
 };
 
-public type Body33 record {
-    ModifyDependenciesRequest data?;
-};
-
-public type Body32 record {
-    TaskRequest data?;
-};
-
-public type Body31 record {
-    TaskRequest data?;
-};
-
-public type Body38 record {
-    TaskDuplicateRequest data?;
-};
-
-public type Body37 record {
-    TaskAddTagRequest data?;
-};
-
-public type Body36 record {
-    TaskAddProjectRequest data?;
-};
-
-public type Body35 record {
-    TaskAddFollowersRequest data?;
-};
-
 # An *event* is an object representing a change to a resource that was
+# observed by an event subscription or delivered asynchronously to
+# the target location of an active webhook.
+# 
+# The event may be triggered by a different `user` than the
+# subscriber. For example, if user A subscribes to a task and user B
+# modified it, the event’s user will be user B. Note: Some events
+# are generated by the system, and will have `null` as the user. API
+# consumers should make sure to handle this case.
+# 
+# The `resource` that triggered the event may be different from the one
+# that the events were requested for or the webhook is subscribed to. For
+# example, a subscription to a project will contain events for tasks
+# contained within the project.
+# 
+# **Note:** pay close attention to the relationship between the fields
+# `Event.action` and `Event.change.action`.
+# `Event.action` represents the action taken on the resource
+# itself, and `Event.change.action` represents how the information
+# within the resource's fields have been modified.
+# 
+# For instance, consider these scenarios:
+# 
+# 
+# * When at task is added to a project, `Event.action` will be
+# `added`, `Event.parent` will be on object with the `id` and
+# `type` of the project, and there will be no `change` field.
+# 
+# 
+# * When an assignee is set on the task, `Event.parent` will be
+# `null`, `Event.action` will be `changed`,
+# `Event.change.action` will be `changed`, and `changed_value` will
+# be an object with the user's `id` and `type`.
+# 
+# 
+# * When a collaborator is added to the task, `Event.parent` will
+# be `null`, `Event.action` will be `changed`,
+# `Event.change.action` will be `added`, and `added_value` will be
+# an object with the user's `id` and `type`.
 public type EventResponse record {
     # The type of action taken on the **resource** that triggered the event.  This can be one of `changed`, `added`, `removed`, `deleted`, or `undeleted` depending on the nature of the event.
     string action?;
@@ -1180,21 +1220,10 @@ public type EventResponse record {
 };
 
 # A *team* is used to group related projects and people together within an organization.
-#
-# A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
 public type TeamCompact record {
     *AsanaResource;
     # The name of the team.
     string name?;
-};
-
-public type Body41 record {
-    TaskRemoveFollowersRequest data?;
-};
-
-public type Body40 record {
-    # A set of dependent tasks.
-    ModifyDependentsRequest data?;
 };
 
 public type ModifyDependenciesRequest record {
@@ -1202,8 +1231,6 @@ public type ModifyDependenciesRequest record {
     string[] dependencies?;
 };
 
-# A story represents an activity associated with an object in the Asana system.
-#
 # A story represents an activity associated with an object in the Asana system.
 public type StoryCompact record {
     *AsanaResource;
@@ -1214,6 +1241,9 @@ public type StoryCompact record {
     # The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
     string resource_subtype?;
     # *Create-only*. Human-readable text for the story or comment.
+    # This will not include the name of the creator.
+    # *Note: This is not guaranteed to be stable for a given type of story. For example, text for a reassignment may not always say “assigned to …” as the text for a story can both be edited and change based on the language settings of the user making the request.*
+    # Use the `resource_subtype` property to discover the action that created the story.
     string text?;
 };
 
@@ -1256,153 +1286,51 @@ public type StoryresponseTarget record {
     string name?;
 };
 
-public type Body8 record {
-    PortfolioRequest data?;
+public type TeamGidProjectsBody record {
+    ProjectRequest data?;
 };
 
-public type Body9 record {
-    AddCustomFieldSettingRequest data?;
+public type TasksTaskGidBody record {
+    TaskRequest data?;
 };
 
-public type Body6 record {
-    # An *organization_export* request starts a job to export the complete data of the given Organization.
-    OrganizationExportRequest data?;
+public type ProjectsProjectGidBody record {
+    ProjectRequest data?;
 };
 
-public type Body29 record {
-    StoryRequest data?;
+public type JobBase JobCompact;
+
+public type StoryRequest StoryBase;
+
+public type TaskGidRemovefollowersBody record {
+    TaskRemoveFollowersRequest data?;
 };
 
-public type Body7 record {
-    PortfolioRequest data?;
-};
-
-public type Body28 record {
-    SectionTaskInsertRequest data?;
-};
-
-public type Body4 record {
-    EnumOptionInsertRequest data?;
-};
-
-public type Body5 record {
-    EnumOptionRequest data?;
-};
-
-public type Body2 record {
-    CustomFieldRequest data?;
-};
-
-public type Body3 record {
-    EnumOptionRequest data?;
-};
-
-public type Body23 record {
-    RemoveFollowersRequest data?;
-};
-
-public type Body22 record {
-    RemoveCustomFieldSettingRequest data?;
-};
-
-public type Body21 record {
-    ProjectStatusRequest data?;
-};
-
-public type Body20 record {
-    ProjectDuplicateRequest data?;
-};
-
-public type Body27 record {
-    SectionRequest data?;
-};
-
-public type Body26 record {
-    ProjectSectionInsertRequest data?;
-};
-
-public type Body25 record {
-    SectionRequest data?;
-};
-
-public type Body24 record {
-    RemoveMembersRequest data?;
-};
-
-public type Body30 record {
-    TagRequest data?;
-};
-
-public type JobBase record {
-    *JobCompact;
-};
-
-public type Body1 record {
-    CustomFieldRequest data?;
-};
-
-public type StoryRequest record {
-    *StoryBase;
-};
-
-# A *project status* is an update on the progress of a particular project, and is sent out to all project followers when created. These updates include both text describing the update and a color code intended to represent the overall state of the project: "green" for projects that are on track, "yellow" for projects at risk, and "red" for projects that are behind.
 public type ProjectStatusCompact record {
     *AsanaResource;
     # The title of the project status update.
     string title?;
 };
 
-public type Body19 record {
-    AddMembersRequest data?;
+public type PortfolioGidRemovemembersBody record {
+    RemoveMembersRequest data?;
 };
 
-public type Body18 record {
-    AddFollowersRequest data?;
-};
-
-public type Body17 record {
+public type ProjectGidAddcustomfieldsettingBody record {
     AddCustomFieldSettingRequest data?;
 };
 
 # A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana.
-#
-# A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana. Portfolios provide a dashboard overview of the state of multiple projects, including a progress report and the most recent [project status](/docs/asana-project-statuses) update.
 public type PortfolioCompact record {
     *AsanaResource;
     # The name of the portfolio.
     string name?;
 };
 
-public type Body12 record {
+public type WorkspaceMembershipRequest WorkspaceMembershipBase;
+
+public type ProjectGidRemovecustomfieldsettingBody record {
     RemoveCustomFieldSettingRequest data?;
-};
-
-public type Body11 record {
-    AddMembersRequest data?;
-};
-
-public type Body10 record {
-    PortfolioAddItemRequest data?;
-};
-
-public type WorkspaceMembershipRequest record {
-    *WorkspaceMembershipBase;
-};
-
-public type Body16 record {
-    ProjectRequest data?;
-};
-
-public type Body15 record {
-    ProjectRequest data?;
-};
-
-public type Body14 record {
-    RemoveMembersRequest data?;
-};
-
-public type Body13 record {
-    PortfolioRemoveItemRequest data?;
 };
 
 public type TagRequest record {
@@ -1413,6 +1341,10 @@ public type TagRequest record {
     string workspace?;
 };
 
+public type TaskGidAddtagBody record {
+    TaskAddTagRequest data?;
+};
+
 # An object to represent a user's like.
 public type Like record {
     # Globally unique identifier of the object, as a string.
@@ -1421,11 +1353,16 @@ public type Like record {
     UserCompact user?;
 };
 
+public type ProjectsBody record {
+    ProjectRequest data?;
+};
+
 public type AttachmentResponse record {
     *AttachmentBase;
     # The time at which this resource was created.
     string created_at?;
     # The URL containing the content of the attachment.
+    # *Note:* May be null if the attachment is hosted by [Box](https://www.box.com/). If present, this URL may only be valid for two minutes from the time of retrieval. You should avoid persisting this URL somewhere and just refresh it on demand to ensure you do not keep stale URLs.
     string? download_url?;
     # The service hosting the attachment. Valid values are `asana`, `dropbox`, `gdrive` and `box`.
     string host?;
@@ -1435,8 +1372,10 @@ public type AttachmentResponse record {
     string? view_url?;
 };
 
-public type WorkspaceRequest record {
-    *WorkspaceBase;
+public type WorkspaceRequest WorkspaceBase;
+
+public type PortfoliosBody record {
+    PortfolioRequest data?;
 };
 
 public type AddMembersRequest record {
@@ -1448,11 +1387,17 @@ public type InlineResponse2019 record {
     WebhookResponse data?;
 };
 
-public type EnumOptionBase record {
-    *EnumOption;
+public type TeamsBody record {
+    TeamRequest data?;
 };
 
-# Webhook objects represent the state of an active subscription for a server to be updated with information from Asana. This schema represents the subscription itself, not the objects that are sent to the server. For information on those please refer to the [Event](/docs/tocS_Event) schema.
+# Enum options are the possible values which an enum custom field can adopt.
+public type EnumOptionBase EnumOption;
+
+public type TaskGidAddfollowersBody record {
+    TaskAddFollowersRequest data?;
+};
+
 public type WebhookCompact record {
     *AsanaResource;
     # If true, the webhook will send events - if false it is considered inactive and will not generate events.
@@ -1468,10 +1413,26 @@ public type AddFollowersRequest record {
     string followers;
 };
 
+public type EnumOptionsEnumOptionGidBody record {
+    EnumOptionRequest data?;
+};
+
+public type SectionsInsertBody record {
+    ProjectSectionInsertRequest data?;
+};
+
 public type TagBase record {
     *TagCompact;
     # Color of the tag.
     string color?;
+};
+
+public type EnumOptionsInsertBody record {
+    EnumOptionInsertRequest data?;
+};
+
+public type WebhooksBody record {
+    WebhookRequest data?;
 };
 
 # An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
@@ -1483,7 +1444,10 @@ public type RemoveCustomFieldSettingRequest record {
     string custom_field;
 };
 
-# This object determines if a user is a member of a workspace.
+public type TaskGidAdddependenciesBody record {
+    ModifyDependenciesRequest data?;
+};
+
 public type WorkspaceMembershipCompact record {
     *AsanaResource;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
@@ -1497,6 +1461,14 @@ public type TaskDuplicateRequest record {
     string include?;
     # The name of the new task.
     string name?;
+};
+
+public type WorkspacesWorkspaceGidBody record {
+    WorkspaceRequest data?;
+};
+
+public type TaskGidRemovedependenciesBody record {
+    ModifyDependenciesRequest data?;
 };
 
 public type ProjectDuplicateRequest record {
@@ -1515,8 +1487,6 @@ public type InlineResponse201 record {
 };
 
 # A tag is a label that can be attached to any task in Asana.
-#
-# A *tag* is a label that can be attached to any task in Asana. It exists in a single workspace or organization.
 public type TagCompact record {
     *AsanaResource;
     # Name of the tag. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
@@ -1535,6 +1505,10 @@ public type AsanaResource record {
     string resource_type?;
 };
 
+public type TaskGidStoriesBody record {
+    StoryRequest data?;
+};
+
 # A dictionary of options to auto-shift dates. `task_dates` must be included to use this option. Requires either `start_on` or `due_on`, but not both.
 public type ProjectduplicaterequestScheduleDates record {
     # Sets the last due date in the duplicated project to the given date. The rest of the due dates will be offset by the same amount as the due dates in the original project.
@@ -1545,16 +1519,20 @@ public type ProjectduplicaterequestScheduleDates record {
     string start_on?;
 };
 
-public type UserTaskListResponse record {
-    *UserTaskListBase;
-};
+public type UserTaskListResponse UserTaskListBase;
 
-# An *organization_export* object represents a request to export the complete data of an Organization in JSON format.
 public type OrganizationExportCompact record {
     *AsanaResource;
     # The time at which this resource was created.
     string created_at?;
     # Download this URL to retreive the full export of the organization
+    # in JSON format. It will be compressed in a gzip (.gz) container.
+    # 
+    # *Note: May be null if the export is still in progress or
+    # failed.  If present, this URL may only be valid for 1 hour from
+    # the time of retrieval. You should avoid persisting this URL
+    # somewhere and rather refresh on demand to ensure you do not keep
+    # stale URLs.*
     string? download_url?;
     # The workspace in which the user task list is located.
     WorkspaceCompact organization?;
@@ -1562,18 +1540,17 @@ public type OrganizationExportCompact record {
     string state?;
 };
 
-public type TeamMembershipResponse record {
-    *TeamMembershipBase;
+public type ProjectGidDuplicateBody record {
+    ProjectDuplicateRequest data?;
 };
 
-public type Body record {
-    # A request object for use in a batch request.
-    BatchRequest data?;
+public type ProjectGidRemovemembersBody record {
+    RemoveMembersRequest data?;
 };
 
-public type WorkspaceMembershipBase record {
-    *WorkspaceMembershipCompact;
-};
+public type TeamMembershipResponse TeamMembershipBase;
+
+public type WorkspaceMembershipBase WorkspaceMembershipCompact;
 
 # Pagination (`limit` and `offset`) and output options (`fields` or `expand`) for the action. “Pretty” JSON output is not an available option on individual actions; if you want pretty output, specify that option on the parent request.
 public type BatchrequestactionOptions record {
@@ -1583,6 +1560,11 @@ public type BatchrequestactionOptions record {
     int 'limit?;
     # Pagination offset for the request.
     int offset?;
+};
+
+public type WorkspaceGidAdduserBody record {
+    # A user identification object for specification with the addUser/removeUser endpoints.
+    WorkspaceAddUserRequest data?;
 };
 
 public type Error record {
@@ -1595,6 +1577,8 @@ public type Error record {
 };
 
 # A collection of rich text that will be displayed as a preview to another app.
+# 
+# This is read-only except for a small group of whitelisted apps.
 public type Preview record {
     # Some fallback text to display if unable to display the full preview.
     string fallback?;
@@ -1614,8 +1598,26 @@ public type Preview record {
     string title_link?;
 };
 
-public type PortfolioMembershipBase record {
-    *PortfolioMembershipCompact;
+public type PortfolioMembershipBase PortfolioMembershipCompact;
+
+public type CustomFieldGidEnumOptionsBody record {
+    EnumOptionRequest data?;
+};
+
+public type ProjectGidAddfollowersBody record {
+    AddFollowersRequest data?;
+};
+
+public type TaskGidRemovetagBody record {
+    TaskRemoveTagRequest data?;
+};
+
+public type TaskGidRemoveprojectBody record {
+    TaskRemoveProjectRequest data?;
+};
+
+public type TaskGidSubtasksBody record {
+    TaskRequest data?;
 };
 
 # *Conditional*
@@ -1633,8 +1635,6 @@ public type InlineResponse20010 record {
 };
 
 # The workspace in which the user task list is located.
-#
-# A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
 public type WorkspaceCompact record {
     *AsanaResource;
     # The name of the workspace.
@@ -1686,4 +1686,8 @@ public type InlineResponse20018 record {
 public type InlineResponse20017 record {
     # A response object returned from the task count endpoint.
     TaskCountResponse data?;
+};
+
+public type WorkspaceGidProjectsBody record {
+    ProjectRequest data?;
 };

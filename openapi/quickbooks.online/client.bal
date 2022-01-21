@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://quickbooks.api.intuit.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Create or Update an Account. The ID of the object to update is specified in the request body.​
     #
@@ -72,11 +73,11 @@ public isolated client class Client {
     # + payload - Account creation data 
     # + return - Success 
     remote isolated function createOrUpdateAccount(string realmId, AccountCreateObject payload) returns AccountResponse|error {
-        string path = string `/v3/company/${realmId}/account`;
+        string resourcePath = string `/v3/company/${realmId}/account`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AccountResponse response = check self.clientEp->post(path, request, targetType = AccountResponse);
+        request.setPayload(jsonBody, "application/json");
+        AccountResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the details of an Account object that has been previously created.
@@ -85,8 +86,8 @@ public isolated client class Client {
     # + accountId - Account ID. 
     # + return - Success 
     remote isolated function readAccount(string realmId, string accountId) returns AccountResponse|error {
-        string path = string `/v3/company/${realmId}/account/${accountId}`;
-        AccountResponse response = check self.clientEp->get(path, targetType = AccountResponse);
+        string resourcePath = string `/v3/company/${realmId}/account/${accountId}`;
+        AccountResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or Update a Bill. The ID of the object to update is specified in the request body.​
@@ -96,13 +97,13 @@ public isolated client class Client {
     # + payload - Bill creation data 
     # + return - Success 
     remote isolated function createOrUpdateBill(string realmId, BillCreateObject payload, string? operation = ()) returns BillResponse|error {
-        string path = string `/v3/company/${realmId}/bill`;
+        string resourcePath = string `/v3/company/${realmId}/bill`;
         map<anydata> queryParam = {"operation": operation};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BillResponse response = check self.clientEp->post(path, request, targetType = BillResponse);
+        request.setPayload(jsonBody, "application/json");
+        BillResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the details of a bill that has been previously created.
@@ -111,8 +112,8 @@ public isolated client class Client {
     # + billId - Bill ID. 
     # + return - Success 
     remote isolated function readBill(string realmId, string billId) returns BillResponse|error {
-        string path = string `/v3/company/${realmId}/bill/${billId}`;
-        BillResponse response = check self.clientEp->get(path, targetType = BillResponse);
+        string resourcePath = string `/v3/company/${realmId}/bill/${billId}`;
+        BillResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or Update a Customer. The ID of the object to update is specified in the request body.​
@@ -121,11 +122,11 @@ public isolated client class Client {
     # + payload - Customer creation data 
     # + return - Success 
     remote isolated function createOrUpdateCustomer(string realmId, CustomerCreateObject payload) returns CustomerResponse|error {
-        string path = string `/v3/company/${realmId}/customer`;
+        string resourcePath = string `/v3/company/${realmId}/customer`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerResponse response = check self.clientEp->post(path, request, targetType = CustomerResponse);
+        request.setPayload(jsonBody, "application/json");
+        CustomerResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the details of a Customer object that has been previously created.
@@ -134,8 +135,8 @@ public isolated client class Client {
     # + customerId - Customer ID. 
     # + return - Success 
     remote isolated function readCustomer(string realmId, string customerId) returns CustomerResponse|error {
-        string path = string `/v3/company/${realmId}/customer/${customerId}`;
-        CustomerResponse response = check self.clientEp->get(path, targetType = CustomerResponse);
+        string resourcePath = string `/v3/company/${realmId}/customer/${customerId}`;
+        CustomerResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or Update a Payment.  The ID of the object to update is specifiedin the request body.​
@@ -145,13 +146,13 @@ public isolated client class Client {
     # + payload - Payment creation data 
     # + return - Success 
     remote isolated function createOrUpdatePayment(string realmId, PaymentCreateObject payload, string? operation = ()) returns PaymentResponse|error {
-        string path = string `/v3/company/${realmId}/payment`;
+        string resourcePath = string `/v3/company/${realmId}/payment`;
         map<anydata> queryParam = {"operation": operation};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PaymentResponse response = check self.clientEp->post(path, request, targetType = PaymentResponse);
+        request.setPayload(jsonBody, "application/json");
+        PaymentResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the details of a Payment object that has been previously created.
@@ -160,8 +161,8 @@ public isolated client class Client {
     # + paymentId - Payment ID. 
     # + return - Success 
     remote isolated function readPayment(string realmId, string paymentId) returns PaymentResponse|error {
-        string path = string `/v3/company/${realmId}/payment/${paymentId}`;
-        PaymentResponse response = check self.clientEp->get(path, targetType = PaymentResponse);
+        string resourcePath = string `/v3/company/${realmId}/payment/${paymentId}`;
+        PaymentResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or Update an Estimate  The ID of the object to update is specifiedin the request body.​
@@ -171,13 +172,13 @@ public isolated client class Client {
     # + payload - Estimate creation data 
     # + return - Success 
     remote isolated function createOrUpdateEstimate(string realmId, EstimateCreateObject payload, string? operation = ()) returns EstimateResponse|error {
-        string path = string `/v3/company/${realmId}/estimate`;
+        string resourcePath = string `/v3/company/${realmId}/estimate`;
         map<anydata> queryParam = {"operation": operation};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EstimateResponse response = check self.clientEp->post(path, request, targetType = EstimateResponse);
+        request.setPayload(jsonBody, "application/json");
+        EstimateResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the details of an estimate that has been previously created.
@@ -186,8 +187,8 @@ public isolated client class Client {
     # + estimateId - Estimate ID. 
     # + return - Success 
     remote isolated function readEstimate(string realmId, string estimateId) returns EstimateResponse|error {
-        string path = string `/v3/company/${realmId}/estimate/${estimateId}`;
-        EstimateResponse response = check self.clientEp->get(path, targetType = EstimateResponse);
+        string resourcePath = string `/v3/company/${realmId}/estimate/${estimateId}`;
+        EstimateResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or Update an Invoice  The ID of the object to update is specifiedin the request body.​
@@ -197,13 +198,13 @@ public isolated client class Client {
     # + payload - Invoice creation data 
     # + return - Success 
     remote isolated function createOrUpdateInvoice(string realmId, InvoiceCreateObject payload, string? operation = ()) returns InvoiceResponse|error {
-        string path = string `/v3/company/${realmId}/invoice`;
+        string resourcePath = string `/v3/company/${realmId}/invoice`;
         map<anydata> queryParam = {"operation": operation};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InvoiceResponse response = check self.clientEp->post(path, request, targetType = InvoiceResponse);
+        request.setPayload(jsonBody, "application/json");
+        InvoiceResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the details of an invoice that has been previously created.
@@ -212,8 +213,8 @@ public isolated client class Client {
     # + invoiceId - Invoice ID. 
     # + return - Success 
     remote isolated function readInvoice(string realmId, string invoiceId) returns InvoiceResponse|error {
-        string path = string `/v3/company/${realmId}/invoice/${invoiceId}`;
-        InvoiceResponse response = check self.clientEp->get(path, targetType = InvoiceResponse);
+        string resourcePath = string `/v3/company/${realmId}/invoice/${invoiceId}`;
+        InvoiceResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create or Update a vendor The ID of the object to update is specified in the request body.​ Either the DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes are required during create.
@@ -222,11 +223,11 @@ public isolated client class Client {
     # + payload - Vendor creation data 
     # + return - Success 
     remote isolated function createOrUpdateVendor(string realmId, VendorCreateObject payload) returns VendorResponse|error {
-        string path = string `/v3/company/${realmId}/vendor`;
+        string resourcePath = string `/v3/company/${realmId}/vendor`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        VendorResponse response = check self.clientEp->post(path, request, targetType = VendorResponse);
+        request.setPayload(jsonBody, "application/json");
+        VendorResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves the details of a vendor object that has been previously created.
@@ -235,8 +236,8 @@ public isolated client class Client {
     # + vendorId - Vendor ID. 
     # + return - Success 
     remote isolated function readVendor(string realmId, string vendorId) returns VendorResponse|error {
-        string path = string `/v3/company/${realmId}/vendor/${vendorId}`;
-        VendorResponse response = check self.clientEp->get(path, targetType = VendorResponse);
+        string resourcePath = string `/v3/company/${realmId}/vendor/${vendorId}`;
+        VendorResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Query an entity
@@ -245,10 +246,10 @@ public isolated client class Client {
     # + query - Query statement. 
     # + return - Success 
     remote isolated function queryEntity(string realmId, string query) returns json|error {
-        string path = string `/v3/company/${realmId}/query`;
+        string resourcePath = string `/v3/company/${realmId}/query`;
         map<anydata> queryParam = {"query": query};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp->get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

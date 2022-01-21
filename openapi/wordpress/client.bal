@@ -65,28 +65,28 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List Posts
     #
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Posts Listed. 
     remote isolated function getPosts(string? context = ()) returns Post[]|error {
-        string  path = string `/posts`;
+        string resourcePath = string `/posts`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Post[] response = check self.clientEp-> get(path, targetType = PostArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Post[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Post
     #
     # + return - Post created. 
     remote isolated function createPosts(PostsBody payload) returns Post|error {
-        string  path = string `/posts`;
+        string resourcePath = string `/posts`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Post response = check self.clientEp->post(path, request, targetType=Post);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Post response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Single Post
@@ -95,10 +95,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Post retrieved. 
     remote isolated function getSinglePost(string id, string? context = ()) returns Post|error {
-        string  path = string `/posts/${id}`;
+        string resourcePath = string `/posts/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Post response = check self.clientEp-> get(path, targetType = Post);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Post response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Single Post
@@ -107,14 +107,13 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Post updated. 
     remote isolated function updateSinglePost(string id, PostsIdBody payload, string? context = ()) returns Post|error {
-        string  path = string `/posts/${id}`;
+        string resourcePath = string `/posts/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Post response = check self.clientEp->post(path, request, targetType=Post);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Post response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete Single Post
@@ -123,10 +122,10 @@ public isolated client class Client {
     # + force - Whether to bypass trash and force deletion. 
     # + return - Post deleted. 
     remote isolated function deleteSinglePost(string id, boolean? force = ()) returns http:Response|error {
-        string  path = string `/posts/${id}`;
+        string resourcePath = string `/posts/${id}`;
         map<anydata> queryParam = {"force": force};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get post revisions
@@ -135,10 +134,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Revisions Listed. 
     remote isolated function getPostRevisions(string id, string? context = ()) returns Revision[]|error {
-        string  path = string `/posts/${id}/revisions`;
+        string resourcePath = string `/posts/${id}/revisions`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Revision[] response = check self.clientEp-> get(path, targetType = RevisionArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Revision[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get single post revisions
@@ -148,10 +147,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Revision retrieved. 
     remote isolated function getSinglePostRevisions(string id, string revisionid, string? context = ()) returns Revision|error {
-        string  path = string `/posts/${id}/revisions/${revisionid}`;
+        string resourcePath = string `/posts/${id}/revisions/${revisionid}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Revision response = check self.clientEp-> get(path, targetType = Revision);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Revision response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete single post revisions
@@ -160,8 +159,8 @@ public isolated client class Client {
     # + revisionid - Id of revision 
     # + return - Revision retrieved. 
     remote isolated function deleteSinglePostRevisions(string id, string revisionid) returns http:Response|error {
-        string  path = string `/posts/${id}/revisions/${revisionid}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/posts/${id}/revisions/${revisionid}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List Pages
@@ -169,22 +168,21 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Pages Listed. 
     remote isolated function listPages(string? context = ()) returns Page[]|error {
-        string  path = string `/pages`;
+        string resourcePath = string `/pages`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Page[] response = check self.clientEp-> get(path, targetType = PageArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Page[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Page
     #
     # + return - Page created. 
     remote isolated function createPage(PagesBody payload) returns Page|error {
-        string  path = string `/pages`;
+        string resourcePath = string `/pages`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Page response = check self.clientEp->post(path, request, targetType=Page);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Page response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Single Page
@@ -193,10 +191,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Page retrieved. 
     remote isolated function getSinglePage(string id, string? context = ()) returns Page|error {
-        string  path = string `/pages/${id}`;
+        string resourcePath = string `/pages/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Page response = check self.clientEp-> get(path, targetType = Page);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Page response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Single Page
@@ -204,12 +202,11 @@ public isolated client class Client {
     # + id - Id of object 
     # + return - Page updated. 
     remote isolated function updateSinglePage(string id, PagesIdBody payload) returns Page|error {
-        string  path = string `/pages/${id}`;
+        string resourcePath = string `/pages/${id}`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Page response = check self.clientEp->post(path, request, targetType=Page);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Page response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete Single Page
@@ -218,10 +215,10 @@ public isolated client class Client {
     # + force - Whether to bypass trash and force deletion. 
     # + return - Post deleted. 
     remote isolated function deleteSinglePage(string id, boolean? force = ()) returns http:Response|error {
-        string  path = string `/pages/${id}`;
+        string resourcePath = string `/pages/${id}`;
         map<anydata> queryParam = {"force": force};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List Media
@@ -229,22 +226,21 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Media Listed. 
     remote isolated function listMedia(string? context = ()) returns Media[]|error {
-        string  path = string `/media`;
+        string resourcePath = string `/media`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Media[] response = check self.clientEp-> get(path, targetType = MediaArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Media[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Media
     #
     # + return - Media created. 
     remote isolated function createMedia(MediaBody payload) returns Media|error {
-        string  path = string `/media`;
+        string resourcePath = string `/media`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Media response = check self.clientEp->post(path, request, targetType=Media);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Media response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Single Media
@@ -253,10 +249,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Page retrieved. 
     remote isolated function getSingleMedia(string id, string? context = ()) returns Media|error {
-        string  path = string `/media/${id}`;
+        string resourcePath = string `/media/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Media response = check self.clientEp-> get(path, targetType = Media);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Media response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Single Media
@@ -264,12 +260,11 @@ public isolated client class Client {
     # + id - Id of object 
     # + return - Page updated. 
     remote isolated function updateSingleMedia(string id, MediaIdBody payload) returns Media|error {
-        string  path = string `/media/${id}`;
+        string resourcePath = string `/media/${id}`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Media response = check self.clientEp->post(path, request, targetType=Media);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Media response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete Single Media
@@ -278,10 +273,10 @@ public isolated client class Client {
     # + force - Whether to bypass trash and force deletion. 
     # + return - Media deleted. 
     remote isolated function delteSingleMedia(string id, boolean? force = ()) returns http:Response|error {
-        string  path = string `/media/${id}`;
+        string resourcePath = string `/media/${id}`;
         map<anydata> queryParam = {"force": force};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List Type
@@ -289,10 +284,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Types Listed. 
     remote isolated function listType(string? context = ()) returns Type[]|error {
-        string  path = string `/types`;
+        string resourcePath = string `/types`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Type[] response = check self.clientEp-> get(path, targetType = TypeArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Type[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Single Type
@@ -301,10 +296,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Type retrieved. 
     remote isolated function getSingleType(string id, string? context = ()) returns Type|error {
-        string  path = string `/types/${id}`;
+        string resourcePath = string `/types/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Type response = check self.clientEp-> get(path, targetType = Type);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Type response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List Status
@@ -312,10 +307,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Statuses Listed. 
     remote isolated function listStatus(string? context = ()) returns Status[]|error {
-        string  path = string `/statuses`;
+        string resourcePath = string `/statuses`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Status[] response = check self.clientEp-> get(path, targetType = StatusArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Status[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Single Status
@@ -324,10 +319,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Status retrieved. 
     remote isolated function getSingleStatus(string id, string? context = ()) returns Status|error {
-        string  path = string `/statuses/${id}`;
+        string resourcePath = string `/statuses/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Status response = check self.clientEp-> get(path, targetType = Status);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Status response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List Comments
@@ -335,22 +330,21 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Comments Listed. 
     remote isolated function listComments(string? context = ()) returns Comment[]|error {
-        string  path = string `/comments`;
+        string resourcePath = string `/comments`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Comment[] response = check self.clientEp-> get(path, targetType = CommentArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Comment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Comment
     #
     # + return - Comment created. 
     remote isolated function createComment(CommentsBody payload) returns Comment|error {
-        string  path = string `/comments`;
+        string resourcePath = string `/comments`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Comment response = check self.clientEp->post(path, request, targetType=Comment);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Comment response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Single Comment
@@ -359,10 +353,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Comment retrieved. 
     remote isolated function getSingleComment(string id, string? context = ()) returns Comment|error {
-        string  path = string `/comments/${id}`;
+        string resourcePath = string `/comments/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Comment response = check self.clientEp-> get(path, targetType = Comment);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Comment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Single Comment
@@ -370,12 +364,11 @@ public isolated client class Client {
     # + id - Id of object 
     # + return - Page updated. 
     remote isolated function updateSingleComment(string id, CommentsIdBody payload) returns Comment|error {
-        string  path = string `/comments/${id}`;
+        string resourcePath = string `/comments/${id}`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Comment response = check self.clientEp->post(path, request, targetType=Comment);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Comment response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete Single Comment
@@ -384,10 +377,10 @@ public isolated client class Client {
     # + force - Whether to bypass trash and force deletion. 
     # + return - Comment deleted. 
     remote isolated function deleteSingleComment(string id, boolean? force = ()) returns http:Response|error {
-        string  path = string `/comments/${id}`;
+        string resourcePath = string `/comments/${id}`;
         map<anydata> queryParam = {"force": force};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List Taxonomy
@@ -395,10 +388,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Types Listed. 
     remote isolated function listTaxonomy(string? context = ()) returns Taxonomy[]|error {
-        string  path = string `/taxonomies`;
+        string resourcePath = string `/taxonomies`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Taxonomy[] response = check self.clientEp-> get(path, targetType = TaxonomyArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Taxonomy[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Single Taxonomy
@@ -407,10 +400,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Taxonomy retrieved. 
     remote isolated function getSingleTaxonomy(string id, string? context = ()) returns Taxonomy|error {
-        string  path = string `/taxonomies/${id}`;
+        string resourcePath = string `/taxonomies/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Taxonomy response = check self.clientEp-> get(path, targetType = Taxonomy);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Taxonomy response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List categories
@@ -418,22 +411,21 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Category Listed. 
     remote isolated function listCategories(string? context = ()) returns Category[]|error {
-        string  path = string `/categories`;
+        string resourcePath = string `/categories`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Category[] response = check self.clientEp-> get(path, targetType = CategoryArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Category[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Category
     #
     # + return - Category created. 
     remote isolated function createCategory(CategoriesBody payload) returns Category|error {
-        string  path = string `/categories`;
+        string resourcePath = string `/categories`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Category response = check self.clientEp->post(path, request, targetType=Category);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Category response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Single Category
@@ -442,10 +434,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Category retrieved. 
     remote isolated function getSingleCategory(string id, string? context = ()) returns Category|error {
-        string  path = string `/categories/${id}`;
+        string resourcePath = string `/categories/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Category response = check self.clientEp-> get(path, targetType = Category);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Category response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Single Category
@@ -453,12 +445,11 @@ public isolated client class Client {
     # + id - Id of object 
     # + return - Category updated. 
     remote isolated function updateSingleCategory(string id, CategoriesIdBody payload) returns Category|error {
-        string  path = string `/categories/${id}`;
+        string resourcePath = string `/categories/${id}`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Category response = check self.clientEp->post(path, request, targetType=Category);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Category response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete Single Category
@@ -467,10 +458,10 @@ public isolated client class Client {
     # + force - Whether to bypass trash and force deletion. 
     # + return - Category deleted. 
     remote isolated function deleteSingleCategory(string id, boolean? force = ()) returns http:Response|error {
-        string  path = string `/categories/${id}`;
+        string resourcePath = string `/categories/${id}`;
         map<anydata> queryParam = {"force": force};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List Tags
@@ -478,22 +469,21 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Tags Listed. 
     remote isolated function gettagList(string? context = ()) returns Tag[]|error {
-        string  path = string `/tags`;
+        string resourcePath = string `/tags`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Tag[] response = check self.clientEp-> get(path, targetType = TagArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Tag[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Tag
     #
     # + return - Tag created. 
     remote isolated function createTag(TagsBody payload) returns Tag|error {
-        string  path = string `/tags`;
+        string resourcePath = string `/tags`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Tag response = check self.clientEp->post(path, request, targetType=Tag);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Tag response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Single Tag
@@ -502,10 +492,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Tag retrieved. 
     remote isolated function getSingleTag(string id, string? context = ()) returns Tag|error {
-        string  path = string `/tags/${id}`;
+        string resourcePath = string `/tags/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        Tag response = check self.clientEp-> get(path, targetType = Tag);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Tag response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Single Tag
@@ -513,12 +503,11 @@ public isolated client class Client {
     # + id - Id of object 
     # + return - Tag updated. 
     remote isolated function updateSingleTag(string id, TagsIdBody payload) returns Tag|error {
-        string  path = string `/tags/${id}`;
+        string resourcePath = string `/tags/${id}`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Tag response = check self.clientEp->post(path, request, targetType=Tag);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Tag response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete Single Tag
@@ -527,10 +516,10 @@ public isolated client class Client {
     # + force - Whether to bypass trash and force deletion. 
     # + return - Tag deleted. 
     remote isolated function deleteSingleTag(string id, boolean? force = ()) returns http:Response|error {
-        string  path = string `/tags/${id}`;
+        string resourcePath = string `/tags/${id}`;
         map<anydata> queryParam = {"force": force};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List Users
@@ -538,22 +527,21 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - Users Listed. 
     remote isolated function listUsers(string? context = ()) returns User[]|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        User[] response = check self.clientEp-> get(path, targetType = UserArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        User[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create User
     #
     # + return - User created. 
     remote isolated function createUser(UsersBody payload) returns User|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        User response = check self.clientEp->post(path, request, targetType=User);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        User response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get Single User
@@ -562,10 +550,10 @@ public isolated client class Client {
     # + context - Scope under which the request is made; determines fields present in response. 
     # + return - User retrieved. 
     remote isolated function getSingleUser(string id, string? context = ()) returns User|error {
-        string  path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         map<anydata> queryParam = {"context": context};
-        path = path + check getPathForQueryParam(queryParam);
-        User response = check self.clientEp-> get(path, targetType = User);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update Single User
@@ -573,12 +561,11 @@ public isolated client class Client {
     # + id - Id of object 
     # + return - User updated. 
     remote isolated function updateSingleUser(string id, UsersIdBody payload) returns User|error {
-        string  path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        User response = check self.clientEp->post(path, request, targetType=User);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        User response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete Single User
@@ -587,10 +574,10 @@ public isolated client class Client {
     # + force - Whether to bypass trash and force deletion. 
     # + return - User deleted. 
     remote isolated function deleteSingleUser(string id, boolean? force = ()) returns http:Response|error {
-        string  path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         map<anydata> queryParam = {"force": force};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

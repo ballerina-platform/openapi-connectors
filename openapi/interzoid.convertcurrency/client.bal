@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Converts amount in one currency to that of another
     #
@@ -48,10 +49,10 @@ public isolated client class Client {
     # + amount - The amount of currency to be converted 
     # + return - Currency rate data 
     remote isolated function convertCurrency(string 'from, string to, string amount) returns CurrencyConversionInfo|error {
-        string  path = string `/convertcurrency`;
+        string resourcePath = string `/convertcurrency`;
         map<anydata> queryParam = {"from": 'from, "to": to, "amount": amount, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        CurrencyConversionInfo response = check self.clientEp-> get(path, targetType = CurrencyConversionInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CurrencyConversionInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

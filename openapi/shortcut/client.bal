@@ -42,15 +42,16 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # List Categories
     #
     # + return - Resource 
     remote isolated function listCategories() returns Category[]|error {
-        string  path = string `/api/v3/categories`;
+        string resourcePath = string `/api/v3/categories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Category[] response = check self.clientEp-> get(path, accHeaders, targetType = CategoryArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Category[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Category
@@ -58,13 +59,13 @@ public isolated client class Client {
     # + payload - Create category data 
     # + return - Resource 
     remote isolated function createCategory(CreateCategory payload) returns Category|error {
-        string  path = string `/api/v3/categories`;
+        string resourcePath = string `/api/v3/categories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Category response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Category);
+        request.setPayload(jsonBody, "application/json");
+        Category response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Category
@@ -72,10 +73,10 @@ public isolated client class Client {
     # + categoryPublicId - The unique ID of the Category. 
     # + return - Resource 
     remote isolated function getCategory(int categoryPublicId) returns Category|error {
-        string  path = string `/api/v3/categories/${categoryPublicId}`;
+        string resourcePath = string `/api/v3/categories/${categoryPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Category response = check self.clientEp-> get(path, accHeaders, targetType = Category);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Category response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Category
@@ -84,13 +85,13 @@ public isolated client class Client {
     # + payload - Update category data 
     # + return - Resource 
     remote isolated function updateCategory(int categoryPublicId, UpdateCategory payload) returns Category|error {
-        string  path = string `/api/v3/categories/${categoryPublicId}`;
+        string resourcePath = string `/api/v3/categories/${categoryPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Category response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Category);
+        request.setPayload(jsonBody, "application/json");
+        Category response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Category
@@ -98,10 +99,10 @@ public isolated client class Client {
     # + categoryPublicId - The unique ID of the Category. 
     # + return - No Content 
     remote isolated function deleteCategory(int categoryPublicId) returns http:Response|error {
-        string  path = string `/api/v3/categories/${categoryPublicId}`;
+        string resourcePath = string `/api/v3/categories/${categoryPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Category Milestones
@@ -109,20 +110,20 @@ public isolated client class Client {
     # + categoryPublicId - The unique ID of the Category. 
     # + return - Resource 
     remote isolated function listCategoryMilestones(int categoryPublicId) returns Milestone[]|error {
-        string  path = string `/api/v3/categories/${categoryPublicId}/milestones`;
+        string resourcePath = string `/api/v3/categories/${categoryPublicId}/milestones`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Milestone[] response = check self.clientEp-> get(path, accHeaders, targetType = MilestoneArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Milestone[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Entity Templates
     #
     # + return - Resource 
     remote isolated function listEntityTemplates() returns EntityTemplate[]|error {
-        string  path = string `/api/v3/entity-templates`;
+        string resourcePath = string `/api/v3/entity-templates`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EntityTemplate[] response = check self.clientEp-> get(path, accHeaders, targetType = EntityTemplateArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EntityTemplate[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Entity Template
@@ -130,37 +131,37 @@ public isolated client class Client {
     # + payload - Request paramaters for creating an entirely new entity template. 
     # + return - Resource 
     remote isolated function createEntityTemplate(CreateEntityTemplate payload) returns EntityTemplate|error {
-        string  path = string `/api/v3/entity-templates`;
+        string resourcePath = string `/api/v3/entity-templates`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntityTemplate response = check self.clientEp->post(path, request, headers = accHeaders, targetType=EntityTemplate);
+        request.setPayload(jsonBody, "application/json");
+        EntityTemplate response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Disable Story Templates
     #
     # + return - No Content 
     remote isolated function disableStoryTemplates() returns http:Response|error {
-        string  path = string `/api/v3/entity-templates/disable`;
+        string resourcePath = string `/api/v3/entity-templates/disable`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Enable Story Templates
     #
     # + return - No Content 
     remote isolated function enableStoryTemplates() returns http:Response|error {
-        string  path = string `/api/v3/entity-templates/enable`;
+        string resourcePath = string `/api/v3/entity-templates/enable`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Entity Template
@@ -168,10 +169,10 @@ public isolated client class Client {
     # + entityTemplatePublicId - The unique ID of the entity template. 
     # + return - Resource 
     remote isolated function getEntityTemplate(string entityTemplatePublicId) returns EntityTemplate|error {
-        string  path = string `/api/v3/entity-templates/${entityTemplatePublicId}`;
+        string resourcePath = string `/api/v3/entity-templates/${entityTemplatePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EntityTemplate response = check self.clientEp-> get(path, accHeaders, targetType = EntityTemplate);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EntityTemplate response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Entity Template
@@ -180,13 +181,13 @@ public isolated client class Client {
     # + payload - Request parameters for changing either a template's name or any of 
     # + return - Resource 
     remote isolated function updateEntityTemplate(string entityTemplatePublicId, UpdateEntityTemplate payload) returns EntityTemplate|error {
-        string  path = string `/api/v3/entity-templates/${entityTemplatePublicId}`;
+        string resourcePath = string `/api/v3/entity-templates/${entityTemplatePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EntityTemplate response = check self.clientEp->put(path, request, headers = accHeaders, targetType=EntityTemplate);
+        request.setPayload(jsonBody, "application/json");
+        EntityTemplate response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Entity Template
@@ -194,30 +195,30 @@ public isolated client class Client {
     # + entityTemplatePublicId - The unique ID of the entity template. 
     # + return - No Content 
     remote isolated function deleteEntityTemplate(string entityTemplatePublicId) returns http:Response|error {
-        string  path = string `/api/v3/entity-templates/${entityTemplatePublicId}`;
+        string resourcePath = string `/api/v3/entity-templates/${entityTemplatePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get Epic Workflow
     #
     # + return - Resource 
     remote isolated function getEpicWorkflow() returns EpicWorkflow|error {
-        string  path = string `/api/v3/epic-workflow`;
+        string resourcePath = string `/api/v3/epic-workflow`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EpicWorkflow response = check self.clientEp-> get(path, accHeaders, targetType = EpicWorkflow);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EpicWorkflow response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Epics
     #
     # + return - Resource 
     remote isolated function listEpics() returns EpicSlim[]|error {
-        string  path = string `/api/v3/epics`;
+        string resourcePath = string `/api/v3/epics`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EpicSlim[] response = check self.clientEp-> get(path, accHeaders, targetType = EpicSlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EpicSlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Epic
@@ -225,13 +226,13 @@ public isolated client class Client {
     # + payload - Create epic data 
     # + return - Resource 
     remote isolated function createEpic(CreateEpic payload) returns Epic|error {
-        string  path = string `/api/v3/epics`;
+        string resourcePath = string `/api/v3/epics`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Epic response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Epic);
+        request.setPayload(jsonBody, "application/json");
+        Epic response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Epic
@@ -239,10 +240,10 @@ public isolated client class Client {
     # + epicPublicId - The unique ID of the Epic. 
     # + return - Resource 
     remote isolated function getEpic(int epicPublicId) returns Epic|error {
-        string  path = string `/api/v3/epics/${epicPublicId}`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Epic response = check self.clientEp-> get(path, accHeaders, targetType = Epic);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Epic response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Epic
@@ -251,13 +252,13 @@ public isolated client class Client {
     # + payload - Update epic data 
     # + return - Resource 
     remote isolated function updateEpic(int epicPublicId, UpdateEpic payload) returns Epic|error {
-        string  path = string `/api/v3/epics/${epicPublicId}`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Epic response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Epic);
+        request.setPayload(jsonBody, "application/json");
+        Epic response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Epic
@@ -265,10 +266,10 @@ public isolated client class Client {
     # + epicPublicId - The unique ID of the Epic. 
     # + return - No Content 
     remote isolated function deleteEpic(int epicPublicId) returns http:Response|error {
-        string  path = string `/api/v3/epics/${epicPublicId}`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Epic Comments
@@ -276,10 +277,10 @@ public isolated client class Client {
     # + epicPublicId - The unique ID of the Epic. 
     # + return - Resource 
     remote isolated function listEpicComments(int epicPublicId) returns ThreadedComment[]|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/comments`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/comments`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ThreadedComment[] response = check self.clientEp-> get(path, accHeaders, targetType = ThreadedCommentArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ThreadedComment[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Epic Comment
@@ -288,13 +289,13 @@ public isolated client class Client {
     # + payload - Create epic comment data 
     # + return - Resource 
     remote isolated function createEpicComment(int epicPublicId, CreateEpicComment payload) returns ThreadedComment|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/comments`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/comments`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ThreadedComment response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ThreadedComment);
+        request.setPayload(jsonBody, "application/json");
+        ThreadedComment response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Epic Comment
@@ -303,10 +304,10 @@ public isolated client class Client {
     # + commentPublicId - The ID of the Comment. 
     # + return - Resource 
     remote isolated function getEpicComment(int epicPublicId, int commentPublicId) returns ThreadedComment|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ThreadedComment response = check self.clientEp-> get(path, accHeaders, targetType = ThreadedComment);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ThreadedComment response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Epic Comment
@@ -316,13 +317,13 @@ public isolated client class Client {
     # + payload - Update epic comment data 
     # + return - Resource 
     remote isolated function updateEpicComment(int epicPublicId, int commentPublicId, UpdateComment payload) returns ThreadedComment|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ThreadedComment response = check self.clientEp->put(path, request, headers = accHeaders, targetType=ThreadedComment);
+        request.setPayload(jsonBody, "application/json");
+        ThreadedComment response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create Epic Comment Comment
@@ -332,13 +333,13 @@ public isolated client class Client {
     # + payload - Create epic comment comment data 
     # + return - Resource 
     remote isolated function createEpicCommentComment(int epicPublicId, int commentPublicId, CreateCommentComment payload) returns ThreadedComment|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ThreadedComment response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ThreadedComment);
+        request.setPayload(jsonBody, "application/json");
+        ThreadedComment response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Epic Comment
@@ -347,10 +348,10 @@ public isolated client class Client {
     # + commentPublicId - The ID of the Comment. 
     # + return - No Content 
     remote isolated function deleteEpicComment(int epicPublicId, int commentPublicId) returns http:Response|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/comments/${commentPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Epic Stories
@@ -358,10 +359,10 @@ public isolated client class Client {
     # + epicPublicId - The unique ID of the Epic. 
     # + return - Resource 
     remote isolated function listEpicStories(int epicPublicId) returns StorySlim[]|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/stories`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StorySlim[] response = check self.clientEp-> get(path, accHeaders, targetType = StorySlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StorySlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Unlink Productboard from Epic
@@ -369,32 +370,32 @@ public isolated client class Client {
     # + epicPublicId - The unique ID of the Epic. 
     # + return - No Content 
     remote isolated function unlinkProductboardFromEpic(int epicPublicId) returns http:Response|error {
-        string  path = string `/api/v3/epics/${epicPublicId}/unlink-productboard`;
+        string resourcePath = string `/api/v3/epics/${epicPublicId}/unlink-productboard`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get External Link Stories
     #
     # + return - Resource 
     remote isolated function getExternalLinkStories() returns StorySlim[]|error {
-        string  path = string `/api/v3/external-link/stories`;
+        string resourcePath = string `/api/v3/external-link/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StorySlim[] response = check self.clientEp-> get(path, accHeaders, targetType = StorySlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StorySlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Files
     #
     # + return - Resource 
     remote isolated function listFiles() returns UploadedFile[]|error {
-        string  path = string `/api/v3/files`;
+        string resourcePath = string `/api/v3/files`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UploadedFile[] response = check self.clientEp-> get(path, accHeaders, targetType = UploadedFileArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UploadedFile[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get File
@@ -402,10 +403,10 @@ public isolated client class Client {
     # + filePublicId - The File’s unique ID. 
     # + return - Resource 
     remote isolated function getFile(int filePublicId) returns UploadedFile|error {
-        string  path = string `/api/v3/files/${filePublicId}`;
+        string resourcePath = string `/api/v3/files/${filePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UploadedFile response = check self.clientEp-> get(path, accHeaders, targetType = UploadedFile);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UploadedFile response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update File
@@ -414,13 +415,13 @@ public isolated client class Client {
     # + payload - Update file data 
     # + return - Resource 
     remote isolated function updateFile(int filePublicId, UpdateFile payload) returns UploadedFile|error {
-        string  path = string `/api/v3/files/${filePublicId}`;
+        string resourcePath = string `/api/v3/files/${filePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UploadedFile response = check self.clientEp->put(path, request, headers = accHeaders, targetType=UploadedFile);
+        request.setPayload(jsonBody, "application/json");
+        UploadedFile response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete File
@@ -428,20 +429,20 @@ public isolated client class Client {
     # + filePublicId - The File’s unique ID. 
     # + return - No Content 
     remote isolated function deleteFile(int filePublicId) returns http:Response|error {
-        string  path = string `/api/v3/files/${filePublicId}`;
+        string resourcePath = string `/api/v3/files/${filePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Groups
     #
     # + return - Resource 
     remote isolated function listGroups() returns Group[]|error {
-        string  path = string `/api/v3/groups`;
+        string resourcePath = string `/api/v3/groups`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Group[] response = check self.clientEp-> get(path, accHeaders, targetType = GroupArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Group[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Group
@@ -449,37 +450,37 @@ public isolated client class Client {
     # + payload - Create group data 
     # + return - Resource 
     remote isolated function createGroup(CreateGroup payload) returns Group|error {
-        string  path = string `/api/v3/groups`;
+        string resourcePath = string `/api/v3/groups`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Disable Groups
     #
     # + return - No Content 
     remote isolated function disableGroups() returns http:Response|error {
-        string  path = string `/api/v3/groups/disable`;
+        string resourcePath = string `/api/v3/groups/disable`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Enable Groups
     #
     # + return - No Content 
     remote isolated function enableGroups() returns http:Response|error {
-        string  path = string `/api/v3/groups/enable`;
+        string resourcePath = string `/api/v3/groups/enable`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Group
@@ -487,10 +488,10 @@ public isolated client class Client {
     # + groupPublicId - The unique ID of the Group. 
     # + return - Resource 
     remote isolated function getGroup(string groupPublicId) returns Group|error {
-        string  path = string `/api/v3/groups/${groupPublicId}`;
+        string resourcePath = string `/api/v3/groups/${groupPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Group response = check self.clientEp-> get(path, accHeaders, targetType = Group);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Group response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Group
@@ -499,13 +500,13 @@ public isolated client class Client {
     # + payload - Update group data 
     # + return - Resource 
     remote isolated function updateGroup(string groupPublicId, UpdateGroup payload) returns Group|error {
-        string  path = string `/api/v3/groups/${groupPublicId}`;
+        string resourcePath = string `/api/v3/groups/${groupPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Group response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Group);
+        request.setPayload(jsonBody, "application/json");
+        Group response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Group Stories
@@ -513,20 +514,20 @@ public isolated client class Client {
     # + groupPublicId - The unique ID of the Group. 
     # + return - Resource 
     remote isolated function listGroupStories(string groupPublicId) returns StorySlim[]|error {
-        string  path = string `/api/v3/groups/${groupPublicId}/stories`;
+        string resourcePath = string `/api/v3/groups/${groupPublicId}/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StorySlim[] response = check self.clientEp-> get(path, accHeaders, targetType = StorySlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StorySlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Iterations
     #
     # + return - Resource 
     remote isolated function listIterations() returns IterationSlim[]|error {
-        string  path = string `/api/v3/iterations`;
+        string resourcePath = string `/api/v3/iterations`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        IterationSlim[] response = check self.clientEp-> get(path, accHeaders, targetType = IterationSlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        IterationSlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Iteration
@@ -534,37 +535,37 @@ public isolated client class Client {
     # + payload - Create iteration data 
     # + return - Resource 
     remote isolated function createIteration(CreateIteration payload) returns Iteration|error {
-        string  path = string `/api/v3/iterations`;
+        string resourcePath = string `/api/v3/iterations`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Iteration response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Iteration);
+        request.setPayload(jsonBody, "application/json");
+        Iteration response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Disable Iterations
     #
     # + return - No Content 
     remote isolated function disableIterations() returns http:Response|error {
-        string  path = string `/api/v3/iterations/disable`;
+        string resourcePath = string `/api/v3/iterations/disable`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Enable Iterations
     #
     # + return - No Content 
     remote isolated function enableIterations() returns http:Response|error {
-        string  path = string `/api/v3/iterations/enable`;
+        string resourcePath = string `/api/v3/iterations/enable`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> put(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Iteration
@@ -572,10 +573,10 @@ public isolated client class Client {
     # + iterationPublicId - The unique ID of the Iteration. 
     # + return - Resource 
     remote isolated function getIteration(int iterationPublicId) returns Iteration|error {
-        string  path = string `/api/v3/iterations/${iterationPublicId}`;
+        string resourcePath = string `/api/v3/iterations/${iterationPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Iteration response = check self.clientEp-> get(path, accHeaders, targetType = Iteration);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Iteration response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Iteration
@@ -584,13 +585,13 @@ public isolated client class Client {
     # + payload - Update iteration data 
     # + return - Resource 
     remote isolated function updateIteration(int iterationPublicId, UpdateIteration payload) returns Iteration|error {
-        string  path = string `/api/v3/iterations/${iterationPublicId}`;
+        string resourcePath = string `/api/v3/iterations/${iterationPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Iteration response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Iteration);
+        request.setPayload(jsonBody, "application/json");
+        Iteration response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Iteration
@@ -598,10 +599,10 @@ public isolated client class Client {
     # + iterationPublicId - The unique ID of the Iteration. 
     # + return - No Content 
     remote isolated function deleteIteration(int iterationPublicId) returns http:Response|error {
-        string  path = string `/api/v3/iterations/${iterationPublicId}`;
+        string resourcePath = string `/api/v3/iterations/${iterationPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Iteration Stories
@@ -609,20 +610,20 @@ public isolated client class Client {
     # + iterationPublicId - The unique ID of the Iteration. 
     # + return - Resource 
     remote isolated function listIterationStories(int iterationPublicId) returns StorySlim[]|error {
-        string  path = string `/api/v3/iterations/${iterationPublicId}/stories`;
+        string resourcePath = string `/api/v3/iterations/${iterationPublicId}/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StorySlim[] response = check self.clientEp-> get(path, accHeaders, targetType = StorySlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StorySlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Labels
     #
     # + return - Resource 
     remote isolated function listLabels() returns Label[]|error {
-        string  path = string `/api/v3/labels`;
+        string resourcePath = string `/api/v3/labels`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Label[] response = check self.clientEp-> get(path, accHeaders, targetType = LabelArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Label[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Label
@@ -630,13 +631,13 @@ public isolated client class Client {
     # + payload - Request parameters for creating a Label on a Shortcut Story. 
     # + return - Resource 
     remote isolated function createLabel(CreateLabelParams payload) returns Label|error {
-        string  path = string `/api/v3/labels`;
+        string resourcePath = string `/api/v3/labels`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Label response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Label);
+        request.setPayload(jsonBody, "application/json");
+        Label response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Label
@@ -644,10 +645,10 @@ public isolated client class Client {
     # + labelPublicId - The unique ID of the Label. 
     # + return - Resource 
     remote isolated function getLabel(int labelPublicId) returns Label|error {
-        string  path = string `/api/v3/labels/${labelPublicId}`;
+        string resourcePath = string `/api/v3/labels/${labelPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Label response = check self.clientEp-> get(path, accHeaders, targetType = Label);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Label response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Label
@@ -656,13 +657,13 @@ public isolated client class Client {
     # + payload - Update label data 
     # + return - Resource 
     remote isolated function updateLabel(int labelPublicId, UpdateLabel payload) returns Label|error {
-        string  path = string `/api/v3/labels/${labelPublicId}`;
+        string resourcePath = string `/api/v3/labels/${labelPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Label response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Label);
+        request.setPayload(jsonBody, "application/json");
+        Label response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Label
@@ -670,10 +671,10 @@ public isolated client class Client {
     # + labelPublicId - The unique ID of the Label. 
     # + return - No Content 
     remote isolated function deleteLabel(int labelPublicId) returns http:Response|error {
-        string  path = string `/api/v3/labels/${labelPublicId}`;
+        string resourcePath = string `/api/v3/labels/${labelPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Label Epics
@@ -681,10 +682,10 @@ public isolated client class Client {
     # + labelPublicId - The unique ID of the Label. 
     # + return - Resource 
     remote isolated function listLabelEpics(int labelPublicId) returns EpicSlim[]|error {
-        string  path = string `/api/v3/labels/${labelPublicId}/epics`;
+        string resourcePath = string `/api/v3/labels/${labelPublicId}/epics`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EpicSlim[] response = check self.clientEp-> get(path, accHeaders, targetType = EpicSlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EpicSlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Label Stories
@@ -692,20 +693,20 @@ public isolated client class Client {
     # + labelPublicId - The unique ID of the Label. 
     # + return - Resource 
     remote isolated function listLabelStories(int labelPublicId) returns StorySlim[]|error {
-        string  path = string `/api/v3/labels/${labelPublicId}/stories`;
+        string resourcePath = string `/api/v3/labels/${labelPublicId}/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StorySlim[] response = check self.clientEp-> get(path, accHeaders, targetType = StorySlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StorySlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Linked Files
     #
     # + return - Resource 
     remote isolated function listLinkedFiles() returns LinkedFile[]|error {
-        string  path = string `/api/v3/linked-files`;
+        string resourcePath = string `/api/v3/linked-files`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LinkedFile[] response = check self.clientEp-> get(path, accHeaders, targetType = LinkedFileArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LinkedFile[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Linked File
@@ -713,13 +714,13 @@ public isolated client class Client {
     # + payload - Create linked file data 
     # + return - Resource 
     remote isolated function createLinkedFile(CreateLinkedFile payload) returns LinkedFile|error {
-        string  path = string `/api/v3/linked-files`;
+        string resourcePath = string `/api/v3/linked-files`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LinkedFile response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LinkedFile);
+        request.setPayload(jsonBody, "application/json");
+        LinkedFile response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Linked File
@@ -727,10 +728,10 @@ public isolated client class Client {
     # + linkedFilePublicId - The unique identifier of the linked file. 
     # + return - Resource 
     remote isolated function getLinkedFile(int linkedFilePublicId) returns LinkedFile|error {
-        string  path = string `/api/v3/linked-files/${linkedFilePublicId}`;
+        string resourcePath = string `/api/v3/linked-files/${linkedFilePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LinkedFile response = check self.clientEp-> get(path, accHeaders, targetType = LinkedFile);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LinkedFile response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Linked File
@@ -739,13 +740,13 @@ public isolated client class Client {
     # + payload - Update linked file data 
     # + return - Resource 
     remote isolated function updateLinkedFile(int linkedFilePublicId, UpdateLinkedFile payload) returns LinkedFile|error {
-        string  path = string `/api/v3/linked-files/${linkedFilePublicId}`;
+        string resourcePath = string `/api/v3/linked-files/${linkedFilePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LinkedFile response = check self.clientEp->put(path, request, headers = accHeaders, targetType=LinkedFile);
+        request.setPayload(jsonBody, "application/json");
+        LinkedFile response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Linked File
@@ -753,30 +754,30 @@ public isolated client class Client {
     # + linkedFilePublicId - The unique identifier of the linked file. 
     # + return - No Content 
     remote isolated function deleteLinkedFile(int linkedFilePublicId) returns http:Response|error {
-        string  path = string `/api/v3/linked-files/${linkedFilePublicId}`;
+        string resourcePath = string `/api/v3/linked-files/${linkedFilePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Get Current Member Info
     #
     # + return - Resource 
     remote isolated function getCurrentMemberInfo() returns MemberInfo|error {
-        string  path = string `/api/v3/member`;
+        string resourcePath = string `/api/v3/member`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MemberInfo response = check self.clientEp-> get(path, accHeaders, targetType = MemberInfo);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MemberInfo response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Members
     #
     # + return - Resource 
     remote isolated function listMembers() returns Member[]|error {
-        string  path = string `/api/v3/members`;
+        string resourcePath = string `/api/v3/members`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Member[] response = check self.clientEp-> get(path, accHeaders, targetType = MemberArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Member[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Member
@@ -784,20 +785,20 @@ public isolated client class Client {
     # + memberPublicId - The Member's unique ID. 
     # + return - Resource 
     remote isolated function getMember(string memberPublicId) returns Member|error {
-        string  path = string `/api/v3/members/${memberPublicId}`;
+        string resourcePath = string `/api/v3/members/${memberPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Member response = check self.clientEp-> get(path, accHeaders, targetType = Member);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Member response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Milestones
     #
     # + return - Resource 
     remote isolated function listMilestones() returns Milestone[]|error {
-        string  path = string `/api/v3/milestones`;
+        string resourcePath = string `/api/v3/milestones`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Milestone[] response = check self.clientEp-> get(path, accHeaders, targetType = MilestoneArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Milestone[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Milestone
@@ -805,13 +806,13 @@ public isolated client class Client {
     # + payload - Create milestone data 
     # + return - Resource 
     remote isolated function createMilestone(CreateMilestone payload) returns Milestone|error {
-        string  path = string `/api/v3/milestones`;
+        string resourcePath = string `/api/v3/milestones`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Milestone response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Milestone);
+        request.setPayload(jsonBody, "application/json");
+        Milestone response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Milestone
@@ -819,10 +820,10 @@ public isolated client class Client {
     # + milestonePublicId - The ID of the Milestone. 
     # + return - Resource 
     remote isolated function getMilestone(int milestonePublicId) returns Milestone|error {
-        string  path = string `/api/v3/milestones/${milestonePublicId}`;
+        string resourcePath = string `/api/v3/milestones/${milestonePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Milestone response = check self.clientEp-> get(path, accHeaders, targetType = Milestone);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Milestone response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Milestone
@@ -831,13 +832,13 @@ public isolated client class Client {
     # + payload - Update milestone data 
     # + return - Resource 
     remote isolated function updateMilestone(int milestonePublicId, UpdateMilestone payload) returns Milestone|error {
-        string  path = string `/api/v3/milestones/${milestonePublicId}`;
+        string resourcePath = string `/api/v3/milestones/${milestonePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Milestone response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Milestone);
+        request.setPayload(jsonBody, "application/json");
+        Milestone response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Milestone
@@ -845,10 +846,10 @@ public isolated client class Client {
     # + milestonePublicId - The ID of the Milestone. 
     # + return - No Content 
     remote isolated function deleteMilestone(int milestonePublicId) returns http:Response|error {
-        string  path = string `/api/v3/milestones/${milestonePublicId}`;
+        string resourcePath = string `/api/v3/milestones/${milestonePublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Milestone Epics
@@ -856,20 +857,20 @@ public isolated client class Client {
     # + milestonePublicId - The ID of the Milestone. 
     # + return - Resource 
     remote isolated function listMilestoneEpics(int milestonePublicId) returns EpicSlim[]|error {
-        string  path = string `/api/v3/milestones/${milestonePublicId}/epics`;
+        string resourcePath = string `/api/v3/milestones/${milestonePublicId}/epics`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EpicSlim[] response = check self.clientEp-> get(path, accHeaders, targetType = EpicSlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EpicSlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Projects
     #
     # + return - Resource 
     remote isolated function listProjects() returns Project[]|error {
-        string  path = string `/api/v3/projects`;
+        string resourcePath = string `/api/v3/projects`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Project[] response = check self.clientEp-> get(path, accHeaders, targetType = ProjectArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Project[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Project
@@ -877,13 +878,13 @@ public isolated client class Client {
     # + payload - Create project data 
     # + return - Resource 
     remote isolated function createProject(CreateProject payload) returns Project|error {
-        string  path = string `/api/v3/projects`;
+        string resourcePath = string `/api/v3/projects`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Project response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Project);
+        request.setPayload(jsonBody, "application/json");
+        Project response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Project
@@ -891,10 +892,10 @@ public isolated client class Client {
     # + projectPublicId - The unique ID of the Project. 
     # + return - Resource 
     remote isolated function getProject(int projectPublicId) returns Project|error {
-        string  path = string `/api/v3/projects/${projectPublicId}`;
+        string resourcePath = string `/api/v3/projects/${projectPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Project response = check self.clientEp-> get(path, accHeaders, targetType = Project);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Project response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Project
@@ -903,13 +904,13 @@ public isolated client class Client {
     # + payload - Update project data 
     # + return - Resource 
     remote isolated function updateProject(int projectPublicId, UpdateProject payload) returns Project|error {
-        string  path = string `/api/v3/projects/${projectPublicId}`;
+        string resourcePath = string `/api/v3/projects/${projectPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Project response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Project);
+        request.setPayload(jsonBody, "application/json");
+        Project response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Project
@@ -917,10 +918,10 @@ public isolated client class Client {
     # + projectPublicId - The unique ID of the Project. 
     # + return - No Content 
     remote isolated function deleteProject(int projectPublicId) returns http:Response|error {
-        string  path = string `/api/v3/projects/${projectPublicId}`;
+        string resourcePath = string `/api/v3/projects/${projectPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Stories
@@ -928,20 +929,20 @@ public isolated client class Client {
     # + projectPublicId - The unique ID of the Project. 
     # + return - Resource 
     remote isolated function listStories(int projectPublicId) returns StorySlim[]|error {
-        string  path = string `/api/v3/projects/${projectPublicId}/stories`;
+        string resourcePath = string `/api/v3/projects/${projectPublicId}/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StorySlim[] response = check self.clientEp-> get(path, accHeaders, targetType = StorySlimArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StorySlim[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Repositories
     #
     # + return - Resource 
     remote isolated function listRepositories() returns Repository[]|error {
-        string  path = string `/api/v3/repositories`;
+        string resourcePath = string `/api/v3/repositories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Repository[] response = check self.clientEp-> get(path, accHeaders, targetType = RepositoryArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Repository[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Repository
@@ -949,40 +950,40 @@ public isolated client class Client {
     # + repoPublicId - The unique ID of the Repository. 
     # + return - Resource 
     remote isolated function getRepository(int repoPublicId) returns Repository|error {
-        string  path = string `/api/v3/repositories/${repoPublicId}`;
+        string resourcePath = string `/api/v3/repositories/${repoPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Repository response = check self.clientEp-> get(path, accHeaders, targetType = Repository);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Repository response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Search
     #
     # + return - Resource 
     remote isolated function search() returns SearchResults|error {
-        string  path = string `/api/v3/search`;
+        string resourcePath = string `/api/v3/search`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SearchResults response = check self.clientEp-> get(path, accHeaders, targetType = SearchResults);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SearchResults response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Search Epics
     #
     # + return - Resource 
     remote isolated function searchEpics() returns EpicSearchResults|error {
-        string  path = string `/api/v3/search/epics`;
+        string resourcePath = string `/api/v3/search/epics`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        EpicSearchResults response = check self.clientEp-> get(path, accHeaders, targetType = EpicSearchResults);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EpicSearchResults response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Search Stories
     #
     # + return - Resource 
     remote isolated function searchStories() returns StorySearchResults|error {
-        string  path = string `/api/v3/search/stories`;
+        string resourcePath = string `/api/v3/search/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StorySearchResults response = check self.clientEp-> get(path, accHeaders, targetType = StorySearchResults);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StorySearchResults response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Story
@@ -990,13 +991,13 @@ public isolated client class Client {
     # + payload - Request parameters for creating a story. 
     # + return - Resource 
     remote isolated function createStory(CreateStoryParams payload) returns Story|error {
-        string  path = string `/api/v3/stories`;
+        string resourcePath = string `/api/v3/stories`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Story response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Story);
+        request.setPayload(jsonBody, "application/json");
+        Story response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Update Multiple Stories
@@ -1004,13 +1005,13 @@ public isolated client class Client {
     # + payload - Update multiple stories data 
     # + return - Resource 
     remote isolated function updateMultipleStories(UpdateStories payload) returns StorySlim[]|error {
-        string  path = string `/api/v3/stories/bulk`;
+        string resourcePath = string `/api/v3/stories/bulk`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StorySlim[] response = check self.clientEp->put(path, request, headers = accHeaders, targetType=StorySlimArr);
+        request.setPayload(jsonBody, "application/json");
+        StorySlim[] response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create Multiple Stories
@@ -1018,23 +1019,23 @@ public isolated client class Client {
     # + payload - Create multiple stories 
     # + return - Resource 
     remote isolated function createMultipleStories(CreateStories payload) returns StorySlim[]|error {
-        string  path = string `/api/v3/stories/bulk`;
+        string resourcePath = string `/api/v3/stories/bulk`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StorySlim[] response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StorySlimArr);
+        request.setPayload(jsonBody, "application/json");
+        StorySlim[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Multiple Stories
     #
     # + return - No Content 
     remote isolated function deleteMultipleStories() returns http:Response|error {
-        string  path = string `/api/v3/stories/bulk`;
+        string resourcePath = string `/api/v3/stories/bulk`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Search Stories (Old)
@@ -1042,13 +1043,13 @@ public isolated client class Client {
     # + payload - Search stories (old) data 
     # + return - Resource 
     remote isolated function searchStoriesOld(SearchStories payload) returns StorySlim[]|error {
-        string  path = string `/api/v3/stories/search`;
+        string resourcePath = string `/api/v3/stories/search`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StorySlim[] response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StorySlimArr);
+        request.setPayload(jsonBody, "application/json");
+        StorySlim[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Story
@@ -1056,10 +1057,10 @@ public isolated client class Client {
     # + storyPublicId - The ID of the Story. 
     # + return - Resource 
     remote isolated function getStory(int storyPublicId) returns Story|error {
-        string  path = string `/api/v3/stories/${storyPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Story response = check self.clientEp-> get(path, accHeaders, targetType = Story);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Story response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Story
@@ -1068,13 +1069,13 @@ public isolated client class Client {
     # + payload - Update story data 
     # + return - Resource 
     remote isolated function updateStory(int storyPublicId, UpdateStory payload) returns Story|error {
-        string  path = string `/api/v3/stories/${storyPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Story response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Story);
+        request.setPayload(jsonBody, "application/json");
+        Story response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Story
@@ -1082,10 +1083,10 @@ public isolated client class Client {
     # + storyPublicId - The ID of the Story. 
     # + return - No Content 
     remote isolated function deleteStory(int storyPublicId) returns http:Response|error {
-        string  path = string `/api/v3/stories/${storyPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Create Story Comment
@@ -1094,13 +1095,13 @@ public isolated client class Client {
     # + payload - Create story comment data 
     # + return - Resource 
     remote isolated function createStoryComment(int storyPublicId, CreateStoryComment payload) returns StoryComment|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/comments`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/comments`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StoryComment response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StoryComment);
+        request.setPayload(jsonBody, "application/json");
+        StoryComment response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Story Comment
@@ -1109,10 +1110,10 @@ public isolated client class Client {
     # + commentPublicId - The ID of the Comment. 
     # + return - Resource 
     remote isolated function getStoryComment(int storyPublicId, int commentPublicId) returns StoryComment|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StoryComment response = check self.clientEp-> get(path, accHeaders, targetType = StoryComment);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StoryComment response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Story Comment
@@ -1122,13 +1123,13 @@ public isolated client class Client {
     # + payload - Update story comment data 
     # + return - Resource 
     remote isolated function updateStoryComment(int storyPublicId, int commentPublicId, UpdateStoryComment payload) returns StoryComment|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StoryComment response = check self.clientEp->put(path, request, headers = accHeaders, targetType=StoryComment);
+        request.setPayload(jsonBody, "application/json");
+        StoryComment response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Story Comment
@@ -1137,10 +1138,10 @@ public isolated client class Client {
     # + commentPublicId - The ID of the Comment. 
     # + return - No Content 
     remote isolated function deleteStoryComment(int storyPublicId, int commentPublicId) returns http:Response|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Create Story Reaction
@@ -1150,13 +1151,13 @@ public isolated client class Client {
     # + payload - Create story reaction data 
     # + return - Resource 
     remote isolated function createStoryReaction(int storyPublicId, int commentPublicId, CreateOrDeleteStoryReaction payload) returns StoryReaction[]|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}/reactions`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}/reactions`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StoryReaction[] response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StoryReactionArr);
+        request.setPayload(jsonBody, "application/json");
+        StoryReaction[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Story Reaction
@@ -1165,10 +1166,10 @@ public isolated client class Client {
     # + commentPublicId - The ID of the Comment. 
     # + return - No Content 
     remote isolated function deleteStoryReaction(int storyPublicId, int commentPublicId) returns http:Response|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}/reactions`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/comments/${commentPublicId}/reactions`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Story History
@@ -1176,10 +1177,10 @@ public isolated client class Client {
     # + storyPublicId - The ID of the Story. 
     # + return - Resource 
     remote isolated function storyHistory(int storyPublicId) returns History[]|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/history`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/history`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        History[] response = check self.clientEp-> get(path, accHeaders, targetType = HistoryArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        History[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Task
@@ -1188,13 +1189,13 @@ public isolated client class Client {
     # + payload - Create task data 
     # + return - Resource 
     remote isolated function createTask(int storyPublicId, CreateTask payload) returns Task|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/tasks`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/tasks`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Task response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Task);
+        request.setPayload(jsonBody, "application/json");
+        Task response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Task
@@ -1203,10 +1204,10 @@ public isolated client class Client {
     # + taskPublicId - The unique ID of the Task. 
     # + return - Resource 
     remote isolated function getTask(int storyPublicId, int taskPublicId) returns Task|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/tasks/${taskPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/tasks/${taskPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Task response = check self.clientEp-> get(path, accHeaders, targetType = Task);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Task response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Task
@@ -1216,13 +1217,13 @@ public isolated client class Client {
     # + payload - Update task data 
     # + return - Resource 
     remote isolated function updateTask(int storyPublicId, int taskPublicId, UpdateTask payload) returns Task|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/tasks/${taskPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/tasks/${taskPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Task response = check self.clientEp->put(path, request, headers = accHeaders, targetType=Task);
+        request.setPayload(jsonBody, "application/json");
+        Task response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Task
@@ -1231,10 +1232,10 @@ public isolated client class Client {
     # + taskPublicId - The unique ID of the Task. 
     # + return - No Content 
     remote isolated function deleteTask(int storyPublicId, int taskPublicId) returns http:Response|error {
-        string  path = string `/api/v3/stories/${storyPublicId}/tasks/${taskPublicId}`;
+        string resourcePath = string `/api/v3/stories/${storyPublicId}/tasks/${taskPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Create Story Link
@@ -1242,13 +1243,13 @@ public isolated client class Client {
     # + payload - Create story link data 
     # + return - Resource 
     remote isolated function createStoryLink(CreateStoryLink payload) returns StoryLink|error {
-        string  path = string `/api/v3/story-links`;
+        string resourcePath = string `/api/v3/story-links`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StoryLink response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StoryLink);
+        request.setPayload(jsonBody, "application/json");
+        StoryLink response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get Story Link
@@ -1256,10 +1257,10 @@ public isolated client class Client {
     # + storyLinkPublicId - The unique ID of the Story Link. 
     # + return - Resource 
     remote isolated function getStoryLink(int storyLinkPublicId) returns StoryLink|error {
-        string  path = string `/api/v3/story-links/${storyLinkPublicId}`;
+        string resourcePath = string `/api/v3/story-links/${storyLinkPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StoryLink response = check self.clientEp-> get(path, accHeaders, targetType = StoryLink);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StoryLink response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update Story Link
@@ -1268,13 +1269,13 @@ public isolated client class Client {
     # + payload - Update story link data 
     # + return - Resource 
     remote isolated function updateStoryLink(int storyLinkPublicId, UpdateStoryLink payload) returns StoryLink|error {
-        string  path = string `/api/v3/story-links/${storyLinkPublicId}`;
+        string resourcePath = string `/api/v3/story-links/${storyLinkPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StoryLink response = check self.clientEp->put(path, request, headers = accHeaders, targetType=StoryLink);
+        request.setPayload(jsonBody, "application/json");
+        StoryLink response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Story Link
@@ -1282,20 +1283,20 @@ public isolated client class Client {
     # + storyLinkPublicId - The unique ID of the Story Link. 
     # + return - No Content 
     remote isolated function deleteStoryLink(int storyLinkPublicId) returns http:Response|error {
-        string  path = string `/api/v3/story-links/${storyLinkPublicId}`;
+        string resourcePath = string `/api/v3/story-links/${storyLinkPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Workflows
     #
     # + return - Resource 
     remote isolated function listWorkflows() returns Workflow[]|error {
-        string  path = string `/api/v3/workflows`;
+        string resourcePath = string `/api/v3/workflows`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Workflow[] response = check self.clientEp-> get(path, accHeaders, targetType = WorkflowArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Workflow[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Workflow
@@ -1303,10 +1304,10 @@ public isolated client class Client {
     # + workflowPublicId - The ID of the Workflow. 
     # + return - Resource 
     remote isolated function getWorkflow(int workflowPublicId) returns Workflow|error {
-        string  path = string `/api/v3/workflows/${workflowPublicId}`;
+        string resourcePath = string `/api/v3/workflows/${workflowPublicId}`;
         map<any> headerValues = {"Shortcut-Token": self.apiKeyConfig.shortcutToken};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Workflow response = check self.clientEp-> get(path, accHeaders, targetType = Workflow);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Workflow response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

@@ -49,8 +49,7 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Added license header at the top of each .bal file. 
 - [ ] Added Package.md as per the guide [here](https://github.com/ballerina-platform/ballerina-extended-library/discussions/77)
 - [ ] Added Module.md for the module of the  connector as per the guide [here](https://github.com/ballerina-platform/ballerina-extended-library/discussions/78)
-- [ ] Created a directory called `resources` at the root of the connector and copied the connector icon there. 
-      Name of the icon file need to be `<connector-name>.svg`
+- [ ] Added connector icon to the root of the connector. Icon needs to be a `png` of 200x200 px size with name `icon.png`
 - [ ] Added Ballerina.toml file with following information. For keywords refer to [guide](https://github.com/ballerina-platform/ballerina-extended-library/discussions/72)
 
 ### Verifying connector module

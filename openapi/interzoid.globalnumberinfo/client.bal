@@ -41,16 +41,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get demographic information for a global telephone number
     #
     # + intlnumber - International number (with country code) to retrieve information for 
     # + return - Global telephone demographic information 
     remote isolated function getglobalnumberinfo(string intlnumber) returns GlobalNumberInfo|error {
-        string  path = string `/getglobalnumberinfo`;
+        string resourcePath = string `/getglobalnumberinfo`;
         map<anydata> queryParam = {"intlnumber": intlnumber, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        GlobalNumberInfo response = check self.clientEp-> get(path, targetType = GlobalNumberInfo);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GlobalNumberInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

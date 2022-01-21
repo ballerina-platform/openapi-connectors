@@ -65,13 +65,14 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List Users.
     #
     # + return - Returns list of users available 
     remote isolated function listUsers() returns Users|error {
-        string  path = string `/api/v2/users.json`;
-        Users response = check self.clientEp-> get(path, targetType = Users);
+        string resourcePath = string `/api/v2/users.json`;
+        Users response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create User.
@@ -79,11 +80,11 @@ public isolated client class Client {
     # + payload - The information for create user request 
     # + return - Returns detail of user created 
     remote isolated function createUser(CreateUserInfo payload) returns User|error {
-        string  path = string `/api/v2/users.json`;
+        string resourcePath = string `/api/v2/users.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        User response = check self.clientEp->post(path, request, targetType=User);
+        request.setPayload(jsonBody, "application/json");
+        User response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Search Users.
@@ -91,10 +92,10 @@ public isolated client class Client {
     # + query - Query 
     # + return - Returns users matching the searchable string 
     remote isolated function searchUsers(string? query = ()) returns json|error {
-        string  path = string `/api/v2/search.json`;
+        string resourcePath = string `/api/v2/search.json`;
         map<anydata> queryParam = {"query": query};
-        path = path + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp-> get(path, targetType = json);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get User By Id.
@@ -102,8 +103,8 @@ public isolated client class Client {
     # + userId - User Id 
     # + return - Returns user belong to the user id 
     remote isolated function getUserById(string userId) returns User|error {
-        string  path = string `/api/v2/users/${userId}.json`;
-        User response = check self.clientEp-> get(path, targetType = User);
+        string resourcePath = string `/api/v2/users/${userId}.json`;
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete User By Id.
@@ -111,16 +112,16 @@ public isolated client class Client {
     # + userId - User Id 
     # + return - Returns detail of user deleted 
     remote isolated function deleteUserById(string userId) returns User|error {
-        string  path = string `/api/v2/users/${userId}.json`;
-        User response = check self.clientEp-> delete(path, targetType = User);
+        string resourcePath = string `/api/v2/users/${userId}.json`;
+        User response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List Tickets.
     #
     # + return - Returns list of tickets available 
     remote isolated function listTickets() returns Tickets|error {
-        string  path = string `/api/v2/tickets.json`;
-        Tickets response = check self.clientEp-> get(path, targetType = Tickets);
+        string resourcePath = string `/api/v2/tickets.json`;
+        Tickets response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Ticket.
@@ -128,11 +129,11 @@ public isolated client class Client {
     # + payload - The information for create ticket request 
     # + return - Returns detail of created ticket 
     remote isolated function createTicket(CreateTicketInfo payload) returns Ticket|error {
-        string  path = string `/api/v2/tickets.json`;
+        string resourcePath = string `/api/v2/tickets.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Ticket response = check self.clientEp->post(path, request, targetType=Ticket);
+        request.setPayload(jsonBody, "application/json");
+        Ticket response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update Ticket.
@@ -141,11 +142,11 @@ public isolated client class Client {
     # + payload - The information for update ticket request 
     # + return - Returns deatil of updated ticket by ticket id 
     remote isolated function updateTicket(string ticketId, UpdateTicketInfo payload) returns json|error {
-        string  path = string `/api/v2/tickets/${ticketId}`;
+        string resourcePath = string `/api/v2/tickets/${ticketId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->put(path, request, targetType=json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Create Organization.
@@ -153,11 +154,11 @@ public isolated client class Client {
     # + payload - The information for create organization request 
     # + return - Organization created 
     remote isolated function createOrganization(CreateOrganizationInfo payload) returns Organization|error {
-        string  path = string `/api/v2/organizations.json`;
+        string resourcePath = string `/api/v2/organizations.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Organization response = check self.clientEp->post(path, request, targetType=Organization);
+        request.setPayload(jsonBody, "application/json");
+        Organization response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

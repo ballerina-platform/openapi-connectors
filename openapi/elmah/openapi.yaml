@@ -377,21 +377,21 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/Search"
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Search"
-          application/json-patch+json:
-            schema:
-              $ref: "#/components/schemas/Search"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/Search"
-        description: A search object containing query, time filters etc.
+      # requestBody:
+      #   content:
+      #     application/*+json:
+      #       schema:
+      #         $ref: "#/components/schemas/Search"
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/Search"
+      #     application/json-patch+json:
+      #       schema:
+      #         $ref: "#/components/schemas/Search"
+      #     text/json:
+      #       schema:
+      #         $ref: "#/components/schemas/Search"
+      #   description: A search object containing query, time filters etc.
       responses:
         "200":
           description: Messages where deleted.

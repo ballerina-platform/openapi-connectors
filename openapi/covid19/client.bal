@@ -30,6 +30,7 @@ public isolated client class Client {
     public isolated function init(http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://disease.sh") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get global COVID-19 totals for today, yesterday and two days ago
     #
@@ -38,10 +39,10 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Global COVID-19 status 
     remote isolated function getGlobalStatus(string? yesterday = (), string? twoDaysAgo = (), string? allowNull = ()) returns CovidAll|error {
-        string path = string `/v3/covid-19/all`;
+        string resourcePath = string `/v3/covid-19/all`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidAll response = check self.clientEp->get(path, targetType = CovidAll);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidAll response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for all US States
@@ -51,10 +52,10 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Status OK 
     remote isolated function getAllUSAStatesStatus(string? sort = (), string? yesterday = (), string? allowNull = ()) returns CovidStates|error {
-        string path = string `/v3/covid-19/states`;
+        string resourcePath = string `/v3/covid-19/states`;
         map<anydata> queryParam = {"sort": sort, "yesterday": yesterday, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidStates response = check self.clientEp->get(path, targetType = CovidStates);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidStates response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for specific US State(s)
@@ -64,10 +65,10 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - COVID-19 status of the given US state 
     remote isolated function getUSAStatusByState(string states, string? yesterday = (), string? allowNull = ()) returns CovidState|error {
-        string path = string `/v3/covid-19/states/${states}`;
+        string resourcePath = string `/v3/covid-19/states/${states}`;
         map<anydata> queryParam = {"yesterday": yesterday, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidState response = check self.clientEp->get(path, targetType = CovidState);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidState response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for all continents
@@ -78,10 +79,10 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Status OK 
     remote isolated function getAllContinentsStatus(string? yesterday = (), string? twoDaysAgo = (), string? sort = (), string? allowNull = ()) returns CovidContinents|error {
-        string path = string `/v3/covid-19/continents`;
+        string resourcePath = string `/v3/covid-19/continents`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "sort": sort, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidContinents response = check self.clientEp->get(path, targetType = CovidContinents);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidContinents response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for a specific continent
@@ -93,10 +94,10 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - COVID-19 status of the given continent 
     remote isolated function getStatusByContinent(string continent, string? yesterday = (), string? twoDaysAgo = (), string strict = "true", string? allowNull = ()) returns CovidContinent|error {
-        string path = string `/v3/covid-19/continents/${continent}`;
+        string resourcePath = string `/v3/covid-19/continents/${continent}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "strict": strict, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidContinent response = check self.clientEp->get(path, targetType = CovidContinent);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidContinent response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for all countries
@@ -107,10 +108,10 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Status OK 
     remote isolated function getAllCountriesStatus(string? yesterday = (), string? twoDaysAgo = (), string? sort = (), string? allowNull = ()) returns CovidCountries|error {
-        string path = string `/v3/covid-19/countries`;
+        string resourcePath = string `/v3/covid-19/countries`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "sort": sort, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidCountries response = check self.clientEp->get(path, targetType = CovidCountries);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidCountries response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for a specific country
@@ -122,10 +123,10 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - COVID-19 status of the given country 
     remote isolated function getStatusByCountry(string country, string? yesterday = (), string? twoDaysAgo = (), string strict = "true", string? allowNull = ()) returns CovidCountry|error {
-        string path = string `/v3/covid-19/countries/${country}`;
+        string resourcePath = string `/v3/covid-19/countries/${country}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "strict": strict, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidCountry response = check self.clientEp->get(path, targetType = CovidCountry);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidCountry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for a specific set of countries
@@ -136,26 +137,26 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Status OK 
     remote isolated function getMultipleCountriesStatus(string countries, string? yesterday = (), string? twoDaysAgo = (), string? allowNull = ()) returns CovidCountries|error {
-        string path = string `/v3/covid-19/countries/${countries}`;
+        string resourcePath = string `/v3/covid-19/countries/${countries}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidCountries response = check self.clientEp->get(path, targetType = CovidCountries);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidCountries response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for all countries and their provinces
     #
     # + return - Status OK 
     remote isolated function getAllCountriesAndProvincesStatus() returns CovidJHUCountries|error {
-        string path = string `/v3/covid-19/jhucsse`;
-        CovidJHUCountries response = check self.clientEp->get(path, targetType = CovidJHUCountries);
+        string resourcePath = string `/v3/covid-19/jhucsse`;
+        CovidJHUCountries response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for all US counties
     #
     # + return - Status OK 
     remote isolated function getUSCountiesStatus() returns CovidJHUCounties|error {
-        string path = string `/v3/covid-19/jhucsse/counties`;
-        CovidJHUCounties response = check self.clientEp->get(path, targetType = CovidJHUCounties);
+        string resourcePath = string `/v3/covid-19/jhucsse/counties`;
+        CovidJHUCounties response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 totals for a specific county
@@ -163,8 +164,8 @@ public isolated client class Client {
     # + county - Name of any county in the USA. All counties are listed in the /v3/covid-19/jhucsse/counties/ endpoint 
     # + return - Status OK 
     remote isolated function getUSAStatusByCounty(string county) returns CovidJHUCounties|error {
-        string path = string `/v3/covid-19/jhucsse/counties/${county}`;
-        CovidJHUCounties response = check self.clientEp->get(path, targetType = CovidJHUCounties);
+        string resourcePath = string `/v3/covid-19/jhucsse/counties/${county}`;
+        CovidJHUCounties response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for all countries and their provinces
@@ -172,10 +173,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status OK 
     remote isolated function getTimeSeriesForAllCountriesAndProvinces(string lastdays = "30") returns CovidHistorical|error {
-        string path = string `/v3/covid-19/historical`;
+        string resourcePath = string `/v3/covid-19/historical`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidHistorical response = check self.clientEp->get(path, targetType = CovidHistorical);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidHistorical response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get global accumulated COVID-19 time series data
@@ -183,10 +184,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getGlobalStatusInTimeSeries(string lastdays = "30") returns CovidHistoricalAll|error {
-        string path = string `/v3/covid-19/historical/all`;
+        string resourcePath = string `/v3/covid-19/historical/all`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidHistoricalAll response = check self.clientEp->get(path, targetType = CovidHistoricalAll);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidHistoricalAll response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for a specific country
@@ -195,10 +196,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - COVID-19 related time series for the given country 
     remote isolated function getTimeSeriesBycountry(string country, string lastdays = "30") returns CovidHistoricalCountry|error {
-        string path = string `/v3/covid-19/historical/${country}`;
+        string resourcePath = string `/v3/covid-19/historical/${country}`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidHistoricalCountry response = check self.clientEp->get(path, targetType = CovidHistoricalCountry);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidHistoricalCountry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for a specific set of countries
@@ -207,10 +208,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesOfMultipleCountries(string countries, string lastdays = "30") returns CovidHistoricalCountries|error {
-        string path = string `/v3/covid-19/historical/${countries}`;
+        string resourcePath = string `/v3/covid-19/historical/${countries}`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidHistoricalCountries response = check self.clientEp->get(path, targetType = CovidHistoricalCountries);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidHistoricalCountries response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for a specific province in a country
@@ -220,10 +221,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesByProvince(string country, string province, string lastdays = "30") returns CovidHistoricalProvince|error {
-        string path = string `/v3/covid-19/historical/${country}/${province}`;
+        string resourcePath = string `/v3/covid-19/historical/${country}/${province}`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidHistoricalProvince response = check self.clientEp->get(path, targetType = CovidHistoricalProvince);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidHistoricalProvince response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for a set of provinces in a country
@@ -233,18 +234,18 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesDataForMultipleProvinces(string country, string provinces, string lastdays = "30") returns CovidHistoricalProvinces|error {
-        string path = string `/v3/covid-19/historical/${country}/${provinces}`;
+        string resourcePath = string `/v3/covid-19/historical/${country}/${provinces}`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidHistoricalProvinces response = check self.clientEp->get(path, targetType = CovidHistoricalProvinces);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidHistoricalProvinces response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get all possible US States to query the /historical/usacounties/{state} endpoint with
     #
     # + return - Status OK 
     remote isolated function getTimeSeriesForUSACounties() returns CovidHistoricalUSCounties|error {
-        string path = string `/v3/covid-19/historical/usacounties`;
-        CovidHistoricalUSCounties response = check self.clientEp->get(path, targetType = CovidHistoricalUSCounties);
+        string resourcePath = string `/v3/covid-19/historical/usacounties`;
+        CovidHistoricalUSCounties response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for all counties in a specified US state
@@ -253,10 +254,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getUSACountiesDataByState(string state, string lastdays = "30") returns CovidHistoricalUSCounty|error {
-        string path = string `/v3/covid-19/historical/usacounties/${state}`;
+        string resourcePath = string `/v3/covid-19/historical/usacounties/${state}`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidHistoricalUSCounty response = check self.clientEp->get(path, targetType = CovidHistoricalUSCounty);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidHistoricalUSCounty response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for all states, with an entry for each day since the pandemic began
@@ -264,10 +265,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesForAllUSAStatesNYT(string lastdays = "30") returns CovidNYTState|error {
-        string path = string `/v3/covid-19/nyt/states`;
+        string resourcePath = string `/v3/covid-19/nyt/states`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidNYTState response = check self.clientEp->get(path, targetType = CovidNYTState);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidNYTState response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for a state or set of states, with an entry for each day since the pandemic began
@@ -276,10 +277,10 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesByUSAStateNYT(string state, string lastdays = "30") returns CovidNYTState|error {
-        string path = string `/v3/covid-19/nyt/states/${state}`;
+        string resourcePath = string `/v3/covid-19/nyt/states/${state}`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidNYTState response = check self.clientEp->get(path, targetType = CovidNYTState);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidNYTState response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for a county or set of counties, with an entry for each day since the pandemic began
@@ -288,26 +289,26 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesByUSACountyNYT(string county, string lastdays = "30") returns CovidNYTCounty|error {
-        string path = string `/v3/covid-19/nyt/counties/${county}`;
+        string resourcePath = string `/v3/covid-19/nyt/counties/${county}`;
         map<anydata> queryParam = {"lastdays": lastdays};
-        path = path + check getPathForQueryParam(queryParam);
-        CovidNYTCounty response = check self.clientEp->get(path, targetType = CovidNYTCounty);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CovidNYTCounty response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 time series data for the entire USA, with an entry for each day since the pandemic began
     #
     # + return - Status Ok 
     remote isolated function getTimeSeriesForUSANYT() returns CovidNYTUSA|error {
-        string path = string `/v3/covid-19/nyt/usa`;
-        CovidNYTUSA response = check self.clientEp->get(path, targetType = CovidNYTUSA);
+        string resourcePath = string `/v3/covid-19/nyt/usa`;
+        CovidNYTUSA response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of supported countries for Apple mobility data
     #
     # + return - Status Ok 
     remote isolated function getAppleMobilityDataSupportedCountries() returns CovidAppleCountries|error {
-        string path = string `/v3/covid-19/apple/countries`;
-        CovidAppleCountries response = check self.clientEp->get(path, targetType = CovidAppleCountries);
+        string resourcePath = string `/v3/covid-19/apple/countries`;
+        CovidAppleCountries response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of supported subregions for specific country in the Apple mobility data set
@@ -315,8 +316,8 @@ public isolated client class Client {
     # + country - A valid country name from the /v3/covid-19/apple/countries endpoint 
     # + return - Status Ok 
     remote isolated function getAppleMobilityDataSupportedSubRegions(string country) returns CovidAppleSubregions|error {
-        string path = string `/v3/covid-19/apple/countries/${country}`;
-        CovidAppleSubregions response = check self.clientEp->get(path, targetType = CovidAppleSubregions);
+        string resourcePath = string `/v3/covid-19/apple/countries/${country}`;
+        CovidAppleSubregions response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 Apple mobility data for subregions of a country
@@ -325,16 +326,16 @@ public isolated client class Client {
     # + subregions - Valid subregion(s) from the /v3/covid-19/apple/countries/{country} endpoint, separated by with commas 
     # + return - Status Ok 
     remote isolated function getStatusBySubRegionUsingAppleMobilotyData(string country, string subregions) returns CovidAppleData|error {
-        string path = string `/v3/covid-19/apple/countries/${country}/${subregions}`;
-        CovidAppleData response = check self.clientEp->get(path, targetType = CovidAppleData);
+        string resourcePath = string `/v3/covid-19/apple/countries/${country}/${subregions}`;
+        CovidAppleData response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get a list of supported countries for government specific data
     #
     # + return - Status Ok 
     remote isolated function getGovenrmentDataSupportedCountries() returns CovidGov|error {
-        string path = string `/v3/covid-19/gov/`;
-        CovidGov response = check self.clientEp->get(path, targetType = CovidGov);
+        string resourcePath = string `/v3/covid-19/gov/`;
+        CovidGov response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 government reported data for a specific country
@@ -343,18 +344,18 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Status Ok 
     remote isolated function getGovernmentReportedDataByCountry(string country, string? allowNull = ()) returns http:Response|error {
-        string path = string `/v3/covid-19/gov/${country}`;
+        string resourcePath = string `/v3/covid-19/gov/${country}`;
         map<anydata> queryParam = {"allowNull": allowNull};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->get(path, targetType = http:Response);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get vaccine trial data from RAPS (Regulatory Affairs Professional Society). Specifically published by Jeff Craven at https://www.raps.org/news-and-articles/news-articles/2020/3/covid-19-vaccine-tracker
     #
     # + return - Vaccine trial data 
     remote isolated function getVaccineTrialData() returns Vaccines|error {
-        string path = string `/v3/covid-19/vaccine`;
-        Vaccines response = check self.clientEp->get(path, targetType = Vaccines);
+        string resourcePath = string `/v3/covid-19/vaccine`;
+        Vaccines response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get total global COVID-19 vaccine doses administered. Sourced from https://covid.ourworldindata.org/
@@ -363,10 +364,10 @@ public isolated client class Client {
     # + fullData - Flag indicating whether to return data type as SimpleVaccineTimeline (false) or FullVaccineTimeline (true). 
     # + return - Vaccine coverage data 
     remote isolated function getTotalGlobalVaccineDosesAdministered(string lastdays = "30", string fullData = "false") returns VaccineCoverage|error {
-        string path = string `/v3/covid-19/vaccine/coverage`;
+        string resourcePath = string `/v3/covid-19/vaccine/coverage`;
         map<anydata> queryParam = {"lastdays": lastdays, "fullData": fullData};
-        path = path + check getPathForQueryParam(queryParam);
-        VaccineCoverage response = check self.clientEp->get(path, targetType = VaccineCoverage);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        VaccineCoverage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 vaccine doses administered for all countries that have reported rolling out vaccination. Sourced  from https://covid.ourworldindata.org/
@@ -375,10 +376,10 @@ public isolated client class Client {
     # + fullData - Flag indicating whether to return data type as SimpleVaccineTimeline (false) or FullVaccineTimeline (true). 
     # + return - Status Ok 
     remote isolated function getVaccineCoverageOfAllCountries(string lastdays = "30", string fullData = "false") returns VaccineCountriesCoverage|error {
-        string path = string `/v3/covid-19/vaccine/coverage/countries`;
+        string resourcePath = string `/v3/covid-19/vaccine/coverage/countries`;
         map<anydata> queryParam = {"lastdays": lastdays, "fullData": fullData};
-        path = path + check getPathForQueryParam(queryParam);
-        VaccineCountriesCoverage response = check self.clientEp->get(path, targetType = VaccineCountriesCoverage);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        VaccineCountriesCoverage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 vaccine doses administered for a country that has reported vaccination rollout. Sourced from https://covid.ourworldindata.org/
@@ -388,10 +389,10 @@ public isolated client class Client {
     # + fullData - Flag indicating whether to return data type as SimpleVaccineTimeline (false) or FullVaccineTimeline (true). 
     # + return - Status Ok 
     remote isolated function getVaccineCoverageByCountry(string country, string lastdays = "30", string fullData = "false") returns VaccineCountryCoverage|error {
-        string path = string `/v3/covid-19/vaccine/coverage/countries/${country}`;
+        string resourcePath = string `/v3/covid-19/vaccine/coverage/countries/${country}`;
         map<anydata> queryParam = {"lastdays": lastdays, "fullData": fullData};
-        path = path + check getPathForQueryParam(queryParam);
-        VaccineCountryCoverage response = check self.clientEp->get(path, targetType = VaccineCountryCoverage);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        VaccineCountryCoverage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 vaccine doses administered for all states that have reported rolling out vaccination. Sourced  from https://covid.ourworldindata.org/
@@ -400,10 +401,10 @@ public isolated client class Client {
     # + fullData - Flag indicating whether to return data type as SimpleVaccineTimeline (false) or FullVaccineTimeline (true). 
     # + return - Status Ok 
     remote isolated function getVaccineCoverageOfAllUSAStates(string lastdays = "30", string fullData = "false") returns VaccineStatesCoverage|error {
-        string path = string `/v3/covid-19/vaccine/coverage/states`;
+        string resourcePath = string `/v3/covid-19/vaccine/coverage/states`;
         map<anydata> queryParam = {"lastdays": lastdays, "fullData": fullData};
-        path = path + check getPathForQueryParam(queryParam);
-        VaccineStatesCoverage response = check self.clientEp->get(path, targetType = VaccineStatesCoverage);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        VaccineStatesCoverage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get COVID-19 vaccine doses administered for a state that has reported vaccination rollout. Sourced from https://covid.ourworldindata.org/
@@ -413,42 +414,42 @@ public isolated client class Client {
     # + fullData - Flag indicating whether to return data type as SimpleVaccineTimeline (false) or FullVaccineTimeline (true). 
     # + return - Status Ok 
     remote isolated function getVaccineCoverageByUSAState(string state, string lastdays = "30", string fullData = "false") returns VaccineStateCoverage|error {
-        string path = string `/v3/covid-19/vaccine/coverage/states/${state}`;
+        string resourcePath = string `/v3/covid-19/vaccine/coverage/states/${state}`;
         map<anydata> queryParam = {"lastdays": lastdays, "fullData": fullData};
-        path = path + check getPathForQueryParam(queryParam);
-        VaccineStateCoverage response = check self.clientEp->get(path, targetType = VaccineStateCoverage);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        VaccineStateCoverage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get therapeutics trial data from RAPS (Regulatory Affairs Professional Society). Specifically published by Jeff Craven at https://www.raps.org/news-and-articles/news-articles/2020/3/covid-19-therapeutics-tracker
     #
     # + return - Status Ok 
     remote isolated function getTherapeuticsTrialData() returns Therapeutics|error {
-        string path = string `/v3/covid-19/therapeutics`;
-        Therapeutics response = check self.clientEp->get(path, targetType = Therapeutics);
+        string resourcePath = string `/v3/covid-19/therapeutics`;
+        Therapeutics response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Influenza-like-illness data for the 2019 and 2020 outbreaks from the US Center for Disease Control
     #
     # + return - Status Ok 
     remote isolated function getInfluenzaLikeIllnessData() returns InfluenzaILINet|error {
-        string path = string `/v3/influenza/cdc/ILINet`;
-        InfluenzaILINet response = check self.clientEp->get(path, targetType = InfluenzaILINet);
+        string resourcePath = string `/v3/influenza/cdc/ILINet`;
+        InfluenzaILINet response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Influenza report data for the 2019 and 2020 outbreaks from the US Center for Disease Control, reported by US clinical labs
     #
     # + return - Status Ok 
     remote isolated function getInfluenzaReportsByUCLA() returns InfluenzaUSCL|error {
-        string path = string `/v3/influenza/cdc/USCL`;
-        InfluenzaUSCL response = check self.clientEp->get(path, targetType = InfluenzaUSCL);
+        string resourcePath = string `/v3/influenza/cdc/USCL`;
+        InfluenzaUSCL response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Influenza report data for the 2019 and 2020 outbreaks from the US Center for Disease Control, reported by US public health labs
     #
     # + return - Status Ok 
     remote isolated function getInfluenzaReportsByUSPHL() returns InfluenzaUSPHL|error {
-        string path = string `/v3/influenza/cdc/USPHL`;
-        InfluenzaUSPHL response = check self.clientEp->get(path, targetType = InfluenzaUSPHL);
+        string resourcePath = string `/v3/influenza/cdc/USPHL`;
+        InfluenzaUSPHL response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

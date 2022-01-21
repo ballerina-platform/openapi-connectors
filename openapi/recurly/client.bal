@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -69,6 +67,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://v3.recurly.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # List sites
     #
@@ -79,10 +78,11 @@ public isolated client class Client {
     # + state - Filter by state. 
     # + return - A list of sites. 
     remote isolated function listSites(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? state = ()) returns SiteList|error {
-        string  path = string `/sites`;
+        string resourcePath = string `/sites`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        SiteList response = check self.clientEp-> get(path, targetType = SiteList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SiteList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch a site
@@ -90,8 +90,8 @@ public isolated client class Client {
     # + siteId - Site ID or subdomain. For ID no prefix is used e.g. `e28zov4fw0v2`. For subdomain use prefix `subdomain-`, e.g. `subdomain-recurly`. 
     # + return - A site. 
     remote isolated function getSite(string siteId) returns Site|error {
-        string  path = string `/sites/${siteId}`;
-        Site response = check self.clientEp-> get(path, targetType = Site);
+        string resourcePath = string `/sites/${siteId}`;
+        Site response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a site's accounts
@@ -107,21 +107,22 @@ public isolated client class Client {
     # + pastDue - Filter for accounts with an invoice in the `past_due` state. 
     # + return - A list of the site's accounts. 
     remote isolated function listAccounts(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? email = (), boolean? subscriber = (), string? pastDue = ()) returns AccountList|error {
-        string  path = string `/accounts`;
+        string resourcePath = string `/accounts`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "email": email, "subscriber": subscriber, "past_due": pastDue};
-        path = path + check getPathForQueryParam(queryParam);
-        AccountList response = check self.clientEp-> get(path, targetType = AccountList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AccountList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an account
     #
     # + return - An account. 
     remote isolated function createAccount(AccountCreate payload) returns Account|error {
-        string  path = string `/accounts`;
+        string resourcePath = string `/accounts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Account response = check self.clientEp->post(path, request, targetType=Account);
+        request.setPayload(jsonBody, "application/json");
+        Account response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch an account
@@ -129,8 +130,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account. 
     remote isolated function getAccount(string accountId) returns Account|error {
-        string  path = string `/accounts/${accountId}`;
-        Account response = check self.clientEp-> get(path, targetType = Account);
+        string resourcePath = string `/accounts/${accountId}`;
+        Account response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an account
@@ -138,11 +139,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account. 
     remote isolated function updateAccount(string accountId, AccountUpdate payload) returns Account|error {
-        string  path = string `/accounts/${accountId}`;
+        string resourcePath = string `/accounts/${accountId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Account response = check self.clientEp->put(path, request, targetType=Account);
+        request.setPayload(jsonBody, "application/json");
+        Account response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deactivate an account
@@ -150,10 +151,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account. 
     remote isolated function deactivateAccount(string accountId) returns Account|error {
-        string  path = string `/accounts/${accountId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        Account response = check self.clientEp-> delete(path, request, targetType = Account);
+        string resourcePath = string `/accounts/${accountId}`;
+        Account response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Fetch an account's acquisition data
@@ -161,8 +160,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account's acquisition data. 
     remote isolated function getAccountAcquisition(string accountId) returns AccountAcquisition|error {
-        string  path = string `/accounts/${accountId}/acquisition`;
-        AccountAcquisition response = check self.clientEp-> get(path, targetType = AccountAcquisition);
+        string resourcePath = string `/accounts/${accountId}/acquisition`;
+        AccountAcquisition response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an account's acquisition data
@@ -170,11 +169,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account's updated acquisition data. 
     remote isolated function updateAccountAcquisition(string accountId, AccountAcquisitionUpdate payload) returns AccountAcquisition|error {
-        string  path = string `/accounts/${accountId}/acquisition`;
+        string resourcePath = string `/accounts/${accountId}/acquisition`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AccountAcquisition response = check self.clientEp->put(path, request, targetType=AccountAcquisition);
+        request.setPayload(jsonBody, "application/json");
+        AccountAcquisition response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove an account's acquisition data
@@ -182,10 +181,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Acquisition data was succesfully deleted. 
     remote isolated function removeAccountAcquisition(string accountId) returns http:Response|error {
-        string  path = string `/accounts/${accountId}/acquisition`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/accounts/${accountId}/acquisition`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Reactivate an inactive account
@@ -193,10 +190,10 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account. 
     remote isolated function reactivateAccount(string accountId) returns Account|error {
-        string  path = string `/accounts/${accountId}/reactivate`;
+        string resourcePath = string `/accounts/${accountId}/reactivate`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Account response = check self.clientEp-> put(path, request, targetType = Account);
+        Account response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Fetch an account's balance and past due status
@@ -204,8 +201,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account's balance. 
     remote isolated function getAccountBalance(string accountId) returns AccountBalance|error {
-        string  path = string `/accounts/${accountId}/balance`;
-        AccountBalance response = check self.clientEp-> get(path, targetType = AccountBalance);
+        string resourcePath = string `/accounts/${accountId}/balance`;
+        AccountBalance response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch an account's billing information
@@ -213,8 +210,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - An account's billing information. 
     remote isolated function getBillingInfo(string accountId) returns BillingInfo|error {
-        string  path = string `/accounts/${accountId}/billing_info`;
-        BillingInfo response = check self.clientEp-> get(path, targetType = BillingInfo);
+        string resourcePath = string `/accounts/${accountId}/billing_info`;
+        BillingInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Set an account's billing information
@@ -222,11 +219,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Updated billing information. 
     remote isolated function updateBillingInfo(string accountId, BillingInfoCreate payload) returns BillingInfo|error {
-        string  path = string `/accounts/${accountId}/billing_info`;
+        string resourcePath = string `/accounts/${accountId}/billing_info`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BillingInfo response = check self.clientEp->put(path, request, targetType=BillingInfo);
+        request.setPayload(jsonBody, "application/json");
+        BillingInfo response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove an account's billing information
@@ -234,10 +231,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Billing information deleted 
     remote isolated function removeBillingInfo(string accountId) returns http:Response|error {
-        string  path = string `/accounts/${accountId}/billing_info`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/accounts/${accountId}/billing_info`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Verify an account's credit card billing information
@@ -245,11 +240,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Transaction information from verify. 
     remote isolated function verifyBillingInfo(string accountId, BillingInfoVerify payload) returns Transaction|error {
-        string  path = string `/accounts/${accountId}/billing_info/verify`;
+        string resourcePath = string `/accounts/${accountId}/billing_info/verify`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Transaction response = check self.clientEp->post(path, request, targetType=Transaction);
+        request.setPayload(jsonBody, "application/json");
+        Transaction response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the list of billing information associated with an account
@@ -261,10 +256,11 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the the billing information for an account's 
     remote isolated function listBillingInfos(string accountId, string[]? ids = (), string sort = "created_at", string? beginTime = (), string? endTime = ()) returns BillingInfoList|error {
-        string  path = string `/accounts/${accountId}/billing_infos`;
+        string resourcePath = string `/accounts/${accountId}/billing_infos`;
         map<anydata> queryParam = {"ids": ids, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        BillingInfoList response = check self.clientEp-> get(path, targetType = BillingInfoList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        BillingInfoList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add new billing information on an account
@@ -272,11 +268,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Updated billing information. 
     remote isolated function createBillingInfo(string accountId, BillingInfoCreate payload) returns BillingInfo|error {
-        string  path = string `/accounts/${accountId}/billing_infos`;
+        string resourcePath = string `/accounts/${accountId}/billing_infos`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BillingInfo response = check self.clientEp->post(path, request, targetType=BillingInfo);
+        request.setPayload(jsonBody, "application/json");
+        BillingInfo response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a billing info
@@ -285,8 +281,8 @@ public isolated client class Client {
     # + billingInfoId - Billing Info ID. 
     # + return - A billing info. 
     remote isolated function getABillingInfo(string accountId, string billingInfoId) returns BillingInfo|error {
-        string  path = string `/accounts/${accountId}/billing_infos/${billingInfoId}`;
-        BillingInfo response = check self.clientEp-> get(path, targetType = BillingInfo);
+        string resourcePath = string `/accounts/${accountId}/billing_infos/${billingInfoId}`;
+        BillingInfo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an account's billing information
@@ -295,11 +291,11 @@ public isolated client class Client {
     # + billingInfoId - Billing Info ID. 
     # + return - Updated billing information. 
     remote isolated function updateABillingInfo(string accountId, string billingInfoId, BillingInfoCreate payload) returns BillingInfo|error {
-        string  path = string `/accounts/${accountId}/billing_infos/${billingInfoId}`;
+        string resourcePath = string `/accounts/${accountId}/billing_infos/${billingInfoId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BillingInfo response = check self.clientEp->put(path, request, targetType=BillingInfo);
+        request.setPayload(jsonBody, "application/json");
+        BillingInfo response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove an account's billing information
@@ -308,10 +304,8 @@ public isolated client class Client {
     # + billingInfoId - Billing Info ID. 
     # + return - Billing information deleted 
     remote isolated function removeABillingInfo(string accountId, string billingInfoId) returns http:Response|error {
-        string  path = string `/accounts/${accountId}/billing_infos/${billingInfoId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/accounts/${accountId}/billing_infos/${billingInfoId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Show the coupon redemptions for an account
@@ -324,10 +318,11 @@ public isolated client class Client {
     # + state - Filter by state. 
     # + return - A list of the the coupon redemptions on an account. 
     remote isolated function listAccountCouponRedemptions(string accountId, string[]? ids = (), string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns CouponRedemptionList|error {
-        string  path = string `/accounts/${accountId}/coupon_redemptions`;
+        string resourcePath = string `/accounts/${accountId}/coupon_redemptions`;
         map<anydata> queryParam = {"ids": ids, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        CouponRedemptionList response = check self.clientEp-> get(path, targetType = CouponRedemptionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CouponRedemptionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Show the coupon redemptions that are active on an account
@@ -335,8 +330,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Active coupon redemptions on an account. 
     remote isolated function listActiveCouponRedemptions(string accountId) returns CouponRedemptionList|error {
-        string  path = string `/accounts/${accountId}/coupon_redemptions/active`;
-        CouponRedemptionList response = check self.clientEp-> get(path, targetType = CouponRedemptionList);
+        string resourcePath = string `/accounts/${accountId}/coupon_redemptions/active`;
+        CouponRedemptionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Generate an active coupon redemption on an account or subscription
@@ -344,11 +339,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Returns the new coupon redemption. 
     remote isolated function createCouponRedemption(string accountId, CouponRedemptionCreate payload) returns CouponRedemption|error {
-        string  path = string `/accounts/${accountId}/coupon_redemptions/active`;
+        string resourcePath = string `/accounts/${accountId}/coupon_redemptions/active`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CouponRedemption response = check self.clientEp->post(path, request, targetType=CouponRedemption);
+        request.setPayload(jsonBody, "application/json");
+        CouponRedemption response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete the active coupon redemption from an account
@@ -356,10 +351,8 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Coupon redemption deleted. 
     remote isolated function removeCouponRedemption(string accountId) returns CouponRedemption|error {
-        string  path = string `/accounts/${accountId}/coupon_redemptions/active`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        CouponRedemption response = check self.clientEp-> delete(path, request, targetType = CouponRedemption);
+        string resourcePath = string `/accounts/${accountId}/coupon_redemptions/active`;
+        CouponRedemption response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List an account's credit payments
@@ -372,10 +365,10 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the account's credit payments. 
     remote isolated function listAccountCreditPayments(string accountId, int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = ()) returns CreditPaymentList|error {
-        string  path = string `/accounts/${accountId}/credit_payments`;
+        string resourcePath = string `/accounts/${accountId}/credit_payments`;
         map<anydata> queryParam = {"limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        CreditPaymentList response = check self.clientEp-> get(path, targetType = CreditPaymentList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CreditPaymentList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List an account's invoices
@@ -390,10 +383,11 @@ public isolated client class Client {
     # + 'type - Filter by type when: - `type=charge`, only charge invoices will be returned. - `type=credit`, only credit invoices will be returned. - `type=non-legacy`, only charge and credit invoices will be returned. - `type=legacy`, only legacy invoices will be returned. 
     # + return - A list of the account's invoices. 
     remote isolated function listAccountInvoices(string accountId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? 'type = ()) returns InvoiceList|error {
-        string  path = string `/accounts/${accountId}/invoices`;
+        string resourcePath = string `/accounts/${accountId}/invoices`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        InvoiceList response = check self.clientEp-> get(path, targetType = InvoiceList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InvoiceList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an invoice for pending line items
@@ -401,11 +395,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Returns the new invoices. 
     remote isolated function createInvoice(string accountId, InvoiceCreate payload) returns InvoiceCollection|error {
-        string  path = string `/accounts/${accountId}/invoices`;
+        string resourcePath = string `/accounts/${accountId}/invoices`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InvoiceCollection response = check self.clientEp->post(path, request, targetType=InvoiceCollection);
+        request.setPayload(jsonBody, "application/json");
+        InvoiceCollection response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Preview new invoice for pending line items
@@ -413,11 +407,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Returns the invoice previews. 
     remote isolated function previewInvoice(string accountId, InvoiceCreate payload) returns InvoiceCollection|error {
-        string  path = string `/accounts/${accountId}/invoices/preview`;
+        string resourcePath = string `/accounts/${accountId}/invoices/preview`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InvoiceCollection response = check self.clientEp->post(path, request, targetType=InvoiceCollection);
+        request.setPayload(jsonBody, "application/json");
+        InvoiceCollection response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # List an account's line items
@@ -434,10 +428,11 @@ public isolated client class Client {
     # + 'type - Filter by type field. 
     # + return - A list of the account's line items. 
     remote isolated function listAccountLineItems(string accountId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? original = (), string? state = (), string? 'type = ()) returns LineItemList|error {
-        string  path = string `/accounts/${accountId}/line_items`;
+        string resourcePath = string `/accounts/${accountId}/line_items`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "original": original, "state": state, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        LineItemList response = check self.clientEp-> get(path, targetType = LineItemList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        LineItemList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new line item for the account
@@ -445,11 +440,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Returns the new line item. 
     remote isolated function createLineItem(string accountId, LineItemCreate payload) returns LineItem|error {
-        string  path = string `/accounts/${accountId}/line_items`;
+        string resourcePath = string `/accounts/${accountId}/line_items`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LineItem response = check self.clientEp->post(path, request, targetType=LineItem);
+        request.setPayload(jsonBody, "application/json");
+        LineItem response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a list of an account's notes
@@ -458,10 +453,11 @@ public isolated client class Client {
     # + ids - Filter results by their IDs. Up to 200 IDs can be passed at once using commas as separators, e.g. `ids=h1at4d57xlmy,gyqgg0d3v9n1,jrsm5b4yefg6`. **Important notes:** * The `ids` parameter cannot be used with any other ordering or filtering   parameters (`limit`, `order`, `sort`, `begin_time`, `end_time`, etc) * Invalid or unknown IDs will be ignored, so you should check that the   results correspond to your request. * Records are returned in an arbitrary order. Since results are all   returned at once you can sort the records yourself. 
     # + return - A list of an account's notes. 
     remote isolated function listAccountNotes(string accountId, string[]? ids = ()) returns AccountNoteList|error {
-        string  path = string `/accounts/${accountId}/notes`;
+        string resourcePath = string `/accounts/${accountId}/notes`;
         map<anydata> queryParam = {"ids": ids};
-        path = path + check getPathForQueryParam(queryParam);
-        AccountNoteList response = check self.clientEp-> get(path, targetType = AccountNoteList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AccountNoteList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch an account note
@@ -470,8 +466,8 @@ public isolated client class Client {
     # + accountNoteId - Account Note ID. 
     # + return - An account note. 
     remote isolated function getAccountNote(string accountId, string accountNoteId) returns AccountNote|error {
-        string  path = string `/accounts/${accountId}/notes/${accountNoteId}`;
-        AccountNote response = check self.clientEp-> get(path, targetType = AccountNote);
+        string resourcePath = string `/accounts/${accountId}/notes/${accountNoteId}`;
+        AccountNote response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch a list of an account's shipping addresses
@@ -485,10 +481,11 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of an account's shipping addresses. 
     remote isolated function listShippingAddresses(string accountId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = ()) returns ShippingAddressList|error {
-        string  path = string `/accounts/${accountId}/shipping_addresses`;
+        string resourcePath = string `/accounts/${accountId}/shipping_addresses`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        ShippingAddressList response = check self.clientEp-> get(path, targetType = ShippingAddressList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ShippingAddressList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new shipping address for the account
@@ -496,11 +493,11 @@ public isolated client class Client {
     # + accountId - Account ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-bob`. 
     # + return - Returns the new shipping address. 
     remote isolated function createShippingAddress(string accountId, ShippingAddressCreate payload) returns ShippingAddress|error {
-        string  path = string `/accounts/${accountId}/shipping_addresses`;
+        string resourcePath = string `/accounts/${accountId}/shipping_addresses`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShippingAddress response = check self.clientEp->post(path, request, targetType=ShippingAddress);
+        request.setPayload(jsonBody, "application/json");
+        ShippingAddress response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch an account's shipping address
@@ -509,8 +506,8 @@ public isolated client class Client {
     # + shippingAddressId - Shipping Address ID. 
     # + return - A shipping address. 
     remote isolated function getShippingAddress(string accountId, string shippingAddressId) returns ShippingAddress|error {
-        string  path = string `/accounts/${accountId}/shipping_addresses/${shippingAddressId}`;
-        ShippingAddress response = check self.clientEp-> get(path, targetType = ShippingAddress);
+        string resourcePath = string `/accounts/${accountId}/shipping_addresses/${shippingAddressId}`;
+        ShippingAddress response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an account's shipping address
@@ -519,11 +516,11 @@ public isolated client class Client {
     # + shippingAddressId - Shipping Address ID. 
     # + return - The updated shipping address. 
     remote isolated function updateShippingAddress(string accountId, string shippingAddressId, ShippingAddressUpdate payload) returns ShippingAddress|error {
-        string  path = string `/accounts/${accountId}/shipping_addresses/${shippingAddressId}`;
+        string resourcePath = string `/accounts/${accountId}/shipping_addresses/${shippingAddressId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShippingAddress response = check self.clientEp->put(path, request, targetType=ShippingAddress);
+        request.setPayload(jsonBody, "application/json");
+        ShippingAddress response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove an account's shipping address
@@ -532,10 +529,8 @@ public isolated client class Client {
     # + shippingAddressId - Shipping Address ID. 
     # + return - Shipping address deleted. 
     remote isolated function removeShippingAddress(string accountId, string shippingAddressId) returns http:Response|error {
-        string  path = string `/accounts/${accountId}/shipping_addresses/${shippingAddressId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/accounts/${accountId}/shipping_addresses/${shippingAddressId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List an account's subscriptions
@@ -550,10 +545,11 @@ public isolated client class Client {
     # + state - Filter by state. - When `state=active`, `state=canceled`, `state=expired`, or `state=future`, subscriptions with states that match the query and only those subscriptions will be returned. - When `state=in_trial`, only subscriptions that have a trial_started_at date earlier than now and a trial_ends_at date later than now will be returned. - When `state=live`, only subscriptions that are in an active, canceled, or future state or are in trial will be returned. 
     # + return - A list of the account's subscriptions. 
     remote isolated function listAccountSubscriptions(string accountId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns SubscriptionList|error {
-        string  path = string `/accounts/${accountId}/subscriptions`;
+        string resourcePath = string `/accounts/${accountId}/subscriptions`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        SubscriptionList response = check self.clientEp-> get(path, targetType = SubscriptionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SubscriptionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List an account's transactions
@@ -569,10 +565,11 @@ public isolated client class Client {
     # + success - Filter by success field. 
     # + return - A list of the account's transactions. 
     remote isolated function listAccountTransactions(string accountId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? 'type = (), string? success = ()) returns TransactionList|error {
-        string  path = string `/accounts/${accountId}/transactions`;
+        string resourcePath = string `/accounts/${accountId}/transactions`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "type": 'type, "success": success};
-        path = path + check getPathForQueryParam(queryParam);
-        TransactionList response = check self.clientEp-> get(path, targetType = TransactionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        TransactionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List an account's child accounts
@@ -589,10 +586,11 @@ public isolated client class Client {
     # + pastDue - Filter for accounts with an invoice in the `past_due` state. 
     # + return - A list of an account's child accounts. 
     remote isolated function listChildAccounts(string accountId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? email = (), boolean? subscriber = (), string? pastDue = ()) returns AccountList|error {
-        string  path = string `/accounts/${accountId}/accounts`;
+        string resourcePath = string `/accounts/${accountId}/accounts`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "email": email, "subscriber": subscriber, "past_due": pastDue};
-        path = path + check getPathForQueryParam(queryParam);
-        AccountList response = check self.clientEp-> get(path, targetType = AccountList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AccountList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a site's account acquisition data
@@ -605,10 +603,11 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the site's account acquisition data. 
     remote isolated function listAccountAcquisition(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = ()) returns AccountAcquisitionList|error {
-        string  path = string `/acquisitions`;
+        string resourcePath = string `/acquisitions`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        AccountAcquisitionList response = check self.clientEp-> get(path, targetType = AccountAcquisitionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AccountAcquisitionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a site's coupons
@@ -621,21 +620,22 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the site's coupons. 
     remote isolated function listCoupons(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = ()) returns CouponList|error {
-        string  path = string `/coupons`;
+        string resourcePath = string `/coupons`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        CouponList response = check self.clientEp-> get(path, targetType = CouponList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CouponList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new coupon
     #
     # + return - A new coupon. 
     remote isolated function createCoupon(CouponCreate payload) returns Coupon|error {
-        string  path = string `/coupons`;
+        string resourcePath = string `/coupons`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Coupon response = check self.clientEp->post(path, request, targetType=Coupon);
+        request.setPayload(jsonBody, "application/json");
+        Coupon response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a coupon
@@ -643,8 +643,8 @@ public isolated client class Client {
     # + couponId - Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`. 
     # + return - A coupon. 
     remote isolated function getCoupon(string couponId) returns Coupon|error {
-        string  path = string `/coupons/${couponId}`;
-        Coupon response = check self.clientEp-> get(path, targetType = Coupon);
+        string resourcePath = string `/coupons/${couponId}`;
+        Coupon response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an active coupon
@@ -652,11 +652,11 @@ public isolated client class Client {
     # + couponId - Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`. 
     # + return - The updated coupon. 
     remote isolated function updateCoupon(string couponId, CouponUpdate payload) returns Coupon|error {
-        string  path = string `/coupons/${couponId}`;
+        string resourcePath = string `/coupons/${couponId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Coupon response = check self.clientEp->put(path, request, targetType=Coupon);
+        request.setPayload(jsonBody, "application/json");
+        Coupon response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Expire a coupon
@@ -664,10 +664,8 @@ public isolated client class Client {
     # + couponId - Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`. 
     # + return - The expired Coupon 
     remote isolated function deactivateCoupon(string couponId) returns Coupon|error {
-        string  path = string `/coupons/${couponId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        Coupon response = check self.clientEp-> delete(path, request, targetType = Coupon);
+        string resourcePath = string `/coupons/${couponId}`;
+        Coupon response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Generate unique coupon codes
@@ -675,11 +673,11 @@ public isolated client class Client {
     # + couponId - Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`. 
     # + return - A set of parameters that can be passed to the `list_unique_coupon_codes` endpoint to obtain only the newly generated `UniqueCouponCodes`. 
     remote isolated function generateUniqueCouponCodes(string couponId, CouponBulkCreate payload) returns UniqueCouponCodeParams|error {
-        string  path = string `/coupons/${couponId}/generate`;
+        string resourcePath = string `/coupons/${couponId}/generate`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UniqueCouponCodeParams response = check self.clientEp->post(path, request, targetType=UniqueCouponCodeParams);
+        request.setPayload(jsonBody, "application/json");
+        UniqueCouponCodeParams response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Restore an inactive coupon
@@ -687,11 +685,11 @@ public isolated client class Client {
     # + couponId - Coupon ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-10off`. 
     # + return - The restored coupon. 
     remote isolated function restoreCoupon(string couponId, CouponUpdate payload) returns Coupon|error {
-        string  path = string `/coupons/${couponId}/restore`;
+        string resourcePath = string `/coupons/${couponId}/restore`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Coupon response = check self.clientEp->put(path, request, targetType=Coupon);
+        request.setPayload(jsonBody, "application/json");
+        Coupon response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # List unique coupon codes associated with a bulk coupon
@@ -705,10 +703,11 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of unique coupon codes that were generated 
     remote isolated function listUniqueCouponCodes(string couponId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = ()) returns UniqueCouponCodeList|error {
-        string  path = string `/coupons/${couponId}/unique_coupon_codes`;
+        string resourcePath = string `/coupons/${couponId}/unique_coupon_codes`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        UniqueCouponCodeList response = check self.clientEp-> get(path, targetType = UniqueCouponCodeList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        UniqueCouponCodeList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a site's credit payments
@@ -720,10 +719,10 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the site's credit payments. 
     remote isolated function listCreditPayments(int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = ()) returns CreditPaymentList|error {
-        string  path = string `/credit_payments`;
+        string resourcePath = string `/credit_payments`;
         map<anydata> queryParam = {"limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        CreditPaymentList response = check self.clientEp-> get(path, targetType = CreditPaymentList);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        CreditPaymentList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch a credit payment
@@ -731,8 +730,8 @@ public isolated client class Client {
     # + creditPaymentId - Credit Payment ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A credit payment. 
     remote isolated function getCreditPayment(string creditPaymentId) returns CreditPayment|error {
-        string  path = string `/credit_payments/${creditPaymentId}`;
-        CreditPayment response = check self.clientEp-> get(path, targetType = CreditPayment);
+        string resourcePath = string `/credit_payments/${creditPaymentId}`;
+        CreditPayment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a site's custom field definitions
@@ -746,10 +745,11 @@ public isolated client class Client {
     # + relatedType - Filter by related type. 
     # + return - A list of the site's custom field definitions. 
     remote isolated function listCustomFieldDefinitions(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? relatedType = ()) returns CustomFieldDefinitionList|error {
-        string  path = string `/custom_field_definitions`;
+        string resourcePath = string `/custom_field_definitions`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "related_type": relatedType};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomFieldDefinitionList response = check self.clientEp-> get(path, targetType = CustomFieldDefinitionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomFieldDefinitionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch an custom field definition
@@ -757,8 +757,8 @@ public isolated client class Client {
     # + customFieldDefinitionId - Custom Field Definition ID 
     # + return - An custom field definition. 
     remote isolated function getCustomFieldDefinition(string customFieldDefinitionId) returns CustomFieldDefinition|error {
-        string  path = string `/custom_field_definitions/${customFieldDefinitionId}`;
-        CustomFieldDefinition response = check self.clientEp-> get(path, targetType = CustomFieldDefinition);
+        string resourcePath = string `/custom_field_definitions/${customFieldDefinitionId}`;
+        CustomFieldDefinition response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a site's items
@@ -772,21 +772,22 @@ public isolated client class Client {
     # + state - Filter by state. 
     # + return - A list of the site's items. 
     remote isolated function listItems(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns ItemList|error {
-        string  path = string `/items`;
+        string resourcePath = string `/items`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        ItemList response = check self.clientEp-> get(path, targetType = ItemList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ItemList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new item
     #
     # + return - A new item. 
     remote isolated function createItem(ItemCreate payload) returns Item|error {
-        string  path = string `/items`;
+        string resourcePath = string `/items`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Item response = check self.clientEp->post(path, request, targetType=Item);
+        request.setPayload(jsonBody, "application/json");
+        Item response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch an item
@@ -794,8 +795,8 @@ public isolated client class Client {
     # + itemId - Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`. 
     # + return - An item. 
     remote isolated function getItem(string itemId) returns Item|error {
-        string  path = string `/items/${itemId}`;
-        Item response = check self.clientEp-> get(path, targetType = Item);
+        string resourcePath = string `/items/${itemId}`;
+        Item response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an active item
@@ -803,11 +804,11 @@ public isolated client class Client {
     # + itemId - Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`. 
     # + return - The updated item. 
     remote isolated function updateItem(string itemId, ItemUpdate payload) returns Item|error {
-        string  path = string `/items/${itemId}`;
+        string resourcePath = string `/items/${itemId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Item response = check self.clientEp->put(path, request, targetType=Item);
+        request.setPayload(jsonBody, "application/json");
+        Item response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deactivate an item
@@ -815,10 +816,8 @@ public isolated client class Client {
     # + itemId - Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`. 
     # + return - An item. 
     remote isolated function deactivateItem(string itemId) returns Item|error {
-        string  path = string `/items/${itemId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        Item response = check self.clientEp-> delete(path, request, targetType = Item);
+        string resourcePath = string `/items/${itemId}`;
+        Item response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Reactivate an inactive item
@@ -826,10 +825,10 @@ public isolated client class Client {
     # + itemId - Item ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-red`. 
     # + return - An item. 
     remote isolated function reactivateItem(string itemId) returns Item|error {
-        string  path = string `/items/${itemId}/reactivate`;
+        string resourcePath = string `/items/${itemId}/reactivate`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Item response = check self.clientEp-> put(path, request, targetType = Item);
+        Item response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # List a site's measured units
@@ -843,21 +842,22 @@ public isolated client class Client {
     # + state - Filter by state. 
     # + return - A list of the site's measured units. 
     remote isolated function listMeasuredUnit(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns MeasuredUnitList|error {
-        string  path = string `/measured_units`;
+        string resourcePath = string `/measured_units`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        MeasuredUnitList response = check self.clientEp-> get(path, targetType = MeasuredUnitList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        MeasuredUnitList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new measured unit
     #
     # + return - A new measured unit. 
     remote isolated function createMeasuredUnit(MeasuredUnitCreate payload) returns MeasuredUnit|error {
-        string  path = string `/measured_units`;
+        string resourcePath = string `/measured_units`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MeasuredUnit response = check self.clientEp->post(path, request, targetType=MeasuredUnit);
+        request.setPayload(jsonBody, "application/json");
+        MeasuredUnit response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a measured unit
@@ -865,8 +865,8 @@ public isolated client class Client {
     # + measuredUnitId - Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`. 
     # + return - An item. 
     remote isolated function getMeasuredUnit(string measuredUnitId) returns MeasuredUnit|error {
-        string  path = string `/measured_units/${measuredUnitId}`;
-        MeasuredUnit response = check self.clientEp-> get(path, targetType = MeasuredUnit);
+        string resourcePath = string `/measured_units/${measuredUnitId}`;
+        MeasuredUnit response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a measured unit
@@ -874,11 +874,11 @@ public isolated client class Client {
     # + measuredUnitId - Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`. 
     # + return - The updated measured_unit. 
     remote isolated function updateMeasuredUnit(string measuredUnitId, MeasuredUnitUpdate payload) returns MeasuredUnit|error {
-        string  path = string `/measured_units/${measuredUnitId}`;
+        string resourcePath = string `/measured_units/${measuredUnitId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MeasuredUnit response = check self.clientEp->put(path, request, targetType=MeasuredUnit);
+        request.setPayload(jsonBody, "application/json");
+        MeasuredUnit response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove a measured unit
@@ -886,10 +886,8 @@ public isolated client class Client {
     # + measuredUnitId - Measured unit ID or name. For ID no prefix is used e.g. `e28zov4fw0v2`. For name use prefix `name-`, e.g. `name-Storage`. 
     # + return - A measured unit. 
     remote isolated function removeMeasuredUnit(string measuredUnitId) returns MeasuredUnit|error {
-        string  path = string `/measured_units/${measuredUnitId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        MeasuredUnit response = check self.clientEp-> delete(path, request, targetType = MeasuredUnit);
+        string resourcePath = string `/measured_units/${measuredUnitId}`;
+        MeasuredUnit response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List a site's invoices
@@ -903,10 +901,11 @@ public isolated client class Client {
     # + 'type - Filter by type when: - `type=charge`, only charge invoices will be returned. - `type=credit`, only credit invoices will be returned. - `type=non-legacy`, only charge and credit invoices will be returned. - `type=legacy`, only legacy invoices will be returned. 
     # + return - A list of the site's invoices. 
     remote isolated function listInvoices(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? 'type = ()) returns InvoiceList|error {
-        string  path = string `/invoices`;
+        string resourcePath = string `/invoices`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        InvoiceList response = check self.clientEp-> get(path, targetType = InvoiceList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InvoiceList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch an invoice
@@ -914,8 +913,8 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - An invoice. 
     remote isolated function getInvoice(string invoiceId) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}`;
-        Invoice response = check self.clientEp-> get(path, targetType = Invoice);
+        string resourcePath = string `/invoices/${invoiceId}`;
+        Invoice response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an invoice
@@ -923,11 +922,11 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - An invoice. 
     remote isolated function updateInvoice(string invoiceId, InvoiceUpdate payload) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}`;
+        string resourcePath = string `/invoices/${invoiceId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Invoice response = check self.clientEp->put(path, request, targetType=Invoice);
+        request.setPayload(jsonBody, "application/json");
+        Invoice response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Fetch an invoice as a PDF
@@ -935,8 +934,8 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - An invoice as a PDF. 
     remote isolated function getInvoicePdf(string invoiceId) returns BinaryFile|error {
-        string  path = string `/invoices/${invoiceId}.pdf`;
-        BinaryFile response = check self.clientEp-> get(path, targetType = BinaryFile);
+        string resourcePath = string `/invoices/${invoiceId}.pdf`;
+        BinaryFile response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Collect a pending or past due, automatic invoice
@@ -944,11 +943,11 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - The updated invoice. 
     remote isolated function collectInvoice(string invoiceId, InvoiceCollect payload) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}/collect`;
+        string resourcePath = string `/invoices/${invoiceId}/collect`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Invoice response = check self.clientEp->put(path, request, targetType=Invoice);
+        request.setPayload(jsonBody, "application/json");
+        Invoice response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Mark an open invoice as failed
@@ -956,10 +955,10 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - The updated invoice. 
     remote isolated function markInvoiceFailed(string invoiceId) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}/mark_failed`;
+        string resourcePath = string `/invoices/${invoiceId}/mark_failed`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Invoice response = check self.clientEp-> put(path, request, targetType = Invoice);
+        Invoice response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Mark an open invoice as successful
@@ -967,10 +966,10 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - The updated invoice. 
     remote isolated function markInvoiceSuccessful(string invoiceId) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}/mark_successful`;
+        string resourcePath = string `/invoices/${invoiceId}/mark_successful`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Invoice response = check self.clientEp-> put(path, request, targetType = Invoice);
+        Invoice response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Reopen a closed, manual invoice
@@ -978,10 +977,10 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - The updated invoice. 
     remote isolated function reopenInvoice(string invoiceId) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}/reopen`;
+        string resourcePath = string `/invoices/${invoiceId}/reopen`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Invoice response = check self.clientEp-> put(path, request, targetType = Invoice);
+        Invoice response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Void a credit invoice.
@@ -989,10 +988,10 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - The updated invoice. 
     remote isolated function voidInvoice(string invoiceId) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}/void`;
+        string resourcePath = string `/invoices/${invoiceId}/void`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Invoice response = check self.clientEp-> put(path, request, targetType = Invoice);
+        Invoice response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Record an external payment for a manual invoices.
@@ -1000,11 +999,11 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - The recorded transaction. 
     remote isolated function recordExternalTransaction(string invoiceId, ExternalTransaction payload) returns Transaction|error {
-        string  path = string `/invoices/${invoiceId}/transactions`;
+        string resourcePath = string `/invoices/${invoiceId}/transactions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Transaction response = check self.clientEp->post(path, request, targetType=Transaction);
+        request.setPayload(jsonBody, "application/json");
+        Transaction response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # List an invoice's line items
@@ -1021,10 +1020,11 @@ public isolated client class Client {
     # + 'type - Filter by type field. 
     # + return - A list of the invoice's line items. 
     remote isolated function listInvoiceLineItems(string invoiceId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? original = (), string? state = (), string? 'type = ()) returns LineItemList|error {
-        string  path = string `/invoices/${invoiceId}/line_items`;
+        string resourcePath = string `/invoices/${invoiceId}/line_items`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "original": original, "state": state, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        LineItemList response = check self.clientEp-> get(path, targetType = LineItemList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        LineItemList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Show the coupon redemptions applied to an invoice
@@ -1036,10 +1036,11 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the the coupon redemptions associated with the invoice. 
     remote isolated function listInvoiceCouponRedemptions(string invoiceId, string[]? ids = (), string sort = "created_at", string? beginTime = (), string? endTime = ()) returns CouponRedemptionList|error {
-        string  path = string `/invoices/${invoiceId}/coupon_redemptions`;
+        string resourcePath = string `/invoices/${invoiceId}/coupon_redemptions`;
         map<anydata> queryParam = {"ids": ids, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        CouponRedemptionList response = check self.clientEp-> get(path, targetType = CouponRedemptionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CouponRedemptionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List an invoice's related credit or charge invoices
@@ -1047,8 +1048,8 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - A list of the credit or charge invoices associated with the invoice. 
     remote isolated function listRelatedInvoices(string invoiceId) returns InvoiceList|error {
-        string  path = string `/invoices/${invoiceId}/related_invoices`;
-        InvoiceList response = check self.clientEp-> get(path, targetType = InvoiceList);
+        string resourcePath = string `/invoices/${invoiceId}/related_invoices`;
+        InvoiceList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Refund an invoice
@@ -1056,11 +1057,11 @@ public isolated client class Client {
     # + invoiceId - Invoice ID or number. For ID no prefix is used e.g. `e28zov4fw0v2`. For number use prefix `number-`, e.g. `number-1000`. 
     # + return - Returns the new credit invoice. 
     remote isolated function refundInvoice(string invoiceId, InvoiceRefund payload) returns Invoice|error {
-        string  path = string `/invoices/${invoiceId}/refund`;
+        string resourcePath = string `/invoices/${invoiceId}/refund`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Invoice response = check self.clientEp->post(path, request, targetType=Invoice);
+        request.setPayload(jsonBody, "application/json");
+        Invoice response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # List a site's line items
@@ -1076,10 +1077,11 @@ public isolated client class Client {
     # + 'type - Filter by type field. 
     # + return - A list of the site's line items. 
     remote isolated function listLineItems(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? original = (), string? state = (), string? 'type = ()) returns LineItemList|error {
-        string  path = string `/line_items`;
+        string resourcePath = string `/line_items`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "original": original, "state": state, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        LineItemList response = check self.clientEp-> get(path, targetType = LineItemList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        LineItemList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch a line item
@@ -1087,8 +1089,8 @@ public isolated client class Client {
     # + lineItemId - Line Item ID. 
     # + return - A line item. 
     remote isolated function getLineItem(string lineItemId) returns LineItem|error {
-        string  path = string `/line_items/${lineItemId}`;
-        LineItem response = check self.clientEp-> get(path, targetType = LineItem);
+        string resourcePath = string `/line_items/${lineItemId}`;
+        LineItem response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete an uninvoiced line item
@@ -1096,10 +1098,8 @@ public isolated client class Client {
     # + lineItemId - Line Item ID. 
     # + return - Line item deleted. 
     remote isolated function removeLineItem(string lineItemId) returns http:Response|error {
-        string  path = string `/line_items/${lineItemId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/line_items/${lineItemId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List a site's plans
@@ -1113,21 +1113,22 @@ public isolated client class Client {
     # + state - Filter by state. 
     # + return - A list of plans. 
     remote isolated function listPlans(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns PlanList|error {
-        string  path = string `/plans`;
+        string resourcePath = string `/plans`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        PlanList response = check self.clientEp-> get(path, targetType = PlanList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PlanList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a plan
     #
     # + return - A plan. 
     remote isolated function createPlan(PlanCreate payload) returns Plan|error {
-        string  path = string `/plans`;
+        string resourcePath = string `/plans`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Plan response = check self.clientEp->post(path, request, targetType=Plan);
+        request.setPayload(jsonBody, "application/json");
+        Plan response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a plan
@@ -1135,8 +1136,8 @@ public isolated client class Client {
     # + planId - Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - A plan. 
     remote isolated function getPlan(string planId) returns Plan|error {
-        string  path = string `/plans/${planId}`;
-        Plan response = check self.clientEp-> get(path, targetType = Plan);
+        string resourcePath = string `/plans/${planId}`;
+        Plan response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a plan
@@ -1144,11 +1145,11 @@ public isolated client class Client {
     # + planId - Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - A plan. 
     remote isolated function updatePlan(string planId, PlanUpdate payload) returns Plan|error {
-        string  path = string `/plans/${planId}`;
+        string resourcePath = string `/plans/${planId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Plan response = check self.clientEp->put(path, request, targetType=Plan);
+        request.setPayload(jsonBody, "application/json");
+        Plan response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove a plan
@@ -1156,10 +1157,8 @@ public isolated client class Client {
     # + planId - Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - Plan deleted 
     remote isolated function removePlan(string planId) returns Plan|error {
-        string  path = string `/plans/${planId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        Plan response = check self.clientEp-> delete(path, request, targetType = Plan);
+        string resourcePath = string `/plans/${planId}`;
+        Plan response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List a plan's add-ons
@@ -1174,10 +1173,11 @@ public isolated client class Client {
     # + state - Filter by state. 
     # + return - A list of add-ons. 
     remote isolated function listPlanAddOns(string planId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns AddOnList|error {
-        string  path = string `/plans/${planId}/add_ons`;
+        string resourcePath = string `/plans/${planId}/add_ons`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        AddOnList response = check self.clientEp-> get(path, targetType = AddOnList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AddOnList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create an add-on
@@ -1185,11 +1185,11 @@ public isolated client class Client {
     # + planId - Plan ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - An add-on. 
     remote isolated function createPlanAddOn(string planId, AddOnCreate payload) returns AddOn|error {
-        string  path = string `/plans/${planId}/add_ons`;
+        string resourcePath = string `/plans/${planId}/add_ons`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AddOn response = check self.clientEp->post(path, request, targetType=AddOn);
+        request.setPayload(jsonBody, "application/json");
+        AddOn response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a plan's add-on
@@ -1198,8 +1198,8 @@ public isolated client class Client {
     # + addOnId - Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - An add-on. 
     remote isolated function getPlanAddOn(string planId, string addOnId) returns AddOn|error {
-        string  path = string `/plans/${planId}/add_ons/${addOnId}`;
-        AddOn response = check self.clientEp-> get(path, targetType = AddOn);
+        string resourcePath = string `/plans/${planId}/add_ons/${addOnId}`;
+        AddOn response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an add-on
@@ -1208,11 +1208,11 @@ public isolated client class Client {
     # + addOnId - Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - An add-on. 
     remote isolated function updatePlanAddOn(string planId, string addOnId, AddOnUpdate payload) returns AddOn|error {
-        string  path = string `/plans/${planId}/add_ons/${addOnId}`;
+        string resourcePath = string `/plans/${planId}/add_ons/${addOnId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AddOn response = check self.clientEp->put(path, request, targetType=AddOn);
+        request.setPayload(jsonBody, "application/json");
+        AddOn response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Remove an add-on
@@ -1221,10 +1221,8 @@ public isolated client class Client {
     # + addOnId - Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - Add-on deleted 
     remote isolated function removePlanAddOn(string planId, string addOnId) returns AddOn|error {
-        string  path = string `/plans/${planId}/add_ons/${addOnId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        AddOn response = check self.clientEp-> delete(path, request, targetType = AddOn);
+        string resourcePath = string `/plans/${planId}/add_ons/${addOnId}`;
+        AddOn response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List a site's add-ons
@@ -1238,10 +1236,11 @@ public isolated client class Client {
     # + state - Filter by state. 
     # + return - A list of add-ons. 
     remote isolated function listAddOns(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns AddOnList|error {
-        string  path = string `/add_ons`;
+        string resourcePath = string `/add_ons`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        AddOnList response = check self.clientEp-> get(path, targetType = AddOnList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AddOnList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch an add-on
@@ -1249,8 +1248,8 @@ public isolated client class Client {
     # + addOnId - Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - An add-on. 
     remote isolated function getAddOn(string addOnId) returns AddOn|error {
-        string  path = string `/add_ons/${addOnId}`;
-        AddOn response = check self.clientEp-> get(path, targetType = AddOn);
+        string resourcePath = string `/add_ons/${addOnId}`;
+        AddOn response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a site's shipping methods
@@ -1263,21 +1262,22 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the site's shipping methods. 
     remote isolated function listShippingMethods(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = ()) returns ShippingMethodList|error {
-        string  path = string `/shipping_methods`;
+        string resourcePath = string `/shipping_methods`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        ShippingMethodList response = check self.clientEp-> get(path, targetType = ShippingMethodList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ShippingMethodList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new shipping method
     #
     # + return - A new shipping method. 
     remote isolated function createShippingMethod(ShippingMethodCreate payload) returns ShippingMethod|error {
-        string  path = string `/shipping_methods`;
+        string resourcePath = string `/shipping_methods`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShippingMethod response = check self.clientEp->post(path, request, targetType=ShippingMethod);
+        request.setPayload(jsonBody, "application/json");
+        ShippingMethod response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a shipping method
@@ -1285,8 +1285,8 @@ public isolated client class Client {
     # + shippingMethodId - Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`. 
     # + return - A shipping method. 
     remote isolated function getShippingMethod(string shippingMethodId) returns ShippingMethod|error {
-        string  path = string `/shipping_methods/${shippingMethodId}`;
-        ShippingMethod response = check self.clientEp-> get(path, targetType = ShippingMethod);
+        string resourcePath = string `/shipping_methods/${shippingMethodId}`;
+        ShippingMethod response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an active Shipping Method
@@ -1294,11 +1294,11 @@ public isolated client class Client {
     # + shippingMethodId - Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`. 
     # + return - The updated shipping method. 
     remote isolated function updateShippingMethod(string shippingMethodId, ShippingMethodUpdate payload) returns ShippingMethod|error {
-        string  path = string `/shipping_methods/${shippingMethodId}`;
+        string resourcePath = string `/shipping_methods/${shippingMethodId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShippingMethod response = check self.clientEp->put(path, request, targetType=ShippingMethod);
+        request.setPayload(jsonBody, "application/json");
+        ShippingMethod response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deactivate a shipping method
@@ -1306,10 +1306,8 @@ public isolated client class Client {
     # + shippingMethodId - Shipping Method ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-usps_2-day`. 
     # + return - A shipping method. 
     remote isolated function deactivateShippingMethod(string shippingMethodId) returns ShippingMethod|error {
-        string  path = string `/shipping_methods/${shippingMethodId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        ShippingMethod response = check self.clientEp-> delete(path, request, targetType = ShippingMethod);
+        string resourcePath = string `/shipping_methods/${shippingMethodId}`;
+        ShippingMethod response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List a site's subscriptions
@@ -1323,21 +1321,22 @@ public isolated client class Client {
     # + state - Filter by state. - When `state=active`, `state=canceled`, `state=expired`, or `state=future`, subscriptions with states that match the query and only those subscriptions will be returned. - When `state=in_trial`, only subscriptions that have a trial_started_at date earlier than now and a trial_ends_at date later than now will be returned. - When `state=live`, only subscriptions that are in an active, canceled, or future state or are in trial will be returned. 
     # + return - A list of the site's subscriptions. 
     remote isolated function listSubscriptions(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? state = ()) returns SubscriptionList|error {
-        string  path = string `/subscriptions`;
+        string resourcePath = string `/subscriptions`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "state": state};
-        path = path + check getPathForQueryParam(queryParam);
-        SubscriptionList response = check self.clientEp-> get(path, targetType = SubscriptionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SubscriptionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new subscription
     #
     # + return - A subscription. 
     remote isolated function createSubscription(SubscriptionCreate payload) returns Subscription|error {
-        string  path = string `/subscriptions`;
+        string resourcePath = string `/subscriptions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Subscription response = check self.clientEp->post(path, request, targetType=Subscription);
+        request.setPayload(jsonBody, "application/json");
+        Subscription response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Fetch a subscription
@@ -1345,8 +1344,8 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription. 
     remote isolated function getSubscription(string subscriptionId) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}`;
-        Subscription response = check self.clientEp-> get(path, targetType = Subscription);
+        string resourcePath = string `/subscriptions/${subscriptionId}`;
+        Subscription response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a subscription
@@ -1354,11 +1353,11 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription. 
     remote isolated function updateSubscription(string subscriptionId, SubscriptionUpdate payload) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/subscriptions/${subscriptionId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Subscription response = check self.clientEp->put(path, request, targetType=Subscription);
+        request.setPayload(jsonBody, "application/json");
+        Subscription response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Terminate a subscription
@@ -1368,12 +1367,10 @@ public isolated client class Client {
     # + charge - Applicable only if the subscription has usage based add-ons and unbilled usage logged for the current billing cycle. If true, current billing cycle unbilled usage is billed on the final invoice. If false, Recurly will create a negative usage record for current billing cycle usage that will zero out the final invoice line items. 
     # + return - An expired subscription. 
     remote isolated function terminateSubscription(string subscriptionId, string refund = "none", boolean charge = true) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/subscriptions/${subscriptionId}`;
         map<anydata> queryParam = {"refund": refund, "charge": charge};
-        path = path + check getPathForQueryParam(queryParam);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        Subscription response = check self.clientEp-> delete(path, request, targetType = Subscription);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Subscription response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Cancel a subscription
@@ -1381,11 +1378,11 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A canceled or failed subscription. 
     remote isolated function cancelSubscription(string subscriptionId, SubscriptionCancel payload) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}/cancel`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/cancel`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Subscription response = check self.clientEp->put(path, request, targetType=Subscription);
+        request.setPayload(jsonBody, "application/json");
+        Subscription response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Reactivate a canceled subscription
@@ -1393,10 +1390,10 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - An active subscription. 
     remote isolated function reactivateSubscription(string subscriptionId) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}/reactivate`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/reactivate`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Subscription response = check self.clientEp-> put(path, request, targetType = Subscription);
+        Subscription response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Pause subscription
@@ -1404,11 +1401,11 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription. 
     remote isolated function pauseSubscription(string subscriptionId, SubscriptionPause payload) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}/pause`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/pause`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Subscription response = check self.clientEp->put(path, request, targetType=Subscription);
+        request.setPayload(jsonBody, "application/json");
+        Subscription response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Resume subscription
@@ -1416,10 +1413,10 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription. 
     remote isolated function resumeSubscription(string subscriptionId) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}/resume`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/resume`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Subscription response = check self.clientEp-> put(path, request, targetType = Subscription);
+        Subscription response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Convert trial subscription
@@ -1427,10 +1424,10 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription. 
     remote isolated function convertTrial(string subscriptionId) returns Subscription|error {
-        string  path = string `/subscriptions/${subscriptionId}/convert_trial`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/convert_trial`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        Subscription response = check self.clientEp-> put(path, request, targetType = Subscription);
+        Subscription response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Fetch a preview of a subscription's renewal invoice(s)
@@ -1438,8 +1435,8 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A preview of the subscription's renewal invoice(s). 
     remote isolated function getPreviewRenewal(string subscriptionId) returns InvoiceCollection|error {
-        string  path = string `/subscriptions/${subscriptionId}/preview_renewal`;
-        InvoiceCollection response = check self.clientEp-> get(path, targetType = InvoiceCollection);
+        string resourcePath = string `/subscriptions/${subscriptionId}/preview_renewal`;
+        InvoiceCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch a subscription's pending change
@@ -1447,8 +1444,8 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription's pending change. 
     remote isolated function getSubscriptionChange(string subscriptionId) returns SubscriptionChange|error {
-        string  path = string `/subscriptions/${subscriptionId}/change`;
-        SubscriptionChange response = check self.clientEp-> get(path, targetType = SubscriptionChange);
+        string resourcePath = string `/subscriptions/${subscriptionId}/change`;
+        SubscriptionChange response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new subscription change
@@ -1456,11 +1453,11 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription change. 
     remote isolated function createSubscriptionChange(string subscriptionId, SubscriptionChangeCreate payload) returns SubscriptionChange|error {
-        string  path = string `/subscriptions/${subscriptionId}/change`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/change`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SubscriptionChange response = check self.clientEp->post(path, request, targetType=SubscriptionChange);
+        request.setPayload(jsonBody, "application/json");
+        SubscriptionChange response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete the pending subscription change
@@ -1468,10 +1465,8 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - Subscription change was deleted. 
     remote isolated function removeSubscriptionChange(string subscriptionId) returns http:Response|error {
-        string  path = string `/subscriptions/${subscriptionId}/change`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/subscriptions/${subscriptionId}/change`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Preview a new subscription change
@@ -1479,11 +1474,11 @@ public isolated client class Client {
     # + subscriptionId - Subscription ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A subscription change. 
     remote isolated function previewSubscriptionChange(string subscriptionId, SubscriptionChangeCreate payload) returns SubscriptionChange|error {
-        string  path = string `/subscriptions/${subscriptionId}/change/preview`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/change/preview`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SubscriptionChange response = check self.clientEp->post(path, request, targetType=SubscriptionChange);
+        request.setPayload(jsonBody, "application/json");
+        SubscriptionChange response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # List a subscription's invoices
@@ -1498,10 +1493,11 @@ public isolated client class Client {
     # + 'type - Filter by type when: - `type=charge`, only charge invoices will be returned. - `type=credit`, only credit invoices will be returned. - `type=non-legacy`, only charge and credit invoices will be returned. - `type=legacy`, only legacy invoices will be returned. 
     # + return - A list of the subscription's invoices. 
     remote isolated function listSubscriptionInvoices(string subscriptionId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? 'type = ()) returns InvoiceList|error {
-        string  path = string `/subscriptions/${subscriptionId}/invoices`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/invoices`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        InvoiceList response = check self.clientEp-> get(path, targetType = InvoiceList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InvoiceList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a subscription's line items
@@ -1518,10 +1514,11 @@ public isolated client class Client {
     # + 'type - Filter by type field. 
     # + return - A list of the subscription's line items. 
     remote isolated function listSubscriptionLineItems(string subscriptionId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? original = (), string? state = (), string? 'type = ()) returns LineItemList|error {
-        string  path = string `/subscriptions/${subscriptionId}/line_items`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/line_items`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "original": original, "state": state, "type": 'type};
-        path = path + check getPathForQueryParam(queryParam);
-        LineItemList response = check self.clientEp-> get(path, targetType = LineItemList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        LineItemList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Show the coupon redemptions for a subscription
@@ -1533,10 +1530,11 @@ public isolated client class Client {
     # + endTime - Inclusively filter by end_time when `sort=created_at` or `sort=updated_at`. **Note:** this value is an ISO8601 timestamp. A partial timestamp that does not include a time zone will default to UTC. 
     # + return - A list of the the coupon redemptions on a subscription. 
     remote isolated function listSubscriptionCouponRedemptions(string subscriptionId, string[]? ids = (), string sort = "created_at", string? beginTime = (), string? endTime = ()) returns CouponRedemptionList|error {
-        string  path = string `/subscriptions/${subscriptionId}/coupon_redemptions`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/coupon_redemptions`;
         map<anydata> queryParam = {"ids": ids, "sort": sort, "begin_time": beginTime, "end_time": endTime};
-        path = path + check getPathForQueryParam(queryParam);
-        CouponRedemptionList response = check self.clientEp-> get(path, targetType = CouponRedemptionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CouponRedemptionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List a subscription add-on's usage records
@@ -1552,10 +1550,11 @@ public isolated client class Client {
     # + billingStatus - Filter by usage record's billing status 
     # + return - A list of the subscription add-on's usage records. 
     remote isolated function listUsage(string subscriptionId, string addOnId, string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "usage_timestamp", string? beginTime = (), string? endTime = (), string billingStatus = "unbilled") returns UsageList|error {
-        string  path = string `/subscriptions/${subscriptionId}/add_ons/${addOnId}/usage`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/add_ons/${addOnId}/usage`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "billing_status": billingStatus};
-        path = path + check getPathForQueryParam(queryParam);
-        UsageList response = check self.clientEp-> get(path, targetType = UsageList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        UsageList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Log a usage record on this subscription add-on
@@ -1564,11 +1563,11 @@ public isolated client class Client {
     # + addOnId - Add-on ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-gold`. 
     # + return - The created usage record. 
     remote isolated function createUsage(string subscriptionId, string addOnId, UsageCreate payload) returns Usage|error {
-        string  path = string `/subscriptions/${subscriptionId}/add_ons/${addOnId}/usage`;
+        string resourcePath = string `/subscriptions/${subscriptionId}/add_ons/${addOnId}/usage`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Usage response = check self.clientEp->post(path, request, targetType=Usage);
+        request.setPayload(jsonBody, "application/json");
+        Usage response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get a usage record
@@ -1576,8 +1575,8 @@ public isolated client class Client {
     # + usageId - Usage Record ID. 
     # + return - The usage record. 
     remote isolated function getUsage(string usageId) returns Usage|error {
-        string  path = string `/usage/${usageId}`;
-        Usage response = check self.clientEp-> get(path, targetType = Usage);
+        string resourcePath = string `/usage/${usageId}`;
+        Usage response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a usage record
@@ -1585,11 +1584,11 @@ public isolated client class Client {
     # + usageId - Usage Record ID. 
     # + return - The updated usage record. 
     remote isolated function updateUsage(string usageId, UsageCreate payload) returns Usage|error {
-        string  path = string `/usage/${usageId}`;
+        string resourcePath = string `/usage/${usageId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Usage response = check self.clientEp->put(path, request, targetType=Usage);
+        request.setPayload(jsonBody, "application/json");
+        Usage response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a usage record.
@@ -1597,10 +1596,8 @@ public isolated client class Client {
     # + usageId - Usage Record ID. 
     # + return - Usage was successfully deleted. 
     remote isolated function removeUsage(string usageId) returns http:Response|error {
-        string  path = string `/usage/${usageId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/usage/${usageId}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List a site's transactions
@@ -1615,10 +1612,11 @@ public isolated client class Client {
     # + success - Filter by success field. 
     # + return - A list of the site's transactions. 
     remote isolated function listTransactions(string[]? ids = (), int 'limit = 20, string 'order = "desc", string sort = "created_at", string? beginTime = (), string? endTime = (), string? 'type = (), string? success = ()) returns TransactionList|error {
-        string  path = string `/transactions`;
+        string resourcePath = string `/transactions`;
         map<anydata> queryParam = {"ids": ids, "limit": 'limit, "order": 'order, "sort": sort, "begin_time": beginTime, "end_time": endTime, "type": 'type, "success": success};
-        path = path + check getPathForQueryParam(queryParam);
-        TransactionList response = check self.clientEp-> get(path, targetType = TransactionList);
+        map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        TransactionList response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch a transaction
@@ -1626,8 +1624,8 @@ public isolated client class Client {
     # + transactionId - Transaction ID or UUID. For ID no prefix is used e.g. `e28zov4fw0v2`. For UUID use prefix `uuid-`, e.g. `uuid-123457890`. 
     # + return - A transaction. 
     remote isolated function getTransaction(string transactionId) returns Transaction|error {
-        string  path = string `/transactions/${transactionId}`;
-        Transaction response = check self.clientEp-> get(path, targetType = Transaction);
+        string resourcePath = string `/transactions/${transactionId}`;
+        Transaction response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Fetch a unique coupon code
@@ -1635,8 +1633,8 @@ public isolated client class Client {
     # + uniqueCouponCodeId - Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`. 
     # + return - A unique coupon code. 
     remote isolated function getUniqueCouponCode(string uniqueCouponCodeId) returns UniqueCouponCode|error {
-        string  path = string `/unique_coupon_codes/${uniqueCouponCodeId}`;
-        UniqueCouponCode response = check self.clientEp-> get(path, targetType = UniqueCouponCode);
+        string resourcePath = string `/unique_coupon_codes/${uniqueCouponCodeId}`;
+        UniqueCouponCode response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deactivate a unique coupon code
@@ -1644,10 +1642,8 @@ public isolated client class Client {
     # + uniqueCouponCodeId - Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`. 
     # + return - A unique coupon code. 
     remote isolated function deactivateUniqueCouponCode(string uniqueCouponCodeId) returns UniqueCouponCode|error {
-        string  path = string `/unique_coupon_codes/${uniqueCouponCodeId}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        UniqueCouponCode response = check self.clientEp-> delete(path, request, targetType = UniqueCouponCode);
+        string resourcePath = string `/unique_coupon_codes/${uniqueCouponCodeId}`;
+        UniqueCouponCode response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Restore a unique coupon code
@@ -1655,40 +1651,40 @@ public isolated client class Client {
     # + uniqueCouponCodeId - Unique Coupon Code ID or code. For ID no prefix is used e.g. `e28zov4fw0v2`. For code use prefix `code-`, e.g. `code-abc-8dh2-def`. 
     # + return - A unique coupon code. 
     remote isolated function reactivateUniqueCouponCode(string uniqueCouponCodeId) returns UniqueCouponCode|error {
-        string  path = string `/unique_coupon_codes/${uniqueCouponCodeId}/restore`;
+        string resourcePath = string `/unique_coupon_codes/${uniqueCouponCodeId}/restore`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        UniqueCouponCode response = check self.clientEp-> put(path, request, targetType = UniqueCouponCode);
+        UniqueCouponCode response = check self.clientEp-> put(resourcePath, request);
         return response;
     }
     # Create a new purchase
     #
     # + return - Returns the new invoices 
     remote isolated function createPurchase(PurchaseCreate payload) returns InvoiceCollection|error {
-        string  path = string `/purchases`;
+        string resourcePath = string `/purchases`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InvoiceCollection response = check self.clientEp->post(path, request, targetType=InvoiceCollection);
+        request.setPayload(jsonBody, "application/json");
+        InvoiceCollection response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Preview a new purchase
     #
     # + return - Returns preview of the new invoices 
     remote isolated function previewPurchase(PurchaseCreate payload) returns InvoiceCollection|error {
-        string  path = string `/purchases/preview`;
+        string resourcePath = string `/purchases/preview`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InvoiceCollection response = check self.clientEp->post(path, request, targetType=InvoiceCollection);
+        request.setPayload(jsonBody, "application/json");
+        InvoiceCollection response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # List the dates that have an available export to download.
     #
     # + return - Returns a list of dates. 
     remote isolated function getExportDates() returns ExportDates|error {
-        string  path = string `/export_dates`;
-        ExportDates response = check self.clientEp-> get(path, targetType = ExportDates);
+        string resourcePath = string `/export_dates`;
+        ExportDates response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List of the export files that are available to download.
@@ -1696,42 +1692,8 @@ public isolated client class Client {
     # + exportDate - Date for which to get a list of available automated export files. Date must be in YYYY-MM-DD format. 
     # + return - Returns a list of export files to download. 
     remote isolated function getExportFiles(string exportDate) returns ExportFiles|error {
-        string  path = string `/exportDates/${exportDate}/export_files`;
-        ExportFiles response = check self.clientEp-> get(path, targetType = ExportFiles);
+        string resourcePath = string `/export_dates/${exportDate}/export_files`;
+        ExportFiles response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

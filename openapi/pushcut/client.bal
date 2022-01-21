@@ -40,25 +40,26 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get devices
     #
     # + return - Success 
     remote isolated function getDevices() returns InlineResponse200[]|error {
-        string  path = string `/devices`;
+        string resourcePath = string `/devices`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse200[] response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse200Arr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse200[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get defined notifications
     #
     # + return - Success 
     remote isolated function getNotifications() returns InlineResponse2001[]|error {
-        string  path = string `/notifications`;
+        string resourcePath = string `/notifications`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse2001[] response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse2001Arr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse2001[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Send a smart notification
@@ -67,23 +68,23 @@ public isolated client class Client {
     # + payload - Extend and customize the defined notification by providing dynamic content. 
     # + return - Success 
     remote isolated function sendNotification(string notificationName, Notification payload) returns http:Response|error {
-        string  path = string `/notifications/${notificationName}`;
+        string resourcePath = string `/notifications/${notificationName}`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get a list of all online action subscriptions
     #
     # + return - Success 
     remote isolated function getSubscriptions() returns SubscriptionData[]|error {
-        string  path = string `/subscriptions`;
+        string resourcePath = string `/subscriptions`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SubscriptionData[] response = check self.clientEp-> get(path, accHeaders, targetType = SubscriptionDataArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SubscriptionData[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Subscribe to an online action
@@ -91,13 +92,13 @@ public isolated client class Client {
     # + payload - Subscription request 
     # + return - Success 
     remote isolated function actionExecuted(Subscription payload) returns InlineResponse2002|error {
-        string  path = string `/subscriptions`;
+        string resourcePath = string `/subscriptions`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InlineResponse2002 response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InlineResponse2002);
+        request.setPayload(jsonBody, "application/json");
+        InlineResponse2002 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Remove an online action subscription
@@ -105,10 +106,10 @@ public isolated client class Client {
     # + subscriptionId - Id that was returned when creating the subscription. 
     # + return - Success 
     remote isolated function deleteSubscription(string subscriptionId) returns http:Response|error {
-        string  path = string `/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/subscriptions/${subscriptionId}`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Execute an Automation Server action.
@@ -121,15 +122,15 @@ public isolated client class Client {
     # + payload - Pass an input or optional configuration with the request. 
     # + return - Success 
     remote isolated function execute(Execute payload, string? shortcut = (), string? homekit = (), string? timeout = (), string? delay = (), string? identifier = ()) returns http:Response|error {
-        string  path = string `/execute`;
+        string resourcePath = string `/execute`;
         map<anydata> queryParam = {"shortcut": shortcut, "homekit": homekit, "timeout": timeout, "delay": delay, "identifier": identifier};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Cancel a scheduled Automation Server action.
@@ -137,14 +138,14 @@ public isolated client class Client {
     # + identifier - Identifier of the request. 
     # + return - Success 
     remote isolated function cancelExecution(string? identifier = ()) returns http:Response|error {
-        string  path = string `/cancelExecution`;
+        string resourcePath = string `/cancelExecution`;
         map<anydata> queryParam = {"identifier": identifier};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

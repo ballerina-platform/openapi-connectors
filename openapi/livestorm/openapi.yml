@@ -113,22 +113,22 @@ components:
       properties:
         copy_from_event_id:
           type: string
-          x-nullable: true
+          nullable: true
           description: Event ID to copy
           example: 356b514f-333e-47d5-b5f2-3a4278b14072
         owner_id:
           type: string
-          x-nullable: false
+          nullable: false
           description: Owner ID
           example: f035b51d-5135-47ee-b1fc-4e92508f312a
         title:
           type: string
-          x-nullable: false
+          nullable: false
           description: Event title
           example: New event
         slug:
           type: string
-          x-nullable: false
+          nullable: false
           description: Event slug
           example: my-awesome-slug
     SessionRequestAttribute:
@@ -137,11 +137,11 @@ components:
       properties:
         estimated_started_at:
           type: string
-          x-nullable: true
+          nullable: true
           description: Estimated started time
         timezone:
           type: string
-          x-nullable: false
+          nullable: false
           description: Time zone
     PeopleRequestAttribute:
       type: object
@@ -149,27 +149,27 @@ components:
       properties:
         referrer:
           type: string
-          x-nullable: true
+          nullable: true
           description: Referrer detail
         utm_source:
           type: string
-          x-nullable: false
+          nullable: false
           description: UTM tracking source
         utm_medium:
           type: string
-          x-nullable: true
+          nullable: true
           description: UTM medium
         utm_term:
           type: string
-          x-nullable: false
+          nullable: false
           description: UTM term
         utm_content:
           type: string
-          x-nullable: true
+          nullable: true
           description: UTM content
         utm_campaign:
           type: string
-          x-nullable: false
+          nullable: false
           description: UTM campaign
     OwnerAttribute:
       type: object
@@ -177,35 +177,34 @@ components:
       properties:
         role:
           type: string
-          x-nullable: false
+          nullable: false
           description: Role of owner
         created_at:
           type: integer
-          x-nullable: false
+          nullable: false
           description: Created timestamp
         updated_at:
           type: integer
-          x-nullable: false
+          nullable: false
           description: Updated timestamp
         timezone:
           type: string
-          x-nullable: false
+          nullable: false
           description: Timezone
         first_name:
           type: string
-          x-nullable: false
+          nullable: false
           description: First name
         last_name:
           type: string
-          x-nullable: false
+          nullable: false
           description: Last name
         email:
           type: string
-          x-nullable: false
+          nullable: false
           description: Email
         avatar_link:
           type: string
-          x-nullable: false
           nullable: true
           description: Avatar link
     EventAttribute:
@@ -214,72 +213,71 @@ components:
       properties:
         title:
           type: string
-          x-nullable: false
+          nullable: false
           description: Event title
           example: New event
         slug:
           type: string
-          x-nullable: false
+          nullable: false
           description: Event slug
           example: my-awesome-slug
         registration_link:
           type: string
-          x-nullable: true
+          nullable: true
           description: Event title
           example: https://app.livestorm.co/p/4d584b01-6319-4d19-a420-c67156273b76
         estimated_duration:
           type: integer
-          x-nullable: true
+          nullable: true
           description: Estimated duration
           example: 20      
         registration_page_enabled:
           type: boolean
-          x-nullable: true
+          nullable: true
           description: Registration page enabled or not
           example: true
         everyone_can_speak:
           type: boolean
-          x-nullable: true
+          nullable: true
           description: Everyone can speack or not
           example: true    
         description:
           type: string
-          x-nullable: true
           nullable: true
           description: Description about event
           example: It is a webinar
         language:
           type: string
-          x-nullable: true
+          nullable: true
           description: Event language
           example: en      
         published_at:
           type: integer
-          x-nullable: true
+          nullable: true
           description: Updated timestamp
           example: 1625606595
         created_at:
           type: integer
-          x-nullable: true
+          nullable: true
           description: Created timestamp
           example: 1625606595  
         updated_at:
           type: integer
-          x-nullable: true
+          nullable: true
           description: Updated timestamp
           example: 1625606595       
         owner:
           "$ref": "#/components/schemas/Owner"
         sessions_count:
           type: integer
-          x-nullable: true
+          nullable: true
           description: Number of sessions
           example: 1  
         fields:
           type: array
           items:
             "$ref": "#/components/schemas/Field"
-          x-nullable: true
+          nullable: true
           description: Fields available
     Field:
       type: object
@@ -287,22 +285,22 @@ components:
       properties:
         id:
           type: string
-          x-nullable: true
+          nullable: true
           description: Event field ID
           example: email  
         type:
           type: string
-          x-nullable: true
+          nullable: true
           description: Type of fields
           example: text  
         order:
           type: integer
-          x-nullable: true
+          nullable: true
           description: Order of fields
           example: 1  
         required:
           type: boolean
-          x-nullable: true
+          nullable: true
           description: Required or not
           example: true  
     EventRelationship:
@@ -313,7 +311,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Session"
-          x-nullable: true
+          nullable: true
           description: Event session
     SessionRelationship:
       type: object
@@ -323,7 +321,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/People"
-          x-nullable: true
+          nullable: true
           description: People
     Session:
       type: object
@@ -331,11 +329,11 @@ components:
       properties:
         type:
           type: string
-          x-nullable: false
+          nullable: false
           description: Session type
         id:
           type: string
-          x-nullable: false
+          nullable: false
           description: Session ID
         attributes:
           "$ref": "#/components/schemas/SessionAttribute"
@@ -374,10 +372,10 @@ components:
           type: string
           description: Canceled time
         created_at:
-          type: string
+          type: integer
           description: Created time
         updated_at:
-          type: string
+          type: integer
           description: Updated time
         registrants_count:
           type: string
@@ -388,11 +386,11 @@ components:
       properties:
         type:
           type: string
-          x-nullable: false
+          nullable: false
           description: People type
         id:
           type: string
-          x-nullable: false
+          nullable: false
           description: People ID
         attributes:
           "$ref": "#/components/schemas/PeopleAttribute"
@@ -404,10 +402,10 @@ components:
           type: string
           description: Role assigned to
         created_at:
-          type: string
+          type: integer
           description: Created time
         updated_at:
-          type: string
+          type: integer
           description: Updated time
         timezone:
           type: string
@@ -826,55 +824,55 @@ paths:
                             properties:
                               event_type_id:
                                 type: string
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               status:
                                 type: string
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               timezone:
                                 type: string
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               room_link:
                                 type: string
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               attendees_count:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               duration:
                                 type: integer
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               estimated_started_at:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               started_at:
                                 type: integer
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               ended_at:
                                 type: integer
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               canceled_at:
                                 type: integer
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               created_at:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               updated_at:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               registrants_count:
                                 type: integer
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                   meta:
                     "$ref": "#/components/schemas/Meta"
@@ -1282,93 +1280,91 @@ paths:
                             properties:
                               role:
                                 type: string
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               created_at:
                                 type: integer
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               updated_at:
                                 type: integer
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               timezone:
                                 type: string
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               first_name:
                                 type: string
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               last_name:
                                 type: string
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               email:
                                 type: string
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               avatar_link:
                                 type: string
-                                x-nullable: true
+                                nullable: true
                                 description: ''
                               registrant_detail:
                                 type: object
-                                x-nullable: true
+                                nullable: true
                                 description: ''
-                                items:
-                                  type: object
-                                  properties:
-                                    event_id:
-                                      type: string
-                                      x-nullable: false
-                                      description: ''
-                                    created_at:
-                                      type: string
-                                      x-nullable: false
-                                      description: ''
-                                    updated_at:
-                                      type: string
-                                      x-nullable: false
-                                      description: ''
-                                    fields:
-                                      type: array
-                                      x-nullable: false
-                                      description: ''
-                                      items:
-                                        type: object
-                                        properties:
-                                          id:
-                                            type: string
-                                            x-nullable: false
-                                            description: ''
-                                          type:
-                                            type: string
-                                            x-nullable: false
-                                            description: ''
-                                          order:
-                                            type: integer
-                                            x-nullable: false
-                                            description: ''
-                                          required:
-                                            type: string
-                                            x-nullable: false
-                                            description: ''
+                                properties:
+                                  event_id:
+                                    type: string
+                                    nullable: false
+                                    description: ''
+                                  created_at:
+                                    type: integer
+                                    nullable: false
+                                    description: ''
+                                  updated_at:
+                                    type: integer
+                                    nullable: false
+                                    description: ''
+                                  fields:
+                                    type: array
+                                    nullable: false
+                                    description: ''
+                                    items:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: string
+                                          nullable: false
+                                          description: ''
+                                        type:
+                                          type: string
+                                          nullable: false
+                                          description: ''
+                                        value:
+                                          type: string
+                                          nullable: true
+                                          description: ''
+                                        required:
+                                          type: boolean
+                                          nullable: false
+                                          description: ''
                               messages_count:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               questions_count:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               votes_count:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                               up_votes_count:
                                 type: integer
-                                x-nullable: false
+                                nullable: false
                                 description: ''
                   meta:
                     "$ref": "#/components/schemas/Meta"

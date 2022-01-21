@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -68,6 +66,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.sendgrid.com/v3") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Send Mail
     #
@@ -75,11 +74,11 @@ public isolated client class Client {
     # + return - No Content 
     @display {label: "Send Email"}
     remote isolated function sendMail(@display {label: "Email Content"} SendEmailRequest payload) returns http:Response|error {
-        string  path = string `/mail/send`;
+        string resourcePath = string `/mail/send`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieve all alerts
@@ -88,26 +87,26 @@ public isolated client class Client {
     # + return - Details related to alerts 
     @display {label: "Get All Alerts"}
     remote isolated function getAlerts(@display {label: "Subuser's Username"} string? onBehalfOf = ()) returns AlertResponse[]|error {
-        string  path = string `/alerts`;
+        string resourcePath = string `/alerts`;
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AlertResponse[] response = check self.clientEp-> get(path, accHeaders, targetType = AlertResponseArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AlertResponse[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new Alert
     #
-    # + payload - Alert Content 
     # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call. 
+    # + payload - Alert Content 
     # + return - Created alert details 
     @display {label: "Create Alert"}
     remote isolated function postAlerts(@display {label: "Alert Content"} PostAlertsRequest payload, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns PostAlertsResponse|error {
-        string  path = string `/alerts`;
+        string resourcePath = string `/alerts`;
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PostAlertsResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PostAlertsResponse);
+        request.setPayload(jsonBody, "application/json");
+        PostAlertsResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete an alert
@@ -117,29 +116,27 @@ public isolated client class Client {
     # + return - Succesful - No Content 
     @display {label: "Delete Alert by Id"}
     remote isolated function deleteAlertById(@display {label: "Alert Id"} int alertId, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns http:Response|error {
-        string  path = string `/alerts/${alertId}`;
+        string resourcePath = string `/alerts/${alertId}`;
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, headers = accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update an alert
     #
     # + alertId - The ID of the alert you would like to retrieve. 
-    # + payload - Alert content to update 
     # + onBehalfOf - The subuser's username. This header generates the API call as if the subuser account was making the call. 
+    # + payload - Alert content to update 
     # + return - Updated alert details 
     @display {label: "Update Alert by Id"}
     remote isolated function updateAlertbyId(@display {label: "Alert Id"} int alertId, UpdateAlertbyIdRequest payload, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns UpdateAlertbyIdResponse|error {
-        string  path = string `/alerts/${alertId}`;
+        string resourcePath = string `/alerts/${alertId}`;
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UpdateAlertbyIdResponse response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=UpdateAlertbyIdResponse);
+        request.setPayload(jsonBody, "application/json");
+        UpdateAlertbyIdResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List all Subusers
@@ -150,10 +147,10 @@ public isolated client class Client {
     # + return - List of Subusers 
     @display {label: "List All Subusers"}
     remote isolated function getSubusers(@display {label: "Username"} string? username = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = ()) returns Subuser[]|error {
-        string  path = string `/subusers`;
+        string resourcePath = string `/subusers`;
         map<anydata> queryParam = {"username": username, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        Subuser[] response = check self.clientEp-> get(path, targetType = SubuserArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Subuser[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create Subuser
@@ -161,11 +158,11 @@ public isolated client class Client {
     # + payload - New subuser details 
     # + return - Created subuser's details 
     remote isolated function postSubusers(@display {label: "New Subuser Details"} PostSubusersRequest payload) returns SubuserPost|error {
-        string  path = string `/subusers`;
+        string resourcePath = string `/subusers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SubuserPost response = check self.clientEp->post(path, request, targetType=SubuserPost);
+        request.setPayload(jsonBody, "application/json");
+        SubuserPost response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete a subuser
@@ -174,10 +171,8 @@ public isolated client class Client {
     # + return - Successful - No Content 
     @display {label: "Update Subuser by Subuser Name"}
     remote isolated function deleteSubuserByName(@display {label: "Subuser Name"} string subuserName) returns http:Response|error {
-        string  path = string `/subusers/${subuserName}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/subusers/${subuserName}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Retrieve all blocks
@@ -190,12 +185,12 @@ public isolated client class Client {
     # + return - List of all blocks 
     @display {label: "Get Suppression Blocks"}
     remote isolated function getSuppressionBlocks(@display {label: "Start Time"} int? startTime = (), @display {label: "End Time"} int? endTime = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns SuppressionBlocks[]|error {
-        string  path = string `/suppression/blocks`;
+        string resourcePath = string `/suppression/blocks`;
         map<anydata> queryParam = {"start_time": startTime, "end_time": endTime, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SuppressionBlocks[] response = check self.clientEp-> get(path, accHeaders, targetType = SuppressionBlocksArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SuppressionBlocks[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve all spam reports
@@ -208,60 +203,12 @@ public isolated client class Client {
     # + return - Received spam reports 
     @display {label: "Get Suppression Spam Reports"}
     remote isolated function getSuppressionSpamReports(@display {label: "Start Time"} int? startTime = (), @display {label: "End Time"} int? endTime = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns SpamReportDetails[]|error {
-        string  path = string `/suppression/spam_reports`;
+        string resourcePath = string `/suppression/spam_reports`;
         map<anydata> queryParam = {"start_time": startTime, "end_time": endTime, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SpamReportDetails[] response = check self.clientEp-> get(path, accHeaders, targetType = SpamReportDetailsArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SpamReportDetails[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

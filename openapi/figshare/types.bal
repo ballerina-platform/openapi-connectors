@@ -307,6 +307,11 @@ public type ArticleDOI record {
     string doi?;
 };
 
+public type HrfeedUploadBody record {
+    # You can find an example in the Hr Feed section
+    string hrfeed?;
+};
+
 public type Role record {
     # Role category
     string category?;
@@ -747,11 +752,6 @@ public type CollectionUpdate record {
 public type ProjectNoteCreate record {
     # Text of the note
     string text;
-};
-
-public type Body record {
-    # You can find an example in the Hr Feed section
-    string hrfeed?;
 };
 
 public type ArticlesCreator record {

@@ -14,12 +14,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type Images any;
+public type Images anydata;
 
-public type Hashtags any;
+public type Hashtags anydata;
 
-public type Instagram any;
+public type Instagram anydata;
 
-public type LinkShortening any;
+public type LinkShortening anydata;
 
-public type Emojis any;
+public type Emojis anydata;

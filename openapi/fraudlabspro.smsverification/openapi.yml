@@ -28,6 +28,7 @@ paths:
   /v1/verification/send:
     post:
       description: Send an SMS with verification code and a custom message for authentication purpose.
+      operationId: sendSMSVerification
       parameters:
         - name: country_code
           in: query
@@ -73,6 +74,7 @@ paths:
   /v1/verification/result:
     get:
       description: Verify that an OTP sent by the Send SMS Verification API is valid.
+      operationId: verifyOTP
       parameters:
         - name: tran_id
           in: query

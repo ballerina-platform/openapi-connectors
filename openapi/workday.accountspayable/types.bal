@@ -58,7 +58,7 @@ public type InvoiceRequestSummary record {
     # The reference number that is encoded with key payment information on the invoice request document.
     string? referenceNumber?;
     # Tax amount for the supplier invoice request.
-    record  { }  taxAmount?;
+    record {} taxAmount?;
     HandlingCode? handlingCode?;
     Status? status?;
     # The due date for payment for this Supplier Invoice Request. Example: If the payment terms are Net 30, the Due Date field is 30 days after the invoice date.
@@ -66,14 +66,14 @@ public type InvoiceRequestSummary record {
     RemitToConnection? remitToConnection?;
     PaymentTerms? paymentTerms?;
     # The amount entered that should match the total of the line amounts.
-    record  { }  controlTotalAmount?;
+    record {} controlTotalAmount?;
     # The memo for the supplier invoice request.
     string? memo?;
     # The reference number provided by the supplier for the supplier invoice request.
     string? suppliersInvoiceNumber?;
     Currency? currency?;
     # The freight amount for the supplier invoice request.
-    record  { }  freightAmount?;
+    record {} freightAmount?;
     ShipToAddress? shipToAddress?;
     ReferenceType? referenceType?;
     # The unique number assigned to the Supplier Invoice Request at the time of creation.
@@ -108,12 +108,12 @@ public type InlineResponse200 record {
 
 public type CreateInvoiceRequestSummary record {
     CurrencyInstanceModelRef? currency?;
-    Company? company?;
+    Company? company;
     # Tax amount for the supplier invoice request.
-    record  { }  taxAmount?;
+    record {} taxAmount?;
     Requester? requester?;
     # The amount entered that should match the total of the line amounts.
-    record  { }  controlTotalAmount?;
+    record {} controlTotalAmount?;
     PaymentTerms? paymentTerms?;
     ReferenceType? referenceType?;
     # The Supplier Invoice Request Lines for a Supplier Invoice Request.
@@ -126,12 +126,12 @@ public type CreateInvoiceRequestSummary record {
     # The date an invoice is received.
     string? invoiceReceivedDate?;
     # Freight amount for the supplier invoice request.
-    record  { }  freightAmount?;
-    Supplier? supplier?;
+    record {} freightAmount?;
+    Supplier? supplier;
     HandlingCode? handlingCode?;
     ShipToAddress? shipToAddress?;
     # The date when a request for a supplier invoice is created.
-    string? invoiceDate?;
+    string? invoiceDate;
     # The memo for the Supplier Invoice Request.
     string? memo?;
     RemitToConnection? remitToConnection?;
@@ -234,7 +234,7 @@ public type LineSplitSummary record {
     # The quantity specified for the Business Document Line distribution line split.
     int? quantity?;
     # The amount on the transaction line split. This value displays in the same currency as the business document.
-    record  { }  amount?;
+    record {} amount?;
     # The accounting worktags for the line split.
     LineSplitWorktagSummary[]? worktags?;
     # Id of the instance
@@ -265,7 +265,7 @@ public type AttachmentSummary record {
 
 public type CreateLineSummary record {
     # The unit cost for the document line.
-    record  { }  unitCost?;
+    record {} unitCost?;
     # The internal line memo for the supplier invoice request line.
     string? internalMemo?;
     # The description of the item on the document line. This is a text-only value.
@@ -284,7 +284,7 @@ public type CreateLineSummary record {
     # The quantity on the transaction line. This value can have 20 integer places, is precise to 2 decimal places, and can be negative.
     int? quantity?;
     # The extended amount for the document line.  Excludes extended amount on tax only invoices.
-    record  { }  extendedAmount?;
+    record {} extendedAmount?;
     SpendCategory? spendCategory?;
     UnitOfMeasure? unitOfMeasure?;
     # The memo on the document line.
@@ -326,9 +326,9 @@ public type ViewLineSummary record {
     # Returns true if the Supplier Invoice Request Line or Line Split is Billable.
     boolean? billable?;
     # The unit cost for the document line.
-    record  { }  unitCost?;
+    record {} unitCost?;
     # The extended amount for the document line.  Excludes Extended Amounts on Tax Only Invoices.
-    record  { }  extendedAmount?;
+    record {} extendedAmount?;
     SpendCategory? spendCategory?;
     # The memo on the document line.
     string? memo?;
@@ -363,9 +363,14 @@ public type FacetsModelReferenceInner record {
     # The alias used to select the facet
     string? facetParameter?;
     # the facet values
-    record  { # The number of instances returned by this facet
-        int? count?; # wid / id / reference id
-        string? id; # A description of the facet
-        string? descriptor?; # A link to the instance
-        string? href?;} []? values?;
+    record {
+        # The number of instances returned by this facet
+        int? count?;
+        # wid / id / reference id
+        string? id;
+        # A description of the facet
+        string? descriptor?;
+        # A link to the instance
+        string? href?;
+    }[]? values?;
 };

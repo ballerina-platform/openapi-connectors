@@ -326,7 +326,7 @@ public type CertificateRevoke record {
 
 public type ErrorLimit record {
     # Number of seconds to wait before attempting a similar request
-    int retryAfterSec?;
+    int retryAfterSec;
     *Error;
 };
 
